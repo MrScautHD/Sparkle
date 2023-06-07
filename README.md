@@ -8,7 +8,7 @@
 
 📚 Libraries (https://www.nuget.org/packages)
 ==========================================
-- [Silk.NET](https://github.com/RiptideNetworking/Riptide)
+- [Silk.NET](https://www.nuget.org/packages/Silk.NET)
 - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
 
 💸 Sponsors
