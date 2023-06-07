@@ -1,9 +1,7 @@
 namespace Sparkle.csharp; 
 
 public class Logger {
-    
-    //TODO Add LOG file.
-    
+
     public static void Debug(string text) {
         Log(text, ConsoleColor.White);
     }
@@ -30,4 +28,6 @@ public class Logger {
         Console.WriteLine(text);
         Console.ResetColor();
     }
+    
+    //TODO Add LOG file.
 }
