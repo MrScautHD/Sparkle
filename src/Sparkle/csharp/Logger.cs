@@ -1,4 +1,4 @@
-namespace Bliss; 
+namespace Sparkle.csharp; 
 
 public class Logger {
     

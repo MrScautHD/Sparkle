@@ -2,7 +2,7 @@ using System.Reflection;
 using Silk.NET.Vulkan;
 using Silk.NET.Windowing;
 
-namespace Bliss; 
+namespace Sparkle.csharp; 
 
 public class Application : IDisposable {
     

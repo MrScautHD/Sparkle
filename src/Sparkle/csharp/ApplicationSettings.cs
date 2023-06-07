@@ -2,7 +2,7 @@ using System.Reflection;
 using Silk.NET.Maths;
 using Silk.NET.Windowing;
 
-namespace Bliss; 
+namespace Sparkle.csharp; 
 
 public class ApplicationSettings {
     
