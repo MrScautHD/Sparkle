@@ -6,9 +6,11 @@
         <Nullable>enable</Nullable>
         <AssemblyName>Sparkle</AssemblyName>
         <RootNamespace>Sparkle</RootNamespace>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BepuPhysics" Version="2.5.0-beta.12" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Silk.NET.Assimp" Version="2.17.1" />
       <PackageReference Include="Silk.NET.Core" Version="2.17.1" />
@@ -16,6 +18,7 @@
       <PackageReference Include="Silk.NET.Maths" Version="2.17.1" />
       <PackageReference Include="Silk.NET.Vulkan" Version="2.17.1" />
       <PackageReference Include="Silk.NET.Windowing" Version="2.17.1" />
+      <PackageReference Include="Silk.NET.XAudio" Version="2.17.1" />
     </ItemGroup>
 
 </Project>
