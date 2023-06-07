@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Reflection;
 using Silk.NET.Vulkan;
 using Silk.NET.Windowing;
@@ -11,7 +10,7 @@ public class Application : IDisposable {
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
 
     private ApplicationSettings _settings;
-    public bool Close;
+    private bool _close;
 
     private IWindow _window;
     private Vk _vk;
@@ -22,16 +21,23 @@ public class Application : IDisposable {
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
     
-    public Application() {
+    public Application(ApplicationSettings settings) {
         Instance = this;
+        this._settings = settings;
     }
     
     public void Run() {
-        this._window.Run();
+        Logger.Debug("Hello World! Sparkle start...");
+        Logger.Info("\tCPU: " + SystemInfo.Cpu);
+        Logger.Info("\tMEMORY: " + SystemInfo.Memory);
+        Logger.Info("\tTHREADS: " + SystemInfo.Threads);
+        Logger.Info("\tOS: " + SystemInfo.Os);
         
+        Logger.Info("Start Initializing!");
+        this._window.Run();
         this.Init();
-
-        while (!this.Close) {
+        
+        while (!this._close) {
 
             while (this._timer >= this._delay) {
                 this.FixedUpdate();
@@ -44,7 +50,10 @@ public class Application : IDisposable {
     }
 
     public virtual void Init() {
+        Logger.Debug("Initializing Time...");
         Time.Init();
+        
+        Logger.Debug("Initializing Window...");
         this.CreateWindow();
     }
 
@@ -75,8 +84,13 @@ public class Application : IDisposable {
         this._window.Initialize();
 
         if (this._window.VkSurface == null) {
-            throw new Exception("Windowing platform doesn't support Vulkan.");
+            Logger.Fatal("Windowing platform doesn't support Vulkan.");
         }
+    }
+
+    public void Close() {
+        Logger.Warn("Application shuts down!");
+        this._close = true;
     }
 
     public void Dispose() {

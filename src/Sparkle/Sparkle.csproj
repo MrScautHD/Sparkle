@@ -21,4 +21,13 @@
       <PackageReference Include="Silk.NET.XAudio" Version="2.17.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="csharp\Audio\" />
+      <Folder Include="csharp\Content\" />
+      <Folder Include="csharp\Entity\" />
+      <Folder Include="csharp\GUI\" />
+      <Folder Include="csharp\Physic\" />
+      <Folder Include="csharp\Scene\" />
+    </ItemGroup>
+
 </Project>
