@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliss", "src\Bliss\Bliss.csproj", "{34708A3F-906E-4C9A-9D1E-1280FE861EC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle", "src\Sparkle\Sparkle.csproj", "{34708A3F-906E-4C9A-9D1E-1280FE861EC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

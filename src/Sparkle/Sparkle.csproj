@@ -4,6 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>Sparkle</AssemblyName>
+        <RootNamespace>Sparkle</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
