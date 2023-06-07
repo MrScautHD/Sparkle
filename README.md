@@ -8,8 +8,9 @@
 
 📚 Libraries (https://www.nuget.org/packages)
 ==========================================
-- [Silk.NET](https://github.com/RiptideNetworking/Riptide)
-- [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
+- [Silk.NET](https://www.nuget.org/packages/Silk.NET)
+- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
+- [BepuPhysics](https://www.nuget.org/packages/BepuPhysics)
 
 💸 Sponsors
 ============
