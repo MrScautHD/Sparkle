@@ -1,3 +1,7 @@
+<p align="center" style="margin-bottom: 0px !important;">
+  <img width="512" src="https://cdn.discordapp.com/attachments/1023302205031321690/1116290698568814612/imagsfe.png" alt="Logo" align="center">
+</p>
+
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
