@@ -21,7 +21,7 @@ public class Application : IDisposable {
     }
     
     public void Run() {
-        Logger.Info("Hello World! Sparkle start...");
+        Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info("\tCPU: " + SystemInfo.Cpu);
         Logger.Info("\tMEMORY: " + SystemInfo.Memory);
         Logger.Info("\tTHREADS: " + SystemInfo.Threads);
@@ -49,20 +49,19 @@ public class Application : IDisposable {
     }
 
     protected virtual void Draw(double dt) {
-       // Logger.Error("Draw");
+        
     }
 
     protected virtual void Update(double dt) {
-        /*while (this._timer >= this._delay) {
+        this._timer += dt;
+        while (this._timer >= this._delay) {
             this.FixedUpdate();
             this._timer -= this._delay;
-        }*/
-        
-       // Logger.Error("Update");
+        }
     }
 
     protected virtual void FixedUpdate() {
-       // Logger.Error("FixedUpdate");
+        
     }
 
     private void CreateWindow() {
