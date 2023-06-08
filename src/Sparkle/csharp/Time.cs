@@ -4,7 +4,7 @@ namespace Sparkle.csharp;
 
 public static class Time {
 
-    public static double DeltaTime => Application.Instance.Window.Time;
+    public static double DeltaTime => Application.Instance.IWindow.Time;
     public static double TotalTime => (float) _watch.Elapsed.TotalSeconds;
 
     private static Stopwatch _watch;

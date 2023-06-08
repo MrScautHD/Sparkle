@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Reflection;
+
 namespace Sparkle.csharp; 
 
 public static class Logger {
@@ -24,8 +27,9 @@ public static class Logger {
     }
 
     private static void Log(string text, ConsoleColor color) {
+        MethodBase? info = new StackFrame(2).GetMethod();
         Console.ForegroundColor = color;
-        Console.WriteLine(text);
+        Console.WriteLine($"[{info.DeclaringType.FullName} :: {info.Name}] {text}");
         Console.ResetColor();
     }
     

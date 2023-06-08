@@ -10,7 +10,7 @@ public class Application : IDisposable {
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
     
     private ApplicationSettings _settings;
-    public IWindow Window;
+    public IWindow IWindow;
 
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
@@ -30,12 +30,12 @@ public class Application : IDisposable {
         Logger.Debug("Creating Window...");
         this.CreateWindow();
 
-        this.Window.Load += Init;
-        this.Window.Update += Update;
-        this.Window.Render += Draw;
+        this.IWindow.Load += Init;
+        this.IWindow.Update += Update;
+        this.IWindow.Render += Draw;
         
         Logger.Debug("Run Window!");
-        this.Window.Run();
+        this.IWindow.Run();
     }
 
     protected virtual void Init() {
@@ -76,11 +76,11 @@ public class Application : IDisposable {
             IsVisible = this._settings.IsVisible
         };
 
-        this.Window = Window.CreateWindow(options);
+        this.IWindow = Window.Create(options);
     }
 
     private void CreateInput() {
-        IInputContext input = this.Window.CreateInput();
+        IInputContext input = this.IWindow.CreateInput();
         
         for (int i = 0; i < input.Keyboards.Count; i++) {
             input.Keyboards[i].KeyDown += KeyDown;
@@ -95,11 +95,11 @@ public class Application : IDisposable {
 
     public void Close() {
         Logger.Warn("Application shuts down!");
-        this.Window.Close();
+        this.IWindow.Close();
     }
 
     public void Dispose() {
-        Window.Dispose();
+        this.IWindow.Dispose();
         //_vk.Dispose();
     }
 }
