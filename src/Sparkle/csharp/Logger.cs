@@ -1,6 +1,6 @@
 namespace Sparkle.csharp; 
 
-public class Logger {
+public static class Logger {
 
     public static void Debug(string text) {
         Log(text, ConsoleColor.White);

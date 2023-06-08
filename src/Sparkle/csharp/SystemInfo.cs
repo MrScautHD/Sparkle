@@ -1,10 +1,10 @@
 namespace Sparkle.csharp; 
 
-public class SystemInfo {
+public static class SystemInfo {
 
-    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")!;
+    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")!; //TODO FIX IT
 
-    public static long Memory => GC.GetTotalMemory(true);
+    public static long Memory => GC.GetTotalMemory(true); //TODO FIX IT
 
     public static int Threads => Environment.ProcessorCount;
 

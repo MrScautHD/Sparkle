@@ -22,7 +22,7 @@ public class ApplicationSettings {
         this.WindowState = WindowState.Normal;
         this.WindowBorder = WindowBorder.Resizable;
         this.VSync = true;
-        this.IsVisible = false;
+        this.IsVisible = true;
         this.TargetFps = 0;
         this.Headless = false;
     }
