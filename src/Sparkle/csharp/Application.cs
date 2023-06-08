@@ -31,15 +31,15 @@ public class Application : IDisposable {
         Logger.Debug("Creating Window...");
         this.CreateWindow();
 
-        this.IWindow.Load += Load;
-        this.IWindow.Update += Tick;
+        this.IWindow.Load += OnInit;
+        this.IWindow.Update += OnUpdate;
         this.IWindow.Render += Draw;
         
         Logger.Debug("Run Window!");
         this.IWindow.Run();
     }
     
-    private void Load() {
+    private void OnInit() {
         Logger.Info("Starting Initializing!");
         
         Logger.Debug("Initializing Input...");
@@ -52,7 +52,7 @@ public class Application : IDisposable {
         this.Init();
     }
     
-    private void Tick(double dt) {
+    private void OnUpdate(double dt) {
         this.Update(dt);
         
         this._timer += dt;
