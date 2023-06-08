@@ -21,17 +21,5 @@ public class TestGame : Application {
 
     protected override void Update(double dt) {
         base.Update(dt);
-
-        if (Input.IsKeyDown(Key.A)) {
-            Logger.Error("A");
-        }
-
-        if (Input.IsKeyPressed(Key.T)) {
-            Logger.Error("T");
-        }
-        
-        if (Input.IsKeyReleased(Key.D)) {
-            Logger.Error("D");
-        }
     }
 }
