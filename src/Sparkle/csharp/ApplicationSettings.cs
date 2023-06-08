@@ -17,7 +17,7 @@ public class ApplicationSettings {
     //public Texture Icon
 
     public ApplicationSettings() {
-        this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Bliss Engine";
+        this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle Engine";
         this.Size = new Vector2D<int>(1280, 720);
         this.WindowState = WindowState.Normal;
         this.WindowBorder = WindowBorder.Resizable;

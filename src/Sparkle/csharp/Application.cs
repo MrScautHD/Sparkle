@@ -99,6 +99,5 @@ public class Application : IDisposable {
 
     public void Dispose() {
         this.IWindow.Dispose();
-        //_vk.Dispose();
     }
 }

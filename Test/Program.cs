@@ -1,6 +1,7 @@
 ﻿using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using Sparkle.csharp;
+using Test;
 
 ApplicationSettings settings = new ApplicationSettings() {
     Title = "Test",
@@ -13,5 +14,5 @@ ApplicationSettings settings = new ApplicationSettings() {
     Headless = false,
 };
 
-using Application application = new Application(settings);
+using TestGame application = new TestGame(settings);
 application.Run();

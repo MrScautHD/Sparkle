@@ -22,12 +22,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="csharp\Audio\" />
-      <Folder Include="csharp\Content\" />
-      <Folder Include="csharp\Entity\" />
-      <Folder Include="csharp\GUI\" />
-      <Folder Include="csharp\Physic\" />
-      <Folder Include="csharp\Scene\" />
+      <Folder Include="csharp\audio\" />
+      <Folder Include="csharp\content\" />
+      <Folder Include="csharp\entity\" />
+      <Folder Include="csharp\gui\" />
+      <Folder Include="csharp\physic\" />
+      <Folder Include="csharp\scene\" />
     </ItemGroup>
 
 </Project>
