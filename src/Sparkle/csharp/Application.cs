@@ -44,7 +44,6 @@ public class Application : IDisposable {
         
         Logger.Debug("Initializing Input...");
         this.InputContext = this.IWindow.CreateInput();
-        Input.KeyIsDown += this.OnKeyDown;
         Input.Init();
 
         Logger.Debug("Initializing Time...");
@@ -79,17 +78,6 @@ public class Application : IDisposable {
 
     protected virtual void FixedUpdate() {
         
-    }
-
-    protected virtual void OnKeyDown(IKeyboard keyboard, Key key, int keyCode) {
-        if (key == Key.F11) {
-            if (this.IWindow.WindowState != WindowState.Fullscreen) {
-                this.IWindow.WindowState = WindowState.Fullscreen;
-            }
-            else {
-                this.IWindow.WindowState = WindowState.Normal;
-            }
-        }
     }
 
     private void CreateWindow() {
