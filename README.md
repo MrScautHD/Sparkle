@@ -3,6 +3,7 @@
 </p>
 
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
+<h4 align="center">A fast, Cross-platform .NET 7 C# 11 game engine.</h4>
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
 
@@ -11,10 +12,31 @@
 [<img src="https://user-images.githubusercontent.com/65916181/229357115-d601e227-e80a-459d-974e-92905e192b08.png" width="125" height="40">](https://discord.gg/7XKw6YQa76)
 
 📚 Libraries (https://www.nuget.org/packages)
-==========================================
+==============================================
 - [Silk.NET](https://www.nuget.org/packages/Silk.NET)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
 - [BepuPhysics](https://www.nuget.org/packages/BepuPhysics)
+
+🌋 Graphic Engine
+==================
+- [Vulkan](https://www.vulkan.org/)
+
+🌋 Features
+==================
+`Audio`
+`Texture`
+`Model`
+`Font`
+`3D Camera`
+`Material`
+`Overlay`
+`GUI`
+`Scene`
+`Entity`
+`Directed/Pointed Light`
+`Content Manager`
+`Config`
+`Physic`
 
 💸 Sponsors
 ============
