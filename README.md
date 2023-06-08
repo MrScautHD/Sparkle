@@ -21,7 +21,7 @@
 ==================
 - [Vulkan](https://www.vulkan.org/)
 
-🌋 Features
+💡 Features
 ==================
 `Audio`
 `Texture`
