@@ -1,4 +1,4 @@
-namespace Sparkle.csharp.file; 
+namespace Sparkle.csharp.file.config; 
 
 public class ConfigBuilder {
     

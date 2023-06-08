@@ -1,5 +1,6 @@
+using Silk.NET.Input;
 using Sparkle.csharp;
-using Sparkle.csharp.file;
+using Sparkle.csharp.file.config;
 
 namespace Test; 
 
@@ -16,5 +17,21 @@ public class TestGame : Application {
             .Add("test", true)
             .Add("lol", 1000)
             .Build();
+    }
+
+    protected override void Update(double dt) {
+        base.Update(dt);
+
+        if (Input.IsKeyDown(Key.A)) {
+            Logger.Error("A");
+        }
+
+        if (Input.IsKeyPressed(Key.T)) {
+            Logger.Error("T");
+        }
+        
+        if (Input.IsKeyReleased(Key.D)) {
+            Logger.Error("D");
+        }
     }
 }

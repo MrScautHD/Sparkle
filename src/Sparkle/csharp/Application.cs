@@ -11,6 +11,7 @@ public class Application : IDisposable {
     
     private ApplicationSettings _settings;
     public IWindow IWindow;
+    public IInputContext InputContext;
 
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
@@ -30,22 +31,41 @@ public class Application : IDisposable {
         Logger.Debug("Creating Window...");
         this.CreateWindow();
 
-        this.IWindow.Load += Init;
-        this.IWindow.Update += Update;
+        this.IWindow.Load += Load;
+        this.IWindow.Update += Tick;
         this.IWindow.Render += Draw;
         
         Logger.Debug("Run Window!");
         this.IWindow.Run();
     }
-
-    protected virtual void Init() {
+    
+    private void Load() {
         Logger.Info("Starting Initializing!");
         
         Logger.Debug("Initializing Input...");
-        this.CreateInput();
-        
+        this.InputContext = this.IWindow.CreateInput();
+        Input.Init();
+
         Logger.Debug("Initializing Time...");
         Time.Init();
+        
+        this.Init();
+    }
+    
+    private void Tick(double dt) {
+        this.Update(dt);
+        
+        this._timer += dt;
+        while (this._timer >= this._delay) {
+            this.FixedUpdate();
+            this._timer -= this._delay;
+        }
+        
+        Input.Update();
+    }
+
+    protected virtual void Init() {
+
     }
 
     protected virtual void Draw(double dt) {
@@ -53,11 +73,6 @@ public class Application : IDisposable {
     }
 
     protected virtual void Update(double dt) {
-        this._timer += dt;
-        while (this._timer >= this._delay) {
-            this.FixedUpdate();
-            this._timer -= this._delay;
-        }
     }
 
     protected virtual void FixedUpdate() {
@@ -76,20 +91,6 @@ public class Application : IDisposable {
         };
 
         this.IWindow = Window.Create(options);
-    }
-
-    private void CreateInput() {
-        IInputContext input = this.IWindow.CreateInput();
-        
-        for (int i = 0; i < input.Keyboards.Count; i++) {
-            input.Keyboards[i].KeyDown += KeyDown;
-        }
-    }
-
-    protected virtual void KeyDown(IKeyboard keyboard, Key key, int keyCode) {
-        if (key == Key.Escape) {
-            this.Close();
-        }
     }
 
     public void Close() {
