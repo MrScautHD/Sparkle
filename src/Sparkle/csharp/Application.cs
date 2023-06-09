@@ -8,10 +8,10 @@ public class Application : IDisposable {
     
     public static Application Instance;
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
-    
-    private ApplicationSettings _settings;
-    public IWindow IWindow;
-    public IInputContext InputContext;
+
+    private readonly ApplicationSettings _settings;
+    public IWindow Win { get; private set; }
+    public IInputContext InputContext { get; private set; }
 
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
@@ -31,19 +31,23 @@ public class Application : IDisposable {
         Logger.Debug("Creating Window...");
         this.CreateWindow();
 
-        this.IWindow.Load += OnInit;
-        this.IWindow.Update += OnUpdate;
-        this.IWindow.Render += Draw;
+        this.Win.Load += OnInit;
+        this.Win.Update += OnUpdate;
+        this.Win.Render += Draw;
         
         Logger.Debug("Run Window!");
-        this.IWindow.Run();
+        this.Win.Run();
     }
     
     private void OnInit() {
-        Logger.Info("Starting Initializing!");
+        if (this.Win.VkSurface == null) {
+            throw new Exception("Windowing platform is not compatible with Vulkan.");
+        }
         
+        Logger.Info("Starting Initializing!");
+
         Logger.Debug("Initializing Input...");
-        this.InputContext = this.IWindow.CreateInput();
+        this.InputContext = this.Win.CreateInput();
         Input.Init();
 
         Logger.Debug("Initializing Time...");
@@ -91,16 +95,16 @@ public class Application : IDisposable {
             IsVisible = this._settings.IsVisible
         };
 
-        this.IWindow = Window.Create(options);
+        this.Win = Window.Create(options);
     }
 
     public void Close() {
         Logger.Warn("Application shuts down!");
-        this.IWindow.Close();
+        this.Win.Close();
     }
 
     public void Dispose() {
-        this.IWindow.Dispose();
+        this.Win.Dispose();
         this.InputContext.Dispose();
     }
 }

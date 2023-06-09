@@ -1,5 +1,6 @@
 namespace Sparkle.csharp.gui; 
 
-public class Gui {
-    
+public abstract class Gui : IDisposable {
+
+    public abstract void Dispose();
 }

@@ -1,5 +1,6 @@
 namespace Sparkle.csharp.overlay; 
 
-public class Overlay {
-    
+public abstract class Overlay : IDisposable {
+
+    public abstract void Dispose();
 }

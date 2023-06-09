@@ -1,5 +1,8 @@
 namespace Sparkle.csharp.entity; 
 
-public class Entity {
+public abstract class Entity : IDisposable {
     
+    public void Dispose() {
+        
+    }
 }

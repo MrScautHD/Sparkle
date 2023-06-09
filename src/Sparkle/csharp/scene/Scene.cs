@@ -1,5 +1,6 @@
 namespace Sparkle.csharp.scene; 
 
-public class Scene {
-    
+public abstract class Scene : IDisposable {
+
+    public abstract void Dispose();
 }

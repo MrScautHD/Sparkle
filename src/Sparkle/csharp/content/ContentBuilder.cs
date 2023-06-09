@@ -1,5 +1,5 @@
 namespace Sparkle.csharp.content; 
 
-public class Content {
+public class ContentBuilder {
     
 }

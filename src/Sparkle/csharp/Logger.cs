@@ -25,11 +25,6 @@ public static class Logger {
         Log(msg, ConsoleColor.Red);
     }
 
-    public static void Fatal(string msg) {
-        Log(msg, ConsoleColor.DarkRed);
-        throw new Exception(msg);
-    }
-
     private static void Log(string msg, ConsoleColor color) {
         MethodBase? info = new StackFrame(2).GetMethod();
         string text = $"[{info.DeclaringType.FullName} :: {info.Name}] {msg}";
