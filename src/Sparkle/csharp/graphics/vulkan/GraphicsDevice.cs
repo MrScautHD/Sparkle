@@ -51,8 +51,7 @@ public unsafe class GraphicsDevice : IDisposable {
 
     private readonly string[] _deviceExtensions = new string[] {
         KhrSwapchain.ExtensionName,
-        KhrSynchronization2.ExtensionName,
-        "VK_EXT_mesh_shader"
+        KhrSynchronization2.ExtensionName
     };
 
     public GraphicsDevice(Vk vk, IWindow window, SampleCountFlags msaaCount, bool validationLayers = true) {
@@ -241,16 +240,9 @@ public unsafe class GraphicsDevice : IDisposable {
 
             queueCreateInfos[i].PQueuePriorities = &queuePriority;
         }
-        //TODO CHECK THAT
+
         PhysicalDeviceFeatures deviceFeatures = new() {
             SamplerAnisotropy = true
-        };
-        
-        PhysicalDeviceMeshShaderFeaturesNV meshShaderFeaturesExt = new() {
-            SType = StructureType.PhysicalDeviceMeshShaderFeaturesExt,
-            MeshShader = Vk.True,
-            TaskShader = Vk.True,
-
         };
 
         PhysicalDeviceSynchronization2FeaturesKHR sync2Features = new() {
@@ -258,20 +250,19 @@ public unsafe class GraphicsDevice : IDisposable {
             Synchronization2 = Vk.True
         };
 
-        //TODO DO THIS CLEANER
-        PhysicalDeviceFeatures2 deviceFeatures2 = new();
-        deviceFeatures2.SType = StructureType.PhysicalDeviceFeatures2;
-        deviceFeatures2.PNext = &meshShaderFeaturesExt;
-        meshShaderFeaturesExt.PNext = &sync2Features;
-        deviceFeatures2.Features = new PhysicalDeviceFeatures();
-        deviceFeatures2.Features.SamplerAnisotropy = Vk.False;
+        PhysicalDeviceFeatures2 deviceFeatures2 = new() {
+            SType = StructureType.PhysicalDeviceFeatures2,
+            PNext = &sync2Features
+        };
+        
+        this._vk.GetPhysicalDeviceFeatures2(this.PhysicalDevice, &deviceFeatures2);
 
         DeviceCreateInfo createInfo = new() {
             SType = StructureType.DeviceCreateInfo,
             QueueCreateInfoCount = (uint) uniqueQueueFamilies.Length,
             PQueueCreateInfos = queueCreateInfos,
-            PNext = &deviceFeatures2,
-
+            PEnabledFeatures = &deviceFeatures,
+            PNext = &sync2Features,
             EnabledExtensionCount = (uint) this._deviceExtensions.Length,
             PpEnabledExtensionNames = (byte**) SilkMarshal.StringArrayToPtr(this._deviceExtensions)
         };
@@ -536,7 +527,6 @@ public unsafe class GraphicsDevice : IDisposable {
 
         return this._validationLayers.All(availableLayerNames.Contains);
     }
-
 
     private SampleCountFlags GetMaxUsableSampleCount() {
         this._vk.GetPhysicalDeviceProperties(this.PhysicalDevice, out var physicalDeviceProperties);

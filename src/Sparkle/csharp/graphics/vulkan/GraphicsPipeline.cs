@@ -6,20 +6,20 @@ using Sparkle.csharp.graphics.vulkan.util;
 
 namespace Sparkle.csharp.graphics.vulkan; 
 
-public class StdPipeline : IDisposable {
+public class GraphicsPipeline : IDisposable {
     
     private readonly Vk _vk;
     private readonly GraphicsDevice _device;
 
     private Pipeline _graphicsPipeline;
-    public Pipeline GraphicsPipeline => this._graphicsPipeline;
+    public Pipeline Pipeline => this._graphicsPipeline;
 
     private ShaderModule _vertShaderModule;
     private ShaderModule _fragShaderModule;
     private ShaderModule _taskShaderModule;
     private ShaderModule _meshShaderModule;
 
-    public StdPipeline(Vk vk, GraphicsDevice device, string vertPath, string fragPath, PipelineConfigInfo configInfo, string renderSystemName = "unknown") {
+    public GraphicsPipeline(Vk vk, GraphicsDevice device, string vertPath, string fragPath, PipelineConfigInfo configInfo, string renderSystemName = "unknown") {
         this._vk = vk;
         this._device = device;
         this.CreateGraphicsPipelineStd(vertPath, fragPath, configInfo, renderSystemName);

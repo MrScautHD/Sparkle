@@ -1,6 +1,8 @@
 using System.Reflection;
 using Silk.NET.Input;
+using Silk.NET.Vulkan;
 using Silk.NET.Windowing;
+using Sparkle.csharp.graphics.vulkan;
 
 namespace Sparkle.csharp; 
 
@@ -10,6 +12,10 @@ public class Application : IDisposable {
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
 
     private readonly ApplicationSettings _settings;
+
+    public Vk Vk { get; private set; }
+    public GraphicsDevice GraphicsDevice { get; private set; }
+    public Renderer Renderer { get; private set; }
     public IWindow Win { get; private set; }
     public IInputContext InputContext { get; private set; }
 
@@ -24,7 +30,8 @@ public class Application : IDisposable {
     public void Run() {
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info("\tCPU: " + SystemInfo.Cpu);
-        Logger.Info("\tMEMORY: " + SystemInfo.Memory);
+        //Logger.Info("\tGPU: " + SystemInfo.Gpu);
+        Logger.Info("\tMEMORY USE: " + SystemInfo.MemoryInUse);
         Logger.Info("\tTHREADS: " + SystemInfo.Threads);
         Logger.Info("\tOS: " + SystemInfo.Os);
         
@@ -43,7 +50,7 @@ public class Application : IDisposable {
         if (this.Win.VkSurface == null) {
             throw new Exception("Windowing platform is not compatible with Vulkan.");
         }
-        
+
         Logger.Info("Starting Initializing!");
 
         Logger.Debug("Initializing Input...");
@@ -52,6 +59,15 @@ public class Application : IDisposable {
 
         Logger.Debug("Initializing Time...");
         Time.Init();
+        
+        Logger.Info("Initializing Vulkan...");
+        this.Vk = Vk.GetApi();
+        
+        Logger.Info("Initializing GraphicDevice...");
+        this.GraphicsDevice = new GraphicsDevice(this.Vk, this.Win, SampleCountFlags.Count1Bit);
+        
+        Logger.Info("Initializing Renderer...");
+        this.Renderer = new Renderer(this.Vk, this.Win, this.GraphicsDevice, false);
         
         this.Init();
     }
