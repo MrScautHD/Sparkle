@@ -6,12 +6,6 @@ public static class ShaderUtil {
     
     public static byte[] GetShaderBytes(string filename, string renderSystemName) {
         Assembly assembly = Assembly.GetExecutingAssembly();
-        
-        foreach (string item in assembly.GetManifestResourceNames()) {
-            Console.Write(".");
-            Console.WriteLine($"{item}");
-        }
-        
         string? resourceName = assembly.GetManifestResourceNames().FirstOrDefault(s => s.EndsWith(filename));
         
         if (resourceName == null) {

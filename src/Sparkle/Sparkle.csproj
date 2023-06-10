@@ -8,10 +8,20 @@
         <AssemblyName>Sparkle</AssemblyName>
         <RootNamespace>Sparkle</RootNamespace>
         <AssemblyVersion>1.0.0</AssemblyVersion>
+        <Title>Sparkle</Title>
+        <Authors>MrScautHD</Authors>
+        <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
+        <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
+        <PackageTags>Vulkan, Game, Engine, Renderer, Graphics, C#11, Net7, Modern, Sparkle, Silk.NET, Stellution, 3D</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Version>1.0.1</Version>
     </PropertyGroup>
-
+    
     <PropertyGroup>
-        <VulkanBinPath>C:\VulkanSDK\1.3.250.0\Bin</VulkanBinPath>
+        <VulkanBinPath>$(VULKAN_SDK)\Bin</VulkanBinPath>
         <SpirVTarget>spv1.4</SpirVTarget>
         <DestinationFolder>./Systems/SPIRV</DestinationFolder>
     </PropertyGroup>
@@ -27,6 +37,13 @@
       <PackageReference Include="Silk.NET.Vulkan.Extensions.KHR" Version="2.17.1" />
       <PackageReference Include="Silk.NET.Windowing" Version="2.17.1" />
       <PackageReference Include="Silk.NET.XAudio" Version="2.17.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="logo.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>

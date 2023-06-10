@@ -337,16 +337,6 @@ public unsafe class GraphicsDevice : IDisposable {
         this._vk.FreeCommandBuffers(this._device, this._commandPool, 1, commandBuffer);
     }
 
-    internal static string GetString(byte* stringStart) {
-        int characters = 0;
-        
-        while (stringStart[characters] != 0) {
-            characters++;
-        }
-
-        return Encoding.UTF8.GetString(stringStart, characters);
-    }
-
     private void PopulateDebugMessengerCreateInfo(ref DebugUtilsMessengerCreateInfoEXT createInfo) {
         createInfo.SType = StructureType.DebugUtilsMessengerCreateInfoExt;
         createInfo.MessageSeverity = DebugUtilsMessageSeverityFlagsEXT.VerboseBitExt | DebugUtilsMessageSeverityFlagsEXT.WarningBitExt | DebugUtilsMessageSeverityFlagsEXT.ErrorBitExt;
@@ -375,7 +365,6 @@ public unsafe class GraphicsDevice : IDisposable {
         return Vk.False;
     }
 
-    // TODO OWN CLASS?
     public struct SwapChainSupportDetails {
         public SurfaceCapabilitiesKHR Capabilities;
         public SurfaceFormatKHR[] Formats;
@@ -458,13 +447,12 @@ public unsafe class GraphicsDevice : IDisposable {
         return this._deviceExtensions.All(availableExtensionNames.Contains);
     }
 
-    // TODO MAYBE A OWN CLASS?
     public struct QueueFamilyIndices {
         public uint? GraphicsFamily { get; set; }
         public uint? PresentFamily { get; set; }
         
         public bool IsComplete() {
-            return this.GraphicsFamily.HasValue && PresentFamily.HasValue;
+            return this.GraphicsFamily.HasValue && this.PresentFamily.HasValue;
         }
     }
 

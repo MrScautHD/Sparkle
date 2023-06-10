@@ -47,9 +47,14 @@ public class Application : IDisposable {
     }
     
     private void OnInit() {
-        if (this.Win.VkSurface == null) {
-            throw new Exception("Windowing platform is not compatible with Vulkan.");
-        }
+        Logger.Info("Initializing Vulkan...");
+        this.Vk = Vk.GetApi();
+        
+        Logger.Info("Initializing GraphicDevice...");
+        this.GraphicsDevice = new GraphicsDevice(this.Vk, this.Win, SampleCountFlags.Count1Bit);
+        
+        Logger.Info("Initializing Renderer...");
+        this.Renderer = new Renderer(this.Vk, this.Win, this.GraphicsDevice, false);
 
         Logger.Info("Starting Initializing!");
 
@@ -59,16 +64,7 @@ public class Application : IDisposable {
 
         Logger.Debug("Initializing Time...");
         Time.Init();
-        
-        Logger.Info("Initializing Vulkan...");
-        this.Vk = Vk.GetApi();
-        
-        Logger.Info("Initializing GraphicDevice...");
-        this.GraphicsDevice = new GraphicsDevice(this.Vk, this.Win, SampleCountFlags.Count1Bit);
-        
-        Logger.Info("Initializing Renderer...");
-        this.Renderer = new Renderer(this.Vk, this.Win, this.GraphicsDevice, false);
-        
+
         this.Init();
     }
     
@@ -85,7 +81,7 @@ public class Application : IDisposable {
     }
 
     protected virtual void Init() {
-
+        
     }
 
     protected virtual void Draw(double dt) {
