@@ -532,11 +532,7 @@ public unsafe class GraphicsDevice : IDisposable {
         this._vk.GetPhysicalDeviceProperties(this.PhysicalDevice, out var physicalDeviceProperties);
 
         SampleCountFlags counts = physicalDeviceProperties.Limits.FramebufferColorSampleCounts & physicalDeviceProperties.Limits.FramebufferDepthSampleCounts;
-
-        return counts;
-
-        // TODO I Think it is not needed but check it!
-        /*
+        
         return counts switch {
             var c when (c & SampleCountFlags.Count64Bit) != 0 => SampleCountFlags.Count64Bit,
             var c when (c & SampleCountFlags.Count32Bit) != 0 => SampleCountFlags.Count32Bit,
@@ -545,7 +541,7 @@ public unsafe class GraphicsDevice : IDisposable {
             var c when (c & SampleCountFlags.Count4Bit) != 0 => SampleCountFlags.Count4Bit,
             var c when (c & SampleCountFlags.Count2Bit) != 0 => SampleCountFlags.Count2Bit,
             _ => SampleCountFlags.Count1Bit
-        };*/
+        };
     }
 
     private Format FindSupportedFormat(IEnumerable<Format> candidates, ImageTiling tiling, FormatFeatureFlags features) {
