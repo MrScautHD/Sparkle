@@ -11,6 +11,10 @@
 
 [<img src="https://user-images.githubusercontent.com/65916181/229357115-d601e227-e80a-459d-974e-92905e192b08.png" width="125" height="40">](https://discord.gg/7XKw6YQa76)
 
+🪙 NuGet
+=====
+- [Nuget](https://www.nuget.org/packages/Sparkle)
+
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
 - [Silk.NET](https://www.nuget.org/packages/Silk.NET)
@@ -37,6 +41,14 @@
 `Content Manager`
 `Config`
 `Physic`
+
+🚧 Build requirements !!! VERY IMPORTANT !!!
+=============================================
+- The projects require the [Vulkan SDK](https://www.lunarg.com/vulkan-sdk/) to build/run. The SDK provides the Vulkan validation layers as well as the command line tools to compile the shaders.
+
+🎊 Special thanks!
+==================
+- [SilkVulkanTutorial](https://github.com/stymee/SilkVulkanTutorial/tree/master)
 
 💸 Sponsors
 ============
