@@ -17,8 +17,6 @@ public unsafe class GraphicsDevice : IDisposable {
     private readonly Vk _vk;
     private readonly IWindow _window;
     
-    private readonly bool _enableValidationLayers;
-
     private ExtDebugUtils _debugUtils;
     private DebugUtilsMessengerEXT _debugMessenger;
     
@@ -45,23 +43,17 @@ public unsafe class GraphicsDevice : IDisposable {
     private CommandPool _commandPool;
     public CommandPool CommandPool => this._commandPool;
     
-    private readonly string[] _validationLayers = new string[] {
-        "VK_LAYER_KHRONOS_validation"
-    };
-
     private readonly string[] _deviceExtensions = new string[] {
         KhrSwapchain.ExtensionName,
-        KhrSynchronization2.ExtensionName
+        KhrSynchronization2.ExtensionName,
     };
 
-    public GraphicsDevice(Vk vk, IWindow window, SampleCountFlags msaaCount, bool validationLayers = true) {
+    public GraphicsDevice(Vk vk, IWindow window, SampleCountFlags msaaCount) {
         this._vk = vk;
         this._window = window;
         this.MsaaCount = msaaCount;
         this.DeviceName = "unknown";
-        this._enableValidationLayers = validationLayers;
         this.CreateInstance();
-        this.SetupDebugMessenger();
         this.CreateSurface();
         this.PickPhysicalDevice();
         this.CreateLogicalDevice();
@@ -117,10 +109,6 @@ public unsafe class GraphicsDevice : IDisposable {
     }
     
     private void CreateInstance() {
-        if (this._enableValidationLayers && !this.CheckValidationLayerSupport()) {
-            throw new Exception("Validation layers requested, but not available!");
-        }
-
         ApplicationInfo appInfo = new() {
             SType = StructureType.ApplicationInfo,
             PApplicationName = (byte*) Marshal.StringToHGlobalAnsi(this._window.Title),
@@ -139,20 +127,9 @@ public unsafe class GraphicsDevice : IDisposable {
         
         createInfo.EnabledExtensionCount = (uint) extensions.Length;
         createInfo.PpEnabledExtensionNames = (byte**) SilkMarshal.StringArrayToPtr(extensions);
-
-        if (this._enableValidationLayers) {
-            createInfo.EnabledLayerCount = (uint) this._validationLayers.Length;
-            createInfo.PpEnabledLayerNames = (byte**) SilkMarshal.StringArrayToPtr(this._validationLayers);
-
-            DebugUtilsMessengerCreateInfoEXT debugCreateInfo = new DebugUtilsMessengerCreateInfoEXT();
-            this.PopulateDebugMessengerCreateInfo(ref debugCreateInfo);
-            createInfo.PNext = &debugCreateInfo;
-        }
-        else {
-            createInfo.EnabledLayerCount = 0;
-            createInfo.PNext = null;
-        }
-
+        createInfo.EnabledLayerCount = 0;
+        createInfo.PNext = null;
+        
         if (this._vk.CreateInstance(createInfo, null, out this._instance) != Result.Success) {
             throw new Exception("failed to create instance!");
         }
@@ -160,10 +137,6 @@ public unsafe class GraphicsDevice : IDisposable {
         Marshal.FreeHGlobal((IntPtr) appInfo.PApplicationName);
         Marshal.FreeHGlobal((IntPtr) appInfo.PEngineName);
         SilkMarshal.Free((nint) createInfo.PpEnabledExtensionNames);
-
-        if (this._enableValidationLayers) {
-            SilkMarshal.Free((nint)createInfo.PpEnabledLayerNames);
-        }
     }
 
     private void CreateSurface() {
@@ -264,27 +237,16 @@ public unsafe class GraphicsDevice : IDisposable {
             PEnabledFeatures = &deviceFeatures,
             PNext = &sync2Features,
             EnabledExtensionCount = (uint) this._deviceExtensions.Length,
-            PpEnabledExtensionNames = (byte**) SilkMarshal.StringArrayToPtr(this._deviceExtensions)
+            PpEnabledExtensionNames = (byte**) SilkMarshal.StringArrayToPtr(this._deviceExtensions),
+            EnabledLayerCount = 0
         };
         
-        if (this._enableValidationLayers) {
-            createInfo.EnabledLayerCount = (uint) this._validationLayers.Length;
-            createInfo.PpEnabledLayerNames = (byte**) SilkMarshal.StringArrayToPtr(this._validationLayers);
-        }
-        else {
-            createInfo.EnabledLayerCount = 0;
-        }
-
         if (this._vk.CreateDevice(this.PhysicalDevice, in createInfo, null, out this._device) != Result.Success) {
             throw new Exception("Failed to create logical device!");
         }
 
         this._vk.GetDeviceQueue(this._device, indices.GraphicsFamily!.Value, 0, out this._graphicsQueue);
         this._vk.GetDeviceQueue(this._device, indices.PresentFamily!.Value, 0, out this._presentQueue);
-
-        if (this._enableValidationLayers) {
-            SilkMarshal.Free((nint) createInfo.PpEnabledLayerNames);
-        }
 
         SilkMarshal.Free((nint) createInfo.PpEnabledExtensionNames);
     }
@@ -342,18 +304,6 @@ public unsafe class GraphicsDevice : IDisposable {
         createInfo.MessageSeverity = DebugUtilsMessageSeverityFlagsEXT.VerboseBitExt | DebugUtilsMessageSeverityFlagsEXT.WarningBitExt | DebugUtilsMessageSeverityFlagsEXT.ErrorBitExt;
         createInfo.MessageType = DebugUtilsMessageTypeFlagsEXT.GeneralBitExt | DebugUtilsMessageTypeFlagsEXT.PerformanceBitExt | DebugUtilsMessageTypeFlagsEXT.ValidationBitExt;
         createInfo.PfnUserCallback = (DebugUtilsMessengerCallbackFunctionEXT) this.DebugCallback;
-    }
-
-    private void SetupDebugMessenger() {
-        if (!this._enableValidationLayers) return;
-        if (!this._vk.TryGetInstanceExtension(this._instance, out this._debugUtils)) return;
-
-        DebugUtilsMessengerCreateInfoEXT createInfo = new DebugUtilsMessengerCreateInfoEXT();
-        this.PopulateDebugMessengerCreateInfo(ref createInfo);
-
-        if (this._debugUtils!.CreateDebugUtilsMessenger(this._instance, in createInfo, null, out this._debugMessenger) != Result.Success) {
-            throw new Exception("Failed to set up debug messenger!");
-        }
     }
 
     private uint DebugCallback(DebugUtilsMessageSeverityFlagsEXT messageSeverity, DebugUtilsMessageTypeFlagsEXT messageTypes, DebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
@@ -494,26 +444,7 @@ public unsafe class GraphicsDevice : IDisposable {
         var glfwExtensions = this._window.VkSurface!.GetRequiredExtensions(out var glfwExtensionCount);
         var extensions = SilkMarshal.PtrToStringArray((nint) glfwExtensions, (int) glfwExtensionCount);
 
-        if (this._enableValidationLayers) {
-            return extensions.Append(ExtDebugUtils.ExtensionName).ToArray();
-        }
-
         return extensions;
-    }
-
-
-    private bool CheckValidationLayerSupport() {
-        uint layerCount = 0;
-        this._vk.EnumerateInstanceLayerProperties(ref layerCount, null);
-        
-        var availableLayers = new LayerProperties[layerCount];
-        fixed (LayerProperties* availableLayersPtr = availableLayers) {
-            this._vk.EnumerateInstanceLayerProperties(ref layerCount, availableLayersPtr);
-        }
-
-        var availableLayerNames = availableLayers.Select(layer => Marshal.PtrToStringAnsi((IntPtr) layer.LayerName)).ToHashSet();
-
-        return this._validationLayers.All(availableLayerNames.Contains);
     }
 
     private SampleCountFlags GetMaxUsableSampleCount() {
