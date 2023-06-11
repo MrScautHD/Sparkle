@@ -5,7 +5,6 @@ using System.Text;
 using Silk.NET.Core;
 using Silk.NET.Core.Native;
 using Silk.NET.Vulkan;
-using Silk.NET.Vulkan.Extensions.EXT;
 using Silk.NET.Vulkan.Extensions.KHR;
 using Silk.NET.Windowing;
 using Buffer = Silk.NET.Vulkan.Buffer;
@@ -16,9 +15,6 @@ public unsafe class GraphicsDevice : IDisposable {
     
     private readonly Vk _vk;
     private readonly IWindow _window;
-    
-    private ExtDebugUtils _debugUtils;
-    private DebugUtilsMessengerEXT _debugMessenger;
     
     private KhrSurface _khrSurface;
     
