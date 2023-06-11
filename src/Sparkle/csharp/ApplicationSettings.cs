@@ -1,29 +1,25 @@
+using System.Drawing;
 using System.Reflection;
-using Silk.NET.Maths;
-using Silk.NET.Windowing;
+using Raylib_cs;
 
 namespace Sparkle.csharp; 
 
 public class ApplicationSettings {
     
     public string Title;
-    public Vector2D<int> Size;
-    public WindowState WindowState;
-    public WindowBorder WindowBorder;
-    public bool VSync;
-    public bool IsVisible;
+    public Size Size;
     public int TargetFps;
     public bool Headless;
-    //public Texture Icon
-
+    public Image Icon; //Todo Make that work...
+    public ConfigFlags[] WindowState;
+    
     public ApplicationSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle Engine";
-        this.Size = new Vector2D<int>(1280, 720);
-        this.WindowState = WindowState.Normal;
-        this.WindowBorder = WindowBorder.Resizable;
-        this.VSync = true;
-        this.IsVisible = true;
+        this.Size = new Size(1280, 720);
         this.TargetFps = 0;
         this.Headless = false;
+        this.WindowState = new[] {
+            ConfigFlags.FLAG_VSYNC_HINT
+        };
     }
 }

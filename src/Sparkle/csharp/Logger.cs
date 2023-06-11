@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection;
+using Raylib_cs;
 using Sparkle.csharp.file;
 
 namespace Sparkle.csharp; 
@@ -10,7 +11,7 @@ public static class Logger {
     public static bool LogFile { get; private set; }
 
     public static void Debug(string msg) {
-        Log(msg, ConsoleColor.White);
+        Log(msg, ConsoleColor.Gray);
     }
 
     public static void Info(string msg) {

@@ -11,8 +11,4 @@
       <ProjectReference Include="..\src\Sparkle\Sparkle.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Silk.NET.Vulkan.Extensions.KHR" Version="2.17.1" />
-    </ItemGroup>
-
 </Project>

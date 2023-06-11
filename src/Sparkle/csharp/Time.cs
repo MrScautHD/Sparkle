@@ -1,15 +1,9 @@
-using System.Diagnostics;
+using Raylib_cs;
 
 namespace Sparkle.csharp; 
 
 public static class Time {
 
-    public static double DeltaTime => Application.Instance.Win.Time;
-    public static double TotalTime => _watch.Elapsed.TotalSeconds;
-
-    private static Stopwatch _watch;
-
-    internal static void Init() {
-        _watch = Stopwatch.StartNew();
-    }
+    public static double DeltaTime => Raylib.GetFrameTime(); //TODO CHECK IF THAT RIGHT
+    public static double TotalTime => Raylib.GetTime();
 }
