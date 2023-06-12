@@ -30,7 +30,7 @@ public static class Logger {
 
     private static void Log(string msg, int skipFrames, ConsoleColor color) {
         MethodBase? info = new StackFrame(skipFrames).GetMethod();
-        string text = $"[{info.DeclaringType.FullName} :: {info.Name}] {msg}";
+        string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
 
         if (LogFile) {
             FileManager.WriteLine(text, LogPath);
@@ -52,7 +52,7 @@ public static class Logger {
         File.Create(LogPath).Close();
     }
 
-    public static unsafe void SetupRayLibLog() {
+    internal static unsafe void SetupRayLibLog() {
         Raylib.SetTraceLogCallback(&RayLibLogger);
     }
     
