@@ -1,5 +1,6 @@
 using System.Reflection;
 using Raylib_cs;
+using Sparkle.csharp.window;
 
 namespace Sparkle.csharp; 
 
@@ -10,13 +11,22 @@ public class Application : IDisposable {
 
     private readonly ApplicationSettings _settings;
 
+    public Window Window { get; private set; }
+    
+    public bool Headless { get; private set; }
+
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
 
     public Application(ApplicationSettings settings) {
         Instance = this;
         this._settings = settings;
+        this.Headless = settings.Headless;
     }
+    
+    public void SetTargetFps(int fps) => Raylib.SetTargetFPS(fps);
+
+    public int GetFps() => Raylib.GetFPS();
     
     public void Run() {
         Logger.Info($"Hello World! Sparkle [{Version}] Start...");
@@ -25,20 +35,17 @@ public class Application : IDisposable {
         Logger.Info("\tTHREADS: " + SystemInfo.Threads);
         Logger.Info("\tOS: " + SystemInfo.Os);
 
-        Logger.Debug("Initialize Window...");
-        Raylib.InitWindow(this._settings.Size.Width, this._settings.Size.Height, this._settings.Title);
-        Raylib.SetTargetFPS(this._settings.TargetFps);
-        //Raylib.SetWindowIcon(Raylib.LoadImage("src/logo"));
-        
-        foreach (ConfigFlags state in this._settings.WindowState) {
-            Raylib.SetWindowState(state);
+        if (!this.Headless) {
+            Logger.Debug("Initialize Window...");
+            this.Window = new Window(this._settings.Size, this._settings.Title);
+            this.Window.SetWindowStates(this._settings.WindowStates);
+            this.SetTargetFps(this._settings.TargetFps);
         }
-        
+
         this.Init();
 
         Logger.Debug("Run Ticks...");
-        while (!Raylib.WindowShouldClose()) {
-            this.Draw();
+        while (!Raylib.WindowShouldClose()) { // TODO Make it work with Headless to!
             this.Update();
             
             this._timer += Time.DeltaTime;
@@ -46,8 +53,11 @@ public class Application : IDisposable {
                 this.FixedUpdate();
                 this._timer -= this._delay;
             }
-            
-            Raylib.PollInputEvents(); // TODO Check what it does
+
+            if (!this.Headless) {
+                this.Draw();
+                //Raylib.PollInputEvents(); // TODO Check what it does
+            }
         }
     }
 

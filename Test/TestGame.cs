@@ -1,3 +1,4 @@
+using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.file.config;
 
@@ -24,5 +25,12 @@ public class TestGame : Application {
 
     protected override void Draw() {
         base.Draw();
+        
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.SKYBLUE);
+
+        Raylib.DrawText("Hello, world!", 12, 12, 20, Color.BLACK);
+
+        Raylib.EndDrawing();
     }
 }
