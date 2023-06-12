@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Raylib_cs;
 using Sparkle.csharp.window;
 
@@ -10,35 +11,35 @@ public class Application : IDisposable {
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
 
     private readonly ApplicationSettings _settings;
+    
+    private readonly double _delay = 1.0 / 60.0;
+    private double _timer;
 
     public Window Window { get; private set; }
     
     public bool Headless { get; private set; }
-
-    private readonly double _delay = 1.0 / 60.0;
-    private double _timer;
 
     public Application(ApplicationSettings settings) {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
     }
-    
-    public void SetTargetFps(int fps) => Raylib.SetTargetFPS(fps);
 
-    public int GetFps() => Raylib.GetFPS();
-    
     public void Run() {
         Logger.Info($"Hello World! Sparkle [{Version}] Start...");
         Logger.Info("\tCPU: " + SystemInfo.Cpu);
-        Logger.Info("\tMEMORY USE: " + SystemInfo.MemoryInUse);
+        Logger.Info("\tVIRTUAL MEMORY: " + SystemInfo.VirtualMemorySize);
         Logger.Info("\tTHREADS: " + SystemInfo.Threads);
         Logger.Info("\tOS: " + SystemInfo.Os);
 
         if (!this.Headless) {
+            Logger.Debug("Initialize RayLib Logger...");
+            Logger.SetupRayLibLog();
+            
             Logger.Debug("Initialize Window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
-            this.Window.SetWindowStates(this._settings.WindowStates);
+            this.Window.SetIcon(Raylib.LoadImage(this._settings.IconPath));
+            this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
 
@@ -59,6 +60,8 @@ public class Application : IDisposable {
                 //Raylib.PollInputEvents(); // TODO Check what it does
             }
         }
+        
+        this.OnClose();
     }
 
     protected virtual void Init() {
@@ -78,8 +81,21 @@ public class Application : IDisposable {
     }
 
     public void Close() {
-        Logger.Warn("Application shuts down!");
         Raylib.CloseWindow();
+    }
+
+    public void OnClose() {
+        Logger.Warn("Application shuts down!");
+    }
+
+    public int GetFps() {
+        return Raylib.GetFPS();
+    }
+
+    public void SetTargetFps(int fps) {
+        if (fps != 0) {
+            Raylib.SetTargetFPS(fps);
+        }
     }
 
     public void Dispose() {

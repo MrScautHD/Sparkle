@@ -10,53 +10,53 @@ public class Window {
         Raylib.InitWindow(size.Width, size.Height, title);
     }
 
-    public bool WindowShouldClose() => Raylib.WindowShouldClose();
+    public bool ShouldClose() => Raylib.WindowShouldClose();
 
-    public void CloseWindow() => Raylib.CloseWindow();
+    public void Close() => Raylib.CloseWindow();
 
-    public bool IsWindowReady() => Raylib.IsWindowReady();
+    public bool IsReady() => Raylib.IsWindowReady();
 
-    public bool IsWindowFullscreen() => Raylib.IsWindowFullscreen();
+    public bool IsFullscreen() => Raylib.IsWindowFullscreen();
 
-    public bool IsWindowHidden() => Raylib.IsWindowHidden();
+    public bool IsHidden() => Raylib.IsWindowHidden();
 
-    public bool IsWindowMinimized() => Raylib.IsWindowMinimized();
+    public bool IsMinimized() => Raylib.IsWindowMinimized();
 
-    public bool IsWindowMaximized() => Raylib.IsWindowMaximized();
+    public bool IsMaximized() => Raylib.IsWindowMaximized();
 
-    public bool IsWindowFocused() => Raylib.IsWindowFocused();
+    public bool IsFocused() => Raylib.IsWindowFocused();
 
-    public bool IsWindowResized() => Raylib.IsWindowResized();
+    public bool IsResized() => Raylib.IsWindowResized();
 
-    public bool IsWindowState(ConfigFlags state) => Raylib.IsWindowState(state);
+    public bool IsState(ConfigFlags state) => Raylib.IsWindowState(state);
 
-    public bool SetWindowState(ConfigFlags state) => Raylib.SetWindowState(state);
+    public bool SetState(ConfigFlags state) => Raylib.SetWindowState(state);
 
-    public void ClearWindowState(ConfigFlags state) => Raylib.ClearWindowState(state);
+    public void ClearState(ConfigFlags state) => Raylib.ClearWindowState(state);
 
     public void ToggleFullscreen() => Raylib.ToggleFullscreen();
 
-    public void MaximizeWindow() => Raylib.MaximizeWindow();
+    public void Maximize() => Raylib.MaximizeWindow();
 
-    public void MinimizeWindow() => Raylib.MinimizeWindow();
+    public void Minimize() => Raylib.MinimizeWindow();
 
-    public void RestoreWindow() => Raylib.RestoreWindow();
+    public void Restore() => Raylib.RestoreWindow();
 
-    public void SetWindowIcon(Image image) => Raylib.SetWindowIcon(image);
+    public void SetIcon(Image image) => Raylib.SetWindowIcon(image);
 
-    public unsafe void SetWindowIcons(Image* images, int count) => Raylib.SetWindowIcons(images, count);
+    public unsafe void SetIcons(Image* images, int count) => Raylib.SetWindowIcons(images, count);
 
-    public void SetWindowTitle(string title) => Raylib.SetWindowTitle(title);
+    public void SetTitle(string title) => Raylib.SetWindowTitle(title);
 
-    public void SetWindowPosition(int x, int y) => Raylib.SetWindowPosition(x, y);
+    public void SetPosition(int x, int y) => Raylib.SetWindowPosition(x, y);
 
-    public void SetWindowMonitor(int monitor) => Raylib.SetWindowMonitor(monitor);
+    public void SetMonitor(int monitor) => Raylib.SetWindowMonitor(monitor);
 
-    public void SetWindowMinSize(int width, int height) => Raylib.SetWindowMinSize(width, height);
+    public void SetMinSize(int width, int height) => Raylib.SetWindowMinSize(width, height);
 
-    public void SetWindowSize(int width, int height) => Raylib.SetWindowSize(width, height);
+    public void SetSize(int width, int height) => Raylib.SetWindowSize(width, height);
 
-    public void SetWindowOpacity(float opacity) => Raylib.SetWindowOpacity(opacity);
+    public void SetOpacity(float opacity) => Raylib.SetWindowOpacity(opacity);
 
     public Size GetScreenSize() => new Size(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 
@@ -74,15 +74,15 @@ public class Window {
 
     public int GetMonitorRefreshRate(int monitor) => Raylib.GetMonitorRefreshRate(monitor);
 
-    public Vector2 GetWindowPosition() => Raylib.GetWindowPosition();
+    public Vector2 GetPosition() => Raylib.GetWindowPosition();
 
-    public Vector2 GetWindowScaleDpi() => Raylib.GetWindowScaleDPI();
+    public Vector2 GetScaleDpi() => Raylib.GetWindowScaleDPI();
 
     public string GetMonitorName(int monitor) => Raylib.GetMonitorName_(monitor);
 
-    public void SetWindowStates(ConfigFlags[] states) {
+    public void SetStates(ConfigFlags[] states) {
         foreach (ConfigFlags state in states) {
-            this.SetWindowState(state);
+            this.SetState(state);
         }
     }
 }

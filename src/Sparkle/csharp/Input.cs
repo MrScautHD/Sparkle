@@ -12,6 +12,8 @@ public static class Input {
     public static bool IsMousePressed(MouseButton button) => Raylib.IsMouseButtonPressed(button);
     public static bool IsMouseReleased(MouseButton button) => Raylib.IsMouseButtonReleased(button);
     
+    public static void SetExitKey(KeyboardKey key) => Raylib.SetExitKey(key);
+    
     public static void ShowCursor() => Raylib.ShowCursor();
     
     public static void HideCursor() => Raylib.HideCursor();
