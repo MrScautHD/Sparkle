@@ -17,13 +17,13 @@
 
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
-- [Silk.NET](https://www.nuget.org/packages/Silk.NET)
+- [RayLib](https://www.raylib.com/)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
 - [BepuPhysics](https://www.nuget.org/packages/BepuPhysics)
 
 🌋 Graphic Engine
 ==================
-- [Vulkan](https://www.vulkan.org/)
+- [OpenGl](https://www.opengl.org/)
 
 💡 Features
 ==================
@@ -41,14 +41,6 @@
 `Content Manager`
 `Config`
 `Physic`
-
-🚧 Build requirements !!! VERY IMPORTANT !!!
-=============================================
-- The projects require the [Vulkan SDK](https://www.lunarg.com/vulkan-sdk/) to build/run. The SDK provides the Vulkan validation layers as well as the command line tools to compile the shaders.
-
-🎊 Special thanks!
-==================
-- [SilkVulkanTutorial](https://github.com/stymee/SilkVulkanTutorial/tree/master)
 
 💸 Sponsors
 ============
