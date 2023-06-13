@@ -11,4 +11,10 @@
       <ProjectReference Include="..\src\Sparkle\Sparkle.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="content/**/*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

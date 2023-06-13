@@ -1,6 +1,8 @@
 namespace Sparkle.csharp.content; 
 
 public interface IContentProcessor {
-
-    void Load();
+    
+    public object Load(string path);
+    
+    public void UnLoad(object content);
 }

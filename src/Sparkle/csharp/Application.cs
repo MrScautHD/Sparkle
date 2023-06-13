@@ -1,6 +1,6 @@
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Raylib_cs;
+using Sparkle.csharp.content;
 using Sparkle.csharp.window;
 
 namespace Sparkle.csharp; 
@@ -16,6 +16,8 @@ public class Application : IDisposable {
     private double _timer;
 
     public Window Window { get; private set; }
+    
+    public ContentManager Content { get; private set; }
     
     public bool Headless { get; private set; }
 
@@ -42,6 +44,9 @@ public class Application : IDisposable {
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
+
+        Logger.Debug("Initialize Content Manager...");
+        this.Content = new ContentManager(this._settings.ContentDirectory);
 
         this.Init();
 
@@ -99,6 +104,6 @@ public class Application : IDisposable {
     }
 
     public void Dispose() {
-        
+        this.Content.Dispose();
     }
 }
