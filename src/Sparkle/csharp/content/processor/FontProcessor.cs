@@ -8,7 +8,7 @@ public class FontProcessor : IContentProcessor {
         return Raylib.LoadFont(path);
     }
 
-    public void UnLoad(object content) {
+    public void Unload(object content) {
         Raylib.UnloadFont((Font) content);
     }
 }

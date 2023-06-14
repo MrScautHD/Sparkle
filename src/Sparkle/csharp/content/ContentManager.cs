@@ -26,32 +26,35 @@ public class ContentManager : IDisposable {
         this._processors.Add(type, processor);
     }
 
-    public IContentProcessor TryGetProcessor<T>() {
-        if (!this._processors.TryGetValue(typeof(T), out IContentProcessor? processor)) {
-            Logger.Error($"Unable to locate ContentProcessor for type {typeof(T)}!");
+    public IContentProcessor TryGetProcessor(Type type) {
+        if (!this._processors.TryGetValue(type, out IContentProcessor? processor)) {
+            Logger.Error($"Unable to locate ContentProcessor for type {type}!");
         }
 
         return processor!;
     }
 
     public T Load<T>(string path) {
-        T content = (T) this.TryGetProcessor<T>().Load(this._contentDirectory + path);
-        Logger.Info($"Loading [{path}]");
-        
+        T content = (T) this.TryGetProcessor(typeof(T)).Load(this._contentDirectory + path);
+
         this._content.Add(content!);
         return content;
     }
     
-    public void UnLoad<T>(T content) { // FIX UNLOADER + ADD LOGGER
+    public void Unload<T>(T content) {
         if (this._content.Contains(content!)) {
-            this.TryGetProcessor<T>().UnLoad(content!);
+            this.TryGetProcessor(typeof(T)).Unload(content!);
             this._content.Remove(content!);
+        }
+        else {
+            Logger.Warn($"Unable to unload content for the specified type {typeof(T)}!");
         }
     }
     
     public void Dispose() {
-        foreach (var content in this._content) {
-            this.UnLoad(content);
+        foreach (object content in this._content.ToList()) {
+            this.TryGetProcessor(content.GetType()).Unload(content);
+            this._content.Remove(content);
         }
     }
 }

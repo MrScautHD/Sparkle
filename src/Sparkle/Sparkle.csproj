@@ -9,7 +9,6 @@
         <RootNamespace>Sparkle</RootNamespace>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <Title>Sparkle</Title>
-        <ContentDirectory>ContentDirectory</ContentDirectory>
         <Authors>MrScautHD</Authors>
         <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
         <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>

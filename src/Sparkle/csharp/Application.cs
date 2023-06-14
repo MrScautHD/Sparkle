@@ -40,13 +40,15 @@ public class Application : IDisposable {
             
             Logger.Debug("Initialize Window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
-            this.Window.SetIcon(Raylib.LoadImage(this._settings.IconPath));
+            
+            Logger.Debug("Initialize Content Manager...");
+            this.Content = new ContentManager(this._settings.ContentDirectory);
+            
+            Logger.Debug("Initialize Settings...");
+            this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
-
-        Logger.Debug("Initialize Content Manager...");
-        this.Content = new ContentManager(this._settings.ContentDirectory);
 
         this.Init();
 
@@ -103,7 +105,7 @@ public class Application : IDisposable {
         }
     }
 
-    public void Dispose() {
+    public virtual void Dispose() {
         this.Content.Dispose();
     }
 }

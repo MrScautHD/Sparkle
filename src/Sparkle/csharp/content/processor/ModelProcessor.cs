@@ -8,7 +8,7 @@ public class ModelProcessor : IContentProcessor {
         return Raylib.LoadModel(path);
     }
     
-    public void UnLoad(object content) {
+    public void Unload(object content) {
         Raylib.UnloadModel((Model) content);
     }
 }

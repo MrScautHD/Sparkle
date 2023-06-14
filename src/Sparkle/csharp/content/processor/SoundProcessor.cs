@@ -8,7 +8,7 @@ public class SoundProcessor : IContentProcessor {
         return Raylib.LoadSound(path);
     }
 
-    public void UnLoad(object content) {
+    public void Unload(object content) {
         Raylib.UnloadSound((Sound) content);
     }
 }

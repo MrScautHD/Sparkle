@@ -8,7 +8,7 @@ public class TextureProcessor : IContentProcessor {
         return Raylib.LoadTexture(path);
     }
     
-    public void UnLoad(object content) {
+    public void Unload(object content) {
         Raylib.UnloadTexture((Texture2D) content);
     }
 }

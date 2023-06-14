@@ -8,7 +8,7 @@ public class ImageProcessor : IContentProcessor {
         return Raylib.LoadImage(path);
     }
 
-    public void UnLoad(object content) {
+    public void Unload(object content) {
         Raylib.UnloadImage((Image) content);
     }
 }

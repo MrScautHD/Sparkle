@@ -4,5 +4,5 @@ public interface IContentProcessor {
     
     public object Load(string path);
     
-    public void UnLoad(object content);
+    public void Unload(object content);
 }
