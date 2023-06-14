@@ -64,11 +64,7 @@ public static class Logger {
             case TraceLogLevel.LOG_DEBUG:
                 Debug(message, 3);
                 break;
-            
-            case TraceLogLevel.LOG_TRACE:
-                Error(message, 3);
-                break;
-            
+
             case TraceLogLevel.LOG_INFO:
                 Info(message, 3);
                 break;

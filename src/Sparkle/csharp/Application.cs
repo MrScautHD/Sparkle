@@ -64,7 +64,6 @@ public class Application : IDisposable {
 
             if (!this.Headless) {
                 this.Draw();
-                //Raylib.PollInputEvents(); // TODO Check what it does
             }
         }
         
