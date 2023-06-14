@@ -106,6 +106,8 @@ public class Application : IDisposable {
     }
 
     public virtual void Dispose() {
-        this.Content.Dispose();
+        if (!this.Headless) {
+            this.Content.Dispose();
+        }
     }
 }
