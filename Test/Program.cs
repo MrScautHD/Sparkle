@@ -9,5 +9,5 @@ ApplicationSettings settings = new ApplicationSettings() {
     Headless = false
 };
 
-using TestGame application = new TestGame(settings);
+using TestGame application = new TestGame(settings, null);
 application.Run();

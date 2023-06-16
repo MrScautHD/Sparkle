@@ -1,6 +1,7 @@
 using System.Reflection;
 using Raylib_cs;
 using Sparkle.csharp.content;
+using Sparkle.csharp.scene;
 using Sparkle.csharp.window;
 
 namespace Sparkle.csharp; 
@@ -21,10 +22,12 @@ public class Application : IDisposable {
     
     public bool Headless { get; private set; }
 
-    public Application(ApplicationSettings settings) {
+    public Application(ApplicationSettings settings, Scene scene) {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
+        
+        SceneManager.SetScene(scene);
     }
 
     public void Run() {
@@ -33,11 +36,11 @@ public class Application : IDisposable {
         Logger.Info("\tVIRTUAL MEMORY: " + SystemInfo.VirtualMemorySize);
         Logger.Info("\tTHREADS: " + SystemInfo.Threads);
         Logger.Info("\tOS: " + SystemInfo.Os);
+        
+        Logger.Debug("Initialize RayLib Logger...");
+        Logger.SetupRayLibLog();
 
         if (!this.Headless) {
-            Logger.Debug("Initialize RayLib Logger...");
-            Logger.SetupRayLibLog();
-            
             Logger.Debug("Initialize Window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
             
@@ -63,31 +66,33 @@ public class Application : IDisposable {
             }
 
             if (!this.Headless) {
+                Raylib.BeginDrawing();
                 this.Draw();
+                Raylib.EndDrawing();
             }
         }
         
         this.OnClose();
     }
-
+    
     protected virtual void Init() {
-        
-    }
-
-    protected virtual void Draw() {
-        
+        SceneManager.Init();
     }
 
     protected virtual void Update() {
-        
+        SceneManager.Update();
     }
 
     protected virtual void FixedUpdate() {
-        
+        SceneManager.FixedUpdate();
+    }
+    
+    protected virtual void Draw() {
+        SceneManager.Draw();
     }
 
     public void Close() {
-        Raylib.CloseWindow();
+        this.Window.Close();
     }
 
     public void OnClose() {
@@ -108,5 +113,7 @@ public class Application : IDisposable {
         if (!this.Headless) {
             this.Content.Dispose();
         }
+        
+        SceneManager.ActiveScene?.Dispose();
     }
 }

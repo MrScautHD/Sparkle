@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.file.config;
+using Sparkle.csharp.scene;
 
 namespace Test; 
 
@@ -10,7 +11,7 @@ public class TestGame : Application {
     public Texture2D Icon;
     public Texture2D Icon2;
     
-    public TestGame(ApplicationSettings settings) : base(settings) {
+    public TestGame(ApplicationSettings settings, Scene scene) : base(settings, scene) {
         Logger.CreateLogFile("logs", "log");
     }
 
@@ -32,7 +33,7 @@ public class TestGame : Application {
 
     protected override void Draw() {
         base.Draw();
-        
+
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.SKYBLUE);
 
