@@ -6,12 +6,12 @@ using Sparkle.csharp.scene;
 
 namespace Test; 
 
-public class TestGame : Application {
+public class TestGame : Game {
 
     public Texture2D Icon;
     public Texture2D Icon2;
     
-    public TestGame(ApplicationSettings settings, Scene scene) : base(settings, scene) {
+    public TestGame(GameSettings settings, Scene scene) : base(settings, scene) {
         Logger.CreateLogFile("logs", "log");
     }
 

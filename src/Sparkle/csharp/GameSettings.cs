@@ -4,7 +4,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp; 
 
-public class ApplicationSettings {
+public class GameSettings {
     
     public string Title;
     public Size Size;
@@ -14,7 +14,7 @@ public class ApplicationSettings {
     public bool Headless;
     public ConfigFlags[] WindowStates;
     
-    public ApplicationSettings() {
+    public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
         this.Size = new Size(1280, 720);
         this.IconPath = "icon.png";

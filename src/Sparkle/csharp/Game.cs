@@ -6,12 +6,12 @@ using Sparkle.csharp.window;
 
 namespace Sparkle.csharp; 
 
-public class Application : IDisposable {
+public class Game : IDisposable {
     
-    public static Application Instance;
+    public static Game Instance;
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
 
-    private readonly ApplicationSettings _settings;
+    private readonly GameSettings _settings;
     
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
@@ -22,7 +22,7 @@ public class Application : IDisposable {
     
     public bool Headless { get; private set; }
 
-    public Application(ApplicationSettings settings, Scene scene) {
+    public Game(GameSettings settings, Scene scene) {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
