@@ -77,7 +77,5 @@ public abstract class Scene : IDisposable {
         foreach (Entity entity in this._entities.Values) {
             entity.Dispose();
         }
-        
-        this._entities.Clear(); // TODO CHECK IF THAT REALLY NEEDED...
     }
 }

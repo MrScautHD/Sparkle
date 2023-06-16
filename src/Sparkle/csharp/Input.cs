@@ -3,6 +3,8 @@ using Raylib_cs;
 namespace Sparkle.csharp; 
 
 public static class Input {
+    
+    //TODO ADD GAMEPAD and all other keys
 
     public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
     public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);

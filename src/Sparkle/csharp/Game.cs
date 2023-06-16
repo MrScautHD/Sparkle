@@ -92,7 +92,9 @@ public class Game : IDisposable {
     }
 
     public void Close() {
-        this.Window.Close();
+        if (!this.Headless) {
+            this.Window.Close();
+        }
     }
 
     public void OnClose() {
@@ -106,6 +108,12 @@ public class Game : IDisposable {
     public void SetTargetFps(int fps) {
         if (fps != 0) {
             Raylib.SetTargetFPS(fps);
+        }
+    }
+
+    public unsafe void OpenURL(string url) {
+        if (!this.Headless) {
+            Raylib.OpenURL(url.ToUTF8Buffer().AsPointer());
         }
     }
 

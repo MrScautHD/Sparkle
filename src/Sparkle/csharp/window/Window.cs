@@ -13,6 +13,8 @@ public class Window {
     public bool ShouldClose() => Raylib.WindowShouldClose();
 
     public void Close() => Raylib.CloseWindow();
+    
+    public void TakeScreenshot(string path) => Raylib.TakeScreenshot(path);
 
     public bool IsReady() => Raylib.IsWindowReady();
 
