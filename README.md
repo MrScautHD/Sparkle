@@ -11,9 +11,11 @@
 
 [<img src="https://user-images.githubusercontent.com/65916181/229357115-d601e227-e80a-459d-974e-92905e192b08.png" width="125" height="40">](https://discord.gg/7XKw6YQa76)
 
-🪙 NuGet
-=====
-- [Nuget](https://www.nuget.org/packages/Sparkle)
+🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
+========================
+```
+dotnet add package Sparkle --version 1.0.0
+```
 
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
@@ -41,6 +43,60 @@
 `Content Manager`
 `Config`
 `Physic`
+
+## 🖥️ Example
+```csharp
+public class GameTest : Game {
+    
+    public GameTest(GameSettings settings, Scene scene) : base(settings, scene) {
+        
+        // Create your own config file!
+        Config builder = new ConfigBuilder("config", "test")
+            .Add("Hello", true)
+            .Add("Bye", 1000)
+            .Build();
+    }
+
+    protected override void Init() {
+        base.Init();
+        
+        // Simple logger.
+        Logger.Debug("Initialize!");
+        Logger.Info("Initialize!");
+        Logger.Warn("Initialize!");
+        Logger.Error("Initialize!");
+
+        // Simple time.
+        double deltaTime = Time.DeltaTime;
+        double totalTime = Time.TotalTime;
+        
+        // Stop the time!
+        Time.WaitTime(10);
+
+        // Load resources.
+        Texture2D texture = this.Content.Load<Texture2D>("icon.png");
+        
+        // Create your own Scene.
+        SceneManager.SetScene(new TestScene("earth"));
+        
+        // Open a url.
+        this.OpenURL("https://www.youtube.com/");
+        
+        // Take a screenshot
+        this.Window.TakeScreenshot("path");
+    }
+
+    // Just runs when !Game.Headless [Support for servers!]
+    protected override void Draw() {
+        base.Draw();
+        
+        // Draw circle if "A" down and way more simple options to draw!
+        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+            this.Graphics.ShapeRenderer.DrawCircle(new Vector2(50, 50), 20, Color.BLUE);
+        }
+    }
+}
+```
 
 💸 Sponsors
 ============
