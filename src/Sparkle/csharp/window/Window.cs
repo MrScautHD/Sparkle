@@ -49,6 +49,8 @@ public class Window {
     public unsafe void SetIcons(Image* images, int count) => Raylib.SetWindowIcons(images, count);
 
     public void SetTitle(string title) => Raylib.SetWindowTitle(title);
+    
+    public void SetClipboardText(string path) => Raylib.SetClipboardText(path);
 
     public void SetPosition(int x, int y) => Raylib.SetWindowPosition(x, y);
 
@@ -59,6 +61,10 @@ public class Window {
     public void SetSize(int width, int height) => Raylib.SetWindowSize(width, height);
 
     public void SetOpacity(float opacity) => Raylib.SetWindowOpacity(opacity);
+    
+    public void EnableEventWaiting() => Raylib.EnableEventWaiting();
+    
+    public void DisableEventWaiting() => Raylib.DisableEventWaiting();
 
     public Size GetScreenSize() => new Size(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 

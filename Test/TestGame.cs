@@ -20,8 +20,8 @@ public class TestGame : Game {
     protected override void Init() {
         base.Init();
         
-        this.OpenURL("https://www.youtube.com/");
-
+        //this.OpenURL("https://www.youtube.com/");
+        
         this.Icon = this.Content.Load<Texture2D>("icon.png");
         this.Icon2 = this.Content.Load<Texture2D>("icon.png");
 
@@ -47,11 +47,11 @@ public class TestGame : Game {
     protected override void Draw() {
         base.Draw();
 
-        Raylib.ClearBackground(Color.SKYBLUE);
-        Raylib.DrawText("Hello, world!", 12, 12, 20, Color.BLACK);
+        //Raylib.ClearBackground(Color.SKYBLUE);
+        //Raylib.DrawText("Hello, world!", 12, 12, 20, Color.BLACK);
         
-        Raylib.DrawFPS(50, 50);
-        Raylib.DrawTextureEx(this.Screenshot, new Vector2(this.Window.GetScreenSize().Width / 2 - this.Icon.width / 2 * 5, this.Window.GetScreenSize().Height / 2 - this.Icon.height / 2 * 5), 0, 5, Color.WHITE);
+        //Raylib.DrawFPS(50, 50);
+        //Raylib.DrawTextureEx(this.Screenshot, new Vector2(this.Window.GetScreenSize().Width / 2 - this.Icon.width / 2 * 5, this.Window.GetScreenSize().Height / 2 - this.Icon.height / 2 * 5), 0, 5, Color.WHITE);
     }
 
     public override void Dispose() {

@@ -1,6 +1,7 @@
 using System.Reflection;
 using Raylib_cs;
 using Sparkle.csharp.content;
+using Sparkle.csharp.graphics;
 using Sparkle.csharp.scene;
 using Sparkle.csharp.window;
 
@@ -18,6 +19,8 @@ public class Game : IDisposable {
 
     public Window Window { get; private set; }
     
+    public Graphics Graphics { get; private set; }
+    
     public ContentManager Content { get; private set; }
     
     public bool Headless { get; private set; }
@@ -26,36 +29,38 @@ public class Game : IDisposable {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
-        
         SceneManager.SetScene(scene);
     }
 
     public void Run() {
-        Logger.Info($"Hello World! Sparkle [{Version}] Start...");
-        Logger.Info("\tCPU: " + SystemInfo.Cpu);
-        Logger.Info("\tVIRTUAL MEMORY: " + SystemInfo.VirtualMemorySize);
-        Logger.Info("\tTHREADS: " + SystemInfo.Threads);
-        Logger.Info("\tOS: " + SystemInfo.Os);
+        Logger.Info($"Hello World! Sparkle [{Version}] start...");
+        Logger.Info($"\tCPU: {SystemInfo.Cpu}");
+        Logger.Info($"\tVIRTUAL MEMORY: {SystemInfo.VirtualMemorySize}MB");
+        Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
+        Logger.Info($"\tOS: {SystemInfo.Os}");
         
-        Logger.Debug("Initialize RayLib Logger...");
-        Logger.SetupRayLibLog();
+        Logger.Debug("Initialize rayLib logger...");
+        Logger.SetupRayLibLogger();
 
         if (!this.Headless) {
-            Logger.Debug("Initialize Window...");
+            Logger.Debug("Initialize window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
-            
-            Logger.Debug("Initialize Content Manager...");
+
+            Logger.Debug("Initialize content manager...");
             this.Content = new ContentManager(this._settings.ContentDirectory);
             
-            Logger.Debug("Initialize Settings...");
+            Logger.Debug("Initialize settings...");
             this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
 
-        this.Init();
+        Logger.Debug("Initialize graphics...");
+        this.Graphics = new Graphics();
 
-        Logger.Debug("Run Ticks...");
+        this.Init();
+        
+        Logger.Debug("Run ticks...");
         while (!Raylib.WindowShouldClose()) { // TODO Make it work with Headless to!
             this.Update();
             
@@ -66,9 +71,10 @@ public class Game : IDisposable {
             }
 
             if (!this.Headless) {
-                Raylib.BeginDrawing();
+                this.Graphics.BeginDrawing();
+                this.Graphics.ClearBackground(Color.SKYBLUE);
                 this.Draw();
-                Raylib.EndDrawing();
+                this.Graphics.EndDrawing();
             }
         }
         

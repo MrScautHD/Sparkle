@@ -52,7 +52,7 @@ public static class Logger {
         File.Create(LogPath).Close();
     }
 
-    internal static unsafe void SetupRayLibLog() {
+    internal static unsafe void SetupRayLibLogger() {
         Raylib.SetTraceLogCallback(&RayLibLogger);
     }
     

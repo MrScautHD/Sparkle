@@ -1,13 +1,16 @@
 ﻿using System.Drawing;
+using Raylib_cs;
 using Sparkle.csharp;
 using Test;
 
 GameSettings settings = new GameSettings() {
-    Title = "Test",
+    Title = "Test - [Sparkle]",
     Size = new Size(1280, 720),
-    TargetFps = 0,
-    Headless = false
+    Headless = false,
+    WindowStates = new[] {
+        ConfigFlags.FLAG_WINDOW_RESIZABLE
+    }
 };
 
-using TestGame application = new TestGame(settings, null);
+using TestGame application = new TestGame(settings, new TestScene("earth"));
 application.Run();
