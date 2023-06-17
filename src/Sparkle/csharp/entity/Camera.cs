@@ -8,8 +8,9 @@ public class Camera : Entity {
 
     public Graphics Graphics => Game.Instance.Graphics;
     
-    public readonly CameraMode Mode;
     private Camera3D _camera;
+    
+    public CameraMode Mode;
     
     public float Zoom;
 

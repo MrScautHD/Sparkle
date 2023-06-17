@@ -21,7 +21,6 @@ public static class Input {
     public static Vector2 GetMousePosition() => Raylib.GetMousePosition();
     public static Vector2 GetMouseDelta() => Raylib.GetMouseDelta();
     public static float GetMouseWheelMove() => Raylib.GetMouseWheelMove();
-    public static Vector2 GetMouseWheelMoveV() => Raylib.GetMouseWheelMoveV();
     public static void SetMouseCursor(MouseCursor cursor) => Raylib.SetMouseCursor(cursor);
     public static void SetMousePosition(Vector2 pos) => Raylib.SetMousePosition((int) pos.X, (int) pos.Y);
     public static void SetMouseOffset(Vector2 offset) => Raylib.SetMouseOffset((int) offset.X, (int) offset.Y);
