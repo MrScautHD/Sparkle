@@ -99,7 +99,7 @@ public class Game : IDisposable {
         SceneManager.Draw();
     }
     
-    public virtual void OnClose() {
+    protected virtual void OnClose() {
         Logger.Warn("Application shuts down!");
     }
 
