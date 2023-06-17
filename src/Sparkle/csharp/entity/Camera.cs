@@ -33,7 +33,8 @@ public class Camera : Entity {
 
     protected internal override void Update() {
         base.Update();
-        Raylib.UpdateCameraPro(ref this._camera, new Vector3(), Raymath.QuaternionToEuler(this.Rotation), this.Zoom);
+        Raylib.UpdateCamera(ref this._camera, CameraMode.CAMERA_FREE);
+        //Raylib.UpdateCameraPro(ref this._camera, new Vector3(0.001F), Raymath.QuaternionToEuler(this.Rotation), this.Zoom);
         this._camera.position = this.Position;
     }
 
@@ -42,12 +43,8 @@ public class Camera : Entity {
         
         this.Graphics.BeginMode3D(this._camera);
         
-        Raylib.DrawCube(Vector3.Zero, 2.0f, 2.0f, 2.0f, Color.RED);
-        Raylib.DrawCubeWires(Vector3.Zero, 2.0f, 2.0f, 2.0f, Color.MAROON);
-        Raylib.DrawGrid(1000, 10);
-        
-        Raylib.DrawPlane(new Vector3(0.0f, 0.0f, 0.0f), new Vector2(32.0f, 32.0f), Color.LIGHTGRAY);
-        
+        Raylib.DrawGrid(10, 1);
+
         this.Graphics.EndMode3D();
     }
     

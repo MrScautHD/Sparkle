@@ -16,6 +16,8 @@ public class Game : IDisposable {
     
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
+    
+    private bool _shouldClose;
 
     public Window Window { get; private set; }
     
@@ -61,7 +63,7 @@ public class Game : IDisposable {
         this.Init();
         
         Logger.Debug("Run ticks...");
-        while (!Raylib.WindowShouldClose()) { // TODO Make it work with Headless to!
+        while ((this.Headless && !this._shouldClose) || (!this.Headless && !this.Window.ShouldClose())) {
             this.Update();
             
             this._timer += Time.DeltaTime;
@@ -96,15 +98,17 @@ public class Game : IDisposable {
     protected virtual void Draw() {
         SceneManager.Draw();
     }
+    
+    public virtual void OnClose() {
+        Logger.Warn("Application shuts down!");
+    }
 
     public void Close() {
         if (!this.Headless) {
             this.Window.Close();
         }
-    }
 
-    public void OnClose() {
-        Logger.Warn("Application shuts down!");
+        this._shouldClose = true;
     }
 
     public int GetFps() {
