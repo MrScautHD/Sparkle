@@ -51,20 +51,22 @@ public class GameTest : Game {
     public GameTest(GameSettings settings, Scene scene) : base(settings, scene) {
         
         // Create your own config file!
-        Config builder = new ConfigBuilder("config", "test")
-            .Add("Hello", true)
+        Config config = new ConfigBuilder("config", "test")
+            .Add("Hello", "Hello World!")
             .Add("Bye", 1000)
             .Build();
+
+        Logger.Info(config.GetValue<string>("Hello"));
     }
 
     protected override void Init() {
         base.Init();
         
         // Simple logger.
-        Logger.Debug("Initialize!");
-        Logger.Info("Initialize!");
-        Logger.Warn("Initialize!");
-        Logger.Error("Initialize!");
+        Logger.Debug("Debug text!");
+        Logger.Info("Info text!");
+        Logger.Warn("Warn text!");
+        Logger.Error("Error text!");
 
         // Simple time.
         double deltaTime = Time.DeltaTime;
