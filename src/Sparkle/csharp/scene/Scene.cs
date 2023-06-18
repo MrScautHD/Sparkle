@@ -16,9 +16,7 @@ public abstract class Scene : IDisposable {
     }
     
     protected internal virtual void Init() {
-        foreach (Entity entity in this._entities.Values) {
-            entity.Init();
-        }
+        
     }
     
     protected internal virtual void Update() {
@@ -41,6 +39,8 @@ public abstract class Scene : IDisposable {
 
     public void AddEntity(Entity entity) {
         entity.Id = this._entityIds++;
+        entity.Init();
+        
         this._entities.Add(entity.Id, entity);
     }
     

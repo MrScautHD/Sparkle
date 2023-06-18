@@ -31,7 +31,7 @@ public class Game : IDisposable {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
-        SceneManager.SetScene(scene);
+        SceneManager.SetDefaultScene(scene);
     }
 
     public void Run() {

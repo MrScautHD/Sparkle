@@ -13,6 +13,8 @@ public struct Config {
     
     public string Path => FileManager.GetPath(this.Directory, this.Name + ".json");
     
+    // TODO CONFIG GETTER... YK
+    
     public Config(string directory, string name, Dictionary<string, object> dictionary, string encryptKey = "") {
         this.Directory = directory;
         this.Name = name;

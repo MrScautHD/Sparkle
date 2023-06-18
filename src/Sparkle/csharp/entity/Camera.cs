@@ -1,23 +1,19 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics;
 
 namespace Sparkle.csharp.entity; 
 
 public class Camera : Entity {
 
-    public Graphics Graphics => Game.Instance.Graphics;
-    
-    private Camera3D _camera;
-    
+    public Camera3D Camera3D;
     public CameraMode Mode;
     
     public float Zoom;
 
-    public Camera(Transform transform, float fov, CameraMode mode) : base(transform) {
+    public Camera(Transform transform, float fov, CameraMode mode = CameraMode.CAMERA_CUSTOM) : base(transform) {
         this.Tag = "camera";
         this.Mode = mode;
-        this._camera = new() {
+        this.Camera3D = new() {
             position = transform.translation,
             target = Vector3.Zero,
             up = Vector3.UnitY,
@@ -26,38 +22,28 @@ public class Camera : Entity {
         };
     }
 
-    public float Fov {
-        get => this._camera.fovy;
-        set => this._camera.fovy = value;
-    }
-
     protected internal override void Update() {
         base.Update();
-        Raylib.UpdateCamera(ref this._camera, CameraMode.CAMERA_FREE);
-        //Raylib.UpdateCameraPro(ref this._camera, new Vector3(0.001F), Raymath.QuaternionToEuler(this.Rotation), this.Zoom);
-        this._camera.position = this.Position;
+        if (this.Mode == CameraMode.CAMERA_CUSTOM) {
+            //Raylib.UpdateCameraPro(ref this._camera, new Vector3(0.001F), Raymath.QuaternionToEuler(this.Rotation), this.Zoom);
+            
+            // TODO TRY TO FIX MOVEMENT + POSITION
+        }
+        else {
+            Raylib.UpdateCamera(ref this.Camera3D, this.Mode);
+        }
     }
 
-    protected internal override void Draw() {
-        base.Draw();
-        
-        this.Graphics.BeginMode3D(this._camera);
-        
-        Raylib.DrawGrid(10, 1);
-
-        this.Graphics.EndMode3D();
-    }
-    
     public unsafe void MoveToTarget(Vector3 target, float delta) {
-        this._camera.target = target;
+        this.Camera3D.target = target;
         
-        fixed (Camera3D* cameraPtr = &this._camera) {
+        fixed (Camera3D* cameraPtr = &this.Camera3D) {
             Raylib.CameraMoveToTarget(cameraPtr, delta);
         }
     }
 
     public Matrix4x4 GetViewMatrix() {
-        return Raylib.GetCameraMatrix(this._camera);
+        return Raylib.GetCameraMatrix(this.Camera3D);
     }
     
     public Matrix4x4 GetTransformMatrix() {
@@ -65,7 +51,7 @@ public class Camera : Entity {
     }
 
     public unsafe Matrix4x4 GetProjectionMatrix() {
-        fixed (Camera3D* cameraPtr = &this._camera) {
+        fixed (Camera3D* cameraPtr = &this.Camera3D) {
             return Raylib.GetCameraProjectionMatrix(cameraPtr, 1);
         }
     }
