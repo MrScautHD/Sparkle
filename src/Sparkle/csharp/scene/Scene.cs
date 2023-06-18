@@ -61,16 +61,12 @@ public abstract class Scene : IDisposable {
         return this._entities.Values.ToArray();
     }
     
-    public Entity[] GetEntitiesWithTag(string tag) {
-        List<Entity> entities = new List<Entity>();
-        
+    public IEnumerable<Entity> GetEntitiesWithTag(string tag) {
         foreach (Entity entity in this._entities.Values) {
             if (entity.Tag == tag) {
-                entities.Add(entity);
+                yield return entity;
             }
         }
-
-        return entities.ToArray();
     }
 
     public virtual void Dispose() {

@@ -7,7 +7,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AssemblyName>Sparkle</AssemblyName>
         <RootNamespace>Sparkle</RootNamespace>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
         <Title>Sparkle</Title>
         <Authors>MrScautHD</Authors>
         <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
@@ -29,6 +29,8 @@
     <ItemGroup>
         <Content Include="icon.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
         </Content>
     </ItemGroup>
 </Project>

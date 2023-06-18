@@ -19,7 +19,7 @@ public class TestScene : Scene {
         };
         
         // CREATE CAMERA OBJECT
-        Camera camera = new Camera(transform, 70, CameraMode.CAMERA_ORBITAL);
+        Camera camera = new Camera(transform, 70, CameraMode.CAMERA_CUSTOM);
         
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);
@@ -29,7 +29,7 @@ public class TestScene : Scene {
         base.Draw();
         
         // BEGIN 3D
-        Raylib.BeginMode3D(SceneManager.MainCamera.Camera3D);
+        Raylib.BeginMode3D(SceneManager.MainCamera.GetCamera3D());
         
         // DRAW GIRD
         Raylib.DrawGrid(10, 1);

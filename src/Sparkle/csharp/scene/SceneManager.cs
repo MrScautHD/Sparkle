@@ -5,7 +5,7 @@ namespace Sparkle.csharp.scene;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
-    public static Camera MainCamera => (Camera) ActiveScene!.GetEntitiesWithTag("camera")[0];
+    public static Camera MainCamera => (Camera) ActiveScene!.GetEntitiesWithTag("camera").First();
     
     internal static void SetDefaultScene(Scene scene) {
         ActiveScene = scene;
