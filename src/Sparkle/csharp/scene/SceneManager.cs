@@ -5,7 +5,7 @@ namespace Sparkle.csharp.scene;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
-    public static Camera MainCamera => (Camera) ActiveScene!.GetEntitiesWithTag("camera").First();
+    public static Camera? MainCamera { get; private set; }
     
     internal static void SetDefaultScene(Scene scene) {
         ActiveScene = scene;
@@ -13,6 +13,7 @@ public static class SceneManager {
 
     internal static void Init() {
         ActiveScene?.Init();
+        MainCamera = (Camera) ActiveScene!.GetEntitiesWithTag("camera").First();
     }
     
     internal static void Update() {
@@ -31,5 +32,6 @@ public static class SceneManager {
         ActiveScene?.Dispose();
         ActiveScene = scene;
         ActiveScene.Init();
+        MainCamera = (Camera) ActiveScene.GetEntitiesWithTag("camera").First();
     }
 }
