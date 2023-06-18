@@ -1,4 +1,4 @@
-using System.Numerics;
+using Newtonsoft.Json.Linq;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.file.config;
@@ -25,10 +25,14 @@ public class TestGame : Game {
         this.Icon = this.Content.Load<Texture2D>("icon.png");
         this.Icon2 = this.Content.Load<Texture2D>("icon.png");
 
-        Config builder = new ConfigBuilder("config", "test")
+        Config config = new ConfigBuilder("config", "test")
             .Add("test", true)
             .Add("lol", 1000)
+            .Add("hello", "Hello World!")
             .Build();
+        
+        Console.WriteLine(config.GetValue<string>("hello"));
+        Console.WriteLine(config.GetValue<int>("lol"));
     }
 
     protected override void Update() {

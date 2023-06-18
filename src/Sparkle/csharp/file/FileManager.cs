@@ -31,11 +31,7 @@ public static class FileManager {
     public static string[] ReadAllLines<T>(string path) {
         return File.ReadAllLines(path);
     }
-    
-    public static JsonNode ReadJsonAsNode(string path, string key = "") {
-        return JsonArray.Parse(DecryptString(File.ReadAllText(path), key));
-    }
-    
+
     public static JObject ReadJsonAsObject(string path, string key = "") {
         return JObject.Parse(DecryptString(File.ReadAllText(path), key));
     }
@@ -50,7 +46,7 @@ public static class FileManager {
     
     public static bool IsJsonValid(string path, string key = "") {
         try {
-            ReadJsonAsNode(path, key);
+            ReadJsonAsObject(path, key);
             return true;
         } catch (Exception) {
             return false;
