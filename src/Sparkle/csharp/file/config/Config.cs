@@ -54,7 +54,11 @@ public struct Config {
     }
     
     public T GetValue<T>(string name) {
-        return this.GetAllValues().Value<T>(name)!;
+        if (!this.GetAllValues().TryGetValue(name, out JToken? jToken)) {
+            Logger.Error($"Unable to locate value [{name}]!");
+        }
+        
+        return jToken!.Value<T>()!;
     }
 
     public JObject GetAllValues() {

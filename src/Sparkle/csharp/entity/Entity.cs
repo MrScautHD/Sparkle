@@ -69,7 +69,7 @@ public abstract class Entity : IDisposable {
 
     public T GetComponent<T>() where T : Component {
         if (!this._components.TryGetValue(typeof(T), out Component? component)) {
-            Logger.Error($"Unable to locate Component for type {typeof(T)}!");
+            Logger.Error($"Unable to locate Component for type [{typeof(T)}]!");
         }
 
         return (T) component!;

@@ -28,7 +28,7 @@ public class ContentManager : IDisposable {
 
     public IContentProcessor TryGetProcessor(Type type) {
         if (!this._processors.TryGetValue(type, out IContentProcessor? processor)) {
-            Logger.Error($"Unable to locate ContentProcessor for type {type}!");
+            Logger.Error($"Unable to locate ContentProcessor for type [{type}]!");
         }
 
         return processor!;
