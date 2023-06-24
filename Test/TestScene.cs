@@ -14,12 +14,17 @@ public class TestScene : Scene {
     protected override void Init() {
         
         // CREATE TRANSFORM
-        Transform transform = new Transform {
-            translation = new Vector3(10.0f, 10.0f, 10.0f)
-        };
+        Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
         
-        // CREATE CAMERA OBJECT
-        Camera camera = new Camera(transform, 70, CameraMode.CAMERA_CUSTOM);
+        // CREATE ORBIT CAMERA
+        //Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
+        //    Target = Vector3.Zero
+        //};
+        
+        // CREATE CUSTOM CAMERA
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_CUSTOM) {
+           
+        };
         
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);
@@ -29,8 +34,8 @@ public class TestScene : Scene {
         base.Draw();
         
         // BEGIN 3D
-        Raylib.BeginMode3D(SceneManager.MainCamera.GetCamera3D());
-        
+        Raylib.BeginMode3D(SceneManager.MainCamera!.GetCamera3D());
+
         // DRAW GIRD
         Raylib.DrawGrid(10, 1);
         
@@ -42,6 +47,8 @@ public class TestScene : Scene {
         
         // DRAW SECOND LINE
         Raylib.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
+        
+        Raylib.DrawCube(SceneManager.MainCamera!.GetCamera3D().target, 2, 2, 2, Color.RED);
 
         // END 3D
         Raylib.EndMode3D();

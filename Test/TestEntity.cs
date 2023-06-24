@@ -1,14 +1,9 @@
-using Raylib_cs;
+using System.Numerics;
 using Sparkle.csharp.entity;
 
 namespace Test; 
 
 public class TestEntity : Entity {
-    
-    public TestEntity(Transform transform) : base(transform) {
-    }
-
-    protected override void Draw() {
-        base.Draw();
+    public TestEntity(Vector3 position) : base(position) {
     }
 }
