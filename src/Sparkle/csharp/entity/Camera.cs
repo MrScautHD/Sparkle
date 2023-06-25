@@ -17,15 +17,15 @@ public class Camera : Entity {
     public float NearPlane;
     public float FarPlane;
 
-    public Vector3 Target { get; private set; }
-    
-    private Vector3 _angleRot;
-    public Vector3 AngleRot => this._angleRot;
-
     public CameraMode Mode;
 
     public float MouseSensitivity;
     public float GamepadSensitivity;
+    
+    public Vector3 Target { get; private set; }
+    
+    private Vector3 _angleRot;
+    public Vector3 AngleRot => this._angleRot;
 
     public Camera(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_CUSTOM) : base(position) {
         this.Tag = "camera";
