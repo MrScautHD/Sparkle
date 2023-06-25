@@ -188,15 +188,15 @@ public class Camera : Entity {
             float right = top * this.AspectRatio;
 
             Rlgl.rlFrustum(-right, right, -top, top, this.NearPlane, this.FarPlane);
+            this.Projection = Raymath.MatrixPerspective(this.Fov * Raylib.DEG2RAD, this.AspectRatio, this.NearPlane, this.FarPlane);
         }
         else {
             float top = this.Fov / 2.0F;
             float right = top * this.AspectRatio;
 
             Rlgl.rlOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
+            this.Projection = Raymath.MatrixOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
         }
-        
-        this.GenProjection();
         
         Rlgl.rlMatrixMode(MatrixMode.MODELVIEW);
         Rlgl.rlLoadIdentity();
