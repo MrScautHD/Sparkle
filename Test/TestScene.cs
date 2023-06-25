@@ -15,14 +15,11 @@ public class TestScene : Scene {
         
         // CREATE TRANSFORM
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
-        
-        // CREATE ORBIT CAMERA
-        //Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
-        //    Target = Vector3.Zero
-        //};
-        
+
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE);
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE) {
+            Target = new Vector3(4, 4, 4)
+        };
         
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);

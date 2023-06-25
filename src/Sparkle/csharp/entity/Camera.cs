@@ -21,13 +21,13 @@ public class Camera : Entity {
 
     public float MouseSensitivity;
     public float GamepadSensitivity;
-    
-    public Vector3 Target { get; private set; }
+
+    public Vector3 Target;
     
     private Vector3 _angleRot;
     public Vector3 AngleRot => this._angleRot;
 
-    public Camera(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_CUSTOM) : base(position) {
+    public Camera(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_FREE) : base(position) {
         this.Tag = "camera";
         this.ProjectionType = CameraProjection.CAMERA_PERSPECTIVE;
         this.Fov = fov;
@@ -119,10 +119,7 @@ public class Camera : Entity {
     }
 
     private void CalculateTargetPosition() {
-        if (this.Mode == CameraMode.CAMERA_ORBITAL) {
-            this.Target = Vector3.Zero;
-        }
-        else {
+        if (this.Mode != CameraMode.CAMERA_ORBITAL) {
             Vector3 viewDir = Vector3.Transform(Vector3.UnitZ, this.Rotation);
             this.Target = this.Position + viewDir;
         }
