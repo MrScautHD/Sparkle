@@ -73,10 +73,6 @@ public abstract class Entity : IDisposable {
         return (T) component!;
     }
 
-    public void RotateAxisAngle(Vector3 axis, float angle) {
-        this.Rotation *= Quaternion.CreateFromAxisAngle(axis, angle * Raylib.DEG2RAD);
-    }
-
     public void Dispose() {
         foreach (Component component in this._components.Values) {
             component.Dispose();
