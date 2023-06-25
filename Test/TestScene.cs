@@ -17,7 +17,7 @@ public class TestScene : Scene {
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE) {
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
             Target = new Vector3(4, 4, 4)
         };
         

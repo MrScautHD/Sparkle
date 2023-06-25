@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_cs;
 using Sparkle.csharp.content;
 using Sparkle.csharp.entity.components;
 using Sparkle.csharp.graphics;

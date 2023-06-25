@@ -126,6 +126,7 @@ public class Camera : Entity {
     }
     
     public Vector3 GetForward() {
+        // TODO Find a way to not use Target anymore for this (Use Rotation for it, and create something like GetLookToTarget...)
         return Vector3.Normalize(Vector3.Subtract(this.Position, this.Target));
     }
     
