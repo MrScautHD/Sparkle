@@ -36,6 +36,8 @@ public static class Input {
     public static int GetGamepadAxisCount(int gamepad) => Raylib.GetGamepadAxisCount(gamepad);
     public static float GetGamepadAxisMovement(int gamepad, GamepadAxis axis) => Raylib.GetGamepadAxisMovement(gamepad, axis);
     public static unsafe void SetGamepadMappings(string mappings) => Raylib.SetGamepadMappings(mappings.ToUTF8Buffer().AsPointer());
+    
+    // TODO IMPLEMENT TOUCH
 
     // CURSOR
     public static void ShowCursor() => Raylib.ShowCursor();

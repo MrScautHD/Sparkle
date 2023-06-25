@@ -1,10 +1,19 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.content;
 using Sparkle.csharp.entity.components;
+using Sparkle.csharp.graphics;
+using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
 public abstract class Entity : IDisposable {
+    
+    protected Window Window => Game.Instance.Window;
+    
+    protected Graphics Graphics => Game.Instance.Graphics;
+
+    protected ContentManager Content => Game.Instance.Content;
     
     public int Id { get; internal set; }
 
@@ -19,6 +28,7 @@ public abstract class Entity : IDisposable {
     public Entity(Vector3 position) {
         this.Position = position;
         this.Scale = Vector3.One;
+        this.Rotation = Quaternion.Identity;
         this._components = new Dictionary<Type, Component>();
     }
 
@@ -64,11 +74,7 @@ public abstract class Entity : IDisposable {
     }
 
     public void RotateAxisAngle(Vector3 axis, float angle) {
-        this.Rotation = Raymath.QuaternionFromAxisAngle(axis, angle);
-    }
-    
-    public void RotateEulerAngles(float pitch, float yaw, float roll) {
-        this.Rotation = Raymath.QuaternionFromEuler(pitch, yaw, roll);
+        this.Rotation *= Quaternion.CreateFromAxisAngle(axis, angle * Raylib.DEG2RAD);
     }
 
     public void Dispose() {

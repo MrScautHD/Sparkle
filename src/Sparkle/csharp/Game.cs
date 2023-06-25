@@ -18,7 +18,7 @@ public class Game : IDisposable {
     private double _timer;
     
     private bool _shouldClose;
-
+    
     public Window Window { get; private set; }
     
     public Graphics Graphics { get; private set; }
@@ -56,7 +56,7 @@ public class Game : IDisposable {
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
-
+        
         Logger.Debug("Initialize graphics...");
         this.Graphics = new Graphics();
 

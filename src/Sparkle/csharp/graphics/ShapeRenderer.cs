@@ -7,8 +7,8 @@ namespace Sparkle.csharp.graphics;
 
 public class ShapeRenderer {
     
-    public void LoadDefault(Texture2D texture, Rectangle source) => Raylib.SetShapesTexture(texture, source);
-    
+    public void SetShapesTexture(Texture2D texture, Rectangle source) => Raylib.SetShapesTexture(texture, source);
+
     public void DrawPixel(Vector2 pos, Color color) => Raylib.DrawPixelV(pos, color);
     
     // LINE

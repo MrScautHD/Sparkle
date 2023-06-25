@@ -1,12 +1,15 @@
 using Sparkle.csharp.content;
 using Sparkle.csharp.graphics;
+using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity.components; 
 
 public abstract class Component : IDisposable {
 
-    protected Graphics Graphics => Game.Instance.Graphics;
+    protected Window Window => Game.Instance.Window;
     
+    protected Graphics Graphics => Game.Instance.Graphics;
+
     protected ContentManager Content => Game.Instance.Content;
 
     protected internal virtual void Init() {
