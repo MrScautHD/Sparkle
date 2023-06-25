@@ -55,12 +55,10 @@ public class Camera : Entity {
             
             case CameraMode.CAMERA_ORBITAL:
                 this.RotateAxisAngle(Vector3.UnitY, 1 * Time.DeltaTime);
-                
-                Vector3 pos = Vector3.Transform(this.GetForward(), this.Rotation);
+                Vector3 view = Vector3.Subtract(this.Position, this.Target);
+                Vector3 pos = Vector3.Transform(view, this.Rotation);
                 this.Position = Vector3.Add(this.Target, pos);
                 
-                
-                //Logger.Error(this.Position + "");
                 this.MoveToTarget(Input.GetMouseWheelMove());
                 break;
             
