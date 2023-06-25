@@ -18,7 +18,9 @@ public class Camera : Entity {
     public float FarPlane;
 
     public Vector3 Target { get; private set; }
+    
     private Vector3 _angleRot;
+    public Vector3 AngleRot => this._angleRot;
 
     public CameraMode Mode;
 
@@ -48,11 +50,6 @@ public class Camera : Entity {
         this.CalculateTargetPosition();
         
         switch (this.Mode) {
-            case CameraMode.CAMERA_CUSTOM:
-                this.InputController();
-               // Logger.Error(this.Rotation + "                             POS: " + this.Position);
-                break;
-            
             case CameraMode.CAMERA_FREE:
                 this.InputController();
                 break;
@@ -157,7 +154,7 @@ public class Camera : Entity {
         this.Position += (this.GetForward().Y * speedVector) * Time.DeltaTime;
         this.Position += (this.Up * speedVector) * Time.DeltaTime;
     }
-    
+
     public void RotateWithAngle(float yaw, float pitch, float roll) {
         this._angleRot.Y = yaw % 360;
         this._angleRot.X = Math.Clamp(pitch, -89, 89);
