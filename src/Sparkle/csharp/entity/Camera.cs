@@ -74,25 +74,25 @@ public class Camera : Entity {
     }
     
     private void InputController() {
-        if (!Input.IsGamepadAvailable(0)) {
+        if (Input.IsGamepadAvailable(0)) {
             float yaw = this._angleRot.Y - (Input.GetMouseDelta().X * this.MouseSensitivity);
             float pitch = this._angleRot.X + (Input.GetMouseDelta().Y * this.MouseSensitivity);
             this.RotateWithAngle(yaw, pitch, 0);
 
             if (Input.IsKeyDown(KeyboardKey.KEY_W)) {
-                this.MoveForward(1);
+                this.Move(new Vector3(0, 0, 1));
             }
 
             if (Input.IsKeyDown(KeyboardKey.KEY_S)) {
-                this.MoveForward(-1);
+                this.Move(new Vector3(0, 0, -1));
             }
 
             if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
-                this.Move(new Vector3(0, 0, -1));
+                this.Move(new Vector3(1, 0, 0));
             }
                 
             if (Input.IsKeyDown(KeyboardKey.KEY_D)) {
-                this.Move(new Vector3(0, 0, 1));
+                this.Move(new Vector3(-1, 0, 0));
             }
             
             if (Input.IsKeyDown(KeyboardKey.KEY_SPACE)) {
@@ -147,12 +147,12 @@ public class Camera : Entity {
     }
     
     public void Move(Vector3 speedVector) {
-        // TODO CHECK THAT AGAIN IF THE VECTORS RIGHT!
-        Vector3 right = Vector3.Cross(this.GetForward(), this.Up);
+        Vector3 right = Vector3.Normalize(Vector3.Cross(this.Up, this.GetForward()));
         
-        this.Position += (right * speedVector.X) * Time.DeltaTime;
-        this.Position += (this.GetForward().Y * speedVector) * Time.DeltaTime;
-        this.Position += (this.Up * speedVector) * Time.DeltaTime;
+        this.Position -= right * (speedVector.X * Time.DeltaTime);
+        this.Position += this.Up * (speedVector * Time.DeltaTime);
+        this.Position -= this.GetForward() * (speedVector.Z * Time.DeltaTime);
+
     }
 
     public void RotateWithAngle(float yaw, float pitch, float roll) {

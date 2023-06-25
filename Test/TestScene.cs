@@ -22,7 +22,7 @@ public class TestScene : Scene {
         //};
         
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL);
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE);
         
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);
