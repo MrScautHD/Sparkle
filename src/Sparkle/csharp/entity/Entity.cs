@@ -10,13 +10,15 @@ public abstract class Entity : IDisposable {
 
     public string? Tag;
 
-    public Transform Transform;
+    public Vector3 Position;
+    public Vector3 Scale;
+    public Quaternion Rotation;
 
     private readonly Dictionary<Type, Component> _components;
 
-    public Entity(Transform transform) {
-        this.Transform = transform;
-        this.Transform.scale = Vector3.One;
+    public Entity(Vector3 position) {
+        this.Position = position;
+        this.Scale = Vector3.One;
         this._components = new Dictionary<Type, Component>();
     }
 
@@ -60,7 +62,15 @@ public abstract class Entity : IDisposable {
 
         return (T) component!;
     }
+
+    public void RotateAxisAngle(Vector3 axis, float angle) {
+        this.Rotation = Raymath.QuaternionFromAxisAngle(axis, angle);
+    }
     
+    public void RotateEulerAngles(float pitch, float yaw, float roll) {
+        this.Rotation = Raymath.QuaternionFromEuler(pitch, yaw, roll);
+    }
+
     public void Dispose() {
         foreach (Component component in this._components.Values) {
             component.Dispose();

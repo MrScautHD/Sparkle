@@ -22,8 +22,8 @@ public class TestScene : Scene {
         //};
         
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_CUSTOM) {
-           
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
+            Target = Vector3.Zero
         };
         
         // ADD OBJECT TO THE SCENE
@@ -34,7 +34,7 @@ public class TestScene : Scene {
         base.Draw();
         
         // BEGIN 3D
-        Raylib.BeginMode3D(SceneManager.MainCamera!.GetCamera3D());
+        SceneManager.MainCamera!.BeginMode3D();
 
         // DRAW GIRD
         Raylib.DrawGrid(10, 1);
@@ -48,9 +48,9 @@ public class TestScene : Scene {
         // DRAW SECOND LINE
         Raylib.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
         
-        Raylib.DrawCube(SceneManager.MainCamera!.GetCamera3D().target, 2, 2, 2, Color.RED);
+        Raylib.DrawCube(SceneManager.MainCamera.Target, 2, 2, 2, Color.RED);
 
         // END 3D
-        Raylib.EndMode3D();
+        SceneManager.MainCamera.EndMode3D();
     }
 }
