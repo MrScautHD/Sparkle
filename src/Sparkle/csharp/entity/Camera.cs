@@ -41,7 +41,7 @@ public class Camera : Entity {
         this.GamepadSensitivity = 0.05F;
         
         this.View = Raymath.MatrixLookAt(this.Position, this.Target, this.Up);
-        this.GenProjection();
+        this.Projection = this.GenProjection();
     }
     
     protected internal override void Update() {
@@ -161,15 +161,15 @@ public class Camera : Entity {
         this.Rotation = Quaternion.CreateFromYawPitchRoll(this._angleRot.Y * Raylib.DEG2RAD, this._angleRot.X * Raylib.DEG2RAD, this._angleRot.Z * Raylib.DEG2RAD);
     }
     
-    private void GenProjection() {
+    private Matrix4x4 GenProjection() {
         if (this.ProjectionType == CameraProjection.CAMERA_PERSPECTIVE) {
-            this.Projection = Raymath.MatrixPerspective(this.Fov * Raylib.DEG2RAD, this.AspectRatio, this.NearPlane, this.FarPlane);
+            return Raymath.MatrixPerspective(this.Fov * Raylib.DEG2RAD, this.AspectRatio, this.NearPlane, this.FarPlane);
         }
         else {
             float top = this.Fov / 2.0F;
             float right = top * this.AspectRatio;
             
-            this.Projection = Raymath.MatrixOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
+            return Raymath.MatrixOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
         }
     }
     
@@ -180,21 +180,8 @@ public class Camera : Entity {
         Rlgl.rlLoadIdentity();
         
         this.AspectRatio = (float) this.Window.GetScreenSize().Width / (float) this.Window.GetScreenSize().Height;
-
-        if (this.ProjectionType == CameraProjection.CAMERA_PERSPECTIVE) {
-            float top = Rlgl.RL_CULL_DISTANCE_NEAR * MathF.Tan(this.Fov * 0.5F * Raylib.DEG2RAD);
-            float right = top * this.AspectRatio;
-
-            Rlgl.rlFrustum(-right, right, -top, top, this.NearPlane, this.FarPlane);
-            this.Projection = Raymath.MatrixPerspective(this.Fov * Raylib.DEG2RAD, this.AspectRatio, this.NearPlane, this.FarPlane);
-        }
-        else {
-            float top = this.Fov / 2.0F;
-            float right = top * this.AspectRatio;
-
-            Rlgl.rlOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
-            this.Projection = Raymath.MatrixOrtho(-right, right, -top, top, this.NearPlane, this.FarPlane);
-        }
+        
+        Rlgl.rlSetMatrixProjection(this.GenProjection());
         
         Rlgl.rlMatrixMode(MatrixMode.MODELVIEW);
         Rlgl.rlLoadIdentity();
