@@ -126,7 +126,6 @@ public class Camera : Entity {
     }
     
     public Vector3 GetForward() {
-        // TODO Find a way to not use Target anymore for this (Use Rotation for it, and create something like GetLookToTarget...)
         return Vector3.Normalize(Vector3.Subtract(this.Position, this.Target));
     }
     
@@ -152,7 +151,7 @@ public class Camera : Entity {
         this.Position -= this.GetForward() * (speedVector.Z * Time.DeltaTime);
     }
 
-    public void RotateWithAngle(float yaw, float pitch, float roll) {
+    public void RotateWithAngle(float yaw, float pitch, float roll) { // TODO CHECK IF IT WOULD SMART TO MOVE IT TO ENTITY SELF!
         this._angleRot.Y = yaw % 360;
         this._angleRot.X = Math.Clamp(pitch, -89, 89);
         this._angleRot.Z = roll % 360;
