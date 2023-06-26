@@ -51,14 +51,14 @@ public class Game : IDisposable {
             Logger.Debug("Initialize content manager...");
             this.Content = new ContentManager(this._settings.ContentDirectory);
             
+            Logger.Debug("Initialize graphics...");
+            this.Graphics = new Graphics();
+            
             Logger.Debug("Initialize settings...");
             this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
         }
-        
-        Logger.Debug("Initialize graphics...");
-        this.Graphics = new Graphics();
 
         this.Init();
         
