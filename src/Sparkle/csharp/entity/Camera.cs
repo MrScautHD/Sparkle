@@ -150,7 +150,6 @@ public class Camera : Entity {
         this.Position -= right * (speedVector.X * Time.DeltaTime);
         this.Position += this.Up * (speedVector * Time.DeltaTime);
         this.Position -= this.GetForward() * (speedVector.Z * Time.DeltaTime);
-
     }
 
     public void RotateWithAngle(float yaw, float pitch, float roll) {
@@ -180,8 +179,9 @@ public class Camera : Entity {
         Rlgl.rlLoadIdentity();
         
         this.AspectRatio = (float) this.Window.GetScreenSize().Width / (float) this.Window.GetScreenSize().Height;
-        
-        Rlgl.rlSetMatrixProjection(this.GenProjection());
+
+        this.Projection = this.GenProjection();
+        Rlgl.rlSetMatrixProjection(this.Projection);
         
         Rlgl.rlMatrixMode(MatrixMode.MODELVIEW);
         Rlgl.rlLoadIdentity();
