@@ -24,6 +24,8 @@ public abstract class Entity : IDisposable {
 
     private readonly Dictionary<Type, Component> _components;
 
+    private bool _hasInitialized;
+
     public Entity(Vector3 position) {
         this.Position = position;
         this.Scale = Vector3.One;
@@ -35,6 +37,8 @@ public abstract class Entity : IDisposable {
         foreach (Component component in this._components.Values) {
             component.Init();
         }
+
+        this._hasInitialized = true;
     }
 
     protected internal virtual void Update() {
@@ -56,6 +60,12 @@ public abstract class Entity : IDisposable {
     }
 
     public void AddComponent(Component component) {
+        component.Entity = this;
+
+        if (this._hasInitialized) {
+            component.Init();
+        }
+        
         this._components.Add(component.GetType(), component);
     }
     

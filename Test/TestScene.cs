@@ -6,9 +6,8 @@ using Sparkle.csharp.scene;
 namespace Test; 
 
 public class TestScene : Scene {
-    
+
     public TestScene(string name) : base(name) {
-        
     }
 
     protected override void Init() {
@@ -17,12 +16,15 @@ public class TestScene : Scene {
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
-            Target = new Vector3(4, 4, 4)
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE) {
+            //Target = new Vector3(4, 4, 4)
         };
         
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);
+        
+        // ADD TEST ENTITY
+        this.AddEntity(new TestEntity(Vector3.Zero));
     }
 
     protected override void Draw() {

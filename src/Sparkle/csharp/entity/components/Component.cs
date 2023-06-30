@@ -12,6 +12,8 @@ public abstract class Component : IDisposable {
 
     protected ContentManager Content => Game.Instance.Content;
 
+    protected internal Entity Entity { get; internal set; }
+
     protected internal virtual void Init() {
         
     }
@@ -29,5 +31,6 @@ public abstract class Component : IDisposable {
     }
     
     public virtual void Dispose() {
+        
     }
 }
