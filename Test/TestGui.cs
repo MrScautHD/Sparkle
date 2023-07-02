@@ -6,7 +6,7 @@ using Sparkle.csharp.gui.elements;
 
 namespace Test; 
 
-public class TestGui : GUI {
+public class TestGui : Gui {
     
     public TestGui(string name) : base(name) {
         

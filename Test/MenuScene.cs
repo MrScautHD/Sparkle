@@ -11,6 +11,8 @@ public class MenuScene : Scene {
 
     protected override void Init() {
         TestGui gui = new TestGui("test");
-        GUIManager.SetGui(gui);
+        GuiManager.SetGui(gui);
+        
+        SceneManager.SetScene(null);
     }
 }

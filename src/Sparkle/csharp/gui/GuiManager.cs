@@ -1,8 +1,8 @@
 namespace Sparkle.csharp.gui; 
 
-public static class GUIManager {
+public static class GuiManager {
     
-    public static GUI? ActiveGui { get; private set; }
+    public static Gui? ActiveGui { get; private set; }
 
     internal static void Init() {
         ActiveGui?.Init();
@@ -11,12 +11,16 @@ public static class GUIManager {
     internal static void Update() {
         ActiveGui?.Update();
     }
-
+    
+    internal static void FixedUpdate() {
+        ActiveGui?.FixedUpdate();
+    }
+    
     internal static void Draw() {
         ActiveGui?.Draw();
     }
     
-    public static void SetGui(GUI gui) {
+    public static void SetGui(Gui gui) {
         ActiveGui?.Dispose();
         ActiveGui = gui;
         ActiveGui.Init();

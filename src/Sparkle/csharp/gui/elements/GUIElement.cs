@@ -44,6 +44,10 @@ public abstract class GUIElement : IDisposable {
             this.IsClicked = false;
         }
     }
+    
+    protected internal virtual void FixedUpdate() {
+        
+    }
 
     protected internal abstract void Draw();
     

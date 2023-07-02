@@ -5,8 +5,10 @@ using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.gui; 
 
-public abstract class GUI : IDisposable {
+public abstract class Gui : IDisposable {
     
+    // TODO MAKE A RESIZE SUPPORT
+
     protected Window Window => Game.Instance.Window;
     
     protected Graphics Graphics => Game.Instance.Graphics;
@@ -15,9 +17,9 @@ public abstract class GUI : IDisposable {
     
     public readonly string Name;
     
-    private readonly Dictionary<string, GUIElement> _elements;
+    private Dictionary<string, GUIElement> _elements;
 
-    public GUI(string name) {
+    public Gui(string name) {
         this.Name = name;
         this._elements = new Dictionary<string, GUIElement>();
     }
@@ -27,10 +29,16 @@ public abstract class GUI : IDisposable {
             element.Init();
         }
     }
-
+    
     protected internal virtual void Update() {
         foreach (GUIElement element in this._elements.Values) {
             element.Update();
+        }
+    }
+
+    protected internal virtual void FixedUpdate() {
+        foreach (GUIElement element in this._elements.Values) {
+            element.FixedUpdate();
         }
     }
 

@@ -2,6 +2,8 @@ using System.Reflection;
 using Raylib_cs;
 using Sparkle.csharp.content;
 using Sparkle.csharp.graphics;
+using Sparkle.csharp.gui;
+using Sparkle.csharp.overlay;
 using Sparkle.csharp.scene;
 using Sparkle.csharp.window;
 
@@ -85,18 +87,46 @@ public class Game : IDisposable {
     
     protected virtual void Init() {
         SceneManager.Init();
+        GuiManager.Init();
+
+        foreach (Overlay overlay in Overlay.Overlays) {
+            if (overlay.Enabled) {
+                overlay.Init();
+            }
+        }
     }
 
     protected virtual void Update() {
         SceneManager.Update();
+        GuiManager.Update();
+        
+        foreach (Overlay overlay in Overlay.Overlays) {
+            if (overlay.Enabled) {
+                overlay.Update();
+            }
+        }
     }
 
     protected virtual void FixedUpdate() {
         SceneManager.FixedUpdate();
+        GuiManager.FixedUpdate();
+        
+        foreach (Overlay overlay in Overlay.Overlays) {
+            if (overlay.Enabled) {
+                overlay.FixedUpdate();
+            }
+        }
     }
     
     protected virtual void Draw() {
         SceneManager.Draw();
+        GuiManager.Draw();
+        
+        foreach (Overlay overlay in Overlay.Overlays) {
+            if (overlay.Enabled) {
+                overlay.Draw();
+            }
+        }
     }
     
     protected virtual void OnClose() {

@@ -35,16 +35,16 @@ public class ContentManager : IDisposable {
     }
 
     public T Load<T>(string path) {
-        T content = (T) this.TryGetProcessor(typeof(T)).Load(this._contentDirectory + path);
+        T item = (T) this.TryGetProcessor(typeof(T)).Load(this._contentDirectory + path);
 
-        this._content.Add(content!);
-        return content;
+        this._content.Add(item!);
+        return item;
     }
     
-    public void Unload<T>(T content) {
-        if (this._content.Contains(content!)) {
-            this.TryGetProcessor(typeof(T)).Unload(content!);
-            this._content.Remove(content!);
+    public void Unload<T>(T item) {
+        if (this._content.Contains(item!)) {
+            this.TryGetProcessor(typeof(T)).Unload(item!);
+            this._content.Remove(item!);
         }
         else {
             Logger.Warn($"Unable to unload content for the specified type {typeof(T)}!");
@@ -52,9 +52,9 @@ public class ContentManager : IDisposable {
     }
     
     public void Dispose() {
-        foreach (object content in this._content.ToList()) {
-            this.TryGetProcessor(content.GetType()).Unload(content);
-            this._content.Remove(content);
+        foreach (object item in this._content.ToList()) {
+            this.TryGetProcessor(item.GetType()).Unload(item);
+            this._content.Remove(item);
         }
     }
 }
