@@ -1,8 +1,9 @@
-using System.Drawing;
 using System.Numerics;
+using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.gui.elements;
+using Color = Raylib_cs.Color;
 
 namespace Test; 
 
@@ -15,10 +16,11 @@ public class TestGui : Gui {
     protected override void Init() {
         base.Init();
 
-        this.AddElement(new BoxElement("box", new Vector2(1, 1), new Size(10, 10), () => {
-            Logger.Error("Write your click code here!");
-            
-            return true; // If you return "false" you cancel the click!
+        Font font = this.Content.Load<Font>("....");
+
+        this.AddElement(new LabelElement("label", font, "HII", 18, Vector2.One, () => {
+            Logger.Error("HELLO");
+            return true;
         }));
     }
 }

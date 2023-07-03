@@ -1,26 +1,29 @@
 using System.Drawing;
 using System.Numerics;
 using Raylib_cs;
+using Color = Raylib_cs.Color;
 using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.gui.elements; 
 
-public abstract class GUIElement : IDisposable {
+public abstract class GuiElement : IDisposable {
 
     public string Name;
 
     public Vector2 Position;
     public Size Size;
+    public Color Color;
 
     protected bool IsHovered;
     protected bool IsClicked;
 
     private Func<bool> _clickFunc;
 
-    public GUIElement(string name, Vector2 position, Size size, Func<bool> clickClickFunc) {
+    public GuiElement(string name, Vector2 position, Size size, Color color, Func<bool> clickClickFunc) {
         this.Name = name;
         this.Position = position;
         this.Size = size;
+        this.Color = color;
         this._clickFunc = clickClickFunc;
     }
     

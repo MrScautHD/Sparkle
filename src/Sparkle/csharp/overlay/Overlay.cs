@@ -36,11 +36,9 @@ public abstract class Overlay : IDisposable {
 
     }
 
-    protected internal virtual void Draw() {
-
-    }
+    protected internal abstract void Draw();
 
     public virtual void Dispose() {
-        Overlays.Remove(this);
+        
     }
 }

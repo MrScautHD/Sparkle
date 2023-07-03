@@ -17,38 +17,38 @@ public abstract class Gui : IDisposable {
     
     public readonly string Name;
     
-    private Dictionary<string, GUIElement> _elements;
+    private Dictionary<string, GuiElement> _elements;
 
     public Gui(string name) {
         this.Name = name;
-        this._elements = new Dictionary<string, GUIElement>();
+        this._elements = new Dictionary<string, GuiElement>();
     }
     
     protected internal virtual void Init() {
-        foreach (GUIElement element in this._elements.Values) {
+        foreach (GuiElement element in this._elements.Values) {
             element.Init();
         }
     }
     
     protected internal virtual void Update() {
-        foreach (GUIElement element in this._elements.Values) {
+        foreach (GuiElement element in this._elements.Values) {
             element.Update();
         }
     }
 
     protected internal virtual void FixedUpdate() {
-        foreach (GUIElement element in this._elements.Values) {
+        foreach (GuiElement element in this._elements.Values) {
             element.FixedUpdate();
         }
     }
 
     protected internal virtual void Draw() {
-        foreach (GUIElement element in this._elements.Values) {
+        foreach (GuiElement element in this._elements.Values) {
             element.Draw();
         }
     }
     
-    protected void AddElement(GUIElement element) {
+    protected void AddElement(GuiElement element) {
         element.Init();
         
         this._elements.Add(element.Name, element);
@@ -58,15 +58,15 @@ public abstract class Gui : IDisposable {
         this._elements.Remove(name);
     }
     
-    protected void RemoveElement(GUIElement element) {
+    protected void RemoveElement(GuiElement element) {
         this.RemoveElement(element.Name);
     }
 
-    protected GUIElement GetElement(string name) {
+    protected GuiElement GetElement(string name) {
         return this._elements[name];
     }
 
-    protected GUIElement[] GetElements() {
+    protected GuiElement[] GetElements() {
         return this._elements.Values.ToArray();
     }
 
