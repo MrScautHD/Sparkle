@@ -1,6 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp;
 using Sparkle.csharp.entity;
+using Sparkle.csharp.gui;
 using Sparkle.csharp.scene;
 
 namespace Test; 
@@ -16,8 +18,8 @@ public class TestScene : Scene {
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
         // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_FREE) {
-            //Target = new Vector3(4, 4, 4)
+        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
+            Target = new Vector3(0, 0, 0)
         };
         
         // ADD OBJECT TO THE SCENE
@@ -25,6 +27,19 @@ public class TestScene : Scene {
         
         // ADD TEST ENTITY
         this.AddEntity(new TestEntity(Vector3.Zero));
+    }
+
+    protected override void Update() {
+        base.Update();
+        
+        if (Input.IsKeyPressed(KeyboardKey.KEY_E)) {
+            TestGui gui = new TestGui("test");
+            GuiManager.SetGui(gui);
+        }
+
+        if (Input.IsKeyPressed(KeyboardKey.KEY_R)) {
+            GuiManager.SetGui(null);
+        }
     }
 
     protected override void Draw() {

@@ -12,7 +12,7 @@ public class LabelElement : GuiElement {
     private int _fontSize;
     private int _spacing;
     
-    public LabelElement(string name, Font font, string text, int fontSize, Vector2 position, Func<bool> clickClickFunc) : this(name, font, text, fontSize, 2, position, Color.WHITE, clickClickFunc) {
+    public LabelElement(string name, Font font, string text, int fontSize, Vector2 position, Func<bool> clickClickFunc) : this(name, font, text, fontSize, 4, position, Color.WHITE, clickClickFunc) {
 
     }
     
@@ -21,10 +21,39 @@ public class LabelElement : GuiElement {
         this._text = text;
         this._fontSize = fontSize;
         this._spacing = spacing;
-        //this.Size = Raylib.MeasureTextEx(this._font, this.text, this._fontSize, this._spacing);
+        this.ReloadTextSize();
+    }
+
+    public string Text {
+        get => this._text;
+        set {
+            this._text = value;
+            this.ReloadTextSize();
+        }
+    }
+    
+    public int FontSize {
+        get => this._fontSize;
+        set {
+            this._fontSize = value;
+            this.ReloadTextSize();
+        }
+    }
+    
+    public int Spacing {
+        get => this._spacing;
+        set {
+            this._spacing = value;
+            this.ReloadTextSize();
+        }
     }
 
     protected internal override void Draw() {
         Raylib.DrawTextPro(this._font, this._text, this.Position, Vector2.Zero, 0, this._fontSize, this._spacing, this.Color);
+    }
+
+    private void ReloadTextSize() {
+        Vector2 size = Raylib.MeasureTextEx(this._font, this._text, this._fontSize, this._spacing);
+        this.Size = new Size((int) size.X, (int) size.Y);
     }
 }

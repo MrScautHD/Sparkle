@@ -6,8 +6,16 @@ namespace Sparkle.csharp.window;
 
 public class Window {
 
+    private Size _size;
+    private string _title;
+
     internal Window(Size size, string title) {
-        Raylib.InitWindow(size.Width, size.Height, title);
+        this._size = size;
+        this._title = title;
+    }
+
+    internal void Init() {
+        Raylib.InitWindow(this._size.Width, this._size.Height, this._title);
     }
 
     public bool ShouldClose() => Raylib.WindowShouldClose();

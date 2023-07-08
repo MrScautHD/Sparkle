@@ -4,10 +4,6 @@ public static class GuiManager {
     
     public static Gui? ActiveGui { get; private set; }
 
-    internal static void Init() {
-        ActiveGui?.Init();
-    }
-
     internal static void Update() {
         ActiveGui?.Update();
     }
@@ -20,9 +16,9 @@ public static class GuiManager {
         ActiveGui?.Draw();
     }
     
-    public static void SetGui(Gui gui) {
+    public static void SetGui(Gui? gui) {
         ActiveGui?.Dispose();
         ActiveGui = gui;
-        ActiveGui.Init();
+        ActiveGui?.Init();
     }
 }

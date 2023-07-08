@@ -16,7 +16,7 @@ public abstract class Gui : IDisposable {
     protected ContentManager Content => Game.Instance.Content;
     
     public readonly string Name;
-    
+
     private Dictionary<string, GuiElement> _elements;
 
     public Gui(string name) {
@@ -25,9 +25,7 @@ public abstract class Gui : IDisposable {
     }
     
     protected internal virtual void Init() {
-        foreach (GuiElement element in this._elements.Values) {
-            element.Init();
-        }
+        
     }
     
     protected internal virtual void Update() {

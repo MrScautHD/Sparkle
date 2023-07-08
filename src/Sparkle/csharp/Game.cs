@@ -43,23 +43,26 @@ public class Game : IDisposable {
         Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
         Logger.Info($"\tOS: {SystemInfo.Os}");
         
-        Logger.Debug("Initialize rayLib logger...");
+        Logger.Debug("Initialize RayLib logger...");
         Logger.SetupRayLibLogger();
 
         if (!this.Headless) {
-            Logger.Debug("Initialize window...");
-            this.Window = new Window(this._settings.Size, this._settings.Title);
-
             Logger.Debug("Initialize content manager...");
             this.Content = new ContentManager(this._settings.ContentDirectory);
             
             Logger.Debug("Initialize graphics...");
             this.Graphics = new Graphics();
             
+            Logger.Debug("Create window...");
+            this.Window = new Window(this._settings.Size, this._settings.Title);
+            
             Logger.Debug("Initialize settings...");
             this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
             this.Window.SetStates(this._settings.WindowStates);
             this.SetTargetFps(this._settings.TargetFps);
+            
+            Logger.Debug("Initialize window...");
+            this.Window.Init();
         }
 
         this.Init();
@@ -87,7 +90,6 @@ public class Game : IDisposable {
     
     protected virtual void Init() {
         SceneManager.Init();
-        GuiManager.Init();
 
         foreach (Overlay overlay in Overlay.Overlays) {
             if (overlay.Enabled) {

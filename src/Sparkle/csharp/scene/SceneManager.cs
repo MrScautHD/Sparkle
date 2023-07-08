@@ -13,7 +13,7 @@ public static class SceneManager {
 
     internal static void Init() {
         ActiveScene?.Init();
-        MainCamera = (Camera) ActiveScene!.GetEntitiesWithTag("camera").First();
+        MainCamera = (Camera) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
     }
     
     internal static void Update() {
@@ -28,10 +28,10 @@ public static class SceneManager {
         ActiveScene?.Draw();
     }
     
-    public static void SetScene(Scene scene) {
+    public static void SetScene(Scene? scene) {
         ActiveScene?.Dispose();
         ActiveScene = scene;
-        ActiveScene.Init();
-        MainCamera = (Camera) ActiveScene.GetEntitiesWithTag("camera").First();
+        ActiveScene?.Init();
+        MainCamera = (Camera) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
     }
 }

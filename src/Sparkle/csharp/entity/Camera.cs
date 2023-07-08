@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.gui;
 
 namespace Sparkle.csharp.entity; 
 
@@ -46,12 +47,14 @@ public class Camera : Entity {
     
     protected internal override void Update() {
         base.Update();
-        
+
         this.CalculateTargetPosition();
         
         switch (this.Mode) {
             case CameraMode.CAMERA_FREE:
-                this.InputController();
+                if (GuiManager.ActiveGui == null) {
+                    this.InputController();
+                }
                 break;
             
             case CameraMode.CAMERA_ORBITAL:
@@ -59,8 +62,10 @@ public class Camera : Entity {
                 Vector3 view = Vector3.Subtract(this.Position, this.Target);
                 Vector3 pos = Vector3.Transform(view, rotation);
                 this.Position = Vector3.Add(this.Target, pos);
-                
-                this.MoveToTarget(Input.GetMouseWheelMove());
+
+                if (GuiManager.ActiveGui == null) {
+                    this.MoveToTarget(Input.GetMouseWheelMove());
+                }
                 break;
             
             case CameraMode.CAMERA_FIRST_PERSON:

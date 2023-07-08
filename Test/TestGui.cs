@@ -3,7 +3,6 @@ using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.gui.elements;
-using Color = Raylib_cs.Color;
 
 namespace Test; 
 
@@ -18,7 +17,8 @@ public class TestGui : Gui {
 
         Font font = this.Content.Load<Font>("....");
 
-        this.AddElement(new LabelElement("label", font, "HII", 18, Vector2.One, () => {
+        Logger.Error("ADDED LABEL!");
+        this.AddElement(new LabelElement("label", font, "SPARKLE ENGINE!", 50, new Vector2(50, 50), () => {
             Logger.Error("HELLO");
             return true;
         }));
