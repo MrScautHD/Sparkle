@@ -17,7 +17,7 @@ public static class ModelHelper {
     public static void DrawPoint3D(Vector3 position, Color color) => Raylib.DrawPoint3D(position, color);
     public static void DrawCircle3D(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color) => Raylib.DrawCircle3D(center, radius, rotationAxis, rotationAngle, color);
     public static void DrawTriangle3D(Vector3 v1, Vector3 v2, Vector3 v3, Color color) => Raylib.DrawTriangle3D(v1, v2, v3, color);
-    public static unsafe void DrawTriangleStrip3D(Vector3 *points, int pointCount, Color color) => Raylib.DrawTriangleStrip3D(points, pointCount, color);
+    public static void DrawTriangleStrip3D(Vector3[] points, int pointCount, Color color) => Raylib.DrawTriangleStrip3D(points, pointCount, color);
     public static void DrawCube(Vector3 position, float width, float height, float length, Color color) => Raylib.DrawCube(position, width, height, length, color);
     public static void DrawCube(Vector3 position, Vector3 size, Color color) => Raylib.DrawCubeV(position, size, color);
     public static void DrawCubeWires(Vector3 position, float width, float height, float length, Color color) => Raylib.DrawCubeWires(position, width, height, length, color);
