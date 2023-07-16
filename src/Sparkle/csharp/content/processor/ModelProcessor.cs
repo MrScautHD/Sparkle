@@ -1,14 +1,15 @@
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
 public class ModelProcessor : IContentProcessor {
 
     public object Load(string path) {
-        return Raylib.LoadModel(path);
+        return ModelHelper.LoadModel(path);
     }
     
     public void Unload(object content) {
-        Raylib.UnloadModel((Model) content);
+        ModelHelper.UnloadModel((Model) content);
     }
 }

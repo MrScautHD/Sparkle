@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.entity;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.scene;
 
@@ -51,18 +52,18 @@ public class TestScene : Scene {
         SceneManager.MainCamera!.BeginMode3D();
 
         // DRAW GIRD
-        Raylib.DrawGrid(10, 1);
+        ModelHelper.DrawGrid(10, 1);
         
         // DRAW CUBE
-        Raylib.DrawCube(new Vector3(3, 2, 3), 5, 5, 5, Color.PURPLE);
+        ModelHelper.DrawCube(new Vector3(3, 2, 3), 5, 5, 5, Color.PURPLE);
         
         // DRAW LINE
-        Raylib.DrawLine3D(new Vector3(10, 3, 4), new Vector3(-10, -3, -4), Color.RED);
+        ModelHelper.DrawLine3D(new Vector3(10, 3, 4), new Vector3(-10, -3, -4), Color.RED);
         
         // DRAW SECOND LINE
-        Raylib.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
+        ModelHelper.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
         
-        Raylib.DrawCube(SceneManager.MainCamera.Target, 2, 2, 2, Color.RED);
+        ModelHelper.DrawCube(SceneManager.MainCamera.Target, 2, 2, 2, Color.RED);
 
         // END 3D
         SceneManager.MainCamera.EndMode3D();

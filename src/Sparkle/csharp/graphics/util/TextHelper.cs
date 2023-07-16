@@ -9,7 +9,8 @@ public static class TextHelper {
     public static bool IsFontReady(Font font) => Raylib.IsFontReady(font);
     
     public static Font LoadFont(string path) => Raylib.LoadFont(path);
-    public static Font LoadFontFromImage(Image image, Color key, int firstChar) => Raylib.LoadFontFromImage(image, key, firstChar);
+    public static Font LoadFont(Image image, Color key, int firstChar) => Raylib.LoadFontFromImage(image, key, firstChar);
+    public static Font LoadFont(string fileType, byte[] fileData, int fontSize, int[] fontChars, int glyphCount) => Raylib.LoadFontFromMemory(fileType, fileData, fontSize, fontChars, glyphCount);
     public static void UnloadFont(Font font) => Raylib.UnloadFont(font);
     
     public static void DrawFPS(int x, int y) => Raylib.DrawFPS(x, y);
