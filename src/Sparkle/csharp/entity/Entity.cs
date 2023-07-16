@@ -18,13 +18,14 @@ public abstract class Entity : IDisposable {
 
     public string? Tag;
 
+    // TODO https://github.com/ChrisDill/Raylib-cs/issues/163
     public Vector3 Position;
     public Vector3 Scale;
     public Quaternion Rotation;
 
     private readonly Dictionary<Type, Component> _components;
 
-    private bool _hasInitialized;
+    public bool HasInitialized { get; private set; }
 
     public Entity(Vector3 position) {
         this.Position = position;
@@ -38,7 +39,7 @@ public abstract class Entity : IDisposable {
             component.Init();
         }
 
-        this._hasInitialized = true;
+        this.HasInitialized = true;
     }
 
     protected internal virtual void Update() {
@@ -62,7 +63,7 @@ public abstract class Entity : IDisposable {
     public void AddComponent(Component component) {
         component.Entity = this;
 
-        if (this._hasInitialized) {
+        if (this.HasInitialized) {
             component.Init();
         }
         

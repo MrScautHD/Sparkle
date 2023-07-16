@@ -11,7 +11,7 @@ namespace Sparkle.csharp;
 
 public class Game : IDisposable {
     
-    public static Game Instance;
+    public static Game Instance { get; private set; }
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
 
     private readonly GameSettings _settings;

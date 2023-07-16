@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 using Color = Raylib_cs.Color;
 
 namespace Sparkle.csharp.gui.elements; 
@@ -49,11 +50,11 @@ public class LabelElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        Raylib.DrawTextPro(this._font, this._text, this.Position, Vector2.Zero, 0, this._fontSize, this._spacing, this.Color);
+        TextHelper.DrawText(this._font, this._text, this.Position, Vector2.Zero, 0, this._fontSize, this._spacing, this.Color);
     }
 
     private void ReloadTextSize() {
-        Vector2 size = Raylib.MeasureTextEx(this._font, this._text, this._fontSize, this._spacing);
+        Vector2 size = TextHelper.MeasureText(this._font, this._text, this._fontSize, this._spacing);
         this.Size = new Size((int) size.X, (int) size.Y);
     }
 }

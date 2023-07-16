@@ -41,23 +41,5 @@ public class TestGame : Game {
             this.Window.Maximize();
             this.Window.ToggleFullscreen();
         }
-
-        //if (Input.IsKeyPressed(KeyboardKey.KEY_A)) {
-        //    this.Screenshot = Raylib.LoadTextureFromImage(Raylib.LoadImageFromScreen());
-        //}
-    }
-
-    protected override void Draw() {
-        base.Draw();
-
-        //Raylib.ClearBackground(Color.SKYBLUE);
-        //Raylib.DrawText("Hello, world!", 12, 12, 20, Color.BLACK);
-        
-        //Raylib.DrawFPS(50, 50);
-        //Raylib.DrawTextureEx(this.Screenshot, new Vector2(this.Window.GetScreenSize().Width / 2 - this.Icon.width / 2 * 5, this.Window.GetScreenSize().Height / 2 - this.Icon.height / 2 * 5), 0, 5, Color.WHITE);
-    }
-
-    public override void Dispose() {
-        base.Dispose();
     }
 }

@@ -1,14 +1,15 @@
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
 public class FontProcessor : IContentProcessor {
     
     public object Load(string path) {
-        return Raylib.LoadFont(path);
+        return TextHelper.LoadFont(path);
     }
 
     public void Unload(object content) {
-        Raylib.UnloadFont((Font) content);
+        TextHelper.UnloadFont((Font) content);
     }
 }

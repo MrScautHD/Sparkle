@@ -9,11 +9,14 @@ namespace Test;
 
 public class TestScene : Scene {
 
+    private TestGui _gui;
+
     public TestScene(string name) : base(name) {
+        this._gui = new TestGui("test");
     }
 
     protected override void Init() {
-        
+
         // CREATE TRANSFORM
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
@@ -33,8 +36,7 @@ public class TestScene : Scene {
         base.Update();
         
         if (Input.IsKeyPressed(KeyboardKey.KEY_E)) {
-            TestGui gui = new TestGui("test");
-            GuiManager.SetGui(gui);
+            GuiManager.SetGui(this._gui);
         }
 
         if (Input.IsKeyPressed(KeyboardKey.KEY_R)) {

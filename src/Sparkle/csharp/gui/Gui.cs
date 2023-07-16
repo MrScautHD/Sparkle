@@ -16,6 +16,8 @@ public abstract class Gui : IDisposable {
     protected ContentManager Content => Game.Instance.Content;
     
     public readonly string Name;
+    
+    public bool HasInitialized { get; private set; }
 
     private Dictionary<string, GuiElement> _elements;
 
@@ -25,7 +27,7 @@ public abstract class Gui : IDisposable {
     }
     
     protected internal virtual void Init() {
-        
+        this.HasInitialized = true;
     }
     
     protected internal virtual void Update() {

@@ -1,5 +1,5 @@
 namespace Sparkle.csharp.graphics.util; 
 
-public class ModelHelper {
+public static class ModelHelper {
     
 }
