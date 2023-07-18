@@ -1,4 +1,4 @@
-Contribute to Stellution
+Contribute to Sparkle
 ===================
 
 If you wish to actually inspect Stellution, submit PRs, you're in the right place!
@@ -6,7 +6,7 @@ If you wish to actually inspect Stellution, submit PRs, you're in the right plac
 Pull Requests
 =============
 
-Stellution is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help!
+Sparkle is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help!
 
 Pull Requests meeting the following guidelines can be merged:
 
@@ -20,8 +20,8 @@ Pull Requests meeting the following guidelines can be merged:
 
 Pull Requests not meeting these guidelines are also welcomed, but we may have to manually merge them, which means that you may not be automatically accredited as the author in the changelog....
 
-All Pull Requests automatically become subject to Stellution's licence. If you're interested in the legal stuff, it's here: https://github.com/MrScautHD/Stellution/blob/Game/LICENSE.txt
+All Pull Requests automatically become subject to Sparkle's licence. If you're interested in the legal stuff, it's here: https://github.com/MrScautHD/Sparkle/blob/main/LICENSE
 
 Donate
 ======
-Stellution is a large project with many Contributors working on it around the clock, it costs money to run such a large project as this, so please consider [becoming a patron.](https://www.google.com/search?client=firefox-b-d&q=test)
+Sparkle is a large project with many Contributors working on it around the clock, it costs money to run such a large project as this, so please consider [becoming a patron.](https://github.com/MrScautHD)
