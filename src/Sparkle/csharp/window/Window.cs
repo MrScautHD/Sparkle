@@ -51,7 +51,7 @@ public class Window {
     public void DisableEventWaiting() => Raylib.DisableEventWaiting();
     
     public Size GetScreenSize() => new Size(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
-    public Size GetRenderHeight() => new Size(Raylib.GetRenderHeight(), Raylib.GetRenderWidth());
+    public Size GetRenderSize() => new Size(Raylib.GetRenderHeight(), Raylib.GetRenderWidth());
     public int GetMonitorCount() => Raylib.GetMonitorCount();
     public int GetCurrentMonitor() => Raylib.GetCurrentMonitor();
     public Vector2 GetMonitorPosition(int monitor) => Raylib.GetMonitorPosition(monitor);
