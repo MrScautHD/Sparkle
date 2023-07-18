@@ -6,10 +6,10 @@ namespace Sparkle.csharp.graphics.util;
 public static class ModelHelper {
     
     public static Model LoadModel(string path) => Raylib.LoadModel(path);
-    public static Model LoadModel(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
-    public static bool IsModelReady(Model model) => Raylib.IsModelReady(model);
+    public static Model LoadModelFromMesh(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
     public static void UnloadModel(Model model) => Raylib.UnloadModel(model);
     
+    public static bool IsModelReady(Model model) => Raylib.IsModelReady(model);
     public static BoundingBox GetModelBoundingBox(Model model) => Raylib.GetModelBoundingBox(model);
     public static void SetModelMeshMaterial(ref Model model, int meshId, int materialId) => Raylib.SetModelMeshMaterial(ref model, meshId, materialId);
 

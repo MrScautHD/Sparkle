@@ -1,14 +1,15 @@
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
 public class TextureProcessor : IContentProcessor {
     
     public object Load(string path) {
-        return Raylib.LoadTexture(path);
+        return TextureHelper.LoadTexture(path);
     }
     
     public void Unload(object content) {
-        Raylib.UnloadTexture((Texture2D) content);
+        TextureHelper.UnloadTexture((Texture2D) content);
     }
 }
