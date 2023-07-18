@@ -17,9 +17,11 @@ public class ContentManager : IDisposable {
         this._processors = new Dictionary<Type, IContentProcessor>();
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Image), new ImageProcessor());
+        this.AddProcessors(typeof(Texture2D), new TextureProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(Sound), new SoundProcessor());
-        this.AddProcessors(typeof(Texture2D), new TextureProcessor());
+        this.AddProcessors(typeof(Wave), new WaveProcessor());
+        this.AddProcessors(typeof(Music), new MusicProcessor());
     }
 
     public void AddProcessors(Type type, IContentProcessor processor) {

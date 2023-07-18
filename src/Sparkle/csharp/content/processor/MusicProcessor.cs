@@ -3,13 +3,13 @@ using Sparkle.csharp.audio;
 
 namespace Sparkle.csharp.content.processor; 
 
-public class SoundProcessor : IContentProcessor {
+public class MusicProcessor : IContentProcessor {
     
     public object Load(string path) {
-        return AudioPlayer.LoadSound(path);
+        return MusicPlayer.LoadMusicStream(path);
     }
 
     public void Unload(object content) {
-        AudioPlayer.UnloadSound((Sound) content);
+        MusicPlayer.UnloadMusicStream((Music) content);
     }
 }

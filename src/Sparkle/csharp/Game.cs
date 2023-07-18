@@ -1,5 +1,6 @@
 using System.Reflection;
 using Raylib_cs;
+using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.graphics;
 using Sparkle.csharp.gui;
@@ -27,6 +28,8 @@ public class Game : IDisposable {
     
     public ContentManager Content { get; private set; }
     
+    public AudioDevice AudioDevice { get; private set; }
+
     public bool Headless { get; private set; }
 
     public Game(GameSettings settings, Scene scene) {
@@ -52,6 +55,10 @@ public class Game : IDisposable {
             
             Logger.Debug("Initialize graphics...");
             this.Graphics = new Graphics();
+            
+            Logger.Debug("Initialize audio device...");
+            this.AudioDevice = new AudioDevice();
+            this.AudioDevice.Init();
             
             Logger.Debug("Create window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
@@ -162,6 +169,7 @@ public class Game : IDisposable {
     public virtual void Dispose() {
         if (!this.Headless) {
             this.Content.Dispose();
+            this.AudioDevice.Close();
         }
         
         SceneManager.ActiveScene?.Dispose();
