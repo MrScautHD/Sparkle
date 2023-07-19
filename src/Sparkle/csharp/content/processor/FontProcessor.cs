@@ -6,10 +6,10 @@ namespace Sparkle.csharp.content.processor;
 public class FontProcessor : IContentProcessor {
     
     public object Load(string path) {
-        return TextHelper.LoadFont(path);
+        return FontHelper.Load(path);
     }
 
     public void Unload(object content) {
-        TextHelper.UnloadFont((Font) content);
+        FontHelper.Unload((Font) content);
     }
 }

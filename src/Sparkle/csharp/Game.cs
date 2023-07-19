@@ -78,7 +78,7 @@ public class Game : IDisposable {
         while ((this.Headless && !this._shouldClose) || (!this.Headless && !this.Window.ShouldClose())) {
             this.Update();
             
-            this._timer += Time.DeltaTime;
+            this._timer += Time.Delta;
             while (this._timer >= this._delay) {
                 this.FixedUpdate();
                 this._timer -= this._delay;

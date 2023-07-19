@@ -58,7 +58,7 @@ public class Camera : Entity {
                 break;
             
             case CameraMode.CAMERA_ORBITAL:
-                Matrix4x4 rotation = Raymath.MatrixRotate(this.Up, -1.5F * Time.DeltaTime);
+                Matrix4x4 rotation = Raymath.MatrixRotate(this.Up, -1.5F * Time.Delta);
                 Vector3 view = Vector3.Subtract(this.Position, this.Target);
                 Vector3 pos = Vector3.Transform(view, rotation);
                 this.Position = Vector3.Add(this.Target, pos);
@@ -135,7 +135,7 @@ public class Camera : Entity {
     }
     
     public void MoveForward(float speed) {
-        this.Position -= this.GetForward() * (speed * Time.DeltaTime);
+        this.Position -= this.GetForward() * (speed * Time.Delta);
     }
     
     public void MoveToTarget(float delta) {
@@ -151,9 +151,9 @@ public class Camera : Entity {
     public void Move(Vector3 speedVector) {
         Vector3 right = Vector3.Normalize(Vector3.Cross(this.Up, this.GetForward()));
         
-        this.Position -= right * (speedVector.X * Time.DeltaTime);
-        this.Position += this.Up * (speedVector * Time.DeltaTime);
-        this.Position -= this.GetForward() * (speedVector.Z * Time.DeltaTime);
+        this.Position -= right * (speedVector.X * Time.Delta);
+        this.Position += this.Up * (speedVector * Time.Delta);
+        this.Position -= this.GetForward() * (speedVector.Z * Time.Delta);
     }
 
     public void RotateWithAngle(float yaw, float pitch, float roll) {

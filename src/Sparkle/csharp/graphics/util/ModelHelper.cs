@@ -5,13 +5,19 @@ namespace Sparkle.csharp.graphics.util;
 
 public static class ModelHelper {
     
-    public static Model LoadModel(string path) => Raylib.LoadModel(path);
-    public static Model LoadModelFromMesh(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
-    public static void UnloadModel(Model model) => Raylib.UnloadModel(model);
+    public static Model Load(string path) => Raylib.LoadModel(path);
+    public static Model LoadFromMesh(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
+    public static void Unload(Model model) => Raylib.UnloadModel(model);
     
-    public static bool IsModelReady(Model model) => Raylib.IsModelReady(model);
-    public static BoundingBox GetModelBoundingBox(Model model) => Raylib.GetModelBoundingBox(model);
-    public static void SetModelMeshMaterial(ref Model model, int meshId, int materialId) => Raylib.SetModelMeshMaterial(ref model, meshId, materialId);
+    public static bool IsReady(Model model) => Raylib.IsModelReady(model);
+    public static BoundingBox GetBoundingBox(Model model) => Raylib.GetModelBoundingBox(model);
+    public static void SetMeshMaterial(ref Model model, int meshId, int materialId) => Raylib.SetModelMeshMaterial(ref model, meshId, materialId);
+    
+    public static void DrawModel(Model model, Vector3 position, float scale, Color color) => Raylib.DrawModel(model, position, scale, color);
+    public static void DrawModel(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelEx(model, position, rotationAxis, rotationAngle, scale, color);
+    public static void DrawModelWires(Model model, Vector3 position, float scale, Color color) => Raylib.DrawModelWires(model, position, scale, color);
+    public static void DrawModelWires(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelWiresEx(model, position, rotationAxis, rotationAngle, scale, color);
+    public static void DrawBoundingBox(BoundingBox box, Color color) => Raylib.DrawBoundingBox(box, color);
 
     public static void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color) => Raylib.DrawLine3D(startPos, endPos, color);
     public static void DrawPoint3D(Vector3 position, Color color) => Raylib.DrawPoint3D(position, color);
@@ -34,16 +40,10 @@ public static class ModelHelper {
     public static void DrawPlane(Vector3 centerPos, Vector2 size, Color color) => Raylib.DrawPlane(centerPos, size, color);
     public static void DrawRay(Ray ray, Color color) => Raylib.DrawRay(ray, color);
     public static void DrawGrid(int slices, float spacing) => Raylib.DrawGrid(slices, spacing);
-    
-    public static void DrawModel(Model model, Vector3 position, float scale, Color color) => Raylib.DrawModel(model, position, scale, color);
-    public static void DrawModel(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelEx(model, position, rotationAxis, rotationAngle, scale, color);
-    public static void DrawModelWires(Model model, Vector3 position, float scale, Color color) => Raylib.DrawModelWires(model, position, scale, color);
-    public static void DrawModelWires(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelWiresEx(model, position, rotationAxis, rotationAngle, scale, color);
-    public static void DrawBoundingBox(BoundingBox box, Color color) => Raylib.DrawBoundingBox(box, color);
-    
-    public static ReadOnlySpan<ModelAnimation> LoadModelAnimations(string path, ref uint animCount) => Raylib.LoadModelAnimations(path, ref animCount);
-    public static void UpdateModelAnimation(Model model, ModelAnimation anim, int frame) => Raylib.UpdateModelAnimation(model, anim, frame);
-    public static void UnloadModelAnimation(ModelAnimation anim) => Raylib.UnloadModelAnimation(anim);
-    public static unsafe void UnloadModelAnimations(ModelAnimation* animations, uint count) => Raylib.UnloadModelAnimations(animations, count);
-    public static bool IsModelAnimationValid(Model model, ModelAnimation anim) => Raylib.IsModelAnimationValid(model, anim);
+
+    public static ReadOnlySpan<ModelAnimation> LoadAnimations(string path, ref uint animCount) => Raylib.LoadModelAnimations(path, ref animCount);
+    public static void UpdateAnimation(Model model, ModelAnimation anim, int frame) => Raylib.UpdateModelAnimation(model, anim, frame);
+    public static void UnloadAnimation(ModelAnimation anim) => Raylib.UnloadModelAnimation(anim);
+    public static unsafe void UnloadAnimations(ModelAnimation* animations, uint count) => Raylib.UnloadModelAnimations(animations, count);
+    public static bool IsAnimationValid(Model model, ModelAnimation anim) => Raylib.IsModelAnimationValid(model, anim);
 }

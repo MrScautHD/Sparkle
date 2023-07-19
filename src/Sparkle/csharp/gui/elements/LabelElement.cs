@@ -50,11 +50,11 @@ public class LabelElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        TextHelper.DrawText(this._font, this._text, this.Position, Vector2.Zero, 0, this._fontSize, this._spacing, this.Color);
+        FontHelper.DrawText(this._font, this._text, this.Position, Vector2.Zero, 0, this._fontSize, this._spacing, this.Color);
     }
 
     private void ReloadTextSize() {
-        Vector2 size = TextHelper.MeasureText(this._font, this._text, this._fontSize, this._spacing);
+        Vector2 size = FontHelper.MeasureText(this._font, this._text, this._fontSize, this._spacing);
         this.Size = new Size((int) size.X, (int) size.Y);
     }
 }

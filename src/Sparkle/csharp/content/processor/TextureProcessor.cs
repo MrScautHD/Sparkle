@@ -6,10 +6,10 @@ namespace Sparkle.csharp.content.processor;
 public class TextureProcessor : IContentProcessor {
     
     public object Load(string path) {
-        return TextureHelper.LoadTexture(path);
+        return TextureHelper.Load(path);
     }
     
     public void Unload(object content) {
-        TextureHelper.UnloadTexture((Texture2D) content);
+        TextureHelper.Unload((Texture2D) content);
     }
 }

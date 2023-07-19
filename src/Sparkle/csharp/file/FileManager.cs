@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json.Nodes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,7 +19,7 @@ public static class FileManager {
     
     public static void WriteLine(object? text, string path, string key = "") {
         using (StreamWriter writer = new StreamWriter(path, true)) {
-            writer.WriteLine(EncryptString(text.ToString(), key));
+            writer.WriteLine(EncryptString(text?.ToString()!, key));
         }
     }
     

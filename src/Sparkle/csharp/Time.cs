@@ -4,9 +4,8 @@ namespace Sparkle.csharp;
 
 public static class Time {
 
-    public static float DeltaTime => Raylib.GetFrameTime();
-    
-    public static double TotalTime => Raylib.GetTime();
+    public static float Delta => Raylib.GetFrameTime();
+    public static double Total => Raylib.GetTime();
 
-    public static void WaitTime(double seconds) => Raylib.WaitTime(seconds);
+    public static void Wait(double seconds) => Raylib.WaitTime(seconds);
 }

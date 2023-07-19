@@ -3,15 +3,15 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
-public static class TextHelper {
+public static class FontHelper {
 
-    public static Font GetDefaultFont() => Raylib.GetFontDefault();
-    public static bool IsFontReady(Font font) => Raylib.IsFontReady(font);
+    public static Font GetDefault() => Raylib.GetFontDefault();
+    public static bool IsReady(Font font) => Raylib.IsFontReady(font);
     
-    public static Font LoadFont(string path) => Raylib.LoadFont(path);
-    public static Font LoadFontFromImage(Image image, Color key, int firstChar) => Raylib.LoadFontFromImage(image, key, firstChar);
-    public static Font LoadFontFromMemory(string fileType, byte[] fileData, int fontSize, int[] fontChars, int glyphCount) => Raylib.LoadFontFromMemory(fileType, fileData, fontSize, fontChars, glyphCount);
-    public static void UnloadFont(Font font) => Raylib.UnloadFont(font);
+    public static Font Load(string path) => Raylib.LoadFont(path);
+    public static Font LoadFromImage(Image image, Color key, int firstChar) => Raylib.LoadFontFromImage(image, key, firstChar);
+    public static Font LoadFromMemory(string fileType, byte[] fileData, int fontSize, int[] fontChars, int glyphCount) => Raylib.LoadFontFromMemory(fileType, fileData, fontSize, fontChars, glyphCount);
+    public static void Unload(Font font) => Raylib.UnloadFont(font);
     
     public static void DrawFPS(int x, int y) => Raylib.DrawFPS(x, y);
     public static void DrawText(string text, int posX, int posY, int fontSize, Color color) => Raylib.DrawText(text, posX, posY, fontSize, color);

@@ -41,14 +41,9 @@ public static class Input {
 
     // CURSOR
     public static void ShowCursor() => Raylib.ShowCursor();
-    
     public static void HideCursor() => Raylib.HideCursor();
-    
     public static bool IsCursorHidden() => Raylib.IsCursorHidden();
-    
     public static void EnableCursor() => Raylib.EnableCursor();
-    
     public static void DisableCursor() => Raylib.DisableCursor();
-    
     public static bool IsCursorOnScreen() => Raylib.IsCursorOnScreen();
 }
