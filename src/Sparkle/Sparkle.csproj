@@ -7,7 +7,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AssemblyName>Sparkle</AssemblyName>
         <RootNamespace>Sparkle</RootNamespace>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <AssemblyVersion>1.0.3</AssemblyVersion>
         <Title>Sparkle</Title>
         <Authors>MrScautHD</Authors>
         <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
@@ -17,7 +17,7 @@
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
         <PackageTags>OpenGL, Game, Engine, Renderer, Graphics, C#11, Net7, Modern, Sparkle, 2D, 3D</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <Version>1.0.1</Version>
+        <Version>1.0.3</Version>
     </PropertyGroup>
     
     <ItemGroup>

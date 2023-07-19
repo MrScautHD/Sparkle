@@ -23,11 +23,8 @@ public class Game : IDisposable {
     private bool _shouldClose;
     
     public Window Window { get; private set; }
-    
     public Graphics Graphics { get; private set; }
-    
     public ContentManager Content { get; private set; }
-    
     public AudioDevice AudioDevice { get; private set; }
 
     public bool Headless { get; private set; }

@@ -1,3 +1,4 @@
+using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.graphics;
 using Sparkle.csharp.window;
@@ -7,10 +8,9 @@ namespace Sparkle.csharp.entity.components;
 public abstract class Component : IDisposable {
 
     protected Window Window => Game.Instance.Window;
-    
     protected Graphics Graphics => Game.Instance.Graphics;
-
     protected ContentManager Content => Game.Instance.Content;
+    protected AudioDevice AudioDevice => Game.Instance.AudioDevice;
 
     protected internal Entity Entity { get; internal set; }
 

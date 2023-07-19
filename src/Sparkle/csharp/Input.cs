@@ -37,8 +37,23 @@ public static class Input {
     public static float GetGamepadAxisMovement(int gamepad, GamepadAxis axis) => Raylib.GetGamepadAxisMovement(gamepad, axis);
     public static unsafe void SetGamepadMappings(string mappings) => Raylib.SetGamepadMappings(mappings.ToUTF8Buffer().AsPointer());
     
-    // TODO IMPLEMENT TOUCH
-
+    // TOUCH
+    public static int GetTouchX() => Raylib.GetTouchX();
+    public static int GetTouchY() => Raylib.GetTouchY();
+    public static Vector2 GetTouchPosition(int index) => Raylib.GetTouchPosition(index);
+    public static int GetTouchPointId(int index) => Raylib.GetTouchPointId(index);
+    public static int GetTouchPointCount() => Raylib.GetTouchPointCount();
+    
+    // GESTURES
+    public static void SetGesturesEnabled(Gesture flags) => Raylib.SetGesturesEnabled(flags);
+    public static bool IsGestureDetected(Gesture gesture) => Raylib.IsGestureDetected(gesture);
+    public static Gesture GetGestureDetected() => Raylib.GetGestureDetected();
+    public static float GetGestureHoldDuration() => Raylib.GetGestureHoldDuration();
+    public static Vector2 GetGestureDragVector() => Raylib.GetGestureDragVector();
+    public static float GetGestureDragAngle() => Raylib.GetGestureDragAngle();
+    public static Vector2 GetGesturePinchVector() => Raylib.GetGesturePinchVector();
+    public static float GetGesturePinchAngle() => Raylib.GetGesturePinchAngle();
+    
     // CURSOR
     public static void ShowCursor() => Raylib.ShowCursor();
     public static void HideCursor() => Raylib.HideCursor();
