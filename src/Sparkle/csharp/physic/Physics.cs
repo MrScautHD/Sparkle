@@ -1,5 +1,5 @@
 namespace Sparkle.csharp.physic; 
 
-public class Physic {
+public class Physics {
     
 }

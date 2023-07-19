@@ -22,7 +22,7 @@ public abstract class Entity : IDisposable {
     public Vector3 Position;
     public Vector3 Scale;
     public Quaternion Rotation;
-
+    
     private readonly Dictionary<Type, Component> _components;
 
     public bool HasInitialized { get; private set; }

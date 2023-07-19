@@ -21,10 +21,10 @@ public static class AudioStreamer {
     public static void SetPitch(AudioStream stream, float pitch) => Raylib.SetAudioStreamPitch(stream, pitch);
     public static void SetPan(AudioStream stream, float pan) => Raylib.SetAudioStreamPan(stream, pan);
     public static void SetBufferSizeDefault(int size) => Raylib.SetAudioStreamBufferSizeDefault(size);
-
-    //public static void SetAudioStreamCallback(AudioStream stream, __FnPtr<void (void*, uint)> callback) => Raylib.SetAudioStreamCallback(stream);
-    //public static void AttachAudioStreamProcessor(AudioStream stream) => Raylib.AttachAudioStreamProcessor(stream);
-    //public static void DetachAudioStreamProcessor(AudioStream stream) => Raylib.DetachAudioStreamProcessor(stream);
-    //public static void AttachAudioMixedProcessor(AudioStream stream) => Raylib.AttachAudioMixedProcessor(stream);
-    //public static void DetachAudioMixedProcessor(AudioStream stream) => Raylib.DetachAudioMixedProcessor(stream);
+    
+    public static unsafe void SetAudioStreamCallback(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> callback) => Raylib.SetAudioStreamCallback(stream, callback);
+    public static unsafe void AttachAudioStreamProcessor(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.AttachAudioStreamProcessor(stream, processor);
+    public static unsafe void DetachAudioStreamProcessor(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.DetachAudioStreamProcessor(stream, processor);
+    public static unsafe void AttachAudioMixedProcessor(delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.AttachAudioMixedProcessor(processor);
+    public static unsafe void DetachAudioMixedProcessor(delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.DetachAudioMixedProcessor(processor);
 }
