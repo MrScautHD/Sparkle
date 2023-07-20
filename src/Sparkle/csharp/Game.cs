@@ -3,6 +3,7 @@ using Raylib_cs;
 using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.graphics;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.scene;
@@ -64,7 +65,7 @@ public class Game : IDisposable {
             this.Window = new Window(this._settings.Size, this._settings.Title);
             this.Window.SetStates(this._settings.WindowStates);
             this.Window.Init();
-            this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
+            this.Window.SetIcon(this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath));
         }
 
         this.Init();

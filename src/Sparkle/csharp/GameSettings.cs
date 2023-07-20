@@ -17,7 +17,7 @@ public class GameSettings {
     public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
         this.Size = new Size(1280, 720);
-        this.IconPath = "icon.png";
+        this.IconPath = string.Empty;
         this.ContentDirectory = "content";
         this.TargetFps = 0;
         this.Headless = false;
