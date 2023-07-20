@@ -13,7 +13,7 @@
         <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
         <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
-        <PackageIcon>icon.png</PackageIcon>
+        <PackageIcon>content\icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
         <PackageTags>OpenGL, Game, Engine, Renderer, Graphics, C#11, Net7, Modern, Sparkle, 2D, 3D</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,10 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="icon.png">
+        <Content Include="content/**/*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
         </Content>
     </ItemGroup>
 </Project>

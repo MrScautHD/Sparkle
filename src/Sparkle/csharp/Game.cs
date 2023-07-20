@@ -45,6 +45,9 @@ public class Game : IDisposable {
         
         Logger.Debug("Initialize RayLib logger...");
         Logger.SetupRayLibLogger();
+        
+        Logger.Debug($"Setting target fps to: {this._settings.TargetFps}");
+        this.SetTargetFps(this._settings.TargetFps);
 
         if (!this.Headless) {
             Logger.Debug("Initialize content manager...");
@@ -56,17 +59,12 @@ public class Game : IDisposable {
             Logger.Debug("Initialize audio device...");
             this.AudioDevice = new AudioDevice();
             this.AudioDevice.Init();
-            
-            Logger.Debug("Create window...");
-            this.Window = new Window(this._settings.Size, this._settings.Title);
-            
-            Logger.Debug("Initialize settings...");
-            this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
-            this.Window.SetStates(this._settings.WindowStates);
-            this.SetTargetFps(this._settings.TargetFps);
-            
+
             Logger.Debug("Initialize window...");
+            this.Window = new Window(this._settings.Size, this._settings.Title);
+            this.Window.SetStates(this._settings.WindowStates);
             this.Window.Init();
+            this.Window.SetIcon(this.Content.Load<Image>(this._settings.IconPath));
         }
 
         this.Init();

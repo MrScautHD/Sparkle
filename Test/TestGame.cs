@@ -7,11 +7,6 @@ namespace Test;
 
 public class TestGame : Game {
 
-    public Texture2D Icon;
-    public Texture2D Icon2;
-
-    public Texture2D Screenshot;
-    
     public TestGame(GameSettings settings, Scene scene) : base(settings, scene) {
         Logger.CreateLogFile("logs", "log");
     }
@@ -20,9 +15,6 @@ public class TestGame : Game {
         base.Init();
         
         //this.OpenURL("https://www.youtube.com/");
-        
-        this.Icon = this.Content.Load<Texture2D>("icon.png");
-        this.Icon2 = this.Content.Load<Texture2D>("icon.png");
 
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)
