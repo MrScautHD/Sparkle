@@ -17,7 +17,7 @@ public class TestScene : Scene {
     }
 
     protected override void Init() {
-
+        
         // CREATE TRANSFORM
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
