@@ -14,7 +14,7 @@
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ========================
 ```
-dotnet add package Sparkle --version 1.0.0
+dotnet add package Sparkle --version [VERSION]
 ```
 
 📚 Libraries (https://www.nuget.org/packages)
