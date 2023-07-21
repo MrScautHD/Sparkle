@@ -1,5 +1,5 @@
 <p align="center" style="margin-bottom: 0px !important;">
-  <img width="512" src="https://cdn.discordapp.com/attachments/1023302205031321690/1116290698568814612/imagsfe.png" alt="Logo" align="center">
+  <img width="512" src="https://cdn.discordapp.com/attachments/1036960672715644939/1131937257578836088/imaged.png" alt="Logo" align="center">
 </p>
 
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
@@ -14,7 +14,7 @@
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ========================
 ```
-dotnet add package Sparkle --version 1.0.0
+dotnet add package Sparkle --version [VERSION]
 ```
 
 📚 Libraries (https://www.nuget.org/packages)
