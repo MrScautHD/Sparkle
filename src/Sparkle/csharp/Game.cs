@@ -40,7 +40,7 @@ public class Game : IDisposable {
     public void Run() {
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info($"\tCPU: {SystemInfo.Cpu}");
-        Logger.Info($"\tVIRTUAL MEMORY: {SystemInfo.VirtualMemorySize}MB");
+        Logger.Info($"\tMEMORY: {SystemInfo.MemorySize} GB");
         Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
         Logger.Info($"\tOS: {SystemInfo.Os}");
         

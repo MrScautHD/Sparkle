@@ -1,12 +1,10 @@
-using System.Diagnostics;
-
 namespace Sparkle.csharp; 
 
 public static class SystemInfo {
 
-    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")!; //TODO FIX IT
+    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")!;
 
-    public static long VirtualMemorySize => Process.GetCurrentProcess().VirtualMemorySize64 / 1000000; // TODO FIX THAT TOO!
+    public static int MemorySize => (int) (GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1048576.0F) / 1000;
 
     public static int Threads => Environment.ProcessorCount;
 
