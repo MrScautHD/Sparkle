@@ -15,7 +15,7 @@
         <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
         <PackageIcon>content\icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
-        <PackageTags>OpenGL, Game, Engine, Renderer, Graphics, C#11, Net7, Modern, Sparkle, 2D, 3D</PackageTags>
+        <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Version>1.0.3</Version>
     </PropertyGroup>

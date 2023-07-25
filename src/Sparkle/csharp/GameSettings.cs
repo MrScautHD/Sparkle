@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Reflection;
 using Raylib_cs;
 
-namespace Sparkle.csharp; 
+namespace Sparkle.csharp;
 
 public class GameSettings {
     

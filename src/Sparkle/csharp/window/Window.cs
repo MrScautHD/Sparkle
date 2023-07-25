@@ -31,8 +31,9 @@ public class Window {
     public bool IsFocused() => Raylib.IsWindowFocused();
     public bool IsResized() => Raylib.IsWindowResized();
     public bool IsState(ConfigFlags state) => Raylib.IsWindowState(state);
-
+    
     public bool SetState(ConfigFlags state) => Raylib.SetWindowState(state);
+    public void SetConfigFlag(ConfigFlags state) => Raylib.SetConfigFlags(state);
     public void ClearState(ConfigFlags state) => Raylib.ClearWindowState(state);
     public void ToggleFullscreen() => Raylib.ToggleFullscreen();
     public void Maximize() => Raylib.MaximizeWindow();
@@ -61,10 +62,10 @@ public class Window {
     public Vector2 GetPosition() => Raylib.GetWindowPosition();
     public Vector2 GetScaleDpi() => Raylib.GetWindowScaleDPI();
     public string GetMonitorName(int monitor) => Raylib.GetMonitorName_(monitor);
-
-    public void SetStates(ConfigFlags[] states) {
+    
+    public void SetConfigFlags(ConfigFlags[] states) {
         foreach (ConfigFlags state in states) {
-            this.SetState(state);
+            this.SetConfigFlag(state);
         }
     }
 }

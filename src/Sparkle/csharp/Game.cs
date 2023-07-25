@@ -63,7 +63,7 @@ public class Game : IDisposable {
 
             Logger.Debug("Initialize window...");
             this.Window = new Window(this._settings.Size, this._settings.Title);
-            this.Window.SetStates(this._settings.WindowStates);
+            this.Window.SetConfigFlags(this._settings.WindowStates);
             this.Window.Init();
             this.Window.SetIcon(this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath));
         }
