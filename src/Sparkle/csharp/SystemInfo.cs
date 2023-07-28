@@ -2,7 +2,7 @@ namespace Sparkle.csharp;
 
 public static class SystemInfo {
 
-    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")!;
+    public static string Cpu => Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER") ?? "Unknown";
 
     public static int MemorySize => (int) (GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1048576.0F) / 1000;
 
