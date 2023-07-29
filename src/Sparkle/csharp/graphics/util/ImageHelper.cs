@@ -64,7 +64,7 @@ public static class ImageHelper {
     
     public static void ClearBackground(ref Image dst, Color color) => Raylib.ImageClearBackground(ref dst, color);
     public static void DrawPixel(ref Image dst, int posX, int posY, Color color) => Raylib.ImageDrawPixel(ref dst, posX, posY, color);
-    public static void DrawPixel(ref Image dst, Vector2 position, Color color) => Raylib.ImageDrawPixelV(ref dst, position, color);
+    public static void DrawPixel(ref Image dst, Vector2 pos, Color color) => Raylib.ImageDrawPixelV(ref dst, pos, color);
     public static void DrawLine(ref Image dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color) => Raylib.ImageDrawLine(ref dst, startPosX, startPosY, endPosX, endPosY, color);
     public static void DrawLine(ref Image dst, Vector2 start, Vector2 end, Color color) => Raylib.ImageDrawLineV(ref dst, start, end, color);
     public static void DrawCircle(ref Image dst, int centerX, int centerY, int radius, Color color) => Raylib.ImageDrawCircle(ref dst, centerX, centerY, radius, color);
@@ -72,10 +72,10 @@ public static class ImageHelper {
     public static unsafe void DrawCircleLines(Image* dst, int centerX, int centerY, int radius, Color color) => Raylib.ImageDrawCircleLines(dst, centerX, centerY, radius, color);
     public static unsafe void DrawCircleLines(Image* dst, Vector2 center, int radius, Color color) => Raylib.ImageDrawCircleLinesV(dst, center, radius, color);
     public static void DrawRectangle(ref Image dst, int posX, int posY, int width, int height, Color color) => Raylib.ImageDrawRectangle(ref dst, posX, posY, width, height, color);
-    public static void DrawRectangle(ref Image dst, Vector2 position, Vector2 size, Color color) => Raylib.ImageDrawRectangleV(ref dst, position, size, color);
+    public static void DrawRectangle(ref Image dst, Vector2 pos, Vector2 size, Color color) => Raylib.ImageDrawRectangleV(ref dst, pos, size, color);
     public static void DrawRectangleRec(ref Image dst, Rectangle rec, Color color) => Raylib.ImageDrawRectangleRec(ref dst, rec, color);
     public static void DrawRectangleLines(ref Image dst, Rectangle rec, int thick, Color color) => Raylib.ImageDrawRectangleLines(ref dst, rec, thick, color);
     public static void Draw(ref Image dst, Image src, Rectangle srcRec, Rectangle dstRec, Color color) => Raylib.ImageDraw(ref dst, src, srcRec, dstRec, color);
     public static void DrawText(ref Image dst, string text, int x, int y, int fontSize, Color color) => Raylib.ImageDrawText(ref dst, text, x, y, fontSize, color);
-    public static void DrawText(ref Image dst, Font font, string text, Vector2 position, int fontSize, float spacing, Color color) => Raylib.ImageDrawTextEx(ref dst, font, text, position, fontSize, spacing, color);
+    public static void DrawText(ref Image dst, Font font, string text, Vector2 pos, int fontSize, float spacing, Color color) => Raylib.ImageDrawTextEx(ref dst, font, text, pos, fontSize, spacing, color);
 }

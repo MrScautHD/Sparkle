@@ -158,7 +158,8 @@ public class Game : IDisposable {
 
     public unsafe void OpenURL(string url) {
         if (!this.Headless) {
-            Raylib.OpenURL(url.ToUTF8Buffer().AsPointer());
+            using UTF8Buffer buffer = url.ToUTF8Buffer();
+            Raylib.OpenURL(buffer.AsPointer());
         }
     }
 

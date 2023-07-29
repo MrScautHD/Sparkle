@@ -35,7 +35,10 @@ public static class Input {
     public static int GetGamepadButtonPressed() => Raylib.GetGamepadButtonPressed();
     public static int GetGamepadAxisCount(int gamepad) => Raylib.GetGamepadAxisCount(gamepad);
     public static float GetGamepadAxisMovement(int gamepad, GamepadAxis axis) => Raylib.GetGamepadAxisMovement(gamepad, axis);
-    public static unsafe void SetGamepadMappings(string mappings) => Raylib.SetGamepadMappings(mappings.ToUTF8Buffer().AsPointer());
+    public static unsafe void SetGamepadMappings(string mappings) {
+        using UTF8Buffer buffer = mappings.ToUTF8Buffer();
+        Raylib.SetGamepadMappings(buffer.AsPointer());
+    }
     
     // TOUCH
     public static int GetTouchX() => Raylib.GetTouchX();

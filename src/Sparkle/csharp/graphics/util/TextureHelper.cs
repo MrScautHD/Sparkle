@@ -22,9 +22,9 @@ public static class TextureHelper {
     public static void SetWrap(Texture2D texture, TextureWrap wrap) => Raylib.SetTextureWrap(texture, wrap);
 
     public static void Draw(Texture2D texture, int posX, int posY, Color color) => Raylib.DrawTexture(texture, posX, posY, color);
-    public static void Draw(Texture2D texture, Vector2 position, Color color) => Raylib.DrawTextureV(texture, position, color);
-    public static void Draw(Texture2D texture, Vector2 position, float rotation, float scale, Color color) => Raylib.DrawTextureEx(texture, position, rotation, scale, color);
-    public static void DrawRec(Texture2D texture, Rectangle source, Vector2 position, Color color) => Raylib.DrawTextureRec(texture, source, position, color);
+    public static void Draw(Texture2D texture, Vector2 pos, Color color) => Raylib.DrawTextureV(texture, pos, color);
+    public static void Draw(Texture2D texture, Vector2 pos, float rotation, float scale, Color color) => Raylib.DrawTextureEx(texture, pos, rotation, scale, color);
+    public static void DrawRec(Texture2D texture, Rectangle source, Vector2 pos, Color color) => Raylib.DrawTextureRec(texture, source, pos, color);
     public static void DrawPro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) => Raylib.DrawTexturePro(texture, source, dest, origin, rotation, color);
     public static void DrawNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color color) => Raylib.DrawTextureNPatch(texture, nPatchInfo, dest, origin, rotation, color);
 }
