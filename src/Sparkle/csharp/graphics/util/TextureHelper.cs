@@ -14,9 +14,11 @@ public static class TextureHelper {
 
     public static bool IsReady(Texture2D texture) => Raylib.IsTextureReady(texture);
     public static bool IsRenderTextureReady(RenderTexture2D target) => Raylib.IsRenderTextureReady(target);
-    public static unsafe void Update(Texture2D texture, void* pixels) => Raylib.UpdateTexture(texture, pixels);
-    public static unsafe void UpdateRec(Texture2D texture, Rectangle rec, void* pixels) => Raylib.UpdateTextureRec(texture, rec, pixels);
-    
+    public static void Update<T>(Texture2D texture, ReadOnlySpan<T> pixels) where T : unmanaged => Raylib.UpdateTexture(texture, pixels);
+    public static void Update<T>(Texture2D texture, T[] pixels) where T : unmanaged => Raylib.UpdateTexture(texture, pixels);
+    public static void UpdateRec<T>(Texture2D texture, Rectangle rec, ReadOnlySpan<T> pixels) where T : unmanaged => Raylib.UpdateTextureRec(texture, rec, pixels);
+    public static void UpdateRec<T>(Texture2D texture, Rectangle rec, T[] pixels) where T : unmanaged => Raylib.UpdateTextureRec(texture, rec, pixels);
+
     public static void GenMipmaps(ref Texture2D texture) => Raylib.GenTextureMipmaps(ref texture);
     public static void SetFilter(Texture2D texture, TextureFilter filter) => Raylib.SetTextureFilter(texture, filter);
     public static void SetWrap(Texture2D texture, TextureWrap wrap) => Raylib.SetTextureWrap(texture, wrap);
