@@ -7,8 +7,7 @@ namespace Test;
 
 public class TestGame : Game {
 
-    public TestGame(GameSettings settings, Scene scene) : base(settings, scene) {
-        Logger.CreateLogFile("logs", "log");
+    public TestGame(GameSettings settings) : base(settings) {
     }
 
     protected override void Init() {

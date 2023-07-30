@@ -11,7 +11,7 @@ public static class TextureHelper {
     public static RenderTexture2D LoadRenderTexture(int width, int height) => Raylib.LoadRenderTexture(width, height);
     public static void Unload(Texture2D texture) => Raylib.UnloadTexture(texture);
     public static void UnloadRenderTexture(RenderTexture2D target) => Raylib.UnloadRenderTexture(target);
-
+    
     public static bool IsReady(Texture2D texture) => Raylib.IsTextureReady(texture);
     public static bool IsRenderTextureReady(RenderTexture2D target) => Raylib.IsRenderTextureReady(target);
     public static void Update<T>(Texture2D texture, ReadOnlySpan<T> pixels) where T : unmanaged => Raylib.UpdateTexture(texture, pixels);

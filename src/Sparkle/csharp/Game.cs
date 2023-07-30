@@ -30,14 +30,17 @@ public class Game : IDisposable {
 
     public bool Headless { get; private set; }
 
-    public Game(GameSettings settings, Scene scene) {
+    public Game(GameSettings settings) {
         Instance = this;
         this._settings = settings;
         this.Headless = settings.Headless;
-        SceneManager.SetDefaultScene(scene);
     }
 
-    public void Run() {
+    public void Run(Scene? scene) {
+        if (this._settings.LogDirectory != string.Empty) {
+            Logger.CreateLogFile(this._settings.LogDirectory);
+        }
+
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info($"\tCPU: {SystemInfo.Cpu}");
         Logger.Info($"\tMEMORY: {SystemInfo.MemorySize} GB");
@@ -67,6 +70,9 @@ public class Game : IDisposable {
             this.Window.Init();
             this.Window.SetIcon(this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath));
         }
+
+        Logger.Debug("Initialize default scene...");
+        SceneManager.SetDefaultScene(scene!);
 
         this.Init();
         

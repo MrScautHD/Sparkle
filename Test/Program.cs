@@ -12,5 +12,5 @@ GameSettings settings = new GameSettings() {
     }
 };
 
-using TestGame application = new TestGame(settings, new TestScene("test"));
-application.Run();
+using TestGame game = new TestGame(settings);
+game.Run(new TestScene("test"));

@@ -7,7 +7,7 @@ public static class SceneManager {
     public static Scene? ActiveScene { get; private set; }
     public static Camera? MainCamera { get; private set; }
     
-    internal static void SetDefaultScene(Scene scene) {
+    internal static void SetDefaultScene(Scene? scene) {
         ActiveScene = scene;
     }
 
