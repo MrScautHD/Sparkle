@@ -65,9 +65,8 @@ public static class FileManager {
         
         using var memoryStream = new MemoryStream();
         using var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-        using (var streamWriter = new StreamWriter(cryptoStream)) {
-            streamWriter.Write(text);
-        }
+        using var streamWriter = new StreamWriter(cryptoStream);
+        streamWriter.Write(text);
         
         return Convert.ToBase64String(memoryStream.ToArray(), Base64FormattingOptions.InsertLineBreaks);
     }
