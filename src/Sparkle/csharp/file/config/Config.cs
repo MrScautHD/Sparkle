@@ -29,7 +29,7 @@ public struct Config {
                     jsonObject.Remove(jsonObjectPair.Key);
                     
                     File.WriteAllText(this.Path, FileManager.EncryptString(jsonObject.ToString(), this._encryptKey));
-                    Logger.Warn($"Value {jsonObjectPair.Key} + get removed! In file {this.Name}");
+                    Logger.Warn($"Value {jsonObjectPair.Key} removed from file {this.Name}");
                 }
             }
             
@@ -39,7 +39,7 @@ public struct Config {
 
                     jsonObject[dictionary.Key] = JToken.FromObject(dictionary.Value);
                     File.WriteAllText(this.Path, FileManager.EncryptString(jsonObject.ToString(), this._encryptKey));
-                    Logger.Info($"File {this.Name} + added: {dictionary.Key} = {dictionary.Value}");
+                    Logger.Info($"File {this.Name} updated: {dictionary.Key} = {dictionary.Value}");
                 }
             }
         }
