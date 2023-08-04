@@ -4,18 +4,17 @@ namespace Sparkle.csharp.file.config;
 
 public struct Config {
     
-    private Dictionary<string, object> _dictionary;
-    
     public string Directory { get; }
     public string Name { get; }
+    public string Path { get; }
     
-    private string _encryptKey;
+    private readonly Dictionary<string, object> _dictionary;
+    private readonly string _encryptKey;
     
-    public string Path => FileManager.GetPath(this.Directory, $"{this.Name}.json");
-
     public Config(string directory, string name, Dictionary<string, object> dictionary, string encryptKey = "") {
         this.Directory = directory;
         this.Name = name;
+        this.Path = FileManager.GetPath(this.Directory, $"{this.Name}.json");
         this._dictionary = dictionary;
         this._encryptKey = encryptKey;
     }
