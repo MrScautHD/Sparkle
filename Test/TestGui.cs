@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
@@ -21,14 +20,14 @@ public class TestGui : Gui {
         Font font = FontHelper.GetDefault();
 
         Logger.Error("ADDED LABEL!");
-        this.AddElement(new LabelElement("label", font, "SPARKLE ENGINE!", 50, new Vector2(50, 50), () => {
+        this.AddElement(new LabelElement("label",font, "SPARKLE ENGINE!", 50, new Vector2(50, 50), () => {
             Logger.Error("HELLO");
             return true;
         }));
 
         Texture2D texture = this.Content.Load<Texture2D>("icon.png");
         
-        this.AddElement(new ButtonElement("button", texture, FontHelper.GetDefault(), "Hello", 18, 4, new Vector2(400, 400), new Size(texture.width, texture.height), Color.WHITE, Color.WHITE, () => {
+        this.AddElement(new ButtonElement("button",texture, FontHelper.GetDefault(), "Hello", 18, new Vector2(400, 400), Color.WHITE, Color.BLACK, () => {
             Logger.Error("Button get clicked!");
             return true;
         }));
