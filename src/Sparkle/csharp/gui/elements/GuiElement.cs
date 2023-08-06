@@ -34,8 +34,6 @@ public abstract class GuiElement : IDisposable {
     protected internal virtual void Update() {
         Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height);
         
-        Rlgl
-        
         if (Raylib.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
             this.IsClicked = Input.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT) && this._clickFunc.Invoke();
