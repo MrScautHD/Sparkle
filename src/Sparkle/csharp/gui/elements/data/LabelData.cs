@@ -4,20 +4,26 @@ using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.gui.elements.data; 
 
-public struct LabelData {
+public class LabelData {
     
     public Font Font;
+    public Vector2 Size;
     public float Rotation;
+    public Color DefaultColor;
+    public Color Color;
+    public Color HoverColor;
     
     private string _text;
     private int _fontSize;
     private int _spacing;
     
-    public Vector2 TextSize { get; private set; }
-
     public LabelData() {
         this.Font = FontHelper.GetDefault();
+        this.Size = Vector2.Zero;
         this.Rotation = 0;
+        this.DefaultColor = Color.WHITE;
+        this.Color = Color.WHITE;
+        this.HoverColor = Color.GRAY;
         this._text = string.Empty;
         this._fontSize = 18;
         this._spacing = 4;
@@ -49,6 +55,6 @@ public struct LabelData {
     }
     
     private void ReloadTextSize() {
-        this.TextSize = FontHelper.MeasureText(this.Font, this._text, this._fontSize, this._spacing);
+        this.Size = FontHelper.MeasureText(this.Font, this._text, this._fontSize, this._spacing);
     }
 }

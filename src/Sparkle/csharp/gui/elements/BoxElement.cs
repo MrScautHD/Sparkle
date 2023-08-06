@@ -6,7 +6,7 @@ using Color = Raylib_cs.Color;
 
 namespace Sparkle.csharp.gui.elements; 
 
-public class BoxElement : GuiElement {
+public class BoxElement {}/* : GuiElement {
     
     public Texture2D Texture;
     
@@ -99,4 +99,4 @@ public class BoxElement : GuiElement {
         Vector2 size = FontHelper.MeasureText(this._font, this._text, this._fontSize, this._spacing);
         this.TextSize = new Size((int) size.X, (int) size.Y);
     }
-}
+}*/

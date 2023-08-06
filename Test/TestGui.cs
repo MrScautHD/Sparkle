@@ -25,12 +25,13 @@ public class TestGui : Gui {
             Text = "Sparkle Engine!"
         };
         
-        this.AddElement(new LabelElement("label", labelData, new Vector2(50, 50), Color.WHITE));
+        this.AddElement(new LabelElement("label", labelData, new Vector2(200, 200)));
         
         ButtonData buttonData = new ButtonData() {
             Texture = this.Content.Load<Texture2D>("icon.png"),
+            DefaultColor = Color.WHITE,
+            Color = Color.WHITE,
             HoverColor = Color.GRAY,
-            PressColor = Color.DARKGRAY
         };
         
         LabelData buttonLabelData = new LabelData() {
@@ -40,7 +41,7 @@ public class TestGui : Gui {
             Text = "Sparkle Engine!"
         };
         
-        this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(200, 200), new Vector2(100, 100), Color.WHITE, Color.BLACK, () => {
+        this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 500), new Vector2(100, 100), () => {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
         }));

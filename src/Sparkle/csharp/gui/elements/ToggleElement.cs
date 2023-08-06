@@ -6,7 +6,7 @@ using Color = Raylib_cs.Color;
 
 namespace Sparkle.csharp.gui.elements; 
 
-public class ToggleElement : GuiElement {
+public class ToggleElement {}/* : GuiElement {
     
     private readonly Font _font;
     private string _defaultText;
@@ -99,4 +99,4 @@ public class ToggleElement : GuiElement {
         Vector2 size = FontHelper.MeasureText(this._font, this._text, this._fontSize, this._spacing);
         this.TextSize = new Size((int) size.X, (int) size.Y);
     }
-}
+}*/
