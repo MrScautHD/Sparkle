@@ -22,7 +22,11 @@ public class TestGui : Gui {
             Font = FontHelper.GetDefault(),
             FontSize = 50,
             Spacing = 4,
-            Text = "Sparkle Engine!"
+            Text = "Sparkle Engine!",
+            DefaultColor = Color.WHITE,
+            Color = Color.WHITE,
+            HoverColor = Color.GRAY,
+            Rotation = 0
         };
         
         this.AddElement(new LabelElement("label", labelData, new Vector2(200, 200)));

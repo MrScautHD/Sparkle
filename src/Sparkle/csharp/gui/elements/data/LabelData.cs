@@ -7,7 +7,7 @@ namespace Sparkle.csharp.gui.elements.data;
 public class LabelData {
     
     public Font Font;
-    public Vector2 Size;
+    public Vector2 Size { get; private set; }
     public float Rotation;
     public Color DefaultColor;
     public Color Color;
