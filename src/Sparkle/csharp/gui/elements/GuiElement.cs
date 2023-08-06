@@ -14,7 +14,7 @@ public abstract class GuiElement : IDisposable {
     public bool Invisible;
 
     public Vector2 Position;
-    public Size Size;
+    public Vector2 Size;
     public Color DefaultColor;
     public Color Color;
 
@@ -23,7 +23,7 @@ public abstract class GuiElement : IDisposable {
 
     private Func<bool>? _clickFunc;
 
-    public GuiElement(string name, Vector2 position, Size size, Color color, Func<bool>? clickClickFunc) {
+    public GuiElement(string name, Vector2 position, Vector2 size, Color color, Func<bool>? clickClickFunc) {
         this.Name = name;
         this.Enabled = true;
         this.Position = position;
@@ -47,7 +47,7 @@ public abstract class GuiElement : IDisposable {
             this.Color.a = Convert.ToByte(Convert.ToInt32(this.Color.a * 0.5F));
         }
 
-        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height);
+        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.X, this.Size.Y);
         
         if (Raylib.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;

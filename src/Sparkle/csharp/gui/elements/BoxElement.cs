@@ -22,18 +22,18 @@ public class BoxElement : GuiElement {
     
     public bool Toggled { get; private set; }
     
-    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, 4, position, Size.Empty, color, fontColor, clickClickFunc) {
-        this.Size = new Size(texture.width, texture.height);
+    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, 4, position, Vector2.Zero, color, fontColor, clickClickFunc) {
+        this.Size = new Vector2(texture.width, texture.height);
     }
     
-    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, Vector2 position, Size size, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, 4, position, size, color, fontColor, clickClickFunc) {
+    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, Vector2 position, Vector2 size, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, 4, position, size, color, fontColor, clickClickFunc) {
     }
     
-    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, int spacing, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, spacing, position, Size.Empty, color, fontColor, clickClickFunc) {
-        this.Size = new Size(texture.width, texture.height);
+    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, int spacing, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, togText, fontSize, spacing, position, Vector2.Zero, color, fontColor, clickClickFunc) {
+        this.Size = new Vector2(texture.width, texture.height);
     }
 
-    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, int spacing, Vector2 position, Size size, Color color, Color fontColor, Func<bool>? clickClickFunc) : base(name, position, size, color, clickClickFunc) {
+    public BoxElement(string name, Texture2D texture, Font font, string text, string togText, int fontSize, int spacing, Vector2 position, Vector2 size, Color color, Color fontColor, Func<bool>? clickClickFunc) : base(name, position, size, color, clickClickFunc) {
         this.Texture = texture;
         this._font = font;
         this._defaultText = text;
@@ -91,7 +91,7 @@ public class BoxElement : GuiElement {
     protected internal override void Draw() {
         TextureHelper.Draw(this.Texture, this.Position, this.Color);
 
-        Vector2 textPos = new Vector2(this.Position.X + this.Size.Width / 2F - this.TextSize.Width / 2F, this.Position.Y + this.Size.Height / 2F - this.TextSize.Height);
+        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2F - this.TextSize.Width / 2F, this.Position.Y + this.Size.Y / 2F - this.TextSize.Height);
         FontHelper.DrawText(this._font, this._text, textPos, Vector2.Zero, 0, this._fontSize, this._spacing, this.FontColor);
     }
     
