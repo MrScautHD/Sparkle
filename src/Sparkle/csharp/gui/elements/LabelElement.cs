@@ -13,11 +13,11 @@ public class LabelElement : GuiElement {
     private int _fontSize;
     private int _spacing;
     
-    public LabelElement(string name, Font font, string text, int fontSize, Vector2 position, Func<bool> clickClickFunc) : this(name, font, text, fontSize, 4, position, Color.WHITE, clickClickFunc) {
+    public LabelElement(string name, Font font, string text, int fontSize, Vector2 position, Func<bool>? clickClickFunc) : this(name, font, text, fontSize, 4, position, Color.WHITE, clickClickFunc) {
 
     }
     
-    public LabelElement(string name, Font font, string text, int fontSize, int spacing, Vector2 position, Color color, Func<bool> clickClickFunc) : base(name, position, Size.Empty, color, clickClickFunc) {
+    public LabelElement(string name, Font font, string text, int fontSize, int spacing, Vector2 position, Color color, Func<bool>? clickClickFunc) : base(name, position, Size.Empty, color, clickClickFunc) {
         this._font = font;
         this._text = text;
         this._fontSize = fontSize;

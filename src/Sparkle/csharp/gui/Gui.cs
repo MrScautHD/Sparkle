@@ -44,7 +44,9 @@ public abstract class Gui : IDisposable {
 
     protected internal virtual void Draw() {
         foreach (GuiElement element in this._elements.Values) {
-            element.Draw();
+            if (!element.Invisible) {
+                element.Draw();
+            }
         }
     }
     

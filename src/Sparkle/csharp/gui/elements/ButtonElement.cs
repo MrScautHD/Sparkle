@@ -15,23 +15,22 @@ public class ButtonElement : GuiElement {
     
     public Size TextSize { get; private set; }
     public Color FontColor;
-    
     public Texture2D Texture;
     
     private Color _hoverColor;
     
-    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, Vector2 position, Color color, Color fontColor, Func<bool> clickClickFunc) : this(name, texture, font, text, fontSize, 4, position, Size.Empty, color, fontColor, clickClickFunc) {
+    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, fontSize, 4, position, Size.Empty, color, fontColor, clickClickFunc) {
         this.Size = new Size(texture.width, texture.height);
     }
     
-    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, Vector2 position, Size size, Color color, Color fontColor, Func<bool> clickClickFunc) : this(name, texture, font, text, fontSize, 4, position, size, color, fontColor, clickClickFunc) {
+    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, Vector2 position, Size size, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, fontSize, 4, position, size, color, fontColor, clickClickFunc) {
     }
     
-    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, int spacing, Vector2 position, Color color, Color fontColor, Func<bool> clickClickFunc) : this(name, texture, font, text, fontSize, spacing, position, Size.Empty, color, fontColor, clickClickFunc) {
+    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, int spacing, Vector2 position, Color color, Color fontColor, Func<bool>? clickClickFunc) : this(name, texture, font, text, fontSize, spacing, position, Size.Empty, color, fontColor, clickClickFunc) {
         this.Size = new Size(texture.width, texture.height);
     }
 
-    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, int spacing, Vector2 position, Size size, Color color, Color fontColor, Func<bool> clickClickFunc) : base(name, position, size, color, clickClickFunc) {
+    public ButtonElement(string name, Texture2D texture, Font font, string text, int fontSize, int spacing, Vector2 position, Size size, Color color, Color fontColor, Func<bool>? clickClickFunc) : base(name, position, size, color, clickClickFunc) {
         this.Texture = texture;
         this._font = font;
         this._text = text;
@@ -69,7 +68,7 @@ public class ButtonElement : GuiElement {
         base.Update();
         this._hoverColor = this.Color;
         
-        if (this.IsHovered) {
+        if (this.IsHovered && this.Enabled) {
             this._hoverColor.r = Convert.ToByte(Convert.ToInt32(this._hoverColor.r * 0.5F));
             this._hoverColor.g = Convert.ToByte(Convert.ToInt32(this._hoverColor.g * 0.5F));
             this._hoverColor.b = Convert.ToByte(Convert.ToInt32(this._hoverColor.b * 0.5F));

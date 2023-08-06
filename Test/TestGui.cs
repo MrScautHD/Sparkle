@@ -27,9 +27,11 @@ public class TestGui : Gui {
 
         Texture2D texture = this.Content.Load<Texture2D>("icon.png");
         
-        this.AddElement(new ButtonElement("button",texture, FontHelper.GetDefault(), "Hello", 18, new Vector2(400, 400), Color.WHITE, Color.BLACK, () => {
+        this.AddElement(new ButtonElement("button", texture, FontHelper.GetDefault(), "Hello", 18, new Vector2(400, 400), Color.WHITE, Color.BLACK, () => {
             Logger.Error("Button get clicked!");
             return true;
         }));
+        
+        this.AddElement(new ToggleElement("toggle", texture, FontHelper.GetDefault(), "Check", "Checked", 18, new Vector2(500, 400), Color.WHITE, Color.BLACK, null));
     }
 }
