@@ -9,8 +9,8 @@ public class LabelData {
     public Font Font;
     public Vector2 Size { get; private set; }
     public float Rotation;
-    public Color DefaultColor;
     public Color Color;
+    public Color DefaultColor { get; private set; }
     public Color HoverColor;
     
     private string _text;
@@ -21,8 +21,8 @@ public class LabelData {
         this.Font = FontHelper.GetDefault();
         this.Size = Vector2.Zero;
         this.Rotation = 0;
-        this.DefaultColor = Color.WHITE;
         this.Color = Color.WHITE;
+        this.DefaultColor = this.Color;
         this.HoverColor = Color.GRAY;
         this._text = string.Empty;
         this._fontSize = 18;

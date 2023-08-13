@@ -23,7 +23,6 @@ public class TestGui : Gui {
             FontSize = 50,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            DefaultColor = Color.WHITE,
             Color = Color.WHITE,
             HoverColor = Color.GRAY,
             Rotation = 0
@@ -33,7 +32,6 @@ public class TestGui : Gui {
         
         ButtonData buttonData = new ButtonData() {
             Texture = this.Content.Load<Texture2D>("icon.png"),
-            DefaultColor = Color.WHITE,
             Color = Color.WHITE,
             HoverColor = Color.GRAY,
         };

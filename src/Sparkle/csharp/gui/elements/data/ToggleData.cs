@@ -3,17 +3,17 @@ using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.gui.elements.data; 
 
-public class ButtonData {
+public class ToggleData {
     
     public Texture2D Texture;
+    public Texture2D ToggledTexture;
     public Color Color;
     public Color DefaultColor { get; private set; }
-    public Color HoverColor;
 
-    public ButtonData() {
+    public ToggleData() {
+        this.Texture = TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
         this.Texture = TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
         this.Color = Color.WHITE;
         this.DefaultColor = this.Color;
-        this.HoverColor = Color.LIGHTGRAY;
     }
 }
