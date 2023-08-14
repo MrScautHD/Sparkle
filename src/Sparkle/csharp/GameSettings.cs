@@ -9,8 +9,8 @@ public class GameSettings {
     public string Title;
     public Size Size;
     public string IconPath;
-    public string ContentDirectory;
     public string LogDirectory;
+    public string ContentDirectory;
     public int TargetFps;
     public bool Headless;
     public ConfigFlags[] WindowStates;

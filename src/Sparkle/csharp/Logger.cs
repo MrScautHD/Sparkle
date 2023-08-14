@@ -10,7 +10,6 @@ namespace Sparkle.csharp;
 public static class Logger {
     
     public static string? LogPath { get; private set; }
-    public static bool LogFile { get; private set; }
 
     public static void Debug(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Gray);
@@ -32,7 +31,7 @@ public static class Logger {
         MethodBase? info = new StackFrame(skipFrames).GetMethod();
         string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
 
-        if (LogFile) {
+        if (LogPath != null) {
             FileManager.WriteLine(text, LogPath!);
         }
 
@@ -43,7 +42,6 @@ public static class Logger {
     
     internal static void CreateLogFile(string directory) {
         LogPath = Path.Combine(directory, $"log - {DateTime.Now:yyyy-MM-dd--HH-mm-ss}.txt");
-        LogFile = true;
         
         if (!Directory.Exists(directory)) {
             Directory.CreateDirectory(directory);

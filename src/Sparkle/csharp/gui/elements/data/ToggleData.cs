@@ -12,7 +12,7 @@ public class ToggleData {
 
     public ToggleData() {
         this.Texture = TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
-        this.Texture = TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
+        this.ToggledTexture = TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.GRAY));
         this.Color = Color.WHITE;
         this.DefaultColor = this.Color;
     }

@@ -5,17 +5,19 @@ using Raylib_cs;
 namespace Sparkle.csharp.window; 
 
 public class Window {
-
-    private Size _size;
-    private string _title;
-
+    
+    private readonly Size _size;
+    private readonly string _title;
+    
     internal Window(Size size, string title) {
         this._size = size;
         this._title = title;
     }
-
+    
     internal void Init() {
-        Raylib.InitWindow(this._size.Width, this._size.Height, this._title);
+        if (!this.IsReady()) {
+            Raylib.InitWindow(this._size.Width, this._size.Height, this._title);
+        }
     }
 
     public bool ShouldClose() => Raylib.WindowShouldClose();

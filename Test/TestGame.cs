@@ -13,8 +13,6 @@ public class TestGame : Game {
     protected override void Init() {
         base.Init();
         
-        //this.OpenURL("https://www.youtube.com/");
-
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)
             .Add("lol", 1000)

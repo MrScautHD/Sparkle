@@ -21,7 +21,7 @@ public class Game : IDisposable {
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
     
-    private bool _shouldClose;
+    public bool ShouldClose;
     
     public Window Window { get; private set; }
     public Graphics Graphics { get; private set; }
@@ -77,7 +77,7 @@ public class Game : IDisposable {
         this.Init();
         
         Logger.Debug("Run ticks...");
-        while ((this.Headless && !this._shouldClose) || (!this.Headless && !this.Window.ShouldClose())) {
+        while (!this.ShouldClose && !this.Window.ShouldClose()) {
             this.Update();
             
             this._timer += Time.Delta;
@@ -144,20 +144,12 @@ public class Game : IDisposable {
         Logger.Warn("Application shuts down!");
     }
 
-    public void Close() {
-        if (!this.Headless) {
-            this.Window.Close();
-        }
-
-        this._shouldClose = true;
-    }
-
     public int GetFps() {
         return Raylib.GetFPS();
     }
 
     public void SetTargetFps(int fps) {
-        if (fps != 0) {
+        if (fps > 0) {
             Raylib.SetTargetFPS(fps);
         }
     }
@@ -171,7 +163,9 @@ public class Game : IDisposable {
     public virtual void Dispose() {
         if (!this.Headless) {
             this.Content.Dispose();
+            this.Window.Close();
             this.AudioDevice.Close();
+            GuiManager.ActiveGui?.Dispose();
         }
         
         SceneManager.ActiveScene?.Dispose();

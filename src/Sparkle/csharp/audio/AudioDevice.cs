@@ -5,7 +5,9 @@ namespace Sparkle.csharp.audio;
 public class AudioDevice {
 
     internal void Init() {
-        Raylib.InitAudioDevice();
+        if (!this.IsReady()) {
+            Raylib.InitAudioDevice();
+        }
     }
 
     public void Close() => Raylib.CloseAudioDevice();
