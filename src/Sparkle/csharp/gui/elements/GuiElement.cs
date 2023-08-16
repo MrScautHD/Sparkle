@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.gui.elements; 
@@ -32,7 +33,7 @@ public abstract class GuiElement : IDisposable {
     protected internal virtual void Update() {
         Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.X, this.Size.Y);
         
-        if (Raylib.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
+        if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
             if (Input.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT) && this.Enabled) {

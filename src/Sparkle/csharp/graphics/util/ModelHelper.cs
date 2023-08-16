@@ -46,4 +46,13 @@ public static class ModelHelper {
     public static void UnloadAnimation(ModelAnimation anim) => Raylib.UnloadModelAnimation(anim);
     public static unsafe void UnloadAnimations(ModelAnimation* animations, uint count) => Raylib.UnloadModelAnimations(animations, count);
     public static bool IsAnimationValid(Model model, ModelAnimation anim) => Raylib.IsModelAnimationValid(model, anim);
+    
+    public static bool CheckCollisionSpheres(Vector3 center1, float radius1, Vector3 center2, float radius2) => Raylib.CheckCollisionSpheres(center1, radius1, center2, radius2);
+    public static bool CheckCollisionBoxes(BoundingBox box1, BoundingBox box2) => Raylib.CheckCollisionBoxes(box1, box2);
+    public static bool CheckCollisionBoxSphere(BoundingBox box, Vector3 center, float radius) => Raylib.CheckCollisionBoxSphere(box, center, radius);
+    public static RayCollision GetRayCollisionSphere(Ray ray, Vector3 center, float radius) => Raylib.GetRayCollisionSphere(ray, center, radius);
+    public static RayCollision GetRayCollisionBox(Ray ray, BoundingBox box) => Raylib.GetRayCollisionBox(ray, box);
+    public static RayCollision GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix4x4 transform) => Raylib.GetRayCollisionMesh(ray, mesh, transform);
+    public static RayCollision GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3) => Raylib.GetRayCollisionTriangle(ray, p1, p2, p3);
+    public static RayCollision GetRayCollisionQuad(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) => Raylib.GetRayCollisionQuad(ray, p1, p2, p3, p4);
 }
