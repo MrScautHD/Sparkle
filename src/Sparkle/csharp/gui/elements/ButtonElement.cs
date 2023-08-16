@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui.elements.data;
 
@@ -6,30 +7,68 @@ namespace Sparkle.csharp.gui.elements;
 
 public class ButtonElement : GuiElement {
     
-    public ButtonData ButtonData { get; private set; }
-    public LabelData LabelData { get; private set; }
+    public Texture2D Texture;
+    public Color Color;
+    public Color HoverColor;
+    
+    public Font Font;
+    public float TextRotation;
+    public Vector2 TextSize;
+    public Color TextColor;
+    public Color TextHoverColor;
+    
+    private string _text;
+    private int _fontSize;
+    private int _spacing;
     
     public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) : base(name, position, size, clickClickFunc) {
-        this.ButtonData = buttonData;
-        this.LabelData = labelData;
-    }
-
-    protected internal override void Update() {
-        base.Update();
+        this.Texture = buttonData.Texture;
+        this.Color = buttonData.Color;
+        this.HoverColor = buttonData.HoverColor;
         
-        this.ButtonData.Color = this.ButtonData.DefaultColor;
-        this.LabelData.Color = this.LabelData.DefaultColor;
+        this.Font = labelData.Font;
+        this.TextRotation = labelData.Rotation;
+        this.TextColor = labelData.Color;
+        this.TextHoverColor = labelData.HoverColor;
         
-        if (this.IsHovered && this.Enabled) {
-            this.ButtonData.Color = this.ButtonData.HoverColor;
-            this.LabelData.Color = this.LabelData.HoverColor;
-        }
+        this._text = labelData.Text;
+        this._fontSize = labelData.FontSize;
+        this._spacing = labelData.Spacing;
+        this.ReloadTextSize();
     }
     
     protected internal override void Draw() {
-        TextureHelper.Draw(this.ButtonData.Texture, this.Position, this.ButtonData.Color);
+        TextureHelper.Draw(this.Texture, this.Position, this.IsHovered ? this.HoverColor : this.Color);
 
-        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2F - this.LabelData.Size.X / 2F, this.Position.Y + this.Size.Y / 2F - this.LabelData.Size.Y);
-        FontHelper.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, Vector2.Zero, 0, this.LabelData.FontSize, this.LabelData.Spacing, this.LabelData.Color);
+        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2F - this.TextSize.X / 2F, this.Position.Y + this.Size.Y / 2F - this.TextSize.Y);
+        FontHelper.DrawText(this.Font, this.Text, textPos, Vector2.Zero, this.TextRotation, this.FontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
+    }
+    
+    public string Text {
+        get => this._text;
+        set {
+            this._text = value;
+            this.ReloadTextSize();
+        }
+    }
+    
+    public int FontSize {
+        get => this._fontSize;
+        set {
+            this._fontSize = value;
+            this.ReloadTextSize();
+        }
+    }
+    
+    public int Spacing {
+        get => this._spacing;
+        set {
+            this._spacing = value;
+            this.ReloadTextSize();
+        }
+    }
+    
+    private void ReloadTextSize() {
+        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
     }
 }

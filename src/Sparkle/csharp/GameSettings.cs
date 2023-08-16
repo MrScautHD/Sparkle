@@ -4,7 +4,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp;
 
-public class GameSettings {
+public struct GameSettings {
     
     public string Title;
     public Size Size;

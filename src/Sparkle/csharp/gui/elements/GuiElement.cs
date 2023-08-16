@@ -6,7 +6,7 @@ namespace Sparkle.csharp.gui.elements;
 
 public abstract class GuiElement : IDisposable {
 
-    public string Name;
+    public readonly string Name;
     public bool Enabled;
 
     public Vector2 Position;
@@ -19,10 +19,10 @@ public abstract class GuiElement : IDisposable {
 
     public GuiElement(string name, Vector2 position, Vector2 size, Func<bool>? clickClickFunc) {
         this.Name = name;
+        this.Enabled = true;
         this.Position = position;
         this.Size = size;
         this._clickFunc = clickClickFunc!;
-        this.Enabled = true;
     }
     
     protected internal virtual void Init() {

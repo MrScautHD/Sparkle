@@ -47,7 +47,18 @@ public class TestGui : Gui {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
         }));
+
+        ToggleData toggleData = new ToggleData() {
+            ToggledText = "Checked"
+        };
         
-        //this.AddElement(new ToggleElement("toggle", texture, FontHelper.GetDefault(), "Check", "Checked", 18, new Vector2(500, 400), Color.WHITE, Color.BLACK, null));
+        LabelData toggleLabelData = new LabelData() {
+            Font = FontHelper.GetDefault(),
+            FontSize = 25,
+            Spacing = 4,
+            Text = "Check"
+        };
+        
+        this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, new Vector2(300, 300), new Vector2(100, 100)));
     }
 }
