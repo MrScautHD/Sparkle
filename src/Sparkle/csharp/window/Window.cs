@@ -64,10 +64,4 @@ public class Window {
     public Vector2 GetPosition() => Raylib.GetWindowPosition();
     public Vector2 GetScaleDpi() => Raylib.GetWindowScaleDPI();
     public string GetMonitorName(int monitor) => Raylib.GetMonitorName_(monitor);
-    
-    public void SetConfigFlags(ConfigFlags[] states) {
-        foreach (ConfigFlags state in states) {
-            this.SetConfigFlag(state);
-        }
-    }
 }

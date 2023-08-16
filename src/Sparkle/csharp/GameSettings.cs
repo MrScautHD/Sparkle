@@ -13,7 +13,7 @@ public struct GameSettings {
     public string ContentDirectory;
     public int TargetFps;
     public bool Headless;
-    public ConfigFlags[] WindowStates;
+    public ConfigFlags ConfigFlag;
     
     public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
@@ -23,9 +23,6 @@ public struct GameSettings {
         this.ContentDirectory = "content";
         this.TargetFps = 0;
         this.Headless = false;
-        this.WindowStates = new[] {
-            ConfigFlags.FLAG_VSYNC_HINT,
-            ConfigFlags.FLAG_WINDOW_RESIZABLE
-        };
+        this.ConfigFlag = ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE;
     }
 }

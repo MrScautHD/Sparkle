@@ -3,12 +3,14 @@ using Raylib_cs;
 namespace Sparkle.csharp.graphics; 
 
 public class Graphics {
+    
+    // TODO Create for 2D a own Camera Entity! (Method already removed here)
 
     public void ClearBackground(Color color) => Raylib.ClearBackground(color);
     
     public void BeginDrawing() => Raylib.BeginDrawing();
     public void EndDrawing() => Raylib.EndDrawing();
-
+    
     public void BeginTextureMode(RenderTexture2D target) => Raylib.BeginTextureMode(target);
     public void EndTextureMode() => Raylib.EndTextureMode();
     

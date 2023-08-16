@@ -11,6 +11,7 @@ public static class Input {
     public static bool IsKeyReleased(KeyboardKey key) => Raylib.IsKeyReleased(key);
     public static bool IsKeyUp(KeyboardKey key) => Raylib.IsKeyUp(key);
     public static int GetKeyPressed() => Raylib.GetKeyPressed();
+    public static int GetCharPressed() => Raylib.GetCharPressed();
     public static void SetExitKey(KeyboardKey key) => Raylib.SetExitKey(key);
     
     // MOUSE
@@ -18,16 +19,20 @@ public static class Input {
     public static bool IsMouseButtonDown(MouseButton button) => Raylib.IsMouseButtonDown(button);
     public static bool IsMouseButtonReleased(MouseButton button) => Raylib.IsMouseButtonReleased(button);
     public static bool IsMouseButtonUp(MouseButton button) => Raylib.IsMouseButtonUp(button);
+    public static int GetMouseX() => Raylib.GetMouseX();
+    public static int GetMouseY() => Raylib.GetMouseY();
     public static Vector2 GetMousePosition() => Raylib.GetMousePosition();
     public static Vector2 GetMouseDelta() => Raylib.GetMouseDelta();
     public static float GetMouseWheelMove() => Raylib.GetMouseWheelMove();
+    public static Vector2 GetMouseWheelMoveV() => Raylib.GetMouseWheelMoveV();
     public static void SetMouseCursor(MouseCursor cursor) => Raylib.SetMouseCursor(cursor);
-    public static void SetMousePosition(Vector2 pos) => Raylib.SetMousePosition((int) pos.X, (int) pos.Y);
-    public static void SetMouseOffset(Vector2 offset) => Raylib.SetMouseOffset((int) offset.X, (int) offset.Y);
-    public static void SetMouseScale(Vector2 scale) => Raylib.SetMouseScale(scale.X, scale.Y);
+    public static void SetMousePosition(int x, int y) => Raylib.SetMousePosition(x, y);
+    public static void SetMouseOffset(int x, int y) => Raylib.SetMouseOffset(x, y);
+    public static void SetMouseScale(float scaleX, float scaleY) => Raylib.SetMouseScale(scaleX, scaleY);
     
     // GAMEPAD
     public static bool IsGamepadAvailable(int gamepad) => Raylib.IsGamepadAvailable(gamepad);
+    public static string GetGamepadName(int gamepad) => Raylib.GetGamepadName_(gamepad);
     public static bool IsGamepadButtonPressed(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonPressed(gamepad, button);
     public static bool IsGamepadButtonDown(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonDown(gamepad, button);
     public static bool IsGamepadButtonReleased(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonReleased(gamepad, button);
