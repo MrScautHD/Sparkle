@@ -22,7 +22,7 @@ public class ButtonElement : GuiElement {
     private int _spacing;
     
     public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) : base(name, position, size, clickClickFunc) {
-        this.Texture = buttonData.Texture;
+        this.Texture = buttonData.Texture ?? TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
         this.Color = buttonData.Color;
         this.HoverColor = buttonData.HoverColor;
         

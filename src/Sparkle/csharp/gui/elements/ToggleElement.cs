@@ -28,8 +28,8 @@ public class ToggleElement : GuiElement {
     public bool IsToggled { get; private set; }
     
     public ToggleElement(string name, ToggleData toggleData, LabelData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) : base(name, position, size, clickClickFunc) {
-        this.Texture = toggleData.Texture;
-        this.ToggledTexture = toggleData.ToggledTexture;
+        this.Texture = toggleData.Texture ?? TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));;
+        this.ToggledTexture = toggleData.ToggledTexture ?? TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.DARKGRAY));
         this.Color = toggleData.Color;
         this.HoverColor = toggleData.HoverColor;
         this.ToggledColor = toggleData.ToggledColor;
