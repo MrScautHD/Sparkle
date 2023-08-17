@@ -14,23 +14,13 @@ public abstract class Component : IDisposable {
 
     protected internal Entity Entity { get; internal set; }
 
-    protected internal virtual void Init() {
-        
-    }
+    protected internal virtual void Init() { }
 
-    protected internal virtual void Update() {
-        
-    }
+    protected internal virtual void Update() { }
     
-    protected internal virtual void FixedUpdate() {
-        
-    }
+    protected internal virtual void FixedUpdate() { }
     
-    protected internal virtual void Draw() {
-        
-    }
+    protected internal virtual void Draw() { }
     
-    public virtual void Dispose() {
-        
-    }
+    public virtual void Dispose() { }
 }

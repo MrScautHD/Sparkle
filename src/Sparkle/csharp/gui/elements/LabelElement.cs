@@ -29,7 +29,7 @@ public class LabelElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        FontHelper.DrawText(this.Font, this.Text, this.Position, Vector2.Zero, this.Rotation, this.FontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
+        FontHelper.DrawText(this.Font, this.Text, this.CalcPos, Vector2.Zero, this.Rotation, this.FontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
     }
     
     public string Text {

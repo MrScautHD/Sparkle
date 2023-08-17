@@ -24,21 +24,13 @@ public abstract class Overlay : IDisposable {
         Overlays.Add(this);
     }
     
-    protected internal virtual void Init() {
-
-    }
+    protected internal virtual void Init() { }
     
-    protected internal virtual void Update() {
+    protected internal virtual void Update() { }
 
-    }
-
-    protected internal virtual void FixedUpdate() {
-
-    }
+    protected internal virtual void FixedUpdate() { }
 
     protected internal abstract void Draw();
 
-    public virtual void Dispose() {
-        
-    }
+    public virtual void Dispose() { }
 }

@@ -15,6 +15,12 @@ public abstract class GuiElement : IDisposable {
 
     protected bool IsHovered;
     protected bool IsClicked;
+    
+    protected float WidthScale { get; private set; }
+    protected float HeightScale { get; private set; }
+    
+    protected Vector2 CalcPos { get; private set; }
+    protected Vector2 CalcSize { get; private set; }
 
     private Func<bool>? _clickFunc;
 
@@ -26,13 +32,15 @@ public abstract class GuiElement : IDisposable {
         this._clickFunc = clickClickFunc!;
     }
     
-    protected internal virtual void Init() {
-        
-    }
+    protected internal virtual void Init() { }
 
     protected internal virtual void Update() {
-        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.X, this.Size.Y);
+        this.UpdateWindowScale();
         
+        this.CalcPos = new Vector2(this.Position.X * this.WidthScale, this.Position.Y * this.HeightScale);
+        this.CalcSize = new Vector2(this.Size.X * this.WidthScale, this.Size.Y * this.HeightScale);
+        
+        Rectangle rec = new Rectangle(this.CalcPos.X, this.CalcPos.Y, this.CalcSize.X, this.CalcSize.Y);
         if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
@@ -49,13 +57,14 @@ public abstract class GuiElement : IDisposable {
         }
     }
     
-    protected internal virtual void FixedUpdate() {
-        
-    }
+    protected internal virtual void FixedUpdate() { }
 
     protected internal abstract void Draw();
     
-    public virtual void Dispose() {
-        
+    private void UpdateWindowScale() {
+        this.WidthScale = Raylib.GetScreenWidth() / 1280F;
+        this.HeightScale = Raylib.GetScreenHeight() / 720F;
     }
+    
+    public virtual void Dispose() { }
 }

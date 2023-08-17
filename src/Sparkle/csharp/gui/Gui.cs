@@ -8,8 +8,6 @@ namespace Sparkle.csharp.gui;
 
 public abstract class Gui : IDisposable {
     
-    // TODO MAKE A RESIZE SUPPORT
-
     protected Window Window => Game.Instance.Window;
     protected Graphics Graphics => Game.Instance.Graphics;
     protected ContentManager Content => Game.Instance.Content;
@@ -72,7 +70,5 @@ public abstract class Gui : IDisposable {
         return this._elements.Values.ToArray();
     }
 
-    public virtual void Dispose() {
-        
-    }
+    public virtual void Dispose() { }
 }

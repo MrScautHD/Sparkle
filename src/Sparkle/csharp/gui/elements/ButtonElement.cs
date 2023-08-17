@@ -15,6 +15,7 @@ public class ButtonElement : GuiElement {
     public Font Font;
     public float TextRotation;
     public Vector2 TextSize;
+    public Vector2 CalcTextSize;
     public Color TextColor;
     public Color TextHoverColor;
     
@@ -39,22 +40,28 @@ public class ButtonElement : GuiElement {
         this._spacing = labelData.Spacing;
         this.ReloadTextSize();
     }
-    
+
+    protected internal override void Update() {
+        base.Update();
+        this.CalcTextSize = new Vector2(this.TextSize.X * this.WidthScale, this.TextSize.Y * this.HeightScale);
+    }
+
     protected internal override void Draw() {
         if (this.Texture != null) {
             Rectangle source = new Rectangle(0, 0, this.Texture.Value.width, this.Texture.Value.height);
-            Rectangle dest = new Rectangle(this.Position.X + (this.Size.X / 2), this.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+            Rectangle dest = new Rectangle(this.CalcPos.X + (this.CalcSize.X / 2), this.CalcPos.Y + (this.CalcSize.Y / 2), this.CalcSize.X, this.CalcSize.Y);
             Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
             TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
         }
         else {
-            Rectangle rec = new Rectangle(this.Position.X + (this.Size.X / 2), this.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+            Rectangle rec = new Rectangle(this.CalcPos.X + (this.CalcSize.X / 2), this.CalcPos.Y + (this.CalcSize.Y / 2), this.CalcSize.X, this.CalcSize.Y);
             Vector2 origin = new Vector2(rec.width / 2, rec.height / 2);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
         }
         
-        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2 - this.TextSize.X / 2F, this.Position.Y + this.Size.Y / 2 - this.TextSize.Y / 2F);
-        FontHelper.DrawText(this.Font, this.Text, textPos, Vector2.Zero, this.TextRotation, this.FontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
+        Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
+        Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
+        FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.FontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
     }
     
     public string Text {

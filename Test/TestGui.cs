@@ -11,9 +11,7 @@ namespace Test;
 
 public class TestGui : Gui {
     
-    public TestGui(string name) : base(name) {
-        
-    }
+    public TestGui(string name) : base(name) { }
 
     protected override void Init() {
         base.Init();
@@ -28,11 +26,10 @@ public class TestGui : Gui {
             Rotation = 0
         };
         
-        this.AddElement(new LabelElement("label", labelData, new Vector2(200, 200)));
+        this.AddElement(new LabelElement("label", labelData, new Vector2(0, 0)));
 
         ButtonData buttonData = new ButtonData() {
-            Texture = this.Content.Load<Texture2D>("icon.png"),
-            Rotation = 60,
+            Texture = this.Content.Load<Texture2D>("icon.png")
         };
         
         LabelData buttonLabelData = new LabelData() {
@@ -40,7 +37,8 @@ public class TestGui : Gui {
             FontSize = 25,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            Color = Color.RED
+            Color = Color.RED,
+            Rotation = 60
         };
         
         this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 400), new Vector2(300, 300), () => {

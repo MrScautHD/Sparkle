@@ -24,9 +24,7 @@ public abstract class Scene : IDisposable {
         this._entities = new Dictionary<int, Entity>();
     }
     
-    protected internal virtual void Init() {
-        
-    }
+    protected internal virtual void Init() { }
     
     protected internal virtual void Update() {
         foreach (Entity entity in this._entities.Values) {
