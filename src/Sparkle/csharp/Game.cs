@@ -23,11 +23,13 @@ public class Game : IDisposable {
     
     public bool ShouldClose;
     
+    public Image Logo { get; private set; }
+
     public Window Window { get; private set; }
     public Graphics Graphics { get; private set; }
     public ContentManager Content { get; private set; }
     public AudioDevice AudioDevice { get; private set; }
-
+    
     public bool Headless { get; private set; }
 
     public Game(GameSettings settings) {
@@ -68,7 +70,9 @@ public class Game : IDisposable {
             this.Window = new Window(this._settings.Size, this._settings.Title);
             this.Window.SetConfigFlag(this._settings.ConfigFlag);
             this.Window.Init();
-            this.Window.SetIcon(this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath));
+            
+            this.Logo = this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath);
+            this.Window.SetIcon(this.Logo);
         }
 
         Logger.Debug("Initialize default scene...");
@@ -162,6 +166,10 @@ public class Game : IDisposable {
 
     public virtual void Dispose() {
         if (!this.Headless) {
+            if (this._settings.IconPath == string.Empty) {
+                ImageHelper.Unload(this.Logo);
+            }
+            
             this.Content.Dispose();
             this.Window.Close();
             this.AudioDevice.Close();

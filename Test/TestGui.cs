@@ -29,21 +29,21 @@ public class TestGui : Gui {
         };
         
         this.AddElement(new LabelElement("label", labelData, new Vector2(200, 200)));
-        
+
         ButtonData buttonData = new ButtonData() {
             Texture = this.Content.Load<Texture2D>("icon.png"),
-            Color = Color.WHITE,
-            HoverColor = Color.GRAY,
+            Rotation = 60,
         };
         
         LabelData buttonLabelData = new LabelData() {
             Font = FontHelper.GetDefault(),
             FontSize = 25,
             Spacing = 4,
-            Text = "Sparkle Engine!"
+            Text = "Sparkle Engine!",
+            Color = Color.RED
         };
         
-        this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 500), new Vector2(100, 100), () => {
+        this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 400), new Vector2(300, 300), () => {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
         }));

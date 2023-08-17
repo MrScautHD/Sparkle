@@ -7,7 +7,8 @@ namespace Sparkle.csharp.gui.elements;
 
 public class ButtonElement : GuiElement {
     
-    public Texture2D Texture;
+    public Texture2D? Texture;
+    public float Rotation;
     public Color Color;
     public Color HoverColor;
     
@@ -21,8 +22,10 @@ public class ButtonElement : GuiElement {
     private int _fontSize;
     private int _spacing;
     
-    public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) : base(name, position, size, clickClickFunc) {
-        this.Texture = buttonData.Texture ?? TextureHelper.LoadFromImage(ImageHelper.GenColor(10, 10, Color.WHITE));
+    public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, position, Vector2.Zero, clickClickFunc) {
+        this.Texture = buttonData.Texture;
+        this.Size = size ?? (this.Texture != null ? new Vector2(this.Texture.Value.width, this.Texture.Value.height) : Vector2.Zero);
+        this.Rotation = buttonData.Rotation;
         this.Color = buttonData.Color;
         this.HoverColor = buttonData.HoverColor;
         
@@ -38,9 +41,19 @@ public class ButtonElement : GuiElement {
     }
     
     protected internal override void Draw() {
-        TextureHelper.Draw(this.Texture, this.Position, this.IsHovered ? this.HoverColor : this.Color);
-
-        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2F - this.TextSize.X / 2F, this.Position.Y + this.Size.Y / 2F - this.TextSize.Y);
+        if (this.Texture != null) {
+            Rectangle source = new Rectangle(0, 0, this.Texture.Value.width, this.Texture.Value.height);
+            Rectangle dest = new Rectangle(this.Position.X + (this.Size.X / 2), this.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+            Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
+            TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+        }
+        else {
+            Rectangle rec = new Rectangle(this.Position.X + (this.Size.X / 2), this.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+            Vector2 origin = new Vector2(rec.width / 2, rec.height / 2);
+            ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+        }
+        
+        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2 - this.TextSize.X / 2F, this.Position.Y + this.Size.Y / 2 - this.TextSize.Y / 2F);
         FontHelper.DrawText(this.Font, this.Text, textPos, Vector2.Zero, this.TextRotation, this.FontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
     }
     

@@ -5,11 +5,13 @@ namespace Sparkle.csharp.gui.elements.data;
 public struct ButtonData {
     
     public Texture2D? Texture;
+    public float Rotation;
     public Color Color;
     public Color HoverColor;
 
     public ButtonData() {
+        this.Rotation = 0;
         this.Color = Color.WHITE;
-        this.HoverColor = Color.LIGHTGRAY;
+        this.HoverColor = Color.GRAY;
     }
 }
