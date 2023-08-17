@@ -19,9 +19,11 @@ public class ButtonElement : GuiElement {
     public Color TextColor;
     public Color TextHoverColor;
     
-    private string _text;
-    private int _fontSize;
-    private int _spacing;
+    public string Text;
+    public float FontSize;
+    public int Spacing;
+    
+    protected float CalcFontSize { get; private set; }
     
     public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, position, Vector2.Zero, clickClickFunc) {
         this.Texture = buttonData.Texture;
@@ -35,15 +37,18 @@ public class ButtonElement : GuiElement {
         this.TextColor = labelData.Color;
         this.TextHoverColor = labelData.HoverColor;
         
-        this._text = labelData.Text;
-        this._fontSize = labelData.FontSize;
-        this._spacing = labelData.Spacing;
-        this.ReloadTextSize();
+        this.Text = labelData.Text;
+        this.FontSize = labelData.FontSize;
+        this.Spacing = labelData.Spacing;
     }
 
     protected internal override void Update() {
         base.Update();
-        this.CalcTextSize = new Vector2(this.TextSize.X * this.WidthScale, this.TextSize.Y * this.HeightScale);
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        
+        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        this.CalcTextSize = new Vector2(this.TextSize.X * scaleFactor, this.TextSize.Y * scaleFactor);
     }
 
     protected internal override void Draw() {
@@ -58,37 +63,11 @@ public class ButtonElement : GuiElement {
             Vector2 origin = new Vector2(rec.width / 2, rec.height / 2);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
         }
-        
-        Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
-        Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
-        FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.FontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
-    }
-    
-    public string Text {
-        get => this._text;
-        set {
-            this._text = value;
-            this.ReloadTextSize();
+
+        if (this.Text != string.Empty) {
+            Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
+            Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
+            FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
         }
-    }
-    
-    public int FontSize {
-        get => this._fontSize;
-        set {
-            this._fontSize = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    public int Spacing {
-        get => this._spacing;
-        set {
-            this._spacing = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    private void ReloadTextSize() {
-        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
     }
 }

@@ -22,10 +22,12 @@ public class ToggleElement : GuiElement {
     public Color TextHoverColor;
     public Color ToggledTextColor;
     
-    private string _text;
-    private string _toggledText;
-    private int _fontSize;
-    private int _spacing;
+    public string Text;
+    public string ToggledText;
+    public float FontSize;
+    public int Spacing;
+    
+    protected float CalcFontSize { get; private set; }
     
     public bool IsToggled { get; private set; }
     
@@ -44,21 +46,24 @@ public class ToggleElement : GuiElement {
         this.TextHoverColor = labelData.HoverColor;
         this.ToggledTextColor = toggleData.ToggledTextColor;
         
-        this._text = labelData.Text;
-        this._toggledText = toggleData.ToggledText;
-        this._fontSize = labelData.FontSize;
-        this._spacing = labelData.Spacing;
-        this.ReloadTextSize();
+        this.Text = labelData.Text;
+        this.ToggledText = toggleData.ToggledText;
+        this.FontSize = labelData.FontSize;
+        this.Spacing = labelData.Spacing;
     }
 
     protected internal override void Update() {
         base.Update();
-        this.CalcTextSize = new Vector2(this.TextSize.X * this.WidthScale, this.TextSize.Y * this.HeightScale);
         
         if (this.IsClicked) {
             this.IsToggled = !this.IsToggled;
-            this.ReloadTextSize();
         }
+        
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        
+        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.TextSize = FontHelper.MeasureText(this.Font, this.IsToggled ? this.ToggledText : this.Text, this.CalcFontSize, this.Spacing);
+        this.CalcTextSize = new Vector2(this.TextSize.X * scaleFactor, this.TextSize.Y * scaleFactor);
     }
     
     protected internal override void Draw() {
@@ -77,46 +82,13 @@ public class ToggleElement : GuiElement {
             Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, color);
         }
-        
-        Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
-        Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
-        Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
-        FontHelper.DrawText(this.Font, this.IsToggled ? this.ToggledText : this.Text, textPos, textOrigin, this.TextRotation, this.FontSize, this.Spacing, textColor);
-    }
-    
-    public string Text {
-        get => this._text;
-        set {
-            this._text = value;
-            this.ReloadTextSize();
+
+        string text = this.IsToggled ? this.ToggledText : this.Text;
+        if (text != string.Empty) {
+            Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
+            Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
+            Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
+            FontHelper.DrawText(this.Font, text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);
         }
-    }
-    
-    public string ToggledText {
-        get => this._toggledText;
-        set {
-            this._toggledText = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    public int FontSize {
-        get => this._fontSize;
-        set {
-            this._fontSize = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    public int Spacing {
-        get => this._spacing;
-        set {
-            this._spacing = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    private void ReloadTextSize() {
-        this.TextSize = FontHelper.MeasureText(this.Font, this.IsToggled ? this.ToggledText : this.Text, this.FontSize, this.Spacing);
     }
 }

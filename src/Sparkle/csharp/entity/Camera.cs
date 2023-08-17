@@ -33,7 +33,7 @@ public class Camera : Entity {
         this.ProjectionType = CameraProjection.CAMERA_PERSPECTIVE;
         this.Fov = fov;
         this.Up = Vector3.UnitY;
-        this.AspectRatio = (float) this.Window.GetScreenSize().Width / (float) this.Window.GetScreenSize().Height;
+        this.AspectRatio = (float) this.Window.GetScreenWidth() / (float) this.Window.GetScreenHeight();
         this.NearPlane = 0.01F;
         this.FarPlane = 1000;
         this.Target = position + Vector3.UnitZ;
@@ -182,7 +182,7 @@ public class Camera : Entity {
         Rlgl.rlPushMatrix();
         Rlgl.rlLoadIdentity();
         
-        this.AspectRatio = (float) this.Window.GetScreenSize().Width / (float) this.Window.GetScreenSize().Height;
+        this.AspectRatio = (float) this.Window.GetScreenWidth() / (float) this.Window.GetScreenHeight();
 
         this.Projection = this.GenProjection();
         Rlgl.rlSetMatrixProjection(this.Projection);

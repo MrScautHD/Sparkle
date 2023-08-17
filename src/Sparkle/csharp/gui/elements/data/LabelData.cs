@@ -8,7 +8,7 @@ public struct LabelData {
     
     public Font Font;
     public string Text;
-    public int FontSize;
+    public float FontSize;
     public int Spacing;
     public float Rotation;
     public Vector2 Size;

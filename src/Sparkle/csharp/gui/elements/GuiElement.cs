@@ -38,7 +38,9 @@ public abstract class GuiElement : IDisposable {
         this.UpdateWindowScale();
         
         this.CalcPos = new Vector2(this.Position.X * this.WidthScale, this.Position.Y * this.HeightScale);
-        this.CalcSize = new Vector2(this.Size.X * this.WidthScale, this.Size.Y * this.HeightScale);
+        
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        this.CalcSize = new Vector2(this.Size.X * scaleFactor, this.Size.Y * scaleFactor);
         
         Rectangle rec = new Rectangle(this.CalcPos.X, this.CalcPos.Y, this.CalcSize.X, this.CalcSize.Y);
         if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
@@ -62,7 +64,7 @@ public abstract class GuiElement : IDisposable {
     protected internal abstract void Draw();
     
     private void UpdateWindowScale() {
-        this.WidthScale = Raylib.GetScreenWidth() / 1280F;
+        this.WidthScale = Game.Instance.Window.GetScreenWidth() / 1280F;
         this.HeightScale = Raylib.GetScreenHeight() / 720F;
     }
     

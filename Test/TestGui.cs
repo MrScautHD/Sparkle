@@ -37,8 +37,7 @@ public class TestGui : Gui {
             FontSize = 25,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            Color = Color.RED,
-            Rotation = 60
+            Color = Color.RED
         };
         
         this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 400), new Vector2(300, 300), () => {
@@ -54,7 +53,8 @@ public class TestGui : Gui {
             Font = FontHelper.GetDefault(),
             FontSize = 25,
             Spacing = 4,
-            Text = "Check"
+            Text = "Check",
+            Color = Color.RED
         };
         
         this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, new Vector2(300, 300), new Vector2(100, 100)));

@@ -53,13 +53,17 @@ public class Window {
     public void EnableEventWaiting() => Raylib.EnableEventWaiting();
     public void DisableEventWaiting() => Raylib.DisableEventWaiting();
     
-    public Size GetScreenSize() => new Size(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
-    public Size GetRenderSize() => new Size(Raylib.GetRenderHeight(), Raylib.GetRenderWidth());
+    public int GetScreenWidth() => Raylib.GetScreenWidth();
+    public int GetScreenHeight() => Raylib.GetScreenHeight();
+    public int GetRenderWidth() => Raylib.GetRenderWidth();
+    public int GetRenderHeight() => Raylib.GetRenderHeight();
     public int GetMonitorCount() => Raylib.GetMonitorCount();
     public int GetCurrentMonitor() => Raylib.GetCurrentMonitor();
     public Vector2 GetMonitorPosition(int monitor) => Raylib.GetMonitorPosition(monitor);
-    public Size GetMonitorSize(int monitor) => new Size(Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
-    public Size GetMonitorPhysicalSize(int monitor) => new Size(Raylib.GetMonitorPhysicalWidth(monitor), Raylib.GetMonitorPhysicalHeight(monitor));
+    public int GetMonitorWidth(int monitor) => Raylib.GetMonitorWidth(monitor);
+    public int GetMonitorHeight(int monitor) => Raylib.GetMonitorHeight(monitor);
+    public int GetMonitorPhysicalWidth(int monitor) => Raylib.GetMonitorPhysicalWidth(monitor);
+    public int GetMonitorPhysicalHeight(int monitor) => Raylib.GetMonitorPhysicalHeight(monitor);
     public int GetMonitorRefreshRate(int monitor) => Raylib.GetMonitorRefreshRate(monitor);
     public Vector2 GetPosition() => Raylib.GetWindowPosition();
     public Vector2 GetScaleDpi() => Raylib.GetWindowScaleDPI();

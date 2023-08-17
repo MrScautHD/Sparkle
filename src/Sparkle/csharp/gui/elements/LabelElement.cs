@@ -12,51 +12,36 @@ public class LabelElement : GuiElement {
     public Color Color;
     public Color HoverColor;
     
-    private string _text;
-    private int _fontSize;
-    private int _spacing;
+    public string Text;
+    public float FontSize;
+    public int Spacing;
     
+    protected float CalcFontSize { get; private set; }
+
     public LabelElement(string name, LabelData data, Vector2 position, Func<bool>? clickClickFunc = null) : base(name, position, data.Size, clickClickFunc) {
         this.Font = data.Font;
         this.Rotation = data.Rotation;
         this.Color = data.Color;
         this.HoverColor = data.HoverColor;
         
-        this._text = data.Text;
-        this._fontSize = data.FontSize;
-        this._spacing = data.Spacing;
-        this.ReloadTextSize();
+        this.Text = data.Text;
+        this.FontSize = data.FontSize;
+        this.Spacing = data.Spacing;
+    }
+
+    protected internal override void Update() {
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        
+        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.Size = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        base.Update();
     }
 
     protected internal override void Draw() {
-        FontHelper.DrawText(this.Font, this.Text, this.CalcPos, Vector2.Zero, this.Rotation, this.FontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
-    }
-    
-    public string Text {
-        get => this._text;
-        set {
-            this._text = value;
-            this.ReloadTextSize();
+        if (this.Text != string.Empty) {
+            Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
+            Vector2 textOrigin = new Vector2(this.CalcSize.X / 2, this.CalcSize.Y / 2);
+            FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
         }
-    }
-    
-    public int FontSize {
-        get => this._fontSize;
-        set {
-            this._fontSize = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    public int Spacing {
-        get => this._spacing;
-        set {
-            this._spacing = value;
-            this.ReloadTextSize();
-        }
-    }
-    
-    private void ReloadTextSize() {
-        this.Size = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
     }
 }
