@@ -7,29 +7,29 @@ namespace Sparkle.csharp.gui.elements;
 public class ButtonElement : GuiElement {
     
     public ButtonData ButtonData { get; private set; }
-    public LabelData LabelData { get; private set; }
+    public TextData textData { get; private set; }
     
-    public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) : base(name, position, size, clickClickFunc) {
+    public ButtonElement(string name, ButtonData buttonData, TextData labelData, Vector2 position, Vector2 size, Func<bool>? clickClickFunc = null) 
+        : base(name, 
+            new GUIElementData() 
+            { 
+                Size = size, 
+                Position = position
+            }, clickClickFunc) 
+    {
         this.ButtonData = buttonData;
-        this.LabelData = labelData;
+        this.textData = labelData;
     }
 
     protected internal override void Update() {
         base.Update();
         
-        this.ButtonData.Color = this.ButtonData.DefaultColor;
-        this.LabelData.Color = this.LabelData.DefaultColor;
-        
-        if (this.IsHovered && this.Enabled) {
-            this.ButtonData.Color = this.ButtonData.HoverColor;
-            this.LabelData.Color = this.LabelData.HoverColor;
-        }
     }
     
     protected internal override void Draw() {
-        TextureHelper.Draw(this.ButtonData.Texture, this.Position, this.ButtonData.Color);
+        TextureHelper.Draw(this.ButtonData.Texture, this.elementData.Position, this.IsHovered ? this.elementData.HoverColor :this.elementData.Color);
 
-        Vector2 textPos = new Vector2(this.Position.X + this.Size.X / 2F - this.LabelData.Size.X / 2F, this.Position.Y + this.Size.Y / 2F - this.LabelData.Size.Y);
-        FontHelper.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, Vector2.Zero, 0, this.LabelData.FontSize, this.LabelData.Spacing, this.LabelData.Color);
+        Vector2 textPos = new Vector2(this.elementData.Position.X + this.elementData.Size.X / 2F - this.textData.Size.X / 2F, this.elementData.Position.Y + this.elementData.Size.Y / 2F - this.textData.Size.Y);
+        FontHelper.DrawText(this.textData.Font, this.textData.Text, textPos, Vector2.Zero, 0, this.textData.FontSize, this.textData.Spacing, this.IsHovered ? this.elementData.HoverColor : this.elementData.Color);
     }
 }

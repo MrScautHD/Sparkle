@@ -17,4 +17,9 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Raylib-cs" Version="4.5.0.3" />
+    </ItemGroup>
+
 </Project>

@@ -1,28 +1,24 @@
 using System.Numerics;
 using Raylib_cs;
 using Rectangle = Raylib_cs.Rectangle;
+using Sparkle.csharp.gui.elements.data;
 
 namespace Sparkle.csharp.gui.elements; 
 
 public abstract class GuiElement : IDisposable {
 
+    public GUIElementData elementData;
     public string Name;
-    public bool Enabled;
-
-    public Vector2 Position;
-    public Vector2 Size;
 
     protected bool IsHovered;
     protected bool IsClicked;
 
     private Func<bool>? _clickFunc;
 
-    public GuiElement(string name, Vector2 position, Vector2 size, Func<bool>? clickClickFunc) {
+    public GuiElement(string name, GUIElementData data, Func<bool>? clickClickFunc) {
         this.Name = name;
-        this.Position = position;
-        this.Size = size;
+        this.elementData = data;
         this._clickFunc = clickClickFunc!;
-        this.Enabled = true;
     }
     
     protected internal virtual void Init() {
@@ -30,12 +26,12 @@ public abstract class GuiElement : IDisposable {
     }
 
     protected internal virtual void Update() {
-        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.Size.X, this.Size.Y);
+        Rectangle rec = new Rectangle(this.elementData.Position.X, this.elementData.Position.Y, this.elementData.Size.X, this.elementData.Size.Y);
         
         if (Raylib.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
-            if (Input.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT) && this.Enabled) {
+            if (Input.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT) && this.elementData.Enabled) {
                 this.IsClicked = this._clickFunc == null || this._clickFunc.Invoke();
             }
             else {

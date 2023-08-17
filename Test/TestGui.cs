@@ -18,32 +18,21 @@ public class TestGui : Gui {
     protected override void Init() {
         base.Init();
 
-        LabelData labelData = new LabelData() {
+        TextData textData = new TextData() {
             Font = FontHelper.GetDefault(),
             FontSize = 50,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            DefaultColor = Color.WHITE,
-            Color = Color.WHITE,
-            HoverColor = Color.GRAY,
-            Rotation = 0
         };
         
-        this.AddElement(new LabelElement("label", labelData, new Vector2(200, 200)));
+        this.AddElement(new LabelElement("label", textData, new Vector2(200, 200)));
         
         ButtonData buttonData = new ButtonData() {
             Texture = this.Content.Load<Texture2D>("icon.png"),
-            DefaultColor = Color.WHITE,
-            Color = Color.WHITE,
-            HoverColor = Color.GRAY,
         };
         
-        LabelData buttonLabelData = new LabelData() {
-            Font = FontHelper.GetDefault(),
-            FontSize = 25,
-            Spacing = 4,
-            Text = "Sparkle Engine!"
-        };
+        TextData buttonLabelData = textData.Clone();
+        buttonLabelData.FontSize = 25;
         
         this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, new Vector2(500, 500), new Vector2(100, 100), () => {
             Logger.Error("BUTTON GET PRESSED!");
