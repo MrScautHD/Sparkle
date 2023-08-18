@@ -15,12 +15,11 @@ public class Game : IDisposable {
     
     public static Game Instance { get; private set; }
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
-
-    private readonly GameSettings _settings;
     
     private readonly double _delay = 1.0 / 60.0;
     private double _timer;
     
+    public readonly GameSettings Settings;
     public bool ShouldClose;
     
     public Image Logo { get; private set; }
@@ -34,13 +33,13 @@ public class Game : IDisposable {
 
     public Game(GameSettings settings) {
         Instance = this;
-        this._settings = settings;
+        this.Settings = settings;
         this.Headless = settings.Headless;
     }
 
     public void Run(Scene? scene) {
-        if (this._settings.LogDirectory != string.Empty) {
-            Logger.CreateLogFile(this._settings.LogDirectory);
+        if (this.Settings.LogDirectory != string.Empty) {
+            Logger.CreateLogFile(this.Settings.LogDirectory);
         }
 
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
@@ -52,12 +51,12 @@ public class Game : IDisposable {
         Logger.Debug("Initialize RayLib logger...");
         Logger.SetupRayLibLogger();
         
-        Logger.Debug($"Setting target fps to: {this._settings.TargetFps}");
-        this.SetTargetFps(this._settings.TargetFps);
+        Logger.Debug($"Setting target fps to: {this.Settings.TargetFps}");
+        this.SetTargetFps(this.Settings.TargetFps);
 
         if (!this.Headless) {
             Logger.Debug("Initialize content manager...");
-            this.Content = new ContentManager(this._settings.ContentDirectory);
+            this.Content = new ContentManager(this.Settings.ContentDirectory);
             
             Logger.Debug("Initialize graphics...");
             this.Graphics = new Graphics();
@@ -67,11 +66,11 @@ public class Game : IDisposable {
             this.AudioDevice.Init();
 
             Logger.Debug("Initialize window...");
-            this.Window = new Window(this._settings.Size, this._settings.Title);
-            this.Window.SetConfigFlag(this._settings.ConfigFlag);
+            this.Window = new Window(this.Settings.Size, this.Settings.Title);
+            this.Window.SetConfigFlag(this.Settings.ConfigFlag);
             this.Window.Init();
             
-            this.Logo = this._settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this._settings.IconPath);
+            this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
             this.Window.SetIcon(this.Logo);
         }
 
@@ -166,7 +165,7 @@ public class Game : IDisposable {
 
     public virtual void Dispose() {
         if (!this.Headless) {
-            if (this._settings.IconPath == string.Empty) {
+            if (this.Settings.IconPath == string.Empty) {
                 ImageHelper.Unload(this.Logo);
             }
             

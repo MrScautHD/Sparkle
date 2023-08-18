@@ -59,7 +59,7 @@ public class ToggleElement : GuiElement {
             this.IsToggled = !this.IsToggled;
         }
         
-        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale) * GuiManager.Scale;
         
         this.CalcFontSize = this.FontSize * scaleFactor;
         this.TextSize = FontHelper.MeasureText(this.Font, this.IsToggled ? this.ToggledText : this.Text, this.CalcFontSize, this.Spacing);
@@ -71,13 +71,13 @@ public class ToggleElement : GuiElement {
         
         if (texture != null) {
             Rectangle source = new Rectangle(0, 0, texture.Value.width, texture.Value.height);
-            Rectangle dest = new Rectangle(this.CalcPos.X + (this.CalcSize.X / 2), this.CalcPos.Y + (this.CalcSize.Y / 2), this.CalcSize.X, this.CalcSize.Y);
+            Rectangle dest = new Rectangle(this.CalcPos.X + (this.Size.X / 2), this.CalcPos.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
             Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
             Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
             TextureHelper.DrawPro(texture.Value, source, dest, origin, this.Rotation, color);
         }
         else {
-            Rectangle rec = new Rectangle(this.CalcPos.X + (this.CalcSize.X / 2), this.CalcPos.Y + (this.CalcSize.Y / 2), this.CalcSize.X, this.CalcSize.Y);
+            Rectangle rec = new Rectangle(this.CalcPos.X + (this.Size.X / 2), this.CalcPos.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
             Vector2 origin = new Vector2(rec.width / 2, rec.height / 2);
             Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, color);
@@ -85,7 +85,7 @@ public class ToggleElement : GuiElement {
 
         string text = this.IsToggled ? this.ToggledText : this.Text;
         if (text != string.Empty) {
-            Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
+            Vector2 textPos = new Vector2(this.CalcPos.X + this.Size.X / 2, this.CalcPos.Y + this.Size.Y / 2);
             Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
             Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
             FontHelper.DrawText(this.Font, text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);

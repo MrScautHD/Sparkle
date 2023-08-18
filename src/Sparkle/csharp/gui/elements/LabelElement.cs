@@ -30,7 +30,7 @@ public class LabelElement : GuiElement {
     }
 
     protected internal override void Update() {
-        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale);
+        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale) * GuiManager.Scale;
         
         this.CalcFontSize = this.FontSize * scaleFactor;
         this.Size = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
@@ -39,8 +39,8 @@ public class LabelElement : GuiElement {
 
     protected internal override void Draw() {
         if (this.Text != string.Empty) {
-            Vector2 textPos = new Vector2(this.CalcPos.X + this.CalcSize.X / 2, this.CalcPos.Y + this.CalcSize.Y / 2);
-            Vector2 textOrigin = new Vector2(this.CalcSize.X / 2, this.CalcSize.Y / 2);
+            Vector2 textPos = new Vector2(this.CalcPos.X + this.Size.X / 2, this.CalcPos.Y + this.Size.Y / 2);
+            Vector2 textOrigin = new Vector2(this.Size.X / 2, this.Size.Y / 2);
             FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
         }
     }

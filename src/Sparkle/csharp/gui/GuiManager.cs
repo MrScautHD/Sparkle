@@ -3,7 +3,8 @@ namespace Sparkle.csharp.gui;
 public static class GuiManager {
     
     public static Gui? ActiveGui { get; private set; }
-
+    public static float Scale { get; private set; } = 1F;
+    
     internal static void Update() {
         ActiveGui?.Update();
     }
@@ -23,5 +24,9 @@ public static class GuiManager {
         if (ActiveGui != null && !ActiveGui.HasInitialized) {
             ActiveGui.Init();
         }
+    }
+
+    public static void SetScale(float scale) {
+        Scale = Math.Clamp(scale, 0.5F, 1);
     }
 }

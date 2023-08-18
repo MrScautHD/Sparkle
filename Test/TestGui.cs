@@ -15,7 +15,7 @@ public class TestGui : Gui {
 
     protected override void Init() {
         base.Init();
-
+/*
         LabelData labelData = new LabelData() {
             Font = FontHelper.GetDefault(),
             FontSize = 50,
@@ -44,7 +44,7 @@ public class TestGui : Gui {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
         }));
-
+*/
         ToggleData toggleData = new ToggleData() {
             ToggledText = "Checked"
         };
@@ -56,7 +56,15 @@ public class TestGui : Gui {
             Text = "Check",
             Color = Color.RED
         };
-        
-        this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, new Vector2(300, 300), new Vector2(100, 100)));
+
+        Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100F) / 2F, (this.Window.GetRenderHeight() - 100F) / 2F);
+        this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, pos, new Vector2(100, 100)));
+    }
+
+    protected override void Update() {
+        base.Update();
+        //Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100) / 2F, this.Window.GetRenderHeight() - 100);
+
+        //this.GetElement("toggle").Position = pos;
     }
 }
