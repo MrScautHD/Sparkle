@@ -57,7 +57,7 @@ public class TestGui : Gui {
             Color = Color.RED
         };
 
-        Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100F) / 2F, (this.Window.GetRenderHeight() - 100F) / 2F);
+        Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100F) / 2F, this.Window.GetRenderHeight() - 100);
         this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, pos, new Vector2(100, 100)));
     }
 
