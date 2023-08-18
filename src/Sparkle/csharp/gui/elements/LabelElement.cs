@@ -30,9 +30,7 @@ public class LabelElement : GuiElement {
     }
 
     protected internal override void Update() {
-        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale) * GuiManager.Scale;
-        
-        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.CalcFontSize = this.FontSize * GuiManager.Scale;
         this.Size = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
         base.Update();
     }

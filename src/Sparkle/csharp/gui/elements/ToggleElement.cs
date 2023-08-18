@@ -17,7 +17,6 @@ public class ToggleElement : GuiElement {
     public Font Font;
     public float TextRotation;
     public Vector2 TextSize;
-    public Vector2 CalcTextSize;
     public Color TextColor;
     public Color TextHoverColor;
     public Color ToggledTextColor;
@@ -54,16 +53,14 @@ public class ToggleElement : GuiElement {
 
     protected internal override void Update() {
         base.Update();
+        GuiManager.SetScale(0.9F);
         
         if (this.IsClicked) {
             this.IsToggled = !this.IsToggled;
         }
         
-        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale) * GuiManager.Scale;
-        
-        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.CalcFontSize = this.FontSize * GuiManager.Scale;
         this.TextSize = FontHelper.MeasureText(this.Font, this.IsToggled ? this.ToggledText : this.Text, this.CalcFontSize, this.Spacing);
-        this.CalcTextSize = new Vector2(this.TextSize.X * scaleFactor, this.TextSize.Y * scaleFactor);
     }
     
     protected internal override void Draw() {

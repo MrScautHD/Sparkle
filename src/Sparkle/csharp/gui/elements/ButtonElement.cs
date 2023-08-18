@@ -15,7 +15,6 @@ public class ButtonElement : GuiElement {
     public Font Font;
     public float TextRotation;
     public Vector2 TextSize;
-    public Vector2 CalcTextSize;
     public Color TextColor;
     public Color TextHoverColor;
     
@@ -44,11 +43,9 @@ public class ButtonElement : GuiElement {
 
     protected internal override void Update() {
         base.Update();
-        float scaleFactor = Math.Min(this.WidthScale, this.HeightScale) * GuiManager.Scale;
         
-        this.CalcFontSize = this.FontSize * scaleFactor;
+        this.CalcFontSize = this.FontSize * GuiManager.Scale;
         this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
-        this.CalcTextSize = new Vector2(this.TextSize.X * scaleFactor, this.TextSize.Y * scaleFactor);
     }
 
     protected internal override void Draw() {

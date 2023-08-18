@@ -17,7 +17,7 @@ public struct GameSettings {
     
     public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
-        this.Size = new Size(1280, 720);
+        this.Size = new Size(1920, 1080);
         this.IconPath = string.Empty;
         this.LogDirectory = "logs";
         this.ContentDirectory = "content";

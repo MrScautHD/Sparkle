@@ -36,13 +36,13 @@ public abstract class GuiElement : IDisposable {
 
     protected internal virtual void Update() {
         this.UpdateWindowScale();
-        // TODO FIX TEXT SIZE....
+        
         this.CalcSize = new Vector2(this.Size.X * GuiManager.Scale, this.Size.Y * GuiManager.Scale);
         
-        float differenceX = Math.Abs(this.Size.X - this.CalcSize.X) / 2;
+        float differenceX = Math.Abs(this.Size.X - this.CalcSize.X);
         float differenceY = Math.Abs(this.Size.Y - this.CalcSize.Y);
         
-        this.CalcPos = new Vector2((this.Position.X + differenceX + this.CalcSize.Y / 2) * this.WidthScale - this.CalcSize.X / 2, (this.Position.Y + differenceY + this.CalcSize.Y) * this.HeightScale - this.CalcSize.Y);
+        this.CalcPos = new Vector2((this.Position.X + differenceX + this.CalcSize.X) * this.WidthScale - this.CalcSize.X, (this.Position.Y + differenceY + this.CalcSize.Y) * this.HeightScale - this.CalcSize.Y);
         
         Rectangle rec = new Rectangle(this.CalcPos.X, this.CalcPos.Y, this.CalcSize.X, this.CalcSize.Y);
         if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
