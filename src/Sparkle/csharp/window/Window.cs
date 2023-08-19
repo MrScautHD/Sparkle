@@ -32,6 +32,7 @@ public class Window {
     /// <summary> See <see cref="Raylib.TakeScreenshot(string)"/> </summary>
     public void TakeScreenshot(string path) => Raylib.TakeScreenshot(path);
     
+    
     /// <summary> See <see cref="Raylib.IsWindowReady"/> </summary>
     public bool IsReady() => Raylib.IsWindowReady();
     
