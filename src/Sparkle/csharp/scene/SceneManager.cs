@@ -8,9 +8,9 @@ public static class SceneManager {
     public static Camera? MainCamera { get; private set; }
     
     /// <summary>
-    /// Set default <see cref="Scene"/>.
+    /// Sets the default scene without disposing of the previous scene or initializing the new scene.
     /// </summary>
-    /// <param name="scene"></param>
+    /// <param name="scene">The scene to be set as the default scene.</param>
     internal static void SetDefaultScene(Scene? scene) {
         ActiveScene = scene;
     }
@@ -46,9 +46,9 @@ public static class SceneManager {
     }
     
     /// <summary>
-    /// Sets <see cref="ActiveScene"/>.
+    /// Sets the active scene, disposes of the previous scene, and initializes the new scene.
     /// </summary>
-    /// <param name="scene"></param>
+    /// <param name="scene">The scene to be set as the active scene.</param>
     public static void SetScene(Scene? scene) {
         ActiveScene?.Dispose();
         ActiveScene = scene;
