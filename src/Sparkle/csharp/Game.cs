@@ -37,6 +37,10 @@ public class Game : IDisposable {
         this.Headless = settings.Headless;
     }
 
+    /// <summary>
+    /// Is called when the <see cref="Game"/> starts.
+    /// </summary>
+    /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
     public void Run(Scene? scene) {
         if (this.Settings.LogDirectory != string.Empty) {
             Logger.CreateLogFile(this.Settings.LogDirectory);
@@ -100,6 +104,9 @@ public class Game : IDisposable {
         this.OnClose();
     }
     
+    /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
     protected virtual void Init() {
         SceneManager.Init();
 
@@ -110,6 +117,9 @@ public class Game : IDisposable {
         }
     }
 
+    /// <summary>
+    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
+    /// </summary>
     protected virtual void Update() {
         SceneManager.Update();
         GuiManager.Update();
@@ -121,6 +131,10 @@ public class Game : IDisposable {
         }
     }
 
+    /// <summary>
+    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// It is used for handling physics and other fixed-time operations.
+    /// </summary>
     protected virtual void FixedUpdate() {
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
@@ -132,6 +146,9 @@ public class Game : IDisposable {
         }
     }
     
+    /// <summary>
+    /// Is called every tick, used for rendering stuff.
+    /// </summary>
     protected virtual void Draw() {
         SceneManager.Draw();
         GuiManager.Draw();
@@ -143,21 +160,36 @@ public class Game : IDisposable {
         }
     }
     
+    /// <summary>
+    /// Is called when the <see cref="Game"/> is shutting down.
+    /// </summary>
     protected virtual void OnClose() {
         Logger.Warn("Application shuts down!");
     }
 
+    /// <summary>
+    /// Retrieves the frames per second (FPS) of the application.
+    /// </summary>
+    /// <returns>The current frames per second (FPS) value.</returns>
     public int GetFps() {
         return Raylib.GetFPS();
     }
 
+    /// <summary>
+    /// Sets the target frames per second (FPS) for the application.
+    /// </summary>
+    /// <param name="fps">The desired target frames per second (FPS) value.</param>
     public void SetTargetFps(int fps) {
         if (fps > 0) {
             Raylib.SetTargetFPS(fps);
         }
     }
 
-    public void OpenURL(string url) {
+    /// <summary>
+    /// Opens a specified URL in the default web browser.
+    /// </summary>
+    /// <param name="url">The URL to be opened.</param>
+    public void OpenUrl(string url) {
         if (!this.Headless) {
             Raylib.OpenURL(url);
         }

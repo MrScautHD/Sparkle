@@ -11,22 +11,48 @@ public static class Logger {
     
     public static string? LogPath { get; private set; }
 
+    /// <summary>
+    /// Logs a debug message with optional stack frame information.
+    /// </summary>
+    /// <param name="msg">The debug message to be logged.</param>
+    /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Debug(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Gray);
     }
 
+    /// <summary>
+    /// Logs an informational message with optional stack frame information.
+    /// </summary>
+    /// <param name="msg">The informational message to be logged.</param>
+    /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Info(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Cyan);
     }
 
+    /// <summary>
+    /// Logs a warning message with optional stack frame information.
+    /// </summary>
+    /// <param name="msg">The warning message to be logged.</param>
+    /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Warn(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Yellow);
     }
 
+    /// <summary>
+    /// Logs an error message with optional stack frame information.
+    /// </summary>
+    /// <param name="msg">The error message to be logged.</param>
+    /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Error(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Red);
     }
 
+    /// <summary>
+    /// Logs a message with optional color formatting and stack frame information.
+    /// </summary>
+    /// <param name="msg">The message to be logged.</param>
+    /// <param name="skipFrames">The number of stack frames to skip (optional).</param>
+    /// <param name="color">The console color for the log message (optional).</param>
     private static void Log(string msg, int skipFrames, ConsoleColor color) {
         MethodBase? info = new StackFrame(skipFrames).GetMethod();
         string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
@@ -40,6 +66,10 @@ public static class Logger {
         Console.ResetColor();
     }
     
+    /// <summary>
+    /// Creates a log file in the specified directory with a timestamped filename.
+    /// </summary>
+    /// <param name="directory">The directory where the log file will be created.</param>
     internal static void CreateLogFile(string directory) {
         LogPath = Path.Combine(directory, $"log - {DateTime.Now:yyyy-MM-dd--HH-mm-ss}.txt");
         
@@ -50,6 +80,9 @@ public static class Logger {
         File.Create(LogPath).Close();
     }
 
+    /// <summary>
+    /// Configures a custom <see cref="Raylib"/> log by setting a trace log callback.
+    /// </summary>
     internal static unsafe void SetupRayLibLogger() {
         Raylib.SetTraceLogCallback(&RayLibLogger);
     }

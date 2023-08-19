@@ -19,6 +19,10 @@ public struct Config {
         this._encryptKey = encryptKey;
     }
     
+    /// <summary>
+    /// Creates or updates a configuration file with the values in the current dictionary.
+    /// </summary>
+    /// <returns>The Config instance representing the created or updated configuration.</returns>
     public Config Create() {
         FileManager.CreateFile(this.Directory, $"{this.Name}.json");
         
@@ -52,6 +56,12 @@ public struct Config {
         return this;
     }
     
+    /// <summary>
+    /// Retrieves a value of a specific type from a collection of values stored as JToken objects.
+    /// </summary>
+    /// <param name="name">The name of the value to retrieve.</param>
+    /// <typeparam name="T">The type of the value to retrieve.</typeparam>
+    /// <returns>The retrieved value of type T if found; otherwise, the default value or null.</returns>
     public T GetValue<T>(string name) {
         if (!this.GetAllValues().TryGetValue(name, out JToken? jToken)) {
             Logger.Error($"Unable to locate value [{name}]!");
@@ -60,6 +70,10 @@ public struct Config {
         return jToken!.Value<T>()!;
     }
 
+    /// <summary>
+    /// Retrieves all values as a JObject from a JSON file using the specified path and encryption key.
+    /// </summary>
+    /// <returns>A JObject containing all values from the JSON file.</returns>
     public JObject GetAllValues() {
         return FileManager.ReadJsonAsObject(this.Path, this._encryptKey);
     }

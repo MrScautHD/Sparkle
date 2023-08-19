@@ -78,6 +78,9 @@ public class Camera : Entity {
         }
     }
     
+    /// <summary>
+    /// Controls the entity's movement and rotation based on input from mouse, keyboard, or gamepad.
+    /// </summary>
     private void InputController() {
         if (!Input.IsGamepadAvailable(0)) {
             float yaw = this._angleRot.Y - (Input.GetMouseDelta().X * this.MouseSensitivity);
@@ -123,6 +126,9 @@ public class Camera : Entity {
         }
     }
 
+    /// <summary>
+    /// Calculates the target position based on the camera's mode and rotation.
+    /// </summary>
     private void CalculateTargetPosition() {
         if (this.Mode != CameraMode.CAMERA_ORBITAL) {
             Vector3 viewDir = Vector3.Transform(Vector3.UnitZ, this.Rotation);
@@ -130,14 +136,26 @@ public class Camera : Entity {
         }
     }
     
+    /// <summary>
+    /// Retrieves the normalized forward direction vector of the camera.
+    /// </summary>
+    /// <returns>The normalized forward direction vector.</returns>
     public Vector3 GetForward() {
         return Vector3.Normalize(Vector3.Subtract(this.Position, this.Target));
     }
     
+    /// <summary>
+    /// Moves the camera forward or backward by a specified speed.
+    /// </summary>
+    /// <param name="speed">The speed of movement.</param>
     public void MoveForward(float speed) {
         this.Position -= this.GetForward() * (speed * Time.Delta);
     }
     
+    /// <summary>
+    /// Moves the object towards a target position based on the given delta value.
+    /// </summary>
+    /// <param name="delta">The amount of movement to apply.</param>
     public void MoveToTarget(float delta) {
         float distance = Vector3.Distance(this.Position, this.Target);
         
@@ -148,6 +166,10 @@ public class Camera : Entity {
         this.Position += this.GetForward() * -delta;
     }
     
+    /// <summary>
+    /// Moves the object based on the provided speed vector.
+    /// </summary>
+    /// <param name="speedVector">The vector representing the movement speed along different axes.</param>
     public void Move(Vector3 speedVector) {
         Vector3 right = Vector3.Normalize(Vector3.Cross(this.Up, this.GetForward()));
         
@@ -156,6 +178,12 @@ public class Camera : Entity {
         this.Position -= this.GetForward() * (speedVector.Z * Time.Delta);
     }
 
+    /// <summary>
+    /// Rotates the object using the specified yaw, pitch, and roll angles.
+    /// </summary>
+    /// <param name="yaw">The yaw angle (rotation around the vertical axis) in degrees.</param>
+    /// <param name="pitch">The pitch angle (rotation around the lateral axis) in degrees, clamped between -89 and 89 degrees.</param>
+    /// <param name="roll">The roll angle (rotation around the longitudinal axis) in degrees.</param>
     public void RotateWithAngle(float yaw, float pitch, float roll) {
         this._angleRot.Y = yaw % 360;
         this._angleRot.X = Math.Clamp(pitch, -89, 89);
@@ -164,6 +192,10 @@ public class Camera : Entity {
         this.Rotation = Quaternion.CreateFromYawPitchRoll(this._angleRot.Y * Raylib.DEG2RAD, this._angleRot.X * Raylib.DEG2RAD, this._angleRot.Z * Raylib.DEG2RAD);
     }
     
+    /// <summary>
+    /// Generates a projection matrix based on the camera's projection type.
+    /// </summary>
+    /// <returns>The generated projection matrix.</returns>
     private Matrix4x4 GenProjection() {
         if (this.ProjectionType == CameraProjection.CAMERA_PERSPECTIVE) {
             return Raymath.MatrixPerspective(this.Fov * Raylib.DEG2RAD, this.AspectRatio, this.NearPlane, this.FarPlane);
@@ -176,6 +208,9 @@ public class Camera : Entity {
         }
     }
     
+    /// <summary>
+    /// Prepares the rendering context for 3D graphics by configuring matrices, projection, and depth testing.
+    /// </summary>
     public void BeginMode3D() {
         Rlgl.rlDrawRenderBatchActive();
         Rlgl.rlMatrixMode(MatrixMode.PROJECTION);
@@ -196,6 +231,9 @@ public class Camera : Entity {
         Rlgl.rlEnableDepthTest();
     }
     
+    /// <summary>
+    /// Ends the 3D rendering mode and performs necessary cleanup.
+    /// </summary>
     public void EndMode3D() {
         Raylib.EndMode3D();
     }

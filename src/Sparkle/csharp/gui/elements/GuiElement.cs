@@ -32,10 +32,16 @@ public abstract class GuiElement : IDisposable {
         this._clickFunc = clickClickFunc!;
     }
     
+    /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
     protected internal virtual void Init() { }
 
+    /// <summary>
+    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
+    /// </summary>
     protected internal virtual void Update() {
-        this.UpdateWindowScale();
+        this.UpdateScale();
         
         this.CalcSize = new Vector2(this.Size.X * GuiManager.Scale, this.Size.Y * GuiManager.Scale);
         
@@ -61,11 +67,21 @@ public abstract class GuiElement : IDisposable {
         }
     }
     
+    /// <summary>
+    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// It is used for handling physics and other fixed-time operations.
+    /// </summary>
     protected internal virtual void FixedUpdate() { }
 
+    /// <summary>
+    /// Is called every tick, used for rendering stuff.
+    /// </summary>
     protected internal abstract void Draw();
     
-    private void UpdateWindowScale() {
+    /// <summary>
+    /// Updates the scaling factors for width and height based on the render dimensions.
+    /// </summary>
+    private void UpdateScale() {
         this.WidthScale = Game.Instance.Window.GetRenderWidth() / (float) Game.Instance.Settings.Size.Width;
         this.HeightScale = Game.Instance.Window.GetRenderHeight() / (float) Game.Instance.Settings.Size.Height;
     }
