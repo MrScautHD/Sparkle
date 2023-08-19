@@ -38,7 +38,7 @@ public class Game : IDisposable {
     }
 
     /// <summary>
-    /// Is called when the <see cref="Game"/> starts.
+    /// Starts the <see cref="Game"/>.
     /// </summary>
     /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
     public void Run(Scene? scene) {
