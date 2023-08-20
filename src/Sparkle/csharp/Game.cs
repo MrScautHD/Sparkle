@@ -24,16 +24,12 @@ public class Game : IDisposable {
     
     public ContentManager Content { get; private set; }
     public Image Logo { get; private set; }
-    public bool Headless { get; private set; }
 
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
-        this.Headless = settings.Headless;
     }
     
-    // TODO Finish Headless support!
-
     /// <summary>
     /// Starts the <see cref="Game"/>.
     /// </summary>
@@ -52,23 +48,21 @@ public class Game : IDisposable {
         Logger.Debug("Initialize Raylib logger...");
         Logger.SetupRayLibLogger();
         
-        Logger.Debug($"Setting target fps to: {this.Settings.TargetFps}");
+        Logger.Debug($"Setting target fps to: {(this.Settings.TargetFps > 0 ? this.Settings.TargetFps : "unlimited")}");
         this.SetTargetFps(this.Settings.TargetFps);
 
-        if (!this.Headless) {
-            Logger.Debug("Initialize content manager...");
-            this.Content = new ContentManager(this.Settings.ContentDirectory);
+        Logger.Debug("Initialize content manager...");
+        this.Content = new ContentManager(this.Settings.ContentDirectory);
             
-            Logger.Debug("Initialize audio device...");
-            AudioDevice.Init();
+        Logger.Debug("Initialize audio device...");
+        AudioDevice.Init();
 
-            Logger.Debug("Initialize window...");
-            Window.SetConfigFlags(this.Settings.ConfigFlag);
-            Window.Init(this.Settings.WindowWidth, this.Settings.WindowHeight, this.Settings.Title);
+        Logger.Debug("Initialize window...");
+        Window.SetConfigFlags(this.Settings.ConfigFlag);
+        Window.Init(this.Settings.WindowWidth, this.Settings.WindowHeight, this.Settings.Title);
             
-            this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
-            Window.SetIcon(this.Logo);
-        }
+        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
+        Window.SetIcon(this.Logo);
 
         Logger.Debug("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
@@ -76,7 +70,7 @@ public class Game : IDisposable {
         this.Init();
         
         Logger.Debug("Run ticks...");
-        while (!this.ShouldClose && !Window.ShouldClose()) {
+        while (!this.ShouldClose && Window.ShouldClose()) {
             this.Update();
             
             this._timer += Time.Delta;
@@ -85,12 +79,10 @@ public class Game : IDisposable {
                 this._timer -= this._delay;
             }
 
-            if (!this.Headless) {
-                Graphics.BeginDrawing();
-                Graphics.ClearBackground(Color.SKYBLUE);
-                this.Draw();
-                Graphics.EndDrawing();
-            }
+            Graphics.BeginDrawing();
+            Graphics.ClearBackground(Color.SKYBLUE);
+            this.Draw();
+            Graphics.EndDrawing();
         }
         
         this.OnClose();
@@ -176,28 +168,19 @@ public class Game : IDisposable {
             Raylib.SetTargetFPS(fps);
         }
     }
-
-    /// <summary>
-    /// Opens a specified URL in the default web browser.
-    /// </summary>
-    /// <param name="url">The URL to be opened.</param>
-    public void OpenUrl(string url) {
-        if (!this.Headless) {
-            Raylib.OpenURL(url);
-        }
-    }
+    
+    /// <inheritdoc cref="Raylib.OpenURL(string)"/>
+    public void OpenUrl(string url) => Raylib.OpenURL(url);
 
     public virtual void Dispose() {
-        if (!this.Headless) {
-            if (this.Settings.IconPath == string.Empty) {
-                ImageHelper.Unload(this.Logo);
-            }
-            
-            this.Content.Dispose();
-            GuiManager.ActiveGui?.Dispose();
-            AudioDevice.Close();
-            Window.Close();
+        if (this.Settings.IconPath == string.Empty) {
+            ImageHelper.Unload(this.Logo);
         }
+            
+        this.Content.Dispose();
+        GuiManager.ActiveGui?.Dispose();
+        AudioDevice.Close();
+        Window.Close();
         
         SceneManager.ActiveScene?.Dispose();
     }

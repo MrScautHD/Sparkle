@@ -17,7 +17,7 @@ public class TestScene : Scene {
     }
 
     protected override void Init() {
-        
+
         // CREATE TRANSFORM
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
 
@@ -25,7 +25,7 @@ public class TestScene : Scene {
         Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
             Target = new Vector3(0, 0, 0)
         };
-        
+
         // ADD OBJECT TO THE SCENE
         this.AddEntity(camera);
         

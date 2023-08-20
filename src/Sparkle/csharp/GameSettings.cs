@@ -12,7 +12,6 @@ public struct GameSettings {
     public string LogDirectory;
     public string ContentDirectory;
     public int TargetFps;
-    public bool Headless;
     public ConfigFlags ConfigFlag;
     
     public GameSettings() {
@@ -23,7 +22,6 @@ public struct GameSettings {
         this.LogDirectory = "logs";
         this.ContentDirectory = "content";
         this.TargetFps = 0;
-        this.Headless = false;
         this.ConfigFlag = ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE;
     }
 }
