@@ -1,6 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.window;
 using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.gui.elements; 
@@ -82,8 +83,8 @@ public abstract class GuiElement : IDisposable {
     /// Updates the scaling factors for width and height based on the render dimensions.
     /// </summary>
     private void UpdateScale() {
-        this.WidthScale = Game.Instance.Window.GetRenderWidth() / (float) Game.Instance.Settings.Size.Width;
-        this.HeightScale = Game.Instance.Window.GetRenderHeight() / (float) Game.Instance.Settings.Size.Height;
+        this.WidthScale = Window.GetRenderWidth() / (float) Game.Instance.Settings.WindowWidth;
+        this.HeightScale = Window.GetRenderHeight() / (float) Game.Instance.Settings.WindowHeight;
     }
     
     public virtual void Dispose() { }

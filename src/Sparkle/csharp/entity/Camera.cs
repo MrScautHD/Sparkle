@@ -1,6 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.gui;
+using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
@@ -33,7 +34,7 @@ public class Camera : Entity {
         this.ProjectionType = CameraProjection.CAMERA_PERSPECTIVE;
         this.Fov = fov;
         this.Up = Vector3.UnitY;
-        this.AspectRatio = (float) this.Window.GetScreenWidth() / (float) this.Window.GetScreenHeight();
+        this.AspectRatio = (float) Window.GetScreenWidth() / (float) Window.GetScreenHeight();
         this.NearPlane = 0.01F;
         this.FarPlane = 1000;
         this.Target = position + Vector3.UnitZ;
@@ -217,7 +218,7 @@ public class Camera : Entity {
         Rlgl.rlPushMatrix();
         Rlgl.rlLoadIdentity();
         
-        this.AspectRatio = (float) this.Window.GetScreenWidth() / (float) this.Window.GetScreenHeight();
+        this.AspectRatio = (float) Window.GetScreenWidth() / (float) Window.GetScreenHeight();
 
         this.Projection = this.GenProjection();
         Rlgl.rlSetMatrixProjection(this.Projection);

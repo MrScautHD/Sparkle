@@ -4,38 +4,38 @@ namespace Sparkle.csharp.audio;
 
 public class WavePlayer {
     
-    /// <summary> See <see cref="Raylib.LoadWave(string)"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadWave(string)"/>
     public static Wave Load(string path) => Raylib.LoadWave(path);
     
-    /// <summary> See <see cref="Raylib.LoadWaveFromMemory(string, byte[])"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadWaveFromMemory(string, byte[])"/>
     public static Wave LoadFromMemory(string fileType, byte[] fileData) => Raylib.LoadWaveFromMemory(fileType, fileData);
     
-    /// <summary> See <see cref="Raylib.UnloadWave"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadWave"/>
     public static void Unload(Wave wave) => Raylib.UnloadWave(wave);
     
     
-    /// <summary> See <see cref="Raylib.IsWaveReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsWaveReady"/>
     public static bool IsReady(Wave wave) => Raylib.IsWaveReady(wave);
     
-    /// <summary> See <see cref="Raylib.ExportWave(Wave, string)"/> </summary>
+    /// <inheritdoc cref="Raylib.ExportWave(Wave, string)"/>
     public static bool Export(Wave wave, string path) => Raylib.ExportWave(wave, path);
     
-    /// <summary> See <see cref="Raylib.ExportWaveAsCode(Wave, string)"/> </summary>
+    /// <inheritdoc cref="Raylib.ExportWaveAsCode(Wave, string)"/>
     public static bool ExportAsCode(Wave wave, string path) => Raylib.ExportWaveAsCode(wave, path);
     
     
-    /// <summary> See <see cref="Raylib.WaveCopy"/> </summary>
+    /// <inheritdoc cref="Raylib.WaveCopy"/>
     public static Wave Copy(Wave wave) => Raylib.WaveCopy(wave);
     
-    /// <summary> See <see cref="Raylib.WaveCrop(ref Wave, int, int)"/> </summary>
+    /// <inheritdoc cref="Raylib.WaveCrop(ref Wave, int, int)"/>
     public static void Crop(ref Wave wave, int initSample, int finalSample) => Raylib.WaveCrop(ref wave, initSample, finalSample);
     
-    /// <summary> See <see cref="Raylib.WaveFormat(ref Wave, int, int, int)"/> </summary>
+    /// <inheritdoc cref="Raylib.WaveFormat(ref Wave, int, int, int)"/>
     public static void Format(ref Wave wave, int sampleRate, int sampleSize, int channels) => Raylib.WaveFormat(ref wave, sampleRate, sampleSize, channels);
     
-    /// <summary> See <see cref="Raylib.LoadWaveSamples"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadWaveSamples"/>
     public static unsafe float* LoadSamples(Wave wave) => Raylib.LoadWaveSamples(wave);
     
-    /// <summary> See <see cref="Raylib.UnloadWaveSamples"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadWaveSamples"/>
     public static unsafe void UnloadSamples(float* samples) => Raylib.UnloadWaveSamples(samples);
 }

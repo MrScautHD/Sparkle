@@ -5,69 +5,69 @@ namespace Sparkle.csharp.graphics.util;
 
 public static class TextureHelper {
     
-    /// <summary> See <see cref="Raylib.LoadTexture(string)"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadTexture(string)"/>
     public static Texture2D Load(string path) => Raylib.LoadTexture(path);
     
-    /// <summary> See <see cref="Raylib.LoadTextureFromImage"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadTextureFromImage"/>
     public static Texture2D LoadFromImage(Image image) => Raylib.LoadTextureFromImage(image);
     
-    /// <summary> See <see cref="Raylib.LoadTextureCubemap"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadTextureCubemap"/>
     public static Texture2D LoadCubemap(Image image, CubemapLayout layout) => Raylib.LoadTextureCubemap(image, layout);
     
-    /// <summary> See <see cref="Raylib.LoadRenderTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadRenderTexture"/>
     public static RenderTexture2D LoadRenderTexture(int width, int height) => Raylib.LoadRenderTexture(width, height);
     
-    /// <summary> See <see cref="Raylib.UnloadTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadTexture"/>
     public static void Unload(Texture2D texture) => Raylib.UnloadTexture(texture);
     
-    /// <summary> See <see cref="Raylib.UnloadRenderTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadRenderTexture"/>
     public static void UnloadRenderTexture(RenderTexture2D target) => Raylib.UnloadRenderTexture(target);
     
     
-    /// <summary> See <see cref="Raylib.IsTextureReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsTextureReady"/>
     public static bool IsReady(Texture2D texture) => Raylib.IsTextureReady(texture);
     
-    /// <summary> See <see cref="Raylib.IsRenderTextureReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsRenderTextureReady"/>
     public static bool IsRenderTextureReady(RenderTexture2D target) => Raylib.IsRenderTextureReady(target);
     
-    /// <summary> See <see cref="Raylib.UpdateTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateTexture"/>
     public static void Update<T>(Texture2D texture, ReadOnlySpan<T> pixels) where T : unmanaged => Raylib.UpdateTexture(texture, pixels);
     
-    /// <summary> See <see cref="Raylib.UpdateTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateTexture"/>
     public static void Update<T>(Texture2D texture, T[] pixels) where T : unmanaged => Raylib.UpdateTexture(texture, pixels);
     
-    /// <summary> See <see cref="Raylib.UpdateTextureRec"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateTextureRec"/>
     public static void UpdateRec<T>(Texture2D texture, Rectangle rec, ReadOnlySpan<T> pixels) where T : unmanaged => Raylib.UpdateTextureRec(texture, rec, pixels);
     
-    /// <summary> See <see cref="Raylib.UpdateTextureRec"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateTextureRec"/>
     public static void UpdateRec<T>(Texture2D texture, Rectangle rec, T[] pixels) where T : unmanaged => Raylib.UpdateTextureRec(texture, rec, pixels);
 
     
-    /// <summary> See <see cref="Raylib.GenTextureMipmaps(ref Texture2D)"/> </summary>
+    /// <inheritdoc cref="Raylib.GenTextureMipmaps(ref Texture2D)"/>
     public static void GenMipmaps(ref Texture2D texture) => Raylib.GenTextureMipmaps(ref texture);
     
-    /// <summary> See <see cref="Raylib.SetTextureFilter"/> </summary>
+    /// <inheritdoc cref="Raylib.SetTextureFilter"/>
     public static void SetFilter(Texture2D texture, TextureFilter filter) => Raylib.SetTextureFilter(texture, filter);
     
-    /// <summary> See <see cref="Raylib.SetTextureWrap"/> </summary>
+    /// <inheritdoc cref="Raylib.SetTextureWrap"/>
     public static void SetWrap(Texture2D texture, TextureWrap wrap) => Raylib.SetTextureWrap(texture, wrap);
 
     
-    /// <summary> See <see cref="Raylib.DrawTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTexture"/>
     public static void Draw(Texture2D texture, int posX, int posY, Color color) => Raylib.DrawTexture(texture, posX, posY, color);
     
-    /// <summary> See <see cref="Raylib.DrawTextureV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTextureV"/>
     public static void Draw(Texture2D texture, Vector2 pos, Color color) => Raylib.DrawTextureV(texture, pos, color);
     
-    /// <summary> See <see cref="Raylib.DrawTextureEx"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTextureEx"/>
     public static void Draw(Texture2D texture, Vector2 pos, float rotation, float scale, Color color) => Raylib.DrawTextureEx(texture, pos, rotation, scale, color);
     
-    /// <summary> See <see cref="Raylib.DrawTextureRec"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTextureRec"/>
     public static void DrawRec(Texture2D texture, Rectangle source, Vector2 pos, Color color) => Raylib.DrawTextureRec(texture, source, pos, color);
     
-    /// <summary> See <see cref="Raylib.DrawTexturePro"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTexturePro"/>
     public static void DrawPro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) => Raylib.DrawTexturePro(texture, source, dest, origin, rotation, color);
     
-    /// <summary> See <see cref="Raylib.DrawTextureNPatch"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTextureNPatch"/>
     public static void DrawNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color color) => Raylib.DrawTextureNPatch(texture, nPatchInfo, dest, origin, rotation, color);
 }

@@ -4,63 +4,63 @@ namespace Sparkle.csharp.audio;
 
 public static class AudioStreamer {
     
-    /// <summary> See <see cref="Raylib.LoadAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadAudioStream"/>
     public static AudioStream Load(uint sampleRate, uint sampleSize, uint channels) => Raylib.LoadAudioStream(sampleRate, sampleSize, channels);
     
-    /// <summary> See <see cref="Raylib.LoadAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadAudioStream"/>
     public static void Unload(AudioStream stream) => Raylib.UnloadAudioStream(stream);
 
     
-    /// <summary> See <see cref="Raylib.IsAudioStreamReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsAudioStreamReady"/>
     public static bool IsReady(AudioStream stream) => Raylib.IsAudioStreamReady(stream);
     
-    /// <summary> See <see cref="Raylib.UpdateAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateAudioStream"/>
     public static unsafe void Update(AudioStream stream, void* data, int frameCount) => Raylib.UpdateAudioStream(stream, data, frameCount);
 
     
-    /// <summary> See <see cref="Raylib.IsAudioStreamProcessed"/> </summary>
+    /// <inheritdoc cref="Raylib.IsAudioStreamProcessed"/>
     public static bool IsProcessed(AudioStream stream) => Raylib.IsAudioStreamProcessed(stream);
     
-    /// <summary> See <see cref="Raylib.IsAudioStreamPlaying"/> </summary>
+    /// <inheritdoc cref="Raylib.IsAudioStreamPlaying"/>
     public static bool IsPlaying(AudioStream stream) => Raylib.IsAudioStreamPlaying(stream);
     
-    /// <summary> See <see cref="Raylib.PlayAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.PlayAudioStream"/>
     public static void Play(AudioStream stream) => Raylib.PlayAudioStream(stream);
     
-    /// <summary> See <see cref="Raylib.PauseAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.PauseAudioStream"/>
     public static void Pause(AudioStream stream) => Raylib.PauseAudioStream(stream);
     
-    /// <summary> See <see cref="Raylib.ResumeAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.ResumeAudioStream"/>
     public static void Resume(AudioStream stream) => Raylib.ResumeAudioStream(stream);
     
-    /// <summary> See <see cref="Raylib.StopAudioStream"/> </summary>
+    /// <inheritdoc cref="Raylib.StopAudioStream"/>
     public static void Stop(AudioStream stream) => Raylib.StopAudioStream(stream);
     
-    /// <summary> See <see cref="Raylib.SetAudioStreamVolume"/> </summary>
+    /// <inheritdoc cref="Raylib.SetAudioStreamVolume"/>
     public static void SetVolume(AudioStream stream, float volume) => Raylib.SetAudioStreamVolume(stream, volume);
     
-    /// <summary> See <see cref="Raylib.SetAudioStreamPitch"/> </summary>
+    /// <inheritdoc cref="Raylib.SetAudioStreamPitch"/>
     public static void SetPitch(AudioStream stream, float pitch) => Raylib.SetAudioStreamPitch(stream, pitch);
     
-    /// <summary> See <see cref="Raylib.SetAudioStreamPan"/> </summary>
+    /// <inheritdoc cref="Raylib.SetAudioStreamPan"/>
     public static void SetPan(AudioStream stream, float pan) => Raylib.SetAudioStreamPan(stream, pan);
     
-    /// <summary> See <see cref="Raylib.SetAudioStreamBufferSizeDefault"/> </summary>
+    /// <inheritdoc cref="Raylib.SetAudioStreamBufferSizeDefault"/>
     public static void SetBufferSizeDefault(int size) => Raylib.SetAudioStreamBufferSizeDefault(size);
     
     
-    /// <summary> See <see cref="Raylib.SetAudioStreamCallback"/> </summary>
+    /// <inheritdoc cref="Raylib.SetAudioStreamCallback"/>
     public static unsafe void SetCallback(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> callback) => Raylib.SetAudioStreamCallback(stream, callback);
     
-    /// <summary> See <see cref="Raylib.AttachAudioStreamProcessor"/> </summary>
+    /// <inheritdoc cref="Raylib.AttachAudioStreamProcessor"/>
     public static unsafe void AttachProcessor(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.AttachAudioStreamProcessor(stream, processor);
     
-    /// <summary> See <see cref="Raylib.DetachAudioStreamProcessor"/> </summary>
+    /// <inheritdoc cref="Raylib.DetachAudioStreamProcessor"/>
     public static unsafe void DetachProcessor(AudioStream stream, delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.DetachAudioStreamProcessor(stream, processor);
     
-    /// <summary> See <see cref="Raylib.AttachAudioMixedProcessor"/> </summary>
+    /// <inheritdoc cref="Raylib.AttachAudioMixedProcessor"/>
     public static unsafe void AttachAudioMixedProcessor(delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.AttachAudioMixedProcessor(processor);
     
-    /// <summary> See <see cref="Raylib.DetachAudioMixedProcessor"/> </summary>
+    /// <inheritdoc cref="Raylib.DetachAudioMixedProcessor"/>
     public static unsafe void DetachAudioMixedProcessor(delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.DetachAudioMixedProcessor(processor);
 }

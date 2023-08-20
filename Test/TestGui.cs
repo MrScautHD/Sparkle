@@ -1,10 +1,9 @@
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.csharp;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.gui.elements;
 using Sparkle.csharp.gui.elements.data;
+using Sparkle.csharp.window;
 using Color = Raylib_cs.Color;
 
 namespace Test; 
@@ -57,7 +56,7 @@ public class TestGui : Gui {
             Color = Color.RED
         };
 
-        Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100F) / 2F, (this.Window.GetRenderHeight() - 100F) / 2F);
+        Vector2 pos = new Vector2((Window.GetRenderWidth() - 100F) / 2F, (Window.GetRenderHeight() - 100F) / 2F);
         this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, pos, new Vector2(100, 100)));
     }
 

@@ -1,18 +1,9 @@
 using System.Numerics;
-using Sparkle.csharp.audio;
-using Sparkle.csharp.content;
 using Sparkle.csharp.entity.components;
-using Sparkle.csharp.graphics;
-using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
 public abstract class Entity : IDisposable {
-    
-    protected Window Window => Game.Instance.Window;
-    protected Graphics Graphics => Game.Instance.Graphics;
-    protected ContentManager Content => Game.Instance.Content;
-    protected AudioDevice AudioDevice => Game.Instance.AudioDevice;
     
     public int Id { get; internal set; }
 

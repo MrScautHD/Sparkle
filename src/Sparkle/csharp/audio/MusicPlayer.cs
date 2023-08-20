@@ -4,54 +4,54 @@ namespace Sparkle.csharp.audio;
 
 public static class MusicPlayer {
 
-    /// <summary> See <see cref="Raylib.LoadMusicStream(string)"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadMusicStream(string)"/>
     public static Music LoadStream(string path) => Raylib.LoadMusicStream(path);
     
-    /// <summary> See <see cref="Raylib.LoadMusicStreamFromMemory(string, byte[])"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadMusicStreamFromMemory(string, byte[])"/>
     public static Music LoadStreamFromMemory(string fileType, byte[] fileData) => Raylib.LoadMusicStreamFromMemory(fileType, fileData);
     
-    /// <summary> See <see cref="Raylib.UnloadMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadMusicStream"/>
     public static void UnloadStream(Music music) => Raylib.UnloadMusicStream(music);
     
     
-    /// <summary> See <see cref="Raylib.IsMusicReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMusicReady"/>
     public static bool IsReady(Music music) => Raylib.IsMusicReady(music);
     
-    /// <summary> See <see cref="Raylib.IsMusicStreamPlaying"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMusicStreamPlaying"/>
     public static bool IsStreamPlaying(Music music) => Raylib.IsMusicStreamPlaying(music);
 
     
-    /// <summary> See <see cref="Raylib.GetMusicTimeLength"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMusicTimeLength"/>
     public static float GetTimeLength(Music music) => Raylib.GetMusicTimeLength(music);
     
-    /// <summary> See <see cref="Raylib.GetMusicTimePlayed"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMusicTimePlayed"/>
     public static float GetTimePlayed(Music music) => Raylib.GetMusicTimePlayed(music);
 
     
-    /// <summary> See <see cref="Raylib.PlayMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.PlayMusicStream"/>
     public static void PlayStream(Music music) => Raylib.PlayMusicStream(music);
     
-    /// <summary> See <see cref="Raylib.UpdateMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.UpdateMusicStream"/>
     public static void UpdateStream(Music music) => Raylib.UpdateMusicStream(music);
     
-    /// <summary> See <see cref="Raylib.StopMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.StopMusicStream"/>
     public static void StopStream(Music music) => Raylib.StopMusicStream(music);
     
-    /// <summary> See <see cref="Raylib.PauseMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.PauseMusicStream"/>
     public static void PauseStream(Music music) => Raylib.PauseMusicStream(music);
     
-    /// <summary> See <see cref="Raylib.ResumeMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.ResumeMusicStream"/>
     public static void ResumeStream(Music music) => Raylib.ResumeMusicStream(music);
     
-    /// <summary> See <see cref="Raylib.SeekMusicStream"/> </summary>
+    /// <inheritdoc cref="Raylib.SeekMusicStream"/>
     public static void SeekStream(Music music, float pos) => Raylib.SeekMusicStream(music, pos);
     
-    /// <summary> See <see cref="Raylib.SetMusicVolume"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMusicVolume"/>
     public static void SetVolume(Music music, float volume) => Raylib.SetMusicVolume(music, volume);
     
-    /// <summary> See <see cref="Raylib.SetMusicPitch"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMusicPitch"/>
     public static void SetPitch(Music music, float pitch) => Raylib.SetMusicPitch(music, pitch);
     
-    /// <summary> See <see cref="Raylib.SetMusicPan"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMusicPan"/>
     public static void SetPan(Music music, float pan) => Raylib.SetMusicPan(music, pan);
 }

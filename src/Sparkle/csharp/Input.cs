@@ -5,158 +5,158 @@ namespace Sparkle.csharp;
 
 public static class Input {
 
-    /// <summary> See <see cref="Raylib.IsKeyPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.IsKeyPressed"/>
     public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);
     
-    /// <summary> See <see cref="Raylib.IsKeyDown"/> </summary>
+    /// <inheritdoc cref="Raylib.IsKeyDown"/>
     public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
     
-    /// <summary> See <see cref="Raylib.IsKeyReleased"/> </summary>
+    /// <inheritdoc cref="Raylib.IsKeyReleased"/>
     public static bool IsKeyReleased(KeyboardKey key) => Raylib.IsKeyReleased(key);
     
-    /// <summary> See <see cref="Raylib.IsKeyUp"/> </summary>
+    /// <inheritdoc cref="Raylib.IsKeyUp"/>
     public static bool IsKeyUp(KeyboardKey key) => Raylib.IsKeyUp(key);
     
-    /// <summary> See <see cref="Raylib.GetKeyPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.GetKeyPressed"/>
     public static int GetKeyPressed() => Raylib.GetKeyPressed();
     
-    /// <summary> See <see cref="Raylib.GetCharPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.GetCharPressed"/>
     public static int GetCharPressed() => Raylib.GetCharPressed();
     
-    /// <summary> See <see cref="Raylib.SetExitKey"/> </summary>
+    /// <inheritdoc cref="Raylib.SetExitKey"/>
     public static void SetExitKey(KeyboardKey key) => Raylib.SetExitKey(key);
     
     
-    /// <summary> See <see cref="Raylib.IsMouseButtonPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMouseButtonPressed"/>
     public static bool IsMouseButtonPressed(MouseButton button) => Raylib.IsMouseButtonPressed(button);
     
-    /// <summary> See <see cref="Raylib.IsMouseButtonDown"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMouseButtonDown"/>
     public static bool IsMouseButtonDown(MouseButton button) => Raylib.IsMouseButtonDown(button);
     
-    /// <summary> See <see cref="Raylib.IsMouseButtonReleased"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMouseButtonReleased"/>
     public static bool IsMouseButtonReleased(MouseButton button) => Raylib.IsMouseButtonReleased(button);
     
-    /// <summary> See <see cref="Raylib.IsMouseButtonUp"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMouseButtonUp"/>
     public static bool IsMouseButtonUp(MouseButton button) => Raylib.IsMouseButtonUp(button);
     
-    /// <summary> See <see cref="Raylib.GetMouseX"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMouseX"/>
     public static int GetMouseX() => Raylib.GetMouseX();
     
-    /// <summary> See <see cref="Raylib.GetMouseY"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMouseY"/>
     public static int GetMouseY() => Raylib.GetMouseY();
     
-    /// <summary> See <see cref="Raylib.GetMousePosition"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMousePosition"/>
     public static Vector2 GetMousePosition() => Raylib.GetMousePosition();
     
-    /// <summary> See <see cref="Raylib.GetMouseDelta"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMouseDelta"/>
     public static Vector2 GetMouseDelta() => Raylib.GetMouseDelta();
     
-    /// <summary> See <see cref="Raylib.GetMouseWheelMove"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMouseWheelMove"/>
     public static float GetMouseWheelMove() => Raylib.GetMouseWheelMove();
     
-    /// <summary> See <see cref="Raylib.GetMouseWheelMoveV"/> </summary>
+    /// <inheritdoc cref="Raylib.GetMouseWheelMoveV"/>
     public static Vector2 GetMouseWheelMoveV() => Raylib.GetMouseWheelMoveV();
     
-    /// <summary> See <see cref="Raylib.SetMouseCursor"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMouseCursor"/>
     public static void SetMouseCursor(MouseCursor cursor) => Raylib.SetMouseCursor(cursor);
     
-    /// <summary> See <see cref="Raylib.SetMousePosition"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMousePosition"/>
     public static void SetMousePosition(int x, int y) => Raylib.SetMousePosition(x, y);
     
-    /// <summary> See <see cref="Raylib.SetMouseOffset"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMouseOffset"/>
     public static void SetMouseOffset(int x, int y) => Raylib.SetMouseOffset(x, y);
     
-    /// <summary> See <see cref="Raylib.SetMouseScale"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMouseScale"/>
     public static void SetMouseScale(float scaleX, float scaleY) => Raylib.SetMouseScale(scaleX, scaleY);
     
     
-    /// <summary> See <see cref="Raylib.IsGamepadAvailable"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGamepadAvailable"/>
     public static bool IsGamepadAvailable(int gamepad) => Raylib.IsGamepadAvailable(gamepad);
     
-    /// <summary> See <see cref="Raylib.GetGamepadName_"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGamepadName_"/>
     public static string GetGamepadName(int gamepad) => Raylib.GetGamepadName_(gamepad);
     
-    /// <summary> See <see cref="Raylib.IsGamepadButtonPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGamepadButtonPressed"/>
     public static bool IsGamepadButtonPressed(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonPressed(gamepad, button);
     
-    /// <summary> See <see cref="Raylib.IsGamepadButtonDown"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGamepadButtonDown"/>
     public static bool IsGamepadButtonDown(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonDown(gamepad, button);
     
-    /// <summary> See <see cref="Raylib.IsGamepadButtonReleased"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGamepadButtonReleased"/>
     public static bool IsGamepadButtonReleased(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonReleased(gamepad, button);
     
-    /// <summary> See <see cref="Raylib.IsGamepadButtonUp"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGamepadButtonUp"/>
     public static bool IsGamepadButtonUp(int gamepad, GamepadButton button) => Raylib.IsGamepadButtonUp(gamepad, button);
     
-    /// <summary> See <see cref="Raylib.GetGamepadButtonPressed"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGamepadButtonPressed"/>
     public static int GetGamepadButtonPressed() => Raylib.GetGamepadButtonPressed();
     
-    /// <summary> See <see cref="Raylib.GetGamepadAxisCount"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGamepadAxisCount"/>
     public static int GetGamepadAxisCount(int gamepad) => Raylib.GetGamepadAxisCount(gamepad);
     
-    /// <summary> See <see cref="Raylib.GetGamepadAxisMovement"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGamepadAxisMovement"/>
     public static float GetGamepadAxisMovement(int gamepad, GamepadAxis axis) => Raylib.GetGamepadAxisMovement(gamepad, axis);
     
-    /// <summary> See <see cref="Raylib.SetGamepadMappings(string)"/> </summary>
+    /// <inheritdoc cref="Raylib.SetGamepadMappings(string)"/>
     public static void SetGamepadMappings(string mappings) => Raylib.SetGamepadMappings(mappings);
     
     
-    /// <summary> See <see cref="Raylib.GetTouchX"/> </summary>
+    /// <inheritdoc cref="Raylib.GetTouchX"/>
     public static int GetTouchX() => Raylib.GetTouchX();
     
-    /// <summary> See <see cref="Raylib.GetTouchY"/> </summary>
+    /// <inheritdoc cref="Raylib.GetTouchY"/>
     public static int GetTouchY() => Raylib.GetTouchY();
     
-    /// <summary> See <see cref="Raylib.GetTouchPosition"/> </summary>
+    /// <inheritdoc cref="Raylib.GetTouchPosition"/>
     public static Vector2 GetTouchPosition(int index) => Raylib.GetTouchPosition(index);
     
-    /// <summary> See <see cref="Raylib.GetTouchPointId"/> </summary>
+    /// <inheritdoc cref="Raylib.GetTouchPointId"/>
     public static int GetTouchPointId(int index) => Raylib.GetTouchPointId(index);
     
-    /// <summary> See <see cref="Raylib.GetTouchPointCount"/> </summary>
+    /// <inheritdoc cref="Raylib.GetTouchPointCount"/>
     public static int GetTouchPointCount() => Raylib.GetTouchPointCount();
     
 
-    /// <summary> See <see cref="Raylib.SetGesturesEnabled"/> </summary>
+    /// <inheritdoc cref="Raylib.SetGesturesEnabled"/>
     public static void SetGesturesEnabled(Gesture flags) => Raylib.SetGesturesEnabled(flags);
     
-    /// <summary> See <see cref="Raylib.IsGestureDetected"/> </summary>
+    /// <inheritdoc cref="Raylib.IsGestureDetected"/>
     public static bool IsGestureDetected(Gesture gesture) => Raylib.IsGestureDetected(gesture);
     
-    /// <summary> See <see cref="Raylib.GetGestureDetected"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGestureDetected"/>
     public static Gesture GetGestureDetected() => Raylib.GetGestureDetected();
     
-    /// <summary> See <see cref="Raylib.GetGestureHoldDuration"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGestureHoldDuration"/>
     public static float GetGestureHoldDuration() => Raylib.GetGestureHoldDuration();
     
-    /// <summary> See <see cref="Raylib.GetGestureDragVector"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGestureDragVector"/>
     public static Vector2 GetGestureDragVector() => Raylib.GetGestureDragVector();
     
-    /// <summary> See <see cref="Raylib.GetGestureDragAngle"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGestureDragAngle"/>
     public static float GetGestureDragAngle() => Raylib.GetGestureDragAngle();
     
-    /// <summary> See <see cref="Raylib.GetGesturePinchVector"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGesturePinchVector"/>
     public static Vector2 GetGesturePinchVector() => Raylib.GetGesturePinchVector();
     
-    /// <summary> See <see cref="Raylib.GetGesturePinchAngle"/> </summary>
+    /// <inheritdoc cref="Raylib.GetGesturePinchAngle"/>
     public static float GetGesturePinchAngle() => Raylib.GetGesturePinchAngle();
     
 
-    /// <summary> See <see cref="Raylib.ShowCursor"/> </summary>
+    /// <inheritdoc cref="Raylib.ShowCursor"/>
     public static void ShowCursor() => Raylib.ShowCursor();
     
-    /// <summary> See <see cref="Raylib.HideCursor"/> </summary>
+    /// <inheritdoc cref="Raylib.HideCursor"/>
     public static void HideCursor() => Raylib.HideCursor();
     
-    /// <summary> See <see cref="Raylib.IsCursorHidden"/> </summary>
+    /// <inheritdoc cref="Raylib.IsCursorHidden"/>
     public static bool IsCursorHidden() => Raylib.IsCursorHidden();
     
-    /// <summary> See <see cref="Raylib.EnableCursor"/> </summary>
+    /// <inheritdoc cref="Raylib.EnableCursor"/>
     public static void EnableCursor() => Raylib.EnableCursor();
     
-    /// <summary> See <see cref="Raylib.DisableCursor"/> </summary>
+    /// <inheritdoc cref="Raylib.DisableCursor"/>
     public static void DisableCursor() => Raylib.DisableCursor();
     
-    /// <summary> See <see cref="Raylib.IsCursorOnScreen"/> </summary>
+    /// <inheritdoc cref="Raylib.IsCursorOnScreen"/>
     public static bool IsCursorOnScreen() => Raylib.IsCursorOnScreen();
 }

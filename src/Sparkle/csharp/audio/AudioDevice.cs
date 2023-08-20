@@ -2,23 +2,17 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.audio; 
 
-public class AudioDevice {
+public static class AudioDevice {
 
-    /// <summary>
-    /// Used for Initializes objects.
-    /// </summary>
-    internal void Init() {
-        if (!this.IsReady()) {
-            Raylib.InitAudioDevice();
-        }
-    }
+    /// <inheritdoc cref="Raylib.InitAudioDevice"/>
+    public static void Init() => Raylib.InitAudioDevice();
     
-    /// <summary> See <see cref="Raylib.CloseAudioDevice"/> </summary>
-    public void Close() => Raylib.CloseAudioDevice();
+    /// <inheritdoc cref="Raylib.CloseAudioDevice"/>
+    public static void Close() => Raylib.CloseAudioDevice();
     
-    /// <summary> See <see cref="Raylib.IsAudioDeviceReady"/> </summary>
-    public bool IsReady() => Raylib.IsAudioDeviceReady();
+    /// <inheritdoc cref="Raylib.IsAudioDeviceReady"/>
+    public static bool IsReady() => Raylib.IsAudioDeviceReady();
     
-    /// <summary> See <see cref="Raylib.SetMasterVolume"/> </summary>
-    public void SetMasterVolume(float volume) => Raylib.SetMasterVolume(volume);
+    /// <inheritdoc cref="Raylib.SetMasterVolume"/>
+    public static void SetMasterVolume(float volume) => Raylib.SetMasterVolume(volume);
 }

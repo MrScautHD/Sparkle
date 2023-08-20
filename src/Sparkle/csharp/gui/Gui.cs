@@ -1,17 +1,8 @@
-using Sparkle.csharp.audio;
-using Sparkle.csharp.content;
-using Sparkle.csharp.graphics;
 using Sparkle.csharp.gui.elements;
-using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.gui; 
 
 public abstract class Gui : IDisposable {
-    
-    protected Window Window => Game.Instance.Window;
-    protected Graphics Graphics => Game.Instance.Graphics;
-    protected ContentManager Content => Game.Instance.Content;
-    protected AudioDevice AudioDevice => Game.Instance.AudioDevice;
     
     public readonly string Name;
     

@@ -1,7 +1,7 @@
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.file.config;
-using Sparkle.csharp.scene;
+using Sparkle.csharp.window;
 
 namespace Test; 
 
@@ -26,8 +26,8 @@ public class TestGame : Game {
         base.Update();
 
         if (Input.IsKeyPressed(KeyboardKey.KEY_F11)) {
-            this.Window.Maximize();
-            this.Window.ToggleFullscreen();
+            Window.Maximize();
+            Window.ToggleFullscreen();
         }
     }
 }

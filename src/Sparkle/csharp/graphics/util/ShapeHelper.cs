@@ -7,156 +7,156 @@ namespace Sparkle.csharp.graphics.util;
 
 public static class ShapeHelper {
 
-    /// <summary> See <see cref="Raylib.SetShapesTexture"/> </summary>
+    /// <inheritdoc cref="Raylib.SetShapesTexture"/>
     public static void SetShapesTexture(Texture2D texture, Rectangle source) => Raylib.SetShapesTexture(texture, source);
 
     
-    /// <summary> See <see cref="Raylib.DrawPixel"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawPixel"/>
     public static void DrawPixel(int posX, int posY, Color color) => Raylib.DrawPixel(posX, posY, color);
     
-    /// <summary> See <see cref="Raylib.DrawPixelV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawPixelV"/>
     public static void DrawPixel(Vector2 pos, Color color) => Raylib.DrawPixelV(pos, color);
     
     
-    /// <summary> See <see cref="Raylib.DrawLine"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLine"/>
     public static void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, Color color) => Raylib.DrawLine(startPosX, startPosY, endPosX, endPosY, color);
     
-    /// <summary> See <see cref="Raylib.DrawLineV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineV"/>
     public static void DrawLine(Vector2 startPos, Vector2 endPos, Color color) => Raylib.DrawLineV(startPos, endPos, color);
     
-    /// <summary> See <see cref="Raylib.DrawLineEx"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineEx"/>
     public static void DrawLine(Vector2 startPos, Vector2 endPos, float thick, Color color) => Raylib.DrawLineEx(startPos, endPos, thick, color);
     
-    /// <summary> See <see cref="Raylib.DrawLineBezier"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineBezier"/>
     public static void DrawLineBezier(Vector2 startPos, Vector2 endPos, float thick, Color color) => Raylib.DrawLineBezier(startPos, endPos, thick, color);
     
-    /// <summary> See <see cref="Raylib.DrawLineBezierQuad"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineBezierQuad"/>
     public static void DrawLineBezierQuad(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color) => Raylib.DrawLineBezierQuad(startPos, endPos, controlPos, thick, color);
    
-    /// <summary> See <see cref="Raylib.DrawLineBezierCubic"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineBezierCubic"/>
     public static void DrawLineBezierCubic(Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thick, Color color) => Raylib.DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos, thick, color);
     
-    /// <summary> See <see cref="Raylib.DrawLineStrip(Vector2[], int, Color)"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawLineStrip(Vector2[], int, Color)"/>
     public static void DrawLineStrip(Vector2[] points, int pointCount, Color color) => Raylib.DrawLineStrip(points, pointCount, color);
 
     
-    /// <summary> See <see cref="Raylib.DrawCircle"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircle"/>
     public static void DrawCircle(int centerX, int centerY, float radius, Color color) => Raylib.DrawCircle(centerX, centerY, radius, color);
     
-    /// <summary> See <see cref="Raylib.DrawCircleV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircleV"/>
     public static void DrawCircle(Vector2 center, float radius, Color color) => Raylib.DrawCircleV(center, radius, color);
     
-    /// <summary> See <see cref="Raylib.DrawCircleLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircleLines"/>
     public static void DrawCircleLines(int centerX, int centerY, float radius, Color color) => Raylib.DrawCircleLines(centerX, centerY, radius, color);
     
-    /// <summary> See <see cref="Raylib.DrawCircleSector"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircleSector"/>
     public static void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) => Raylib.DrawCircleSector(center, radius, startAngle, endAngle, segments, color);
     
-    /// <summary> See <see cref="Raylib.DrawCircleSectorLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircleSectorLines"/>
     public static void DrawCircleSectorLines(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) => Raylib.DrawCircleSectorLines(center, radius, startAngle, endAngle, segments, color);
     
-    /// <summary> See <see cref="Raylib.DrawCircleGradient"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawCircleGradient"/>
     public static void DrawCircleGradient(int centerX, int centerY, float radius, Color color1, Color color2) => Raylib.DrawCircleGradient(centerX, centerY, radius, color1, color2);
     
     
-    /// <summary> See <see cref="Raylib.DrawEllipse"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawEllipse"/>
     public static void DrawEllipse(int centerX, int centerY, float radiusH, float radiusV, Color color) => Raylib.DrawEllipse(centerX, centerY, radiusH, radiusV, color);
     
-    /// <summary> See <see cref="Raylib.DrawEllipseLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawEllipseLines"/>
     public static void DrawEllipseLines(int centerX, int centerY, float radiusH, float radiusV, Color color) => Raylib.DrawEllipseLines(centerX, centerY, radiusH, radiusV, color);
     
     
-    /// <summary> See <see cref="Raylib.DrawRing"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRing"/>
     public static void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) => Raylib.DrawRing(center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
     
-    /// <summary> See <see cref="Raylib.DrawRingLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRingLines"/>
     public static void DrawRingLines(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) => Raylib.DrawRingLines(center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
 
     
-    /// <summary> See <see cref="Raylib.DrawRectangle"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangle"/>
     public static void DrawRectangle(int posX, int posY, int width, int height, Color color) => Raylib.DrawRectangle(posX, posY, width, height, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleV"/>
     public static void DrawRectangle(Vector2 pos, Vector2 size, Color color) => Raylib.DrawRectangleV(pos, size, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleRec"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleRec"/>
     public static void DrawRectangle(Rectangle rec, Color color) => Raylib.DrawRectangleRec(rec, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectanglePro"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectanglePro"/>
     public static void DrawRectangle(Rectangle rec, Vector2 origin, float rotation, Color color) => Raylib.DrawRectanglePro(rec, origin, rotation, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleGradientEx"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleGradientEx"/>
     public static void DrawRectangleGradient(Rectangle rec, Color col1, Color col2, Color col3, Color col4) => Raylib.DrawRectangleGradientEx(rec, col1, col2, col3, col4);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleGradientV"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleGradientV"/>
     public static void DrawRectangleGradientV(int posX, int posY, int width, int height, Color color1, Color color2) => Raylib.DrawRectangleGradientV(posX, posY, width, height, color1, color2);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleGradientH"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleGradientH"/>
     public static void DrawRectangleGradientH(int posX, int posY, int width, int height, Color color1, Color color2) => Raylib.DrawRectangleGradientH(posX, posY, width, height, color1, color2);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleLines"/>
     public static void DrawRectangleLines(int posX, int posY, int width, int height, Color color) => Raylib.DrawRectangleLines(posX, posY, width, height, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleLinesEx"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleLinesEx"/>
     public static void DrawRectangleLines(Rectangle rec, float lineThick, Color color) => Raylib.DrawRectangleLinesEx(rec, lineThick, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleRounded"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleRounded"/>
     public static void DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color) => Raylib.DrawRectangleRounded(rec, roundness, segments, color);
     
-    /// <summary> See <see cref="Raylib.DrawRectangleRoundedLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawRectangleRoundedLines"/>
     public static void DrawRectangleRoundedLines(Rectangle rec, float roundness, int segments, float lineThick, Color color) => Raylib.DrawRectangleRoundedLines(rec, roundness, segments, lineThick, color);
 
     
-    /// <summary> See <see cref="Raylib.DrawTriangle"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTriangle"/>
     public static void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, Color color) => Raylib.DrawTriangle(v1, v2, v3, color);
     
-    /// <summary> See <see cref="Raylib.DrawTriangleLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTriangleLines"/>
     public static void DrawTriangleLines(Vector2 v1, Vector2 v2, Vector2 v3, Color color) => Raylib.DrawTriangleLines(v1, v2, v3, color);
     
-    /// <summary> See <see cref="Raylib.DrawTriangleFan(Vector2[], int, Color)"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTriangleFan(Vector2[], int, Color)"/>
     public static void DrawTriangleFan(Vector2[] points, int pointCount, Color color) => Raylib.DrawTriangleFan(points, pointCount, color);
     
-    /// <summary> See <see cref="Raylib.DrawTriangleStrip(Vector2[], int, Color)"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawTriangleStrip(Vector2[], int, Color)"/>
     public static void DrawTriangleStrip(Vector2[] points, int pointCount, Color color) => Raylib.DrawTriangleStrip(points, pointCount, color);
 
     
-    /// <summary> See <see cref="Raylib.DrawPoly"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawPoly"/>
     public static void DrawPoly(Vector2 center, int sides, float radius, float rotation, Color color) => Raylib.DrawPoly(center, sides, radius, rotation, color);
     
-    /// <summary> See <see cref="Raylib.DrawPolyLines"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawPolyLines"/>
     public static void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, Color color) => Raylib.DrawPolyLines(center, sides, radius, rotation, color);
     
-    /// <summary> See <see cref="Raylib.DrawPolyLinesEx"/> </summary>
+    /// <inheritdoc cref="Raylib.DrawPolyLinesEx"/>
     public static void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color) => Raylib.DrawPolyLinesEx(center, sides, radius, rotation, lineThick, color);
     
     
-    /// <summary> See <see cref="Raylib.CheckCollisionRecs"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionRecs"/>
     public static bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2) => Raylib.CheckCollisionRecs(rec1, rec2);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionCircles"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionCircles"/>
     public static bool CheckCollisionCircles(Vector2 center1, float radius1, Vector2 center2, float radius2) => Raylib.CheckCollisionCircles(center1, radius1, center2, radius2);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionCircleRec"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionCircleRec"/>
     public static bool CheckCollisionCircleRec(Vector2 center, float radius, Rectangle rec) => Raylib.CheckCollisionCircleRec(center, radius, rec);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionPointRec"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionPointRec"/>
     public static bool CheckCollisionPointRec(Vector2 point, Rectangle rec) => Raylib.CheckCollisionPointRec(point, rec);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionPointCircle"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionPointCircle"/>
     public static bool CheckCollisionPointCircle(Vector2 point, Vector2 center, float radius) => Raylib.CheckCollisionPointCircle(point, center, radius);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionPointTriangle"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionPointTriangle"/>
     public static bool CheckCollisionPointTriangle(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3) => Raylib.CheckCollisionPointTriangle(point, p1, p2, p3);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionPointPoly"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionPointPoly"/>
     public static unsafe bool CheckCollisionPointPoly(Vector2 point, Vector2* points, int pointCount) => Raylib.CheckCollisionPointPoly(point, points, pointCount);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionLines(Vector2, Vector2, Vector2, Vector2, ref Vector2)"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionLines(Vector2, Vector2, Vector2, Vector2, ref Vector2)"/>
     public static bool CheckCollisionLines(Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, ref Vector2 collisionPoint) => Raylib.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, ref collisionPoint);
     
-    /// <summary> See <see cref="Raylib.CheckCollisionPointLine"/> </summary>
+    /// <inheritdoc cref="Raylib.CheckCollisionPointLine"/>
     public static bool CheckCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshold) => Raylib.CheckCollisionPointLine(point, p1, p2, threshold);
     
-    /// <summary> See <see cref="Raylib.GetCollisionRec"/> </summary>
+    /// <inheritdoc cref="Raylib.GetCollisionRec"/>
     public static Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2) => Raylib.GetCollisionRec(rec1, rec2);
 }

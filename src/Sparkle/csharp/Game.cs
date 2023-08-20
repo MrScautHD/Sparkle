@@ -22,13 +22,8 @@ public class Game : IDisposable {
     public readonly GameSettings Settings;
     public bool ShouldClose;
     
-    public Image Logo { get; private set; }
-
-    public Window Window { get; private set; }
-    public Graphics Graphics { get; private set; }
     public ContentManager Content { get; private set; }
-    public AudioDevice AudioDevice { get; private set; }
-    
+    public Image Logo { get; private set; }
     public bool Headless { get; private set; }
 
     public Game(GameSettings settings) {
@@ -36,6 +31,8 @@ public class Game : IDisposable {
         this.Settings = settings;
         this.Headless = settings.Headless;
     }
+    
+    // TODO Finish Headless support!
 
     /// <summary>
     /// Starts the <see cref="Game"/>.
@@ -52,7 +49,7 @@ public class Game : IDisposable {
         Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
         Logger.Info($"\tOS: {SystemInfo.Os}");
         
-        Logger.Debug("Initialize RayLib logger...");
+        Logger.Debug("Initialize Raylib logger...");
         Logger.SetupRayLibLogger();
         
         Logger.Debug($"Setting target fps to: {this.Settings.TargetFps}");
@@ -62,20 +59,15 @@ public class Game : IDisposable {
             Logger.Debug("Initialize content manager...");
             this.Content = new ContentManager(this.Settings.ContentDirectory);
             
-            Logger.Debug("Initialize graphics...");
-            this.Graphics = new Graphics();
-            
             Logger.Debug("Initialize audio device...");
-            this.AudioDevice = new AudioDevice();
-            this.AudioDevice.Init();
+            AudioDevice.Init();
 
             Logger.Debug("Initialize window...");
-            this.Window = new Window(this.Settings.Size, this.Settings.Title);
-            this.Window.SetConfigFlag(this.Settings.ConfigFlag);
-            this.Window.Init();
+            Window.SetConfigFlags(this.Settings.ConfigFlag);
+            Window.Init(this.Settings.WindowWidth, this.Settings.WindowHeight, this.Settings.Title);
             
             this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
-            this.Window.SetIcon(this.Logo);
+            Window.SetIcon(this.Logo);
         }
 
         Logger.Debug("Initialize default scene...");
@@ -84,7 +76,7 @@ public class Game : IDisposable {
         this.Init();
         
         Logger.Debug("Run ticks...");
-        while (!this.ShouldClose && !this.Window.ShouldClose()) {
+        while (!this.ShouldClose && !Window.ShouldClose()) {
             this.Update();
             
             this._timer += Time.Delta;
@@ -94,10 +86,10 @@ public class Game : IDisposable {
             }
 
             if (!this.Headless) {
-                this.Graphics.BeginDrawing();
-                this.Graphics.ClearBackground(Color.SKYBLUE);
+                Graphics.BeginDrawing();
+                Graphics.ClearBackground(Color.SKYBLUE);
                 this.Draw();
-                this.Graphics.EndDrawing();
+                Graphics.EndDrawing();
             }
         }
         
@@ -202,9 +194,9 @@ public class Game : IDisposable {
             }
             
             this.Content.Dispose();
-            this.Window.Close();
-            this.AudioDevice.Close();
             GuiManager.ActiveGui?.Dispose();
+            AudioDevice.Close();
+            Window.Close();
         }
         
         SceneManager.ActiveScene?.Dispose();

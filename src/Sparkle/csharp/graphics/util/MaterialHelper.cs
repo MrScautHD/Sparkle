@@ -4,19 +4,19 @@ namespace Sparkle.csharp.graphics.util;
 
 public static class MaterialHelper {
     
-    /// <summary> See <see cref="Raylib.LoadMaterialDefault"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadMaterialDefault"/>
     public static Material LoadDefault() => Raylib.LoadMaterialDefault();
     
-    /// <summary> See <see cref="Raylib.LoadMaterials"/> </summary>
+    /// <inheritdoc cref="Raylib.LoadMaterials"/>
     public static unsafe Material* LoadMaterials(sbyte* fileName, int* materialCount) => Raylib.LoadMaterials(fileName, materialCount);
     
-    /// <summary> See <see cref="Raylib.IsMaterialReady"/> </summary>
+    /// <inheritdoc cref="Raylib.IsMaterialReady"/>
     public static bool IsReady() => Raylib.IsMaterialReady();
     
-    /// <summary> See <see cref="Raylib.UnloadMaterial"/> </summary>
+    /// <inheritdoc cref="Raylib.UnloadMaterial"/>
     public static void Unload(Material material) => Raylib.UnloadMaterial(material);
 
     
-    /// <summary> See <see cref="Raylib.SetMaterialTexture(ref Material, MaterialMapIndex, Texture2D)"/> </summary>
+    /// <inheritdoc cref="Raylib.SetMaterialTexture(ref Material, MaterialMapIndex, Texture2D)"/>
     public static void SetTexture(ref Material material, MaterialMapIndex mapType, Texture2D texture) => Raylib.SetMaterialTexture(ref material, mapType, texture);
 }
