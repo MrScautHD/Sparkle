@@ -3,7 +3,7 @@ using Raylib_cs;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.components;
 
-namespace Test; 
+namespace Test;
 
 public class TestEntity : Entity {
     public TestEntity(Vector3 position) : base(position) {

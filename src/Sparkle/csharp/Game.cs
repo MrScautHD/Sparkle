@@ -63,14 +63,14 @@ public class Game : IDisposable {
             
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
-
+        
         Logger.Debug("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
 
         this.Init();
         
         Logger.Debug("Run ticks...");
-        while (!this.ShouldClose && Window.ShouldClose()) {
+        while (!this.ShouldClose && !Window.ShouldClose()) {
             this.Update();
             
             this._timer += Time.Delta;
