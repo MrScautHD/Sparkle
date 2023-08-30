@@ -3,6 +3,7 @@ using Sparkle.csharp.audio;
 
 namespace Sparkle.csharp.content.processor; 
 
+#if !HEADLESS
 public class WaveProcessor : IContentProcessor {
     
     public object Load(string path) {
@@ -13,3 +14,4 @@ public class WaveProcessor : IContentProcessor {
         WavePlayer.Unload((Wave) content);
     }
 }
+#endif

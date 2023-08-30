@@ -4,6 +4,7 @@ using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.gui.elements.data; 
 
+#if !HEADLESS
 public struct LabelData {
     
     public Font Font;
@@ -26,3 +27,4 @@ public struct LabelData {
         this.HoverColor = Color.GRAY;
     }
 }
+#endif

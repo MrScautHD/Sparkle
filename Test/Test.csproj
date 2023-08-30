@@ -5,11 +5,24 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Debug_Headless;Release_Headless</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Sparkle\Sparkle.csproj" />
+        <ProjectReference Include="..\src\Sparkle\Sparkle.csproj" />
     </ItemGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug_Headless'">
+        <DefineConstants>$(DefineConstants);HEADLESS;DEBUG</DefineConstants>
+        <Optimize>false</Optimize>
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release_Headless'">
+        <DefineConstants>$(DefineConstants);HEADLESS</DefineConstants>
+    </PropertyGroup>
 
     <ItemGroup>
         <Content Include="content/**/*">

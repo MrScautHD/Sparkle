@@ -2,6 +2,7 @@ using Sparkle.csharp.gui.elements;
 
 namespace Sparkle.csharp.gui; 
 
+#if !HEADLESS
 public abstract class Gui : IDisposable {
     
     public readonly string Name;
@@ -97,3 +98,4 @@ public abstract class Gui : IDisposable {
 
     public virtual void Dispose() { }
 }
+#endif

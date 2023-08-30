@@ -2,6 +2,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
+#if !HEADLESS
 public static class MaterialHelper {
     
     /// <inheritdoc cref="Raylib.LoadMaterialDefault"/>
@@ -20,3 +21,4 @@ public static class MaterialHelper {
     /// <inheritdoc cref="Raylib.SetMaterialTexture(ref Material, MaterialMapIndex, Texture2D)"/>
     public static void SetTexture(ref Material material, MaterialMapIndex mapType, Texture2D texture) => Raylib.SetMaterialTexture(ref material, mapType, texture);
 }
+#endif

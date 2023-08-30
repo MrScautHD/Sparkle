@@ -1,5 +1,6 @@
 namespace Sparkle.csharp.content; 
 
+#if !HEADLESS
 public interface IContentProcessor {
     
     /// <summary>
@@ -15,3 +16,4 @@ public interface IContentProcessor {
     /// <param name="item">The content item to unload.</param>
     public void Unload(object item);
 }
+#endif

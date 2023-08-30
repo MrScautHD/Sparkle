@@ -23,7 +23,9 @@ public abstract class Component : IDisposable {
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
+#if !HEADLESS
     protected internal virtual void Draw() { }
+#endif
     
     public virtual void Dispose() { }
 }

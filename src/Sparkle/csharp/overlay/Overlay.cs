@@ -1,5 +1,6 @@
 namespace Sparkle.csharp.overlay; 
 
+#if !HEADLESS
 public abstract class Overlay : IDisposable {
     
     public readonly string Name;
@@ -34,6 +35,7 @@ public abstract class Overlay : IDisposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal abstract void Draw();
-
+    
     public virtual void Dispose() { }
 }
+#endif

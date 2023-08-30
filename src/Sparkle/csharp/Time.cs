@@ -2,6 +2,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp; 
 
+#if !HEADLESS
 public static class Time {
     
     /// <inheritdoc cref="Raylib.GetFrameTime"/>
@@ -13,3 +14,4 @@ public static class Time {
     /// <inheritdoc cref="Raylib.WaitTime"/>
     public static void Wait(double seconds) => Raylib.WaitTime(seconds);
 }
+#endif

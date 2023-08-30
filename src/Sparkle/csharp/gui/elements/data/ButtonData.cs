@@ -2,6 +2,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.gui.elements.data; 
 
+#if !HEADLESS
 public struct ButtonData {
     
     public Texture2D? Texture;
@@ -15,3 +16,4 @@ public struct ButtonData {
         this.HoverColor = Color.GRAY;
     }
 }
+#endif

@@ -5,6 +5,8 @@ namespace Sparkle.csharp.window;
 
 public static class Window {
 
+#if !HEADLESS
+
     /// <inheritdoc cref="Raylib.InitWindow(int, int, string)"/>
     public static void Init(int width, int height, string title) => Raylib.InitWindow(width, height, title);
     
@@ -145,4 +147,6 @@ public static class Window {
     
     /// <inheritdoc cref="Raylib.GetClipboardText_"/>
     public static string GetClipboardText() => Raylib.GetClipboardText_();
+    
+#endif
 }

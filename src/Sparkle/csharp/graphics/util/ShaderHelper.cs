@@ -3,6 +3,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
+#if !HEADLESS
 public static class ShaderHelper {
     
     /// <inheritdoc cref="Raylib.LoadShader(string, string)"/>
@@ -38,3 +39,4 @@ public static class ShaderHelper {
     /// <inheritdoc cref="Raylib.SetShaderValueTexture"/>
     public static void SetValueTexture(Shader shader, int locIndex, Texture2D texture) => Raylib.SetShaderValueTexture(shader, locIndex, texture);
 }
+#endif

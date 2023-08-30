@@ -42,11 +42,13 @@ public abstract class Scene : IDisposable {
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
+#if !HEADLESS
     protected internal virtual void Draw() {
         foreach (Entity entity in this._entities.Values) {
             entity.Draw();
         }
     }
+#endif
     
     /// <summary>
     /// Adds an entity to the collection and initializes it.

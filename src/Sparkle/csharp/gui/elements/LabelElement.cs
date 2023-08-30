@@ -5,6 +5,7 @@ using Sparkle.csharp.gui.elements.data;
 
 namespace Sparkle.csharp.gui.elements; 
 
+#if !HEADLESS
 public class LabelElement : GuiElement {
     
     public Font Font;
@@ -43,3 +44,4 @@ public class LabelElement : GuiElement {
         }
     }
 }
+#endif

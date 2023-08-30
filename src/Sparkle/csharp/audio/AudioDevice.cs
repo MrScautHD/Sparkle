@@ -2,7 +2,9 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.audio; 
 
+#if !HEADLESS
 public static class AudioDevice {
+    
 
     /// <inheritdoc cref="Raylib.InitAudioDevice"/>
     public static void Init() => Raylib.InitAudioDevice();
@@ -16,3 +18,4 @@ public static class AudioDevice {
     /// <inheritdoc cref="Raylib.SetMasterVolume"/>
     public static void SetMasterVolume(float volume) => Raylib.SetMasterVolume(volume);
 }
+#endif

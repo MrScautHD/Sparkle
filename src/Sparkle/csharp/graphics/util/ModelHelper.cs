@@ -3,6 +3,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
+#if !HEADLESS
 public static class ModelHelper {
     
     
@@ -146,3 +147,4 @@ public static class ModelHelper {
     /// <inheritdoc cref="Raylib.GetRayCollisionQuad"/>
     public static RayCollision GetRayCollisionQuad(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) => Raylib.GetRayCollisionQuad(ray, p1, p2, p3, p4);
 }
+#endif

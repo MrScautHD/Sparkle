@@ -24,7 +24,7 @@ public class TestGame : Game {
 
     protected override void Update() {
         base.Update();
-
+        
         if (Input.IsKeyPressed(KeyboardKey.KEY_F11)) {
             Window.Maximize();
             Window.ToggleFullscreen();

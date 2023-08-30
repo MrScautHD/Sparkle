@@ -5,6 +5,7 @@ using Sparkle.csharp.gui.elements.data;
 
 namespace Sparkle.csharp.gui.elements; 
 
+#if !HEADLESS
 public class ToggleElement : GuiElement {
     
     public Texture2D? Texture;
@@ -89,3 +90,4 @@ public class ToggleElement : GuiElement {
         }
     }
 }
+#endif

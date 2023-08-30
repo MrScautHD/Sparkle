@@ -2,6 +2,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.audio; 
 
+#if !HEADLESS
 public class WavePlayer {
     
     /// <inheritdoc cref="Raylib.LoadWave(string)"/>
@@ -39,3 +40,4 @@ public class WavePlayer {
     /// <inheritdoc cref="Raylib.UnloadWaveSamples"/>
     public static unsafe void UnloadSamples(float* samples) => Raylib.UnloadWaveSamples(samples);
 }
+#endif

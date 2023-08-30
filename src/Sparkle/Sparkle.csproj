@@ -1,34 +1,50 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>true</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <AssemblyName>Sparkle</AssemblyName>
-        <RootNamespace>Sparkle</RootNamespace>
-        <AssemblyVersion>1.0.3</AssemblyVersion>
-        <Title>Sparkle</Title>
-        <Authors>MrScautHD</Authors>
-        <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
-        <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
-        <PackageIcon>content\icon.png</PackageIcon>
-        <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
-        <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <Version>2.0.0.0</Version>
-    </PropertyGroup>
-    
-    <ItemGroup>
-      <PackageReference Include="BepuPhysics" Version="2.5.0-beta.13" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-      <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Sparkle</AssemblyName>
+    <RootNamespace>Sparkle</RootNamespace>
+    <AssemblyVersion>1.0.3</AssemblyVersion>
+    <Title>Sparkle</Title>
+    <Authors>MrScautHD</Authors>
+    <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
+    <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
+    <PackageIcon>content\icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
+    <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>2.0.0.0</Version>
+    <Configurations>Debug;Release;Debug_Headless;Release_Headless</Configurations>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Content Include="content/icon.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_Headless'">
+    <DefineConstants>$(DefineConstants);HEADLESS;DEBUG</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release_Headless'">
+    <DefineConstants>$(DefineConstants);HEADLESS;RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepuPhysics" Version="2.5.0-beta.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="content/icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

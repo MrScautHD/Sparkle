@@ -3,6 +3,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
+#if !HEADLESS
 public static class ImageHelper {
     
     /// <inheritdoc cref="Raylib.LoadImage(string)"/>
@@ -214,3 +215,4 @@ public static class ImageHelper {
     /// <inheritdoc cref="Raylib.ImageDrawTextEx(ref Image, Font, string, Vector2, int, float, Color)"/>
     public static void DrawText(ref Image dst, Font font, string text, Vector2 pos, int fontSize, float spacing, Color color) => Raylib.ImageDrawTextEx(ref dst, font, text, pos, fontSize, spacing, color);
 }
+#endif

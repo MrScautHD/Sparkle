@@ -3,6 +3,7 @@ using Raylib_cs;
 
 namespace Sparkle.csharp; 
 
+#if !HEADLESS
 public static class Input {
 
     /// <inheritdoc cref="Raylib.IsKeyPressed"/>
@@ -160,3 +161,4 @@ public static class Input {
     /// <inheritdoc cref="Raylib.IsCursorOnScreen"/>
     public static bool IsCursorOnScreen() => Raylib.IsCursorOnScreen();
 }
+#endif
