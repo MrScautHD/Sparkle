@@ -12,6 +12,7 @@ public struct GameSettings {
     public string LogDirectory;
     public string ContentDirectory;
     public int TargetFps;
+    public int FixedTimeStep;
     public ConfigFlags WindowFlags;
     
     public GameSettings() {
@@ -22,6 +23,7 @@ public struct GameSettings {
         this.LogDirectory = "logs";
         this.ContentDirectory = "content";
         this.TargetFps = 0;
+        this.FixedTimeStep = 60;
         this.WindowFlags = ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE;
     }
 }

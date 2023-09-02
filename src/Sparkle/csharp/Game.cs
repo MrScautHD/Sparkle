@@ -16,7 +16,7 @@ public class Game : IDisposable {
     public static Game Instance { get; private set; }
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
     
-    private readonly double _delay = 1.0 / 60.0;
+    private readonly double _delay;
     private double _timer;
     
     public readonly GameSettings Settings;
@@ -29,6 +29,7 @@ public class Game : IDisposable {
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
+        this._delay = 1.0 / settings.FixedTimeStep;
     }
     
     /// <summary>
