@@ -5,7 +5,6 @@ using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.graphics.util; 
 
-#if !HEADLESS
 public static class ShapeHelper {
 
     /// <inheritdoc cref="Raylib.SetShapesTexture"/>
@@ -161,4 +160,3 @@ public static class ShapeHelper {
     /// <inheritdoc cref="Raylib.GetCollisionRec"/>
     public static Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2) => Raylib.GetCollisionRec(rec1, rec2);
 }
-#endif

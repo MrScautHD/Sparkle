@@ -1,6 +1,5 @@
 namespace Sparkle.csharp.overlay; 
 
-#if !HEADLESS
 public abstract class Overlay : IDisposable {
     
     public readonly string Name;
@@ -38,4 +37,3 @@ public abstract class Overlay : IDisposable {
     
     public virtual void Dispose() { }
 }
-#endif

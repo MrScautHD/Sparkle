@@ -3,7 +3,6 @@ using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
-#if !HEADLESS
 public class TextureProcessor : IContentProcessor {
     
     public object Load(string path) {
@@ -14,4 +13,3 @@ public class TextureProcessor : IContentProcessor {
         TextureHelper.Unload((Texture2D) content);
     }
 }
-#endif

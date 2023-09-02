@@ -1,6 +1,5 @@
 namespace Sparkle.csharp.gui; 
 
-#if !HEADLESS
 public enum Anchor {
     TopLeft,
     TopCenter,
@@ -14,4 +13,3 @@ public enum Anchor {
     BottomCenter,
     BottomRight
 }
-#endif

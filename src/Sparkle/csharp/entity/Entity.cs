@@ -58,14 +58,12 @@ public abstract class Entity : IDisposable {
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
-#if !HEADLESS
     protected internal virtual void Draw() {
         foreach (Component component in this._components.Values) {
             component.Draw();
         }
     }
-#endif
-
+    
     /// <summary>
     /// Adds a component to the entity and initializes it if the entity has been initialized.
     /// </summary>

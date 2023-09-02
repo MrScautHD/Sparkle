@@ -2,7 +2,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.audio; 
 
-#if !HEADLESS
 public static class MusicPlayer {
     
     /// <inheritdoc cref="Raylib.LoadMusicStream(string)"/>
@@ -56,4 +55,3 @@ public static class MusicPlayer {
     /// <inheritdoc cref="Raylib.SetMusicPan"/>
     public static void SetPan(Music music, float pan) => Raylib.SetMusicPan(music, pan);
 }
-#endif

@@ -5,9 +5,7 @@ namespace Sparkle.csharp.scene;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
-#if !HEADLESS
     public static Camera? MainCamera { get; private set; }
-#endif
     
     /// <summary>
     /// Sets the default scene without disposing of the previous scene or initializing the new scene.
@@ -22,9 +20,7 @@ public static class SceneManager {
     /// </summary>
     internal static void Init() {
         ActiveScene?.Init();
-#if !HEADLESS
         MainCamera = (Camera) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
-#endif
     }
     
     /// <summary>
@@ -45,11 +41,9 @@ public static class SceneManager {
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
-#if !HEADLESS
     internal static void Draw() {
         ActiveScene?.Draw();
     }
-#endif
     
     /// <summary>
     /// Sets the active scene, disposes of the previous scene, and initializes the new scene.
@@ -59,8 +53,6 @@ public static class SceneManager {
         ActiveScene?.Dispose();
         ActiveScene = scene;
         ActiveScene?.Init();
-#if !HEADLESS
         MainCamera = (Camera) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
-#endif
     }
 }

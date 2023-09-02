@@ -3,7 +3,6 @@ using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
-#if !HEADLESS
 public class FontProcessor : IContentProcessor {
     
     public object Load(string path) {
@@ -14,4 +13,3 @@ public class FontProcessor : IContentProcessor {
         FontHelper.Unload((Font) content);
     }
 }
-#endif

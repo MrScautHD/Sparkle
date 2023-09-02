@@ -2,7 +2,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.audio; 
 
-#if !HEADLESS
 public static class AudioStreamer {
     
     /// <inheritdoc cref="Raylib.LoadAudioStream"/>
@@ -65,4 +64,3 @@ public static class AudioStreamer {
     /// <inheritdoc cref="Raylib.DetachAudioMixedProcessor"/>
     public static unsafe void DetachAudioMixedProcessor(delegate*unmanaged[Cdecl]<void*, uint, void> processor) => Raylib.DetachAudioMixedProcessor(processor);
 }
-#endif

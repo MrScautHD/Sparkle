@@ -5,7 +5,6 @@ using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
-#if !HEADLESS
 public class Camera : Entity {
     
     public Matrix4x4 View { get; private set; }
@@ -240,4 +239,3 @@ public class Camera : Entity {
         Raylib.EndMode3D();
     }
 }
-#endif

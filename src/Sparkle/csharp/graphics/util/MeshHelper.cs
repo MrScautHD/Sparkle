@@ -3,7 +3,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
-#if !HEADLESS
 public static class MeshHelper {
     
     /// <inheritdoc cref="Raylib.UploadMesh(ref Mesh, CBool)"/>
@@ -66,4 +65,3 @@ public static class MeshHelper {
     /// <inheritdoc cref="Raylib.GenMeshCubicmap"/>
     public static Mesh GenCubicMap(Image cubicMap, Vector3 cubeSize) => Raylib.GenMeshCubicmap(cubicMap, cubeSize);
 }
-#endif

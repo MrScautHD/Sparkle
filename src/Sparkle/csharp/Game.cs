@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 using Raylib_cs;
 using Sparkle.csharp.audio;
@@ -23,11 +22,9 @@ public class Game : IDisposable {
     public readonly GameSettings Settings;
     public bool ShouldClose;
     
-#if !HEADLESS
     public ContentManager Content { get; private set; }
     
     public Image Logo { get; private set; }
-#endif
     
     public Game(GameSettings settings) {
         Instance = this;
@@ -55,7 +52,6 @@ public class Game : IDisposable {
         Logger.Debug($"Setting target fps to: {(this.Settings.TargetFps > 0 ? this.Settings.TargetFps : "unlimited")}");
         this.SetTargetFps(this.Settings.TargetFps);
 
-#if !HEADLESS
         Logger.Debug("Initialize content manager...");
         this.Content = new ContentManager(this.Settings.ContentDirectory);
         
@@ -68,7 +64,6 @@ public class Game : IDisposable {
             
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
-#endif
         
         Logger.Debug("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
@@ -76,7 +71,6 @@ public class Game : IDisposable {
         this.Init();
         
         Logger.Debug("Run ticks...");
-#if !HEADLESS
         while (!this.ShouldClose && !Window.ShouldClose()) {
             this.Update();
             
@@ -91,17 +85,6 @@ public class Game : IDisposable {
             this.Draw();
             Graphics.EndDrawing();
         }
-#else
-        while (!this.ShouldClose) {
-            this.Update();
-            
-            this._timer += Time.Delta;
-            while (this._timer >= this._delay) {
-                this.FixedUpdate();
-                this._timer -= this._delay;
-            }
-        }
-#endif        
         
         this.OnClose();
     }
@@ -112,13 +95,11 @@ public class Game : IDisposable {
     protected virtual void Init() {
         SceneManager.Init();
         
-#if !HEADLESS
         foreach (Overlay overlay in Overlay.Overlays) {
             if (overlay.Enabled) {
                 overlay.Init();
             }
         }
-#endif
     }
 
     /// <summary>
@@ -126,7 +107,6 @@ public class Game : IDisposable {
     /// </summary>
     protected virtual void Update() {
         SceneManager.Update();
-#if !HEADLESS
         GuiManager.Update();
         
         foreach (Overlay overlay in Overlay.Overlays) {
@@ -134,7 +114,6 @@ public class Game : IDisposable {
                 overlay.Update();
             }
         }
-#endif
     }
 
     /// <summary>
@@ -143,7 +122,6 @@ public class Game : IDisposable {
     /// </summary>
     protected virtual void FixedUpdate() {
         SceneManager.FixedUpdate();
-#if !HEADLESS
         GuiManager.FixedUpdate();
         
         foreach (Overlay overlay in Overlay.Overlays) {
@@ -151,13 +129,11 @@ public class Game : IDisposable {
                 overlay.FixedUpdate();
             }
         }
-#endif
     }
     
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
-#if !HEADLESS
     protected virtual void Draw() {
         SceneManager.Draw();
         GuiManager.Draw();
@@ -168,7 +144,6 @@ public class Game : IDisposable {
             }
         }
     }
-#endif
     
     /// <summary>
     /// Is called when the <see cref="Game"/> is shutting down.
@@ -196,11 +171,9 @@ public class Game : IDisposable {
     }
     
     /// <inheritdoc cref="Raylib.OpenURL(string)"/>
-    [Conditional("HEADED")]
     public void OpenUrl(string url) => Raylib.OpenURL(url);
 
     public virtual void Dispose() {
-#if !HEADLESS
         if (this.Settings.IconPath == string.Empty) {
             ImageHelper.Unload(this.Logo);
         }
@@ -209,8 +182,6 @@ public class Game : IDisposable {
         GuiManager.ActiveGui?.Dispose();
         AudioDevice.Close();
         Window.Close();
-#endif
-        
         SceneManager.ActiveScene?.Dispose();
     }
 }

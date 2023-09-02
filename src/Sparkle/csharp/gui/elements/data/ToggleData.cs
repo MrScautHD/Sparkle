@@ -2,7 +2,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.gui.elements.data; 
 
-#if !HEADLESS
 public struct ToggleData {
     
     public Texture2D? Texture;
@@ -25,4 +24,3 @@ public struct ToggleData {
         this.ToggledTextColor = Color.WHITE;
     }
 }
-#endif

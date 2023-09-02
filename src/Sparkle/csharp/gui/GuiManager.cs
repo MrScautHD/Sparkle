@@ -1,6 +1,5 @@
 namespace Sparkle.csharp.gui; 
 
-#if !HEADLESS
 public static class GuiManager {
     
     public static Gui? ActiveGui { get; private set; }
@@ -49,4 +48,3 @@ public static class GuiManager {
         Scale = Math.Clamp(scale, 0.5F, 1);
     }
 }
-#endif

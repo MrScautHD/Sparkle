@@ -3,7 +3,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
-#if !HEADLESS
 public static class TextureHelper {
     
     /// <inheritdoc cref="Raylib.LoadTexture(string)"/>
@@ -72,4 +71,3 @@ public static class TextureHelper {
     /// <inheritdoc cref="Raylib.DrawTextureNPatch"/>
     public static void DrawNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color color) => Raylib.DrawTextureNPatch(texture, nPatchInfo, dest, origin, rotation, color);
 }
-#endif

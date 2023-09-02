@@ -3,7 +3,6 @@ using Sparkle.csharp.content.processor;
 
 namespace Sparkle.csharp.content; 
 
-#if !HEADLESS
 public class ContentManager : IDisposable {
 
     private readonly string _contentDirectory;
@@ -85,4 +84,3 @@ public class ContentManager : IDisposable {
         }
     }
 }
-#endif

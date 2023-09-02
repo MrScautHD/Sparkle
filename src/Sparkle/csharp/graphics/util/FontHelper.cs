@@ -3,7 +3,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics.util; 
 
-#if !HEADLESS
 public static class FontHelper {
 
     /// <inheritdoc cref="Raylib.GetFontDefault"/>
@@ -58,4 +57,3 @@ public static class FontHelper {
     /// <inheritdoc cref="Raylib.GetGlyphAtlasRec"/>
     public static Rectangle GetGlyphAtlasRec(Font font, int character) => Raylib.GetGlyphAtlasRec(font, character);
 }
-#endif

@@ -6,7 +6,6 @@ using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.gui.elements; 
 
-#if !HEADLESS
 public abstract class GuiElement : IDisposable {
 
     public readonly string Name;
@@ -90,4 +89,3 @@ public abstract class GuiElement : IDisposable {
     
     public virtual void Dispose() { }
 }
-#endif

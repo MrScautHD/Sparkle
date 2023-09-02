@@ -2,7 +2,6 @@ using Raylib_cs;
 
 namespace Sparkle.csharp.graphics; 
 
-#if !HEADLESS
 public static class Graphics {
     
     // TODO Create for 2D a own Camera Entity! (Method already removed here)
@@ -45,4 +44,3 @@ public static class Graphics {
     /// <inheritdoc cref="Raylib.EndScissorMode"/>
     public static void EndScissorMode() => Raylib.EndScissorMode();
 }
-#endif

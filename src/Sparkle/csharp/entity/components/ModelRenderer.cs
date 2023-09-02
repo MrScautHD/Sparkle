@@ -4,7 +4,6 @@ using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.components; 
 
-#if !HEADLESS
 public class ModelRenderer : Component {
     
     private Model _model;
@@ -44,4 +43,3 @@ public class ModelRenderer : Component {
         SceneManager.MainCamera.EndMode3D();
     }
 }
-#endif
