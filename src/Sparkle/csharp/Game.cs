@@ -95,12 +95,7 @@ public class Game : IDisposable {
     /// </summary>
     protected virtual void Init() {
         SceneManager.Init();
-        
-        foreach (Overlay overlay in Overlay.Overlays) {
-            if (overlay.Enabled) {
-                overlay.Init();
-            }
-        }
+        OverlayManager.Init();
     }
 
     /// <summary>
@@ -109,27 +104,17 @@ public class Game : IDisposable {
     protected virtual void Update() {
         SceneManager.Update();
         GuiManager.Update();
-        
-        foreach (Overlay overlay in Overlay.Overlays) {
-            if (overlay.Enabled) {
-                overlay.Update();
-            }
-        }
+        OverlayManager.Update();
     }
 
     /// <summary>
-    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
-        
-        foreach (Overlay overlay in Overlay.Overlays) {
-            if (overlay.Enabled) {
-                overlay.FixedUpdate();
-            }
-        }
+        OverlayManager.FixedUpdate();
     }
     
     /// <summary>
@@ -138,12 +123,7 @@ public class Game : IDisposable {
     protected virtual void Draw() {
         SceneManager.Draw();
         GuiManager.Draw();
-        
-        foreach (Overlay overlay in Overlay.Overlays) {
-            if (overlay.Enabled) {
-                overlay.Draw();
-            }
-        }
+        OverlayManager.Draw();
     }
     
     /// <summary>
@@ -177,6 +157,10 @@ public class Game : IDisposable {
     public virtual void Dispose() {
         if (this.Settings.IconPath == string.Empty) {
             ImageHelper.Unload(this.Logo);
+        }
+        
+        foreach (Overlay overlay in OverlayManager.Overlays) {
+            overlay.Dispose();
         }
 
         this.Content.Dispose();

@@ -5,6 +5,7 @@ namespace Sparkle.csharp.scene;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
+    
     public static Camera? MainCamera { get; private set; }
     
     /// <summary>
@@ -31,7 +32,7 @@ public static class SceneManager {
     }
     
     /// <summary>
-    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     internal static void FixedUpdate() {

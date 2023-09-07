@@ -3,15 +3,11 @@ namespace Sparkle.csharp.overlay;
 public abstract class Overlay : IDisposable {
     
     public readonly string Name;
-
     public bool Enabled;
-
-    public static readonly List<Overlay> Overlays = new();
 
     public Overlay(string name) {
         this.Name = name;
-        
-        Overlays.Add(this);
+        OverlayManager.Overlays.Add(this);
     }
     
     /// <summary>
@@ -25,7 +21,7 @@ public abstract class Overlay : IDisposable {
     protected internal virtual void Update() { }
 
     /// <summary>
-    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() { }

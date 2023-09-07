@@ -15,7 +15,7 @@ public abstract class Component : IDisposable {
     protected internal virtual void Update() { }
     
     /// <summary>
-    /// Is invoked at a fixed rate of every 60 frames following the <see cref="Update"/> method.
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() { }
