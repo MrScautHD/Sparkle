@@ -1,9 +1,9 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
-using Sparkle.csharp.gui.elements.data;
+using Sparkle.csharp.gui.element.data;
 
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public class LabelElement : GuiElement {
     
@@ -18,6 +18,13 @@ public class LabelElement : GuiElement {
     
     protected float CalcFontSize { get; private set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LabelElement"/> with the given parameters, inheriting from a base class and setting various properties related to the label data.
+    /// </summary>
+    /// <param name="name">The name of the LabelElement.</param>
+    /// <param name="data">Data for initializing label-specific properties like Font, Rotation, and Colors.</param>
+    /// <param name="position">Position of the LabelElement on the screen.</param>
+    /// <param name="clickClickFunc">Optional click function to be executed when the label is clicked.</param>
     public LabelElement(string name, LabelData data, Vector2 position, Func<bool>? clickClickFunc = null) : base(name, position, data.Size, clickClickFunc) {
         this.Font = data.Font;
         this.Rotation = data.Rotation;

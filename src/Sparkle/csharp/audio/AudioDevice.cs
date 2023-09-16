@@ -1,9 +1,7 @@
 using Raylib_cs;
-using Sparkle.csharp.attribute;
 
 namespace Sparkle.csharp.audio; 
 
-[Headless(false)]
 public static class AudioDevice {
 
     /// <inheritdoc cref="Raylib.InitAudioDevice"/>

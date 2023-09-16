@@ -26,6 +26,13 @@ public class Game : IDisposable {
     
     public Image Logo { get; private set; }
     
+    public bool HasInitialized { get; private set; }
+    public bool HasDisposed { get; private set; }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Game"/>, setting the static Instance to this object, initializing game settings, and calculating the delay based on the FixedTimeStep.
+    /// </summary>
+    /// <param name="settings">The game settings to be used for this Game instance.</param>
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
@@ -37,6 +44,8 @@ public class Game : IDisposable {
     /// </summary>
     /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
     public void Run(Scene? scene) {
+        this.ThrowIfDisposed();
+        
         if (this.Settings.LogDirectory != string.Empty) {
             Logger.CreateLogFile(this.Settings.LogDirectory);
         }
@@ -68,8 +77,9 @@ public class Game : IDisposable {
         
         Logger.Debug("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
-
+        
         this.Init();
+        this.HasInitialized = true;
         
         Logger.Debug("Run ticks...");
         while (!this.ShouldClose && !Window.ShouldClose()) {
@@ -97,7 +107,7 @@ public class Game : IDisposable {
         SceneManager.Init();
         OverlayManager.Init();
     }
-
+    
     /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
@@ -105,6 +115,9 @@ public class Game : IDisposable {
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
+        foreach (Overlay overlay in OverlayManager.Overlays) {
+            overlay.Dispose();
+        }
     }
 
     /// <summary>
@@ -138,6 +151,7 @@ public class Game : IDisposable {
     /// </summary>
     /// <returns>The current frames per second (FPS) value.</returns>
     public int GetFps() {
+        this.ThrowIfDisposed();
         return Raylib.GetFPS();
     }
 
@@ -146,27 +160,47 @@ public class Game : IDisposable {
     /// </summary>
     /// <param name="fps">The desired target frames per second (FPS) value.</param>
     public void SetTargetFps(int fps) {
+        this.ThrowIfDisposed();
         if (fps > 0) {
             Raylib.SetTargetFPS(fps);
         }
     }
-    
+
     /// <inheritdoc cref="Raylib.OpenURL(string)"/>
-    public void OpenUrl(string url) => Raylib.OpenURL(url);
+    public void OpenUrl(string url) {
+        this.ThrowIfDisposed();
+        Raylib.OpenURL(url);
+    }
 
-    public virtual void Dispose() {
-        if (this.Settings.IconPath == string.Empty) {
-            ImageHelper.Unload(this.Logo);
-        }
+    public void Dispose() {
+        if (this.HasDisposed) return;
         
-        foreach (Overlay overlay in OverlayManager.Overlays) {
-            overlay.Dispose();
-        }
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+        this.HasDisposed = true;
+    }
 
-        this.Content.Dispose();
-        GuiManager.ActiveGui?.Dispose();
-        AudioDevice.Close();
-        Window.Close();
-        SceneManager.ActiveScene?.Dispose();
+    protected virtual void Dispose(bool disposing) {
+        if (disposing) {
+            if (this.Settings.IconPath == string.Empty) {
+                ImageHelper.Unload(this.Logo);
+            }
+        
+            foreach (Overlay overlay in OverlayManager.Overlays) {
+                overlay.Dispose();
+            }
+
+            this.Content.Dispose();
+            GuiManager.ActiveGui?.Dispose();
+            AudioDevice.Close();
+            Window.Close();
+            SceneManager.ActiveScene?.Dispose();
+        }
+    }
+    
+    public void ThrowIfDisposed() {
+        if (this.HasDisposed) {
+            throw new ObjectDisposedException(this.GetType().Name);
+        }
     }
 }

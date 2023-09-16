@@ -7,10 +7,15 @@ namespace Test;
 
 public class TestGame : Game {
 
+    public TestOverlay Overlay;
+
     public TestGame(GameSettings settings) : base(settings) { }
 
     protected override void Init() {
         base.Init();
+
+        this.Overlay = new TestOverlay("Test");
+        this.Overlay.Enabled = true;
         
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)

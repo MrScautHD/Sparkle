@@ -9,7 +9,7 @@ public class ModelProcessor : IContentProcessor {
         return ModelHelper.Load(path);
     }
     
-    public void Unload(object content) {
-        ModelHelper.Unload((Model) content);
+    public void Unload(object item) {
+        ModelHelper.Unload((Model) item);
     }
 }

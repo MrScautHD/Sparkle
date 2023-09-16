@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.scene;
 
-namespace Sparkle.csharp.entity.components; 
+namespace Sparkle.csharp.entity.component; 
 
 public class ModelRenderer : Component {
     
@@ -13,6 +13,14 @@ public class ModelRenderer : Component {
     
     private bool _drawWires;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModelRenderer"/>, setting the model, texture, material map, optional color, and wireframe rendering option.
+    /// </summary>
+    /// <param name="model">The 3D model to be rendered.</param>
+    /// <param name="texture">The texture to be applied to the model.</param>
+    /// <param name="materialMap">The type of material map to be used. Default is MaterialMapIndex.MATERIAL_MAP_ALBEDO.</param>
+    /// <param name="color">Optional color to be applied to the model. Default is white.</param>
+    /// <param name="drawWires">Optional flag to indicate whether to render the model in wireframe. Default is false.</param>
     public ModelRenderer(Model model, Texture2D texture, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = null, bool drawWires = false) {
         this._model = model;
         this._texture = texture;

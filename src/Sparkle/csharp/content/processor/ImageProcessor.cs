@@ -9,7 +9,7 @@ public class ImageProcessor : IContentProcessor {
         return ImageHelper.Load(path);
     }
 
-    public void Unload(object content) {
-        ImageHelper.Unload((Image) content);
+    public void Unload(object item) {
+        ImageHelper.Unload((Image) item);
     }
 }

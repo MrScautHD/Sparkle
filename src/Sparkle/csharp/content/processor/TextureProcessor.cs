@@ -9,7 +9,7 @@ public class TextureProcessor : IContentProcessor {
         return TextureHelper.Load(path);
     }
     
-    public void Unload(object content) {
-        TextureHelper.Unload((Texture2D) content);
+    public void Unload(object item) {
+        TextureHelper.Unload((Texture2D) item);
     }
 }

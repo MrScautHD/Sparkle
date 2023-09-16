@@ -9,7 +9,7 @@ public class WaveProcessor : IContentProcessor {
         return WavePlayer.Load(path);
     }
 
-    public void Unload(object content) {
-        WavePlayer.Unload((Wave) content);
+    public void Unload(object item) {
+        WavePlayer.Unload((Wave) item);
     }
 }

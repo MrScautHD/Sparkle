@@ -11,19 +11,27 @@ public struct Config {
     private readonly Dictionary<string, object> _dictionary;
     private readonly string _encryptKey;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Config"/>, specifying the directory, name, initial dictionary of settings, and optional encryption key.
+    /// </summary>
+    /// <param name="directory">The directory where the config file will be located.</param>
+    /// <param name="name">The name of the config file without extension.</param>
+    /// <param name="dictionary">The initial dictionary of settings to be saved in the config.</param>
+    /// <param name="encryptKey">Optional encryption key for securing the config file. Default is an empty string, meaning no encryption.</param>
     public Config(string directory, string name, Dictionary<string, object> dictionary, string encryptKey = "") {
         this.Directory = directory;
         this.Name = name;
         this.Path = FileManager.GetPath(this.Directory, $"{this.Name}.json");
         this._dictionary = dictionary;
         this._encryptKey = encryptKey;
+        this.Create();
     }
     
     /// <summary>
     /// Creates or updates a configuration file with the values in the current dictionary.
     /// </summary>
     /// <returns>The Config instance representing the created or updated configuration.</returns>
-    public Config Create() {
+    private Config Create() {
         FileManager.CreateFile(this.Directory, $"{this.Name}.json");
         
         if (FileManager.IsJsonValid(this.Path, this._encryptKey)) {

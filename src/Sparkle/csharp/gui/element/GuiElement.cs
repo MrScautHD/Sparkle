@@ -4,7 +4,7 @@ using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.window;
 using Rectangle = Raylib_cs.Rectangle;
 
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public abstract class GuiElement : IDisposable {
 
@@ -24,7 +24,17 @@ public abstract class GuiElement : IDisposable {
     protected Vector2 CalcSize { get; private set; }
 
     private Func<bool>? _clickFunc;
+    
+    public bool HasInitialized { get; private set; }
+    public bool HasDisposed { get; private set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GuiElement"/> with specified parameters, setting its name, enabled state, position, size, and optional click function.
+    /// </summary>
+    /// <param name="name">The name of the GuiElement.</param>
+    /// <param name="position">The position of the GuiElement on the screen.</param>
+    /// <param name="size">The size of the GuiElement.</param>
+    /// <param name="clickClickFunc">Optional click function to be executed when the GuiElement is clicked. Defaults to null.</param>
     public GuiElement(string name, Vector2 position, Vector2 size, Func<bool>? clickClickFunc) {
         this.Name = name;
         this.Enabled = true;
@@ -32,11 +42,13 @@ public abstract class GuiElement : IDisposable {
         this.Size = size;
         this._clickFunc = clickClickFunc!;
     }
-    
+
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
-    protected internal virtual void Init() { }
+    protected internal virtual void Init() {
+        this.HasInitialized = true;
+    }
 
     /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
@@ -86,6 +98,24 @@ public abstract class GuiElement : IDisposable {
         this.WidthScale = Window.GetRenderWidth() / (float) Game.Instance.Settings.WindowWidth;
         this.HeightScale = Window.GetRenderHeight() / (float) Game.Instance.Settings.WindowHeight;
     }
+
+    public virtual void Dispose() {
+        if (this.HasDisposed) return;
+        
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+        this.HasDisposed = true;
+    }
     
-    public virtual void Dispose() { }
+    protected virtual void Dispose(bool disposing) {
+        if (disposing) {
+            this.Enabled = false;
+        }
+    }
+    
+    public void ThrowIfDisposed() {
+        if (this.HasDisposed) {
+            throw new ObjectDisposedException(this.GetType().Name);
+        }
+    }
 }

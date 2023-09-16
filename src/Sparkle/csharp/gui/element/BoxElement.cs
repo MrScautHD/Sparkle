@@ -4,7 +4,7 @@ using Raylib_cs;
 using Sparkle.csharp.graphics.util;
 using Color = Raylib_cs.Color;
 
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public class BoxElement {}/* : GuiElement {
     

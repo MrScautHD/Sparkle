@@ -1,9 +1,9 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
-using Sparkle.csharp.gui.elements.data;
+using Sparkle.csharp.gui.element.data;
 
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public class ButtonElement : GuiElement {
     
@@ -24,6 +24,15 @@ public class ButtonElement : GuiElement {
     
     protected float CalcFontSize { get; private set; }
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ButtonElement"/> with the given parameters. Inherits from a base class and sets various properties related to button and label data.
+    /// </summary>
+    /// <param name="name">The name of the ButtonElement.</param>
+    /// <param name="buttonData">Data for initializing button-specific properties like Texture, Rotation, and Colors.</param>
+    /// <param name="labelData">Data for initializing label-specific properties like Font, Text, and Colors.</param>
+    /// <param name="position">Position of the ButtonElement on the screen.</param>
+    /// <param name="size">Optional size of the ButtonElement. Will default to the texture size if not provided and a texture exists.</param>
+    /// <param name="clickClickFunc">Optional click function to be executed when the button is clicked.</param>
     public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Vector2 position, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, position, Vector2.Zero, clickClickFunc) {
         this.Texture = buttonData.Texture;
         this.Size = size ?? (this.Texture != null ? new Vector2(this.Texture.Value.width, this.Texture.Value.height) : Vector2.Zero);

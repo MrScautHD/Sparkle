@@ -9,7 +9,7 @@ public static class OverlayManager {
     /// </summary>
     internal static void Init() {
         foreach (Overlay overlay in Overlays) {
-            if (overlay.Enabled) {
+            if (!overlay.HasInitialized) {
                 overlay.Init();
             }
         }

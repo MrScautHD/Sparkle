@@ -1,5 +1,5 @@
 using System.Numerics;
-using Sparkle.csharp.entity.components;
+using Sparkle.csharp.entity.component;
 
 namespace Sparkle.csharp.entity; 
 
@@ -17,7 +17,14 @@ public abstract class Entity : IDisposable {
     private readonly Dictionary<Type, Component> _components;
 
     public bool HasInitialized { get; private set; }
+    public bool HasDisposed { get; private set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Entity"/>, setting its position in 3D space.
+    /// Also initializes the entity's scale to 1,1,1 (Vector3.One) and rotation to identity (Quaternion.Identity).
+    /// Additionally, initializes an empty dictionary to hold components associated with the entity.
+    /// </summary>
+    /// <param name="position">Initial position of the entity in 3D space, specified as a Vector3.</param>
     public Entity(Vector3 position) {
         this.Position = position;
         this.Scale = Vector3.One;
@@ -69,6 +76,7 @@ public abstract class Entity : IDisposable {
     /// </summary>
     /// <param name="component">The component to be added.</param>
     public void AddComponent(Component component) {
+        this.ThrowIfDisposed();
         component.Entity = this;
 
         if (this.HasInitialized) {
@@ -83,6 +91,7 @@ public abstract class Entity : IDisposable {
     /// </summary>
     /// <param name="component">The component to be removed.</param>
     public void RemoveComponent(Component component) {
+        this.ThrowIfDisposed();
         this._components.Remove(component.GetType());
         component.Dispose();
     }
@@ -93,16 +102,33 @@ public abstract class Entity : IDisposable {
     /// <typeparam name="T">The type of component to retrieve.</typeparam>
     /// <returns>The component of the specified type.</returns>
     public T GetComponent<T>() where T : Component {
+        this.ThrowIfDisposed();
         if (!this._components.TryGetValue(typeof(T), out Component? component)) {
             Logger.Error($"Unable to locate Component for type [{typeof(T)}]!");
         }
 
         return (T) component!;
     }
-
-    public void Dispose() {
-        foreach (Component component in this._components.Values) {
-            component.Dispose();
+    
+    public virtual void Dispose() {
+        if (this.HasDisposed) return;
+        
+        this.Dispose(true);
+        GC.SuppressFinalize(this);
+        this.HasDisposed = true;
+    }
+    
+    protected virtual void Dispose(bool disposing) {
+        if (disposing) {
+            foreach (Component component in this._components.Values) {
+                component.Dispose();
+            }
+        }
+    }
+    
+    public void ThrowIfDisposed() {
+        if (this.HasDisposed) {
+            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }

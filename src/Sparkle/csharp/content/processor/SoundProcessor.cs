@@ -9,7 +9,7 @@ public class SoundProcessor : IContentProcessor {
         return SoundPlayer.Load(path);
     }
 
-    public void Unload(object content) {
-        SoundPlayer.Unload((Sound) content);
+    public void Unload(object item) {
+        SoundPlayer.Unload((Sound) item);
     }
 }

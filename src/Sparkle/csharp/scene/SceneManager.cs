@@ -7,14 +7,6 @@ public static class SceneManager {
     public static Scene? ActiveScene { get; private set; }
     
     public static Camera? MainCamera { get; private set; }
-    
-    /// <summary>
-    /// Sets the default scene without disposing of the previous scene or initializing the new scene.
-    /// </summary>
-    /// <param name="scene">The scene to be set as the default scene.</param>
-    internal static void SetDefaultScene(Scene? scene) {
-        ActiveScene = scene;
-    }
 
     /// <summary>
     /// Initializes the current scene and sets the main camera if available.
@@ -44,6 +36,14 @@ public static class SceneManager {
     /// </summary>
     internal static void Draw() {
         ActiveScene?.Draw();
+    }
+    
+    /// <summary>
+    /// Sets the default scene without disposing of the previous scene or initializing the new scene.
+    /// </summary>
+    /// <param name="scene">The scene to be set as the default scene.</param>
+    internal static void SetDefaultScene(Scene? scene) {
+        ActiveScene = scene;
     }
     
     /// <summary>

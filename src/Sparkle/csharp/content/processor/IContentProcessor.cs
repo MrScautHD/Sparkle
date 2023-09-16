@@ -1,4 +1,4 @@
-namespace Sparkle.csharp.content; 
+namespace Sparkle.csharp.content.processor; 
 
 public interface IContentProcessor {
     
@@ -7,11 +7,11 @@ public interface IContentProcessor {
     /// </summary>
     /// <param name="path">The path to the content item.</param>
     /// <returns>The loaded content item as an object.</returns>
-    public object Load(string path);
+    object Load(string path);
     
     /// <summary>
     /// Unloads a content item.
     /// </summary>
     /// <param name="item">The content item to unload.</param>
-    public void Unload(object item);
+    void Unload(object item);
 }

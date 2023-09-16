@@ -9,7 +9,7 @@ public class MusicProcessor : IContentProcessor {
         return MusicPlayer.LoadStream(path);
     }
 
-    public void Unload(object content) {
-        MusicPlayer.UnloadStream((Music) content);
+    public void Unload(object item) {
+        MusicPlayer.UnloadStream((Music) item);
     }
 }

@@ -1,8 +1,8 @@
 using System.Numerics;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
-using Sparkle.csharp.gui.elements;
-using Sparkle.csharp.gui.elements.data;
+using Sparkle.csharp.gui.element;
+using Sparkle.csharp.gui.element.data;
 using Sparkle.csharp.window;
 using Color = Raylib_cs.Color;
 

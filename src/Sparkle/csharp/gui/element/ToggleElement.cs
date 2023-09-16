@@ -1,9 +1,9 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
-using Sparkle.csharp.gui.elements.data;
+using Sparkle.csharp.gui.element.data;
 
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public class ToggleElement : GuiElement {
     
@@ -30,6 +30,15 @@ public class ToggleElement : GuiElement {
     
     public bool IsToggled { get; private set; }
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ToggleElement"/> with the given parameters. Inherits from a base class and sets various properties related to toggle and label data.
+    /// </summary>
+    /// <param name="name">The name of the ToggleElement.</param>
+    /// <param name="toggleData">Data for initializing toggle-specific properties like Textures, Rotation, and Colors.</param>
+    /// <param name="labelData">Data for initializing label-specific properties like Font, Text, and Colors.</param>
+    /// <param name="position">Position of the ToggleElement on the screen.</param>
+    /// <param name="size">Optional size of the ToggleElement. Will default to the texture size if not provided and a texture exists.</param>
+    /// <param name="clickClickFunc">Optional click function to be executed when the toggle is clicked.</param>
     public ToggleElement(string name, ToggleData toggleData, LabelData labelData, Vector2 position, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, position, Vector2.Zero, clickClickFunc) {
         this.Texture = toggleData.Texture;
         this.ToggledTexture = toggleData.ToggledTexture;

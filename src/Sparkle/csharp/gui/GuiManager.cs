@@ -32,7 +32,7 @@ public static class GuiManager {
     /// </summary>
     /// <param name="gui">The GUI to be set as the active GUI.</param>
     public static void SetGui(Gui? gui) {
-        ActiveGui?.Dispose();
+        ActiveGui?.Dispose(); // CHECK IF DISPOSED IF YES RETURN + LOGGER.ERROR "This GUI is already disposed"!
         ActiveGui = gui;
         
         if (ActiveGui != null && !ActiveGui.HasInitialized) {

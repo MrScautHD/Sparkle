@@ -9,7 +9,7 @@ public class FontProcessor : IContentProcessor {
         return FontHelper.Load(path);
     }
 
-    public void Unload(object content) {
-        FontHelper.Unload((Font) content);
+    public void Unload(object item) {
+        FontHelper.Unload((Font) item);
     }
 }

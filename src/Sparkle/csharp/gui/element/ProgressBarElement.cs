@@ -1,4 +1,4 @@
-namespace Sparkle.csharp.gui.elements; 
+namespace Sparkle.csharp.gui.element; 
 
 public class ProgressBarElement {
     
