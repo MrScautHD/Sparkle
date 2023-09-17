@@ -15,7 +15,7 @@ public class TestGame : Game {
         base.Init();
 
         this.Overlay = new TestOverlay("Test");
-        this.Overlay.Enabled = true;
+        this.Overlay.Enabled = false;
         
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)

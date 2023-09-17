@@ -30,7 +30,13 @@ public class TestScene : Scene {
         this.AddEntity(camera);
         
         // ADD TEST ENTITY
-        this.AddEntity(new TestEntity(Vector3.Zero));
+
+        for (int i = 0; i < 1000; i++) {
+            this.AddEntity(new TestEntity(new Vector3(0, i, 0)));
+        }
+        
+        //this.AddEntity(new TestEntity(new Vector3(0, 20, 0)));
+        this.AddEntity(new GroundEntity(Vector3.Zero));
     }
 
     protected override void Update() {

@@ -38,7 +38,7 @@ public class Game : IDisposable {
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
-        this._delay = 1.0 / settings.FixedTimeStep;
+        this._delay = 1.0F / settings.FixedTimeStep;
     }
     
     /// <summary>
@@ -118,7 +118,6 @@ public class Game : IDisposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected virtual void Update() {
-        this.Simulation.Update(this.Settings.FixedTimeStep, 1);
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
@@ -138,6 +137,7 @@ public class Game : IDisposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
+        this.Simulation.Update(1.0F / this.Settings.FixedTimeStep, 1);
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
         OverlayManager.FixedUpdate();
@@ -208,6 +208,7 @@ public class Game : IDisposable {
             AudioDevice.Close();
             GuiManager.ActiveGui?.Dispose();
             SceneManager.ActiveScene?.Dispose();
+            this.Simulation.Dispose();
         }
     }
     
