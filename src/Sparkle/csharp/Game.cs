@@ -115,9 +115,6 @@ public class Game : IDisposable {
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
-        foreach (Overlay overlay in OverlayManager.Overlays) {
-            overlay.Dispose();
-        }
     }
 
     /// <summary>
@@ -185,15 +182,15 @@ public class Game : IDisposable {
             if (this.Settings.IconPath == string.Empty) {
                 ImageHelper.Unload(this.Logo);
             }
-        
-            foreach (Overlay overlay in OverlayManager.Overlays) {
-                overlay.Dispose();
+
+            for (int i = 0; i < OverlayManager.Overlays.Count; i++) {
+                OverlayManager.Overlays[i].Dispose();
             }
 
             this.Content.Dispose();
-            GuiManager.ActiveGui?.Dispose();
-            AudioDevice.Close();
             Window.Close();
+            AudioDevice.Close();
+            GuiManager.ActiveGui?.Dispose();
             SceneManager.ActiveScene?.Dispose();
         }
     }

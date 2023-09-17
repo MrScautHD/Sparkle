@@ -70,7 +70,7 @@ public abstract class Overlay : IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (disposing) {
             this._enabled = false;
-            OverlayManager.Overlays.Remove(this); // TODO IDK
+            OverlayManager.Overlays.Remove(this);
         }
     }
     
