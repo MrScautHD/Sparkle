@@ -51,6 +51,15 @@ public abstract class Entity : IDisposable {
             component.Update();
         }
     }
+
+    /// <summary>
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void AfterUpdate() {
+        foreach (Component component in this._components.Values) {
+            component.AfterUpdate();
+        }
+    }
     
     /// <summary>
     /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.

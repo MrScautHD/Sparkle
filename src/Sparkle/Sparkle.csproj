@@ -31,4 +31,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="csharp\physics\shapes\" />
+  </ItemGroup>
 </Project>

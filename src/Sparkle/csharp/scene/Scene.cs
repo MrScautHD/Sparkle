@@ -40,6 +40,15 @@ public abstract class Scene : IDisposable {
     }
     
     /// <summary>
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void AfterUpdate() {
+        foreach (Entity entity in this._entities.Values) {
+            entity.AfterUpdate();
+        }
+    }
+    
+    /// <summary>
     /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
@@ -141,7 +150,7 @@ public abstract class Scene : IDisposable {
         }
     }
     
-    public void ThrowIfDisposed() {
+    protected void ThrowIfDisposed() {
         if (this.HasDisposed) {
             throw new ObjectDisposedException(this.GetType().Name);
         }

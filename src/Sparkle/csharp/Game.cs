@@ -6,6 +6,7 @@ using Sparkle.csharp.graphics;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
+using Sparkle.csharp.physics;
 using Sparkle.csharp.scene;
 using Sparkle.csharp.window;
 
@@ -23,6 +24,7 @@ public class Game : IDisposable {
     public bool ShouldClose;
     
     public ContentManager Content { get; private set; }
+    public Simulation Simulation { get; private set; }
     
     public Image Logo { get; private set; }
     
@@ -75,6 +77,9 @@ public class Game : IDisposable {
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
         
+        Logger.Debug("Initialize physics...");
+        this.Simulation = new Simulation(this.Settings.PhysicsSettings);
+        
         Logger.Debug("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
         
@@ -84,6 +89,7 @@ public class Game : IDisposable {
         Logger.Debug("Run ticks...");
         while (!this.ShouldClose && !Window.ShouldClose()) {
             this.Update();
+            this.AfterUpdate();
             
             this._timer += Time.Delta;
             while (this._timer >= this._delay) {
@@ -112,13 +118,23 @@ public class Game : IDisposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected virtual void Update() {
+        this.Simulation.Update(this.Settings.FixedTimeStep, 1);
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
     }
 
     /// <summary>
-    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected virtual void AfterUpdate() {
+        SceneManager.AfterUpdate();
+        GuiManager.AfterUpdate();
+        OverlayManager.AfterUpdate();
+    }
+
+    /// <summary>
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
@@ -195,7 +211,7 @@ public class Game : IDisposable {
         }
     }
     
-    public void ThrowIfDisposed() {
+    protected void ThrowIfDisposed() {
         if (this.HasDisposed) {
             throw new ObjectDisposedException(this.GetType().Name);
         }

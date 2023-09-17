@@ -35,6 +35,15 @@ public abstract class Gui : IDisposable {
             element.Update();
         }
     }
+    
+    /// <summary>
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void AfterUpdate() {
+        foreach (GuiElement element in this._elements.Values) {
+            element.AfterUpdate();
+        }
+    }
 
     /// <summary>
     /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
@@ -122,7 +131,7 @@ public abstract class Gui : IDisposable {
         }
     }
     
-    public void ThrowIfDisposed() {
+    protected void ThrowIfDisposed() {
         if (this.HasDisposed) {
             throw new ObjectDisposedException(this.GetType().Name);
         }

@@ -20,6 +20,11 @@ public abstract class Component : IDisposable {
     protected internal virtual void Update() { }
     
     /// <summary>
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void AfterUpdate() { }
+    
+    /// <summary>
     /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="Update"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
