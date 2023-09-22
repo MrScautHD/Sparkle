@@ -27,6 +27,12 @@ dotnet add package Sparkle --version [VERSION]
 ==================
 - [OpenGl](https://www.opengl.org/)
 
+Soon...
+==================
+- [Vulkan](https://www.vulkan.org/)
+- [Direct3D 11](https://learn.microsoft.com/de-de/windows/win32/direct3d)
+- [Metal](https://developer.apple.com/metal/)
+
 💡 Features
 ==================
 `Audio`
