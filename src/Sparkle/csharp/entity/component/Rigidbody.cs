@@ -5,17 +5,22 @@ namespace Sparkle.csharp.entity.component;
 
 public class Rigidbody : Component {
     
+    public BodyInterface BodyInterface => Game.Instance.Simulation.PhysicsSystem.BodyInterface;
+    
     public Shape Shape { get; private set; }
     public MotionType MotionType { get; private set; }
     public BodyID BodyId { get; private set; }
     
-    public BodyInterface BodyInterface => Game.Instance.Simulation.PhysicsSystem.BodyInterface;
+    public float Friction;
+    public float Restitution;
     
     private ObjectLayer _objectLayer;
     
-    public Rigidbody(Shape shape, MotionType type) {
+    public Rigidbody(Shape shape, MotionType type, float friction = 0, float restitution = 0) {
         this.Shape = shape;
         this.MotionType = type;
+        this.Friction = friction;
+        this.Restitution = restitution;
     }
 
     protected internal override void Init() {
@@ -36,6 +41,8 @@ public class Rigidbody : Component {
         BodyCreationSettings settings = new BodyCreationSettings(this.Shape, this.Entity.Position, this.Entity.Rotation, this.MotionType, this._objectLayer);
 
         Body body = this.BodyInterface.CreateBody(settings);
+        body.Friction = this.Friction;
+        body.Restitution = this.Restitution;
         
         this.BodyInterface.AddBody(body, Activation.Activate);
         this.BodyId = body.ID;

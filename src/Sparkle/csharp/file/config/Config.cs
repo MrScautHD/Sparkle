@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Sparkle.csharp.file.config; 
 
-public struct Config {
+public class Config {
     
     public string Directory { get; }
     public string Name { get; }
@@ -30,8 +30,7 @@ public struct Config {
     /// <summary>
     /// Creates or updates a configuration file with the values in the current dictionary.
     /// </summary>
-    /// <returns>The Config instance representing the created or updated configuration.</returns>
-    private Config Create() {
+    private void Create() {
         FileManager.CreateFile(this.Directory, $"{this.Name}.json");
         
         if (FileManager.IsJsonValid(this.Path, this._encryptKey)) {
@@ -60,8 +59,6 @@ public struct Config {
             FileManager.WriteJson(this._dictionary, this.Path, this._encryptKey);
             Logger.Warn($"Re/Wrote {this.Name}");
         }
-
-        return this;
     }
     
     /// <summary>

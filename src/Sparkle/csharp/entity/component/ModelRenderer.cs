@@ -42,10 +42,10 @@ public class ModelRenderer : Component {
         Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
         
         if (this._drawWires) {
-            Raylib.DrawModelWiresEx(this._model, this.Entity.Position, axis, angle, this.Entity.Scale, this._color);
+            Raylib.DrawModelWiresEx(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
         }
         else {
-            Raylib.DrawModelEx(this._model, this.Entity.Position, axis, angle, this.Entity.Scale, Color.WHITE);
+            Raylib.DrawModelEx(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
         }
         
         SceneManager.MainCamera.EndMode3D();
