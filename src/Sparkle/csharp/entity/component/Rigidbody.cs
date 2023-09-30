@@ -1,11 +1,13 @@
 using JoltPhysicsSharp;
+using Sparkle.csharp.physics;
 using Sparkle.csharp.physics.layers;
 
 namespace Sparkle.csharp.entity.component; 
 
 public class Rigidbody : Component {
     
-    public BodyInterface BodyInterface => Game.Instance.Simulation.PhysicsSystem.BodyInterface;
+    public Simulation Simulation => Game.Instance.Simulation;
+    public BodyInterface BodyInterface => Simulation.PhysicsSystem.BodyInterface;
     
     public Shape Shape { get; private set; }
     public MotionType MotionType { get; private set; }

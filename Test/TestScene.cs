@@ -31,14 +31,14 @@ public class TestScene : Scene {
         
         // ADD TEST ENTITY
 
-        
+        /*
         for (int i = 0; i < 1000; i++) {
             this.AddEntity(new TestEntity(new Vector3(0, i, 0)));
-        }
+        }*/
 
-        //TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
+        TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
+        this.AddEntity(entity);
         
-        //this.AddEntity(entity);
         this.AddEntity(new GroundEntity(Vector3.Zero));
     }
 
