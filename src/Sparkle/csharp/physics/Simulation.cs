@@ -1,3 +1,4 @@
+using System.Numerics;
 using JoltPhysicsSharp;
 using Sparkle.csharp.physics.layers;
 
@@ -16,6 +17,10 @@ public class Simulation : IDisposable {
     private ObjectVsBroadPhaseLayerFilterImpl _broadPhaseLayerFilter;
     private ObjectLayerPairFilterImpl _objectLayerPairFilter;
 
+    private BroadPhaseLayerFilterImpl _broadPhaseLayerFilterImpl;
+    private ObjectLayerFilterImpl _objectLayerFilterImpl;
+    private BodyFilterImpl _bodyFilterImpl;
+
     public Simulation(PhysicsSettings settings) {
         Foundation.Init();
         
@@ -28,6 +33,10 @@ public class Simulation : IDisposable {
         this._broadPhaseLayerFilter = new ObjectVsBroadPhaseLayerFilterImpl();
         this._objectLayerPairFilter = new ObjectLayerPairFilterImpl();
         
+        this._broadPhaseLayerFilterImpl = new BroadPhaseLayerFilterImpl();
+        this._objectLayerFilterImpl = new ObjectLayerFilterImpl();
+        this._bodyFilterImpl = new BodyFilterImpl();
+        
         this.PhysicsSystem = new PhysicsSystem();
         this.PhysicsSystem.Init(settings.MaxBodies, settings.NumBodyMutexes, settings.MaxBodyPairs, settings.MaxContactConstraints, this._broadPhaseLayer, this._broadPhaseLayerFilter, this._objectLayerPairFilter);
         this.PhysicsSystem.Gravity = settings.Gravity;
@@ -36,6 +45,16 @@ public class Simulation : IDisposable {
 
     public void Update(float timeStep, int collisionSteps) {
         this.PhysicsSystem.Update(timeStep, collisionSteps, this._allocator, this._jobSystem);
+    }
+
+    public bool RayCast(Vector3 origin, out RayCastResult result, Vector3 direction, float distance) {
+        result = RayCastResult.Default;
+
+        if (this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this._broadPhaseLayerFilterImpl, this._objectLayerFilterImpl, this._bodyFilterImpl)) {
+            return true;
+        }
+
+        return false;
     }
     
     public void Dispose() {
@@ -52,7 +71,10 @@ public class Simulation : IDisposable {
             this._jobSystem.Dispose();
             this._broadPhaseLayer.Dispose();
             this._broadPhaseLayerFilter.Dispose();
+            this._broadPhaseLayerFilterImpl.Dispose();
+            this._objectLayerFilterImpl.Dispose();
             this._objectLayerPairFilter.Dispose();
+            this._bodyFilterImpl.Dispose();
             this.PhysicsSystem.Dispose();
             Foundation.Shutdown();
         }

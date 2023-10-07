@@ -8,6 +8,6 @@ namespace Test;
 public class GroundEntity : Entity {
 
     public GroundEntity(Vector3 position) : base(position) {
-        this.AddComponent(new Rigidbody(new BoxShape(new Vector3(100000, 0, 100000)), MotionType.Static));
+        this.AddComponent(new Rigidbody(new BoxShape(new Vector3(100000, 1, 100000)), MotionType.Static));
     }
 }

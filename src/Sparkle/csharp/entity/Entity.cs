@@ -135,7 +135,7 @@ public abstract class Entity : IDisposable {
         }
     }
     
-    public void ThrowIfDisposed() {
+    protected void ThrowIfDisposed() {
         if (this.HasDisposed) {
             throw new ObjectDisposedException(this.GetType().Name);
         }

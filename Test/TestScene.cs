@@ -30,7 +30,7 @@ public class TestScene : Scene {
         this.AddEntity(camera);
         
         // ADD TEST ENTITY
-
+        
         /*
         for (int i = 0; i < 1000; i++) {
             this.AddEntity(new TestEntity(new Vector3(0, i, 0)));

@@ -69,6 +69,7 @@ public class Rigidbody : Component {
         if (disposing) {
             this.BodyInterface.RemoveBody(this.BodyId);
             this.BodyInterface.DestroyBody(this.BodyId);
+            this.Shape.Dispose();
         }
     }
 }

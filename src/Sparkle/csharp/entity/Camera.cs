@@ -68,10 +68,10 @@ public class Camera : Entity {
             
             case CameraMode.CAMERA_ORBITAL:
                 Matrix4x4 rotation = Raymath.MatrixRotate(this.Up, -1.5F * Time.Delta);
-                Vector3 view = Vector3.Subtract(this.Position, this.Target);
+                Vector3 view = this.Position - this.Target;
                 Vector3 pos = Vector3.Transform(view, rotation);
-                this.Position = Vector3.Add(this.Target, pos);
-
+                this.Position = this.Target + pos;
+                
                 if (GuiManager.ActiveGui == null) {
                     this.MoveToTarget(Input.GetMouseWheelMove());
                 }
