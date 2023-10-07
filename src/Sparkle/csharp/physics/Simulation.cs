@@ -49,12 +49,8 @@ public class Simulation : IDisposable {
 
     public bool RayCast(Vector3 origin, out RayCastResult result, Vector3 direction, float distance) {
         result = RayCastResult.Default;
-
-        if (this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this._broadPhaseLayerFilterImpl, this._objectLayerFilterImpl, this._bodyFilterImpl)) {
-            return true;
-        }
-
-        return false;
+        
+        return this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this._broadPhaseLayerFilterImpl, this._objectLayerFilterImpl, this._bodyFilterImpl);
     }
     
     public void Dispose() {
