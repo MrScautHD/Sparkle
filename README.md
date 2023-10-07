@@ -21,7 +21,7 @@ dotnet add package Sparkle --version [VERSION]
 ==============================================
 - [RayLib](https://www.raylib.com/)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
-- [BepuPhysics](https://www.nuget.org/packages/BepuPhysics)
+- [JoltPhysicsSharp](https://www.nuget.org/packages/JoltPhysicsSharp)
 
 🌋 Graphic Engine
 ==================
@@ -33,22 +33,9 @@ Soon...
 - [Direct3D 11](https://learn.microsoft.com/de-de/windows/win32/direct3d)
 - [Metal](https://developer.apple.com/metal/)
 
-💡 Features
+💡 Features [TAGS]
 ==================
-`Audio`
-`Texture`
-`Model`
-`Font`
-`3D Camera`
-`Material`
-`Overlay`
-`GUI`
-`Scene`
-`Entity`
-`Directed/Pointed Light`
-`Content Manager`
-`Config`
-`Physic`
+`OpenGL` `Angle` `Game Engine` `Renderer` `Graphics` `C#11` `Net7` `dotnet` `Modern` `Sparkle` `2D` `3D` `Raylib` `Fast` `Physics` `XNA` `Cross-platform` `Audio`
 
 ## 🖥️ Example
 ```csharp
@@ -100,7 +87,7 @@ public class GameTest : Game {
         
         // Draw circle if "A" down and way more simple options to draw!
         if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
-            this.Graphics.ShapeRenderer.DrawCircle(new Vector2(50, 50), 20, Color.BLUE);
+            ShapeHelper.DrawCircle(new Vector2(50, 50), 20, Color.BLUE);
         }
     }
 }
