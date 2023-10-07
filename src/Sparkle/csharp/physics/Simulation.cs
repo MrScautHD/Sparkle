@@ -63,6 +63,7 @@ public class Simulation : IDisposable {
     
     protected virtual void Dispose(bool disposing) {
         if (disposing) {
+            Foundation.Shutdown();
             this._allocator.Dispose();
             this._jobSystem.Dispose();
             this._broadPhaseLayer.Dispose();
@@ -72,7 +73,6 @@ public class Simulation : IDisposable {
             this._objectLayerPairFilter.Dispose();
             this._bodyFilterImpl.Dispose();
             this.PhysicsSystem.Dispose();
-            Foundation.Shutdown();
         }
     }
 }
