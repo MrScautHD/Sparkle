@@ -18,18 +18,14 @@ public class TestScene : Scene {
 
     protected override void Init() {
 
-        // CREATE TRANSFORM
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
-
-        // CREATE CUSTOM CAMERA
-        Camera camera = new Camera(pos, 70, CameraMode.CAMERA_ORBITAL) {
+        Cam3D cam3D = new Cam3D(pos, 70, CameraMode.CAMERA_ORBITAL) {
             Target = new Vector3(0, 0, 0)
         };
-
-        // ADD OBJECT TO THE SCENE
-        this.AddEntity(camera);
+        this.AddEntity(cam3D);
         
-        // ADD TEST ENTITY
+        Cam2D cam2D = new Cam2D(new Vector2(10, 10), new Vector2(10, 10), Cam2D.CameraMode.Normal);
+        this.AddEntity(cam2D);
         
         /*
         for (int i = 0; i < 1000; i++) {
@@ -58,7 +54,7 @@ public class TestScene : Scene {
         base.Draw();
         
         // BEGIN 3D
-        SceneManager.MainCamera!.BeginMode3D();
+        /*SceneManager.MainCamera!.BeginMode3D();
 
         // DRAW GIRD
         ModelHelper.DrawGrid(10, 1);
@@ -75,6 +71,18 @@ public class TestScene : Scene {
         ModelHelper.DrawCube(SceneManager.MainCamera.Target, 2, 2, 2, Color.RED);
 
         // END 3D
-        SceneManager.MainCamera.EndMode3D();
+        SceneManager.MainCamera.EndMode3D();*/
+
+        Cam2D cam2D = (Cam2D) this.GetEntity(1);
+
+        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+            cam2D.Target.X += 10.0F * Time.Delta;
+        }
+        
+        cam2D.BeginMode2D();
+        
+        ShapeHelper.DrawRectangle((int) cam2D.Target.X, (int) cam2D.Target.Y, 5, 5, Color.WHITE);
+        
+        cam2D.EndMode2D();
     }
 }

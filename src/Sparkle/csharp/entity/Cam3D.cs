@@ -5,7 +5,7 @@ using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
-public class Camera : Entity {
+public class Cam3D : Entity {
     
     public Matrix4x4 View { get; private set; }
     public Matrix4x4 Projection { get; private set; }
@@ -30,14 +30,14 @@ public class Camera : Entity {
     public Vector3 AngleRot => this._angleRot;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Camera"/> with the specified position, field of view (fov), and camera mode.
+    /// Initializes a new instance of the <see cref="Cam3D"/> with the specified position, field of view (fov), and camera mode.
     /// Also sets various camera properties such as tag, projection type, aspect ratio, near/far planes, and sensitivity.
     /// Finally, it initializes the View and Projection matrices for the camera.
     /// </summary>
     /// <param name="position">Initial position of the camera in 3D space, as a Vector3.</param>
     /// <param name="fov">Field of view angle, in degrees, in the y-axis.</param>
     /// <param name="mode">Camera movement mode, default is CameraMode.CAMERA_FREE.</param>
-    public Camera(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_FREE) : base(position) {
+    public Cam3D(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_FREE) : base(position) {
         this.Tag = "camera";
         this.ProjectionType = CameraProjection.CAMERA_PERSPECTIVE;
         this.Fov = fov;

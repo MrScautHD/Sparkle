@@ -10,7 +10,7 @@ public static class SystemInfo {
     /// <summary>
     /// Gets the total available memory size in gigabytes (GB).
     /// </summary>
-    public static int MemorySize => (int) (GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1048576.0F) / 1000;
+    public static int MemorySize => (int) Math.Ceiling(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (1024.0F * 1024.0F * 1024.0F));
 
     /// <summary>
     /// Gets the number of available processor threads.
