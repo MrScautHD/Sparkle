@@ -62,7 +62,7 @@ public class GameTest : Game {
         Logger.Error("Error text!");
 
         // Simple time.
-        double deltaTime = Time.DeltaTime;
+        float deltaTime = Time.DeltaTime;
         double totalTime = Time.TotalTime;
         
         // Stop the time!
@@ -78,7 +78,7 @@ public class GameTest : Game {
         this.OpenURL("https://www.youtube.com/");
         
         // Take a screenshot
-        this.Window.TakeScreenshot("path");
+        Window.TakeScreenshot("path");
     }
 
     // Just runs when !Game.Headless [Support for servers!]
