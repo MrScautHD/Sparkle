@@ -12,7 +12,7 @@ using Sparkle.csharp.window;
 
 namespace Sparkle.csharp; 
 
-public class Game : IDisposable {
+public class Game : Disposable {
     
     public static Game Instance { get; private set; }
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
@@ -29,7 +29,6 @@ public class Game : IDisposable {
     public Image Logo { get; private set; }
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Game"/>, setting the static Instance to this object, initializing game settings, and calculating the delay based on the FixedTimeStep.
@@ -46,8 +45,6 @@ public class Game : IDisposable {
     /// </summary>
     /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
     public void Run(Scene? scene) {
-        this.ThrowIfDisposed();
-        
         if (this.Settings.LogDirectory != string.Empty) {
             Logger.CreateLogFile(this.Settings.LogDirectory);
         }
@@ -164,7 +161,6 @@ public class Game : IDisposable {
     /// </summary>
     /// <returns>The current frames per second (FPS) value.</returns>
     public int GetFps() {
-        this.ThrowIfDisposed();
         return Raylib.GetFPS();
     }
 
@@ -173,27 +169,15 @@ public class Game : IDisposable {
     /// </summary>
     /// <param name="fps">The desired target frames per second (FPS) value.</param>
     public void SetTargetFps(int fps) {
-        this.ThrowIfDisposed();
         if (fps > 0) {
             Raylib.SetTargetFPS(fps);
         }
     }
 
     /// <inheritdoc cref="Raylib.OpenURL(string)"/>
-    public void OpenUrl(string url) {
-        this.ThrowIfDisposed();
-        Raylib.OpenURL(url);
-    }
+    public void OpenUrl(string url) => Raylib.OpenURL(url);
 
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
-
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             if (this.Settings.IconPath == string.Empty) {
                 ImageHelper.Unload(this.Logo);
@@ -209,12 +193,6 @@ public class Game : IDisposable {
             GuiManager.ActiveGui?.Dispose();
             SceneManager.ActiveScene?.Dispose();
             this.Simulation.Dispose();
-        }
-    }
-    
-    protected void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }

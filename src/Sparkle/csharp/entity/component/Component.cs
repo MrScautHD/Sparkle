@@ -1,11 +1,10 @@
 namespace Sparkle.csharp.entity.component; 
 
-public abstract class Component : IDisposable {
+public abstract class Component : Disposable {
     
     protected internal Entity Entity { get; internal set; }
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
 
     /// <summary>
     /// Used for Initializes objects.
@@ -34,20 +33,4 @@ public abstract class Component : IDisposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal virtual void Draw() { }
-
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
-    
-    protected virtual void Dispose(bool disposing) { }
-    
-    public void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
-        }
-    }
 }

@@ -1,12 +1,11 @@
 namespace Sparkle.csharp.overlay; 
 
-public abstract class Overlay : IDisposable {
+public abstract class Overlay : Disposable {
     
     public readonly string Name;
     private bool _enabled;
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Overlay"/>, setting its name and adding it to the OverlayManager's list of Overlays.
@@ -26,7 +25,6 @@ public abstract class Overlay : IDisposable {
         get => this._enabled;
         
         set {
-            this.ThrowIfDisposed();
             this._enabled = value;
         
             if (!this.HasInitialized) {
@@ -63,25 +61,11 @@ public abstract class Overlay : IDisposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal abstract void Draw();
-
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
     
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             this._enabled = false;
             OverlayManager.Overlays.Remove(this);
-        }
-    }
-    
-    protected void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }

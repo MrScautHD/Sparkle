@@ -6,7 +6,7 @@ using Rectangle = Raylib_cs.Rectangle;
 
 namespace Sparkle.csharp.gui.element; 
 
-public abstract class GuiElement : IDisposable {
+public abstract class GuiElement : Disposable {
 
     public readonly string Name;
     public bool Enabled;
@@ -26,7 +26,6 @@ public abstract class GuiElement : IDisposable {
     private Func<bool>? _clickFunc;
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GuiElement"/> with specified parameters, setting its name, enabled state, position, size, and optional click function.
@@ -103,24 +102,10 @@ public abstract class GuiElement : IDisposable {
         this.WidthScale = Window.GetRenderWidth() / (float) Game.Instance.Settings.WindowWidth;
         this.HeightScale = Window.GetRenderHeight() / (float) Game.Instance.Settings.WindowHeight;
     }
-
-    public virtual void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
     
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             this.Enabled = false;
-        }
-    }
-    
-    public void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }

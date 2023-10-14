@@ -4,11 +4,10 @@ using Sparkle.csharp.physics.layers;
 
 namespace Sparkle.csharp.physics; 
 
-public class Simulation : IDisposable {
+public class Simulation : Disposable {
 
     public PhysicsSystem PhysicsSystem { get; private set; }
     public PhysicsSettings Settings { get; private set; }
-    public bool HasDisposed { get; private set; }
     
     private TempAllocator _allocator;
     private JobSystemThreadPool _jobSystem;
@@ -53,15 +52,7 @@ public class Simulation : IDisposable {
         return this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this._broadPhaseLayerFilterImpl, this._objectLayerFilterImpl, this._bodyFilterImpl);
     }
     
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
-    
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             Foundation.Shutdown();
             this._allocator.Dispose();

@@ -3,15 +3,13 @@ using Sparkle.csharp.content.processor;
 
 namespace Sparkle.csharp.content; 
 
-public class ContentManager : IDisposable {
+public class ContentManager : Disposable {
 
     private readonly string _contentDirectory;
 
     private readonly List<object> _content;
     private readonly Dictionary<Type, IContentProcessor> _processors;
     
-    public bool HasDisposed { get; private set; }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ContentManager"/>, setting the content directory and initializing internal collections and processors.
     /// </summary>
@@ -36,7 +34,6 @@ public class ContentManager : IDisposable {
     /// <param name="type">The type of content for which the processor will be used.</param>
     /// <param name="processor">The content processor to add.</param>
     public void AddProcessors(Type type, IContentProcessor processor) {
-        this.ThrowIfDisposed();
         this._processors.Add(type, processor);
     }
 
@@ -49,7 +46,6 @@ public class ContentManager : IDisposable {
     /// or null if a matching processor is not found.
     /// </returns>
     public IContentProcessor TryGetProcessor(Type type) {
-        this.ThrowIfDisposed();
         if (!this._processors.TryGetValue(type, out IContentProcessor? processor)) {
             Logger.Error($"Unable to locate ContentProcessor for type [{type}]!");
         }
@@ -64,7 +60,6 @@ public class ContentManager : IDisposable {
     /// <param name="path">The path to the content item.</param>
     /// <returns>The loaded content item.</returns>
     public T Load<T>(string path) {
-        this.ThrowIfDisposed();
         T item = (T) this.TryGetProcessor(typeof(T)).Load(this._contentDirectory + path);
 
         this._content.Add(item!);
@@ -77,7 +72,6 @@ public class ContentManager : IDisposable {
     /// <typeparam name="T">The type of content item to unload.</typeparam>
     /// <param name="item">The content item to unload.</param>
     public void Unload<T>(T item) {
-        this.ThrowIfDisposed();
         if (this._content.Contains(item!)) {
             this.TryGetProcessor(typeof(T)).Unload(item!);
             this._content.Remove(item!);
@@ -87,26 +81,12 @@ public class ContentManager : IDisposable {
         }
     }
     
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
-    
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (object item in this._content.ToList()) {
+            foreach (object item in this._content) {
                 this.TryGetProcessor(item.GetType()).Unload(item);
-                this._content.Remove(item);
             }
-        }
-    }
-    
-    public void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
+            this._content.Clear();
         }
     }
 }

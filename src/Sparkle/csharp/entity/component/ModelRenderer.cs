@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 
@@ -50,4 +51,6 @@ public class ModelRenderer : Component {
         
         SceneManager.MainCamera.EndMode3D();
     }
+
+    protected override void Dispose(bool disposing) { }
 }

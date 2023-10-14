@@ -2,7 +2,7 @@ using Sparkle.csharp.entity;
 
 namespace Sparkle.csharp.scene; 
 
-public abstract class Scene : IDisposable {
+public abstract class Scene : Disposable {
 
     public readonly string Name;
     
@@ -11,7 +11,6 @@ public abstract class Scene : IDisposable {
     private int _entityIds;
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the Scene class with the specified name.
@@ -72,7 +71,6 @@ public abstract class Scene : IDisposable {
     /// </summary>
     /// <param name="entity">The entity to be added.</param>
     public void AddEntity(Entity entity) {
-        this.ThrowIfDisposed();
         entity.Id = this._entityIds++;
         entity.Init();
         
@@ -84,7 +82,6 @@ public abstract class Scene : IDisposable {
     /// </summary>
     /// <param name="id">The ID of the entity to be removed.</param>
     public void RemoveEntity(int id) {
-        this.ThrowIfDisposed();
         this._entities[id].Dispose();
         this._entities.Remove(id);
     }
@@ -94,7 +91,6 @@ public abstract class Scene : IDisposable {
     /// </summary>
     /// <param name="entity">The entity to be removed.</param>
     public void RemoveEntity(Entity entity) {
-        this.ThrowIfDisposed();
         this.RemoveEntity(entity.Id);
     }
 
@@ -104,7 +100,6 @@ public abstract class Scene : IDisposable {
     /// <param name="id">The ID of the entity to be retrieved.</param>
     /// <returns>The entity associated with the specified ID.</returns>
     public Entity GetEntity(int id) {
-        this.ThrowIfDisposed();
         return this._entities[id];
     }
 
@@ -113,7 +108,6 @@ public abstract class Scene : IDisposable {
     /// </summary>
     /// <returns>An array containing all entities in the collection.</returns>
     public Entity[] GetEntities() {
-        this.ThrowIfDisposed();
         return this._entities.Values.ToArray();
     }
     
@@ -123,36 +117,20 @@ public abstract class Scene : IDisposable {
     /// <param name="tag">The tag used to filter entities.</param>
     /// <returns>An enumerable of entities with the specified tag.</returns>
     public IEnumerable<Entity> GetEntitiesWithTag(string tag) {
-        this.ThrowIfDisposed();
-        
         foreach (Entity entity in this._entities.Values) {
             if (entity.Tag == tag) {
                 yield return entity;
             }
         }
     }
-
-    public void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
     
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             foreach (Entity entity in this._entities.Values) {
                 entity.Dispose();
             }
             this._entities.Clear();
             this._entityIds = 0;
-        }
-    }
-    
-    protected void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }

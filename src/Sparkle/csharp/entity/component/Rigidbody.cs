@@ -64,8 +64,6 @@ public class Rigidbody : Component {
     }
 
     protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-
         if (disposing) {
             this.BodyInterface.RemoveBody(this.BodyId);
             this.BodyInterface.DestroyBody(this.BodyId);

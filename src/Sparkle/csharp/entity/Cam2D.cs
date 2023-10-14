@@ -36,7 +36,7 @@ public class Cam2D : Entity {
     public float Zoom {
         get => this._camera2D.zoom;
         set {
-            if (value < this.MaxZoom) {
+            if (value < this.MaxZoom) { //TODO CHECK THE ZOOM AGAIN!
                 this._camera2D.zoom = value;
             }
         }
@@ -45,7 +45,7 @@ public class Cam2D : Entity {
     protected internal override void Update() {
         base.Update();
         this.Zoom += Input.GetMouseWheelMove() * 0.05F;
-
+        
         switch (this.Mode) {
             case CameraMode.Normal:
                 this.NormalMovement(Window.GetScreenWidth(), Window.GetScreenHeight());

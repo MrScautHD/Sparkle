@@ -2,14 +2,13 @@ using Sparkle.csharp.gui.element;
 
 namespace Sparkle.csharp.gui; 
 
-public abstract class Gui : IDisposable {
+public abstract class Gui : Disposable {
     
     public readonly string Name;
 
     private Dictionary<string, GuiElement> _elements;
     
     public bool HasInitialized { get; private set; }
-    public bool HasDisposed { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Gui"/>, setting its name and initializing an empty dictionary to hold Gui elements.
@@ -71,8 +70,6 @@ public abstract class Gui : IDisposable {
     /// </summary>
     /// <param name="element">The GUI element to be added.</param>
     protected void AddElement(GuiElement element) {
-        this.ThrowIfDisposed();
-        
         element.Init();
         this._elements.Add(element.Name, element);
     }
@@ -82,7 +79,6 @@ public abstract class Gui : IDisposable {
     /// </summary>
     /// <param name="name">The name of the GUI element to be removed.</param>
     protected void RemoveElement(string name) {
-        this.ThrowIfDisposed();
         this._elements.Remove(name);
     }
     
@@ -91,7 +87,6 @@ public abstract class Gui : IDisposable {
     /// </summary>
     /// <param name="element">The GUI element to be removed.</param>
     protected void RemoveElement(GuiElement element) {
-        this.ThrowIfDisposed();
         this.RemoveElement(element.Name);
     }
 
@@ -101,7 +96,6 @@ public abstract class Gui : IDisposable {
     /// <param name="name">The name of the GUI element to be retrieved.</param>
     /// <returns>The GUI element associated with the specified name.</returns>
     protected GuiElement GetElement(string name) {
-        this.ThrowIfDisposed();
         return this._elements[name];
     }
 
@@ -110,30 +104,15 @@ public abstract class Gui : IDisposable {
     /// </summary>
     /// <returns>An array containing all GUI elements in the collection.</returns>
     protected GuiElement[] GetElements() {
-        this.ThrowIfDisposed();
         return this._elements.Values.ToArray();
     }
-
-    public virtual void Dispose() {
-        if (this.HasDisposed) return;
-        
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-        this.HasDisposed = true;
-    }
     
-    protected virtual void Dispose(bool disposing) {
+    protected override void Dispose(bool disposing) {
         if (disposing) {
             foreach (GuiElement element in this._elements.Values) {
                 element.Dispose();
             }
             this._elements.Clear();
-        }
-    }
-    
-    protected void ThrowIfDisposed() {
-        if (this.HasDisposed) {
-            throw new ObjectDisposedException(this.GetType().Name);
         }
     }
 }
