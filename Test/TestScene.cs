@@ -50,7 +50,7 @@ public class TestScene : Scene {
     protected override void Draw() {
         base.Draw();
         
-        /*
+        
         // BEGIN 3D
         SceneManager.MainCamera!.BeginMode3D();
 
@@ -69,7 +69,7 @@ public class TestScene : Scene {
         ModelHelper.DrawCube(SceneManager.MainCamera.Target, 2, 2, 2, Color.RED);
 
         // END 3D
-        SceneManager.MainCamera.EndMode3D();*/
+        SceneManager.MainCamera.EndMode3D();
 
         
         /*

@@ -1,6 +1,5 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 

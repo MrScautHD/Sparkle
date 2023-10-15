@@ -27,12 +27,12 @@ public class TestEntity : Entity {
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
-        /*
+        
         Rigidbody body = this.GetComponent<Rigidbody>();
 
         if (body.Simulation.RayCast(new Vector3(this.Position.X, this.Position.Y - 2, this.Position.Z), out RayCastResult result, -Vector3.UnitY, 8)) {
             float force = 100000;
             body.BodyInterface.AddForce(body.BodyId, new Vector3(0, (body.Shape.MassProperties.Mass * -body.Simulation.Settings.Gravity.Y) + force, 0));
-        }*/
+        }
     }
 }

@@ -56,11 +56,11 @@ public static class Logger {
     private static void Log(string msg, int skipFrames, ConsoleColor color) {
         MethodBase? info = new StackFrame(skipFrames).GetMethod();
         string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
-
+        
         if (LogPath != null) {
             FileManager.WriteLine(text, LogPath!);
         }
-
+        
         Console.ForegroundColor = color;
         Console.WriteLine(text);
         Console.ResetColor();
@@ -76,7 +76,7 @@ public static class Logger {
         if (!Directory.Exists(directory)) {
             Directory.CreateDirectory(directory);
         }
-        
+
         File.Create(LogPath).Close();
     }
 

@@ -17,7 +17,7 @@ public class Game : Disposable {
     public static Game Instance { get; private set; }
     public static readonly Version Version = Assembly.GetExecutingAssembly().GetName().Version!;
     
-    private readonly double _delay;
+    private readonly double _fixedTimeStep;
     private double _timer;
     
     public readonly GameSettings Settings;
@@ -37,7 +37,7 @@ public class Game : Disposable {
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
-        this._delay = 1.0F / settings.FixedTimeStep;
+        this._fixedTimeStep = 1.0F / settings.FixedTimeStep;
     }
     
     /// <summary>
@@ -89,9 +89,9 @@ public class Game : Disposable {
             this.AfterUpdate();
             
             this._timer += Time.Delta;
-            while (this._timer >= this._delay) {
+            while (this._timer >= this._fixedTimeStep) {
                 this.FixedUpdate();
-                this._timer -= this._delay;
+                this._timer -= this._fixedTimeStep;
             }
             
             Graphics.BeginDrawing();
@@ -156,23 +156,11 @@ public class Game : Disposable {
         Logger.Warn("Application shuts down!");
     }
 
-    /// <summary>
-    /// Retrieves the frames per second (FPS) of the application.
-    /// </summary>
-    /// <returns>The current frames per second (FPS) value.</returns>
-    public int GetFps() {
-        return Raylib.GetFPS();
-    }
+    /// <inheritdoc cref="Raylib.GetFPS"/>
+    public int GetFps() => Raylib.GetFPS();
 
-    /// <summary>
-    /// Sets the target frames per second (FPS) for the application.
-    /// </summary>
-    /// <param name="fps">The desired target frames per second (FPS) value.</param>
-    public void SetTargetFps(int fps) {
-        if (fps > 0) {
-            Raylib.SetTargetFPS(fps);
-        }
-    }
+    /// <inheritdoc cref="Raylib.SetTargetFPS"/>
+    public void SetTargetFps(int fps) => Raylib.SetTargetFPS(fps);
 
     /// <inheritdoc cref="Raylib.OpenURL(string)"/>
     public void OpenUrl(string url) => Raylib.OpenURL(url);
@@ -182,9 +170,9 @@ public class Game : Disposable {
             if (this.Settings.IconPath == string.Empty) {
                 ImageHelper.Unload(this.Logo);
             }
-
-            for (int i = 0; i < OverlayManager.Overlays.Count; i++) {
-                OverlayManager.Overlays[i].Dispose();
+            
+            foreach (Overlay overlay in OverlayManager.Overlays.ToList()) {
+                overlay.Dispose();
             }
 
             this.Content.Dispose();
