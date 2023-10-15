@@ -2,7 +2,6 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.entity;
-using Sparkle.csharp.entity.component;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.scene;
@@ -10,8 +9,7 @@ using Sparkle.csharp.scene;
 namespace Test; 
 
 public class TestScene : Scene {
-
-
+    
     public TestScene(string name) : base(name) { }
 
     protected override void Init() {
@@ -50,7 +48,6 @@ public class TestScene : Scene {
     protected override void Draw() {
         base.Draw();
         
-        
         // BEGIN 3D
         SceneManager.MainCamera!.BeginMode3D();
 
@@ -70,7 +67,6 @@ public class TestScene : Scene {
 
         // END 3D
         SceneManager.MainCamera.EndMode3D();
-
         
         /*
         Cam2D cam2D = (Cam2D) this.GetEntity(1);
