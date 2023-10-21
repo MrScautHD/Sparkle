@@ -7,10 +7,12 @@ namespace Sparkle.csharp.entity;
 public class Cam2D : Entity {
     
     private Camera2D _camera2D;
+    private float AMPLIT = 0.1f; // don't go above 80 TODO: make a setting bar to change the value between 1(better) and 50(worst)
     
     public Vector2 Target;
     public CameraMode Mode;
     public float MaxZoom;
+    
     
     public Cam2D(Vector2 position, Vector2 target, CameraMode mode) : base(new Vector3(position.X, position.Y, 0)) {
         this._camera2D = new Camera2D();
@@ -44,7 +46,7 @@ public class Cam2D : Entity {
 
     protected internal override void Update() {
         base.Update();
-        this.Zoom += Input.GetMouseWheelMove() * 0.05F;
+        this.Zoom -= Input.GetMouseWheelMove() * 0.13F;
         
         switch (this.Mode) {
             case CameraMode.Normal:
@@ -52,7 +54,15 @@ public class Cam2D : Entity {
                 break;
             
             case CameraMode.Smooth:
-                this.SmoothMovement(Window.GetScreenWidth(), Window.GetScreenHeight());
+                this.SmoothMovement((int) (Window.GetScreenWidth()), (int) (Window.GetScreenHeight()));
+                break;
+            
+            case CameraMode.Smoother:
+                this.SmootherMovement((int) (Window.GetScreenWidth()), (int) (Window.GetScreenHeight()), AMPLIT);
+                break;
+            
+            default: // for people stupid like Lucy
+                Logger.Fatal("BRO YOU FORGOT TO ADD THE CAM SETTINGS");
                 break;
         }
     }
@@ -67,11 +77,26 @@ public class Cam2D : Entity {
         float minEffectLength = 10;
         float fractionSpeed = 0.8f;
 
-        this.Offset = new Vector2(width / 2.0F, height / 2.0F);
+        this.Offset = new Vector2(width / 2.0F, height / 2.0F); // centering
         Vector2 diff = this.Target - this.Position;
-        float length = diff.Length();
+        float length = diff.Length(); // the norm 2
 
         if (length > minEffectLength) {
+            float speed = Math.Max(fractionSpeed * length, minSpeed);
+            this.Position = Vector2.Add(this.Position, Vector2.Multiply(diff, speed * Time.Delta / length));
+        }
+    }
+
+    protected void SmootherMovement(int width, int height, float ampl) {
+        float minSpeed = 30;
+        // float minEffectLength = 0;
+        float fractionSpeed = 0.8f;
+
+        this.Offset = new Vector2(width / 2.0F, height / 2.0F); // centering
+        Vector2 diff = this.Target - this.Position;
+        float length = diff.Length(); // the norm 2
+
+        if (length > Math.Sin(Time.Delta) * ampl) {
             float speed = Math.Max(fractionSpeed * length, minSpeed);
             this.Position = Vector2.Add(this.Position, Vector2.Multiply(diff, speed * Time.Delta / length));
         }
@@ -80,6 +105,7 @@ public class Cam2D : Entity {
     public enum CameraMode {
         Normal,
         Smooth,
+        Smoother,
         Custom
     }
     
