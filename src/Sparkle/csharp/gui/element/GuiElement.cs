@@ -12,11 +12,11 @@ public abstract class GuiElement : Disposable {
     public bool Enabled;
 
     protected Vector2 Position;
-    protected Vector2 Size;
     protected Vector2 ScaledSize;
     
-    protected Anchor? AnchorPoint;
-    protected Vector2 Offset;
+    public Anchor? AnchorPoint;
+    public Vector2 Offset;
+    public Vector2 Size;
 
     protected bool IsHovered;
     protected bool IsClicked;
@@ -38,7 +38,6 @@ public abstract class GuiElement : Disposable {
         this.Enabled = true;
         this.AnchorPoint = anchor;
         this.Offset = offset;
-        this.Position = Vector2.Zero;
         this.Size = size;
         this._clickFunc = clickClickFunc!;
     }
