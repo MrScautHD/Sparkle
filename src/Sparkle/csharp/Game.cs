@@ -56,7 +56,7 @@ public class Game : Disposable {
         Logger.Info($"\tOS: {SystemInfo.Os}");
         
         Logger.Debug("Initialize Raylib logger...");
-        Logger.SetupRayLibLogger();
+        Logger.SetupRaylibLogger();
         
         Logger.Debug($"Setting target fps to: {(this.Settings.TargetFps > 0 ? this.Settings.TargetFps : "unlimited")}");
         this.SetTargetFps(this.Settings.TargetFps);
@@ -69,7 +69,7 @@ public class Game : Disposable {
 
         Logger.Debug("Initialize window...");
         Window.SetConfigFlags(this.Settings.WindowFlags);
-        Window.Init(this.Settings.WindowWidth, this.Settings.WindowHeight, this.Settings.Title);
+        Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
             
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);

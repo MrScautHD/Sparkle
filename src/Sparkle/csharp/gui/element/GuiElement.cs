@@ -11,33 +11,34 @@ public abstract class GuiElement : Disposable {
     public readonly string Name;
     public bool Enabled;
 
-    public Vector2 Position;
-    public Vector2 Size;
+    protected Vector2 Position;
+    protected Vector2 Size;
+    protected Vector2 ScaledSize;
+    
+    protected Anchor? AnchorPoint;
+    protected Vector2 Offset;
 
     protected bool IsHovered;
     protected bool IsClicked;
     
-    protected float WidthScale { get; private set; }
-    protected float HeightScale { get; private set; }
-    
-    protected Vector2 CalcPos { get; private set; }
-    protected Vector2 CalcSize { get; private set; }
-
     private Func<bool>? _clickFunc;
     
     public bool HasInitialized { get; private set; }
-
+    
     /// <summary>
-    /// Initializes a new instance of the <see cref="GuiElement"/> with specified parameters, setting its name, enabled state, position, size, and optional click function.
+    /// Initializes a new GUI element with the specified parameters.
     /// </summary>
-    /// <param name="name">The name of the GuiElement.</param>
-    /// <param name="position">The position of the GuiElement on the screen.</param>
-    /// <param name="size">The size of the GuiElement.</param>
-    /// <param name="clickClickFunc">Optional click function to be executed when the GuiElement is clicked. Defaults to null.</param>
-    public GuiElement(string name, Vector2 position, Vector2 size, Func<bool>? clickClickFunc) {
+    /// <param name="name">The name of the GUI element.</param>
+    /// <param name="anchor">The anchor point for positioning the element.</param>
+    /// <param name="offset">An optional offset for fine-tuning the position.</param>
+    /// <param name="size">The size of the GUI element.</param>
+    /// <param name="clickClickFunc">An optional function to handle click events.</param>
+    public GuiElement(string name, Anchor anchor, Vector2 offset, Vector2 size, Func<bool>? clickClickFunc) {
         this.Name = name;
         this.Enabled = true;
-        this.Position = position;
+        this.AnchorPoint = anchor;
+        this.Offset = offset;
+        this.Position = Vector2.Zero;
         this.Size = size;
         this._clickFunc = clickClickFunc!;
     }
@@ -53,16 +54,10 @@ public abstract class GuiElement : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
-        this.UpdateScale();
+        this.CalculateSize();
+        this.CalculatePosition();
         
-        this.CalcSize = new Vector2(this.Size.X * GuiManager.Scale, this.Size.Y * GuiManager.Scale);
-        
-        float differenceX = Math.Abs(this.Size.X - this.CalcSize.X);
-        float differenceY = Math.Abs(this.Size.Y - this.CalcSize.Y);
-        
-        this.CalcPos = new Vector2((this.Position.X + differenceX + this.CalcSize.X) * this.WidthScale - this.CalcSize.X, (this.Position.Y + differenceY + this.CalcSize.Y) * this.HeightScale - this.CalcSize.Y);
-        
-        Rectangle rec = new Rectangle(this.CalcPos.X, this.CalcPos.Y, this.CalcSize.X, this.CalcSize.Y);
+        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
@@ -96,11 +91,64 @@ public abstract class GuiElement : Disposable {
     protected internal abstract void Draw();
     
     /// <summary>
-    /// Updates the scaling factors for width and height based on the render dimensions.
+    /// Calculates and updates the size of the GUI element based on the current display scale.
     /// </summary>
-    private void UpdateScale() {
-        this.WidthScale = Window.GetRenderWidth() / (float) Game.Instance.Settings.WindowWidth;
-        this.HeightScale = Window.GetRenderHeight() / (float) Game.Instance.Settings.WindowHeight;
+    protected virtual void CalculateSize() {
+        float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
+        this.ScaledSize = this.Size * scale * GuiManager.Scale;
+    }
+
+    /// <summary>
+    /// Calculates the position of the GUI element based on its anchor point and offset.
+    /// </summary>
+    protected virtual void CalculatePosition() {
+        Vector2 pos = Vector2.Zero;
+        
+        switch (this.AnchorPoint) {
+            case Anchor.TopLeft:
+                break;
+            
+            case Anchor.TopCenter:
+                pos.X = Window.GetRenderWidth() / 2.0F - this.ScaledSize.X / 2.0F;
+                break;
+            
+            case Anchor.TopRight:
+                pos.X = Window.GetRenderWidth() - this.ScaledSize.X;
+                break;
+            
+            case Anchor.CenterLeft:
+                pos.Y = Window.GetRenderHeight() / 2.0F - this.ScaledSize.Y / 2.0F;
+                break;
+            
+            case Anchor.Center:
+                pos.X = Window.GetRenderWidth() / 2.0F - this.ScaledSize.X / 2.0F;
+                pos.Y = Window.GetRenderHeight() / 2.0F - this.ScaledSize.Y / 2.0F;
+                break;
+            
+            case Anchor.CenterRight:
+                pos.X = Window.GetRenderWidth() - this.ScaledSize.X;
+                pos.Y = Window.GetRenderHeight() / 2.0F - this.ScaledSize.Y / 2.0F;
+                break;
+            
+            case Anchor.BottomLeft:
+                pos.Y = Window.GetRenderHeight() - this.ScaledSize.Y;
+                break;
+            
+            case Anchor.BottomCenter:
+                pos.X = Window.GetRenderWidth() / 2.0F - this.ScaledSize.X / 2.0F;
+                pos.Y = Window.GetRenderHeight() - this.ScaledSize.Y;
+                break;
+            
+            case Anchor.BottomRight:
+                pos.X = Window.GetRenderWidth() - this.ScaledSize.X;
+                pos.Y = Window.GetRenderHeight() - this.ScaledSize.Y;
+                break;
+        }
+
+        pos.X += this.Offset.X;
+        pos.Y += this.Offset.Y;
+        
+        this.Position = pos;
     }
     
     protected override void Dispose(bool disposing) {

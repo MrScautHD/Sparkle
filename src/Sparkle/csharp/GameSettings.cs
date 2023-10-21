@@ -7,8 +7,8 @@ namespace Sparkle.csharp;
 public struct GameSettings {
     
     public string Title;
-    public int WindowWidth;
-    public int WindowHeight;
+    public int Width;
+    public int Height;
     public string IconPath;
     public string LogDirectory;
     public string ContentDirectory;
@@ -22,8 +22,8 @@ public struct GameSettings {
     /// </summary>
     public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
-        this.WindowWidth = 1280;
-        this.WindowHeight = 720;
+        this.Width = 1280;
+        this.Height = 720;
         this.IconPath = string.Empty;
         this.LogDirectory = "logs";
         this.ContentDirectory = "content";
