@@ -27,9 +27,10 @@ public class Cam2D : Entity {
     /// <param name="target">The target location the camera should follow.</param>
     /// <param name="mode">The camera follow mode (e.g., follow smoothly or snap to target).</param>
     /// <param name="zoom">The initial zoom level (default is 5).</param>
-    public Cam2D(Vector2 position, Vector2 target, CameraFollowMode mode, float zoom = 5) : base(new Vector3(position.X, position.Y, 0)) {
+    public Cam2D(Vector2 position, Vector2 target, CameraFollowMode mode, float zoom = 5) : base(Vector3.Zero) {
         this.Tag = "camera2D";
         this._camera2D = new Camera2D();
+        this.Position = position;
         this.Target = target;
         this.Mode = mode;
         this.MinZoom = 0;
