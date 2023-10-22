@@ -49,7 +49,7 @@ public class Test3DScene : Scene {
         SceneManager.MainCam3D!.BeginMode3D();
         
         //DRAW GIRD
-        ModelHelper.DrawGrid(10, 1);
+        ModelHelper.DrawGrid(100, 1);
         
         // DRAW CUBE
         ModelHelper.DrawCube(new Vector3(3, 2, 3), 5, 5, 5, Color.PURPLE);
