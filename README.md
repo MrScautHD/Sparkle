@@ -13,8 +13,9 @@
 
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ========================
+<!-- Make sure to update this as new versions come out. Doing this makes it easier for people to copy paste, us devs are lazy -->
 ```
-dotnet add package Sparkle --version [VERSION]
+dotnet add package Sparkle --version 2.0.0
 ```
 
 📚 Libraries (https://www.nuget.org/packages)
@@ -41,7 +42,7 @@ Soon...
 ```csharp
 public class GameTest : Game {
     
-    public GameTest(GameSettings settings, Scene scene) : base(settings, scene) {
+    public GameTest(GameSettings settings) : base(settings) {
         
         // Create your own config file!
         Config config = new ConfigBuilder("config", "test")
@@ -81,7 +82,6 @@ public class GameTest : Game {
         Window.TakeScreenshot("path");
     }
 
-    // Just runs when !Game.Headless [Support for servers!]
     protected override void Draw() {
         base.Draw();
         
