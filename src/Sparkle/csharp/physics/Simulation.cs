@@ -20,6 +20,10 @@ public class Simulation : Disposable {
     private ObjectLayerFilterImpl _objectLayerFilterImpl;
     private BodyFilterImpl _bodyFilterImpl;
 
+    /// <summary>
+    /// Initializes a new instance of the Simulation class with the specified physics settings.
+    /// </summary>
+    /// <param name="settings">The physics settings to configure the simulation.</param>
     public Simulation(PhysicsSettings settings) {
         Foundation.Init();
         
@@ -42,10 +46,23 @@ public class Simulation : Disposable {
         this.PhysicsSystem.OptimizeBroadPhase();
     }
 
+    /// <summary>
+    /// Updates the simulation for a given time step with a specified number of collision resolution steps.
+    /// </summary>
+    /// <param name="timeStep">The time step to advance the simulation.</param>
+    /// <param name="collisionSteps">The number of collision resolution steps to perform.</param>
     public void Update(float timeStep, int collisionSteps) {
         this.PhysicsSystem.Update(timeStep, collisionSteps, this._allocator, this._jobSystem);
     }
 
+    /// <summary>
+    /// Performs a raycast in the simulation to detect intersections between a ray and physical objects.
+    /// </summary>
+    /// <param name="origin">The origin of the ray.</param>
+    /// <param name="result">The result of the raycast, including intersection details.</param>
+    /// <param name="direction">The direction of the ray.</param>
+    /// <param name="distance">The maximum distance to check for intersections.</param>
+    /// <returns>True if an intersection was found, false otherwise.</returns>
     public bool RayCast(Vector3 origin, out RayCastResult result, Vector3 direction, float distance) {
         result = RayCastResult.Default;
         
