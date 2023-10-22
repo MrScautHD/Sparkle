@@ -8,4 +8,4 @@ GameSettings settings = new GameSettings() {
 };
 
 using TestGame game = new TestGame(settings);
-game.Run(new TestScene("test"));
+game.Run(new Test2DScene("test"));

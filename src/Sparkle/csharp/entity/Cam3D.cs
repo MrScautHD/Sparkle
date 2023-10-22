@@ -38,7 +38,7 @@ public class Cam3D : Entity {
     /// <param name="fov">Field of view angle, in degrees, in the y-axis.</param>
     /// <param name="mode">Camera movement mode, default is CameraMode.CAMERA_FREE.</param>
     public Cam3D(Vector3 position, float fov, CameraMode mode = CameraMode.CAMERA_FREE) : base(position) {
-        this.Tag = "camera";
+        this.Tag = "camera3D";
         this.ProjectionType = CameraProjection.CAMERA_PERSPECTIVE;
         this.Fov = fov;
         this.Up = Vector3.UnitY;

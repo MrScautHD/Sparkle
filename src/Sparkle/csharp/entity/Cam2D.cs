@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.gui;
 using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
@@ -7,38 +8,76 @@ namespace Sparkle.csharp.entity;
 public class Cam2D : Entity {
     
     private Camera2D _camera2D;
-    private float AMPLIT = 0.1f; // don't go above 80 TODO: make a setting bar to change the value between 1(better) and 50(worst)
     
     public Vector2 Target;
-    public CameraMode Mode;
+    public CameraFollowMode Mode;
+    
+    public float MinZoom;
     public float MaxZoom;
+    public float ZoomSpeed;
+
+    public float MinFollowSpeed;
+    public float MinFollowEffectLength;
+    public float FractionFollowSpeed;
     
-    
-    public Cam2D(Vector2 position, Vector2 target, CameraMode mode) : base(new Vector3(position.X, position.Y, 0)) {
+    /// <summary>
+    /// Initializes a 2D camera with the specified parameters, including position, target, camera mode, and zoom level.
+    /// </summary>
+    /// <param name="position">The initial position of the camera.</param>
+    /// <param name="target">The target location the camera should follow.</param>
+    /// <param name="mode">The camera follow mode (e.g., follow smoothly or snap to target).</param>
+    /// <param name="zoom">The initial zoom level (default is 5).</param>
+    public Cam2D(Vector2 position, Vector2 target, CameraFollowMode mode, float zoom = 5) : base(new Vector3(position.X, position.Y, 0)) {
+        this.Tag = "camera2D";
         this._camera2D = new Camera2D();
         this.Target = target;
         this.Mode = mode;
+        this.MinZoom = 0;
+        this.MaxZoom = 10;
+        this.Zoom = zoom;
+        this.ZoomSpeed = 0.1F;
+        this.MinFollowSpeed = 30;
+        this.MinFollowEffectLength = 10;
+        this.FractionFollowSpeed = 0.8F;
     }
-
+    
+    /// <summary>
+    /// Gets or sets the 2D camera's current position, which is equivalent to the camera's target.
+    /// </summary>
     public new Vector2 Position {
         get => this._camera2D.target;
         set => this._camera2D.target = value;
     }
     
+    /// <summary>
+    /// Gets or sets the rotation of the 2D camera.
+    /// </summary>
     public new float Rotation {
         get => this._camera2D.rotation;
         set => this._camera2D.rotation = value;
     }
     
+    /// <summary>
+    /// Gets or sets the offset applied to the 2D camera's position.
+    /// </summary>
     public Vector2 Offset {
         get => this._camera2D.offset;
         set => this._camera2D.offset = value;
     }
     
+    /// <summary>
+    /// Gets or sets the zoom level of the 2D camera, with optional minimum and maximum limits.
+    /// </summary>
     public float Zoom {
         get => this._camera2D.zoom;
         set {
-            if (value < this.MaxZoom) { //TODO CHECK THE ZOOM AGAIN!
+            if (value < this.MinZoom) {
+                this._camera2D.zoom = this.MinZoom;
+            }
+            else if (value > this.MaxZoom) {
+                this._camera2D.zoom = this.MaxZoom;
+            }
+            else {
                 this._camera2D.zoom = value;
             }
         }
@@ -46,73 +85,63 @@ public class Cam2D : Entity {
 
     protected internal override void Update() {
         base.Update();
-        this.Zoom -= Input.GetMouseWheelMove() * 0.13F;
+
+        if (GuiManager.ActiveGui == null) {
+            this.Zoom -= Input.GetMouseWheelMove() * 0.13F;
+        }
         
         switch (this.Mode) {
-            case CameraMode.Normal:
-                this.NormalMovement(Window.GetScreenWidth(), Window.GetScreenHeight());
+            case CameraFollowMode.Normal:
+                this.NormalMovement();
                 break;
             
-            case CameraMode.Smooth:
-                this.SmoothMovement((int) (Window.GetScreenWidth()), (int) (Window.GetScreenHeight()));
-                break;
-            
-            case CameraMode.Smoother:
-                this.SmootherMovement((int) (Window.GetScreenWidth()), (int) (Window.GetScreenHeight()), AMPLIT);
-                break;
-            
-            default: // for people stupid like Lucy
-                Logger.Fatal("BRO YOU FORGOT TO ADD THE CAM SETTINGS");
+            case CameraFollowMode.Smooth:
+                this.SmoothMovement();
                 break;
         }
     }
 
-    protected void NormalMovement(int width, int height) {
+    /// <summary>
+    /// Sets the camera's position and offset for normal movement mode, centered on the screen's dimensions.
+    /// </summary>
+    private void NormalMovement() {
+        this.Offset = new Vector2(Window.GetScreenWidth() / 2.0F, Window.GetScreenHeight() / 2.0F);
         this.Position = this.Target;
-        this.Offset = new Vector2(width / 2.0F, height / 2.0F);
     }
     
-    protected void SmoothMovement(int width, int height) {
-        float minSpeed = 30;
-        float minEffectLength = 10;
-        float fractionSpeed = 0.8f;
-
-        this.Offset = new Vector2(width / 2.0F, height / 2.0F); // centering
+    /// <summary>
+    /// Sets the camera's position and offset for smooth movement mode, ensuring gradual tracking of the target.
+    /// </summary>
+    private void SmoothMovement() {
+        this.Offset = new Vector2(Window.GetScreenWidth() / 2.0F, Window.GetScreenHeight() / 2.0F);
         Vector2 diff = this.Target - this.Position;
-        float length = diff.Length(); // the norm 2
-
-        if (length > minEffectLength) {
-            float speed = Math.Max(fractionSpeed * length, minSpeed);
-            this.Position = Vector2.Add(this.Position, Vector2.Multiply(diff, speed * Time.Delta / length));
-        }
-    }
-
-    protected void SmootherMovement(int width, int height, float ampl) {
-        float minSpeed = 30;
-        // float minEffectLength = 0;
-        float fractionSpeed = 0.8f;
-
-        this.Offset = new Vector2(width / 2.0F, height / 2.0F); // centering
-        Vector2 diff = this.Target - this.Position;
-        float length = diff.Length(); // the norm 2
-
-        if (length > Math.Sin(Time.Delta) * ampl) {
-            float speed = Math.Max(fractionSpeed * length, minSpeed);
-            this.Position = Vector2.Add(this.Position, Vector2.Multiply(diff, speed * Time.Delta / length));
+        float length = diff.Length();
+        
+        if (length > this.MinFollowEffectLength) {
+            float speed = Math.Max(this.FractionFollowSpeed * length, this.MinFollowSpeed);
+            this.Position += diff * (speed * Time.Delta / length);
         }
     }
     
-    public enum CameraMode {
+    /// <summary>
+    /// Defines different modes for camera following behavior.
+    /// </summary>
+    public enum CameraFollowMode {
         Normal,
         Smooth,
-        Smoother,
         Custom
     }
     
+    /// <summary>
+    /// Begins a 2D rendering mode with the current camera settings.
+    /// </summary>
     public void BeginMode2D() {
         Raylib.BeginMode2D(this._camera2D);
     }
 
+    /// <summary>
+    /// Ends the 2D rendering mode, restoring the default rendering state.
+    /// </summary>
     public void EndMode2D() {
         Raylib.EndMode2D();
     }

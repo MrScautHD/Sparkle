@@ -6,14 +6,16 @@ public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
     
-    public static Cam3D? MainCamera { get; private set; }
+    public static Cam3D? MainCam3D { get; private set; }
+    public static Cam2D? MainCam2D { get; private set; }
 
     /// <summary>
     /// Initializes the current scene and sets the main camera if available.
     /// </summary>
     internal static void Init() {
         ActiveScene?.Init();
-        MainCamera = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
+        MainCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        MainCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
     }
     
     /// <summary>
@@ -61,6 +63,7 @@ public static class SceneManager {
         ActiveScene?.Dispose();
         ActiveScene = scene;
         ActiveScene?.Init();
-        MainCamera = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera").FirstOrDefault()!;
+        MainCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        MainCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
     }
 }

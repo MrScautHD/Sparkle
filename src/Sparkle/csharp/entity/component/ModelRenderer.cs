@@ -34,7 +34,7 @@ public class ModelRenderer : Component {
     protected internal override unsafe void Draw() {
         base.Draw();
         
-        SceneManager.MainCamera!.BeginMode3D();
+        SceneManager.MainCam3D!.BeginMode3D();
         
         Vector3 axis;
         float angle;
@@ -48,7 +48,7 @@ public class ModelRenderer : Component {
             Raylib.DrawModelEx(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
         }
         
-        SceneManager.MainCamera.EndMode3D();
+        SceneManager.MainCam3D.EndMode3D();
     }
 
     protected override void Dispose(bool disposing) { }
