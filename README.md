@@ -82,7 +82,6 @@ public class GameTest : Game {
         Window.TakeScreenshot("path");
     }
 
-    // Just runs when !Game.Headless [Support for servers!]
     protected override void Draw() {
         base.Draw();
         
