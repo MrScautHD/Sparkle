@@ -78,7 +78,8 @@ public class Cam3D : Entity {
                 break;
             
             case CameraMode.CAMERA_FIRST_PERSON:
-                //TODO DO A OWN FIRST PERSON CAMERA
+                //this.Position = this.Target;
+                //CHAT GPT IMPLIMENT THIS!
                 break;
             
             case CameraMode.CAMERA_THIRD_PERSON:
