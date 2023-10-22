@@ -42,7 +42,7 @@ Soon...
 ```csharp
 public class GameTest : Game {
     
-    public GameTest(GameSettings settings, Scene scene) : base(settings, scene) {
+    public GameTest(GameSettings settings) : base(settings) {
         
         // Create your own config file!
         Config config = new ConfigBuilder("config", "test")
