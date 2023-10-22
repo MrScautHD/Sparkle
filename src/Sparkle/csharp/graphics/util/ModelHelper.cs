@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.entity;
 
 namespace Sparkle.csharp.graphics.util; 
 
@@ -40,7 +41,16 @@ public static class ModelHelper {
     
     /// <inheritdoc cref="Raylib.DrawBoundingBox"/>
     public static void DrawBoundingBox(BoundingBox box, Color color) => Raylib.DrawBoundingBox(box, color);
-
+    
+    /// <inheritdoc cref="Raylib.DrawBillboard"/>
+    public static void DrawBillboard(Cam3D camera, Texture2D texture, Vector3 center, float size, Color color) => Raylib.DrawBillboard(camera.GetCamera3D(), texture, center, size, color);
+    
+    /// <inheritdoc cref="Raylib.DrawBillboardRec"/>
+    public static void DrawBillboardRec(Cam3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color color) => Raylib.DrawBillboardRec(camera.GetCamera3D(), texture, source, position, size, color);
+    
+    /// <inheritdoc cref="Raylib.DrawBillboardPro"/>
+    public static void DrawBillboardPro(Cam3D camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color color) => Raylib.DrawBillboardPro(camera.GetCamera3D(), texture, source, position, up, size, origin, rotation, color);
+    
     
     /// <inheritdoc cref="Raylib.DrawLine3D"/>
     public static void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color) => Raylib.DrawLine3D(startPos, endPos, color);

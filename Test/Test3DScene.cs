@@ -14,9 +14,7 @@ public class Test3DScene : Scene {
     
     protected override void Init() {
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
-        Cam3D cam3D = new Cam3D(pos, 70, CameraMode.CAMERA_ORBITAL) {
-            Target = new Vector3(0, 0, 0)
-        };
+        Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.CAMERA_PERSPECTIVE, CameraMode.CAMERA_ORBITAL);
         this.AddEntity(cam3D);
         
         /*

@@ -101,7 +101,7 @@ public class Cam2D : Entity {
                 break;
         }
     }
-
+    
     /// <summary>
     /// Sets the camera's position and offset for normal movement mode, centered on the screen's dimensions.
     /// </summary>
@@ -131,6 +131,40 @@ public class Cam2D : Entity {
         Normal,
         Smooth,
         Custom
+    }
+    
+    /// <summary>
+    /// Retrieves the 2D transformation matrix representing the current camera settings.
+    /// </summary>
+    /// <returns>The 2D transformation matrix based on the camera's configuration.</returns>
+    public Matrix4x4 GetMatrix2D() {
+        return Raylib.GetCameraMatrix2D(this._camera2D);
+    }
+
+    /// <summary>
+    /// Converts a screen-space 2D position to world-space using the current camera settings.
+    /// </summary>
+    /// <param name="position">The screen-space position to be converted.</param>
+    /// <returns>The world-space representation of the provided position.</returns>
+    public Vector2 GetScreenToWorld2D(Vector2 position) {
+        return Raylib.GetScreenToWorld2D(position, this._camera2D);
+    }
+    
+    /// <summary>
+    /// Converts a world-space 2D position to screen-space using the current camera settings.
+    /// </summary>
+    /// <param name="position">The world-space position to be converted.</param>
+    /// <returns>The screen-space representation of the provided position.</returns>
+    public Vector2 GetWorldToScreen2D(Vector2 position) {
+        return Raylib.GetWorldToScreen2D(position, this._camera2D);
+    }
+    
+    /// <summary>
+    /// Retrieves the internal 2D camera used for rendering.
+    /// </summary>
+    /// <returns>The Camera2D object representing the current camera settings.</returns>
+    internal Camera2D GetCamera2D() {
+        return this._camera2D;
     }
     
     /// <summary>
