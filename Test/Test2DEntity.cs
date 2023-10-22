@@ -8,11 +8,7 @@ namespace Test;
 
 public class Test2DEntity : Entity {
     
-    private readonly Texture2D _texture;
-    
     public Test2DEntity(Vector2 position) : base(new Vector3(position.X, position.Y, 0)) {
-        this._texture = Game.Instance.Content.Load<Texture2D>("sprite.png");
-        
-        this.AddComponent(new Sprite(this._texture, null, null));
+        this.AddComponent(new Sprite(TestGame.SpriteTexture, null, null));
     }
 }

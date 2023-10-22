@@ -74,6 +74,9 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
         
+        Logger.Debug("Load content...");
+        this.Load();
+        
         Logger.Debug("Initialize physics...");
         this.Simulation = new Simulation(this.Settings.PhysicsSettings);
         
@@ -110,6 +113,11 @@ public class Game : Disposable {
         SceneManager.Init();
         OverlayManager.Init();
     }
+
+    /// <summary>
+    /// Used for loading resources.
+    /// </summary>
+    protected virtual void Load() { }
     
     /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
