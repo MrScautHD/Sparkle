@@ -60,7 +60,6 @@ public class Test3DScene : Scene {
         // DRAW SECOND LINE
         ModelHelper.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
         
-        
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);
         
         // END 3D
