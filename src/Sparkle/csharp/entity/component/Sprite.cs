@@ -27,7 +27,7 @@ public class Sprite : Component {
         SceneManager.MainCam2D!.BeginMode2D();
         
         Rectangle source = new Rectangle(0, 0, this.Texture.width, this.Texture.height);
-        Rectangle dest = new Rectangle(this.Entity.Position.X + (this.Size.X / 2), this.Entity.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+        Rectangle dest = new Rectangle(this.Entity.Position.X, this.Entity.Position.Y, this.Size.X, this.Size.Y);
         Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
         TextureHelper.DrawPro(this.Texture, source, dest, origin, this.Rotation, this.Color);
         
