@@ -43,24 +43,11 @@ public class Test3DScene : Scene {
     protected override void Draw() {
         base.Draw();
         
-        // BEGIN 3D
         SceneManager.MainCam3D!.BeginMode3D();
         
-        //DRAW GIRD
         ModelHelper.DrawGrid(100, 1);
-        
-        // DRAW CUBE
-        ModelHelper.DrawCube(new Vector3(3, 2, 3), 5, 5, 5, Color.PURPLE);
-        
-        // DRAW LINE
-        ModelHelper.DrawLine3D(new Vector3(10, 3, 4), new Vector3(-10, -3, -4), Color.RED);
-        
-        // DRAW SECOND LINE
-        ModelHelper.DrawLine3D(new Vector3(0, 3, 4), new Vector3(-10, -3, -4), Color.BLUE);
-        
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);
         
-        // END 3D
         SceneManager.MainCam3D.EndMode3D();
     }
 }

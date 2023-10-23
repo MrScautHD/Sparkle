@@ -27,6 +27,11 @@ public class Cam3D : Entity {
         get => this._camera3D.position;
         set => this._camera3D.position = value;
     }
+
+    /// <summary>
+    /// Gets the rotation of the 3D camera as a quaternion based on its current view.
+    /// </summary>
+    public new Quaternion Rotation => Raymath.QuaternionFromMatrix(this.GetView());
     
     /// <summary>
     /// Gets or sets the target position of the 3D camera.
@@ -145,7 +150,7 @@ public class Cam3D : Entity {
     /// </summary>
     /// <param name="angle">The angle in radians by which to yaw the camera.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
-    public unsafe void Yaw(float angle, bool rotateAroundTarget) {
+    public unsafe void SetYaw(float angle, bool rotateAroundTarget) {
         fixed (Camera3D* camera = &this._camera3D) {
             Raylib.CameraYaw(camera, angle, rotateAroundTarget);
         }
@@ -158,7 +163,7 @@ public class Cam3D : Entity {
     /// <param name="lockView">Specifies whether to lock the camera's view direction during the pitch.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
     /// <param name="rotateUp">Specifies whether to rotate the camera up direction.</param>
-    public unsafe void Pitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
+    public unsafe void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
         fixed (Camera3D* camera = &this._camera3D) {
             Raylib.CameraPitch(camera, angle, lockView, rotateAroundTarget, rotateUp);
         }
@@ -168,7 +173,7 @@ public class Cam3D : Entity {
     /// Rolls (rotates around the line of sight) the 3D camera by the specified angle.
     /// </summary>
     /// <param name="angle">The angle in radians by which to roll the camera.</param>
-    public unsafe void Roll(float angle) {
+    public unsafe void SetRoll(float angle) {
         fixed (Camera3D* camera = &this._camera3D) {
             Raylib.CameraRoll(camera, angle);
         }
