@@ -31,7 +31,12 @@ public class Cam3D : Entity {
     /// <summary>
     /// Gets the rotation of the 3D camera as a quaternion based on its current view.
     /// </summary>
-    public new Quaternion Rotation => Raymath.QuaternionFromMatrix(this.GetView());
+    public new Quaternion Rotation {
+        get {
+            Matrix4x4 lookAt = Matrix4x4.CreateLookAt(this.Position, this.Target, this.Up);
+            return Raymath.QuaternionFromMatrix(lookAt);
+        }
+    }
     
     /// <summary>
     /// Gets or sets the target position of the 3D camera.
@@ -146,36 +151,66 @@ public class Cam3D : Entity {
     }
 
     /// <summary>
-    /// Yaws (rotates horizontally) the 3D camera by the specified angle.
+    /// Gets the yaw (horizontal rotation) of the 3D camera in degrees.
     /// </summary>
-    /// <param name="angle">The angle in radians by which to yaw the camera.</param>
+    /// <returns>The yaw angle of the camera in degrees.</returns>
+    public float GetYaw() {
+        return Raymath.QuaternionToEuler(this.Rotation).Y * Raylib.RAD2DEG;
+    }
+
+    /// <summary>
+    /// Gets the pitch (vertical rotation) of the 3D camera in degrees.
+    /// </summary>
+    /// <returns>The pitch angle of the camera in degrees.</returns>
+    public float GetPitch() {
+        return Raymath.QuaternionToEuler(this.Rotation).X * Raylib.RAD2DEG;
+    }
+
+    /// <summary>
+    /// Gets the roll (tilt or bank) of the 3D camera in degrees.
+    /// </summary>
+    /// <returns>The roll angle of the camera in degrees.</returns>
+    public float GetRoll() {
+        return Raymath.QuaternionToEuler(this.Rotation).Z * Raylib.RAD2DEG;
+    }
+
+    /// <summary>
+    /// Sets the yaw (horizontal rotation) of the 3D camera to the specified angle in degrees.
+    /// </summary>
+    /// <param name="angle">The target yaw angle in degrees.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
     public unsafe void SetYaw(float angle, bool rotateAroundTarget) {
+        float difference = this.GetYaw() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
+        
         fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraYaw(camera, angle, rotateAroundTarget);
+            Raylib.CameraYaw(camera, difference, rotateAroundTarget);
         }
     }
     
     /// <summary>
-    /// Pitches (rotates vertically) the 3D camera by the specified angle.
+    /// Sets the pitch (vertical rotation) of the 3D camera to the specified angle in degrees.
     /// </summary>
-    /// <param name="angle">The angle in radians by which to pitch the camera.</param>
-    /// <param name="lockView">Specifies whether to lock the camera's view direction during the pitch.</param>
+    /// <param name="angle">The target pitch angle in degrees.</param>
+    /// <param name="lockView">Specifies whether to lock the view during the rotation.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
-    /// <param name="rotateUp">Specifies whether to rotate the camera up direction.</param>
+    /// <param name="rotateUp">Specifies whether to rotate upwards.</param>
     public unsafe void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
+        float difference = angle * Raylib.DEG2RAD - this.GetPitch() * Raylib.DEG2RAD;
+        
         fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraPitch(camera, angle, lockView, rotateAroundTarget, rotateUp);
+            Raylib.CameraPitch(camera, difference, lockView, rotateAroundTarget, rotateUp);
         }
     }
-    
+
     /// <summary>
-    /// Rolls (rotates around the line of sight) the 3D camera by the specified angle.
+    /// Sets the roll (tilt or bank) of the 3D camera to the specified angle in degrees.
     /// </summary>
-    /// <param name="angle">The angle in radians by which to roll the camera.</param>
+    /// <param name="angle">The target roll angle in degrees.</param>
     public unsafe void SetRoll(float angle) {
+        float difference = this.GetRoll() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
+        
         fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraRoll(camera, angle);
+            Raylib.CameraRoll(camera, difference);
         }
     }
 
