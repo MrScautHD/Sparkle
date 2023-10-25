@@ -73,8 +73,92 @@ public class Cam3D : Entity {
     protected internal override void Update() {
         base.Update();
 
-        if (this.Mode != CameraMode.CAMERA_CUSTOM) {
-            Raylib.UpdateCamera(ref this._camera3D, this.Mode);
+        switch (this.Mode) {
+            
+            case CameraMode.CAMERA_FREE:
+                if (!Input.IsGamepadAvailable(0)) {
+                    this.SetYaw(this.GetYaw() + Input.GetMouseDelta().X * 0.03F, false);
+                    this.SetPitch(this.GetPitch() - Input.GetMouseDelta().Y * 0.03F, true, false, false);
+
+                    if (Input.IsKeyDown(KeyboardKey.KEY_W)) {
+                        this.MoveForward(0.09F, true);
+                    }
+                    
+                    if (Input.IsKeyDown(KeyboardKey.KEY_S)) {
+                        this.MoveForward(-0.09F, true);
+                    }
+                    
+                    if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+                        this.MoveRight(-0.09F, true);
+                    }
+                    
+                    if (Input.IsKeyDown(KeyboardKey.KEY_D)) {
+                        this.MoveRight(0.09F, true);
+                    }
+
+                    if (Input.IsKeyDown(KeyboardKey.KEY_SPACE)) {
+                        this.MoveUp(0.09F);
+                    }
+                    
+                    if (Input.IsKeyDown(KeyboardKey.KEY_LEFT_SHIFT)) {
+                        this.MoveUp(-0.09F);
+                    }
+                }
+                else {
+                    this.SetYaw(this.GetYaw() + (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_X) * 2) * 0.03F, false);
+                    this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_Y) * 2) * 0.03F, true, false, false);
+                    
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_RIGHT_TRIGGER_2)) {
+                        this.MoveForward(0.09F, true);
+                    }
+                    
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_LEFT_TRIGGER_2)) {
+                        this.MoveForward(-0.09F, true);
+                    }
+                    
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) {
+                        this.MoveRight(0.09F, true);
+                    }
+                    
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_LEFT_TRIGGER_1)) {
+                        this.MoveRight(-0.09F, true);
+                    }
+
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_RIGHT_FACE_UP)) {
+                        this.MoveUp(0.09F);
+                    }
+                    
+                    if (Input.IsGamepadButtonDown(0, GamepadButton.GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
+                        this.MoveUp(-0.09F);
+                    }
+                }
+                break;
+            
+            case CameraMode.CAMERA_ORBITAL:
+                Raylib.UpdateCamera(ref this._camera3D, CameraMode.CAMERA_ORBITAL);
+                break;
+            
+            case CameraMode.CAMERA_FIRST_PERSON:
+                if (!Input.IsGamepadAvailable(0)) {
+                    this.SetYaw(this.GetYaw() + Input.GetMouseDelta().X * 0.03F, false);
+                    this.SetPitch(this.GetPitch() - Input.GetMouseDelta().Y * 0.03F, true, false, false);
+                }
+                else {
+                    this.SetYaw(this.GetYaw() + (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_X) * 2) * 0.03F, false);
+                    this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_Y) * 2) * 0.03F, true, false, false);
+                }
+                break;
+            
+            case CameraMode.CAMERA_THIRD_PERSON:
+                if (!Input.IsGamepadAvailable(0)) {
+                    this.SetYaw(this.GetYaw() + Input.GetMouseDelta().X * 0.03F, true);
+                    this.SetPitch(this.GetPitch() - Input.GetMouseDelta().Y * 0.03F, true, true, false);
+                }
+                else {
+                    this.SetYaw(this.GetYaw() + (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_X) * 2) * 0.03F, true);
+                    this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.GAMEPAD_AXIS_RIGHT_Y) * 2) * 0.03F, true, true, false);
+                }
+                break;
         }
     }
     
