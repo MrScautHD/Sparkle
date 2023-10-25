@@ -1,7 +1,5 @@
 using System.Numerics;
 using JoltPhysicsSharp;
-using Raylib_cs;
-using Sparkle.csharp;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.component;
 
