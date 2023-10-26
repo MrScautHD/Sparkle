@@ -18,6 +18,7 @@
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.0.1</Version>
+    <PackageIcon>content\images\icon.png</PackageIcon>
   </PropertyGroup>
   
   <ItemGroup>
