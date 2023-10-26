@@ -88,7 +88,7 @@ public class Cam2D : Entity {
         base.Update();
 
         if (GuiManager.ActiveGui == null) {
-            this.Zoom -= Input.GetMouseWheelMove() * 0.13F;
+            this.Zoom -= Input.GetMouseWheelMove() * this.ZoomSpeed;
         }
         
         switch (this.Mode) {
@@ -128,9 +128,9 @@ public class Cam2D : Entity {
     /// Defines different modes for camera following behavior.
     /// </summary>
     public enum CameraFollowMode {
+        Custom,
         Normal,
-        Smooth,
-        Custom
+        Smooth
     }
     
     /// <summary>
