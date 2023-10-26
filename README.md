@@ -15,7 +15,7 @@
 ========================
 <!-- Make sure to update this as new versions come out. Doing this makes it easier for people to copy paste, us devs are lazy -->
 ```
-dotnet add package Sparkle --version 2.0.0
+dotnet add package Sparkle --version 2.0.1
 ```
 
 📚 Libraries (https://www.nuget.org/packages)
