@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 
@@ -28,7 +29,7 @@ public class ModelRenderer : Component {
         this._color = color ?? Color.WHITE;
         this._drawWires = drawWires;
         
-        Raylib.SetMaterialTexture(ref this._model, 0, this._materialMap, ref this._texture);
+        MaterialHelper.SetTexture(ref this._model, 0, this._materialMap, ref this._texture);
     }
     
     protected internal override unsafe void Draw() {
@@ -42,10 +43,11 @@ public class ModelRenderer : Component {
         Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
         
         if (this._drawWires) {
-            Raylib.DrawModelWiresEx(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+            
+            ModelHelper.DrawModelWires(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
         }
         else {
-            Raylib.DrawModelEx(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+            ModelHelper.DrawModel(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
         }
         
         SceneManager.MainCam3D.EndMode3D();

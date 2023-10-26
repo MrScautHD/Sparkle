@@ -71,7 +71,7 @@ public class Game : Disposable {
         Window.SetConfigFlags(this.Settings.WindowFlags);
         Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
             
-        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
+        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/images/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
         
         Logger.Debug("Load content...");

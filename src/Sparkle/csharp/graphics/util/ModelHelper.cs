@@ -19,6 +19,9 @@ public static class ModelHelper {
     
     /// <inheritdoc cref="Raylib.IsModelReady"/>
     public static bool IsReady(Model model) => Raylib.IsModelReady(model);
+
+    /// <inheritdoc cref="Raylib.GetMaterial"/>
+    public static Material GetMaterial(ref Model model, int materialIndex) => Raylib.GetMaterial(ref model, materialIndex);
     
     /// <inheritdoc cref="Raylib.GetModelBoundingBox"/>
     public static BoundingBox GetBoundingBox(Model model) => Raylib.GetModelBoundingBox(model);

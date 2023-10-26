@@ -8,6 +8,7 @@
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
     <AssemblyVersion>2.0.1</AssemblyVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
     <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
@@ -17,17 +18,16 @@
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.0.1</Version>
-    <PackageIcon>content\icon.png</PackageIcon>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="JoltPhysicsSharp" Version="1.9.8" />
+    <PackageReference Include="JoltPhysicsSharp" Version="1.9.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <Content Include="content/icon.png">
+    <Content Include="content/images/icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
