@@ -22,6 +22,7 @@ public class Test3DScene : Scene {
             this.AddEntity(new TestEntity(new Vector3(0, i, 0)));
         }*/
         
+        
         TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
         this.AddEntity(entity);
         
