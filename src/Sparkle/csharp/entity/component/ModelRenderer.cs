@@ -10,6 +10,7 @@ public class ModelRenderer : Component {
     private Model _model;
     private Texture2D _texture;
     private MaterialMapIndex _materialMap;
+    private Shader? _shader;
     private Color _color;
     
     private bool _drawWires;
@@ -22,14 +23,20 @@ public class ModelRenderer : Component {
     /// <param name="materialMap">The type of material map to be used. Default is MaterialMapIndex.MATERIAL_MAP_ALBEDO.</param>
     /// <param name="color">Optional color to be applied to the model. Default is white.</param>
     /// <param name="drawWires">Optional flag to indicate whether to render the model in wireframe. Default is false.</param>
-    public ModelRenderer(Model model, Texture2D texture, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = null, bool drawWires = false) {
+    public ModelRenderer(Model model, Texture2D texture, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Shader? shader = null, Color? color = null, bool drawWires = false) {
         this._model = model;
         this._texture = texture;
         this._materialMap = materialMap;
+        this._shader = shader;
         this._color = color ?? Color.WHITE;
         this._drawWires = drawWires;
         
         MaterialHelper.SetTexture(ref this._model, 0, this._materialMap, ref this._texture);
+
+        if (this._shader != null) {
+            Shader shaderRef = this._shader.Value;
+            MaterialHelper.SetShader(ref this._model, 0, ref shaderRef);
+        }
     }
     
     protected internal override unsafe void Draw() {

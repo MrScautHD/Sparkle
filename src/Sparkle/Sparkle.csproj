@@ -8,7 +8,6 @@
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
     <AssemblyVersion>2.0.1</AssemblyVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
     <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
@@ -28,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="content/images/icon.png">
+    <Content Include="content/**/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

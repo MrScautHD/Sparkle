@@ -1,5 +1,7 @@
 using System.Numerics;
 using JoltPhysicsSharp;
+using Raylib_cs;
+using Sparkle.csharp;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.component;
 
@@ -8,7 +10,7 @@ namespace Test;
 public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture));
+        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, MaterialMapIndex.MATERIAL_MAP_ALBEDO));
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         //boxShape.MassProperties.ScaleToMass(100000000);

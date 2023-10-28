@@ -13,7 +13,6 @@ public abstract class Overlay : Disposable {
     /// <param name="name">The name of the Overlay instance.</param>
     public Overlay(string name) {
         this.Name = name;
-        OverlayManager.Overlays.Add(this);
     }
     
     /// <summary>
@@ -65,7 +64,7 @@ public abstract class Overlay : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this._enabled = false;
-            OverlayManager.Overlays.Remove(this);
+            OverlayManager.GetOverlays().Remove(this);
         }
     }
 }

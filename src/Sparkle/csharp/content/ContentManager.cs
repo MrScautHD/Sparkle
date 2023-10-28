@@ -23,20 +23,12 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
+        this.AddProcessors(typeof(Shader), new ShaderProcessor());
         this.AddProcessors(typeof(Sound), new SoundProcessor());
         this.AddProcessors(typeof(Wave), new WaveProcessor());
         this.AddProcessors(typeof(Music), new MusicProcessor());
     }
     
-    /// <summary>
-    /// Adds a content processor to the collection for a specified content type.
-    /// </summary>
-    /// <param name="type">The type of content for which the processor will be used.</param>
-    /// <param name="processor">The content processor to add.</param>
-    public void AddProcessors(Type type, IContentProcessor processor) {
-        this._processors.Add(type, processor);
-    }
-
     /// <summary>
     /// Tries to retrieve a content processor for the specified content type.
     /// </summary>
@@ -51,6 +43,15 @@ public class ContentManager : Disposable {
         }
 
         return processor!;
+    }
+    
+    /// <summary>
+    /// Adds a content processor to the collection for a specified content type.
+    /// </summary>
+    /// <param name="type">The type of content for which the processor will be used.</param>
+    /// <param name="processor">The content processor to add.</param>
+    public void AddProcessors(Type type, IContentProcessor processor) {
+        this._processors.Add(type, processor);
     }
 
     /// <summary>

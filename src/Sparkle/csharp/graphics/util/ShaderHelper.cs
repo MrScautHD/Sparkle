@@ -15,13 +15,6 @@ public static class ShaderHelper {
     public static void Unload(Shader shader) => Raylib.UnloadShader(shader);
 
     
-    /// <inheritdoc cref="Raylib.BeginShaderMode"/>
-    public static void BeginMode(Shader shader) => Raylib.BeginShaderMode(shader);
-    
-    /// <inheritdoc cref="Raylib.EndShaderMode"/>
-    public static void EndMode() => Raylib.EndShaderMode();
-
-    
     /// <inheritdoc cref="Raylib.IsShaderReady"/>
     public static bool IsReady(Shader shader) => Raylib.IsShaderReady(shader);
     
@@ -29,8 +22,20 @@ public static class ShaderHelper {
     public static int GetLocationAttribute(Shader shader, string attributeName) => Raylib.GetShaderLocationAttrib(shader, attributeName);
     
     
+    /// <inheritdoc cref="Raylib.SetShaderValueV"/>
+    public static void SetValueV<T>(Shader shader, int locIndex, T[] values, ShaderUniformDataType uniformType, int count) where T : unmanaged => Raylib.SetShaderValueV(shader, locIndex, values, uniformType, count);
+    
+    /// <inheritdoc cref="Raylib.SetShaderValueV"/>
+    public static void SetValueV<T>(Shader shader, int locIndex, Span<T> values, ShaderUniformDataType uniformType, int count) where T : unmanaged => Raylib.SetShaderValueV(shader, locIndex, values, uniformType, count);
+    
     /// <inheritdoc cref="Raylib.SetShaderValue"/>
     public static void SetValue<T>(Shader shader, int locIndex, T value, ShaderUniformDataType uniformType) where T : unmanaged => Raylib.SetShaderValue(shader, locIndex, value, uniformType);
+    
+    /// <inheritdoc cref="Raylib.SetShaderValue"/>
+    public static void SetValue<T>(Shader shader, int locIndex, T[] values, ShaderUniformDataType uniformType) where T : unmanaged => Raylib.SetShaderValue(shader, locIndex, values, uniformType);
+    
+    /// <inheritdoc cref="Raylib.SetShaderValue"/>
+    public static void SetValue<T>(Shader shader, int locIndex, Span<T> values, ShaderUniformDataType uniformType) where T : unmanaged => Raylib.SetShaderValue(shader, locIndex, values, uniformType);
     
     /// <inheritdoc cref="Raylib.SetShaderValueMatrix"/>
     public static void SetValueMatrix(Shader shader, int locIndex, Matrix4x4 mat) => Raylib.SetShaderValueMatrix(shader, locIndex, mat);

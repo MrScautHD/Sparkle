@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.entity;
+using Sparkle.csharp.graphics;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.scene;
@@ -21,7 +22,9 @@ public class Test3DScene : Scene {
         for (int i = 0; i < 1000; i++) {
             this.AddEntity(new TestEntity(new Vector3(0, i, 0)));
         }*/
-        
+
+        Light light = new Light(Vector3.One, Light.LightType.Point, Vector3.Zero, Color.RED);
+        this.AddEntity(light);
         
         TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
         this.AddEntity(entity);
@@ -44,11 +47,13 @@ public class Test3DScene : Scene {
     protected override void Draw() {
         base.Draw();
         
+        Graphics.BeginShaderMode(((Light) this.GetEntity(1)).Shader);
         SceneManager.MainCam3D!.BeginMode3D();
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);
         
         SceneManager.MainCam3D.EndMode3D();
+        Graphics.EndShaderMode();
     }
 }

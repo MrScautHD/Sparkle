@@ -3,7 +3,7 @@ using Raylib_cs;
 using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.entity; 
-/*
+
 public class Light : Entity {
 
     public Shader Shader;
@@ -19,6 +19,8 @@ public class Light : Entity {
     public int PosLoc;
     public int TargetLoc;
     public int ColorLoc;
+    
+    public int LightCount { get; private set; }
 
     public Light(Vector3 position, LightType type, Vector3 target, Color color) : base(position) {
         this.Enabled = true;
@@ -33,21 +35,20 @@ public class Light : Entity {
     }
 
     public unsafe void LoadShader() {
-        this.Shader = ShaderHelper.Load("content/shaders/lighting.vs", "content/shaders/lighting.fs");
-
-        this.Shader.locs[(int)ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocationAttribute(this.Shader, "viewPos");
+        this.Shader = Game.Instance.Content.Load<Shader>("shaders/lighting");
+        this.LightCount++;
+        
+        this.Shader.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocationAttribute(this.Shader, "viewPos");
 
         int ambientLoc = ShaderHelper.GetLocationAttribute(this.Shader, "ambient");
         float[] ambient = new[] { 0.1f, 0.1f, 0.1f, 1.0f };
-        Raylib.SetShaderValue(this.Shader, ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-
-        // MODEL NEED TO SET TO A SHADER!
+        ShaderHelper.SetValue(this.Shader, ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
         
-        string enabledName = "lights[" + this.Id + "].enabled";
-        string typeName = "lights[" + this.Id + "].type";
-        string posName = "lights[" + this.Id + "].position";
-        string targetName = "lights[" + this.Id + "].target";
-        string colorName = "lights[" + this.Id + "].color";
+        string enabledName = "lights[" + this.LightCount + "].enabled";
+        string typeName = "lights[" + this.LightCount + "].type";
+        string posName = "lights[" + this.LightCount + "].position";
+        string targetName = "lights[" + this.LightCount + "].target";
+        string colorName = "lights[" + this.LightCount + "].color";
         
         this.EnabledLoc = ShaderHelper.GetLocationAttribute(this.Shader, enabledName);
         this.TypeLoc = ShaderHelper.GetLocationAttribute(this.Shader, typeName);
@@ -60,20 +61,20 @@ public class Light : Entity {
     
     public void UpdateLightValues() {
         // Send to shader light enabled state and type
-        Raylib.SetShaderValue(
+        ShaderHelper.SetValue(
             this.Shader,
             this.EnabledLoc,
             this.Enabled ? 1 : 0,
             ShaderUniformDataType.SHADER_UNIFORM_INT
         );
         
-        Raylib.SetShaderValue(this.Shader, this.TypeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(this.Shader, this.TypeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
 
         // Send to shader light target position values
-        Raylib.SetShaderValue(this.Shader, this.PosLoc, this.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(this.Shader, this.PosLoc, this.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
 
         // Send to shader light target position values
-        Raylib.SetShaderValue(this.Shader, this.TargetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(this.Shader, this.TargetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
 
         // Send to shader light color values
         float[] color = new[] {
@@ -83,12 +84,11 @@ public class Light : Entity {
             (float) this.Color.a / (float)255
         };
         
-        Raylib.SetShaderValue(this.Shader, this.ColorLoc, color, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(this.Shader, this.ColorLoc, color, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
     }
     
     public enum LightType {
-        Directorional,
+        Directed,
         Point
     }
 }
-*/

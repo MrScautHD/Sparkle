@@ -7,8 +7,11 @@ using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.physics;
+using Sparkle.csharp.registry;
+using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
 using Sparkle.csharp.window;
+using Registry = Sparkle.csharp.registry.Registry;
 
 namespace Sparkle.csharp; 
 
@@ -74,6 +77,8 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/images/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
         Window.SetIcon(this.Logo);
         
+        this.OnRun();
+        
         Logger.Debug("Load content...");
         this.Load();
         
@@ -105,11 +110,19 @@ public class Game : Disposable {
         
         this.OnClose();
     }
+
+    /// <summary>
+    /// This method is called when the game starts.
+    /// </summary>
+    protected virtual void OnRun() {
+        RegistryManager.AddType(new ShaderRegistry());
+    }
     
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
     protected virtual void Init() {
+        RegistryManager.Init();
         SceneManager.Init();
         OverlayManager.Init();
     }
@@ -117,7 +130,9 @@ public class Game : Disposable {
     /// <summary>
     /// Used for loading resources.
     /// </summary>
-    protected virtual void Load() { }
+    protected virtual void Load() {
+        RegistryManager.Load();
+    }
     
     /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
@@ -178,8 +193,12 @@ public class Game : Disposable {
             if (this.Settings.IconPath == string.Empty) {
                 ImageHelper.Unload(this.Logo);
             }
+
+            foreach (Registry overlay in RegistryManager.GetTypes().ToList()) {
+                overlay.Dispose();
+            }
             
-            foreach (Overlay overlay in OverlayManager.Overlays.ToList()) {
+            foreach (Overlay overlay in OverlayManager.GetOverlays().ToList()) {
                 overlay.Dispose();
             }
 
