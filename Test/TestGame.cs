@@ -1,6 +1,7 @@
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.file.config;
+using Sparkle.csharp.overlay;
 using Sparkle.csharp.window;
 
 namespace Test; 
@@ -23,6 +24,7 @@ public class TestGame : Game {
         
         this.Overlay = new TestOverlay("Test");
         this.Overlay.Enabled = false;
+        OverlayManager.AddOverlay(this.Overlay);
         
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)
