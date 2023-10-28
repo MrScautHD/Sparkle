@@ -194,11 +194,11 @@ public class Game : Disposable {
                 ImageHelper.Unload(this.Logo);
             }
 
-            foreach (Registry overlay in RegistryManager.GetTypes().ToList()) {
+            foreach (Registry overlay in RegistryManager.RegisterTypes) {
                 overlay.Dispose();
             }
             
-            foreach (Overlay overlay in OverlayManager.GetOverlays().ToList()) {
+            foreach (Overlay overlay in OverlayManager.Overlays) {
                 overlay.Dispose();
             }
 

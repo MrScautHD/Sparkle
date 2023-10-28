@@ -49,7 +49,7 @@ public abstract class Registry : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this._items.Clear();
-            RegistryManager.GetTypes().Remove(this);
+            RegistryManager.RegisterTypes.Remove(this);
         }
     }
 }

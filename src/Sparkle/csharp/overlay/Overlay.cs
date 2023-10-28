@@ -64,7 +64,7 @@ public abstract class Overlay : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this._enabled = false;
-            OverlayManager.GetOverlays().Remove(this);
+            OverlayManager.Overlays.Remove(this);
         }
     }
 }
