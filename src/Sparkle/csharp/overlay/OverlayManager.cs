@@ -2,7 +2,7 @@ namespace Sparkle.csharp.overlay;
 
 public static class OverlayManager {
     
-    private static readonly List<Overlay> _overlays = new();
+    private static List<Overlay> _overlays = new();
     
     /// <summary>
     /// Retrieves a list of registered overlays for use in the system.

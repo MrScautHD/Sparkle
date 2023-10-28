@@ -9,6 +9,6 @@ public class ShaderRegistry : Registry {
     protected internal override void Load() {
         base.Load();
 
-        LightShader = this.Register("light", this.Content.Load<Shader>("shaders/lighting"));
+        LightShader = this.Register("light", () => this.Content.Load<Shader>("shaders/lighting"));
     }
 }

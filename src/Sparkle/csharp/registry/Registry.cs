@@ -35,11 +35,15 @@ public abstract class Registry : Disposable {
     /// <param name="name">The name associated with the object.</param>
     /// <param name="item">The object to register.</param>
     /// <returns>The registered object of type T.</returns>
-    protected T Register<T>(string name, T item) {
-        Logger.Info($"Registration complete for: {name}");
-        this._items.Add(name, item!);
-
-        return item;
+    protected T? Register<T>(string name, Func<T> item) {
+        if (this._items.TryAdd(name, item)) {
+            Logger.Info($"Registration complete for: {name}");
+            return item.Invoke();
+        }
+        else {
+            Logger.Error($"Unable to register: {name}");
+            return default;
+        }
     }
 
     protected override void Dispose(bool disposing) {

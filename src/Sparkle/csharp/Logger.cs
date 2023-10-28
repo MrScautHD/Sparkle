@@ -44,7 +44,7 @@ public static class Logger {
     /// <param name="msg">The error message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Error(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.DarkRed);
+        Log(msg, skipFrames, ConsoleColor.Red);
     }
 
     /// <summary>
