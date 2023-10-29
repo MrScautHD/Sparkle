@@ -1,12 +1,13 @@
 using Raylib_cs;
 using Sparkle.csharp.audio;
+using Sparkle.csharp.content.type;
 
 namespace Sparkle.csharp.content.processor; 
 
 public class WaveProcessor : IContentProcessor {
     
-    public object Load(string path) {
-        return WavePlayer.Load(path);
+    public object Load(IContentType type, string directory) {
+        return WavePlayer.Load(directory + ((WaveContent) type).Path);
     }
 
     public void Unload(object item) {

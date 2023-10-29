@@ -1,13 +1,16 @@
+using Sparkle.csharp.content.type;
+
 namespace Sparkle.csharp.content.processor; 
 
 public interface IContentProcessor {
     
     /// <summary>
-    /// Loads a content item from the specified path.
+    /// Loads content of the specified type from the given directory and returns the loaded content as an object.
     /// </summary>
-    /// <param name="path">The path to the content item.</param>
-    /// <returns>The loaded content item as an object.</returns>
-    object Load(string path);
+    /// <param name="type">The content type to load.</param>
+    /// <param name="directory">The directory from which to load the content.</param>
+    /// <returns>The loaded content as an object.</returns>
+    object Load(IContentType type, string directory);
     
     /// <summary>
     /// Unloads a content item.

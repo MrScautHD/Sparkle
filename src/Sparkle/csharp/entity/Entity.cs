@@ -3,11 +3,11 @@ using Sparkle.csharp.entity.component;
 
 namespace Sparkle.csharp.entity; 
 
-public abstract class Entity : Disposable {
+public class Entity : Disposable {
     
     public int Id { get; internal set; }
 
-    public string? Tag;
+    public string Tag;
 
     // TODO https://github.com/ChrisDill/Raylib-cs/issues/163
     public Vector3 Position;
@@ -25,6 +25,7 @@ public abstract class Entity : Disposable {
     /// </summary>
     /// <param name="position">Initial position of the entity in 3D space, specified as a Vector3.</param>
     public Entity(Vector3 position) {
+        this.Tag = string.Empty;
         this.Position = position;
         this.Scale = Vector3.One;
         this.Rotation = Quaternion.Identity;

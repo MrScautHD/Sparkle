@@ -7,13 +7,13 @@ public abstract class Registry : Disposable {
     protected ContentManager Content => Game.Instance.Content;
     public bool HasInitialized { get; private set; }
     
-    private Dictionary<string, object> _items;
+    protected readonly Dictionary<string, object> Items;
     
     /// <summary>
     /// Initializes a new instance of the Registry class, creating an empty registry for storing items.
     /// </summary>
     public Registry() {
-        this._items = new Dictionary<string, object>();
+        this.Items = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public abstract class Registry : Disposable {
     /// <param name="item">The object to register.</param>
     /// <returns>The registered object of type T.</returns>
     protected T? Register<T>(string name, Func<T> item) {
-        if (this._items.TryAdd(name, item)) {
+        if (this.Items.TryAdd(name, item)) {
             Logger.Info($"Registration complete for: {name}");
             return item.Invoke();
         }
@@ -48,7 +48,7 @@ public abstract class Registry : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            this._items.Clear();
+            this.Items.Clear();
             RegistryManager.RegisterTypes.Remove(this);
         }
     }

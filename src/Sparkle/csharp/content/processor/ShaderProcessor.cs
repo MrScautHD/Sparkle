@@ -1,12 +1,13 @@
 using Raylib_cs;
+using Sparkle.csharp.content.type;
 using Sparkle.csharp.graphics.util;
 
 namespace Sparkle.csharp.content.processor; 
 
 public class ShaderProcessor : IContentProcessor {
     
-    public object Load(string path) {
-        return ShaderHelper.Load($"{path}.vs", $"{path}.fs");
+    public object Load(IContentType type, string directory) {
+        return ShaderHelper.Load(directory + ((ShaderContent) type).VertPath, directory + ((ShaderContent) type).FragPath);
     }
 
     public void Unload(object item) {

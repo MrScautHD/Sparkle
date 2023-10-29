@@ -18,6 +18,9 @@ public static class ShaderHelper {
     /// <inheritdoc cref="Raylib.IsShaderReady"/>
     public static bool IsReady(Shader shader) => Raylib.IsShaderReady(shader);
     
+    /// <inheritdoc cref="Raylib.GetShaderLocation(Shader, string)"/>
+    public static int GetLocation(Shader shader, string attributeName) => Raylib.GetShaderLocation(shader, attributeName);
+    
     /// <inheritdoc cref="Raylib.GetShaderLocationAttrib(Shader, string)"/>
     public static int GetLocationAttribute(Shader shader, string attributeName) => Raylib.GetShaderLocationAttrib(shader, attributeName);
     

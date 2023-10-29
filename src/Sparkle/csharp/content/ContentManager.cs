@@ -1,5 +1,6 @@
 using Raylib_cs;
 using Sparkle.csharp.content.processor;
+using Sparkle.csharp.content.type;
 
 namespace Sparkle.csharp.content; 
 
@@ -53,15 +54,15 @@ public class ContentManager : Disposable {
     public void AddProcessors(Type type, IContentProcessor processor) {
         this._processors.Add(type, processor);
     }
-
+    
     /// <summary>
-    /// Loads a content item of the specified type from the given path.
+    /// Loads content of the specified type and adds it to the content manager, returning the loaded item.
     /// </summary>
-    /// <typeparam name="T">The type of content item to load.</typeparam>
-    /// <param name="path">The path to the content item.</param>
-    /// <returns>The loaded content item.</returns>
-    public T Load<T>(string path) {
-        T item = (T) this.TryGetProcessor(typeof(T)).Load(this._contentDirectory + path);
+    /// <typeparam name="T">The type of content to load.</typeparam>
+    /// <param name="contentType">The content type interface for loading.</param>
+    /// <returns>The loaded content item of type T.</returns>
+    public T Load<T>(IContentType contentType) {
+        T item = (T) this.TryGetProcessor(typeof(T)).Load(contentType, this._contentDirectory);
 
         this._content.Add(item!);
         return item;

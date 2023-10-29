@@ -2,6 +2,7 @@ using System.Reflection;
 using Raylib_cs;
 using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
+using Sparkle.csharp.content.type;
 using Sparkle.csharp.graphics;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
@@ -61,7 +62,6 @@ public class Game : Disposable {
         Logger.Debug("Initialize Raylib logger...");
         Logger.SetupRaylibLogger();
         
-        Logger.Debug($"Setting target fps to: {(this.Settings.TargetFps > 0 ? this.Settings.TargetFps : "unlimited")}");
         this.SetTargetFps(this.Settings.TargetFps);
 
         Logger.Debug("Initialize content manager...");
@@ -74,7 +74,7 @@ public class Game : Disposable {
         Window.SetConfigFlags(this.Settings.WindowFlags);
         Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
             
-        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/images/icon.png") : this.Content.Load<Image>(this.Settings.IconPath);
+        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/images/icon.png") : this.Content.Load<Image>(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
         this.OnRun();

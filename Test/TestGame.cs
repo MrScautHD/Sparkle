@@ -1,5 +1,6 @@
 using Raylib_cs;
 using Sparkle.csharp;
+using Sparkle.csharp.content.type;
 using Sparkle.csharp.file.config;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.window;
@@ -40,11 +41,11 @@ public class TestGame : Game {
         base.Load();
         
         // TEXTURES
-        PlayerTexture = Content.Load<Texture2D>("texture.png");
-        SpriteTexture = Content.Load<Texture2D>("sprite.png");
+        PlayerTexture = Content.Load<Texture2D>(new TextureContent("texture.png"));
+        SpriteTexture = Content.Load<Texture2D>(new TextureContent("sprite.png"));
         
         // MODELS
-        PlayerModel = Content.Load<Model>("model.glb");
+        PlayerModel = Content.Load<Model>(new ModelContent("model.glb"));
     }
 
     protected override void Update() {
