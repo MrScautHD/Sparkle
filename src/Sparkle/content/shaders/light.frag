@@ -19,7 +19,7 @@ out vec4 finalColor;
 #define LIGHT_DIRECTIONAL 0
 #define LIGHT_POINT 1
 
-struct MaterialPropert {
+struct MaterialProperty {
     vec3 color;
     int useSampler;
     sampler2D sampler0;
