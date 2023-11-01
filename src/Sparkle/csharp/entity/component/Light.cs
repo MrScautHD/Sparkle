@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
+using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 
 
@@ -9,94 +10,87 @@ public class Light : Component {
 
     public static int LightCount { get; private set; }
     
-    private bool _enabled;
-    private LightType _type;
-    private Vector3 _target;
-    private Color _color;
-
+    public bool Enabled;
+    public LightType Type;
+    public Vector3 Target;
+    public Color Color;
+    public float LightLevel;
+    
+    public int LightIndex { get; private set; }
+    
+    private int _ambientLoc;
+    private int _lightCountLoc;
+    
     private int _enabledLoc;
     private int _typeLoc;
     private int _posLoc;
     private int _targetLoc;
     private int _colorLoc;
     
-    public Light(LightType type, Vector3 target, Color color) {
-        this._enabled = true;
-        this._type = type;
-        this._target = target;
-        this._color = color;
+    public Light(LightType type, Vector3 target, Color color, float lightLevel = 0.1F) {
+        this.Enabled = true;
+        this.Type = type;
+        this.Target = target;
+        this.Color = color;
+        this.LightLevel = lightLevel;
     }
     
-    public bool Enabled {
-        get => this._enabled;
-        set {
-            this._enabled = value;
-            this.UpdateValues();
-        }
-    }
-
-    public LightType Type {
-        get => this._type;
-        set {
-            this._type = value;
-            this.UpdateValues();
-        }
-    }
-    
-    public Vector3 Target {
-        get => this._target;
-        set {
-            this._target = value;
-            this.UpdateValues();
-        }
-    }
-    
-    public Color Color {
-        get => this._color;
-        set {
-            this._color = value;
-            this.UpdateValues();
-        }
-    }
-    
-    protected internal override unsafe void Init() {
+    protected internal override void Init() {
         base.Init();
-        ShaderRegistry.Light.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Light, "viewPos");
+        this.SetLocations();
+        this.SetLightIndex();
+    }
 
-        float[] ambient = new[] {
-            0.1f,
-            0.1f,
-            0.1f,
-            1.0f
-        };
-        
-        int ambientLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "ambient");
-        ShaderHelper.SetValue(ShaderRegistry.Light, ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-        
-        this._enabledLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{LightCount}].enabled");
-        this._typeLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{LightCount}].type");
-        this._posLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{LightCount}].position");
-        this._targetLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{LightCount}].target");
-        this._colorLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{LightCount}].color");
+    protected internal override void Update() {
+        base.Update();
+        this.UpdateValues();
+    }
+    
+    /// <summary>
+    /// Sets the index of the current light source.
+    /// </summary>
+    private void SetLightIndex() {
+        this.LightIndex = LightCount;
         LightCount++;
     }
-    
-    private void UpdateValues() {
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._enabledLoc, this._enabled ? 1 : 0, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._typeLoc, (int) this._type, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._posLoc, this.Entity.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._targetLoc, this._target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
 
-        float[] color = new[] {
-            this._color.r / 255.0F,
-            this._color.g / 255.0F,
-            this._color.b / 255.0F,
-            this._color.a / 255.0F
-        };
+    /// <summary>
+    /// Sets shader locations for light source parameters.
+    /// </summary>
+    private unsafe void SetLocations() {
+        ShaderRegistry.Light.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Light, "viewPos");
+        this._ambientLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "ambient");
+        this._lightCountLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "lightCount");
         
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._colorLoc, color, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        this._enabledLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].enabled");
+        this._typeLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].type");
+        this._posLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].position");
+        this._targetLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].target");
+        this._colorLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].color");
     }
     
+    /// <summary>
+    /// Updates the values of the light source for shader rendering.
+    /// </summary>
+    private unsafe void UpdateValues() {
+        if (SceneManager.MainCam3D == null) return;
+        
+        ShaderHelper.SetValue(ShaderRegistry.Light, ShaderRegistry.Light.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        
+        Vector4 ambient = new Vector4(this.LightLevel, this.LightLevel, this.LightLevel, 1.0f);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._lightCountLoc, LightCount, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._enabledLoc, this.Enabled ? 1 : 0, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._typeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._posLoc, this.Entity.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._targetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Light, this._colorLoc, ColorHelper.Normalize(this.Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+    }
+    
+    /// <summary>
+    /// Defines the types of lights, including directional and point lights.
+    /// </summary>
     public enum LightType {
         Directional,
         Pointed

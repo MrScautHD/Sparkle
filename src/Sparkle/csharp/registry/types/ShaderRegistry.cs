@@ -11,7 +11,7 @@ public class ShaderRegistry : Registry {
     protected internal override void Load() {
         base.Load();
         
-        Light = this.Register("light", () => this.Content.Load<Shader>(new ShaderContent("shaders/light.vert", "shaders/light.frag")));
+        Light = this.Register("lighting", () => this.Content.Load<Shader>(new ShaderContent("shaders/lighting.vert", "shaders/lighting.frag")));
         DiscardAlpha = this.Register("discard_alpha", () => this.Content.Load<Shader>(new ShaderContent(null!, "shaders/discard_alpha.frag")));
     }
 }

@@ -7,7 +7,7 @@ namespace Sparkle.csharp.content.processor;
 public class ModelProcessor : IContentProcessor {
 
     public object Load(IContentType type, string directory) {
-        return ModelHelper.Load(directory + ((ModelContent) type).Path);
+        return ModelHelper.Load(directory + type.Path);
     }
     
     public void Unload(object item) {

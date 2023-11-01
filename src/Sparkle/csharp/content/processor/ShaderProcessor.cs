@@ -7,7 +7,7 @@ namespace Sparkle.csharp.content.processor;
 public class ShaderProcessor : IContentProcessor {
     
     public object Load(IContentType type, string directory) {
-        return ShaderHelper.Load(directory + ((ShaderContent) type).VertPath, directory + ((ShaderContent) type).FragPath);
+        return ShaderHelper.Load(directory + ((ShaderContent) type).Path, directory + ((ShaderContent) type).FragPath);
     }
 
     public void Unload(object item) {

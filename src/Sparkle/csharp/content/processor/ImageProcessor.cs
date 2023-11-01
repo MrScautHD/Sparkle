@@ -7,7 +7,7 @@ namespace Sparkle.csharp.content.processor;
 public class ImageProcessor : IContentProcessor {
     
     public object Load(IContentType type, string directory) {
-        return ImageHelper.Load(directory + ((ImageContent) type).Path);
+        return ImageHelper.Load(directory + type.Path);
     }
 
     public void Unload(object item) {
