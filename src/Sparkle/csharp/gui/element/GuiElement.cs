@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.window;
 using Rectangle = Raylib_cs.Rectangle;
 

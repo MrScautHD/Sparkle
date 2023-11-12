@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using Raylib_cs;
 
-namespace Sparkle.csharp.graphics.util; 
+namespace Sparkle.csharp.graphics.helper; 
 
 public class ColorHelper {
     

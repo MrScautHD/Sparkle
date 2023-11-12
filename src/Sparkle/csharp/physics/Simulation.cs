@@ -51,7 +51,7 @@ public class Simulation : Disposable {
     /// </summary>
     /// <param name="timeStep">The time step to advance the simulation.</param>
     /// <param name="collisionSteps">The number of collision resolution steps to perform.</param>
-    public void Update(float timeStep, int collisionSteps) {
+    protected internal void Update(float timeStep, int collisionSteps) {
         this.PhysicsSystem.Update(timeStep, collisionSteps, this._allocator, this._jobSystem);
     }
 

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_cs;
 using Sparkle.csharp.entity.component;
 
 namespace Sparkle.csharp.entity; 
@@ -9,7 +10,6 @@ public class Entity : Disposable {
 
     public string Tag;
 
-    // TODO https://github.com/ChrisDill/Raylib-cs/issues/163
     public Vector3 Position;
     public Vector3 Scale;
     public Quaternion Rotation;

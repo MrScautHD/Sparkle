@@ -1,3 +1,5 @@
+using Sparkle.csharp.content;
+
 namespace Sparkle.csharp.registry; 
 
 public class RegistryManager {
@@ -30,9 +32,9 @@ public class RegistryManager {
     /// <summary>
     /// Used for loading resources.
     /// </summary>
-    internal static void Load() {
+    internal static void Load(ContentManager content) {
         foreach (Registry registry in RegisterTypes) {
-            registry.Load();
+            registry.Load(content);
         }
     }
 }

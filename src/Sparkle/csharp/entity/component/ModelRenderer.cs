@@ -1,5 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
@@ -33,16 +34,14 @@ public class ModelRenderer : Component {
         this._color = color ?? Color.WHITE;
         this._drawWires = drawWires;
         
-        for (int i = 0; i < model.materialCount; i++) {
+        for (int i = 0; i < model.MaterialCount; i++) {
             MaterialHelper.SetShader(ref this._model, i, ref this._shader);
         }
         
-        for (int i = 0; i < model.materialCount; i++) {
+        for (int i = 0; i < model.MaterialCount; i++) {
             MaterialHelper.SetTexture(ref this._model, i, this._materialMap, ref this._texture);
         }
     }
-    
-    // TODO IMPLIMENT FRUSTRUM
     
     protected internal override unsafe void Draw() {
         base.Draw();
@@ -53,15 +52,18 @@ public class ModelRenderer : Component {
         
         Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
         
-        if (this._drawWires) {
-            ModelHelper.DrawModelWires(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+        if (SceneManager.MainCam3D.GetFrustum().ContainsBox(ModelHelper.GetBoundingBox(this._model))) {
+            if (this._drawWires) {
+                ModelHelper.DrawModelWires(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+            }
+            else {
+                ModelHelper.DrawModel(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+            }
         }
-        else {
-            ModelHelper.DrawModel(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
-        }
-
+        
+        
         SceneManager.MainCam3D.EndMode3D();
     }
-
+    
     protected override void Dispose(bool disposing) { }
 }

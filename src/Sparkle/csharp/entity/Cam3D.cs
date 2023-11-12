@@ -1,12 +1,15 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
+using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
 public class Cam3D : Entity {
 
     private Camera3D _camera3D;
+    private Frustum _frustum;
     
     public CameraMode Mode;
     
@@ -17,6 +20,7 @@ public class Cam3D : Entity {
     public Cam3D(Vector3 position, Vector3 target, Vector3 up, float fov, CameraProjection projection, CameraMode mode = CameraMode.CAMERA_FREE) : base(Vector3.Zero) {
         this.Tag = "camera3D";
         this._camera3D = new Camera3D();
+        this._frustum = new Frustum();
         this.Position = position;
         this.Target = target;
         this.Up = up;
@@ -32,8 +36,8 @@ public class Cam3D : Entity {
     /// Gets or sets the position of the 3D camera in 3D space.
     /// </summary>
     public new Vector3 Position {
-        get => this._camera3D.position;
-        set => this._camera3D.position = value;
+        get => this._camera3D.Position;
+        set => this._camera3D.Position = value;
     }
 
     /// <summary>
@@ -50,32 +54,32 @@ public class Cam3D : Entity {
     /// Gets or sets the target position of the 3D camera.
     /// </summary>
     public Vector3 Target {
-        get => this._camera3D.target;
-        set => this._camera3D.target = value;
+        get => this._camera3D.Target;
+        set => this._camera3D.Target = value;
     }
     
     /// <summary>
     /// Gets or sets the up direction vector of the 3D camera.
     /// </summary>
     public Vector3 Up {
-        get => this._camera3D.up;
-        set => this._camera3D.up = value;
+        get => this._camera3D.Up;
+        set => this._camera3D.Up = value;
     }
 
     /// <summary>
     /// Gets or sets the vertical field of view (FOV) angle of the 3D camera.
     /// </summary>
     public float Fov {
-        get => this._camera3D.fovy;
-        set => this._camera3D.fovy = value;
+        get => this._camera3D.FovY;
+        set => this._camera3D.FovY = value;
     }
     
     /// <summary>
     /// Gets or sets the projection type of the 3D camera.
     /// </summary>
     public CameraProjection Projection {
-        get => this._camera3D.projection;
-        set => this._camera3D.projection = value;
+        get => this._camera3D.Projection;
+        set => this._camera3D.Projection = value;
     }
     
     protected internal override void Update() {
@@ -183,78 +187,45 @@ public class Cam3D : Entity {
         }
     }
     
-    /// <summary>
-    /// Retrieves the forward direction vector of the 3D camera.
-    /// </summary>
-    /// <returns>The forward direction vector of the camera in 3D space.</returns>
-    public unsafe Vector3 GetForward() {
-        fixed (Camera3D* camera = &this._camera3D) {
-            return Raylib.GetCameraForward(camera);
-        }
-    }
+    /// <inheritdoc cref="Raylib.GetCameraForward(ref Camera3D)"/>
+    public Vector3 GetForward() => Raylib.GetCameraForward(ref this._camera3D);
     
-    /// <summary>
-    /// Retrieves the up direction vector of the 3D camera.
-    /// </summary>
-    /// <returns>The up direction vector of the camera in 3D space.</returns>
-    public unsafe Vector3 GetUp() {
-        fixed (Camera3D* camera = &this._camera3D) {
-            return Raylib.GetCameraUp(camera);
-        }
-    }
+    /// <inheritdoc cref="Raylib.GetCameraUp(ref Camera3D)"/>
+    public Vector3 GetUp() => Raylib.GetCameraUp(ref this._camera3D);
     
-    /// <summary>
-    /// Retrieves the right direction vector of the 3D camera.
-    /// </summary>
-    /// <returns>The right direction vector of the camera in 3D space.</returns>
-    public unsafe Vector3 GetRight() {
-        fixed (Camera3D* camera = &this._camera3D) {
-            return Raylib.GetCameraRight(camera);
-        }
-    }
+    /// <inheritdoc cref="Raylib.GetCameraRight(ref Camera3D)"/>
+    public Vector3 GetRight() => Raylib.GetCameraRight(ref this._camera3D);
     
-    /// <summary>
-    /// Moves the 3D camera forward by the specified distance.
-    /// </summary>
-    /// <param name="distance">The distance by which to move the camera forward.</param>
-    /// <param name="moveInWorldPlane">Specifies whether to move in the world plane (true) or camera plane (false).</param>
-    public unsafe void MoveForward(float distance, bool moveInWorldPlane) {
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraMoveForward(camera, distance, moveInWorldPlane);
-        }
-    }
+    /// <inheritdoc cref="Raylib.CameraMoveForward(ref Camera3D, float, CBool)"/>
+    public void MoveForward(float distance, bool moveInWorldPlane) => Raylib.CameraMoveForward(ref this._camera3D, distance, moveInWorldPlane);
     
-    /// <summary>
-    /// Moves the 3D camera upward by the specified distance.
-    /// </summary>
-    /// <param name="distance">The distance by which to move the camera upward.</param>
-    public unsafe void MoveUp(float distance) {
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraMoveUp(camera, distance);
-        }
-    }
+    /// <inheritdoc cref="Raylib.CameraMoveUp(ref Camera3D, float)"/>
+    public void MoveUp(float distance) => Raylib.CameraMoveUp(ref this._camera3D, distance);
     
-    /// <summary>
-    /// Moves the 3D camera rightward by the specified distance.
-    /// </summary>
-    /// <param name="distance">The distance by which to move the camera rightward.</param>
-    /// <param name="moveInWorldPlane">Specifies whether to move in the world plane (true) or camera plane (false).</param>
-    public unsafe void MoveRight(float distance, bool moveInWorldPlane) {
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraMoveRight(camera, distance, moveInWorldPlane);
-        }
-    }
+    /// <inheritdoc cref="Raylib.CameraMoveRight(ref Camera3D, float, CBool)"/>
+    public void MoveRight(float distance, bool moveInWorldPlane) => Raylib.CameraMoveRight(ref this._camera3D, distance, moveInWorldPlane);
+    
+    /// <inheritdoc cref="Raylib.CameraMoveToTarget(ref Camera3D, float)"/>
+    public void MoveToTarget(float delta) => Raylib.CameraMoveToTarget(ref this._camera3D, delta);
 
-    /// <summary>
-    /// Moves the 3D camera towards its target position by a specified delta distance.
-    /// </summary>
-    /// <param name="delta">The distance by which to move the camera towards its target.</param>
-    public unsafe void MoveToTarget(float delta) {
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraMoveToTarget(camera, delta);
-        }
-    }
-
+    /// <inheritdoc cref="Raylib.GetCameraViewMatrix(ref Camera3D)"/>
+    public Matrix4x4 GetView() => Raylib.GetCameraViewMatrix(ref this._camera3D);
+    
+    /// <inheritdoc cref="Raylib.GetCameraProjectionMatrix(ref Camera3D, float)"/>
+    public Matrix4x4 GetProjection(float aspect) => Raylib.GetCameraProjectionMatrix(ref this._camera3D, aspect);
+    
+    /// <inheritdoc cref="Raylib.GetCameraMatrix"/>
+    public Matrix4x4 GetTransformMatrix() => Raylib.GetCameraMatrix(this._camera3D);
+    
+    /// <inheritdoc cref="Raylib.GetWorldToScreen"/>
+    public Vector2 GetWorldToScreen(Vector3 position) => Raylib.GetWorldToScreen(position, this._camera3D);
+    
+    /// <inheritdoc cref="Raylib.GetWorldToScreenEx"/>
+    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => Raylib.GetWorldToScreenEx(position, this._camera3D, width, height);
+    
+    /// <inheritdoc cref="Raylib.GetMouseRay"/>
+    public Ray GetMouseRay(Vector2 mousePosition, Camera3D camera) => Raylib.GetMouseRay(mousePosition, camera);
+    
     /// <summary>
     /// Gets the yaw (horizontal rotation) of the 3D camera in degrees.
     /// </summary>
@@ -284,12 +255,10 @@ public class Cam3D : Entity {
     /// </summary>
     /// <param name="angle">The target yaw angle in degrees.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
-    public unsafe void SetYaw(float angle, bool rotateAroundTarget) {
+    public void SetYaw(float angle, bool rotateAroundTarget) {
         float difference = this.GetYaw() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
         
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraYaw(camera, difference, rotateAroundTarget);
-        }
+        Raylib.CameraYaw(ref this._camera3D, difference, rotateAroundTarget);
     }
     
     /// <summary>
@@ -299,83 +268,29 @@ public class Cam3D : Entity {
     /// <param name="lockView">Specifies whether to lock the view during the rotation.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
     /// <param name="rotateUp">Specifies whether to rotate upwards.</param>
-    public unsafe void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
+    public void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
         float difference = angle * Raylib.DEG2RAD - this.GetPitch() * Raylib.DEG2RAD;
         
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraPitch(camera, difference, lockView, rotateAroundTarget, rotateUp);
-        }
+        Raylib.CameraPitch(ref this._camera3D, difference, lockView, rotateAroundTarget, rotateUp);
     }
 
     /// <summary>
     /// Sets the roll (tilt or bank) of the 3D camera to the specified angle in degrees.
     /// </summary>
     /// <param name="angle">The target roll angle in degrees.</param>
-    public unsafe void SetRoll(float angle) {
+    public void SetRoll(float angle) {
         float difference = this.GetRoll() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
         
-        fixed (Camera3D* camera = &this._camera3D) {
-            Raylib.CameraRoll(camera, difference);
-        }
-    }
-
-    /// <summary>
-    /// Retrieves the view matrix for the 3D camera.
-    /// </summary>
-    /// <returns>The view matrix for the 3D camera.</returns>
-    public unsafe Matrix4x4 GetView() {
-        fixed (Camera3D* camera = &this._camera3D) {
-            return Raylib.GetCameraViewMatrix(camera);
-        }
+        Raylib.CameraRoll(ref this._camera3D, difference);
     }
     
     /// <summary>
-    /// Retrieves the projection matrix for the 3D camera with the specified aspect ratio.
+    /// Retrieves the Frustum associated with the current instance.
     /// </summary>
-    /// <param name="aspect">The aspect ratio used for projection.</param>
-    /// <returns>The projection matrix for the 3D camera.</returns>
-    public unsafe Matrix4x4 GetProjection(float aspect) {
-        fixed (Camera3D* camera = &this._camera3D) {
-            return Raylib.GetCameraProjectionMatrix(camera, aspect);
-        }
-    }
-
-    /// <summary>
-    /// Retrieves the transformation matrix representing the current 3D camera settings.
-    /// </summary>
-    /// <returns>The transformation matrix based on the camera's configuration.</returns>
-    public Matrix4x4 GetTransformMatrix() {
-        return Raylib.GetCameraMatrix(this._camera3D);
-    }
-
-    /// <summary>
-    /// Converts a world-space 3D position to screen-space using the current 3D camera settings.
-    /// </summary>
-    /// <param name="position">The world-space 3D position to be converted.</param>
-    /// <returns>The screen-space representation of the provided 3D position.</returns>
-    public Vector2 GetWorldToScreen(Vector3 position) {
-        return Raylib.GetWorldToScreen(position, this._camera3D);
-    }
-    
-    /// <summary>
-    /// Converts a world-space 3D position to screen-space using the current 3D camera settings.
-    /// </summary>
-    /// <param name="position">The world-space 3D position to be converted.</param>
-    /// <param name="width">The width of the screen or viewport.</param>
-    /// <param name="height">The height of the screen or viewport.</param>
-    /// <returns>The screen-space representation of the provided 3D position.</returns>
-    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) {
-        return Raylib.GetWorldToScreenEx(position, this._camera3D, width, height);
-    }
-    
-    /// <summary>
-    /// Retrieves a ray in 3D space based on the mouse position and a specified camera.
-    /// </summary>
-    /// <param name="mousePosition">The 2D mouse position in screen space.</param>
-    /// <param name="camera">The 3D camera used for raycasting.</param>
-    /// <returns>A Ray object representing the ray in 3D space.</returns>
-    public Ray GetMouseRay(Vector2 mousePosition, Camera3D camera) {
-        return Raylib.GetMouseRay(mousePosition, camera);
+    /// <returns>The Frustum object.</returns>
+    public Frustum GetFrustum() {
+        this._frustum.Extract();
+        return this._frustum;
     }
     
     /// <summary>

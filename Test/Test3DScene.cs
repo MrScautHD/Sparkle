@@ -4,7 +4,7 @@ using Sparkle.csharp;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.component;
 using Sparkle.csharp.graphics;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
@@ -55,10 +55,12 @@ public class Test3DScene : Scene {
         base.Draw();
         
         SceneManager.MainCam3D!.BeginMode3D();
+        Graphics.BeginShaderMode(ShaderRegistry.Light);
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);
         
+        Graphics.EndShaderMode();
         SceneManager.MainCam3D.EndMode3D();
     }
 }

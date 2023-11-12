@@ -4,7 +4,6 @@ namespace Sparkle.csharp.registry;
 
 public abstract class Registry : Disposable {
     
-    protected ContentManager Content => Game.Instance.Content;
     public bool HasInitialized { get; private set; }
     
     private readonly Dictionary<string, object> _items;
@@ -26,7 +25,7 @@ public abstract class Registry : Disposable {
     /// <summary>
     /// Used for loading resources.
     /// </summary>
-    protected internal virtual void Load() { }
+    protected internal virtual void Load(ContentManager content) { }
     
     /// <summary>
     /// Registers an object with a specified name in the registry.

@@ -46,40 +46,40 @@ public class Cam2D : Entity {
     /// Gets or sets the 2D camera's current position, which is equivalent to the camera's target.
     /// </summary>
     public new Vector2 Position {
-        get => this._camera2D.target;
-        set => this._camera2D.target = value;
+        get => this._camera2D.Target;
+        set => this._camera2D.Target = value;
     }
     
     /// <summary>
     /// Gets or sets the rotation of the 2D camera.
     /// </summary>
     public new float Rotation {
-        get => this._camera2D.rotation;
-        set => this._camera2D.rotation = value;
+        get => this._camera2D.Rotation;
+        set => this._camera2D.Rotation = value;
     }
     
     /// <summary>
     /// Gets or sets the offset applied to the 2D camera's position.
     /// </summary>
     public Vector2 Offset {
-        get => this._camera2D.offset;
-        set => this._camera2D.offset = value;
+        get => this._camera2D.Offset;
+        set => this._camera2D.Offset = value;
     }
     
     /// <summary>
     /// Gets or sets the zoom level of the 2D camera, with optional minimum and maximum limits.
     /// </summary>
     public float Zoom {
-        get => this._camera2D.zoom;
+        get => this._camera2D.Zoom;
         set {
             if (value < this.MinZoom) {
-                this._camera2D.zoom = this.MinZoom;
+                this._camera2D.Zoom = this.MinZoom;
             }
             else if (value > this.MaxZoom) {
-                this._camera2D.zoom = this.MaxZoom;
+                this._camera2D.Zoom = this.MaxZoom;
             }
             else {
-                this._camera2D.zoom = value;
+                this._camera2D.Zoom = value;
             }
         }
     }

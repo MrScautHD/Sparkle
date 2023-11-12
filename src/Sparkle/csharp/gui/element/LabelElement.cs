@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.gui.element.data;
 using Sparkle.csharp.window;
 

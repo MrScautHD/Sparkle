@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 
@@ -15,7 +15,7 @@ public class Sprite : Component {
     
     public Sprite(Texture2D texture, Vector2? size, Color? color, float rotation = 0, bool flipSprite = false) {
         this.Texture = texture;
-        this.Size = size ?? new Vector2(texture.width, texture.height);
+        this.Size = size ?? new Vector2(texture.Width, texture.Height);
         this.Color = color ?? Color.WHITE;
         this.Rotation = rotation;
         this.FlipSprite = flipSprite;
@@ -26,9 +26,9 @@ public class Sprite : Component {
         
         SceneManager.MainCam2D!.BeginMode2D();
         
-        Rectangle source = new Rectangle(0, 0, this.Texture.width, this.Texture.height);
+        Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
         Rectangle dest = new Rectangle(this.Entity.Position.X, this.Entity.Position.Y, this.Size.X, this.Size.Y);
-        Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
+        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         TextureHelper.DrawPro(this.Texture, source, dest, origin, this.Rotation, this.Color);
         
         SceneManager.MainCam2D.EndMode2D();

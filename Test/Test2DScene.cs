@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.entity;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.scene;
 
 namespace Test; 

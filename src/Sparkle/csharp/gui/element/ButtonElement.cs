@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.gui.element.data;
 using Sparkle.csharp.window;
 
@@ -37,7 +37,7 @@ public class ButtonElement : GuiElement {
     /// <param name="clickClickFunc">An optional function to handle click events.</param>
     public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, anchor, offset, Vector2.Zero, clickClickFunc) {
         this.Texture = buttonData.Texture;
-        this.Size = size ?? (this.Texture != null ? new Vector2(this.Texture.Value.width, this.Texture.Value.height) : Vector2.Zero);
+        this.Size = size ?? (this.Texture != null ? new Vector2(this.Texture.Value.Width, this.Texture.Value.Height) : Vector2.Zero);
         this.Rotation = buttonData.Rotation;
         this.Color = buttonData.Color;
         this.HoverColor = buttonData.HoverColor;
@@ -63,14 +63,14 @@ public class ButtonElement : GuiElement {
 
     protected internal override void Draw() {
         if (this.Texture != null) {
-            Rectangle source = new Rectangle(0, 0, this.Texture.Value.width, this.Texture.Value.height);
+            Rectangle source = new Rectangle(0, 0, this.Texture.Value.Width, this.Texture.Value.Height);
             Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(dest.width / 2, dest.height / 2);
+            Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
             TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
         }
         else {
             Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(rec.width / 2, rec.height / 2);
+            Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
         }
 

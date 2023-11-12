@@ -23,7 +23,7 @@
   <ItemGroup>
     <PackageReference Include="JoltPhysicsSharp" Version="1.9.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
+    <PackageReference Include="Raylib-cs" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

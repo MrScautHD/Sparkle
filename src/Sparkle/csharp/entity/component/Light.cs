@@ -1,6 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
 
@@ -58,7 +58,7 @@ public class Light : Component {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private unsafe void SetLocations() {
-        ShaderRegistry.Light.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Light, "viewPos");
+        ShaderRegistry.Light.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Light, "viewPos");
         this._ambientLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "ambient");
         this._lightCountLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "lightCount");
         
@@ -75,7 +75,7 @@ public class Light : Component {
     private unsafe void UpdateValues() {
         if (SceneManager.MainCam3D == null) return;
         
-        ShaderHelper.SetValue(ShaderRegistry.Light, ShaderRegistry.Light.locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Light, ShaderRegistry.Light.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
         
         Vector4 ambient = new Vector4(this.LightLevel, this.LightLevel, this.LightLevel, 1.0f);
         ShaderHelper.SetValue(ShaderRegistry.Light, this._ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);

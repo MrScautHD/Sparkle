@@ -3,7 +3,7 @@ using Raylib_cs;
 using Color = Raylib_cs.Color;
 using Rectangle = Raylib_cs.Rectangle;
 
-namespace Sparkle.csharp.graphics.util; 
+namespace Sparkle.csharp.graphics.helper; 
 
 public static class ShapeHelper {
 

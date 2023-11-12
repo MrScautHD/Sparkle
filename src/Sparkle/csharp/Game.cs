@@ -4,7 +4,7 @@ using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.content.type;
 using Sparkle.csharp.graphics;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.physics;
@@ -131,7 +131,7 @@ public class Game : Disposable {
     /// Used for loading resources.
     /// </summary>
     protected virtual void Load() {
-        RegistryManager.Load();
+        RegistryManager.Load(this.Content);
     }
     
     /// <summary>

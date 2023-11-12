@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.entity;
 
-namespace Sparkle.csharp.graphics.util; 
+namespace Sparkle.csharp.graphics.helper; 
 
 public static class ModelHelper {
     
@@ -120,7 +120,7 @@ public static class ModelHelper {
 
     
     /// <inheritdoc cref="Raylib.LoadModelAnimations(string, ref uint)"/>
-    public static ReadOnlySpan<ModelAnimation> LoadAnimations(string path, ref uint animCount) => Raylib.LoadModelAnimations(path, ref animCount);
+    public static unsafe ModelAnimation* LoadAnimations(string path, ref uint animCount) => Raylib.LoadModelAnimations(path, ref animCount);
     
     /// <inheritdoc cref="Raylib.UpdateModelAnimation"/>
     public static void UpdateAnimation(Model model, ModelAnimation anim, int frame) => Raylib.UpdateModelAnimation(model, anim, frame);

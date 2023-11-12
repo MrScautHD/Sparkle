@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace Sparkle.csharp.graphics.util; 
+namespace Sparkle.csharp.graphics.helper; 
 
 public static class MaterialHelper {
     
@@ -11,7 +11,7 @@ public static class MaterialHelper {
     public static unsafe Material* LoadMaterials(sbyte* fileName, int* materialCount) => Raylib.LoadMaterials(fileName, materialCount);
     
     /// <inheritdoc cref="Raylib.IsMaterialReady"/>
-    public static bool IsReady() => Raylib.IsMaterialReady();
+    public static bool IsReady(Material material) => Raylib.IsMaterialReady(material);
     
     /// <inheritdoc cref="Raylib.UnloadMaterial"/>
     public static void Unload(Material material) => Raylib.UnloadMaterial(material);
