@@ -110,10 +110,10 @@ public class Frustum {
     }
     
     /// <summary>
-    /// Checks if a BoundingBox is contained within the frustum.
+    /// Checks if a bounding box is contained within the frustum.
     /// </summary>
-    /// <param name="box">The BoundingBox to check.</param>
-    /// <returns>True if the BoundingBox is contained within the frustum, otherwise false.</returns>
+    /// <param name="box">The bounding box to check.</param>
+    /// <returns>True if the bounding box is contained within the frustum, otherwise false.</returns>
     public bool ContainsBox(BoundingBox box) {
         foreach (var plane in this._planes) {
             bool allOutside = true;
