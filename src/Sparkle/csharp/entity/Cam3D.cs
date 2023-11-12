@@ -2,7 +2,6 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.gui;
-using Sparkle.csharp.window;
 
 namespace Sparkle.csharp.entity; 
 
@@ -290,6 +289,7 @@ public class Cam3D : Entity {
     /// <returns>The Frustum object.</returns>
     public Frustum GetFrustum() {
         this._frustum.Extract();
+        
         return this._frustum;
     }
     
