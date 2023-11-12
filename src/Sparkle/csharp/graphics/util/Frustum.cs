@@ -75,6 +75,23 @@ public class Frustum {
     }
     
     /// <summary>
+    /// Checks if a point is contained within the frustum.
+    /// </summary>
+    /// <param name="point">The point to check.</param>
+    /// <returns>True if the point is contained within the frustum, otherwise false.</returns>
+    public bool ContainsPoint(Vector3 point) {
+        foreach (var plane in this._planes) {
+            float distance = Vector3.Dot(plane.Normal, point) + plane.D;
+            
+            if (distance < 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
     /// Checks if a sphere is contained within the frustum.
     /// </summary>
     /// <param name="center">The center of the sphere.</param>
@@ -88,27 +105,39 @@ public class Frustum {
                 return false;
             }
         }
-
+        
         return true;
     }
     
     /// <summary>
-    /// Checks if a bounding box is contained within the frustum.
+    /// Checks if a BoundingBox is contained within the frustum.
     /// </summary>
-    /// <param name="box">The bounding box to check.</param>
-    /// <returns>True if the bounding box is contained within the frustum, otherwise false.</returns>
+    /// <param name="box">The BoundingBox to check.</param>
+    /// <returns>True if the BoundingBox is contained within the frustum, otherwise false.</returns>
     public bool ContainsBox(BoundingBox box) {
-        Vector3 center = (box.Min + box.Max) / 2.0f;
-        float radius = Vector3.Distance(center, box.Max);
-        
         foreach (var plane in this._planes) {
-            float distance = Vector3.Dot(plane.Normal, center) + plane.D;
+            bool allOutside = true;
             
-            if (distance < -radius) {
+            for (int i = 0; i < 8; i++) {
+                Vector3 corner = new Vector3(
+                    (i & 1) == 0 ? box.Min.X : box.Max.X,
+                    (i & 2) == 0 ? box.Min.Y : box.Max.Y,
+                    (i & 4) == 0 ? box.Min.Z : box.Max.Z
+                );
+                
+                float distance = Vector3.Dot(plane.Normal, corner) + plane.D;
+                
+                if (distance >= 0) {
+                    allOutside = false;
+                    break;
+                }
+            }
+            
+            if (allOutside) {
                 return false;
             }
         }
-
+        
         return true;
     }
 }

@@ -1,7 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
 
@@ -51,8 +50,12 @@ public class ModelRenderer : Component {
         float angle;
         
         Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
+
+        BoundingBox box = ModelHelper.GetBoundingBox(this._model);
+        box.Min.Y += this.Entity.Position.Y;
+        box.Max.Y += this.Entity.Position.Y;
         
-        if (SceneManager.MainCam3D.GetFrustum().ContainsBox(ModelHelper.GetBoundingBox(this._model))) {
+        if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
             if (this._drawWires) {
                 ModelHelper.DrawModelWires(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
             }
