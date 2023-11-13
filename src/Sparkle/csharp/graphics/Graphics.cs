@@ -4,8 +4,6 @@ namespace Sparkle.csharp.graphics;
 
 public static class Graphics {
     
-    // TODO Create for 2D a own Camera Entity! (Method already removed here)
-
     /// <inheritdoc cref="Raylib.ClearBackground"/>
     public static void ClearBackground(Color color) => Raylib.ClearBackground(color);
     

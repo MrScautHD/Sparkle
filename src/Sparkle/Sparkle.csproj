@@ -7,7 +7,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
-    <AssemblyVersion>2.0.1</AssemblyVersion>
+    <AssemblyVersion>2.1.0</AssemblyVersion>
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
     <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
@@ -16,8 +16,8 @@
     <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.0.1</Version>
-    <PackageIcon>content\images\icon.png</PackageIcon>
+    <Version>2.1.0</Version>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
   
   <ItemGroup>
@@ -27,7 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="content/**/*">
+    <None Include="content\images\icon.png" Pack="true" PackagePath=""/>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="content/**/*" Pack="true" PackagePath="">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
