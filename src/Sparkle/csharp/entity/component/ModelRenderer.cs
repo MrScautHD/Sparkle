@@ -1,31 +1,35 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
 
 namespace Sparkle.csharp.entity.component; 
 
 public class ModelRenderer : Component {
+
+    public ModelAnimationPlayer AnimationPlayer { get; private set; }
     
     private Model _model;
     private Texture2D _texture;
     private Shader _shader;
     private MaterialMapIndex _materialMap;
     private Color _color;
-    
     private bool _drawWires;
     
     /// <summary>
-    /// Initializes a new instance of the ModelRenderer class with the specified model and texture, allowing for optional shader, material map, color, and wireframe rendering settings.
+    /// Initializes a new instance of the ModelRenderer class with optional parameters.
     /// </summary>
-    /// <param name="model">The 3D model to render.</param>
+    /// <param name="model">The 3D model.</param>
     /// <param name="texture">The texture to apply to the model.</param>
-    /// <param name="shader">An optional custom shader to use (default is null).</param>
-    /// <param name="materialMap">The material map index for the texture (default is MATERIAL_MAP_ALBEDO).</param>
-    /// <param name="color">The color to apply to the model (default is Color.WHITE).</param>
-    /// <param name="drawWires">A flag indicating whether to render the model in wireframe mode (default is false).</param>
-    public ModelRenderer(Model model, Texture2D texture, Shader? shader = null, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = null, bool drawWires = false) {
+    /// <param name="shader">The shader to use. If null, the default shader is used.</param>
+    /// <param name="materialMap">The material map index.</param>
+    /// <param name="color">The color of the model. If null, the default color is used.</param>
+    /// <param name="drawWires">Determines whether to draw wires for the model.</param>
+    /// <param name="animations">Optional array of model animations.</param>
+    public ModelRenderer(Model model, Texture2D texture, Shader? shader = null, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = null, bool drawWires = false, ModelAnimation[]? animations = null) {
+        this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
         this._texture = texture;
         this._shader = shader ?? ShaderRegistry.DiscardAlpha;
@@ -46,16 +50,17 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        Vector3 axis;
-        float angle;
-        
-        Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
-
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.Y += this.Entity.Position.Y;
         box.Max.Y += this.Entity.Position.Y;
         
         if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
+            
+            Vector3 axis;
+            float angle;
+            
+            Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
+            
             if (this._drawWires) {
                 ModelHelper.DrawModelWires(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
             }
@@ -64,8 +69,12 @@ public class ModelRenderer : Component {
             }
         }
         
-        
         SceneManager.MainCam3D.EndMode3D();
+    }
+    
+    protected internal override void Update() {
+        base.Update();
+        this.AnimationPlayer.Update(this._model);
     }
     
     protected override void Dispose(bool disposing) { }
