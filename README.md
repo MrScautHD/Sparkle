@@ -55,12 +55,16 @@ public class GameTest : Game {
 
     protected override void Init() {
         base.Init();
-
-        // Load resources.
-        this.Texture = this.Content.Load<Texture2D>("icon.png");
         
         // Open a url.
         this.OpenURL("https://www.youtube.com/");
+    }
+
+    protected override void Load() {
+        base.Load();
+        
+        // Load resources.
+        this.Texture = this.Content.Load<Texture2D>("icon.png");
     }
 
     protected override void Draw() {
