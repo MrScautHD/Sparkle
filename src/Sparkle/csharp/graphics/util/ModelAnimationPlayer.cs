@@ -4,7 +4,7 @@ using Sparkle.csharp.graphics.helper;
 namespace Sparkle.csharp.graphics.util; 
 
 public class ModelAnimationPlayer {
-
+    
     private readonly ModelAnimation[] _animations;
     
     private int _frameCount;
@@ -17,7 +17,18 @@ public class ModelAnimationPlayer {
         this._animations = animations;
     }
 
-    protected internal void Update(Model model) {
+    protected internal unsafe void Update(Model model) {
+        for (int i = 0; i < model.MeshCount; i++) {
+            Mesh mesh = model.Meshes[i];
+
+            float boneID = (byte) &mesh.BoneWeights;
+
+            bool test = boneID == null;
+            
+            Logger.Error(test + "");
+        }
+        
+        
         if (!this._isPause && this._isPlaying) {
             this._frameCount++;
 
@@ -36,10 +47,10 @@ public class ModelAnimationPlayer {
     }
 
     public void Play(int index, bool loop) {
-        /*if (index > this._animations.Length - 1) {
-            Logger.Warn($"This model can accommodate a maximum of [{this._animations.Length}] animations.");
+        if (index > this._animations.Length - 1) {
+            Logger.Error($"Unable to play the animation at index [{index}], the maximum number of available animations is [{this._animations.Length}].");
             return;
-        }*/
+        }
 
         this._playingIndex = index;
         this._isPlaying = true;

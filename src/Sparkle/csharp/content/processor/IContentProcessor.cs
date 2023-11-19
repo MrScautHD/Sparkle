@@ -17,4 +17,10 @@ public interface IContentProcessor {
     /// </summary>
     /// <param name="item">The content item to unload.</param>
     void Unload(object item);
+
+    /// <summary>
+    /// Gets the content type associated with the current instance.
+    /// </summary>
+    /// <returns>The content type.</returns>
+    Type GetContentType();
 }

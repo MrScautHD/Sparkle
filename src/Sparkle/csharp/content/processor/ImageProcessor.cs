@@ -13,4 +13,8 @@ public class ImageProcessor : IContentProcessor {
     public void Unload(object item) {
         ImageHelper.Unload((Image) item);
     }
+
+    public Type GetContentType() {
+        return typeof(ImageContent);
+    }
 }

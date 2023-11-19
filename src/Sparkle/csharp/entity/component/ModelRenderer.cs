@@ -28,7 +28,7 @@ public class ModelRenderer : Component {
     /// <param name="color">The color of the model. If null, the default color is used.</param>
     /// <param name="drawWires">Determines whether to draw wires for the model.</param>
     /// <param name="animations">Optional array of model animations.</param>
-    public ModelRenderer(Model model, Texture2D texture, Shader? shader = null, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = null, bool drawWires = false, ModelAnimation[]? animations = null) {
+    public ModelRenderer(Model model, Texture2D texture, Shader? shader = default, ModelAnimation[]? animations = default, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = default, bool drawWires = false) {
         this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
         this._texture = texture;
@@ -71,11 +71,11 @@ public class ModelRenderer : Component {
         
         SceneManager.MainCam3D.EndMode3D();
     }
-    
-    protected internal override void Update() {
-        base.Update();
+
+    protected internal override void FixedUpdate() {
+        base.FixedUpdate();
         this.AnimationPlayer.Update(this._model);
     }
-    
+
     protected override void Dispose(bool disposing) { }
 }

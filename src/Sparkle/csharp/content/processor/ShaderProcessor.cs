@@ -13,4 +13,8 @@ public class ShaderProcessor : IContentProcessor {
     public void Unload(object item) {
         ShaderHelper.Unload((Shader) item);
     }
+
+    public Type GetContentType() {
+        return typeof(ShaderContent);
+    }
 }

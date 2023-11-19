@@ -13,4 +13,8 @@ public class MusicProcessor : IContentProcessor {
     public void Unload(object item) {
         MusicPlayer.UnloadStream((Music) item);
     }
+
+    public Type GetContentType() {
+        return typeof(MusicContent);
+    }
 }

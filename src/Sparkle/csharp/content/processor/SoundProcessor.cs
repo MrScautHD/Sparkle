@@ -13,4 +13,8 @@ public class SoundProcessor : IContentProcessor {
     public void Unload(object item) {
         SoundPlayer.Unload((Sound) item);
     }
+
+    public Type GetContentType() {
+        return typeof(SoundContent);
+    }
 }

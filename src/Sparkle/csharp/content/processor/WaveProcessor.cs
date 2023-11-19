@@ -13,4 +13,8 @@ public class WaveProcessor : IContentProcessor {
     public void Unload(object item) {
         WavePlayer.Unload((Wave) item);
     }
+
+    public Type GetContentType() {
+        return typeof(WaveContent);
+    }
 }

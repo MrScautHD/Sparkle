@@ -13,4 +13,8 @@ public class TextureProcessor : IContentProcessor {
     public void Unload(object item) {
         TextureHelper.Unload((Texture2D) item);
     }
+
+    public Type GetContentType() {
+        return typeof(TextureContent);
+    }
 }

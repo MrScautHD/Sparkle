@@ -2,7 +2,7 @@ using Sparkle.csharp.content;
 
 namespace Sparkle.csharp.registry; 
 
-public class RegistryManager {
+public static class RegistryManager {
     
     internal static List<Registry> RegisterTypes = new();
 

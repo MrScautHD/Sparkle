@@ -1,7 +1,9 @@
+using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.content.type;
 using Sparkle.csharp.file.config;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.window;
 
@@ -15,7 +17,11 @@ public class TestGame : Game {
     
     // MODELS
     public static Model PlayerModel;
-
+    
+    // MODEL ANIMATIONS
+    public static ModelAnimation[] Animations;
+    
+    // OVERLAY
     public TestOverlay Overlay;
 
     public TestGame(GameSettings settings) : base(settings) { }
@@ -41,11 +47,14 @@ public class TestGame : Game {
         base.Load();
         
         // TEXTURES
-        PlayerTexture = Content.Load<Texture2D>(new TextureContent("texture.png"));
-        SpriteTexture = Content.Load<Texture2D>(new TextureContent("sprite.png"));
+        PlayerTexture = this.Content.Load<Texture2D>(new TextureContent("texture.png"));
+        SpriteTexture = this.Content.Load<Texture2D>(new TextureContent("sprite.png"));
         
         // MODELS
-        PlayerModel = Content.Load<Model>(new ModelContent("model.glb"));
+        PlayerModel = this.Content.Load<Model>(new ModelContent("model.glb"));
+        
+        // MODEL ANIMATIONS
+        Animations = this.Content.Load<ModelAnimation[]>(new ModelAnimationContent("model.glb"));
     }
 
     protected override void Update() {

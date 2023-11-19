@@ -13,4 +13,8 @@ public class ModelProcessor : IContentProcessor {
     public void Unload(object item) {
         ModelHelper.Unload((Model) item);
     }
+
+    public Type GetContentType() {
+        return typeof(ModelContent);
+    }
 }

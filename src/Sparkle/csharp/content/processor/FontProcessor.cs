@@ -13,4 +13,8 @@ public class FontProcessor : IContentProcessor {
     public void Unload(object item) {
         FontHelper.Unload((Font) item);
     }
+
+    public Type GetContentType() {
+        return typeof(FontContent);
+    }
 }

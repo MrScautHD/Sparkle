@@ -26,4 +26,8 @@ public class ModelAnimationProcessor : IContentProcessor {
             ModelHelper.UnloadAnimations(animation, (uint) animations.Length);
         }
     }
+
+    public Type GetContentType() {
+        return typeof(ModelAnimationContent);
+    }
 }
