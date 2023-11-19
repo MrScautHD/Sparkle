@@ -74,7 +74,7 @@ public class ModelRenderer : Component {
 
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
-        this.AnimationPlayer.Update(this._model);
+        this.AnimationPlayer.FixedUpdate(this._model);
     }
 
     protected override void Dispose(bool disposing) { }

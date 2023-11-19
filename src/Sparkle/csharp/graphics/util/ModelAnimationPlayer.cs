@@ -17,7 +17,7 @@ public class ModelAnimationPlayer {
         this._animations = animations;
     }
 
-    protected internal void Update(Model model) {
+    protected internal void FixedUpdate(Model model) {
         if (!this._isPause && this._isPlaying) {
             this._frameCount++;
 
