@@ -27,20 +27,20 @@ dotnet add package Sparkle --version 2.1.0
 🌋 Graphic Engine
 ==================
 - [OpenGl](https://www.opengl.org/)
+- [Angle](https://github.com/google/angle) `(Vulkan, Direct3D, Metal...)`
 
-Soon...
+💻 Contributors
 ==================
-- [Vulkan](https://www.vulkan.org/)
-- [Direct3D 11](https://learn.microsoft.com/de-de/windows/win32/direct3d)
-- [Metal](https://developer.apple.com/metal/)
+<a href="https://github.com/mrscauthd/sparkle/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=mrscauthd/sparkle&max=500&columns=20&anon=1" />
+</a>
 
-💡 Features [TAGS]
-==================
-`OpenGL` `Angle` `Game Engine` `Renderer` `Graphics` `C#11` `Net7` `dotnet` `Modern` `Sparkle` `2D` `3D` `Raylib` `Fast` `Physics` `XNA` `Cross-platform` `Audio`
 
-## 🖥️ Example
+## 🖥️ Basic Example
 ```csharp
 public class GameTest : Game {
+
+    public Texture2D Texture;
     
     public GameTest(GameSettings settings) : base(settings) {
         
@@ -56,38 +56,28 @@ public class GameTest : Game {
     protected override void Init() {
         base.Init();
         
-        // Simple logger.
-        Logger.Debug("Debug text!");
-        Logger.Info("Info text!");
-        Logger.Warn("Warn text!");
-        Logger.Error("Error text!");
-
-        // Simple time.
-        float deltaTime = Time.DeltaTime;
-        double totalTime = Time.TotalTime;
-        
-        // Stop the time!
-        Time.WaitTime(10);
-
-        // Load resources.
-        Texture2D texture = this.Content.Load<Texture2D>("icon.png");
-        
-        // Create your own Scene.
-        SceneManager.SetScene(new TestScene("earth"));
-        
         // Open a url.
         this.OpenURL("https://www.youtube.com/");
+    }
+
+    protected override void Load() {
+        base.Load();
         
-        // Take a screenshot
-        Window.TakeScreenshot("path");
+        // Load resources.
+        this.Texture = this.Content.Load<Texture2D>("icon.png");
     }
 
     protected override void Draw() {
         base.Draw();
         
-        // Draw circle if "A" down and way more simple options to draw!
+        // Draw circle if "A" down.
         if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
             ShapeHelper.DrawCircle(new Vector2(50, 50), 20, Color.BLUE);
+        }
+
+        // Draw texture if "B" down.
+        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+            TextureHelper.Draw(this.Texture, Vector3.Zero, Color.WHITE)
         }
     }
 }
