@@ -17,18 +17,7 @@ public class ModelAnimationPlayer {
         this._animations = animations;
     }
 
-    protected internal unsafe void Update(Model model) {
-        for (int i = 0; i < model.MeshCount; i++) {
-            Mesh mesh = model.Meshes[i];
-
-            float boneID = (byte) &mesh.BoneWeights;
-
-            bool test = boneID == null;
-            
-            Logger.Error(test + "");
-        }
-        
-        
+    protected internal void Update(Model model) {
         if (!this._isPause && this._isPlaying) {
             this._frameCount++;
 
