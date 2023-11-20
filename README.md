@@ -76,7 +76,7 @@ public class GameTest : Game {
         }
 
         // Draw texture if "B" down.
-        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+        if (Input.IsKeyDown(KeyboardKey.KEY_B)) {
             TextureHelper.Draw(this.Texture, Vector3.Zero, Color.WHITE)
         }
     }
