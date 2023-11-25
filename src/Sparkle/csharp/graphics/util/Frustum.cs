@@ -21,57 +21,52 @@ public class Frustum {
         Matrix4x4 viewProjection = Matrix4x4.Transpose(Rlgl.GetMatrixModelview()) * Matrix4x4.Transpose(Rlgl.GetMatrixProjection());
         
         // LEFT
-        this._planes[0] = new Plane(
+        this._planes[0] = Plane.Normalize(new Plane(
             viewProjection.M14 + viewProjection.M11,
             viewProjection.M24 + viewProjection.M21,
             viewProjection.M34 + viewProjection.M31,
             viewProjection.M44 + viewProjection.M41
-        );
+        ));
 
         // RIGHT
-        this._planes[1] = new Plane(
+        this._planes[1] = Plane.Normalize(new Plane(
             viewProjection.M14 - viewProjection.M11,
             viewProjection.M24 - viewProjection.M21,
             viewProjection.M34 - viewProjection.M31,
             viewProjection.M44 - viewProjection.M41
-        );
+        ));
 
         // BOTTOM
-        this._planes[2] = new Plane(
+        this._planes[2] = Plane.Normalize(new Plane(
             viewProjection.M14 + viewProjection.M12,
             viewProjection.M24 + viewProjection.M22,
             viewProjection.M34 + viewProjection.M32,
             viewProjection.M44 + viewProjection.M42
-        );
+        ));
 
         // TOP
-        this._planes[3] = new Plane(
+        this._planes[3] = Plane.Normalize(new Plane(
             viewProjection.M14 - viewProjection.M12,
             viewProjection.M24 - viewProjection.M22,
             viewProjection.M34 - viewProjection.M32,
             viewProjection.M44 - viewProjection.M42
-        );
+        ));
 
         // NEAR
-        this._planes[4] = new Plane(
+        this._planes[4] = Plane.Normalize(new Plane(
             viewProjection.M13,
             viewProjection.M23,
             viewProjection.M33,
             viewProjection.M43
-        );
+        ));
         
         // FAR
-        this._planes[5] = new Plane(
+        this._planes[5] = Plane.Normalize(new Plane(
             viewProjection.M14 - viewProjection.M13,
             viewProjection.M24 - viewProjection.M23,
             viewProjection.M34 - viewProjection.M33,
             viewProjection.M44 - viewProjection.M43
-        );
-        
-        // NORMALIZE
-        for (int i = 0; i < 6; i++) {
-            this._planes[i] = Plane.Normalize(this._planes[i]);
-        }
+        ));
     }
     
     /// <summary>
