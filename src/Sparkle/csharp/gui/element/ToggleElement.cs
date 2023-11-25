@@ -82,23 +82,27 @@ public class ToggleElement : GuiElement {
     protected internal override void Draw() {
         Texture2D? texture = this.IsToggled ? this.ToggledTexture : this.Texture;
         
+        float x = this.Position.X + this.ScaledSize.X / 2;
+        float y = this.Position.Y + this.ScaledSize.Y / 2;
+        
+        Rectangle rec = new Rectangle(x, y, this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle dest = new Rectangle(x, y, this.ScaledSize.X, this.ScaledSize.Y);
+        
+        Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
+        
         if (texture != null) {
             Rectangle source = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
-            Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
             Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
-            Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
             TextureHelper.DrawPro(texture.Value, source, dest, origin, this.Rotation, color);
         }
         else {
-            Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
             Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
-            Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
             ShapeHelper.DrawRectangle(rec, origin, this.Rotation, color);
         }
 
         string text = this.IsToggled ? this.ToggledText : this.Text;
         if (text != string.Empty) {
-            Vector2 textPos = new Vector2(this.Position.X + this.ScaledSize.X / 2, this.Position.Y + this.ScaledSize.Y / 2);
+            Vector2 textPos = new Vector2(x, y);
             Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
             Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
             FontHelper.DrawText(this.Font, text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);
