@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
-<h4 align="center">A fast, Cross-platform .NET 7 C# 11 game engine.</h4>
+<h4 align="center">A fast, Cross-platform .NET 8 C# 12 game engine.</h4>
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
 
