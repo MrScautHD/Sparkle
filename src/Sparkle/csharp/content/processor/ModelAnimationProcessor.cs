@@ -6,9 +6,9 @@ namespace Sparkle.csharp.content.processor;
 
 public class ModelAnimationProcessor : IContentProcessor {
     
-    public unsafe object Load(IContentType type, string directory) {
+    public unsafe object Load<T>(IContentType<T> type) {
         uint count = 0;
-        ModelAnimation* animation = ModelHelper.LoadAnimations(directory + type.Path, ref count);
+        ModelAnimation* animation = ModelHelper.LoadAnimations(type.Path, ref count);
         
         ModelAnimation[] animations = new ModelAnimation[count];
         
@@ -25,9 +25,5 @@ public class ModelAnimationProcessor : IContentProcessor {
         fixed (ModelAnimation* animation = animations) {
             ModelHelper.UnloadAnimations(animation, (uint) animations.Length);
         }
-    }
-
-    public Type GetContentType() {
-        return typeof(ModelAnimationContent);
     }
 }

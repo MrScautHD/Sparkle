@@ -1,9 +1,7 @@
-using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp;
 using Sparkle.csharp.content.type;
 using Sparkle.csharp.file.config;
-using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.window;
 
@@ -23,7 +21,7 @@ public class TestGame : Game {
     
     // OVERLAY
     public TestOverlay Overlay;
-
+    
     public TestGame(GameSettings settings) : base(settings) { }
 
     protected override void Init() {
@@ -47,14 +45,20 @@ public class TestGame : Game {
         base.Load();
         
         // TEXTURES
-        PlayerTexture = this.Content.Load<Texture2D>(new TextureContent("texture.png"));
-        SpriteTexture = this.Content.Load<Texture2D>(new TextureContent("sprite.png"));
+        PlayerTexture = this.Content.Load(new TextureContent("texture.png"));
+        SpriteTexture = this.Content.Load(new TextureContent("sprite.png"));
         
         // MODELS
-        PlayerModel = this.Content.Load<Model>(new ModelContent("model.glb"));
+        PlayerModel = this.Content.Load(new ModelContent("model.glb"));
         
         // MODEL ANIMATIONS
-        Animations = this.Content.Load<ModelAnimation[]>(new ModelAnimationContent("model.glb"));
+        Animations = this.Content.Load(new ModelAnimationContent("model.glb"));
+    }
+
+    protected override void Draw() {
+        base.Draw();
+        
+        //this.VideoPlayer.Draw();
     }
 
     protected override void Update() {

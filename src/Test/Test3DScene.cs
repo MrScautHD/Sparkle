@@ -34,7 +34,7 @@ public class Test3DScene : Scene {
         // TEST ENTITY
         TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
         this.AddEntity(entity);
-        
+
         // GROUND
         this.AddEntity(new GroundEntity(Vector3.Zero));
     }

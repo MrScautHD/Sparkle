@@ -58,6 +58,7 @@ public class Game : Disposable {
         Logger.Info($"\tMEMORY: {SystemInfo.MemorySize} GB");
         Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
         Logger.Info($"\tOS: {SystemInfo.Os}");
+        Logger.Info($"\tAPI: {Rlgl.GetVersion()}");
         
         Logger.Debug("Initialize Raylib logger...");
         Logger.SetupRaylibLogger();
@@ -65,7 +66,7 @@ public class Game : Disposable {
         this.SetTargetFps(this.Settings.TargetFps);
 
         Logger.Debug("Initialize content manager...");
-        this.Content = new ContentManager(this.Settings.ContentDirectory);
+        this.Content = new ContentManager();
         
         Logger.Debug("Initialize audio device...");
         AudioDevice.Init();
@@ -73,8 +74,8 @@ public class Game : Disposable {
         Logger.Debug("Initialize window...");
         Window.SetConfigFlags(this.Settings.WindowFlags);
         Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
-            
-        this.Logo = this.Settings.IconPath == string.Empty ? ImageHelper.Load("content/images/icon.png") : this.Content.Load<Image>(new ImageContent(this.Settings.IconPath));
+        
+        this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
         this.OnRun();
@@ -190,10 +191,6 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            if (this.Settings.IconPath == string.Empty) {
-                ImageHelper.Unload(this.Logo);
-            }
-
             foreach (Registry overlay in RegistryManager.RegisterTypes.ToList()) {
                 overlay.Dispose();
             }

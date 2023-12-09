@@ -49,7 +49,7 @@ public class LabelElement : GuiElement {
     protected internal override void Draw() {
         if (this.Text == string.Empty) return;
         
-        Vector2 textPos = new Vector2(this.Position.X + this.Position.X / 2, this.Position.Y + this.Position.Y / 2);
+        Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
         Vector2 textOrigin = new Vector2(this.Position.X / 2, this.Position.Y / 2);
             
         FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);

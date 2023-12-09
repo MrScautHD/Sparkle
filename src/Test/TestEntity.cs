@@ -10,8 +10,7 @@ namespace Test;
 public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, ShaderRegistry.Light, TestGame.Animations));
-        this.GetComponent<ModelRenderer>().AnimationPlayer.Play(1, true);
+        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, ShaderRegistry.Light));
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         this.AddComponent(new Rigidbody(boxShape, MotionType.Dynamic));

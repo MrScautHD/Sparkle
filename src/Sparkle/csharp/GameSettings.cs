@@ -11,7 +11,6 @@ public struct GameSettings {
     public int Height;
     public string IconPath;
     public string LogDirectory;
-    public string ContentDirectory;
     public int TargetFps;
     public int FixedTimeStep;
     public ConfigFlags WindowFlags;
@@ -26,7 +25,6 @@ public struct GameSettings {
         this.Height = 720;
         this.IconPath = string.Empty;
         this.LogDirectory = "logs";
-        this.ContentDirectory = "content";
         this.TargetFps = 0;
         this.FixedTimeStep = 60;
         this.WindowFlags = ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE;

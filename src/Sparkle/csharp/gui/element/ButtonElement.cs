@@ -75,7 +75,7 @@ public class ButtonElement : GuiElement {
         }
 
         if (this.Text != string.Empty) {
-            Vector2 textPos = new Vector2(this.Position.X + this.ScaledSize.X / 2, this.Position.Y + this.ScaledSize.Y / 2);
+            Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
             Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
             FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
         }

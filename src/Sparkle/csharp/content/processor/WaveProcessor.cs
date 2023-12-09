@@ -6,15 +6,11 @@ namespace Sparkle.csharp.content.processor;
 
 public class WaveProcessor : IContentProcessor {
     
-    public object Load(IContentType type, string directory) {
-        return WavePlayer.Load(directory + type.Path);
+    public object Load<T>(IContentType<T> type) {
+        return WavePlayer.Load(type.Path);
     }
 
     public void Unload(object item) {
         WavePlayer.Unload((Wave) item);
-    }
-
-    public Type GetContentType() {
-        return typeof(WaveContent);
     }
 }

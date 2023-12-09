@@ -22,11 +22,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="JoltPhysicsSharp" Version="1.9.11" />
+    <PackageReference Include="JoltPhysicsSharp" Version="1.9.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Raylib-cs" Version="5.0.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Include="content\images\icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>

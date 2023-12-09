@@ -5,22 +5,16 @@ namespace Sparkle.csharp.content.processor;
 public interface IContentProcessor {
     
     /// <summary>
-    /// Loads content of the specified type from the given directory and returns the loaded content as an object.
+    /// Loads the content of the specified type.
     /// </summary>
-    /// <param name="type">The content type to load.</param>
-    /// <param name="directory">The directory from which to load the content.</param>
-    /// <returns>The loaded content as an object.</returns>
-    object Load(IContentType type, string directory);
+    /// <typeparam name="T">The type of content to load.</typeparam>
+    /// <param name="type">The content type from which to retrieve the content.</param>
+    /// <returns>The loaded content of the specified type.</returns>
+    object Load<T>(IContentType<T> type);
     
     /// <summary>
     /// Unloads a content item.
     /// </summary>
     /// <param name="item">The content item to unload.</param>
     void Unload(object item);
-
-    /// <summary>
-    /// Gets the content type associated with the current instance.
-    /// </summary>
-    /// <returns>The content type.</returns>
-    Type GetContentType();
 }
