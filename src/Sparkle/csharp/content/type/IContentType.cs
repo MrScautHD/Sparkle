@@ -1,9 +1,10 @@
 namespace Sparkle.csharp.content.type; 
 
-public interface IContentType {
-
+public interface IContentType<T> {
+    
     /// <summary>
-    /// Gets or sets the path to the content item.
+    /// Gets the path of the content type.
     /// </summary>
-    string Path { get; set; }
+    /// <returns>The path of the content type.</returns>
+    string Path { get; }
 }

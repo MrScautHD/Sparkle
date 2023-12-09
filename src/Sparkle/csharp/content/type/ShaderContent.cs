@@ -1,9 +1,11 @@
+using Raylib_cs;
+
 namespace Sparkle.csharp.content.type; 
 
-public class ShaderContent : IContentType {
+public class ShaderContent : IContentType<Shader> {
     
-    public string Path { get; set; }
-    public string FragPath { get; set; }
+    public string Path { get; }
+    public string FragPath { get; }
     
     /// <summary>
     /// Initializes a new instance of the ShaderContent class with the specified vertex and fragment shader paths.

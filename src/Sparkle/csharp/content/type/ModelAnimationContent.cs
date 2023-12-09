@@ -1,8 +1,10 @@
-﻿namespace Sparkle.csharp.content.type; 
+﻿using Raylib_cs;
 
-public class ModelAnimationContent : IContentType {
+namespace Sparkle.csharp.content.type; 
+
+public class ModelAnimationContent : IContentType<ModelAnimation[]> {
     
-    public string Path { get; set; }
+    public string Path { get; }
 
     /// <summary>
     /// Initializes a new instance of the ModelAnimationContent class with the specified path.

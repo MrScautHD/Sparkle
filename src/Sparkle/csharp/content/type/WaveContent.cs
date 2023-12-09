@@ -1,8 +1,10 @@
+using Raylib_cs;
+
 namespace Sparkle.csharp.content.type; 
 
-public class WaveContent : IContentType {
+public class WaveContent : IContentType<Wave> {
     
-    public string Path { get; set; }
+    public string Path { get; }
     
     /// <summary>
     /// Initializes a new instance of the WaveContent class with the specified audio wave file path.

@@ -1,8 +1,10 @@
+using Raylib_cs;
+
 namespace Sparkle.csharp.content.type; 
 
-public class FontContent : IContentType {
+public class FontContent : IContentType<Font> {
 
-    public string Path { get; set; }
+    public string Path { get; }
     
     /// <summary>
     /// Initializes a new instance of the FontContent class with the specified path.

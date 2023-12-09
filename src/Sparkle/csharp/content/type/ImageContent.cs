@@ -1,8 +1,10 @@
+using Raylib_cs;
+
 namespace Sparkle.csharp.content.type; 
 
-public class ImageContent : IContentType {
+public class ImageContent : IContentType<Image> {
     
-    public string Path { get; set; }
+    public string Path { get; }
     
     /// <summary>
     /// Initializes a new instance of the ImageContent class with the specified path.

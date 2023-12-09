@@ -1,8 +1,10 @@
+using Raylib_cs;
+
 namespace Sparkle.csharp.content.type; 
 
-public class ModelContent : IContentType {
+public class ModelContent : IContentType<Model> {
     
-    public string Path { get; set; }
+    public string Path { get; }
     
     /// <summary>
     /// Initializes a new instance of the ModelContent class with the specified path.
