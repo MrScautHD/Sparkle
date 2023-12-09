@@ -4,7 +4,6 @@ using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.content.type;
 using Sparkle.csharp.graphics;
-using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.physics;

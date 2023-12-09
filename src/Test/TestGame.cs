@@ -17,7 +17,7 @@ public class TestGame : Game {
     public static Model PlayerModel;
     
     // MODEL ANIMATIONS
-    public static ModelAnimation[] Animations;
+    //public static ModelAnimation[] Animations;
     
     // OVERLAY
     public TestOverlay Overlay;
@@ -45,14 +45,14 @@ public class TestGame : Game {
         base.Load();
         
         // TEXTURES
-        PlayerTexture = this.Content.Load(new TextureContent("texture.png"));
-        SpriteTexture = this.Content.Load(new TextureContent("sprite.png"));
+        PlayerTexture = this.Content.Load(new TextureContent("content/texture.png"));
+        SpriteTexture = this.Content.Load(new TextureContent("content/sprite.png"));
         
         // MODELS
-        PlayerModel = this.Content.Load(new ModelContent("model.glb"));
+        PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
         
         // MODEL ANIMATIONS
-        Animations = this.Content.Load(new ModelAnimationContent("model.glb"));
+        //Animations = this.Content.Load(new ModelAnimationContent("model.glb"));
     }
 
     protected override void Draw() {
