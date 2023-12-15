@@ -1,9 +1,11 @@
 using System.Numerics;
+using JoltPhysicsSharp;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
+using BoundingBox = Raylib_cs.BoundingBox;
 
 namespace Sparkle.csharp.entity.component; 
 
@@ -51,8 +53,14 @@ public class ModelRenderer : Component {
         SceneManager.MainCam3D!.BeginMode3D();
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
+        box.Min.X += this.Entity.Position.X;
+        box.Max.X += this.Entity.Position.X;
+        
         box.Min.Y += this.Entity.Position.Y;
         box.Max.Y += this.Entity.Position.Y;
+        
+        box.Min.Z += this.Entity.Position.Z;
+        box.Max.Z += this.Entity.Position.Z;
         
         if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
             

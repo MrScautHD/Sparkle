@@ -1,8 +1,8 @@
 using JoltPhysicsSharp;
 
-namespace Sparkle.csharp.physics.layers; 
+namespace Sparkle.csharp.physics.tables; 
 
-public class ObjectLayerFilterImpl : ObjectLayerFilter {
+public class ObjectLayerFilterTable : ObjectLayerFilter {
 
     protected override bool ShouldCollide(ObjectLayer layer) {
         return true;

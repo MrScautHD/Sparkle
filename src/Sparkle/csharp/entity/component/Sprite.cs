@@ -12,7 +12,15 @@ public class Sprite : Component {
     public Color Color;
     public float Rotation;
     public bool FlipSprite;
-    
+
+    /// <summary>
+    /// Represents a sprite object.
+    /// </summary>
+    /// <param name="texture">The texture of the sprite.</param>
+    /// <param name="size">The size of the sprite. If null, the size will be the same as the texture.</param>
+    /// <param name="color">The color of the sprite. If null, the color will be white.</param>
+    /// <param name="rotation">The rotation angle of the sprite. Default value is 0.</param>
+    /// <param name="flipSprite">A flag indicating if the sprite should be flipped. Default value is false.</param>
     public Sprite(Texture2D texture, Vector2? size, Color? color, float rotation = 0, bool flipSprite = false) {
         this.Texture = texture;
         this.Size = size ?? new Vector2(texture.Width, texture.Height);

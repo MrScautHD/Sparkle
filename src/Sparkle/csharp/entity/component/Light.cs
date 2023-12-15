@@ -26,7 +26,14 @@ public class Light : Component {
     private int _posLoc;
     private int _targetLoc;
     private int _colorLoc;
-    
+
+    /// <summary>
+    /// Initializes a new instance of the Light class with the specified parameters.
+    /// </summary>
+    /// <param name="type">The type of light.</param>
+    /// <param name="target">The position the light is directed towards.</param>
+    /// <param name="color">The color of the light.</param>
+    /// <param name="lightLevel">The level of brightness for the light. Default value is 0.1F.</param>
     public Light(LightType type, Vector3 target, Color color, float lightLevel = 0.1F) {
         this.Enabled = true;
         this.Type = type;

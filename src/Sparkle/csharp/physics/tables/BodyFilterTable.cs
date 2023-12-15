@@ -1,8 +1,8 @@
 using JoltPhysicsSharp;
 
-namespace Sparkle.csharp.physics.layers; 
+namespace Sparkle.csharp.physics.tables; 
 
-public class BodyFilterImpl : BodyFilter {
+public class BodyFilterTable : BodyFilter {
     
     protected override bool ShouldCollide(BodyID bodyId) {
         return true;

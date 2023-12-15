@@ -157,7 +157,7 @@ public class Game : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
-        this.Simulation.Update(1.0F / this.Settings.FixedTimeStep, 1);
+        this.Simulation.Step(1.0F / this.Settings.FixedTimeStep, 1);
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
         OverlayManager.FixedUpdate();
@@ -197,13 +197,13 @@ public class Game : Disposable {
             foreach (Overlay overlay in OverlayManager.Overlays.ToList()) {
                 overlay.Dispose();
             }
-
-            this.Content.Dispose();
-            Window.Close();
-            AudioDevice.Close();
+            
             GuiManager.ActiveGui?.Dispose();
             SceneManager.ActiveScene?.Dispose();
             this.Simulation.Dispose();
+            this.Content.Dispose();
+            AudioDevice.Close();
+            Window.Close();
         }
     }
 }

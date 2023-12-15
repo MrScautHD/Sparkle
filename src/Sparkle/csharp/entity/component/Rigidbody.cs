@@ -17,7 +17,14 @@ public class Rigidbody : Component {
     public float Restitution;
     
     private ObjectLayer _objectLayer;
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Rigidbody"/> class with the specified parameters.
+    /// </summary>
+    /// <param name="shape">The shape of the rigidbody.</param>
+    /// <param name="type">The motion type of the rigidbody.</param>
+    /// <param name="friction">The friction coefficient of the rigidbody. Default is 0.</param>
+    /// <param name="restitution">The restitution coefficient of the rigidbody. Default is 0.</param>
     public Rigidbody(Shape shape, MotionType type, float friction = 0, float restitution = 0) {
         this.Shape = shape;
         this.MotionType = type;

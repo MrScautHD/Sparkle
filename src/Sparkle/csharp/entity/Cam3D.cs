@@ -15,7 +15,10 @@ public class Cam3D : Entity {
     public float MouseSensitivity;
     public float MovementSpeed;
     public float OrbitalSpeed;
-    
+
+    /// <summary>
+    /// Represents a 3D camera for rendering 3D scenes.
+    /// </summary>
     public Cam3D(Vector3 position, Vector3 target, Vector3 up, float fov, CameraProjection projection, CameraMode mode = CameraMode.CAMERA_FREE) : base(Vector3.Zero) {
         this.Tag = "camera3D";
         this._camera3D = new Camera3D();
