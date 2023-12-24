@@ -62,8 +62,6 @@ uniform vec3 viewPos;
 uniform vec3 ambientColor;
 uniform float ambient;
 
-uniform sampler2DArray lightArray;
-
 // refl in range 0 to 1
 // returns base reflectivity to 1
 // incrase reflectivity when surface view at larger angle
