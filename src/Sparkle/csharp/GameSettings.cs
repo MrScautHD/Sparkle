@@ -1,5 +1,4 @@
 using System.Reflection;
-using JoltPhysicsSharp;
 using Raylib_cs;
 using Sparkle.csharp.physics;
 
@@ -7,15 +6,15 @@ namespace Sparkle.csharp;
 
 public struct GameSettings {
     
-    public string Title;
-    public int Width;
-    public int Height;
-    public string IconPath;
-    public string LogDirectory;
-    public int TargetFps;
-    public int FixedTimeStep;
-    public ConfigFlags WindowFlags;
-    public PhysicsSettings PhysicsSettings;
+    public string Title { get; init; }
+    public int Width { get; init; }
+    public int Height { get; init; }
+    public string IconPath { get; init; }
+    public string LogDirectory { get; init; }
+    public int TargetFps { get; init; }
+    public int FixedTimeStep { get; init; }
+    public ConfigFlags WindowFlags { get; init; }
+    public PhysicsSettings PhysicsSettings { get; init; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="GameSettings"/> with default values for various game settings such as window size, icon path, log directory, content directory, and more.

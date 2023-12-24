@@ -76,7 +76,7 @@ public class Frustum {
     /// <returns>True if the point is contained within the frustum, otherwise false.</returns>
     public bool ContainsPoint(Vector3 point) {
         foreach (var plane in this._planes) {
-            float distance = Vector3.Dot(plane.Normal, point) + plane.D;
+            float distance = Plane.DotCoordinate(plane, point);
             
             if (distance < 0) {
                 return false;
@@ -94,7 +94,7 @@ public class Frustum {
     /// <returns>True if the sphere is contained within the frustum, otherwise false.</returns>
     public bool ContainsSphere(Vector3 center, float radius) {
         foreach (var plane in this._planes) {
-            float distance = Vector3.Dot(plane.Normal, center) + plane.D;
+            float distance = Plane.DotCoordinate(plane, center);
             
             if (distance < -radius) {
                 return false;
@@ -120,7 +120,7 @@ public class Frustum {
                     (i & 4) == 0 ? box.Min.Z : box.Max.Z
                 );
                 
-                float distance = Vector3.Dot(plane.Normal, corner) + plane.D;
+                float distance = Plane.DotCoordinate(plane, corner);
                 
                 if (distance >= 0) {
                     allOutside = false;

@@ -14,32 +14,51 @@ public class Light : Component {
     public LightType Type;
     public Vector3 Target;
     public Color Color;
-    public float LightLevel;
+    public float Intensity;
+
+    public float AmbientIntensity;
+    public Color AmbientColor;
     
     public int LightIndex { get; private set; }
     
-    private int _ambientLoc;
     private int _lightCountLoc;
+    
+    private int _ambientLoc;
+    private int _ambientColorLoc;
+    
+    private int _emissivePowerLoc;
+    private int _emissiveColorLoc;
+    private int _tilingLoc;
+
+    private int _useTexAlbedoLoc;
+    private int _useTexNormalLoc;
+    private int _useTexMRALoc;
+    private int _useTexEmissiveLoc;
     
     private int _enabledLoc;
     private int _typeLoc;
     private int _posLoc;
     private int _targetLoc;
     private int _colorLoc;
+    private int _intensityLoc;
 
     /// <summary>
-    /// Initializes a new instance of the Light class with the specified parameters.
+    /// Represents a light source in a 3D environment.
     /// </summary>
-    /// <param name="type">The type of light.</param>
-    /// <param name="target">The position the light is directed towards.</param>
+    /// <param name="type">The type of light source.</param>
+    /// <param name="target">The position that the light is pointing towards.</param>
     /// <param name="color">The color of the light.</param>
-    /// <param name="lightLevel">The level of brightness for the light. Default value is 0.1F.</param>
-    public Light(LightType type, Vector3 target, Color color, float lightLevel = 0.1F) {
+    /// <param name="ambientColor">The ambient color of the light.</param>
+    /// <param name="intensity">The intensity of the light.</param>
+    /// <param name="ambientIntensity">The ambient intensity of the light.</param>
+    public Light(LightType type, Vector3 target, Color color, Color ambientColor, float intensity = 1, float ambientIntensity = 0.02F) {
         this.Enabled = true;
         this.Type = type;
         this.Target = target;
         this.Color = color;
-        this.LightLevel = lightLevel;
+        this.Intensity = intensity;
+        this.AmbientIntensity = ambientIntensity;
+        this.AmbientColor = ambientColor;
     }
     
     protected internal override void Init() {
@@ -65,15 +84,33 @@ public class Light : Component {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private unsafe void SetLocations() {
-        ShaderRegistry.Light.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Light, "viewPos");
-        this._ambientLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "ambient");
-        this._lightCountLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, "lightCount");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_ALBEDO] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_METALNESS] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "mraMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_NORMAL] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "normalMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_EMISSION] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "emissiveMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_COLOR_DIFFUSE] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoColor");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "viewPos");
         
-        this._enabledLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].enabled");
-        this._typeLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].type");
-        this._posLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].position");
-        this._targetLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].target");
-        this._colorLoc = ShaderHelper.GetLocation(ShaderRegistry.Light, $"lights[{this.LightIndex}].color");
+        this._lightCountLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "numOfLights");
+        
+        this._ambientLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "ambient");
+        this._ambientColorLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "ambientColor");
+        
+        this._emissivePowerLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "emissivePower");
+        this._emissiveColorLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "emissiveColor");
+        this._tilingLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "tiling");
+
+        this._useTexAlbedoLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexAlbedo");
+        this._useTexNormalLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexNormal");
+        this._useTexMRALoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexMRA");
+        this._useTexEmissiveLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexEmissive");
+        
+        this._enabledLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].enabled");
+        this._typeLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].type");
+        this._posLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].position");
+        this._targetLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].target");
+        this._colorLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].color");
+        this._intensityLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].intensity");
     }
     
     /// <summary>
@@ -82,17 +119,24 @@ public class Light : Component {
     private unsafe void UpdateValues() {
         if (SceneManager.MainCam3D == null) return;
         
-        ShaderHelper.SetValue(ShaderRegistry.Light, ShaderRegistry.Light.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._lightCountLoc, LightCount, ShaderUniformDataType.SHADER_UNIFORM_INT);
         
-        Vector4 ambient = new Vector4(this.LightLevel, this.LightLevel, this.LightLevel, 1.0f);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._ambientLoc, ambient, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._lightCountLoc, LightCount, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._ambientColorLoc, ColorHelper.Normalize(this.AmbientColor), ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._ambientLoc, this.AmbientIntensity, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
         
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._enabledLoc, this.Enabled ? 1 : 0, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._typeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._posLoc, this.Entity.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._targetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Light, this._colorLoc, ColorHelper.Normalize(this.Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._useTexAlbedoLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._useTexNormalLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._useTexMRALoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._useTexEmissiveLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._enabledLoc, this.Enabled ? 1 : 0, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._typeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._posLoc, this.Entity.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._targetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._colorLoc, ColorHelper.Normalize(this.Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this._intensityLoc, this.Intensity, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
     }
     
     /// <summary>
@@ -100,7 +144,8 @@ public class Light : Component {
     /// </summary>
     public enum LightType {
         Directional,
-        Pointed
+        Point,
+        Spot
     }
 
     protected override void Dispose(bool disposing) { }

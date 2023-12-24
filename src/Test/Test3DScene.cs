@@ -21,9 +21,12 @@ public class Test3DScene : Scene {
         Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.CAMERA_PERSPECTIVE, CameraMode.CAMERA_FREE);
         this.AddEntity(cam3D);
 
-        Entity light = new Entity(new Vector3(0, 5, 0));
-        light.AddComponent(new Light(Light.LightType.Pointed, Vector3.Zero, Color.RED));
-        this.AddEntity(light);
+        for (int i = 0; i < 10; i++) {
+            Entity light = new Entity(new Vector3(0, 5, 0));
+            light.AddComponent(new Light(Light.LightType.Point, Vector3.Zero, Color.RED, Color.BLUE));
+            this.AddEntity(light);
+        }
+        
 
         // LIGHT
         /*
@@ -55,7 +58,7 @@ public class Test3DScene : Scene {
         base.Draw();
         
         SceneManager.MainCam3D!.BeginMode3D();
-        Graphics.BeginShaderMode(ShaderRegistry.Light);
+        Graphics.BeginShaderMode(ShaderRegistry.Pbr);
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);

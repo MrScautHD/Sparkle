@@ -9,12 +9,13 @@ namespace Test;
 public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, ShaderRegistry.Light));
+        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, ShaderRegistry.Pbr));
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         this.AddComponent(new Rigidbody(boxShape, MotionType.Dynamic));
     }
     
+    /*
     protected override void FixedUpdate() {
         base.FixedUpdate();
         
@@ -24,5 +25,5 @@ public class TestEntity : Entity {
             float force = 100000;
             body.BodyInterface.AddForce(body.BodyId, new Vector3(0, (body.Shape.MassProperties.Mass * -body.Simulation.Settings.Gravity.Y) + force, 0));
         }
-    }
+    }*/
 }

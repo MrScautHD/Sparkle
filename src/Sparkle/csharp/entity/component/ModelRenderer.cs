@@ -1,5 +1,4 @@
 using System.Numerics;
-using JoltPhysicsSharp;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.graphics.util;
@@ -63,7 +62,6 @@ public class ModelRenderer : Component {
         box.Max.Z += this.Entity.Position.Z;
         
         if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
-            
             Vector3 axis;
             float angle;
             

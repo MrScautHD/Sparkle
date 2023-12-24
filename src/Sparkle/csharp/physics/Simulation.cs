@@ -10,13 +10,13 @@ public class Simulation : Disposable {
     public PhysicsSystem PhysicsSystem { get; private set; }
     public PhysicsSettings Settings { get; private set; }
 
-    private ObjectLayerPairFilterTable _objectLayerPairFilterTable;
-    private BroadPhaseLayerInterfaceTable _broadPhaseLayerInterfaceTable;
-    private ObjectVsBroadPhaseLayerFilterTable _objectVsBroadPhaseLayerFilterTable;
+    public ObjectLayerPairFilterTable ObjectLayerPairFilterTable { get; private set; }
+    public BroadPhaseLayerInterfaceTable BroadPhaseLayerInterfaceTable { get; private set; }
+    public ObjectVsBroadPhaseLayerFilterTable ObjectVsBroadPhaseLayerFilterTable { get; private set; }
 
-    private BroadPhaseLayerFilterTable _broadPhaseLayerFilterTable;
-    private ObjectLayerFilterTable _objectLayerFilterTable;
-    private BodyFilterTable _bodyFilterTable;
+    public BroadPhaseLayerFilterTable BroadPhaseLayerFilterTable { get; private set; }
+    public ObjectLayerFilterTable ObjectLayerFilterTable { get; private set; }
+    public BodyFilterTable BodyFilterTable { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the Simulation class with the specified physics settings.
@@ -29,29 +29,30 @@ public class Simulation : Disposable {
         
         this.Settings = settings;
         
-        this._objectLayerPairFilterTable = new ObjectLayerPairFilterTable(2);
-        this._objectLayerPairFilterTable.EnableCollision(Layers.NonMoving, Layers.Moving);
-        this._objectLayerPairFilterTable.EnableCollision(Layers.Moving, Layers.Moving);
+        this.ObjectLayerPairFilterTable = new ObjectLayerPairFilterTable(2);
+        this.ObjectLayerPairFilterTable.EnableCollision(Layers.NonMoving, Layers.Moving);
+        this.ObjectLayerPairFilterTable.EnableCollision(Layers.Moving, Layers.Moving);
         
-        this._broadPhaseLayerInterfaceTable = new BroadPhaseLayerInterfaceTable(2, 2);
-        this._broadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer(Layers.NonMoving, BroadPhaseLayers.NonMoving);
-        this._broadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer(Layers.Moving, BroadPhaseLayers.Moving);
+        this.BroadPhaseLayerInterfaceTable = new BroadPhaseLayerInterfaceTable(2, 2);
+        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer(Layers.NonMoving, BroadPhaseLayers.NonMoving);
+        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer(Layers.Moving, BroadPhaseLayers.Moving);
         
-        this._objectVsBroadPhaseLayerFilterTable = new ObjectVsBroadPhaseLayerFilterTable(this._broadPhaseLayerInterfaceTable, 2, this._objectLayerPairFilterTable, 2);
+        this.ObjectVsBroadPhaseLayerFilterTable = new ObjectVsBroadPhaseLayerFilterTable(this.BroadPhaseLayerInterfaceTable, 2, this.ObjectLayerPairFilterTable, 2);
         
-        this._broadPhaseLayerFilterTable = new BroadPhaseLayerFilterTable();
-        this._objectLayerFilterTable = new ObjectLayerFilterTable();
-        this._bodyFilterTable = new BodyFilterTable();
+        this.BroadPhaseLayerFilterTable = new BroadPhaseLayerFilterTable();
+        this.ObjectLayerFilterTable = new ObjectLayerFilterTable();
+        this.BodyFilterTable = new BodyFilterTable();
         
         this.PhysicsSystem = new PhysicsSystem(new PhysicsSystemSettings() {
             MaxBodies = this.Settings.MaxBodies,
             MaxBodyPairs = this.Settings.MaxBodyPairs,
             MaxContactConstraints = this.Settings.MaxContactConstraints,
-            ObjectLayerPairFilter = this._objectLayerPairFilterTable,
-            BroadPhaseLayerInterface = this._broadPhaseLayerInterfaceTable,
-            ObjectVsBroadPhaseLayerFilter = this._objectVsBroadPhaseLayerFilterTable
+            ObjectLayerPairFilter = this.ObjectLayerPairFilterTable,
+            BroadPhaseLayerInterface = this.BroadPhaseLayerInterfaceTable,
+            ObjectVsBroadPhaseLayerFilter = this.ObjectVsBroadPhaseLayerFilterTable
         });
-        
+
+        this.PhysicsSystem.Gravity = this.Settings.Gravity;
         this.PhysicsSystem.OptimizeBroadPhase();
     }
 
@@ -63,28 +64,31 @@ public class Simulation : Disposable {
     protected internal void Step(float timeStep, int collisionSteps) {
         this.PhysicsSystem.Step(timeStep, collisionSteps);
     }
-
+    
     /// <summary>
-    /// Performs a raycast in the simulation to detect intersections between a ray and physical objects.
+    /// Performs a raycast from a given origin in a specified direction for a given distance.
     /// </summary>
-    /// <param name="origin">The origin of the ray.</param>
-    /// <param name="result">The result of the raycast, including intersection details.</param>
-    /// <param name="direction">The direction of the ray.</param>
-    /// <param name="distance">The maximum distance to check for intersections.</param>
-    /// <returns>True if an intersection was found, false otherwise.</returns>
+    /// <param name="origin">The starting point of the raycast.</param>
+    /// <param name="result">Output parameter to store the result of the raycast.</param>
+    /// <param name="direction">The direction in which the ray is casted.</param>
+    /// <param name="distance">The maximum distance for the raycast.</param>
+    /// <returns>Returns a boolean indicating whether the raycast hit something or not.</returns>
     public bool RayCast(Vector3 origin, out RayCastResult result, Vector3 direction, float distance) {
         result = RayCastResult.Default;
         
-        return this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this._broadPhaseLayerFilterTable, this._objectLayerFilterTable, this._bodyFilterTable);
+        return this.PhysicsSystem.NarrowPhaseQuery.CastRay((Double3) origin, direction * distance, ref result, this.BroadPhaseLayerFilterTable, this.ObjectLayerFilterTable, this.BodyFilterTable);
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            Foundation.Shutdown();
-            this._broadPhaseLayerFilterTable.Dispose();
-            this._objectLayerFilterTable.Dispose();
-            this._bodyFilterTable.Dispose();
+            this.ObjectLayerPairFilterTable.Dispose();
+            this.BroadPhaseLayerInterfaceTable.Dispose();
+            this.ObjectVsBroadPhaseLayerFilterTable.Dispose();
+            this.BroadPhaseLayerFilterTable.Dispose();
+            this.ObjectLayerFilterTable.Dispose();
+            this.BodyFilterTable.Dispose();
             this.PhysicsSystem.Dispose();
+            Foundation.Shutdown();
         }
     }
 }
