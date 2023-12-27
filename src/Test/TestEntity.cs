@@ -1,7 +1,9 @@
 using System.Numerics;
 using JoltPhysicsSharp;
+using Raylib_cs;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.component;
+using Sparkle.csharp.graphics.util;
 using Sparkle.csharp.registry.types;
 
 namespace Test;
@@ -9,7 +11,22 @@ namespace Test;
 public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, TestGame.PlayerTexture, ShaderRegistry.Pbr));
+
+        Material[] materials = new MaterialBuilder(TestGame.PlayerModel, ShaderRegistry.Pbr)
+            .Add(MaterialMapIndex.MATERIAL_MAP_ALBEDO, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.MATERIAL_MAP_METALNESS, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.MATERIAL_MAP_NORMAL, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.MATERIAL_MAP_EMISSION, TestGame.PlayerTexture)
+            
+            .Add(MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color.WHITE)
+            .Add(MaterialMapIndex.MATERIAL_MAP_EMISSION, new Color(255, 162, 0, 255))
+            
+            .Add(MaterialMapIndex.MATERIAL_MAP_METALNESS, 0)
+            .Add(MaterialMapIndex.MATERIAL_MAP_ROUGHNESS, 0)
+            .Add(MaterialMapIndex.MATERIAL_MAP_OCCLUSION, 1)
+            .Build();
+        
+        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials));
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         this.AddComponent(new Rigidbody(boxShape, MotionType.Dynamic));

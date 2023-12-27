@@ -2,7 +2,6 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.graphics.util;
-using Sparkle.csharp.registry.types;
 using Sparkle.csharp.scene;
 using BoundingBox = Raylib_cs.BoundingBox;
 
@@ -10,46 +9,29 @@ namespace Sparkle.csharp.entity.component;
 
 public class ModelRenderer : Component {
 
-    public ModelAnimationPlayer AnimationPlayer { get; private set; }
+    public ModelAnimationPlayer AnimationPlayer { get; }
     
     private Model _model;
-    private Texture2D _texture;
-    private Shader _shader;
-    private MaterialMapIndex _materialMap;
+    private Material[] _materials;
     private Color _color;
     private bool _drawWires;
     
-    /// <summary>
-    /// Initializes a new instance of the ModelRenderer class with optional parameters.
-    /// </summary>
-    /// <param name="model">The 3D model.</param>
-    /// <param name="texture">The texture to apply to the model.</param>
-    /// <param name="shader">The shader to use. If null, the default shader is used.</param>
-    /// <param name="materialMap">The material map index.</param>
-    /// <param name="color">The color of the model. If null, the default color is used.</param>
-    /// <param name="drawWires">Determines whether to draw wires for the model.</param>
-    /// <param name="animations">Optional array of model animations.</param>
-    public ModelRenderer(Model model, Texture2D texture, Shader? shader = default, ModelAnimation[]? animations = default, MaterialMapIndex materialMap = MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color? color = default, bool drawWires = false) {
+    public ModelRenderer(Model model, Material[] materials, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) {
         this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
-        this._texture = texture;
-        this._shader = shader ?? ShaderRegistry.DiscardAlpha;
-        this._materialMap = materialMap;
+        this._materials = materials;
         this._color = color ?? Color.WHITE;
         this._drawWires = drawWires;
-        
-        for (int i = 0; i < model.MaterialCount; i++) {
-            MaterialHelper.SetShader(ref this._model, i, ref this._shader);
-        }
-        
-        for (int i = 0; i < model.MaterialCount; i++) {
-            MaterialHelper.SetTexture(ref this._model, i, this._materialMap, ref this._texture);
-        }
+        this.SetupMaterial();
     }
     
     protected internal override unsafe void Draw() {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
+        
+        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.SHADER_UNIFORM_VEC2);
+        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, this._materials[0].Maps[(int) MaterialMapIndex.MATERIAL_MAP_EMISSION].Color, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;
@@ -81,6 +63,12 @@ public class ModelRenderer : Component {
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
         this.AnimationPlayer.FixedUpdate(this._model);
+    }
+
+    private unsafe void SetupMaterial() {
+        fixed (Material* material = this._materials) {
+            this._model.Materials = material;
+        }
     }
 
     protected override void Dispose(bool disposing) { }

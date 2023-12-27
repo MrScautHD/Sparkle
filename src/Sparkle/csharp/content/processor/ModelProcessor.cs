@@ -10,7 +10,13 @@ public class ModelProcessor : IContentProcessor {
         return ModelHelper.Load(type.Path);
     }
     
-    public void Unload(object item) {
+    public unsafe void Unload(object item) {
+        Model model = (Model) item;
+        
+        for (int i = 0; i < model.MaterialCount; i++) {
+            MaterialHelper.Unload(model.Materials[i]);
+        }
+        
         ModelHelper.Unload((Model) item);
     }
 }

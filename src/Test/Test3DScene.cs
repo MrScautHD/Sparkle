@@ -21,11 +21,9 @@ public class Test3DScene : Scene {
         Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.CAMERA_PERSPECTIVE, CameraMode.CAMERA_FREE);
         this.AddEntity(cam3D);
 
-        for (int i = 0; i < 10; i++) {
-            Entity light = new Entity(new Vector3(0, 5, 0));
-            light.AddComponent(new Light(Light.LightType.Point, Vector3.Zero, Color.RED, Color.BLUE));
-            this.AddEntity(light);
-        }
+        Entity light = new Entity(new Vector3(1, 3, 0));
+        light.AddComponent(new Light(Light.LightType.Point, Vector3.Zero, Color.RED, Color.BLUE));
+        this.AddEntity(light);
         
 
         // LIGHT
