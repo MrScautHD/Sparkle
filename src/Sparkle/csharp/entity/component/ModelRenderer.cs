@@ -29,9 +29,9 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.SHADER_UNIFORM_VEC2);
-        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, this._materials[0].Maps[(int) MaterialMapIndex.MATERIAL_MAP_EMISSION].Color, ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-        ShaderHelper.SetValue(this._model.Materials->Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.SHADER_UNIFORM_VEC2);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.MATERIAL_MAP_EMISSION].Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;
@@ -56,7 +56,6 @@ public class ModelRenderer : Component {
                 ModelHelper.DrawModel(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
             }
         }
-        
         SceneManager.MainCam3D.EndMode3D();
     }
 
@@ -66,8 +65,8 @@ public class ModelRenderer : Component {
     }
 
     private unsafe void SetupMaterial() {
-        fixed (Material* material = this._materials) {
-            this._model.Materials = material;
+        for (int i = 0; i < this._model.MaterialCount; i++) {
+            this._model.Materials[i] = this._materials[i];
         }
     }
 

@@ -13,6 +13,10 @@ public class ModelAnimationPlayer {
     private bool _isLoop;
     private bool _isPause;
 
+    /// <summary>
+    /// Initializes a new instance of the ModelAnimationPlayer class with the given animations.
+    /// </summary>
+    /// <param name="animations">An array of ModelAnimation objects representing the animations to be played.</param>
     public ModelAnimationPlayer(ModelAnimation[] animations) {
         this._animations = animations;
     }
@@ -35,6 +39,11 @@ public class ModelAnimationPlayer {
         }
     }
 
+    /// <summary>
+    /// Plays the animation at the specified index.
+    /// </summary>
+    /// <param name="index">The index of the animation to play.</param>
+    /// <param name="loop">Specifies whether the animation should loop or not.</param>
     public void Play(int index, bool loop) {
         if (index > this._animations.Length - 1) {
             Logger.Error($"Unable to play the animation at index [{index}], the maximum number of available animations is [{this._animations.Length}].");
@@ -47,6 +56,9 @@ public class ModelAnimationPlayer {
         this._isPause = false;
     }
 
+    /// <summary>
+    /// Stops the playback of the animation.
+    /// </summary>
     public void Stop() {
         this._frameCount = 0;
         this._playingIndex = 0;
@@ -55,10 +67,16 @@ public class ModelAnimationPlayer {
         this._isPause = false;
     }
 
+    /// <summary>
+    /// Set the pause flag to true, indicating a pause state.
+    /// </summary>
     public void Pause() {
         this._isPause = true;
     }
-    
+
+    /// <summary>
+    /// Unpauses the application.
+    /// </summary>
     public void UnPause() {
         this._isPause = false;
     }

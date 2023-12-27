@@ -51,7 +51,7 @@ public class Light : Component {
     /// <param name="ambientColor">The ambient color of the light.</param>
     /// <param name="intensity">The intensity of the light.</param>
     /// <param name="ambientIntensity">The ambient intensity of the light.</param>
-    public Light(LightType type, Vector3 target, Color color, Color ambientColor, float intensity = 10, float ambientIntensity = 0.02F) {
+    public Light(LightType type, Vector3 target, Color color, Color ambientColor, float intensity = 1, float ambientIntensity = 0.02F) {
         this.Enabled = true;
         this.Type = type;
         this.Target = target;
