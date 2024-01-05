@@ -1,22 +1,31 @@
 using Raylib_cs;
+using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.registry.types;
 
 namespace Sparkle.csharp.graphics.util;
 
 public class MaterialBuilder {
 
-    private Material[] _materials;
+    private Model _model;
     private Shader _shader;
+    private Material[] _materials;
 
     /// <summary>
     /// Represents a builder class for creating materials.
     /// </summary>
-    public unsafe MaterialBuilder(Model model, Shader? shader = default) {
-        this._materials = new Material[model.MaterialCount];
+    public MaterialBuilder(Model model, Shader? shader = default) {
+        this._model = model;
         this._shader = shader ?? ShaderRegistry.DiscardAlpha;
-        
-        for (int i = 0; i < model.MaterialCount; i++) {
-            this._materials[i] = model.Materials[i];
+        this._materials = new Material[this._model.MaterialCount];
+        this.SetupMaterial();
+    }
+
+    /// <summary>
+    /// Sets up the materials for the model with the specified shader.
+    /// </summary>
+    private unsafe void SetupMaterial() {
+        for (int i = 0; i < this._model.MaterialCount; i++) {
+            this._materials[i] = this._model.Materials[i];
             this._materials[i].Shader = this._shader;
         }
     }
@@ -27,9 +36,9 @@ public class MaterialBuilder {
     /// <param name="mapIndex">The index of the material map to update.</param>
     /// <param name="texture">The texture to add.</param>
     /// <returns>A reference to the MaterialBuilder instance for method chaining.</returns>
-    public unsafe MaterialBuilder Add(MaterialMapIndex mapIndex, Texture2D texture) {
-        foreach (Material material in this._materials) {
-            material.Maps[(int) mapIndex].Texture = texture;
+    public MaterialBuilder Add(MaterialMapIndex mapIndex, Texture2D texture) {
+        for (int i = 0; i < this._materials.Length; i++) {
+            MaterialHelper.SetTexture(ref this._materials[i], mapIndex, texture);
         }
         
         return this;
@@ -41,9 +50,9 @@ public class MaterialBuilder {
     /// <param name="mapIndex">The map index to add the color to.</param>
     /// <param name="color">The color to add.</param>
     /// <returns>The updated material builder.</returns>
-    public unsafe MaterialBuilder Add(MaterialMapIndex mapIndex, Color color) {
-        foreach (Material material in this._materials) {
-            material.Maps[(int) mapIndex].Color = color;
+    public MaterialBuilder Add(MaterialMapIndex mapIndex, Color color) {
+        for (int i = 0; i < this._materials.Length; i++) {
+            MaterialHelper.SetColor(ref this._materials[i], mapIndex, color);
         }
         
         return this;
@@ -55,9 +64,9 @@ public class MaterialBuilder {
     /// <param name="mapIndex">The map index at which to add the value.</param>
     /// <param name="value">The value to add to the maps.</param>
     /// <returns>The updated MaterialBuilder object.</returns>
-    public unsafe MaterialBuilder Add(MaterialMapIndex mapIndex, float value) {
-        foreach (Material material in this._materials) {
-            material.Maps[(int) mapIndex].Value = value;
+    public MaterialBuilder Add(MaterialMapIndex mapIndex, float value) {
+        for (int i = 0; i < this._materials.Length; i++) {
+            MaterialHelper.SetValue(ref this._materials[i], mapIndex, value);
         }
         
         return this;
