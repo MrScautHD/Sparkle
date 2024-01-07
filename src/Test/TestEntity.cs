@@ -3,7 +3,7 @@ using JoltPhysicsSharp;
 using Raylib_cs;
 using Sparkle.csharp.entity;
 using Sparkle.csharp.entity.component;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.material;
 using Sparkle.csharp.registry.types;
 
 namespace Test;

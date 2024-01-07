@@ -22,19 +22,25 @@ public class Test3DScene : Scene {
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(Light.LightType.Point, Vector3.Zero, Color.RED, Color.BLUE));
+        light.AddComponent(new Light(Light.LightType.Spot, new Vector3(0, 2, 0), Color.RED, Color.BLUE));
         this.AddEntity(light);
-        
 
         // LIGHT
         /*
         Entity light = new Entity(Vector3.Zero);
         light.AddComponent(new Light(Light.LightType.Pointed, Vector3.Zero, Color.RED));
         this.AddEntity(light);*/
+
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 12; j++) {
+                TestEntity test = new TestEntity(new Vector3(i, 3, j));
+                this.AddEntity(test);
+            }
+        }
         
         // TEST ENTITY
-        TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
-        this.AddEntity(entity);
+        //TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
+        //this.AddEntity(entity);
 
         // GROUND
         this.AddEntity(new GroundEntity(Vector3.Zero));

@@ -2,7 +2,7 @@ using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.registry.types;
 
-namespace Sparkle.csharp.graphics.util;
+namespace Sparkle.csharp.graphics.material;
 
 public class MaterialBuilder {
 

@@ -1,7 +1,7 @@
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 
-namespace Sparkle.csharp.graphics.util; 
+namespace Sparkle.csharp.graphics.model; 
 
 public class ModelAnimationPlayer {
     

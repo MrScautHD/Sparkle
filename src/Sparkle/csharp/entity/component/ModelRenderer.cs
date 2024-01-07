@@ -1,7 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.csharp.graphics;
 using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.graphics.util;
+using Sparkle.csharp.graphics.model;
 using Sparkle.csharp.scene;
 using BoundingBox = Raylib_cs.BoundingBox;
 
@@ -43,6 +44,7 @@ public class ModelRenderer : Component {
         box.Min.Z += this.Entity.Position.Z;
         box.Max.Z += this.Entity.Position.Z;
         
+        // TODO IMPLEMENT OOBB BOXES!
         if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
             Vector3 axis;
             float angle;
