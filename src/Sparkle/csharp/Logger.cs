@@ -51,11 +51,20 @@ public static class Logger {
     /// Logs an error message and throws an exception with optional stack frame information.
     /// </summary>
     /// <param name="msg">The fatal message to be logged.</param>
-    /// <param name="exception">The optional exception to be thrown (default is null).</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
-    public static void Fatal(string msg, Exception? exception = null, int skipFrames = 2) {
+    public static void Fatal(string msg, int skipFrames = 2) {
         Log(msg, skipFrames, ConsoleColor.Red);
-        throw exception ?? new Exception(msg);
+        throw new Exception(msg);
+    }
+
+    /// <summary>
+    /// Logs an exception message with the color red and throws the exception.
+    /// </summary>
+    /// <param name="exception">The exception to log and throw.</param>
+    /// <param name="skipFrames">The number of frames to skip when determining the source of the log message.</param>
+    public static void Fatal(Exception exception, int skipFrames = 2) {
+        Log(exception.Message, skipFrames, ConsoleColor.Red);
+        throw exception;
     }
 
     /// <summary>
@@ -120,7 +129,7 @@ public static class Logger {
                 break;
             
             case TraceLogLevel.LOG_FATAL:
-                Fatal(message, null, 3);
+                Fatal(message, 3);
                 break;
         }
     }

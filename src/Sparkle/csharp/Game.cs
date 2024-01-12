@@ -1,9 +1,11 @@
 using System.Reflection;
+using OpenTK.Graphics;
 using Raylib_cs;
 using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
 using Sparkle.csharp.content.type;
 using Sparkle.csharp.graphics;
+using Sparkle.csharp.graphics.gl;
 using Sparkle.csharp.gui;
 using Sparkle.csharp.overlay;
 using Sparkle.csharp.physics;
@@ -25,6 +27,8 @@ public class Game : Disposable {
     
     public readonly GameSettings Settings;
     public bool ShouldClose;
+    
+    public NativeBindingsContext BindingsContext { get; private set; }
     
     public ContentManager Content { get; private set; }
     public Simulation Simulation { get; private set; }
@@ -76,6 +80,10 @@ public class Game : Disposable {
         
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
+        
+        Logger.Info("Initialize OpenGL bindings...");
+        this.BindingsContext = new NativeBindingsContext();
+        GLLoader.LoadBindings(this.BindingsContext);
         
         this.OnRun();
         
@@ -178,7 +186,7 @@ public class Game : Disposable {
     protected virtual void OnClose() {
         Logger.Warn("Application shuts down!");
     }
-
+    
     /// <inheritdoc cref="Raylib.GetFPS"/>
     public int GetFps() => Raylib.GetFPS();
 

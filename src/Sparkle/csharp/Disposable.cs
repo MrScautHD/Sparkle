@@ -26,8 +26,7 @@ public abstract class Disposable : IDisposable {
     /// </summary>
     protected void ThrowIfDisposed() {
         if (this.HasDisposed) {
-            string message = this.GetType().Name;
-            Logger.Fatal(message, new ObjectDisposedException(message));
+            Logger.Fatal(new ObjectDisposedException(this.GetType().Name));
         }
     }
 }
