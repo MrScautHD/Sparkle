@@ -20,7 +20,8 @@ dotnet add package Sparkle --version 2.1.0
 
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
-- [RayLib](https://www.raylib.com/)
+- [RayLib](https://www.raylib.com)
+- [OpenTK](https://github.com/opentk/opentk)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
 - [JoltPhysicsSharp](https://www.nuget.org/packages/JoltPhysicsSharp)
 
