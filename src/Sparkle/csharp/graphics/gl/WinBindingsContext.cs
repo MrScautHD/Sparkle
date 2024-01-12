@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Sparkle.csharp.graphics.gl;
 
-public class WglBindingsContext : IBindingsContext, IDisposable {
+public class WinBindingsContext : IBindingsContext, IDisposable {
     
     public bool HasDisposed { get; private set; }
 
@@ -12,7 +12,7 @@ public class WglBindingsContext : IBindingsContext, IDisposable {
     /// <summary>
     /// Represents a context for managing WGL bindings.
     /// </summary>
-    public WglBindingsContext() {
+    public WinBindingsContext() {
         this._openGlHandle = LoadLibrary("opengl32.dll");
     }
     

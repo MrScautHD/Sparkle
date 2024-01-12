@@ -11,10 +11,10 @@ public class NativeBindingsContext : IBindingsContext, IDisposable {
 
     public NativeBindingsContext() {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-            this._context = new WglBindingsContext();
+            this._context = new WinBindingsContext();
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-            Logger.Fatal(new PlatformNotSupportedException()); // TODO FINISH IT
+            this._context = new LinuxBindingContext(); // TODO CHECK IF IT WORKS
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
             Logger.Fatal(new PlatformNotSupportedException()); // TODO FINISH IT
@@ -48,7 +48,7 @@ public class NativeBindingsContext : IBindingsContext, IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (disposing) {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                ((WglBindingsContext) this._context!).Dispose();
+                ((WinBindingsContext) this._context!).Dispose();
             }
         }
     }

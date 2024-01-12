@@ -1,5 +1,6 @@
 using System.Reflection;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using Raylib_cs;
 using Sparkle.csharp.audio;
 using Sparkle.csharp.content;
@@ -112,6 +113,7 @@ public class Game : Disposable {
             
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SKYBLUE);
+            GL.BlendFunc(BlendingFactor.One, BlendingFactor.One); // TODO JUST FOR TESTING
             this.Draw();
             Graphics.EndDrawing();
         }
