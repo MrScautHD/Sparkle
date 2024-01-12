@@ -210,6 +210,7 @@ public class Game : Disposable {
             SceneManager.ActiveScene?.Dispose();
             this.Simulation.Dispose();
             this.Content.Dispose();
+            this.BindingsContext.Dispose();
             AudioDevice.Close();
             Window.Close();
         }
