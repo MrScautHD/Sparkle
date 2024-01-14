@@ -113,7 +113,7 @@ public class Game : Disposable {
             
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SKYBLUE);
-            GL.BlendFunc(BlendingFactor.One, BlendingFactor.One); // TODO JUST FOR TESTING
+            //GL.BlendFunc(BlendingFactor.One, BlendingFactor.One); // TODO JUST FOR TESTING
             this.Draw();
             Graphics.EndDrawing();
         }

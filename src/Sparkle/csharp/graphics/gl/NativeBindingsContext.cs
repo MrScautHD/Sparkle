@@ -14,10 +14,10 @@ public class NativeBindingsContext : IBindingsContext, IDisposable {
             this._context = new WinBindingsContext();
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-            this._context = new LinuxBindingContext(); // TODO CHECK IF IT WORKS
+            this._context = new LinuxBindingContext();
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-            Logger.Fatal(new PlatformNotSupportedException()); // TODO FINISH IT
+            this._context = new MacBindingContext();
         }
         else {
             Logger.Fatal(new PlatformNotSupportedException());

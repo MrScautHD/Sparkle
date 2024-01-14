@@ -85,9 +85,9 @@ float GeomSmith(float nDotV, float nDotL, float roughness) {
     return ggx1 * ggx2;
 }
 
-vec3 ComputePBR() {
-    vec3 albedo = texture(albedoMap, vec2(fragTexCoord.x * tiling.x + offset.x, fragTexCoord.y * tiling.y + offset.y)).rgb;
-    albedo = vec3(albedoColor.x * albedo.x, albedoColor.y * albedo.y, albedoColor.z * albedo.z);
+vec4 ComputePBR() {
+    vec4 albedo_tex = texture(albedoMap, vec2(fragTexCoord.x * tiling.x + offset.x, fragTexCoord.y * tiling.y + offset.y));
+    vec3 albedo = vec3(albedoColor.x * albedo_tex.x, albedoColor.y * albedo_tex.y, albedoColor.z * albedo_tex.z);
 
     float metallic = clamp(metallicValue, 0.0, 1.0);
     float roughness = clamp(roughnessValue, 0.0, 1.0);
@@ -170,17 +170,21 @@ vec3 ComputePBR() {
     }
 
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;
-    return ambient_final + lightAccum * ao + e;
+    return vec4(ambient_final + lightAccum * ao + e, albedo_tex.w);
 }
 
 void main() {
-    vec3 color = ComputePBR();
+    vec4 color = ComputePBR();
+
+    if(color.a <= 0.0) {
+        discard;
+    }
 
     //HDR tonemapping
-    color = pow(color, color + vec3(1.0));
+    color = vec4(pow(color.rgb, color.rgb + vec3(1.0)), color.w);
 
     //gamma correction
-    color = pow(color, vec3(1.0 / 2.2));
+    color = vec4(pow(color.rgb, vec3(1.0 / 2.2)), color.w);
 
-    finalColor = vec4(color, 1.0);
+    finalColor = color;
 }
