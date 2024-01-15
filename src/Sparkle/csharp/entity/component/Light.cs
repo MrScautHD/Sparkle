@@ -59,6 +59,11 @@ public class Light : Component {
     }
     
     protected internal override void Init() {
+        if (LightCount >= 815) {
+            Logger.Error($"The initialization of Component [{ this.GetType().Name }] failed due to reaching the maximum limit of 815 lights.");
+            return;
+        }
+        
         base.Init();
         GL.GenBuffers(1, ref this._lightBuffer);
         this.SetLocations();
