@@ -22,7 +22,7 @@ public class Test3DScene : Scene {
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(Light.LightType.Spot, new Vector3(0, 2, 0), Color.RED, Color.BLUE));
+        light.AddComponent(new Light(Light.LightType.Point, new Vector3(0, 2, 0), Color.RED, Color.BLUE));
         this.AddEntity(light);
 
         // LIGHT

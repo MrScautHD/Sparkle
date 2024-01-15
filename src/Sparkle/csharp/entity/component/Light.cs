@@ -1,4 +1,6 @@
 using System.Numerics;
+using System.Runtime.InteropServices;
+using OpenTK.Graphics.OpenGL;
 using Raylib_cs;
 using Sparkle.csharp.graphics.helper;
 using Sparkle.csharp.registry.types;
@@ -18,6 +20,8 @@ public class Light : Component {
 
     public float AmbientIntensity;
     public Color AmbientColor;
+
+    private int _lightBuffer;
     
     public int LightIndex { get; private set; }
     
@@ -34,13 +38,6 @@ public class Light : Component {
     public int UseTexNormalLoc { get; private set; }
     public int UseTexMraLoc { get; private set; }
     public int UseTexEmissiveLoc { get; private set; }
-    
-    public int EnabledLoc { get; private set; }
-    public int TypeLoc { get; private set; }
-    public int PosLoc { get; private set; }
-    public int TargetLoc { get; private set; }
-    public int ColorLoc { get; private set; }
-    public int IntensityLoc { get; private set; }
 
     /// <summary>
     /// Represents a light source in a 3D environment.
@@ -63,6 +60,7 @@ public class Light : Component {
     
     protected internal override void Init() {
         base.Init();
+        GL.GenBuffers(1, ref this._lightBuffer);
         this.SetLocations();
         this.SetLightIndex();
     }
@@ -113,13 +111,6 @@ public class Light : Component {
         this.UseTexNormalLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexNormal");
         this.UseTexMraLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexMRA");
         this.UseTexEmissiveLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "useTexEmissive");
-        
-        this.EnabledLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].enabled");
-        this.TypeLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].type");
-        this.PosLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].position");
-        this.TargetLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].target");
-        this.ColorLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].color");
-        this.IntensityLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, $"lights[{this.LightIndex}].intensity");
     }
     
     /// <summary>
@@ -140,12 +131,30 @@ public class Light : Component {
         
         ShaderHelper.SetValue(ShaderRegistry.Pbr, ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_INT);
         
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.EnabledLoc, this.Enabled ? 1 : 0, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.TypeLoc, (int) this.Type, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.PosLoc, this.Entity.Position, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.TargetLoc, this.Target, ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.ColorLoc, ColorHelper.Normalize(this.Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.IntensityLoc, this.Intensity, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
+        GL.BindBuffer(BufferTargetARB.UniformBuffer, this._lightBuffer);
+        
+        float[] data = new float[13];
+        data[0] = this.Enabled ? 1 : 0;
+        data[1] = (int) this.Type;
+
+        data[2] = this.Entity.Position.X;
+        data[3] = this.Entity.Position.Y;
+        data[4] = this.Entity.Position.Z;
+        
+        data[5] = this.Target.X;
+        data[6] = this.Target.Y;
+        data[7] = this.Target.Z;
+        
+        data[8] = this.Color.R;
+        data[9] = this.Color.G;
+        data[10] = this.Color.B;
+        data[11] = this.Color.A;
+        
+        data[12] = this.Intensity;
+        
+        IntPtr dataPtr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
+        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(float) * 13 * this.LightIndex, dataPtr, BufferUsageARB.DynamicDraw);
+        GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
     }
     
     /// <summary>
@@ -156,6 +165,10 @@ public class Light : Component {
         Point,
         Spot
     }
-
-    protected override void Dispose(bool disposing) { }
+    
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            GL.DeleteBuffers(1, this._lightBuffer);
+        }
+    }
 }

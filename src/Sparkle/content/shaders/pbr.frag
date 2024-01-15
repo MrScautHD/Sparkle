@@ -1,15 +1,12 @@
 #version 330
 
-#define MAX_LIGHTS 167
+#define MAX_LIGHTS 815
 #define PI 3.14159265358979323846
 
 // LIGHT TYPE
 #define LIGHT_DIRECTIONAL 0
 #define LIGHT_POINT 1
 #define LIGHT_SPOT 2
-
-// TODO CHECK (DISCARD ALPHA) IS WORKING HERE.
-// TODO SET THE (MAX LIGHTS) HIGHER. (unlimited) https://discord.com/channels/426912293134270465/1188441169185746964
 
 struct Light {
     int enabled;
@@ -19,6 +16,12 @@ struct Light {
     vec4 color;
     float intensity;
 };
+
+layout(std140) uniform LightBuffer {
+    Light lights[MAX_LIGHTS];
+};
+
+uniform int numOfLights;
 
 // Input vertex attributes (from vertex shader)
 in vec3 fragPosition;
@@ -31,8 +34,6 @@ in mat3 TBN;
 // Output fragment color
 out vec4 finalColor;
 // Input uniform values
-
-uniform int numOfLights;
 
 uniform sampler2D albedoMap;
 uniform sampler2D mraMap;
@@ -55,8 +56,6 @@ uniform float roughnessValue;
 uniform float aoValue;
 uniform float emissivePower;
 
-// Input lighting values
-uniform Light lights[MAX_LIGHTS];
 uniform vec3 viewPos;
 
 uniform vec3 ambientColor;
