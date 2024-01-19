@@ -1,6 +1,6 @@
 using Raylib_cs;
-using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.overlay;
+using Sparkle.CSharp.Overlays;
+using Sparkle.CSharp.Rendering.Helpers;
 
 namespace Test; 
 

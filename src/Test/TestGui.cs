@@ -1,11 +1,10 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp;
-using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.gui;
-using Sparkle.csharp.gui.element;
-using Sparkle.csharp.gui.element.data;
-using Sparkle.csharp.window;
+using Sparkle;
+using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.GUI.Elements;
+using Sparkle.CSharp.GUI.Elements.Data;
+using Sparkle.CSharp.Rendering.Helpers;
 using Color = Raylib_cs.Color;
 
 namespace Test; 

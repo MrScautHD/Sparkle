@@ -1,13 +1,14 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp;
-using Sparkle.csharp.entity;
-using Sparkle.csharp.entity.component;
-using Sparkle.csharp.graphics;
-using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.gui;
-using Sparkle.csharp.registry.types;
-using Sparkle.csharp.scene;
+using Sparkle;
+using Sparkle.CSharp;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.Registries.Types;
+using Sparkle.CSharp.Rendering;
+using Sparkle.CSharp.Rendering.Helpers;
+using Sparkle.CSharp.SceneManagement;
 
 namespace Test; 
 

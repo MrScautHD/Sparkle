@@ -1,5 +1,6 @@
 ﻿using Raylib_cs;
-using Sparkle.csharp;
+using Sparkle;
+using Sparkle.CSharp;
 using Test;
 
 GameSettings settings = new GameSettings() {

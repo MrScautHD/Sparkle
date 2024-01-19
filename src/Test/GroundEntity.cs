@@ -1,7 +1,7 @@
 using System.Numerics;
 using JoltPhysicsSharp;
-using Sparkle.csharp.entity;
-using Sparkle.csharp.entity.component;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
 
 namespace Test; 
 

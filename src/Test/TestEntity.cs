@@ -1,10 +1,10 @@
 using System.Numerics;
 using JoltPhysicsSharp;
 using Raylib_cs;
-using Sparkle.csharp.entity;
-using Sparkle.csharp.entity.component;
-using Sparkle.csharp.graphics.material;
-using Sparkle.csharp.registry.types;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Registries.Types;
+using Sparkle.CSharp.Rendering.Material;
 
 namespace Test;
 

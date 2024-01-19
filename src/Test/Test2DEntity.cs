@@ -1,8 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp;
-using Sparkle.csharp.entity;
-using Sparkle.csharp.entity.component;
+using Sparkle;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
 
 namespace Test; 
 
