@@ -1,7 +1,7 @@
 using Raylib_cs;
 using Sparkle.CSharp.Rendering.Helpers;
 
-namespace Sparkle.CSharp.Rendering.Model; 
+namespace Sparkle.CSharp.Rendering.Util; 
 
 public class ModelAnimationPlayer {
     
@@ -21,7 +21,7 @@ public class ModelAnimationPlayer {
         this._animations = animations;
     }
 
-    protected internal void FixedUpdate(Raylib_cs.Model model) {
+    protected internal void FixedUpdate(Model model) {
         if (!this._isPause && this._isPlaying) {
             this._frameCount++;
 

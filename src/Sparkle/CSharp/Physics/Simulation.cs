@@ -30,12 +30,12 @@ public class Simulation : Disposable {
         this.Settings = settings;
         
         this.ObjectLayerPairFilterTable = new ObjectLayerPairFilterTable(2);
-        this.ObjectLayerPairFilterTable.EnableCollision((int)PhysicLayers.NonMoving, (int)PhysicLayers.Moving);
-        this.ObjectLayerPairFilterTable.EnableCollision((int)PhysicLayers.Moving, (int)PhysicLayers.Moving);
+        this.ObjectLayerPairFilterTable.EnableCollision((int) PhysicLayers.NonMoving, (int) PhysicLayers.Moving);
+        this.ObjectLayerPairFilterTable.EnableCollision((int) PhysicLayers.Moving, (int) PhysicLayers.Moving);
         
         this.BroadPhaseLayerInterfaceTable = new BroadPhaseLayerInterfaceTable(2, 2);
-        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer((int)PhysicLayers.NonMoving, (int)BroadPhaseLayers.NonMoving);
-        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer((int)PhysicLayers.Moving, (int)BroadPhaseLayers.Moving);
+        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer((int) PhysicLayers.NonMoving, (int) BroadPhaseLayers.NonMoving);
+        this.BroadPhaseLayerInterfaceTable.MapObjectToBroadPhaseLayer((int) PhysicLayers.Moving, (int) BroadPhaseLayers.Moving);
         
         this.ObjectVsBroadPhaseLayerFilterTable = new ObjectVsBroadPhaseLayerFilterTable(this.BroadPhaseLayerInterfaceTable, 2, this.ObjectLayerPairFilterTable, 2);
         

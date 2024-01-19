@@ -8,39 +8,39 @@ public static class ModelHelper {
     
     
     /// <inheritdoc cref="Raylib.LoadModel"/>
-    public static Raylib_cs.Model Load(string path) => Raylib.LoadModel(path);
+    public static Model Load(string path) => Raylib.LoadModel(path);
     
     /// <inheritdoc cref="Raylib.LoadModelFromMesh"/>
-    public static Raylib_cs.Model LoadFromMesh(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
+    public static Model LoadFromMesh(Mesh mesh) => Raylib.LoadModelFromMesh(mesh);
     
     /// <inheritdoc cref="Raylib.UnloadModel"/>
-    public static void Unload(Raylib_cs.Model model) => Raylib.UnloadModel(model);
+    public static void Unload(Model model) => Raylib.UnloadModel(model);
     
     
     /// <inheritdoc cref="Raylib.IsModelReady"/>
-    public static bool IsReady(Raylib_cs.Model model) => Raylib.IsModelReady(model);
+    public static bool IsReady(Model model) => Raylib.IsModelReady(model);
 
     /// <inheritdoc cref="Raylib.GetMaterial"/>
-    public static Raylib_cs.Material GetMaterial(ref Raylib_cs.Model model, int materialIndex) => Raylib.GetMaterial(ref model, materialIndex);
+    public static Material GetMaterial(ref Model model, int materialIndex) => Raylib.GetMaterial(ref model, materialIndex);
     
     /// <inheritdoc cref="Raylib.GetModelBoundingBox"/>
-    public static BoundingBox GetBoundingBox(Raylib_cs.Model model) => Raylib.GetModelBoundingBox(model);
+    public static BoundingBox GetBoundingBox(Model model) => Raylib.GetModelBoundingBox(model);
     
     /// <inheritdoc cref="Raylib.SetModelMeshMaterial(ref Model, int, int)"/>
-    public static void SetMeshMaterial(ref Raylib_cs.Model model, int meshId, int materialId) => Raylib.SetModelMeshMaterial(ref model, meshId, materialId);
+    public static void SetMeshMaterial(ref Model model, int meshId, int materialId) => Raylib.SetModelMeshMaterial(ref model, meshId, materialId);
     
     
     /// <inheritdoc cref="Raylib.DrawModel"/>
-    public static void DrawModel(Raylib_cs.Model model, Vector3 pos, float scale, Color color) => Raylib.DrawModel(model, pos, scale, color);
+    public static void DrawModel(Model model, Vector3 pos, float scale, Color color) => Raylib.DrawModel(model, pos, scale, color);
     
     /// <inheritdoc cref="Raylib.DrawModel"/>
-    public static void DrawModel(Raylib_cs.Model model, Vector3 pos, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelEx(model, pos, rotationAxis, rotationAngle, scale, color);
+    public static void DrawModel(Model model, Vector3 pos, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelEx(model, pos, rotationAxis, rotationAngle, scale, color);
     
     /// <inheritdoc cref="Raylib.DrawModelWires"/>
-    public static void DrawModelWires(Raylib_cs.Model model, Vector3 pos, float scale, Color color) => Raylib.DrawModelWires(model, pos, scale, color);
+    public static void DrawModelWires(Model model, Vector3 pos, float scale, Color color) => Raylib.DrawModelWires(model, pos, scale, color);
     
     /// <inheritdoc cref="Raylib.DrawModelWires"/>
-    public static void DrawModelWires(Raylib_cs.Model model, Vector3 pos, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelWiresEx(model, pos, rotationAxis, rotationAngle, scale, color);
+    public static void DrawModelWires(Model model, Vector3 pos, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color color) => Raylib.DrawModelWiresEx(model, pos, rotationAxis, rotationAngle, scale, color);
     
     /// <inheritdoc cref="Raylib.DrawBoundingBox"/>
     public static void DrawBoundingBox(BoundingBox box, Color color) => Raylib.DrawBoundingBox(box, color);
@@ -123,7 +123,7 @@ public static class ModelHelper {
     public static unsafe ModelAnimation* LoadAnimations(string path, ref uint animCount) => Raylib.LoadModelAnimations(path, ref animCount);
     
     /// <inheritdoc cref="Raylib.UpdateModelAnimation"/>
-    public static void UpdateAnimation(Raylib_cs.Model model, ModelAnimation anim, int frame) => Raylib.UpdateModelAnimation(model, anim, frame);
+    public static void UpdateAnimation(Model model, ModelAnimation anim, int frame) => Raylib.UpdateModelAnimation(model, anim, frame);
     
     /// <inheritdoc cref="Raylib.UnloadModelAnimation"/>
     public static void UnloadAnimation(ModelAnimation anim) => Raylib.UnloadModelAnimation(anim);
@@ -132,7 +132,7 @@ public static class ModelHelper {
     public static unsafe void UnloadAnimations(ModelAnimation* animations, uint count) => Raylib.UnloadModelAnimations(animations, count);
     
     /// <inheritdoc cref="Raylib.IsModelAnimationValid"/>
-    public static bool IsAnimationValid(Raylib_cs.Model model, ModelAnimation anim) => Raylib.IsModelAnimationValid(model, anim);
+    public static bool IsAnimationValid(Model model, ModelAnimation anim) => Raylib.IsModelAnimationValid(model, anim);
     
     
     /// <inheritdoc cref="Raylib.CheckCollisionSpheres"/>

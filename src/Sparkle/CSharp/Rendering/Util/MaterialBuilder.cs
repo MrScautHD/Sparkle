@@ -2,21 +2,21 @@ using Raylib_cs;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
 
-namespace Sparkle.CSharp.Rendering.Material;
+namespace Sparkle.CSharp.Rendering.Util;
 
 public class MaterialBuilder {
 
-    private Raylib_cs.Model _model;
+    private Model _model;
     private Shader _shader;
-    private Raylib_cs.Material[] _materials;
+    private Material[] _materials;
 
     /// <summary>
     /// Represents a builder class for creating materials.
     /// </summary>
-    public MaterialBuilder(Raylib_cs.Model model, Shader? shader = default) {
+    public MaterialBuilder(Model model, Shader? shader = default) {
         this._model = model;
         this._shader = shader ?? ShaderRegistry.DiscardAlpha;
-        this._materials = new Raylib_cs.Material[this._model.MaterialCount];
+        this._materials = new Material[this._model.MaterialCount];
         this.SetupMaterial();
     }
 
@@ -76,7 +76,7 @@ public class MaterialBuilder {
     /// Builds and returns an array of materials.
     /// </summary>
     /// <returns>An array of materials.</returns>
-    public Raylib_cs.Material[] Build() {
+    public Material[] Build() {
         return this._materials;
     }
 }

@@ -4,7 +4,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Material;
+using Sparkle.CSharp.Rendering.Util;
 
 namespace Test;
 

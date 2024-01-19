@@ -11,7 +11,7 @@ using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Gl;
-using Sparkle.CSharp.SceneManagement;
+using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.CSharp;
@@ -52,7 +52,7 @@ public class Game : Disposable {
     /// Starts the <see cref="Game"/>.
     /// </summary>
     /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
-    public void Run(Scene? scene) {
+    public void Run(Scene scene) {
         if (this.Settings.LogDirectory != string.Empty) {
             Logger.CreateLogFile(this.Settings.LogDirectory);
         }

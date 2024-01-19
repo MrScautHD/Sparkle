@@ -1,6 +1,5 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
@@ -8,7 +7,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.SceneManagement;
+using Sparkle.CSharp.Scenes;
 
 namespace Test; 
 

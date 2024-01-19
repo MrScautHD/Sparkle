@@ -1,8 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Rendering.Model;
-using Sparkle.CSharp.SceneManagement;
+using Sparkle.CSharp.Rendering.Util;
+using Sparkle.CSharp.Scenes;
 using BoundingBox = Raylib_cs.BoundingBox;
 
 namespace Sparkle.CSharp.Entities.Components; 

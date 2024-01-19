@@ -37,13 +37,13 @@ public class Rigidbody : Component {
         
         switch (this.MotionType) {
             case MotionType.Static:
-                this._objectLayer = (int)PhysicLayers.NonMoving;
+                this._objectLayer = (int) PhysicLayers.NonMoving;
                 break;
             case MotionType.Kinematic:
-                this._objectLayer = (int)PhysicLayers.Moving;
+                this._objectLayer = (int) PhysicLayers.Moving;
                 break;
             case MotionType.Dynamic:
-                this._objectLayer = (int)PhysicLayers.Moving;
+                this._objectLayer = (int) PhysicLayers.Moving;
                 break;
         }
         

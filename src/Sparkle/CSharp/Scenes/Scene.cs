@@ -1,6 +1,6 @@
 using Sparkle.CSharp.Entities;
 
-namespace Sparkle.CSharp.SceneManagement; 
+namespace Sparkle.CSharp.Scenes; 
 
 public abstract class Scene : Disposable {
 

@@ -26,10 +26,10 @@ public static class MeshHelper {
 
     
     /// <inheritdoc cref="Raylib.DrawMesh"/>
-    public static void Draw(Mesh mesh, Raylib_cs.Material material, Matrix4x4 transform) => Raylib.DrawMesh(mesh, material, transform);
+    public static void Draw(Mesh mesh, Material material, Matrix4x4 transform) => Raylib.DrawMesh(mesh, material, transform);
     
     /// <inheritdoc cref="Raylib.DrawMeshInstanced(Mesh, Material, Matrix4x4[], int)"/>
-    public static void DrawInstanced(Mesh mesh, Raylib_cs.Material material, Matrix4x4[] transforms, int instances) => Raylib.DrawMeshInstanced(mesh, material, transforms, instances);
+    public static void DrawInstanced(Mesh mesh, Material material, Matrix4x4[] transforms, int instances) => Raylib.DrawMeshInstanced(mesh, material, transforms, instances);
 
     
     /// <inheritdoc cref="Raylib.GenMeshPoly"/>

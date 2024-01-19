@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.SceneManagement;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities.Components; 
 
