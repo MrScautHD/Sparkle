@@ -1,9 +1,10 @@
 using System.Numerics;
 using Raylib_cs;
-using Sparkle.csharp;
-using Sparkle.csharp.entity;
-using Sparkle.csharp.graphics.helper;
-using Sparkle.csharp.scene;
+using Sparkle;
+using Sparkle.CSharp;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Rendering.Helpers;
+using Sparkle.CSharp.SceneManagement;
 
 namespace Test; 
 
