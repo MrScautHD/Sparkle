@@ -52,7 +52,7 @@ public class Game : Disposable {
     /// Starts the <see cref="Game"/>.
     /// </summary>
     /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
-    public void Run(Scene scene) {
+    public void Run(Scene? scene) {
         if (this.Settings.LogDirectory != string.Empty) {
             Logger.CreateLogFile(this.Settings.LogDirectory);
         }
