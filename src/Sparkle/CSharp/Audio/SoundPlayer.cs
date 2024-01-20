@@ -10,8 +10,14 @@ public static class SoundPlayer {
     /// <inheritdoc cref="Raylib.LoadSoundFromWave"/>
     public static Sound LoadFromWave(Wave wave) => Raylib.LoadSoundFromWave(wave);
     
+    /// <inheritdoc cref="Raylib.LoadSoundAlias"/>
+    public static Sound LoadAlias(Sound source) => Raylib.LoadSoundAlias(source);
+    
     /// <inheritdoc cref="Raylib.UnloadSound"/>
     public static void Unload(Sound sound) => Raylib.UnloadSound(sound);
+    
+    /// <inheritdoc cref="Raylib.UnloadSoundAlias"/>
+    public static void UnloadAlias(Sound alias) => Raylib.UnloadSoundAlias(alias);
 
     
     /// <inheritdoc cref="Raylib.IsSoundReady"/>

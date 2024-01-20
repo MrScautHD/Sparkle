@@ -15,14 +15,23 @@ public static class FontHelper {
     /// <inheritdoc cref="Raylib.LoadFont(string)"/>
     public static Font Load(string path) => Raylib.LoadFont(path);
     
+    /// <inheritdoc cref="Raylib.LoadFontEx(string, int, int[], int)"/>
+    public static Font LoadEx(string path, int fontSize, int[] codepoints, int codepointCount) => Raylib.LoadFontEx(path, fontSize, codepoints, codepointCount);
+    
+    /// <inheritdoc cref="Raylib.LoadFontData"/>
+    public static unsafe GlyphInfo* LoadData(byte* fileData, int dataSize, int fontSize, int* fontChars, int glyphCount, FontType type) => Raylib.LoadFontData(fileData, dataSize, fontSize, fontChars, glyphCount, type);
+    
     /// <inheritdoc cref="Raylib.LoadFontFromImage"/>
     public static Font LoadFromImage(Image image, Color key, int firstChar) => Raylib.LoadFontFromImage(image, key, firstChar);
     
     /// <inheritdoc cref="Raylib.LoadFontFromMemory(string, byte[], int, int[], int)"/>
-    public static Font LoadFromMemory(string fileType, byte[] fileData, int fontSize, int[] fontChars, int glyphCount) => Raylib.LoadFontFromMemory(fileType, fileData, fontSize, fontChars, glyphCount);
+    public static Font LoadFromMemory(string fileType, byte[] fileData, int fontSize, int[] codepoints, int codepointCount) => Raylib.LoadFontFromMemory(fileType, fileData, fontSize, codepoints, codepointCount);
     
     /// <inheritdoc cref="Raylib.UnloadFont"/>
     public static void Unload(Font font) => Raylib.UnloadFont(font);
+    
+    /// <inheritdoc cref="Raylib.UnloadFontData"/>
+    public static unsafe void UnloadData(GlyphInfo* chars, int glyphCount) => Raylib.UnloadFontData(chars, glyphCount);
     
     
     /// <inheritdoc cref="Raylib.DrawFPS"/>
@@ -40,6 +49,9 @@ public static class FontHelper {
     /// <inheritdoc cref="Raylib.DrawTextCodepoint"/>
     public static void DrawTextCodepoint(Font font, int codepoint, Vector2 pos, float fontSize, Color color) => Raylib.DrawTextCodepoint(font, codepoint, pos, fontSize, color);
     
+    
+    /// <inheritdoc cref="Raylib.SetTextLineSpacing"/>
+    public static void SetTextLineSpacing(int spacing) => Raylib.SetTextLineSpacing(spacing);
     
     /// <inheritdoc cref="Raylib.MeasureText(string, int)"/>
     public static int MeasureText(string text, int fontSize) => Raylib.MeasureText(text, fontSize);

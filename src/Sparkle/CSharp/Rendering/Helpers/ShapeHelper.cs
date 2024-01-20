@@ -49,6 +49,9 @@ public static class ShapeHelper {
     /// <inheritdoc cref="Raylib.DrawCircleLines"/>
     public static void DrawCircleLines(int centerX, int centerY, float radius, Color color) => Raylib.DrawCircleLines(centerX, centerY, radius, color);
     
+    /// <inheritdoc cref="Raylib.DrawCircleLinesV"/>
+    public static void DrawCircleLinesV(Vector2 center, float radius, Color color) => Raylib.DrawCircleLinesV(center, radius, color);
+    
     /// <inheritdoc cref="Raylib.DrawCircleSector"/>
     public static void DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) => Raylib.DrawCircleSector(center, radius, startAngle, endAngle, segments, color);
     
@@ -128,6 +131,53 @@ public static class ShapeHelper {
     
     /// <inheritdoc cref="Raylib.DrawPolyLinesEx"/>
     public static void DrawPolyLines(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color) => Raylib.DrawPolyLinesEx(center, sides, radius, rotation, lineThick, color);
+    
+    
+    /// <inheritdoc cref="Raylib.DrawSplineLinear(Vector2[], int, float, Color)"/>
+    public static void DrawSplineLinear(Vector2[] points, int pointCount, float thick, Color color) => Raylib.DrawSplineLinear(points, pointCount, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineBasis(Vector2[], int, float, Color)"/>
+    public static void DrawSplineBasis(Vector2[] points, int pointCount, float thick, Color color) => Raylib.DrawSplineBasis(points, pointCount, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineCatmullRom(Vector2[], int, float, Color)"/>
+    public static void DrawSplineCatmullRom(Vector2[] points, int pointCount, float thick, Color color) => Raylib.DrawSplineCatmullRom(points, pointCount, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineBezierQuadratic(Vector2[], int, float, Color)"/>
+    public static void DrawSplineBezierQuadratic(Vector2[] points, int pointCount, float thick, Color color) => Raylib.DrawSplineBezierQuadratic(points, pointCount, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineBezierCubic(Vector2[], int, float, Color)"/>
+    public static void DrawSplineBezierCubic(Vector2[] points, int pointCount, float thick, Color color) => Raylib.DrawSplineBezierCubic(points, pointCount, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineSegmentLinear(Vector2, Vector2, float, Color)"/>
+    public static void DrawSplineSegmentLinear(Vector2 p1, Vector2 p2, float thick, Color color) => Raylib.DrawSplineSegmentLinear(p1, p2, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineSegmentBasis(Vector2, Vector2, Vector2, Vector2, float, Color)"/>
+    public static void DrawSplineSegmentBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color) => Raylib.DrawSplineSegmentBasis(p1, p2, p3, p4, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineSegmentCatmullRom(Vector2, Vector2, Vector2, Vector2, float, Color)"/>
+    public static void DrawSplineSegmentCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color) => Raylib.DrawSplineSegmentCatmullRom(p1, p2, p3, p4, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineSegmentBezierQuadratic(Vector2, Vector2, Vector2, float, Color)"/>
+    public static void DrawSplineSegmentBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color) => Raylib.DrawSplineSegmentBezierQuadratic(p1, c2, p3, thick, color);
+    
+    /// <inheritdoc cref="Raylib.DrawSplineSegmentBezierCubic(Vector2, Vector2, Vector2, Vector2, float, Color)"/>
+    public static void DrawSplineSegmentBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color) => Raylib.DrawSplineSegmentBezierCubic(p1, c2, c3, p4, thick, color);
+    
+    
+    /// <inheritdoc cref="Raylib.GetSplinePointLinear(Vector2, Vector2, float)"/>
+    public static Vector2 GetSplinePointLinear(Vector2 startPos, Vector2 endPos, float t) => Raylib.GetSplinePointLinear(startPos, endPos, t);
+    
+    /// <inheritdoc cref="Raylib.GetSplinePointBasis(Vector2, Vector2, Vector2, Vector2, float)"/>
+    public static Vector2 GetSplinePointBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t) => Raylib.GetSplinePointBasis(p1, p2, p3, p4, t);
+    
+    /// <inheritdoc cref="Raylib.GetSplinePointCatmullRom(Vector2, Vector2, Vector2, Vector2, float)"/>
+    public static Vector2 GetSplinePointCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t) => Raylib.GetSplinePointCatmullRom(p1, p2, p3, p4, t);
+    
+    /// <inheritdoc cref="Raylib.GetSplinePointBezierQuad(Vector2, Vector2, Vector2, float)"/>
+    public static Vector2 GetSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t) => Raylib.GetSplinePointBezierQuad(p1, c2, p3, t);
+    
+    /// <inheritdoc cref="Raylib.GetSplinePointBezierCubic(Vector2, Vector2, Vector2, Vector2, float)"/>
+    public static Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t) => Raylib.GetSplinePointBezierCubic(p1, c2, c3, p4, t);
     
     
     /// <inheritdoc cref="Raylib.CheckCollisionRecs"/>

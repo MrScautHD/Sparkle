@@ -24,7 +24,7 @@ public class Sprite : Component {
     public Sprite(Texture2D texture, Vector2? size, Color? color, float rotation = 0, bool flipSprite = false) {
         this.Texture = texture;
         this.Size = size ?? new Vector2(texture.Width, texture.Height);
-        this.Color = color ?? Color.WHITE;
+        this.Color = color ?? Color.White;
         this.Rotation = rotation;
         this.FlipSprite = flipSprite;
     }

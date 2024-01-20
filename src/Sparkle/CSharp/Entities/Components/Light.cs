@@ -96,12 +96,12 @@ public class Light : Component {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private unsafe void SetLocations() {
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_ALBEDO] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoMap");
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_METALNESS] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "mraMap");
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_NORMAL] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "normalMap");
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_MAP_EMISSION] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "emissiveMap");
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_COLOR_DIFFUSE] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoColor");
-        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "viewPos");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.MapAlbedo] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.MapMetalness] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "mraMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.MapNormal] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "normalMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.MapEmission] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "emissiveMap");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.ColorDiffuse] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "albedoColor");
+        ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.VectorView] = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "viewPos");
         
         this.LightCountLoc = ShaderHelper.GetLocation(ShaderRegistry.Pbr, "numOfLights");
         
@@ -123,19 +123,20 @@ public class Light : Component {
     /// </summary>
     private unsafe void UpdateValues() {
         if (SceneManager.MainCam3D == null) return;
+
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.LightCountLoc, LightCount, ShaderUniformDataType.Int);
         
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.LightCountLoc, LightCount, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.AmbientColorLoc, ColorHelper.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
         
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.AmbientColorLoc, ColorHelper.Normalize(this.AmbientColor), ShaderUniformDataType.SHADER_UNIFORM_VEC3);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexAlbedoLoc, 1, ShaderUniformDataType.Int);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexNormalLoc, 1, ShaderUniformDataType.Int);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexMraLoc, 1, ShaderUniformDataType.Int);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexEmissiveLoc, 1, ShaderUniformDataType.Int);
         
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexAlbedoLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexNormalLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexMraLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, this.UseTexEmissiveLoc, 1, ShaderUniformDataType.SHADER_UNIFORM_INT);
+        ShaderHelper.SetValue(ShaderRegistry.Pbr, ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.MainCam3D.Position, ShaderUniformDataType.Vec3);
         
-        ShaderHelper.SetValue(ShaderRegistry.Pbr, ShaderRegistry.Pbr.Locs[(int) ShaderLocationIndex.SHADER_LOC_VECTOR_VIEW], SceneManager.MainCam3D.Position, ShaderUniformDataType.SHADER_UNIFORM_INT);
-        
+        GL.UseProgram((int) ShaderRegistry.Pbr.Id);
         GL.BindBuffer(BufferTargetARB.UniformBuffer, this._lightBuffer);
         
         float[] data = new float[13];

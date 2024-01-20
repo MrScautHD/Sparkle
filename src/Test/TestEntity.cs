@@ -13,17 +13,17 @@ public class TestEntity : Entity {
     public TestEntity(Vector3 position) : base(position) {
 
         Material[] materials = new MaterialBuilder(TestGame.PlayerModel, ShaderRegistry.Pbr)
-            .Add(MaterialMapIndex.MATERIAL_MAP_ALBEDO, TestGame.PlayerTexture)
-            .Add(MaterialMapIndex.MATERIAL_MAP_METALNESS, TestGame.PlayerTexture)
-            .Add(MaterialMapIndex.MATERIAL_MAP_NORMAL, TestGame.PlayerTexture)
-            .Add(MaterialMapIndex.MATERIAL_MAP_EMISSION, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.Albedo, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.Metalness, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.Normal, TestGame.PlayerTexture)
+            .Add(MaterialMapIndex.Emission, TestGame.PlayerTexture)
             
-            .Add(MaterialMapIndex.MATERIAL_MAP_ALBEDO, Color.WHITE)
-            .Add(MaterialMapIndex.MATERIAL_MAP_EMISSION, new Color(255, 162, 0, 255))
+            .Add(MaterialMapIndex.Albedo, Color.White)
+            .Add(MaterialMapIndex.Emission, new Color(255, 162, 0, 255))
             
-            .Add(MaterialMapIndex.MATERIAL_MAP_METALNESS, 0)
-            .Add(MaterialMapIndex.MATERIAL_MAP_ROUGHNESS, 0)
-            .Add(MaterialMapIndex.MATERIAL_MAP_OCCLUSION, 1)
+            .Add(MaterialMapIndex.Metalness, 0)
+            .Add(MaterialMapIndex.Roughness, 0)
+            .Add(MaterialMapIndex.Occlusion, 1)
             .Build();
         
         this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials));

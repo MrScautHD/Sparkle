@@ -25,7 +25,7 @@
     <PackageReference Include="JoltPhysicsSharp" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK.Graphics" Version="5.0.0-pre.9" />
-    <PackageReference Include="Raylib-cs" Version="5.0.0" />
+    <PackageReference Include="Raylib-cs" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup>

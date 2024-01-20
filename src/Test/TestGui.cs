@@ -21,8 +21,8 @@ public class TestGui : Gui {
             FontSize = 50,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            Color = Color.WHITE,
-            HoverColor = Color.GRAY,
+            Color = Color.White,
+            HoverColor = Color.Gray,
             Rotation = 0
         };
         

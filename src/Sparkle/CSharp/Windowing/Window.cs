@@ -55,6 +55,9 @@ public static class Window {
     /// <inheritdoc cref="Raylib.ToggleFullscreen"/>
     public static void ToggleFullscreen() => Raylib.ToggleFullscreen();
     
+    /// <inheritdoc cref="Raylib.ToggleBorderlessWindowed"/>
+    public static void ToggleBorderless() => Raylib.ToggleBorderlessWindowed();
+    
     /// <inheritdoc cref="Raylib.MaximizeWindow"/>
     public static void Maximize() => Raylib.MaximizeWindow();
     
@@ -85,11 +88,17 @@ public static class Window {
     /// <inheritdoc cref="Raylib.SetWindowMinSize"/>
     public static void SetMinSize(int width, int height) => Raylib.SetWindowMinSize(width, height);
     
+    /// <inheritdoc cref="Raylib.SetWindowMaxSize"/>
+    public static void SetMaxSize(int width, int height) => Raylib.SetWindowMaxSize(width, height);
+    
     /// <inheritdoc cref="Raylib.SetWindowSize"/>
     public static void SetSize(int width, int height) => Raylib.SetWindowSize(width, height);
     
     /// <inheritdoc cref="Raylib.SetWindowOpacity"/>
     public static void SetOpacity(float opacity) => Raylib.SetWindowOpacity(opacity);
+    
+    /// <inheritdoc cref="Raylib.SetWindowFocused"/>
+    public static void SetFocused(float opacity) => Raylib.SetWindowFocused();
     
     /// <inheritdoc cref="Raylib.EnableEventWaiting"/>
     public static void EnableEventWaiting() => Raylib.EnableEventWaiting();

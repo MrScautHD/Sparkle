@@ -9,33 +9,22 @@ public static class ImageHelper {
     public static Image Load(string path) => Raylib.LoadImage(path);
     
     /// <inheritdoc cref="Raylib.LoadImageRaw(string, int, int, PixelFormat, int)"/>
-    public static Image Load(string path, int width, int height, PixelFormat format, int headerSize) => Raylib.LoadImageRaw(path, width, height, format, headerSize);
+    public static Image LoadRaw(string path, int width, int height, PixelFormat format, int headerSize) => Raylib.LoadImageRaw(path, width, height, format, headerSize);
+    
+    /// <inheritdoc cref="Raylib.LoadImageSvg(string, int, int)"/>
+    public static Image LoadSvg(string path, int width, int height) => Raylib.LoadImageSvg(path, width, height);
     
     /// <inheritdoc cref="Raylib.LoadImageAnim(string, out int)"/>
-    public static Image Load(string path, out int frames) => Raylib.LoadImageAnim(path, out frames);
+    public static Image LoadAnim(string path, out int frames) => Raylib.LoadImageAnim(path, out frames);
     
     /// <inheritdoc cref="Raylib.LoadImageFromMemory(string, byte[])"/>
-    public static Image Load(string fileType, byte[] fileData) => Raylib.LoadImageFromMemory(fileType, fileData);
+    public static Image LoadFromMemory(string fileType, byte[] fileData) => Raylib.LoadImageFromMemory(fileType, fileData);
     
     /// <inheritdoc cref="Raylib.LoadImageFromTexture"/>
-    public static Image Load(Texture2D texture) => Raylib.LoadImageFromTexture(texture);
+    public static Image LoadFromTexture(Texture2D texture) => Raylib.LoadImageFromTexture(texture);
     
     /// <inheritdoc cref="Raylib.LoadImageFromScreen"/>
     public static Image LoadFromScreen() => Raylib.LoadImageFromScreen();
-    
-    /// <inheritdoc cref="Raylib.UnloadImage"/>
-    public static void Unload(Image image) => Raylib.UnloadImage(image);
-    
-    
-    /// <inheritdoc cref="Raylib.IsImageReady"/>
-    public static bool IsReady(Image image) => Raylib.IsImageReady(image);
-    
-    /// <inheritdoc cref="Raylib.ExportImage(Image, string)"/>
-    public static bool Export(Image image, string path) => Raylib.ExportImage(image, path);
-    
-    /// <inheritdoc cref="Raylib.ExportImageAsCode(Image, string)"/>
-    public static bool ExportAsCode(Image image, string path) => Raylib.ExportImageAsCode(image, path);
-    
     
     /// <inheritdoc cref="Raylib.LoadImageColors"/>
     public static unsafe Color* LoadColors(Image image) => Raylib.LoadImageColors(image);
@@ -48,19 +37,35 @@ public static class ImageHelper {
     
     /// <inheritdoc cref="Raylib.UnloadImagePalette"/>
     public static unsafe void UnloadPalette(Color* color) => Raylib.UnloadImagePalette(color);
-
+    
+    /// <inheritdoc cref="Raylib.UnloadImage"/>
+    public static void Unload(Image image) => Raylib.UnloadImage(image);
+    
+    
+    /// <inheritdoc cref="Raylib.IsImageReady"/>
+    public static bool IsReady(Image image) => Raylib.IsImageReady(image);
+    
+    /// <inheritdoc cref="Raylib.ExportImage(Image, string)"/>
+    public static bool Export(Image image, string path) => Raylib.ExportImage(image, path);
+    
+    /// <inheritdoc cref="Raylib.ExportImageToMemory"/>
+    public static unsafe char* ExportToMemory(Image image, sbyte* fileType, int *fileSize) => Raylib.ExportImageToMemory(image, fileType, fileSize);
+    
+    /// <inheritdoc cref="Raylib.ExportImageAsCode(Image, string)"/>
+    public static bool ExportAsCode(Image image, string path) => Raylib.ExportImageAsCode(image, path);
+    
     
     /// <inheritdoc cref="Raylib.GenImageColor"/>
     public static Image GenColor(int width, int height, Color color) => Raylib.GenImageColor(width, height, color);
     
-    /// <inheritdoc cref="Raylib.GenImageGradientH"/>
-    public static Image GenGradientH(int width, int height, Color left, Color right) => Raylib.GenImageGradientH(width, height, left, right);
-    
-    /// <inheritdoc cref="Raylib.GenImageGradientV"/>
-    public static Image GenGradientV(int width, int height, Color top, Color bottom) => Raylib.GenImageGradientV(width, height, top, bottom);
+    /// <inheritdoc cref="Raylib.GenImageGradientLinear"/>
+    public static Image GenGradientLinear(int width, int height, int direction, Color start, Color end) => Raylib.GenImageGradientLinear(width, height, direction, start, end);
     
     /// <inheritdoc cref="Raylib.GenImageGradientRadial"/>
     public static Image GenGradientRadial(int width, int height, float density, Color inner, Color outer) => Raylib.GenImageGradientRadial(width, height, density, inner, outer);
+    
+    /// <inheritdoc cref="Raylib.GenImageGradientSquare"/>
+    public static Image GenImageGradientSquare(int width, int height, float density, Color inner, Color outer) => Raylib.GenImageGradientSquare(width, height, density, inner, outer);
     
     /// <inheritdoc cref="Raylib.GenImageChecked"/>
     public static Image GenChecked(int width, int height, int checksX, int checksY, Color col1, Color col2) => Raylib.GenImageChecked(width, height, checksX, checksY, col1, col2);
@@ -74,8 +79,8 @@ public static class ImageHelper {
     /// <inheritdoc cref="Raylib.GenImageCellular"/>
     public static Image GenCellular(int width, int height, int tileSize) => Raylib.GenImageCellular(width, height, tileSize);
     
-    /// <inheritdoc cref="Raylib.GenImageText"/>
-    public static Image GenText(int width, int height, int tileSize) => Raylib.GenImageText(width, height, tileSize);
+    /// <inheritdoc cref="Raylib.GenImageText(int, int, string)"/>
+    public static Image GenText(int width, int height, string text) => Raylib.GenImageText(width, height, text);
     
     
     /// <inheritdoc cref="Raylib.ImageCopy"/>
@@ -134,6 +139,9 @@ public static class ImageHelper {
     
     /// <inheritdoc cref="Raylib.ImageFlipHorizontal(ref Image)"/>
     public static void FlipHorizontal(ref Image image) => Raylib.ImageFlipHorizontal(ref image);
+    
+    /// <inheritdoc cref="Raylib.ImageRotate(ref Image, int)"/>
+    public static void Rotate(ref Image image, int degrees) => Raylib.ImageRotate(ref image, degrees);
     
     /// <inheritdoc cref="Raylib.ImageRotateCW(ref Image)"/>
     public static void RotateCW(ref Image image) => Raylib.ImageRotateCW(ref image);

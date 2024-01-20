@@ -25,19 +25,19 @@ public class Test2DScene : Scene {
         base.Update();
         Test2DEntity player = (Test2DEntity) this.GetEntity(1);
 
-        if (Input.IsKeyDown(KeyboardKey.KEY_W)) {
+        if (Input.IsKeyDown(KeyboardKey.W)) {
             player.Position.Y -= 50.0F * Time.Delta;
         }
         
-        if (Input.IsKeyDown(KeyboardKey.KEY_S)) {
+        if (Input.IsKeyDown(KeyboardKey.S)) {
             player.Position.Y += 50.0F * Time.Delta;
         }
         
-        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
+        if (Input.IsKeyDown(KeyboardKey.A)) {
             player.Position.X -= 50.0F * Time.Delta;
         }
         
-        if (Input.IsKeyDown(KeyboardKey.KEY_D)) {
+        if (Input.IsKeyDown(KeyboardKey.D)) {
             player.Position.X += 50.0F * Time.Delta;
         }
         
@@ -50,7 +50,7 @@ public class Test2DScene : Scene {
         SceneManager.MainCam2D!.BeginMode2D();
         
         // OBJECTS
-        ShapeHelper.DrawRectangle(45, 123, 5, 5, Color.WHITE);
+        ShapeHelper.DrawRectangle(45, 123, 5, 5, Color.White);
         ShapeHelper.DrawRectangle(5, 12, 30, 50, new Color(192, 112, 162, 100));
         
         SceneManager.MainCam2D!.EndMode2D();

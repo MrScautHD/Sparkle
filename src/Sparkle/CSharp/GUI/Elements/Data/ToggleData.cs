@@ -20,11 +20,11 @@ public struct ToggleData {
     /// </summary>
     public ToggleData() {
         this.Rotation = 0;
-        this.Color = Color.WHITE;
-        this.HoverColor = Color.GRAY;
-        this.ToggledColor = Color.WHITE;
+        this.Color = Color.White;
+        this.HoverColor = Color.Gray;
+        this.ToggledColor = Color.White;
 
         this.ToggledText = string.Empty;
-        this.ToggledTextColor = Color.WHITE;
+        this.ToggledTextColor = Color.White;
     }
 }

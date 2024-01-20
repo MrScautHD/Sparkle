@@ -14,7 +14,7 @@ public struct ButtonData {
     /// </summary>
     public ButtonData() {
         this.Rotation = 0;
-        this.Color = Color.WHITE;
-        this.HoverColor = Color.GRAY;
+        this.Color = Color.White;
+        this.HoverColor = Color.Gray;
     }
 }

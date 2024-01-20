@@ -11,6 +11,6 @@ public class TestOverlay : Overlay {
     }
 
     protected override void Draw() {
-        ShapeHelper.DrawCircle(70, 70, 30, Color.RED);
+        ShapeHelper.DrawCircle(70, 70, 30, Color.Red);
     }
 }

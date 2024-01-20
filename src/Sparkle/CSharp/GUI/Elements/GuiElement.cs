@@ -60,7 +60,7 @@ public abstract class GuiElement : Disposable {
         if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
-            if (Input.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT) && this.Enabled) {
+            if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {
                 this.IsClicked = this._clickFunc == null || this._clickFunc.Invoke();
             }
             else {

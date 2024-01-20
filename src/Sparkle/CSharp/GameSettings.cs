@@ -27,7 +27,7 @@ public struct GameSettings {
         this.LogDirectory = "logs";
         this.TargetFps = 0;
         this.FixedTimeStep = 60;
-        this.WindowFlags = ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE;
+        this.WindowFlags = ConfigFlags.VSyncHint | ConfigFlags.ResizableWindow;
         this.PhysicsSettings = new PhysicsSettings();
     }
 }

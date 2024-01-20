@@ -15,4 +15,7 @@ public static class AudioDevice {
     
     /// <inheritdoc cref="Raylib.SetMasterVolume"/>
     public static void SetMasterVolume(float volume) => Raylib.SetMasterVolume(volume);
+    
+    /// <inheritdoc cref="Raylib.GetMasterVolume"/>
+    public static float GetMasterVolume() => Raylib.GetMasterVolume();
 }

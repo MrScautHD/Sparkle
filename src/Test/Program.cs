@@ -4,7 +4,7 @@ using Test;
 
 GameSettings settings = new GameSettings() {
     Title = "Test - [Sparkle]",
-    WindowFlags = ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE
+    WindowFlags = ConfigFlags.Msaa4xHint | ConfigFlags.ResizableWindow
 };
 
 using TestGame game = new TestGame(settings);

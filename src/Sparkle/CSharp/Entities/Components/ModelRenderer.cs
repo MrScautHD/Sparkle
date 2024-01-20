@@ -20,7 +20,7 @@ public class ModelRenderer : Component {
         this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
         this._materials = materials;
-        this._color = color ?? Color.WHITE;
+        this._color = color ?? Color.White;
         this._drawWires = drawWires;
         this.SetupMaterial();
     }
@@ -29,9 +29,9 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.SHADER_UNIFORM_VEC2);
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.MATERIAL_MAP_EMISSION].Color), ShaderUniformDataType.SHADER_UNIFORM_VEC4);
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.SHADER_UNIFORM_FLOAT);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
+        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;

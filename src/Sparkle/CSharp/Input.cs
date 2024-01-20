@@ -8,6 +8,9 @@ public static class Input {
     /// <inheritdoc cref="Raylib.IsKeyPressed"/>
     public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);
     
+    /// <inheritdoc cref="Raylib.IsKeyPressedRepeat"/>
+    public static bool IsKeyPressedRepeat(KeyboardKey key) => Raylib.IsKeyPressedRepeat(key);
+    
     /// <inheritdoc cref="Raylib.IsKeyDown"/>
     public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
     

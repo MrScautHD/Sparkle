@@ -112,23 +112,23 @@ public static class Logger {
         string message = Logging.GetLogMessage(new IntPtr(text), new IntPtr(args));
 
         switch ((TraceLogLevel) logLevel) {
-            case TraceLogLevel.LOG_DEBUG:
+            case TraceLogLevel.Debug:
                 Debug(message, 3);
                 break;
 
-            case TraceLogLevel.LOG_INFO:
+            case TraceLogLevel.Info:
                 Info(message, 3);
                 break;
             
-            case TraceLogLevel.LOG_WARNING:
+            case TraceLogLevel.Warning:
                 Warn(message, 3);
                 break;
             
-            case TraceLogLevel.LOG_ERROR:
+            case TraceLogLevel.Error:
                 Error(message, 3);
                 break;
             
-            case TraceLogLevel.LOG_FATAL:
+            case TraceLogLevel.Fatal:
                 Fatal(message, 3);
                 break;
         }

@@ -27,7 +27,7 @@ public struct LabelData {
         this.Spacing = 4;
         this.Rotation = 0;
         this.Size = Vector2.Zero;
-        this.Color = Color.WHITE;
-        this.HoverColor = Color.GRAY;
+        this.Color = Color.White;
+        this.HoverColor = Color.Gray;
     }
 }

@@ -18,11 +18,11 @@ public class Test3DScene : Scene {
     protected override void Init() {
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
-        Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.CAMERA_PERSPECTIVE, CameraMode.CAMERA_FREE);
+        Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.Perspective, CameraMode.Free);
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(Light.LightType.Point, new Vector3(0, 2, 0), Color.RED, Color.BLUE));
+        light.AddComponent(new Light(Light.LightType.Point, new Vector3(0, 2, 0), Color.Red, Color.Blue));
         this.AddEntity(light);
 
         // LIGHT
@@ -49,11 +49,11 @@ public class Test3DScene : Scene {
     protected override void Update() {
         base.Update();
         
-        if (Input.IsKeyPressed(KeyboardKey.KEY_E)) {
+        if (Input.IsKeyPressed(KeyboardKey.E)) {
             GuiManager.SetGui(new TestGui("Test"));
         }
 
-        if (Input.IsKeyPressed(KeyboardKey.KEY_R)) {
+        if (Input.IsKeyPressed(KeyboardKey.R)) {
             GuiManager.SetGui(null);
         }
     }
@@ -65,7 +65,7 @@ public class Test3DScene : Scene {
         Graphics.BeginShaderMode(ShaderRegistry.Pbr);
         
         ModelHelper.DrawGrid(100, 1);
-        ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.RED);
+        ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.Red);
         
         Graphics.EndShaderMode();
         SceneManager.MainCam3D.EndMode3D();
