@@ -107,7 +107,7 @@ public static class Logger {
         Raylib.SetTraceLogCallback(&RaylibLogger);
     }
     
-    [UnmanagedCallersOnly(CallConvs = new[] {typeof(CallConvCdecl)})]
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
     private static unsafe void RaylibLogger(int logLevel, sbyte* text, sbyte* args) {
         string message = Logging.GetLogMessage(new IntPtr(text), new IntPtr(args));
 

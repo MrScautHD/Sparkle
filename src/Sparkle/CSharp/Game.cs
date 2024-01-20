@@ -82,7 +82,7 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
-        Logger.Info("Initialize OpenGL bindings...");
+        Logger.Info("Initialize OpenTk binding...");
         this.BindingsContext = new NativeBindingsContext();
         GLLoader.LoadBindings(this.BindingsContext);
         
@@ -113,7 +113,6 @@ public class Game : Disposable {
             
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SkyBlue);
-            //GL.BlendFunc(BlendingFactor.One, BlendingFactor.One); // TODO JUST FOR TESTING
             this.Draw();
             Graphics.EndDrawing();
         }

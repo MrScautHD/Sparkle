@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 using Raylib_cs;
 using Sparkle.CSharp.Registries.Types;
@@ -138,29 +137,32 @@ public class Light : Component {
         
         GL.UseProgram((int) ShaderRegistry.Pbr.Id);
         GL.BindBuffer(BufferTargetARB.UniformBuffer, this._lightBuffer);
-        
-        float[] data = new float[13];
-        data[0] = this.Enabled ? 1 : 0;
-        data[1] = (int) this.Type;
+        GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
 
-        data[2] = this.Entity.Position.X;
-        data[3] = this.Entity.Position.Y;
-        data[4] = this.Entity.Position.Z;
-        
-        data[5] = this.Target.X;
-        data[6] = this.Target.Y;
-        data[7] = this.Target.Z;
-        
-        data[8] = this.Color.R;
-        data[9] = this.Color.G;
-        data[10] = this.Color.B;
-        data[11] = this.Color.A;
-        
-        data[12] = this.Intensity;
-        
-        IntPtr dataPtr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
-        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(float) * 13 * this.LightIndex, dataPtr, BufferUsageARB.DynamicDraw);
+        LightData data = new LightData {
+            Enabled = this.Enabled ? 1 : 0,
+            Type = (int) this.Type,
+            Position = this.Entity.Position,
+            Target = this.Target,
+            Color = ColorHelper.Normalize(this.Color),
+            Intensity = this.Intensity
+        };
+
+        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * (this.LightIndex + 1), data, BufferUsageARB.DynamicDraw);
+        GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
         GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
+    }
+
+    /// <summary>
+    /// Represents data for a light source.
+    /// </summary>
+    private struct LightData {
+        public int Enabled;
+        public int Type;
+        public Vector3 Position;
+        public Vector3 Target;
+        public Vector4 Color;
+        public float Intensity;
     }
     
     /// <summary>

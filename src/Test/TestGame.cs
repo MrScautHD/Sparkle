@@ -66,8 +66,9 @@ public class TestGame : Game {
         base.Update();
         
         if (Input.IsKeyPressed(KeyboardKey.F11)) {
+            Input.DisableCursor();
             Window.Maximize();
-            Window.ToggleFullscreen();
+            Window.ToggleBorderless();
         }
     }
 }

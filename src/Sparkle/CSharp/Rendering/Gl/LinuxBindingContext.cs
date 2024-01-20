@@ -4,6 +4,7 @@ using OpenTK;
 namespace Sparkle.CSharp.Rendering.Gl;
 
 public class LinuxBindingContext : IBindingsContext {
+    
     private delegate IntPtr ProcAddressDelegate(string procName);
     
     private ProcAddressDelegate[] _procAddresses;
@@ -27,7 +28,7 @@ public class LinuxBindingContext : IBindingsContext {
                 // Continue to the next delegate method
             }
         }
-            
+        
         throw new Exception("Unable to locate one of the .SO files.");
     }
 
