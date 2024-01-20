@@ -60,7 +60,7 @@ public class Rigidbody : Component {
     protected internal override void AfterUpdate() {
         base.AfterUpdate();
         
-        this.BodyInterface.SetPositionAndRotationWhenChanged(this.BodyId, new Double3(this.Entity.Position.X, this.Entity.Position.Y, this.Entity.Position.Z), this.Entity.Rotation, Activation.Activate);
+        this.BodyInterface.SetPositionAndRotationWhenChanged(this.BodyId, (Double3) this.Entity.Position, this.Entity.Rotation, Activation.Activate);
     }
 
     protected internal override void FixedUpdate() {
