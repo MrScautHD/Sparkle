@@ -155,8 +155,9 @@ public class Light : Component {
         GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
     }
 
+
     /// <summary>
-    /// Represents data for a light source.
+    /// Represents light data.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 80)]
     private struct LightData {
