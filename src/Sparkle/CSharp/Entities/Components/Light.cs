@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
 using Raylib_cs;
 using Sparkle.CSharp.Registries.Types;
@@ -148,7 +149,8 @@ public class Light : Component {
             Intensity = this.Intensity
         };
 
-        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * (this.LightIndex + 1), data, BufferUsageARB.DynamicDraw);
+        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsageARB.DynamicDraw);
+        GL.BufferSubData(BufferTargetARB.UniformBuffer, IntPtr.Zero, sizeof(LightData) * (LightIndex + 1), data);
         GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
         GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
     }
@@ -156,13 +158,14 @@ public class Light : Component {
     /// <summary>
     /// Represents data for a light source.
     /// </summary>
+    [StructLayout(LayoutKind.Explicit, Size = 80)]
     private struct LightData {
-        public int Enabled;
-        public int Type;
-        public Vector3 Position;
-        public Vector3 Target;
-        public Vector4 Color;
-        public float Intensity;
+        [FieldOffset(0)] public int Enabled;
+        [FieldOffset(4)] public int Type;
+        [FieldOffset(16)] public Vector3 Position;
+        [FieldOffset(32)] public Vector3 Target;
+        [FieldOffset(48)] public Vector4 Color;
+        [FieldOffset(64)] public float Intensity;
     }
     
     /// <summary>
