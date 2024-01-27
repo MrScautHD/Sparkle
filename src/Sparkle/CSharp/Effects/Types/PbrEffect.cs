@@ -178,7 +178,7 @@ public class PbrEffect : Effect {
     /// Represents light data.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 80)]
-    public struct LightData {
+    private struct LightData {
         [FieldOffset(0)] public int Enabled;
         [FieldOffset(4)] public int Type;
         [FieldOffset(16)] public Vector3 Position;

@@ -38,7 +38,6 @@ public class Effect : Disposable {
     /// </summary>
     protected internal virtual void FixedUpdate() { }
 
-
     /// <summary>
     /// Updates the shader parameters for the materials, called from the ModelRenderer.
     /// </summary>
