@@ -24,11 +24,13 @@ public abstract class Overlay : Disposable {
         get => this._enabled;
         
         set {
-            this._enabled = value;
-        
-            if (!this.HasInitialized) {
-                this.Init();
-                this.HasInitialized = true;
+            if (!this.HasDisposed) {
+                this._enabled = value;
+                
+                if (!this.HasInitialized) {
+                    this.Init();
+                    this.HasInitialized = true;
+                }
             }
         }
     }

@@ -12,7 +12,7 @@ public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
 
-        Material[] materials = new MaterialBuilder(TestGame.PlayerModel, ShaderRegistry.Pbr)
+        Material[] materials = new MaterialBuilder(TestGame.PlayerModel)
             .Add(MaterialMapIndex.Albedo, TestGame.PlayerTexture)
             .Add(MaterialMapIndex.Metalness, TestGame.PlayerTexture)
             .Add(MaterialMapIndex.Normal, TestGame.PlayerTexture)
@@ -26,7 +26,7 @@ public class TestEntity : Entity {
             .Add(MaterialMapIndex.Occlusion, 1)
             .Build();
         
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials));
+        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr));
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         this.AddComponent(new Rigidbody(boxShape, MotionType.Dynamic));

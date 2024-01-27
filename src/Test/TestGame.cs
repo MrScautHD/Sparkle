@@ -2,6 +2,8 @@ using Raylib_cs;
 using Sparkle;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Effects;
+using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.IO.Config;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Windowing;
@@ -30,7 +32,7 @@ public class TestGame : Game {
         
         this.Overlay = new TestOverlay("Test");
         this.Overlay.Enabled = false;
-        OverlayManager.AddOverlay(this.Overlay);
+        OverlayManager.Add(this.Overlay);
         
         Config config = new ConfigBuilder("config", "test")
             .Add("test", true)
@@ -51,7 +53,7 @@ public class TestGame : Game {
         
         // MODELS
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
-        
+
         // MODEL ANIMATIONS
         //Animations = this.Content.Load(new ModelAnimationContent("model.glb"));
     }

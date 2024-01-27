@@ -117,7 +117,7 @@ vec4 ComputePBR() {
 
     for (int i = 0; i < numOfLights; ++i) {
         Light light = lights[i];
-
+        
         vec3 L;
         vec3 H;
         float dist;

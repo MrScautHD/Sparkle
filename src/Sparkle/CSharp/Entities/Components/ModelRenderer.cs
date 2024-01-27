@@ -1,5 +1,8 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.CSharp.Effects;
+using Sparkle.CSharp.Effects.Types;
+using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Rendering.Util;
 using Sparkle.CSharp.Scenes;
@@ -13,13 +16,15 @@ public class ModelRenderer : Component {
     
     private Model _model;
     private Material[] _materials;
+    private Effect _effect;
     private Color _color;
     private bool _drawWires;
     
-    public ModelRenderer(Model model, Material[] materials, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) {
+    public ModelRenderer(Model model, Material[] materials, Effect? effect = default, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) {
         this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
         this._materials = materials;
+        this._effect = effect ?? EffectRegistry.DiscardAlpha;
         this._color = color ?? Color.White;
         this._drawWires = drawWires;
         this.SetupMaterial();
@@ -29,9 +34,12 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
-        ShaderHelper.SetValue(this._model.Materials[0].Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
+        // TODO THINK ABOUT A BETTER SYSTEM FOR IT
+        if (this._effect is PbrEffect) {
+            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
+            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
+            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
+        }
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;
@@ -68,6 +76,7 @@ public class ModelRenderer : Component {
     private unsafe void SetupMaterial() {
         for (int i = 0; i < this._model.MaterialCount; i++) {
             this._model.Materials[i] = this._materials[i];
+            this._model.Materials[i].Shader = this._effect.Shader;
         }
     }
 

@@ -8,7 +8,7 @@ public static class OverlayManager {
     /// Adds an overlay to the system and logs the addition for tracking purposes.
     /// </summary>
     /// <param name="overlay">The overlay to be added.</param>
-    public static void AddOverlay(Overlay overlay) {
+    public static void Add(Overlay overlay) {
         Logger.Info($"Added Overlay: {overlay.Name}");
         Overlays.Add(overlay);
     }

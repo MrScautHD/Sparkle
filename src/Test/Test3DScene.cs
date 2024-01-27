@@ -1,6 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp;
+using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.GUI;
@@ -16,20 +17,15 @@ public class Test3DScene : Scene {
     public Test3DScene(string name) : base(name) { }
     
     protected override void Init() {
+        
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
         Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.Perspective, CameraMode.Free);
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(Light.LightType.Point, new Vector3(0, 2, 0), Color.Red, Color.Blue));
+        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.One, Color.Red));
         this.AddEntity(light);
-
-        // LIGHT
-        /*
-        Entity light = new Entity(Vector3.Zero);
-        light.AddComponent(new Light(Light.LightType.Pointed, Vector3.Zero, Color.RED));
-        this.AddEntity(light);*/
 
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
@@ -62,7 +58,7 @@ public class Test3DScene : Scene {
         base.Draw();
         
         SceneManager.MainCam3D!.BeginMode3D();
-        Graphics.BeginShaderMode(ShaderRegistry.Pbr);
+        Graphics.BeginShaderMode(EffectRegistry.Pbr.Shader);
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.Red);

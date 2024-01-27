@@ -4,6 +4,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Audio;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Physics;
@@ -82,7 +83,7 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
-        Logger.Info("Initialize OpenTk binding...");
+        Logger.Info("Initialize OpenTK binding...");
         this.BindingsContext = new NativeBindingsContext();
         GLLoader.LoadBindings(this.BindingsContext);
         
@@ -124,7 +125,7 @@ public class Game : Disposable {
     /// This method is called when the game starts.
     /// </summary>
     protected virtual void OnRun() {
-        RegistryManager.AddType(new ShaderRegistry());
+        RegistryManager.AddType(new EffectRegistry());
     }
     
     /// <summary>
@@ -132,6 +133,7 @@ public class Game : Disposable {
     /// </summary>
     protected virtual void Init() {
         RegistryManager.Init();
+        EffectManager.Init();
         SceneManager.Init();
         OverlayManager.Init();
     }
@@ -147,6 +149,7 @@ public class Game : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected virtual void Update() {
+        EffectManager.Update();
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
@@ -156,6 +159,7 @@ public class Game : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected virtual void AfterUpdate() {
+        EffectManager.AfterUpdate();
         SceneManager.AfterUpdate();
         GuiManager.AfterUpdate();
         OverlayManager.AfterUpdate();
@@ -167,6 +171,7 @@ public class Game : Disposable {
     /// </summary>
     protected virtual void FixedUpdate() {
         this.Simulation.Step(1.0F / this.Settings.FixedTimeStep, 1);
+        EffectManager.FixedUpdate();
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
         OverlayManager.FixedUpdate();
@@ -199,12 +204,16 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (Registry overlay in RegistryManager.RegisterTypes.ToList()) {
-                overlay.Dispose();
+            foreach (Registry registry in RegistryManager.RegisterTypes.ToList()) {
+                registry.Dispose();
             }
             
             foreach (Overlay overlay in OverlayManager.Overlays.ToList()) {
                 overlay.Dispose();
+            }
+
+            foreach (Effect effect in EffectManager.Effects.ToList()) {
+                effect.Dispose();
             }
             
             GuiManager.ActiveGui?.Dispose();

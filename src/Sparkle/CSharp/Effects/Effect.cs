@@ -1,0 +1,42 @@
+using Raylib_cs;
+using Sparkle.CSharp.Content.Types;
+
+namespace Sparkle.CSharp.Effects;
+
+public class Effect : Disposable {
+
+    public Shader Shader { get; private set; }
+    public bool HasInitialized { get; private set; }
+    
+    /// <summary>
+    /// Represents an effect that applies a shader to a rendering object.
+    /// </summary>
+    public Effect(string vertPath, string fragPath) {
+        this.Shader = Game.Instance.Content.Load(new ShaderContent(vertPath, fragPath));
+    }
+    
+    /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
+    protected internal virtual void Init() {
+        this.HasInitialized = true;
+    }
+
+    /// <summary>
+    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void Update() { }
+    
+    /// <summary>
+    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// </summary>
+    protected internal virtual void AfterUpdate() { }
+    
+    /// <summary>
+    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
+    /// It is used for handling physics and other fixed-time operations.
+    /// </summary>
+    protected internal virtual void FixedUpdate() { }
+
+    protected override void Dispose(bool disposing) { }
+}
