@@ -1,7 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Effects;
-using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Rendering.Util;
@@ -34,7 +33,7 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        this._effect.UpdateMaterialParameters(_materials);
+        this._effect.UpdateMaterialParameters(this._materials);
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;
