@@ -34,12 +34,7 @@ public class ModelRenderer : Component {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
         
-        // TODO THINK ABOUT A BETTER SYSTEM FOR IT
-        if (this._effect is PbrEffect) {
-            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
-            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.EmissiveColorLoc, ColorHelper.Normalize(this._materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
-            ShaderHelper.SetValue(this._effect.Shader, SceneManager.ActiveScene!.GetEntity(1).GetComponent<Light>().Effect.EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
-        }
+        this._effect.UpdateMaterialParameters(_materials);
         
         BoundingBox box = ModelHelper.GetBoundingBox(this._model);
         box.Min.X += this.Entity.Position.X;

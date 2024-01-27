@@ -15,7 +15,7 @@ public class PbrEffect : Effect {
     private int _lightBuffer;
     private int _lightIds;
     
-    private Dictionary<int, Light> _lights;
+    private Dictionary<int, LightData> _lights;
     
     public int LightCountLoc { get; private set; }
     
@@ -34,7 +34,7 @@ public class PbrEffect : Effect {
     public PbrEffect(string vertPath, string fragPath, Color ambientColor, float ambientIntensity = 0.02F) : base(vertPath, fragPath) {
         this.AmbientColor = ambientColor;
         this.AmbientIntensity = ambientIntensity;
-        this._lights = new Dictionary<int, Light>();
+        this._lights = new Dictionary<int, LightData>();
     }
 
     protected internal override void Init() {
@@ -47,34 +47,65 @@ public class PbrEffect : Effect {
         base.Update();
         this.UpdateValues();
     }
+    
+    protected internal override unsafe void UpdateMaterialParameters(Material[] materials) {
+        base.UpdateMaterialParameters(materials);
+        
+        ShaderHelper.SetValue(this.Shader, this.TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
+        ShaderHelper.SetValue(this.Shader, this.EmissiveColorLoc, ColorHelper.Normalize(materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
+        ShaderHelper.SetValue(this.Shader, this.EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
+    }
 
     /// <summary>
-    /// Adds a new light to the PBR effect.
+    /// Adds a light to the PbrEffect.
     /// </summary>
+    /// <param name="enabled">The enable state of the light.</param>
     /// <param name="type">The type of the light.</param>
     /// <param name="position">The position of the light.</param>
     /// <param name="target">The target of the light.</param>
     /// <param name="color">The color of the light.</param>
     /// <param name="intensity">The intensity of the light.</param>
-    /// <param name="id">The assigned ID of the light.</param>
-    public void AddLight(LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
+    /// <param name="id">The ID of the added light.</param>
+    public void AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
         id = this._lightIds++;
         
         if (this._lights.Count >= 815) {
             Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
             return;
         }
-
-        Light light = new Light() {
-            Enabled = 1,
+        
+        LightData lightData = new LightData() {
+            Enabled = enabled ? 1 : 0,
             Type = (int) type,
             Position = position,
             Target = target,
             Color = ColorHelper.Normalize(color),
             Intensity = intensity
         };
+        
+        this._lights.Add(id, lightData);
+    }
 
-        this._lights.Add(id, light);
+    /// <summary>
+    /// Updates the parameters of a specific light.
+    /// </summary>
+    /// <param name="id">The ID of the light to update.</param>
+    /// <param name="enabled">Whether the light is enabled or disabled.</param>
+    /// <param name="type">The type of the light.</param>
+    /// <param name="position">The position of the light.</param>
+    /// <param name="target">The target of the light.</param>
+    /// <param name="color">The color of the light.</param>
+    /// <param name="intensity">The intensity of the light.</param>
+    public void UpdateLightParameters(int id, bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity) {
+        LightData lightData = this._lights[id];
+        lightData.Enabled = enabled ? 1 : 0;
+        lightData.Type = (int) type;
+        lightData.Position = position;
+        lightData.Target = target;
+        lightData.Color = ColorHelper.Normalize(color);
+        lightData.Intensity = intensity;
+
+        this._lights[id] = lightData;
     }
 
     /// <summary>
@@ -133,21 +164,21 @@ public class PbrEffect : Effect {
         GL.BindBuffer(BufferTargetARB.UniformBuffer, this._lightBuffer);
         GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
 
-        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(Light) * 815, IntPtr.Zero, BufferUsageARB.DynamicDraw);
+        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsageARB.DynamicDraw);
 
         for (int i = 0; i < this._lights.Count; i++) {
-            GL.BufferSubData(BufferTargetARB.UniformBuffer, IntPtr.Zero, sizeof(Light) * i, this._lights[i]);
+            GL.BufferSubData(BufferTargetARB.UniformBuffer, IntPtr.Zero, sizeof(LightData) * i, this._lights[i]);
         }
         
         GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
         GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
     }
-    
+
     /// <summary>
     /// Represents light data.
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 80)]
-    private struct Light {
+    public struct LightData {
         [FieldOffset(0)] public int Enabled;
         [FieldOffset(4)] public int Type;
         [FieldOffset(16)] public Vector3 Position;
