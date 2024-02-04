@@ -20,8 +20,7 @@ dotnet add package Sparkle --version 2.1.0
 
 ⭐ Getting Started
 ===========
-We hope you enjoyed your experience with Sparkle!
-For further information, please visit our Wiki at: https://github.com/MrScautHD/Sparkle/wiki/Getting-Started
+We trust you'll relish your time with Sparkle! To kick things off, head over to our [Wiki](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) for a seamless start.
 
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
