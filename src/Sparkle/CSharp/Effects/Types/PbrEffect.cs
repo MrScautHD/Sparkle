@@ -165,7 +165,6 @@ public class PbrEffect : Effect {
         GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
 
         GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsageARB.DynamicDraw);
-
         
         for (int i = 0; i < this._lights.Count; i++) {
             GL.BufferSubData(BufferTargetARB.UniformBuffer, IntPtr.Zero, sizeof(LightData) * (i + 1), this._lights[i]);
