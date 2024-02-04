@@ -1,9 +1,6 @@
 using Raylib_cs;
-using Sparkle;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
-using Sparkle.CSharp.Effects;
-using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.IO.Config;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Windowing;
@@ -56,12 +53,6 @@ public class TestGame : Game {
 
         // MODEL ANIMATIONS
         //Animations = this.Content.Load(new ModelAnimationContent("model.glb"));
-    }
-
-    protected override void Draw() {
-        base.Draw();
-        
-        //this.VideoPlayer.Draw();
     }
 
     protected override void Update() {

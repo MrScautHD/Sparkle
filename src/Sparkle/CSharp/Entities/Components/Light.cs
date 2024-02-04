@@ -17,6 +17,8 @@ public class Light : Component {
     public Color Color;
     public float Intensity;
 
+    private bool _result;
+
     /// <summary>
     /// Represents a light component which can be added to entities in a scene.
     /// </summary>
@@ -30,8 +32,12 @@ public class Light : Component {
     }
     
     protected internal override void Init() {
-        this.Effect.AddLight(this.Enabled, this.Type, this.Entity.Position, this.Target, this.Color, this.Intensity, out int id);
+        this._result = this.Effect.AddLight(this.Enabled, this.Type, this.Entity.Position, this.Target, this.Color, this.Intensity, out int id);
         this.Id = id;
+        
+        if (this._result) {
+            base.Init();
+        }
     }
 
     protected internal override void Update() {
@@ -49,6 +55,10 @@ public class Light : Component {
     }
 
     protected override void Dispose(bool disposing) {
-        this.Effect.RemoveLight(this.Id);
+        if (disposing) {
+            if (this._result) {
+                this.Effect.RemoveLight(this.Id);
+            }
+        }
     }
 }

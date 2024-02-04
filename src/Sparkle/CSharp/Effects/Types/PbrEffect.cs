@@ -53,25 +53,26 @@ public class PbrEffect : Effect {
         
         ShaderHelper.SetValue(this.Shader, this.TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
         ShaderHelper.SetValue(this.Shader, this.EmissiveColorLoc, ColorHelper.Normalize(materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
-        ShaderHelper.SetValue(this.Shader, this.EmissivePowerLoc, 0.01F, ShaderUniformDataType.Float);
+        ShaderHelper.SetValue(this.Shader, this.EmissivePowerLoc, materials[0].Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
     }
 
     /// <summary>
     /// Adds a light to the PbrEffect.
     /// </summary>
-    /// <param name="enabled">The enable state of the light.</param>
+    /// <param name="enabled">Whether the light should be enabled or disabled.</param>
     /// <param name="type">The type of the light.</param>
     /// <param name="position">The position of the light.</param>
-    /// <param name="target">The target of the light.</param>
+    /// <param name="target">The target direction of the light.</param>
     /// <param name="color">The color of the light.</param>
     /// <param name="intensity">The intensity of the light.</param>
-    /// <param name="id">The ID of the added light.</param>
-    public void AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
+    /// <param name="id">An output parameter to store the ID of the added light.</param>
+    /// <returns>Returns true if the light was successfully added, false otherwise.</returns>
+    public bool AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
         id = this._lightIds++;
         
         if (this._lights.Count >= 815) {
             Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
-            return;
+            return false;
         }
         
         LightData lightData = new LightData() {
@@ -84,6 +85,15 @@ public class PbrEffect : Effect {
         };
         
         this._lights.Add(id, lightData);
+        return true;
+    }
+    
+    /// <summary>
+    /// Removes a light from the PBR effect.
+    /// </summary>
+    /// <param name="id">The ID of the light</param>
+    public void RemoveLight(int id) {
+        this._lights.Remove(id);
     }
 
     /// <summary>
@@ -106,14 +116,6 @@ public class PbrEffect : Effect {
         lightData.Intensity = intensity;
 
         this._lights[id] = lightData;
-    }
-
-    /// <summary>
-    /// Removes a light from the PBR effect.
-    /// </summary>
-    /// <param name="id">The ID of the light</param>
-    public void RemoveLight(int id) {
-        this._lights.Remove(id);
     }
     
     /// <summary>
@@ -147,7 +149,7 @@ public class PbrEffect : Effect {
     /// </summary>
     private unsafe void UpdateValues() {
         if (SceneManager.MainCam3D == null) return;
-
+        
         ShaderHelper.SetValue(this.Shader, this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
         
         ShaderHelper.SetValue(this.Shader, this.AmbientColorLoc, ColorHelper.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);

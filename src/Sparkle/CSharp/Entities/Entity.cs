@@ -36,7 +36,9 @@ public class Entity : Disposable {
     /// </summary>
     protected internal virtual void Init() {
         foreach (Component component in this._components.Values) {
-            component.Init();
+            if (!component.HasInitialized) {
+                component.Init();
+            }
         }
 
         this.HasInitialized = true;
@@ -47,7 +49,9 @@ public class Entity : Disposable {
     /// </summary>
     protected internal virtual void Update() {
         foreach (Component component in this._components.Values) {
-            component.Update();
+            if (component.HasInitialized) {
+                component.Update();
+            }
         }
     }
 
@@ -56,7 +60,9 @@ public class Entity : Disposable {
     /// </summary>
     protected internal virtual void AfterUpdate() {
         foreach (Component component in this._components.Values) {
-            component.AfterUpdate();
+            if (component.HasInitialized) {
+                component.AfterUpdate();
+            }
         }
     }
     
@@ -66,7 +72,9 @@ public class Entity : Disposable {
     /// </summary>
     protected internal virtual void FixedUpdate() {
         foreach (Component component in this._components.Values) {
-            component.FixedUpdate();
+            if (component.HasInitialized) {
+                component.FixedUpdate();
+            }
         }
     }
     
@@ -75,7 +83,9 @@ public class Entity : Disposable {
     /// </summary>
     protected internal virtual void Draw() {
         foreach (Component component in this._components.Values) {
-            component.Draw();
+            if (component.HasInitialized) {
+                component.Draw();
+            }
         }
     }
     

@@ -3,7 +3,7 @@
 #define MAX_LIGHTS 815
 #define PI 3.14159265358979323846
 
-// LIGHT TYPE
+// Light Types
 #define LIGHT_DIRECTIONAL 0
 #define LIGHT_POINT 1
 #define LIGHT_SPOT 2
@@ -108,9 +108,9 @@ vec4 ComputePBR() {
     }
 
     vec3 V = normalize(viewPos - fragPosition);
-    vec3 e = (texture(emissiveMap, vec2(fragTexCoord.x * tiling.x + offset.x, fragTexCoord.y * tiling.y + offset.y)).rgb).g * emissiveColor.rgb * emissivePower * useTexEmissive;
+    vec3 emissive = (texture(emissiveMap, vec2(fragTexCoord.x * tiling.x + offset.x, fragTexCoord.y * tiling.y + offset.y)).rgb).g * emissiveColor.rgb * emissivePower * useTexEmissive;
 
-    // return N;//vec3(metallic, metallic, metallic);
+    // return N; //vec3(metallic, metallic, metallic);
     // if dia-electric use base reflectivity of 0.04 otherwise ut is a metal use albedo as base reflectivity
     vec3 baseRefl = mix(vec3(0.04), albedo.rgb, metallic);
     vec3 lightAccum = vec3(0.0); // acumulate lighting lum
@@ -125,11 +125,9 @@ vec4 ComputePBR() {
         vec3 radiance;
         
         if (light.type == LIGHT_DIRECTIONAL) {
-            L = normalize(light.target);
+            L = -normalize(light.target - light.position);
             H = normalize(V + L);
-            dist = 1.0;  // Directional lights are effectively at an infinite distance
-            attenuation = 1.0;
-            radiance = light.color.rgb * light.intensity * attenuation; // calc input radiance,light energy comming in
+            radiance = light.color.rgb * light.intensity; // calc input radiance,light energy comming in
         }
         else if (light.type == LIGHT_SPOT) {
             L = normalize(light.position - fragPosition);
@@ -169,7 +167,7 @@ vec4 ComputePBR() {
     }
 
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;
-    return vec4(ambient_final + lightAccum * ao + e, albedo_tex.w);
+    return vec4(ambient_final + lightAccum * ao + emissive, albedo_tex.w);
 }
 
 void main() {

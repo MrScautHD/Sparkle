@@ -24,6 +24,7 @@ public class TestEntity : Entity {
             .Add(MaterialMapIndex.Metalness, 0)
             .Add(MaterialMapIndex.Roughness, 0)
             .Add(MaterialMapIndex.Occlusion, 1)
+            .Add(MaterialMapIndex.Emission, 0.01F)
             .Build();
         
         this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr));
