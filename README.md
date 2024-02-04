@@ -18,6 +18,10 @@
 dotnet add package Sparkle --version 2.1.0
 ```
 
+⭐ Getting Started
+===========
+We trust you'll relish your time with Sparkle! To kick things off, head over to our [Wiki](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) for a seamless start.
+
 📚 Libraries (https://www.nuget.org/packages)
 ==============================================
 - [RayLib](https://www.raylib.com)
@@ -58,27 +62,27 @@ public class GameTest : Game {
         base.Init();
         
         // Open a url.
-        this.OpenURL("https://www.youtube.com/");
+        this.OpenUrl("https://www.youtube.com/");
     }
 
     protected override void Load() {
         base.Load();
         
         // Load resources.
-        this.Texture = this.Content.Load<Texture2D>("icon.png");
+        this.Texture = this.Content.Load(new TextureContent("icon.png"));
     }
 
     protected override void Draw() {
         base.Draw();
         
         // Draw circle if "A" down.
-        if (Input.IsKeyDown(KeyboardKey.KEY_A)) {
-            ShapeHelper.DrawCircle(new Vector2(50, 50), 20, Color.BLUE);
+        if (Input.IsKeyDown(KeyboardKey.A)) {
+            ShapeHelper.DrawCircle(new Vector2(50, 50), 20, Color.Blue);
         }
 
         // Draw texture if "B" down.
-        if (Input.IsKeyDown(KeyboardKey.KEY_B)) {
-            TextureHelper.Draw(this.Texture, Vector3.Zero, Color.WHITE)
+        if (Input.IsKeyDown(KeyboardKey.B)) {
+            TextureHelper.Draw(this.Texture, Vector3.Zero, Color.White);
         }
     }
 }
