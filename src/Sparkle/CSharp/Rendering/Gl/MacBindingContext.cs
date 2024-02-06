@@ -5,7 +5,7 @@ namespace Sparkle.CSharp.Rendering.Gl;
 
 public class MacBindingContext : IBindingsContext {
     
-    //TODO check to if it works with a MAC "/System/Library/Frameworks/OpenGL.framework/OpenGL"
+    //TODO check if it works: "/System/Library/Frameworks/OpenGL.framework/OpenGL"
 
     /// <summary>
     /// Retrieves the address of an OpenGL extension function.
@@ -14,7 +14,7 @@ public class MacBindingContext : IBindingsContext {
     /// <returns>
     /// A pointer to the extension function if found; otherwise, <see cref="IntPtr.Zero"/>.
     /// </returns>
-    [DllImport("libGL.dylib", EntryPoint = "NSOpenGLGetProcAddress", CharSet = CharSet.Ansi)]
+    [DllImport("/System/Library/Frameworks/OpenGL.framework/OpenGL", EntryPoint = "NSOpenGLGetProcAddress", CharSet = CharSet.Ansi)]
     private static extern IntPtr NSOpenGLGetProcAddress(string procName);
     
     public IntPtr GetProcAddress(string procName) {

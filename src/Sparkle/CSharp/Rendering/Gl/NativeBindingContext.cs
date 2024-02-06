@@ -3,15 +3,15 @@ using OpenTK;
 
 namespace Sparkle.CSharp.Rendering.Gl;
 
-public class NativeBindingsContext : IBindingsContext, IDisposable {
+public class NativeBindingContext : IBindingsContext, IDisposable {
     
     public bool HasDisposed { get; private set; }
 
     private IBindingsContext? _context;
 
-    public NativeBindingsContext() {
+    public NativeBindingContext() {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-            this._context = new WinBindingsContext();
+            this._context = new WinBindingContext();
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
             this._context = new LinuxBindingContext();
@@ -48,7 +48,7 @@ public class NativeBindingsContext : IBindingsContext, IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (disposing) {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                ((WinBindingsContext) this._context!).Dispose();
+                ((WinBindingContext) this._context!).Dispose();
             }
         }
     }

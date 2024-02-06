@@ -124,28 +124,32 @@ vec4 ComputePBR() {
         float attenuation;
         vec3 radiance;
         
-        if (light.type == LIGHT_DIRECTIONAL) {
-            L = -normalize(light.target - light.position);
-            H = normalize(V + L);
-            radiance = light.color.rgb * light.intensity; // calc input radiance,light energy comming in
-        }
-        else if (light.type == LIGHT_SPOT) {
-            L = normalize(light.position - fragPosition);
-            H = normalize(V + L);
-            dist = length(light.position - fragPosition);
-            attenuation = 1.0 / (dist * dist * 0.23);
+        switch (light.type) {
+            case LIGHT_DIRECTIONAL:
+                L = -normalize(light.target - light.position);
+                H = normalize(V + L);
+                radiance = light.color.rgb * light.intensity; // calc input radiance,light energy comming in
+                break;
+            
+            case LIGHT_SPOT:
+                L = normalize(light.position - fragPosition);
+                H = normalize(V + L);
+                dist = length(light.position - fragPosition);
+                attenuation = 1.0 / (dist * dist * 0.23);
 
-            // Check if the fragment is within the spot cone
-            float spotCosine = dot(normalize(light.target - light.position), -L);
-            float spotFactor = smoothstep(light.target.y, light.target.y + light.color.a, spotCosine);
-            radiance = light.color.rgb * light.intensity * attenuation * spotFactor; // calc input radiance,light energy comming in
-        }
-        else {
-            L = normalize(light.position - fragPosition); // calc light vector
-            H = normalize(V + L); // calc halfway bisecting vector
-            dist = length(light.position - fragPosition); // calc distance to light
-            attenuation = 1.0 / (dist * dist * 0.23); // calc attenuation
-            radiance = light.color.rgb * light.intensity * attenuation; // calc input radiance,light energy comming in
+                // Check if the fragment is within the spot cone
+                float spotCosine = dot(normalize(light.target - light.position), -L);
+                float spotFactor = smoothstep(light.target.y, light.target.y + light.color.a, spotCosine);
+                radiance = light.color.rgb * light.intensity * attenuation * spotFactor; // calc input radiance,light energy comming in
+                break;
+            
+            case LIGHT_POINT:
+                L = normalize(light.position - fragPosition); // calc light vector
+                H = normalize(V + L); // calc halfway bisecting vector
+                dist = length(light.position - fragPosition); // calc distance to light
+                attenuation = 1.0 / (dist * dist * 0.23); // calc attenuation
+                radiance = light.color.rgb * light.intensity * attenuation; // calc input radiance,light energy comming in
+                break;
         }
         
         // Cook-Torrance BRDF distribution function

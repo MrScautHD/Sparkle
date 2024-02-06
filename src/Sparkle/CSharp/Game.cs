@@ -30,7 +30,7 @@ public class Game : Disposable {
     public readonly GameSettings Settings;
     public bool ShouldClose;
     
-    public NativeBindingsContext BindingsContext { get; private set; }
+    public NativeBindingContext BindingContext { get; private set; }
     
     public ContentManager Content { get; private set; }
     public Simulation Simulation { get; private set; }
@@ -84,8 +84,8 @@ public class Game : Disposable {
         Window.SetIcon(this.Logo);
         
         Logger.Info("Initialize OpenTK binding...");
-        this.BindingsContext = new NativeBindingsContext();
-        GLLoader.LoadBindings(this.BindingsContext);
+        this.BindingContext = new NativeBindingContext();
+        GLLoader.LoadBindings(this.BindingContext);
         
         this.OnRun();
         
@@ -220,7 +220,7 @@ public class Game : Disposable {
             SceneManager.ActiveScene?.Dispose();
             this.Simulation.Dispose();
             this.Content.Dispose();
-            this.BindingsContext.Dispose();
+            this.BindingContext.Dispose();
             AudioDevice.Close();
             Window.Close();
         }
