@@ -20,16 +20,26 @@ public class LinuxBindingContext : IBindingsContext {
     }
     
     public IntPtr GetProcAddress(string procName) {
-        foreach (ProcAddressDelegate procAddress in this._procAddresses) {
+        IntPtr address = IntPtr.Zero;
+        
+        foreach (ProcAddressDelegate procAddressDelegate in this._procAddresses) {
             try {
-                return procAddress(procName);
+                address = procAddressDelegate(procName);
+                
+                if (address != IntPtr.Zero) {
+                    break;
+                }
             }
             catch (Exception) {
                 // Continue to the next delegate method
             }
         }
+
+        if (address == IntPtr.Zero) {
+            Logger.Fatal("Failed to retrieve the Procedure Address.");
+        }
         
-        throw new Exception("Unable to locate one of the .SO files.");
+        return address;
     }
 
     /// <summary>

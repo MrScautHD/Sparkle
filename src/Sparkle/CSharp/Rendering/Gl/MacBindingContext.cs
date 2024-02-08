@@ -5,8 +5,6 @@ namespace Sparkle.CSharp.Rendering.Gl;
 
 public class MacBindingContext : IBindingsContext {
     
-    //TODO check if it works: "/System/Library/Frameworks/OpenGL.framework/OpenGL"
-
     /// <summary>
     /// Retrieves the address of an OpenGL extension function.
     /// </summary>
@@ -18,6 +16,12 @@ public class MacBindingContext : IBindingsContext {
     private static extern IntPtr NSOpenGLGetProcAddress(string procName);
     
     public IntPtr GetProcAddress(string procName) {
-        return NSOpenGLGetProcAddress(procName);
+        IntPtr address = NSOpenGLGetProcAddress(procName);
+
+        if (address == IntPtr.Zero) {
+            Logger.Fatal("Failed to retrieve the Procedure Address.");
+        }
+
+        return address;
     }
 }

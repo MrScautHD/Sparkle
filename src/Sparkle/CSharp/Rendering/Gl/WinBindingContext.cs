@@ -17,13 +17,19 @@ public class WinBindingContext : IBindingsContext, IDisposable {
     }
     
     public IntPtr GetProcAddress(string procName) {
-        IntPtr address = GetWglProcAddress(procName);
+        IntPtr wgladdress = GetWglProcAddress(procName);
         
-        if (address == IntPtr.Zero) {
-            return GetProcAddress(this._openGlHandle, procName);
+        if (wgladdress == IntPtr.Zero) {
+            IntPtr procAddress = GetProcAddress(this._openGlHandle, procName);
+
+            if (procAddress == IntPtr.Zero) {
+                Logger.Fatal("Failed to retrieve the Procedure Address.");
+            }
+
+            return procAddress;
         }
 
-        return address;
+        return wgladdress;
     }
 
     /// <summary>

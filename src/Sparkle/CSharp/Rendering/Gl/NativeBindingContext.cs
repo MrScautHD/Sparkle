@@ -16,7 +16,7 @@ public class NativeBindingContext : IBindingsContext, IDisposable {
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
             this._context = new LinuxBindingContext();
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
             this._context = new MacBindingContext();
         }
         else {
