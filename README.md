@@ -22,7 +22,7 @@ dotnet add package Sparkle --version 2.1.0
 ===========
 We trust you'll relish your time with Sparkle! To kick things off, head over to our [Wiki](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) for a seamless start.
 
-📚 Libraries (https://www.nuget.org/packages)
+📚 Libraries - [Nuget](https://www.nuget.org/packages/Sparkle)
 ==============================================
 - [RayLib](https://www.raylib.com)
 - [OpenTK](https://github.com/opentk/opentk)
