@@ -60,7 +60,6 @@ public class TestGame : Game {
         
         if (Input.IsKeyPressed(KeyboardKey.F11)) {
             Input.DisableCursor();
-            Window.Maximize();
             Window.ToggleBorderless();
         }
     }

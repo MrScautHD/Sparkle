@@ -181,6 +181,7 @@ public class Game : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected virtual void Draw() {
+        EffectManager.Draw();
         SceneManager.Draw();
         GuiManager.Draw();
         OverlayManager.Draw();

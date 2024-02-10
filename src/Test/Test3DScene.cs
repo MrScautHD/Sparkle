@@ -1,4 +1,5 @@
 using System.Numerics;
+using JoltPhysicsSharp;
 using Raylib_cs;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Effects.Types;
@@ -24,9 +25,9 @@ public class Test3DScene : Scene {
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.One, Color.Red));
+        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
-
+        
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
                 TestEntity test = new TestEntity(new Vector3(i, 3, j));
@@ -39,7 +40,9 @@ public class Test3DScene : Scene {
         //this.AddEntity(entity);
 
         // GROUND
-        this.AddEntity(new GroundEntity(Vector3.Zero));
+        Entity ground = new Entity(new Vector3(0, -2, 0));
+        ground.AddComponent(new Rigidbody(new BoxShape(new Vector3(100000, 1, 100000)), MotionType.Static));
+        this.AddEntity(ground);
     }
 
     protected override void Update() {

@@ -22,7 +22,7 @@ public class Light : Component {
     /// <summary>
     /// Represents a light component which can be added to entities in a scene.
     /// </summary>
-    public Light(PbrEffect effect, PbrEffect.LightType type, Vector3 target, Color color, float intensity = 1) {
+    public Light(PbrEffect effect, PbrEffect.LightType type, Vector3 target, Color color, float intensity = 4) {
         this.Effect = effect;
         this.Enabled = true;
         this.Type = type;
@@ -42,14 +42,26 @@ public class Light : Component {
 
     protected internal override void Update() {
         base.Update();
+
+        // TODO REMOVE IT AFTER TESTS
+        if (Input.IsKeyPressed(KeyboardKey.H)) {
+            this.Enabled = !this.Enabled;
+            Logger.Error("LIGHT TOGGLED TO: " + this.Enabled);
+        }
+        
         this.Effect.UpdateLightParameters(this.Id, this.Enabled, this.Type, this.Entity.Position, this.Target, this.Color, this.Intensity);
     }
 
     protected internal override void Draw() {
         base.Draw();
         SceneManager.MainCam3D!.BeginMode3D();
-        
-        ModelHelper.DrawSphere(this.Entity.Position, 0.2f, 8, 8, this.Color);
+
+        if (this.Enabled) {
+            ModelHelper.DrawSphere(this.Entity.Position, 0.2f, 8, 8, this.Color);
+        }
+        else {
+            ModelHelper.DrawSphereWires(this.Entity.Position, 0.2f, 8, 8, this.Color);
+        }
         
         SceneManager.MainCam3D!.EndMode3D();
     }

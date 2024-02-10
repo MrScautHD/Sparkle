@@ -21,7 +21,7 @@ public class Sprite : Component {
     /// <param name="color">The color of the sprite. If null, the color will be white.</param>
     /// <param name="rotation">The rotation angle of the sprite. Default value is 0.</param>
     /// <param name="flipSprite">A flag indicating if the sprite should be flipped. Default value is false.</param>
-    public Sprite(Texture2D texture, Vector2? size, Color? color, float rotation = 0, bool flipSprite = false) {
+    public Sprite(Texture2D texture, Vector2? size = default, Color? color = default, float rotation = 0, bool flipSprite = false) {
         this.Texture = texture;
         this.Size = size ?? new Vector2(texture.Width, texture.Height);
         this.Color = color ?? Color.White;

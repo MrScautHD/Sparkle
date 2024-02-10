@@ -57,4 +57,15 @@ public static class EffectManager {
             }
         }
     }
+    
+    /// <summary>
+    /// Is called every tick, used for rendering stuff.
+    /// </summary>
+    internal static void Draw() {
+        foreach (Effect effect in Effects) {
+            if (effect.HasInitialized) {
+                effect.Draw();
+            }
+        }
+    }
 }

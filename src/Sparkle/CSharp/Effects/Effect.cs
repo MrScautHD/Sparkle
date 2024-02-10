@@ -21,7 +21,7 @@ public class Effect : Disposable {
     protected internal virtual void Init() {
         this.HasInitialized = true;
     }
-
+    
     /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
@@ -37,6 +37,11 @@ public class Effect : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() { }
+    
+    /// <summary>
+    /// Is called every tick, used for rendering stuff.
+    /// </summary>
+    protected internal virtual void Draw() { }
 
     /// <summary>
     /// Updates the shader parameters for the materials, called from the ModelRenderer.
