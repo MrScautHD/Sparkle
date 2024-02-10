@@ -12,6 +12,8 @@ public class Light : Component {
     public int Id { get; private set; }
 
     public bool Enabled;
+    public bool DrawSphere;
+    
     public PbrEffect.LightType Type;
     public Vector3 Target;
     public Color Color;
@@ -22,9 +24,10 @@ public class Light : Component {
     /// <summary>
     /// Represents a light component which can be added to entities in a scene.
     /// </summary>
-    public Light(PbrEffect effect, PbrEffect.LightType type, Vector3 target, Color color, float intensity = 4) {
-        this.Effect = effect;
+    public Light(PbrEffect effect, PbrEffect.LightType type, Vector3 target, Color color, float intensity = 4, bool drawSphere = false) {
         this.Enabled = true;
+        this.DrawSphere = drawSphere;
+        this.Effect = effect;
         this.Type = type;
         this.Target = target;
         this.Color = color;
@@ -42,30 +45,24 @@ public class Light : Component {
 
     protected internal override void Update() {
         base.Update();
-
-        // TODO REMOVE IT AFTER TESTS
-        if (Input.IsKeyPressed(KeyboardKey.H)) {
-            this.Enabled = !this.Enabled;
-            Logger.Error("LIGHT TOGGLED TO: " + this.Enabled);
-        }
-        
         this.Effect.UpdateLightParameters(this.Id, this.Enabled, this.Type, this.Entity.Position, this.Target, this.Color, this.Intensity);
     }
 
     protected internal override void Draw() {
         base.Draw();
-        
-        // TODO REMOVE IT AFTER TESTS (Or doing it better idk or a bool for it...)
-        SceneManager.MainCam3D!.BeginMode3D();
 
-        if (this.Enabled) {
-            ModelHelper.DrawSphere(this.Entity.Position, 0.2f, 8, 8, this.Color);
+        if (this.DrawSphere) {
+            SceneManager.MainCam3D!.BeginMode3D();
+            
+            if (this.Enabled) {
+                ModelHelper.DrawSphere(this.Entity.Position, 0.05F * Intensity, 16, 16, this.Color);
+            }
+            else {
+                ModelHelper.DrawSphereWires(this.Entity.Position, 0.05F * Intensity, 16, 16, this.Color);
+            }
+                    
+            SceneManager.MainCam3D!.EndMode3D();
         }
-        else {
-            ModelHelper.DrawSphereWires(this.Entity.Position, 0.2f, 8, 8, this.Color);
-        }
-        
-        SceneManager.MainCam3D!.EndMode3D();
     }
 
     protected override void Dispose(bool disposing) {

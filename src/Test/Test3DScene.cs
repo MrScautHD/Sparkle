@@ -25,7 +25,7 @@ public class Test3DScene : Scene {
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Spot, Vector3.Zero, Color.Red));
+        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
         
         for (int i = 0; i < 12; i++) {
