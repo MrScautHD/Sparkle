@@ -54,6 +54,8 @@ public class Light : Component {
 
     protected internal override void Draw() {
         base.Draw();
+        
+        // TODO REMOVE IT AFTER TESTS (Or doing it better idk or a bool for it...)
         SceneManager.MainCam3D!.BeginMode3D();
 
         if (this.Enabled) {

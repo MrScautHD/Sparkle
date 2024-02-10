@@ -11,7 +11,7 @@ namespace Test;
 public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
-
+        
         Material[] materials = new MaterialBuilder(TestGame.PlayerModel)
             .Add(MaterialMapIndex.Albedo, TestGame.PlayerTexture)
             .Add(MaterialMapIndex.Metalness, TestGame.PlayerTexture)
@@ -21,9 +21,9 @@ public class TestEntity : Entity {
             .Add(MaterialMapIndex.Albedo, Color.White)
             .Add(MaterialMapIndex.Emission, new Color(255, 162, 0, 255))
             
-            .Add(MaterialMapIndex.Metalness, 0)
-            .Add(MaterialMapIndex.Roughness, 0)
-            .Add(MaterialMapIndex.Occlusion, 1)
+            .Add(MaterialMapIndex.Metalness, 0.0F)
+            .Add(MaterialMapIndex.Roughness, 0.0F)
+            .Add(MaterialMapIndex.Occlusion, 1.0F)
             .Add(MaterialMapIndex.Emission, 0.01F)
             .Build();
         
