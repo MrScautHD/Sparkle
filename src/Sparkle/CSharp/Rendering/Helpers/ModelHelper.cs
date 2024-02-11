@@ -7,7 +7,7 @@ namespace Sparkle.CSharp.Rendering.Helpers;
 public static class ModelHelper {
     
     
-    /// <inheritdoc cref="Raylib.LoadModel"/>
+    /// <inheritdoc cref="Raylib.LoadModel(string)"/>
     public static Model Load(string path) => Raylib.LoadModel(path);
     
     /// <inheritdoc cref="Raylib.LoadModelFromMesh"/>

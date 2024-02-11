@@ -55,10 +55,10 @@ public class Light : Component {
             SceneManager.MainCam3D!.BeginMode3D();
             
             if (this.Enabled) {
-                ModelHelper.DrawSphere(this.Entity.Position, 0.05F * Intensity, 16, 16, this.Color);
+                ModelHelper.DrawSphere(this.Entity.Position, 0.05F * this.Intensity, 16, 16, this.Color);
             }
             else {
-                ModelHelper.DrawSphereWires(this.Entity.Position, 0.05F * Intensity, 16, 16, this.Color);
+                ModelHelper.DrawSphereWires(this.Entity.Position, 0.05F * this.Intensity, 16, 16, this.Color);
             }
                     
             SceneManager.MainCam3D!.EndMode3D();

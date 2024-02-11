@@ -45,8 +45,7 @@ public class ModelRenderer : Component {
         box.Min.Z += this.Entity.Position.Z;
         box.Max.Z += this.Entity.Position.Z;
         
-        // TODO IMPLEMENT OOBB BOXES!
-        if (SceneManager.MainCam3D.GetFrustum().ContainsBox(box)) {
+        if (SceneManager.MainCam3D.GetFrustum().ContainsOrientedBox(box, this.Entity.Position, this.Entity.Rotation)) {
             Vector3 axis;
             float angle;
             

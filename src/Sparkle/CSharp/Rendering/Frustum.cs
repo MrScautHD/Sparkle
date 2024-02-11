@@ -135,4 +135,38 @@ public class Frustum {
 
         return true;
     }
+
+    /// <summary>
+    /// Checks if a oriented box is contained within the frustum.
+    /// </summary>
+    /// <param name="box">The oriented box to check.</param>
+    /// <param name="origin">The origin of the oriented box.</param>
+    /// <param name="rotation">The rotation of the oriented box.</param>
+    /// <returns>True if the oriented box is contained within the frustum, otherwise false.</returns>
+    public bool ContainsOrientedBox(BoundingBox box, Vector3 origin, Quaternion rotation) {
+        foreach (var plane in this._planes) {
+            bool allOutside = true;
+
+            for (int i = 0; i < 8; i++) {
+                float x = (i & 1) == 0 ? box.Min.X : box.Max.X;
+                float y = (i & 2) == 0 ? box.Min.Y : box.Max.Y;
+                float z = (i & 4) == 0 ? box.Min.Z : box.Max.Z;
+
+                Vector3 corner = Vector3.Transform(new Vector3(x, y, z) - origin, rotation) + origin;
+                
+                float distance = Plane.DotCoordinate(plane, corner);
+            
+                if (distance >= 0) {
+                    allOutside = false;
+                    break;
+                }
+            }
+
+            if (allOutside) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -11,7 +11,7 @@ public class ModelProcessor : IContentProcessor {
 
         for (int i = 0; i < model.MeshCount; i++) {
             if (model.Meshes[i].Tangents == default) {
-                Raylib.GenMeshTangents(ref model.Meshes[i]);
+                MeshHelper.GenTangents(ref model.Meshes[i]);
             }
         }
         

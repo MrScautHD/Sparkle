@@ -169,7 +169,7 @@ vec4 ComputePBR() {
         kD *= 1.0 - metallic;
         lightAccum += ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * light.enabled; // angle of light has impact on result
     }
-
+    
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;
     return vec4(ambient_final + lightAccum * ao + emissive, albedo_tex.w);
 }
