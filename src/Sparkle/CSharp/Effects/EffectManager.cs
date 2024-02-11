@@ -9,7 +9,7 @@ public static class EffectManager {
     /// </summary>
     /// <param name="effect">The effect to be added.</param>
     public static void Add(Effect effect) {
-        Logger.Info($"Added Effect: {nameof(effect)}");
+        Logger.Info($"Added Effect: {effect.GetType().Name}");
         Effects.Add(effect);
     }
     

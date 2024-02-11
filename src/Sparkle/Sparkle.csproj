@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
-    <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#11, Net7, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
+    <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#12, Net8, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>2.2.0</Version>
     <PackageIcon>icon.png</PackageIcon>
@@ -33,7 +33,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="content/**/*" Pack="true" PackagePath="">
+    <Content Include="content/**/*" Pack="true">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
