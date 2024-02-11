@@ -20,4 +20,4 @@ All Pull Requests are subject to Sparkle's license. For details on the legal asp
 
 ## Support Sparkle
 
-Sparkle is a substantial project with dedicated contributors working tirelessly on it. Maintaining such a project comes with expenses. Please consider [becoming a donator](https://github.com/MrScautHD) to support our efforts.
+Sparkle is a substantial project with dedicated contributors working tirelessly on it. Maintaining such a project comes with expenses. Please consider [becoming a donator](https://github.com/sponsors/MrScautHD) to support our efforts.
