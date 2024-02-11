@@ -1,27 +1,23 @@
-Contribute to Sparkle
+Get Involved with Sparkle
 ===================
 
-If you wish to actually inspect Stellution, submit PRs, you're in the right place!
+Ready to dive into Sparkle and make contributions? You're in the right place!
 
-Pull Requests
-=============
+## Pull Requests Welcome
 
-Sparkle is an open source project and Pull Requests from any competent coder are extremely welcome - we could use the help!
+Sparkle is an open-source project, and we eagerly welcome Pull Requests from capable coders like you! Your assistance is invaluable to us.
 
-Pull Requests meeting the following guidelines can be merged:
+To ensure smooth integration, please adhere to the following guidelines when submitting Pull Requests:
 
-1. Please make one sensibly-named commit, which describes the aspect you are fixing.
+1. Commit with a clear, descriptive name that reflects the aspect you're addressing.
+2. One Pull Request per commit, please. Mixing unrelated commits in a single Pull Request can be confusing for us.
+3. If you're fixing something not listed in the issues or not immediately apparent, provide explanatory comments detailing your changes.
+4. Respect our code style; you can familiarize yourself with it by examining existing sources.
 
-2. One Pull Request per commit please. It confuses us if you mix three unrelated commits in one Pull Request.
+While Pull Requests not meeting these guidelines are still appreciated, they may require manual merging. Consequently, automatic accreditation as the author in the changelog cannot be guaranteed.
 
-3. If you're fixing something which is not already in the issues list and is not obvious, please make comments explaining what you fixed.
+All Pull Requests are subject to Sparkle's license. For details on the legal aspects, refer to our [license documentation](https://github.com/MrScautHD/Sparkle/blob/main/LICENSE).
 
-4. Please respect our code style. You can see the style by looking at existing sources.
+## Support Sparkle
 
-Pull Requests not meeting these guidelines are also welcomed, but we may have to manually merge them, which means that you may not be automatically accredited as the author in the changelog....
-
-All Pull Requests automatically become subject to Sparkle's licence. If you're interested in the legal stuff, it's here: https://github.com/MrScautHD/Sparkle/blob/main/LICENSE
-
-Donate
-======
-Sparkle is a large project with many Contributors working on it around the clock, it costs money to run such a large project as this, so please consider [becoming a patron.](https://github.com/MrScautHD)
+Sparkle is a substantial project with dedicated contributors working tirelessly on it. Maintaining such a project comes with expenses. Please consider [becoming a donator](https://github.com/sponsors/MrScautHD) to support our efforts.
