@@ -9,7 +9,7 @@ namespace Sparkle.CSharp;
 
 public static class Logger {
     
-    public delegate bool OnMessage(LogType type, string msg, int skipFrames);
+    public delegate bool OnMessage(LogType type, string msg, int skipFrames, ConsoleColor color);
     public static event OnMessage? Message;
     
     public static string? LogPath { get; private set; }
@@ -83,7 +83,7 @@ public static class Logger {
         OnMessage? message = Message;
 
         if (message != null) {
-            if (message.Invoke(type, msg, skipFrames)) {
+            if (message.Invoke(type, msg, skipFrames, color)) {
                 return;
             }
         }

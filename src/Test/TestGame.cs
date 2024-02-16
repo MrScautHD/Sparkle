@@ -66,7 +66,7 @@ public class TestGame : Game {
         }
     }
 
-    private bool CustomLog(Logger.LogType type, string msg, int skipFrames) {
+    private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {
         if (type == Logger.LogType.Debug) {
             Console.WriteLine(msg);
             return true;
