@@ -9,6 +9,9 @@ namespace Sparkle.CSharp;
 
 public static class Logger {
     
+    public delegate bool OnMessage(LogType type, string msg, int skipFrames);
+    public static event OnMessage? Message;
+    
     public static string? LogPath { get; private set; }
 
     /// <summary>
@@ -17,7 +20,9 @@ public static class Logger {
     /// <param name="msg">The debug message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Debug(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.Gray);
+#if DEBUG
+        Log(LogType.Debug, msg, skipFrames, ConsoleColor.Gray);
+#endif
     }
 
     /// <summary>
@@ -26,7 +31,7 @@ public static class Logger {
     /// <param name="msg">The informational message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Info(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.Cyan);
+        Log(LogType.Info, msg, skipFrames, ConsoleColor.Cyan);
     }
 
     /// <summary>
@@ -35,7 +40,7 @@ public static class Logger {
     /// <param name="msg">The warning message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Warn(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.Yellow);
+        Log(LogType.Warn, msg, skipFrames, ConsoleColor.Yellow);
     }
 
     /// <summary>
@@ -44,7 +49,7 @@ public static class Logger {
     /// <param name="msg">The error message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Error(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.Red);
+        Log(LogType.Error, msg, skipFrames, ConsoleColor.Red);
     }
 
     /// <summary>
@@ -53,7 +58,7 @@ public static class Logger {
     /// <param name="msg">The fatal message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional, default is 2).</param>
     public static void Fatal(string msg, int skipFrames = 2) {
-        Log(msg, skipFrames, ConsoleColor.Red);
+        Log(LogType.Fatal, msg, skipFrames, ConsoleColor.Red);
         throw new Exception(msg);
     }
 
@@ -63,17 +68,26 @@ public static class Logger {
     /// <param name="exception">The exception to log and throw.</param>
     /// <param name="skipFrames">The number of frames to skip when determining the source of the log message.</param>
     public static void Fatal(Exception exception, int skipFrames = 2) {
-        Log(exception.Message, skipFrames, ConsoleColor.Red);
+        Log(LogType.Fatal, exception.Message, skipFrames, ConsoleColor.Red);
         throw exception;
     }
-
+    
     /// <summary>
     /// Logs a message with optional color formatting and stack frame information.
     /// </summary>
+    /// <param name="type">The log type.</param>
     /// <param name="msg">The message to be logged.</param>
     /// <param name="skipFrames">The number of stack frames to skip (optional).</param>
     /// <param name="color">The console color for the log message (optional).</param>
-    private static void Log(string msg, int skipFrames, ConsoleColor color) {
+    private static void Log(LogType type, string msg, int skipFrames, ConsoleColor color) {
+        OnMessage? message = Message;
+
+        if (message != null) {
+            if (message.Invoke(type, msg, skipFrames)) {
+                return;
+            }
+        }
+
         MethodBase? info = new StackFrame(skipFrames).GetMethod();
         string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
         
@@ -132,5 +146,16 @@ public static class Logger {
                 Fatal(message, 3);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Enumeration of log types used in the Logger class.
+    /// </summary>
+    public enum LogType {
+        Debug,
+        Info,
+        Warn,
+        Error,
+        Fatal
     }
 }

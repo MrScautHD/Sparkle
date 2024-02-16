@@ -65,18 +65,18 @@ public class Game : Disposable {
         Logger.Info($"\tOS: {SystemInfo.Os}");
         Logger.Info($"\tAPI: {Rlgl.GetVersion()}");
         
-        Logger.Debug("Initialize Raylib logger...");
+        Logger.Info("Initialize Raylib logger...");
         Logger.SetupRaylibLogger();
         
         this.SetTargetFps(this.Settings.TargetFps);
 
-        Logger.Debug("Initialize content manager...");
+        Logger.Info("Initialize content manager...");
         this.Content = new ContentManager();
         
-        Logger.Debug("Initialize audio device...");
+        Logger.Info("Initialize audio device...");
         AudioDevice.Init();
 
-        Logger.Debug("Initialize window...");
+        Logger.Info("Initialize window...");
         Window.SetConfigFlags(this.Settings.WindowFlags);
         Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
         
@@ -89,19 +89,19 @@ public class Game : Disposable {
         
         this.OnRun();
         
-        Logger.Debug("Load content...");
+        Logger.Info("Load content...");
         this.Load();
         
-        Logger.Debug("Initialize physics...");
+        Logger.Info("Initialize physics...");
         this.Simulation = new Simulation(this.Settings.PhysicsSettings);
         
-        Logger.Debug("Initialize default scene...");
+        Logger.Info("Initialize default scene...");
         SceneManager.SetDefaultScene(scene!);
         
         this.Init();
         this.HasInitialized = true;
         
-        Logger.Debug("Run ticks...");
+        Logger.Info("Run ticks...");
         while (!this.ShouldClose && !Window.ShouldClose()) {
             this.Update();
             this.AfterUpdate();

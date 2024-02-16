@@ -21,9 +21,11 @@ public class TestGame : Game {
     
     // OVERLAY
     public TestOverlay Overlay;
-    
-    public TestGame(GameSettings settings) : base(settings) { }
 
+    public TestGame(GameSettings settings) : base(settings) {
+        Logger.Message += this.CustomLog;
+    }
+    
     protected override void Init() {
         base.Init();
         
@@ -62,5 +64,14 @@ public class TestGame : Game {
             Input.DisableCursor();
             Window.ToggleBorderless();
         }
+    }
+
+    private bool CustomLog(Logger.LogType type, string msg, int skipFrames) {
+        if (type == Logger.LogType.Debug) {
+            Console.WriteLine(msg);
+            return true;
+        }
+
+        return false;
     }
 }
