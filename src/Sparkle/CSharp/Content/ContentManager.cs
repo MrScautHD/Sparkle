@@ -20,6 +20,7 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
         this.AddProcessors(typeof(ModelAnimation[]), new ModelAnimationProcessor());
+        this.AddProcessors(typeof(Material[]), new MaterialProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(Shader), new ShaderProcessor());
         this.AddProcessors(typeof(Sound), new SoundProcessor());
@@ -37,7 +38,7 @@ public class ContentManager : Disposable {
     /// </returns>
     public IContentProcessor TryGetProcessor(Type type) {
         if (!this._processors.TryGetValue(type, out IContentProcessor? processor)) {
-            Logger.Error($"Unable to locate ContentProcessor for type [{type}]!");
+            Logger.Error($"Unable to locate ContentProcessor for type: [{type}]!");
         }
 
         return processor!;
@@ -51,6 +52,25 @@ public class ContentManager : Disposable {
     public void AddProcessors(Type type, IContentProcessor processor) {
         this._processors.Add(type, processor);
     }
+
+    /// <summary>
+    /// Adds a item of unmanaged content to the content manager.
+    /// </summary>
+    /// <typeparam name="T">The type of content being added.</typeparam>
+    /// <param name="item">The item to be added.</param>
+    public void AddUnmanagedContent<T>(T item) {
+        if (this._processors.ContainsKey(item!.GetType())) {
+            if (!this._content.Contains(item)) {
+                this._content.Add(item);
+            }
+            else {
+                Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
+            }
+        }
+        else {
+            Logger.Warn($"This item is of an unsupported type: {typeof(T)}!");
+        }
+    }
     
     /// <summary>
     /// Loads an item of type T from the specified directory using the provided content type.
@@ -63,7 +83,13 @@ public class ContentManager : Disposable {
         
         T item = (T) processor.Load(type);
 
-        this._content.Add(item!);
+        if (!this._content.Contains(item!)) {
+            this._content.Add(item!);
+        }
+        else {
+            Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
+        }
+        
         return item;
     }
     
@@ -78,7 +104,7 @@ public class ContentManager : Disposable {
             this._content.Remove(item!);
         }
         else {
-            Logger.Warn($"Unable to unload content for the specified type {typeof(T)}!");
+            Logger.Warn($"Unable to unload content for the specified type: {typeof(T)}!");
         }
     }
     
@@ -87,6 +113,7 @@ public class ContentManager : Disposable {
             foreach (object item in this._content) {
                 this.TryGetProcessor(item.GetType()).Unload(item);
             }
+            
             this._content.Clear();
         }
     }

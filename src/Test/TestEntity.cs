@@ -26,8 +26,11 @@ public class TestEntity : Entity {
             .Add(MaterialMapIndex.Occlusion, 1.0F)
             .Add(MaterialMapIndex.Emission, 0.01F)
             .Build();
+
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr/*, default, TestGame.Animations*/);
+        //modelRenderer.AnimationPlayer.Play(1, true);
         
-        this.AddComponent(new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr));
+        this.AddComponent(modelRenderer);
 
         BoxShape boxShape = new BoxShape(new Vector3(1, 1, 1));
         this.AddComponent(new Rigidbody(boxShape, MotionType.Dynamic));
