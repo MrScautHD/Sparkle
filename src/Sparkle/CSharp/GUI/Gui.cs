@@ -112,6 +112,7 @@ public abstract class Gui : Disposable {
             foreach (GuiElement element in this._elements.Values) {
                 element.Dispose();
             }
+            
             this._elements.Clear();
         }
     }

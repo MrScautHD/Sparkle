@@ -1,6 +1,5 @@
 using System.Numerics;
-using Raylib_cs;
-using Sparkle;
+using Sparkle.CSharp;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
@@ -15,7 +14,7 @@ public class TestGui : Gui {
 
     protected override void Init() {
         base.Init();
-
+/*
         LabelData labelData = new LabelData() {
             Font = FontHelper.GetDefault(),
             FontSize = 50,
@@ -27,8 +26,11 @@ public class TestGui : Gui {
         };
         
         this.AddElement(new LabelElement("label", labelData, Anchor.Center, Vector2.Zero));
-/*
+*/
+        
+        
         ButtonData buttonData = new ButtonData() {
+            Color = Color.Blue
             //Texture = Game.Instance.Content.Load<Texture2D>("icon.png")
         };
         
@@ -37,13 +39,13 @@ public class TestGui : Gui {
             FontSize = 25,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            Color = Color.RED
+            Color = Color.Red
         };
         
         this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, Anchor.Center, Vector2.Zero, new Vector2(300, 300), () => {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
-        }));*/
+        }));
 
 /*
         ToggleData toggleData = new ToggleData() {

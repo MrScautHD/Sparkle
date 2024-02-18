@@ -21,7 +21,7 @@ public class TestGame : Game {
     
     // OVERLAY
     public TestOverlay Overlay;
-
+    
     public TestGame(GameSettings settings) : base(settings) {
         Logger.Message += this.CustomLog;
     }
@@ -67,11 +67,11 @@ public class TestGame : Game {
     }
 
     private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {
-        if (type == Logger.LogType.Debug) {
+        /*if (type == Logger.LogType.Debug) {
             Console.WriteLine(msg);
             return true;
-        }
-
+        }*/
+        
         return false;
     }
 }

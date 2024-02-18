@@ -129,6 +129,7 @@ public abstract class Scene : Disposable {
             foreach (Entity entity in this._entities.Values) {
                 entity.Dispose();
             }
+            
             this._entities.Clear();
             this._entityIds = 0;
         }

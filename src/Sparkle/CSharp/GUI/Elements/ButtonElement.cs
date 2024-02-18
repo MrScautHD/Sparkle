@@ -35,7 +35,7 @@ public class ButtonElement : GuiElement {
     /// <param name="offset">An optional offset for fine-tuning the position.</param>
     /// <param name="size">An optional size for the button element; if not provided, it's determined by the texture.</param>
     /// <param name="clickClickFunc">An optional function to handle click events.</param>
-    public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2? size, Func<bool>? clickClickFunc = null) : base(name, anchor, offset, Vector2.Zero, clickClickFunc) {
+    public ButtonElement(string name, ButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2? size = default, Func<bool>? clickClickFunc = default) : base(name, anchor, offset, Vector2.Zero, clickClickFunc) {
         this.Texture = buttonData.Texture;
         this.Size = size ?? (this.Texture != null ? new Vector2(this.Texture.Value.Width, this.Texture.Value.Height) : Vector2.Zero);
         this.Rotation = buttonData.Rotation;
@@ -63,21 +63,43 @@ public class ButtonElement : GuiElement {
 
     protected internal override void Draw() {
         if (this.Texture != null) {
-            Rectangle source = new Rectangle(0, 0, this.Texture.Value.Width, this.Texture.Value.Height);
-            Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
-            TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+            this.DrawTextureButton();
         }
         else {
-            Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
-            ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+            this.DrawColorButton();
         }
 
         if (this.Text != string.Empty) {
-            Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
-            Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
-            FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
+            this.DrawText();
         }
+    }
+
+    /// <summary>
+    /// Draws a button with a textured background on the GUI.
+    /// </summary>
+    protected virtual void DrawTextureButton() {
+        Rectangle source = new Rectangle(0, 0, this.Texture!.Value.Width, this.Texture.Value.Height);
+        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
+        TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+    }
+
+    /// <summary>
+    /// Draws a color button on the screen.
+    /// </summary>
+    protected virtual void DrawColorButton() {
+        Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
+        ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(this.Color, -0.5F));
+    }
+
+    /// <summary>
+    /// Draws the text of the button element.
+    /// </summary>
+    protected virtual void DrawText() {
+        Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
+        Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
+        FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
     }
 }

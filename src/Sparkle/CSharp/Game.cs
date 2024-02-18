@@ -95,8 +95,8 @@ public class Game : Disposable {
         Logger.Info("Initialize physics...");
         this.Simulation = new Simulation(this.Settings.PhysicsSettings);
         
-        Logger.Info("Initialize default scene...");
-        SceneManager.SetDefaultScene(scene!);
+        Logger.Info("Set default scene...");
+        SceneManager.SetDefaultScene(scene);
         
         this.Init();
         this.HasInitialized = true;
