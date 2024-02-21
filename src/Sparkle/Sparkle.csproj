@@ -11,7 +11,7 @@
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
     <Description>A fast, Cross-platform .NET 7 C# 11 game engine.</Description>
-    <PackageProjectUrl>https://stellution.com/</PackageProjectUrl>
+    <PackageProjectUrl>https://sparkle-engine.com/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#12, Net8, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
