@@ -11,7 +11,7 @@ public struct ButtonData : IData {
     public Color HoverColor { get; set; }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="ButtonData"/>, setting default values for Rotation, Color, and HoverColor.
+    /// Represents data for a button element.
     /// </summary>
     public ButtonData() {
         this.Rotation = 0;

@@ -9,13 +9,12 @@ namespace Sparkle.CSharp.GUI.Elements;
 public class LabelElement : GuiElement {
     
     public Font Font;
-    public float Rotation;
-    public Color Color;
-    public Color HoverColor;
-    
     public string Text;
     public float FontSize;
     public int Spacing;
+    public float Rotation;
+    public Color Color;
+    public Color HoverColor;
     
     protected float CalcFontSize { get; private set; }
 

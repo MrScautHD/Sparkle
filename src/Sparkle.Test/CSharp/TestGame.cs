@@ -6,7 +6,7 @@ using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
-namespace Sparkle.Test; 
+namespace Sparkle.Test.CSharp; 
 
 public class TestGame : Game {
 

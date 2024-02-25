@@ -15,9 +15,7 @@ public struct LabelData : IData {
     public Color HoverColor { get; set; }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="LabelData"/> with default settings. 
-    /// Sets the default font, an empty text string, a font size of 18, a spacing of 4, 
-    /// a rotation of 0, a size of (0,0), and default colors for normal and hover states.
+    /// Represents data for a label element.
     /// </summary>
     public LabelData() {
         this.Font = FontHelper.GetDefault();

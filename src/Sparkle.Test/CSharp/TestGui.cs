@@ -6,7 +6,7 @@ using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Rendering.Helpers;
 using Color = Raylib_cs.Color;
 
-namespace Sparkle.Test; 
+namespace Sparkle.Test.CSharp; 
 
 public class TestGui : Gui {
     
@@ -45,9 +45,11 @@ public class TestGui : Gui {
             return true;
         }));
 
-/*
+
         ToggleData toggleData = new ToggleData() {
-            ToggledText = "Checked"
+            ToggledText = "Checked",
+            ToggledColor = Color.Green,
+            ToggledTextColor = Color.DarkGreen,
         };
         
         LabelData toggleLabelData = new LabelData() {
@@ -55,16 +57,10 @@ public class TestGui : Gui {
             FontSize = 25,
             Spacing = 4,
             Text = "Check",
-            Color = Color.RED
+            Color = Color.Red,
+            HoverColor = Color.Gold
         };
 
-        this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, Anchor.Center, Vector2.Zero, new Vector2(100, 100)));*/
-    }
-
-    protected override void Update() {
-        base.Update();
-        //Vector2 pos = new Vector2((this.Window.GetRenderWidth() - 100F) / 2F, (this.Window.GetRenderHeight() - 100F) / 2F);
-
-        //this.GetElement("toggle").Position = pos;
+        this.AddElement(new ToggleElement("toggle", toggleData, toggleLabelData, Anchor.TopCenter, Vector2.Zero, new Vector2(100, 100)));
     }
 }

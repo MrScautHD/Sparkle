@@ -68,41 +68,44 @@ public class ButtonElement : GuiElement {
         Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
+        Color color = this.IsHovered ? this.HoverColor : this.Color;
+        Color textColor = this.IsHovered ? this.TextHoverColor : this.TextColor;
+        
         if (this.Texture != null) {
-            this.DrawTextureButton(source, dest, origin);
+            this.DrawTexture(this.Texture.Value, source, dest, origin, this.Rotation, color);
         }
         else {
-            this.DrawColorButton(dest, origin);
+            this.DrawRectangle(dest, origin, this.Rotation, color);
         }
 
         if (this.Text != string.Empty) {
-            this.DrawText();
+            this.DrawText(this.Font, this.Text, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);
         }
     }
 
     /// <summary>
     /// Draws a button with a textured background on the GUI.
     /// </summary>
-    protected virtual void DrawTextureButton(Rectangle source, Rectangle dest, Vector2 origin) {
-        TextureHelper.DrawPro(this.Texture!.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+    protected virtual void DrawTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) {
+        TextureHelper.DrawPro(texture, source, dest, origin, rotation, color);
     }
 
     /// <summary>
     /// Draws a color button on the screen.
     /// </summary>
-    protected virtual void DrawColorButton(Rectangle dest, Vector2 origin) {
-        ShapeHelper.DrawRectangle(dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+    protected virtual void DrawRectangle(Rectangle dest, Vector2 origin, float rotation, Color color) {
+        ShapeHelper.DrawRectangle(dest, origin, rotation, color);
 
         Rectangle rec = new Rectangle(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
-        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(this.IsHovered ? this.HoverColor : this.Color, -0.5F));
+        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(color, -0.5F));
     }
 
     /// <summary>
     /// Draws the text of the button element.
     /// </summary>
-    protected virtual void DrawText() {
+    protected virtual void DrawText(Font font, string text, float rotation, float fontSize, int spacing, Color color) {
         Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
         Vector2 origin = new Vector2(this.ScaledTextSize.X / 2, this.ScaledTextSize.Y / 2);
-        FontHelper.DrawText(this.Font, this.Text, pos, origin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
+        FontHelper.DrawText(font, text, pos, origin, rotation, fontSize, spacing, color);
     }
 }

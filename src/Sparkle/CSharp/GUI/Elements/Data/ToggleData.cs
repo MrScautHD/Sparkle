@@ -2,29 +2,28 @@ using Raylib_cs;
 
 namespace Sparkle.CSharp.GUI.Elements.Data; 
 
-public struct ToggleData {
+public struct ToggleData : IData {
     
-    public Texture2D? Texture;
-    public Texture2D? ToggledTexture;
-    public float Rotation;
-    public Color Color;
-    public Color HoverColor;
-    public Color ToggledColor;
+    public float Rotation { get; set; }
+    public Color Color { get; set; }
+    public Color HoverColor { get; set; }
+    public Color ToggledColor { get; set; }
+    public Color ToggledTextColor { get; set; }
+    
+    public Texture2D? Texture { get; set; }
+    public Texture2D? ToggledTexture { get; set; }
 
-    public string ToggledText;
-    public Color ToggledTextColor;
-
+    public string ToggledText { get; set; }
+    
     /// <summary>
-    /// Initializes a new instance of the <see cref="ToggleData"/> with default settings.
-    /// Sets the rotation to 0, assigns default colors for various states, and initializes an empty toggled text with a default color.
+    /// Represents data for a toggle element.
     /// </summary>
     public ToggleData() {
         this.Rotation = 0;
         this.Color = Color.White;
         this.HoverColor = Color.Gray;
         this.ToggledColor = Color.White;
-
-        this.ToggledText = string.Empty;
         this.ToggledTextColor = Color.White;
+        this.ToggledText = string.Empty;
     }
 }

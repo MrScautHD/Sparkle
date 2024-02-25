@@ -16,16 +16,16 @@ public class ToggleElement : GuiElement {
     public Color ToggledColor;
     
     public Font Font;
-    public float TextRotation;
-    public Vector2 TextSize;
-    public Color TextColor;
-    public Color TextHoverColor;
-    public Color ToggledTextColor;
-    
     public string Text;
     public string ToggledText;
     public float FontSize;
+    public Vector2 TextSize;
+    public Vector2 ScaledTextSize;
     public int Spacing;
+    public float TextRotation;
+    public Color TextColor;
+    public Color TextHoverColor;
+    public Color ToggledTextColor;
     
     protected float CalcFontSize { get; private set; }
     
@@ -51,15 +51,16 @@ public class ToggleElement : GuiElement {
         this.ToggledColor = toggleData.ToggledColor;
         
         this.Font = labelData.Font;
+        this.Text = labelData.Text;
+        this.ToggledText = toggleData.ToggledText;
+        this.FontSize = labelData.FontSize;
+        this.TextSize = Vector2.Zero;
+        this.ScaledTextSize = Vector2.Zero;
+        this.Spacing = labelData.Spacing;
         this.TextRotation = labelData.Rotation;
         this.TextColor = labelData.Color;
         this.TextHoverColor = labelData.HoverColor;
         this.ToggledTextColor = toggleData.ToggledTextColor;
-        
-        this.Text = labelData.Text;
-        this.ToggledText = toggleData.ToggledText;
-        this.FontSize = labelData.FontSize;
-        this.Spacing = labelData.Spacing;
     }
 
     protected internal override void Update() {
@@ -76,32 +77,56 @@ public class ToggleElement : GuiElement {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.CalcFontSize = this.FontSize * scale * GuiManager.Scale;
         
-        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        string text = this.IsToggled ? this.ToggledText : this.Text;
+        this.TextSize = FontHelper.MeasureText(this.Font, text, this.FontSize, this.Spacing);
+        this.ScaledTextSize = FontHelper.MeasureText(this.Font, text, this.CalcFontSize, this.Spacing);
     }
 
     protected internal override void Draw() {
+        Rectangle source = new Rectangle(0, 0, this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
+        
         Texture2D? texture = this.IsToggled ? this.ToggledTexture : this.Texture;
+        string text = this.IsToggled ? this.ToggledText : this.Text;
+        Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
+        Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
         
         if (texture != null) {
-            Rectangle source = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
-            Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
-            Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
-            TextureHelper.DrawPro(texture.Value, source, dest, origin, this.Rotation, color);
+            this.DrawTexture(texture.Value, source, dest, origin, this.Rotation, color);
         }
         else {
-            Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-            Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
-            Color color = this.IsHovered ? this.HoverColor : (this.IsToggled ? this.ToggledColor : this.Color);
-            ShapeHelper.DrawRectangle(rec, origin, this.Rotation, color);
+            this.DrawRectangle(dest, origin, this.Rotation, color);
         }
 
-        string text = this.IsToggled ? this.ToggledText : this.Text;
         if (text != string.Empty) {
-            Vector2 textPos = new Vector2(this.Position.X + this.ScaledSize.X / 2, this.Position.Y + this.ScaledSize.Y / 2);
-            Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
-            Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
-            FontHelper.DrawText(this.Font, text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);
+            this.DrawText(this.Font, text, this.TextRotation, this.CalcFontSize, this.Spacing, textColor);
         }
+    }
+    
+    /// <summary>
+    /// Draws a button with a textured background on the GUI.
+    /// </summary>
+    protected virtual void DrawTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) {
+        TextureHelper.DrawPro(texture, source, dest, origin, rotation, color);
+    }
+
+    /// <summary>
+    /// Draws a color button on the screen.
+    /// </summary>
+    protected virtual void DrawRectangle(Rectangle dest, Vector2 origin, float rotation, Color color) {
+        ShapeHelper.DrawRectangle(dest, origin, rotation, color);
+
+        Rectangle rec = new Rectangle(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
+        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(color, -0.5F));
+    }
+
+    /// <summary>
+    /// Draws the text of the button element.
+    /// </summary>
+    protected virtual void DrawText(Font font, string text, float rotation, float fontSize, int spacing, Color color) {
+        Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
+        Vector2 origin = new Vector2(this.ScaledTextSize.X / 2, this.ScaledTextSize.Y / 2);
+        FontHelper.DrawText(font, text, pos, origin, rotation, fontSize, spacing, color);
     }
 }

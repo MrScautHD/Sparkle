@@ -11,7 +11,7 @@ using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 
-namespace Sparkle.Test; 
+namespace Sparkle.Test.CSharp; 
 
 public class Test3DScene : Scene {
     
