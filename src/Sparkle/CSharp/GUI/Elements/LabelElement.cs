@@ -27,7 +27,7 @@ public class LabelElement : GuiElement {
     /// <param name="anchor">The anchor point for positioning the element.</param>
     /// <param name="offset">The offset for fine-tuning the position.</param>
     /// <param name="clickClickFunc">An optional function to handle click events.</param>
-    public LabelElement(string name, LabelData data, Anchor anchor, Vector2 offset, Func<bool>? clickClickFunc = null) : base(name, anchor, offset, data.Size, clickClickFunc) {
+    public LabelElement(string name, LabelData data, Anchor anchor, Vector2 offset, Func<bool>? clickClickFunc = null) : base(name, anchor, offset, Vector2.Zero, clickClickFunc) {
         this.Font = data.Font;
         this.Rotation = data.Rotation;
         this.Color = data.Color;
@@ -42,16 +42,22 @@ public class LabelElement : GuiElement {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.CalcFontSize = this.FontSize * scale * GuiManager.Scale;
         
-        this.Size = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
-        this.ScaledSize = this.Size;
+        this.Size = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
+        this.ScaledSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
     }
 
     protected internal override void Draw() {
-        if (this.Text == string.Empty) return;
-        
-        Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
-        Vector2 textOrigin = new Vector2(this.Position.X / 2, this.Position.Y / 2);
-            
-        FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
+        if (this.Text != string.Empty) {
+            this.DrawText();
+        }
+    }
+    
+    /// <summary>
+    /// Draws the text of the button element.
+    /// </summary>
+    protected virtual void DrawText() {
+        Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
+        Vector2 origin = new Vector2(this.ScaledSize.X / 2, this.ScaledSize.Y / 2);
+        FontHelper.DrawText(this.Font, this.Text, pos, origin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
     }
 }

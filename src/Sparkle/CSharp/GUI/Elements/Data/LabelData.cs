@@ -1,19 +1,18 @@
-using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Rendering.Helpers;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
-public struct LabelData {
+public struct LabelData : IData {
     
-    public Font Font;
-    public string Text;
-    public float FontSize;
-    public int Spacing;
-    public float Rotation;
-    public Vector2 Size;
-    public Color Color;
-    public Color HoverColor;
+    public Font Font { get; set; }
+    public string Text { get; set; }
+    public float FontSize { get; set; }
+    public int Spacing { get; set; }
+    
+    public float Rotation { get; set; }
+    public Color Color { get; set; }
+    public Color HoverColor { get; set; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="LabelData"/> with default settings. 
@@ -26,7 +25,6 @@ public struct LabelData {
         this.FontSize = 18;
         this.Spacing = 4;
         this.Rotation = 0;
-        this.Size = Vector2.Zero;
         this.Color = Color.White;
         this.HoverColor = Color.Gray;
     }

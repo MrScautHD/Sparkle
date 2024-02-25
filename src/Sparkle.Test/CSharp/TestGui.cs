@@ -6,7 +6,7 @@ using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Rendering.Helpers;
 using Color = Raylib_cs.Color;
 
-namespace Test; 
+namespace Sparkle.Test; 
 
 public class TestGui : Gui {
     
@@ -14,7 +14,7 @@ public class TestGui : Gui {
 
     protected override void Init() {
         base.Init();
-/*
+
         LabelData labelData = new LabelData() {
             Font = FontHelper.GetDefault(),
             FontSize = 50,
@@ -25,13 +25,10 @@ public class TestGui : Gui {
             Rotation = 0
         };
         
-        this.AddElement(new LabelElement("label", labelData, Anchor.Center, Vector2.Zero));
-*/
-        
+        this.AddElement(new LabelElement("label", labelData, Anchor.BottomCenter, Vector2.Zero));
         
         ButtonData buttonData = new ButtonData() {
-            Color = Color.Blue
-            //Texture = Game.Instance.Content.Load<Texture2D>("icon.png")
+            Color = Color.Orange
         };
         
         LabelData buttonLabelData = new LabelData() {
@@ -39,7 +36,8 @@ public class TestGui : Gui {
             FontSize = 25,
             Spacing = 4,
             Text = "Sparkle Engine!",
-            Color = Color.Red
+            Color = Color.Red,
+            HoverColor = Color.Gold
         };
         
         this.AddElement(new ButtonElement("button", buttonData, buttonLabelData, Anchor.Center, Vector2.Zero, new Vector2(300, 300), () => {

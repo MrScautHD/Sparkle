@@ -2,7 +2,7 @@ using System.Numerics;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 
-namespace Test; 
+namespace Sparkle.Test; 
 
 public class Test2DEntity : Entity {
     

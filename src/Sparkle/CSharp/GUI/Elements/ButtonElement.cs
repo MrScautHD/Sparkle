@@ -14,14 +14,14 @@ public class ButtonElement : GuiElement {
     public Color HoverColor;
     
     public Font Font;
-    public float TextRotation;
-    public Vector2 TextSize;
-    public Color TextColor;
-    public Color TextHoverColor;
-    
     public string Text;
     public float FontSize;
+    public Vector2 TextSize;
+    public Vector2 ScaledTextSize;
     public int Spacing;
+    public float TextRotation;
+    public Color TextColor;
+    public Color TextHoverColor;
     
     protected float CalcFontSize { get; private set; }
     
@@ -43,13 +43,14 @@ public class ButtonElement : GuiElement {
         this.HoverColor = buttonData.HoverColor;
         
         this.Font = labelData.Font;
+        this.Text = labelData.Text;
+        this.FontSize = labelData.FontSize;
+        this.TextSize = Vector2.Zero;
+        this.ScaledTextSize = Vector2.Zero;
+        this.Spacing = labelData.Spacing;
         this.TextRotation = labelData.Rotation;
         this.TextColor = labelData.Color;
         this.TextHoverColor = labelData.HoverColor;
-        
-        this.Text = labelData.Text;
-        this.FontSize = labelData.FontSize;
-        this.Spacing = labelData.Spacing;
     }
 
     protected override void CalculateSize() {
@@ -58,15 +59,20 @@ public class ButtonElement : GuiElement {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.CalcFontSize = this.FontSize * scale * GuiManager.Scale;
         
-        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
+        this.ScaledTextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
     }
 
     protected internal override void Draw() {
+        Rectangle source = new Rectangle(0, 0, this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
+        
         if (this.Texture != null) {
-            this.DrawTextureButton();
+            this.DrawTextureButton(source, dest, origin);
         }
         else {
-            this.DrawColorButton();
+            this.DrawColorButton(dest, origin);
         }
 
         if (this.Text != string.Empty) {
@@ -77,29 +83,26 @@ public class ButtonElement : GuiElement {
     /// <summary>
     /// Draws a button with a textured background on the GUI.
     /// </summary>
-    protected virtual void DrawTextureButton() {
-        Rectangle source = new Rectangle(0, 0, this.Texture!.Value.Width, this.Texture.Value.Height);
-        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
-        TextureHelper.DrawPro(this.Texture.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+    protected virtual void DrawTextureButton(Rectangle source, Rectangle dest, Vector2 origin) {
+        TextureHelper.DrawPro(this.Texture!.Value, source, dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
     }
 
     /// <summary>
     /// Draws a color button on the screen.
     /// </summary>
-    protected virtual void DrawColorButton() {
-        Rectangle rec = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
-        Vector2 origin = new Vector2(rec.Width / 2, rec.Height / 2);
-        ShapeHelper.DrawRectangle(rec, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
-        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(this.Color, -0.5F));
+    protected virtual void DrawColorButton(Rectangle dest, Vector2 origin) {
+        ShapeHelper.DrawRectangle(dest, origin, this.Rotation, this.IsHovered ? this.HoverColor : this.Color);
+
+        Rectangle rec = new Rectangle(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
+        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(this.IsHovered ? this.HoverColor : this.Color, -0.5F));
     }
 
     /// <summary>
     /// Draws the text of the button element.
     /// </summary>
     protected virtual void DrawText() {
-        Vector2 textPos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
-        Vector2 textOrigin = new Vector2(this.TextSize.X / 2, this.TextSize.Y / 2);
-        FontHelper.DrawText(this.Font, this.Text, textPos, textOrigin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
+        Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
+        Vector2 origin = new Vector2(this.ScaledTextSize.X / 2, this.ScaledTextSize.Y / 2);
+        FontHelper.DrawText(this.Font, this.Text, pos, origin, this.TextRotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.TextHoverColor : this.TextColor);
     }
 }

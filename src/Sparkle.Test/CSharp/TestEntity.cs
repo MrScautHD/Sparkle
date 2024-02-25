@@ -6,7 +6,7 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Util;
 
-namespace Test;
+namespace Sparkle.Test;
 
 public class TestEntity : Entity {
     

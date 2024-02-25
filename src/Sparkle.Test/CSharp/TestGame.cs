@@ -6,7 +6,7 @@ using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
-namespace Test; 
+namespace Sparkle.Test; 
 
 public class TestGame : Game {
 
@@ -30,7 +30,7 @@ public class TestGame : Game {
     protected override void Init() {
         base.Init();
         
-        this.Overlay = new TestOverlay("Test");
+        this.Overlay = new TestOverlay("Sparkle.Test");
         this.Overlay.Enabled = false;
         OverlayManager.Add(this.Overlay);
         

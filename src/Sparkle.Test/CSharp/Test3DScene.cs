@@ -11,7 +11,7 @@ using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 
-namespace Test; 
+namespace Sparkle.Test; 
 
 public class Test3DScene : Scene {
     
@@ -49,7 +49,7 @@ public class Test3DScene : Scene {
         base.Update();
         
         if (Input.IsKeyPressed(KeyboardKey.E)) {
-            GuiManager.SetGui(new TestGui("Test"));
+            GuiManager.SetGui(new TestGui("Sparkle.Test"));
         }
 
         if (Input.IsKeyPressed(KeyboardKey.R)) {

@@ -5,7 +5,7 @@ using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 
-namespace Test; 
+namespace Sparkle.Test; 
 
 public class Test2DScene : Scene {
     

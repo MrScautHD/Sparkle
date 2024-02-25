@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle", "src\Sparkle\Sparkle.csproj", "{34708A3F-906E-4C9A-9D1E-1280FE861EC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\Test\Test.csproj", "{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle.Test", "src\Sparkle.Test\Sparkle.Test.csproj", "{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

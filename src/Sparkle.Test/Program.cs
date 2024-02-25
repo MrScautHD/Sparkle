@@ -1,9 +1,9 @@
 ﻿using Raylib_cs;
 using Sparkle.CSharp;
-using Test;
+using Sparkle.Test;
 
 GameSettings settings = new GameSettings() {
-    Title = "Test - [Sparkle]",
+    Title = "Sparkle - [Tests]",
     WindowFlags = ConfigFlags.Msaa4xHint | ConfigFlags.ResizableWindow
 };
 
