@@ -6,7 +6,7 @@ using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Rendering.Helpers;
 using Color = Raylib_cs.Color;
 
-namespace Sparkle.Test.CSharp; 
+namespace Sparkle.Test.CSharp;
 
 public class TestGui : Gui {
     

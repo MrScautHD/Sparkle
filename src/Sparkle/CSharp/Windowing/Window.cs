@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 
-namespace Sparkle.CSharp.Windowing; 
+namespace Sparkle.CSharp.Windowing;
 
 public static class Window {
     

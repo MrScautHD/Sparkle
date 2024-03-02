@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace Sparkle.CSharp.Audio; 
+namespace Sparkle.CSharp.Audio;
 
 public class WavePlayer {
     

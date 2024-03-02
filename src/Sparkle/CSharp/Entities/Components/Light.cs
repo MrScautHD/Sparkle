@@ -3,7 +3,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Rendering.Helpers;
 
-namespace Sparkle.CSharp.Entities.Components; 
+namespace Sparkle.CSharp.Entities.Components;
 
 public class Light : Component {
     

@@ -5,7 +5,7 @@ using Sparkle.CSharp.IO.Config;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Windowing;
 
-namespace Sparkle.Test.CSharp; 
+namespace Sparkle.Test.CSharp;
 
 public class TestGame : Game {
 

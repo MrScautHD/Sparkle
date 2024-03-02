@@ -2,7 +2,7 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Entities;
 
-namespace Sparkle.CSharp.Rendering.Helpers; 
+namespace Sparkle.CSharp.Rendering.Helpers;
 
 public static class ModelHelper {
     

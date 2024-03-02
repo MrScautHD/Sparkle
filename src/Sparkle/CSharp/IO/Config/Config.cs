@@ -1,6 +1,6 @@
 using Newtonsoft.Json.Linq;
 
-namespace Sparkle.CSharp.IO.Config; 
+namespace Sparkle.CSharp.IO.Config;
 
 public class Config {
     

@@ -2,7 +2,7 @@ using JoltPhysicsSharp;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Layers;
 
-namespace Sparkle.CSharp.Entities.Components; 
+namespace Sparkle.CSharp.Entities.Components;
 
 public class Rigidbody : Component {
     

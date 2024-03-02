@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace Sparkle.CSharp; 
+namespace Sparkle.CSharp;
 
 public static class Time {
     

@@ -4,7 +4,7 @@ using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 using Rectangle = Raylib_cs.Rectangle;
 
-namespace Sparkle.CSharp.GUI.Elements; 
+namespace Sparkle.CSharp.GUI.Elements;
 
 public abstract class GuiElement : Disposable {
 

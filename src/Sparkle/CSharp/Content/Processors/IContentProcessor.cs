@@ -1,6 +1,6 @@
 using Sparkle.CSharp.Content.Types;
 
-namespace Sparkle.CSharp.Content.Processors; 
+namespace Sparkle.CSharp.Content.Processors;
 
 public interface IContentProcessor {
     

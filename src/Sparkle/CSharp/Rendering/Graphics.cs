@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace Sparkle.CSharp.Rendering; 
+namespace Sparkle.CSharp.Rendering;
 
 public static class Graphics {
     

@@ -11,7 +11,7 @@ using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 
-namespace Sparkle.Test.CSharp; 
+namespace Sparkle.Test.CSharp;
 
 public class Test3DScene : Scene {
     
@@ -28,7 +28,7 @@ public class Test3DScene : Scene {
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
         
-        for (int i = 0; i < 8000; i++) {
+        for (int i = 0; i < 10000; i++) {
            // for (int j = 0; j < 12; j++) {
                 TestEntity test = new TestEntity(new Vector3(0, i, 0));
                 this.AddEntity(test);

@@ -1,6 +1,6 @@
 ﻿using Raylib_cs;
 
-namespace Sparkle.CSharp.Content.Types; 
+namespace Sparkle.CSharp.Content.Types;
 
 public class ModelAnimationContent : IContentType<ModelAnimation[]> {
     

@@ -4,7 +4,7 @@ using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
-namespace Sparkle.CSharp.GUI.Elements; 
+namespace Sparkle.CSharp.GUI.Elements;
 
 public class ButtonElement : GuiElement {
     

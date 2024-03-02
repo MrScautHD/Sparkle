@@ -1,6 +1,6 @@
 using Sparkle.CSharp.GUI.Elements;
 
-namespace Sparkle.CSharp.GUI; 
+namespace Sparkle.CSharp.GUI;
 
 public abstract class Gui : Disposable {
     

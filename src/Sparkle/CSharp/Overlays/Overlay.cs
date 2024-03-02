@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp.Overlays; 
+namespace Sparkle.CSharp.Overlays;
 
 public abstract class Overlay : Disposable {
     

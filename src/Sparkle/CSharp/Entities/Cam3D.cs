@@ -3,7 +3,7 @@ using Raylib_cs;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Rendering;
 
-namespace Sparkle.CSharp.Entities; 
+namespace Sparkle.CSharp.Entities;
 
 public class Cam3D : Entity {
 

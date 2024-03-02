@@ -7,7 +7,7 @@ using Sparkle.CSharp.Rendering.Util;
 using Sparkle.CSharp.Scenes;
 using BoundingBox = Raylib_cs.BoundingBox;
 
-namespace Sparkle.CSharp.Entities.Components; 
+namespace Sparkle.CSharp.Entities.Components;
 
 public class ModelRenderer : Component {
 

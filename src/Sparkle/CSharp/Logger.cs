@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Raylib_cs;
 using Sparkle.CSharp.IO;
 
-namespace Sparkle.CSharp; 
+namespace Sparkle.CSharp;
 
 public static class Logger {
     

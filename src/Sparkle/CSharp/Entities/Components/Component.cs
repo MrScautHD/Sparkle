@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp.Entities.Components; 
+namespace Sparkle.CSharp.Entities.Components;
 
 public abstract class Component : Disposable {
     

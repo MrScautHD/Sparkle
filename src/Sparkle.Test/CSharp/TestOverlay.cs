@@ -2,7 +2,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Rendering.Helpers;
 
-namespace Sparkle.Test.CSharp; 
+namespace Sparkle.Test.CSharp;
 
 public class TestOverlay : Overlay {
 

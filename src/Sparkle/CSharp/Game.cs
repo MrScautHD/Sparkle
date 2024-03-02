@@ -12,6 +12,7 @@ using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Gl;
+using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Windowing;
 
@@ -114,6 +115,7 @@ public class Game : Disposable {
             
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SkyBlue);
+            FontHelper.DrawFps(50,50);
             this.Draw();
             Graphics.EndDrawing();
         }

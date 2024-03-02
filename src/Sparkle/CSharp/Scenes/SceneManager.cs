@@ -1,6 +1,6 @@
 using Sparkle.CSharp.Entities;
 
-namespace Sparkle.CSharp.Scenes; 
+namespace Sparkle.CSharp.Scenes;
 
 public static class SceneManager {
     

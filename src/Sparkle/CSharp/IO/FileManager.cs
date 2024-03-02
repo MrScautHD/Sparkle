@@ -3,7 +3,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Sparkle.CSharp.IO; 
+namespace Sparkle.CSharp.IO;
 
 public static class FileManager {
     

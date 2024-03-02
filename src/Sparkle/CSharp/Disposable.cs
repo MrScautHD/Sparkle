@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp; 
+namespace Sparkle.CSharp;
 
 public abstract class Disposable : IDisposable {
     

@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp.Content.Types; 
+namespace Sparkle.CSharp.Content.Types;
 
 public interface IContentType<T> {
     

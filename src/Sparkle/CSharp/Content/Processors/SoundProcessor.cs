@@ -2,7 +2,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Audio;
 using Sparkle.CSharp.Content.Types;
 
-namespace Sparkle.CSharp.Content.Processors; 
+namespace Sparkle.CSharp.Content.Processors;
 
 public class SoundProcessor : IContentProcessor {
     

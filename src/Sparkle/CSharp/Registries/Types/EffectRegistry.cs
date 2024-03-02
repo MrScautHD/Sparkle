@@ -3,7 +3,7 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Effects.Types;
 
-namespace Sparkle.CSharp.Registries.Types; 
+namespace Sparkle.CSharp.Registries.Types;
 
 public class EffectRegistry : Registry {
 

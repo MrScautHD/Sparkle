@@ -1,6 +1,6 @@
 using Sparkle.CSharp.Content;
 
-namespace Sparkle.CSharp.Registries; 
+namespace Sparkle.CSharp.Registries;
 
 public static class RegistryManager {
     

@@ -1,7 +1,7 @@
 using System.Numerics;
 using Sparkle.CSharp.Entities.Components;
 
-namespace Sparkle.CSharp.Entities; 
+namespace Sparkle.CSharp.Entities;
 
 public class Entity : Disposable {
     

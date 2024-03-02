@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp; 
+namespace Sparkle.CSharp;
 
 public static class SystemInfo {
 

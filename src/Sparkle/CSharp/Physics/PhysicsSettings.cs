@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Sparkle.CSharp.Physics; 
+namespace Sparkle.CSharp.Physics;
 
 public struct PhysicsSettings {
 

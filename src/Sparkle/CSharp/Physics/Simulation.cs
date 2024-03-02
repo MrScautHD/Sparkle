@@ -3,7 +3,7 @@ using JoltPhysicsSharp;
 using Sparkle.CSharp.Physics.Layers;
 using Sparkle.CSharp.Physics.Tables;
 
-namespace Sparkle.CSharp.Physics; 
+namespace Sparkle.CSharp.Physics;
 
 public class Simulation : Disposable {
 

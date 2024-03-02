@@ -1,4 +1,4 @@
-namespace Sparkle.CSharp.Physics.Layers; 
+namespace Sparkle.CSharp.Physics.Layers;
 
 public enum BroadPhaseLayers {
     NonMoving = 0,
