@@ -9,7 +9,7 @@ namespace Sparkle.Test.CSharp;
 
 public class Test2DScene : Scene {
     
-    public Test2DScene(string name) : base(name) { }
+    public Test2DScene(string name) : base(name, SceneType.Scene2D) { }
 
     protected override void Init() {
         base.Init();
@@ -47,12 +47,8 @@ public class Test2DScene : Scene {
     protected override void Draw() {
         base.Draw();
         
-        SceneManager.MainCam2D!.BeginMode2D();
-        
         // OBJECTS
         ShapeHelper.DrawRectangle(45, 123, 5, 5, Color.White);
         ShapeHelper.DrawRectangle(5, 12, 30, 50, new Color(192, 112, 162, 100));
-        
-        SceneManager.MainCam2D!.EndMode2D();
     }
 }

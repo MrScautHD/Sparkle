@@ -44,7 +44,20 @@ public static class SceneManager {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     internal static void Draw() {
-        ActiveScene?.Draw();
+        switch (ActiveScene?.Type) {
+            
+            case SceneType.Scene3D:
+                MainCam3D?.BeginMode3D();
+                ActiveScene.Draw();
+                MainCam3D?.EndMode3D();
+                break;
+            
+            case SceneType.Scene2D:
+                MainCam2D?.BeginMode2D();
+                ActiveScene.Draw();
+                MainCam2D?.EndMode2D();
+                break;
+        }
     }
     
     /// <summary>

@@ -2,7 +2,6 @@ using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities.Components; 
 
@@ -50,18 +49,14 @@ public class Light : Component {
 
     protected internal override void Draw() {
         base.Draw();
-
+        
         if (this.DrawSphere) {
-            SceneManager.MainCam3D!.BeginMode3D();
-            
             if (this.Enabled) {
                 ModelHelper.DrawSphere(this.Entity.Position, 0.05F * this.Intensity, 16, 16, this.Color);
             }
             else {
                 ModelHelper.DrawSphereWires(this.Entity.Position, 0.05F * this.Intensity, 16, 16, this.Color);
             }
-                    
-            SceneManager.MainCam3D!.EndMode3D();
         }
     }
 

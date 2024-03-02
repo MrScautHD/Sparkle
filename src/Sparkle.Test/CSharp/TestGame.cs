@@ -3,7 +3,6 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Config;
 using Sparkle.CSharp.Overlays;
-using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.Test.CSharp; 
@@ -53,7 +52,7 @@ public class TestGame : Game {
         
         // MODELS
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
-
+        
         // MODEL ANIMATIONS
         //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
     }

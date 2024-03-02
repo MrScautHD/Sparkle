@@ -14,6 +14,7 @@ public class ModelRenderer : Component {
     public ModelAnimationPlayer AnimationPlayer { get; }
     
     private Model _model;
+    private BoundingBox _box;
     private Material[] _materials;
     private Effect _effect;
     private Color _color;
@@ -22,33 +23,41 @@ public class ModelRenderer : Component {
     public ModelRenderer(Model model, Material[] materials, Effect? effect = default, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) {
         this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
+        this._box = ModelHelper.GetBoundingBox(this._model);
         this._materials = materials;
         this._effect = effect ?? EffectRegistry.DiscardAlpha;
         this._color = color ?? Color.White;
         this._drawWires = drawWires;
         this.SetupMaterial();
     }
-    
-    protected internal override unsafe void Draw() {
-        base.Draw();
-        SceneManager.MainCam3D!.BeginMode3D();
+
+    protected internal override void Update() {
+        base.Update();
         
         this._effect.UpdateMaterialParameters(this._materials);
         
-        BoundingBox box = ModelHelper.GetBoundingBox(this._model);
-        box.Min.X += this.Entity.Position.X;
-        box.Max.X += this.Entity.Position.X;
+        Vector3 dimension = this._box.Max - this._box.Min;
+        this._box.Min.X = this.Entity.Position.X - dimension.X / 2;
+        this._box.Min.Y = this.Entity.Position.Y;
+        this._box.Min.Z = this.Entity.Position.Z - dimension.Z / 2;
         
-        box.Min.Y += this.Entity.Position.Y;
-        box.Max.Y += this.Entity.Position.Y;
+        this._box.Max.X = this.Entity.Position.X + dimension.X / 2;
+        this._box.Max.Y = this.Entity.Position.Y + dimension.Y;
+        this._box.Max.Z = this.Entity.Position.Z + dimension.Z / 2;
+    }
+
+    protected internal override void FixedUpdate() {
+        base.FixedUpdate();
+        this.AnimationPlayer.FixedUpdate(this._model);
+    }
+    
+    protected internal override unsafe void Draw() {
+        base.Draw();
         
-        box.Min.Z += this.Entity.Position.Z;
-        box.Max.Z += this.Entity.Position.Z;
-        
-        if (SceneManager.MainCam3D.GetFrustum().ContainsOrientedBox(box, this.Entity.Position, this.Entity.Rotation)) {
+        if (SceneManager.MainCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.Entity.Position, this.Entity.Rotation)) {
             Vector3 axis;
             float angle;
-            
+           
             Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
             
             if (this._drawWires) {
@@ -58,12 +67,6 @@ public class ModelRenderer : Component {
                 ModelHelper.DrawModel(this._model, this.Entity.Position, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
             }
         }
-        SceneManager.MainCam3D.EndMode3D();
-    }
-
-    protected internal override void FixedUpdate() {
-        base.FixedUpdate();
-        this.AnimationPlayer.FixedUpdate(this._model);
     }
 
     private unsafe void SetupMaterial() {

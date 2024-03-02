@@ -1,27 +1,28 @@
 using Sparkle.CSharp.Entities;
 
-namespace Sparkle.CSharp.Scenes; 
+namespace Sparkle.CSharp.Scenes;
 
 public abstract class Scene : Disposable {
-
+    
     public readonly string Name;
+    public readonly SceneType Type;
     
     private readonly Dictionary<int, Entity> _entities;
-
     private int _entityIds;
     
     public bool HasInitialized { get; private set; }
-
+    
     /// <summary>
-    /// Initializes a new instance of the Scene class with the specified name.
-    /// Also initializes an empty dictionary to hold entities within the scene.
+    /// Represents an abstract scene in the game.
     /// </summary>
-    /// <param name="name">The name of the scene.</param>
-    public Scene(string name) {
+    /// <param name="name">The scene name.</param>
+    /// <param name="type">The scene type (3D or 2D).</param>
+    protected Scene(string name, SceneType type) {
         this.Name = name;
+        this.Type = type;
         this._entities = new Dictionary<int, Entity>();
     }
-
+    
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>

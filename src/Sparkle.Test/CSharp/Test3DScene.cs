@@ -15,7 +15,7 @@ namespace Sparkle.Test.CSharp;
 
 public class Test3DScene : Scene {
     
-    public Test3DScene(string name) : base(name) { }
+    public Test3DScene(string name) : base(name, SceneType.Scene3D) { }
     
     protected override void Init() {
         
@@ -28,11 +28,11 @@ public class Test3DScene : Scene {
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
         
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 12; j++) {
-                TestEntity test = new TestEntity(new Vector3(i, 3, j));
+        for (int i = 0; i < 8000; i++) {
+           // for (int j = 0; j < 12; j++) {
+                TestEntity test = new TestEntity(new Vector3(0, i, 0));
                 this.AddEntity(test);
-            }
+            //}
         }
         
         // TEST ENTITY
@@ -59,14 +59,11 @@ public class Test3DScene : Scene {
 
     protected override void Draw() {
         base.Draw();
-        
-        SceneManager.MainCam3D!.BeginMode3D();
         Graphics.BeginShaderMode(EffectRegistry.Pbr.Shader);
         
         ModelHelper.DrawGrid(100, 1);
-        ModelHelper.DrawCube(SceneManager.MainCam3D.Target, 2, 2, 2, Color.Red);
+        ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
         
         Graphics.EndShaderMode();
-        SceneManager.MainCam3D.EndMode3D();
     }
 }

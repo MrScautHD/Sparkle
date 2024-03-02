@@ -3,8 +3,8 @@ using Sparkle.CSharp;
 using Sparkle.Test.CSharp;
 
 GameSettings settings = new GameSettings() {
-    Title = "Sparkle - [Tests]",
-    WindowFlags = ConfigFlags.Msaa4xHint | ConfigFlags.ResizableWindow
+    Title = "Sparkle - [Test]",
+    WindowFlags = ConfigFlags.Msaa4xHint | ConfigFlags.ResizableWindow,
 };
 
 using TestGame game = new TestGame(settings);

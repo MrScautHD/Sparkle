@@ -1,7 +1,6 @@
 using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities.Components; 
 
@@ -11,7 +10,7 @@ public class Sprite : Component {
     public Vector2 Size;
     public Color Color;
     public float Rotation;
-    public bool FlipSprite;
+    public bool FlipSprite; // TODO ADD IT!
 
     /// <summary>
     /// Represents a sprite object.
@@ -32,14 +31,10 @@ public class Sprite : Component {
     protected internal override void Draw() {
         base.Draw();
         
-        SceneManager.MainCam2D!.BeginMode2D();
-        
         Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
         Rectangle dest = new Rectangle(this.Entity.Position.X, this.Entity.Position.Y, this.Size.X, this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         TextureHelper.DrawPro(this.Texture, source, dest, origin, this.Rotation, this.Color);
-        
-        SceneManager.MainCam2D.EndMode2D();
     }
 
     protected override void Dispose(bool disposing) { }
