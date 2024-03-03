@@ -92,7 +92,7 @@ public static class Logger {
         string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
         
         if (LogPath != null) {
-            FileManager.WriteLine(text, LogPath);
+            FileAccessor.WriteLine(LogPath, text);
         }
         
         Console.ForegroundColor = color;

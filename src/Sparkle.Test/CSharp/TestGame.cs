@@ -1,7 +1,8 @@
+using Newtonsoft.Json.Linq;
 using Raylib_cs;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
-using Sparkle.CSharp.IO.Config;
+using Sparkle.CSharp.IO.Configs.Json;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Windowing;
 
@@ -33,14 +34,22 @@ public class TestGame : Game {
         this.Overlay.Enabled = false;
         OverlayManager.Add(this.Overlay);
         
-        Config config = new ConfigBuilder("config", "test")
-            .Add("test", true)
-            .Add("lol", 1000)
-            .Add("hello", "Hello World!")
+        JArray jList = new JArray();
+        jList.Add(21);
+        jList.Add(22);
+        jList.Add(23);
+        
+        JsonConfig jsonConfig = new JsonConfigBuilder("config", "jsonConfig")
+            .Add("Number", 12345.02F)
+            .Add("Check", true)
+            .Add("Text", "Hello")
+            .Add("List", jList)
             .Build();
         
-        Console.WriteLine(config.GetValue<string>("hello"));
-        Console.WriteLine(config.GetValue<int>("lol"));
+        Logger.Debug($"Number: {jsonConfig.GetValue<float>("Number")}");
+        Logger.Debug($"Check: {jsonConfig.GetValue<bool>("Check")}");
+        Logger.Debug($"Text: {jsonConfig.GetValue<string>("Text")}");
+        Logger.Debug($"List: {jsonConfig.GetValue<JArray>("List")}");
     }
 
     protected override void Load() {

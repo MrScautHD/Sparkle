@@ -12,7 +12,6 @@ using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Gl;
-using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Windowing;
 
@@ -84,7 +83,7 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
-        Logger.Info("Initialize OpenTK binding...");
+        Logger.Info("Initialize OpenTK binding..."); // TODO Remove it when Raylib-5.1 release 
         this.BindingContext = new NativeBindingContext();
         GLLoader.LoadBindings(this.BindingContext);
         
@@ -115,7 +114,6 @@ public class Game : Disposable {
             
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SkyBlue);
-            FontHelper.DrawFps(50,50);
             this.Draw();
             Graphics.EndDrawing();
         }
