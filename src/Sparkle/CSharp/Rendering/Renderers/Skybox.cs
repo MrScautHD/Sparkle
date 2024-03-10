@@ -12,6 +12,8 @@ public class Skybox : Disposable {
     
     private Texture2D _cubeMap;
     private Model _box;
+    
+    public bool HasInitialized { get; private set; }
 
     /// <summary>
     /// Represents a skybox in a 3D scene.
@@ -21,6 +23,8 @@ public class Skybox : Disposable {
     }
 
     protected internal void Init() {
+        this.HasInitialized = true;
+        
         this._cubeMap = TextureHelper.LoadCubemap(this.CubeMap, CubemapLayout.AutoDetect);
         this._box = ModelHelper.LoadFromMesh(MeshHelper.GenCube(1, 1, 1));
         MaterialHelper.SetTexture(ref this._box, 0, MaterialMapIndex.Cubemap, ref this._cubeMap);

@@ -12,7 +12,7 @@ public class Cam3D : Entity {
     private Frustum _frustum;
     
     public CameraMode Mode;
-    public Skybox? Skybox;
+    public Skybox? Skybox { get; private set; }
     
     public float MouseSensitivity;
     public float MovementSpeed;
@@ -89,7 +89,10 @@ public class Cam3D : Entity {
 
     protected internal override void Init() {
         base.Init();
-        this.Skybox?.Init();
+        
+        if (this.Skybox != null && !this.Skybox.HasInitialized) {
+            this.Skybox.Init();
+        }
     }
 
     protected internal override void Update() {
@@ -297,6 +300,19 @@ public class Cam3D : Entity {
         float difference = this.GetRoll() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
         
         Raylib.CameraRoll(ref this._camera3D, difference);
+    }
+
+    /// <summary>
+    /// Sets the skybox for the 3D camera.
+    /// </summary>
+    /// <param name="skybox">The skybox to set.</param>
+    public void SetSkybox(Skybox? skybox) {
+        this.Skybox?.Dispose();
+        this.Skybox = skybox;
+        
+        if (this.Skybox != null && !this.Skybox.HasInitialized) {
+            this.Skybox.Init();
+        }
     }
     
     /// <summary>
