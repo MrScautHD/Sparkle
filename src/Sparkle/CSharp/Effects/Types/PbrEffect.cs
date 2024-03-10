@@ -163,17 +163,17 @@ public class PbrEffect : Effect {
         ShaderHelper.SetValue(this.Shader, this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.MainCam3D.Position, ShaderUniformDataType.Vec3);
         
         GL.UseProgram((int) this.Shader.Id);
-        GL.BindBuffer(BufferTargetARB.UniformBuffer, this._lightBuffer);
-        GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
+        GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
+        GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
 
-        GL.BufferData(BufferTargetARB.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsageARB.DynamicDraw);
+        GL.BufferData(BufferTarget.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsage.DynamicDraw);
         
         for (int i = 0; i < this._lights.Count; i++) {
-            GL.BufferSubData(BufferTargetARB.UniformBuffer, IntPtr.Zero, sizeof(LightData) * (i + 1), this._lights[i]);
+            GL.BufferSubData(BufferTarget.UniformBuffer, IntPtr.Zero, sizeof(LightData) * (i + 1), this._lights[i]);
         }
         
-        GL.BindBufferBase(BufferTargetARB.UniformBuffer, 0, this._lightBuffer);
-        GL.BindBuffer(BufferTargetARB.UniformBuffer, 0);
+        GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
+        GL.BindBuffer(BufferTarget.UniformBuffer, 0);
     }
 
     /// <summary>
