@@ -10,16 +10,14 @@ public class Skybox : Disposable {
 
     public readonly Image CubeMap;
     
-    public Quaternion Rotation;
-    public Color Color;
-
     private Texture2D _cubeMap;
     private Model _box;
-    
-    public Skybox(Image cubeMap, Quaternion? rotation = default, Color? color = default) {
+
+    /// <summary>
+    /// Represents a skybox in a 3D scene.
+    /// </summary>
+    public Skybox(Image cubeMap) {
         this.CubeMap = cubeMap;
-        this.Rotation = rotation ?? Quaternion.Identity;
-        this.Color = color ?? Color.White;
     }
 
     protected internal void Init() {
@@ -30,16 +28,12 @@ public class Skybox : Disposable {
         Shader shader = EffectRegistry.Skybox.Shader;
         MaterialHelper.SetShader(ref this._box, 0, ref shader);
     }
-
-    protected internal unsafe void Draw() {
+    
+    protected internal void Draw() {
         Rlgl.DisableBackfaceCulling();
         Rlgl.DisableDepthMask();
-        
-        Vector3 axis;
-        float angle;
-           
-        Raymath.QuaternionToAxisAngle(this.Rotation, &axis, &angle);
-        ModelHelper.DrawModel(this._box, SceneManager.MainCam3D!.Position, axis, angle, Vector3.One, this.Color);
+
+        ModelHelper.DrawModel(this._box, SceneManager.MainCam3D!.Position, 1, Color.White);
         
         Rlgl.EnableBackfaceCulling();
         Rlgl.EnableDepthMask();

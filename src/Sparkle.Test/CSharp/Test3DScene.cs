@@ -45,7 +45,7 @@ public class Test3DScene : Scene {
         ground.AddComponent(new RigidBody(shapes, true, true));
         this.AddEntity(ground);
     }
-
+    
     protected override void Update() {
         base.Update();
         
