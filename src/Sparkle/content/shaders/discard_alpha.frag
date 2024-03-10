@@ -11,7 +11,7 @@ out vec4 finalColor;
 void main() {
     vec4 texelColor = texture(texture0, fragTexCoord);
     
-    if(texelColor.a <= 0.0) {
+    if (texelColor.a <= 0.0) {
         discard;
     }
     

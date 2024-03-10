@@ -9,6 +9,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
+using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.Test.CSharp;
@@ -21,7 +22,7 @@ public class Test3DScene : Scene {
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
-        Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.Perspective, CameraMode.Free);
+        Cam3D cam3D = new Cam3D(pos, Vector3.Zero, Vector3.UnitY, 70, CameraProjection.Perspective, CameraMode.Free, new Skybox(TestGame.Skybox));
         this.AddEntity(cam3D);
 
         Entity light = new Entity(new Vector3(1, 3, 0));

@@ -14,6 +14,9 @@ public class TestGame : Game {
     public static Texture2D PlayerTexture;
     public static Texture2D SpriteTexture;
     
+    // IMAGES
+    public static Image Skybox;
+    
     // MODELS
     public static Model PlayerModel;
     
@@ -58,6 +61,9 @@ public class TestGame : Game {
         // TEXTURES
         PlayerTexture = this.Content.Load(new TextureContent("content/texture.png"));
         SpriteTexture = this.Content.Load(new TextureContent("content/sprite.png"));
+        
+        // IMAGES
+        Skybox = this.Content.Load(new ImageContent("content/skybox.png"));
         
         // MODELS
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));

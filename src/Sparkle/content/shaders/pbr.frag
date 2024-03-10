@@ -33,7 +33,6 @@ in mat3 TBN;
 
 // Output fragment color
 out vec4 finalColor;
-// Input uniform values
 
 uniform sampler2D albedoMap;
 uniform sampler2D mraMap;
@@ -177,7 +176,7 @@ vec4 ComputePBR() {
 void main() {
     vec4 color = ComputePBR();
 
-    if(color.a <= 0.0) {
+    if (color.a <= 0.0) {
         discard;
     }
 
