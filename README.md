@@ -27,7 +27,7 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 - [RayLib](https://www.raylib.com)
 - [OpenTK](https://github.com/opentk/opentk)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
-- [JoltPhysicsSharp](https://www.nuget.org/packages/JoltPhysicsSharp)
+- [Jitter2](https://www.nuget.org/packages/Jitter2)
 
 🌋 Graphic Engine
 ==================
