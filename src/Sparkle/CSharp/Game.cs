@@ -7,7 +7,6 @@ using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Overlays;
-using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
@@ -31,9 +30,7 @@ public class Game : Disposable {
     public bool ShouldClose;
     
     public NativeBindingContext BindingContext { get; private set; }
-    
     public ContentManager Content { get; private set; }
-    public Simulation Simulation { get; private set; }
     
     public Image Logo { get; private set; }
     
@@ -91,9 +88,6 @@ public class Game : Disposable {
         
         Logger.Info("Load content...");
         this.Load();
-        
-        Logger.Info("Initialize physics...");
-        this.Simulation = new Simulation(this.Settings.PhysicsSettings);
         
         Logger.Info("Set default scene...");
         SceneManager.SetDefaultScene(scene);
@@ -170,7 +164,6 @@ public class Game : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
-        this.Simulation.Step(1.0F / this.Settings.FixedTimeStep, 1);
         EffectManager.FixedUpdate();
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
@@ -219,7 +212,6 @@ public class Game : Disposable {
             
             GuiManager.ActiveGui?.Dispose();
             SceneManager.ActiveScene?.Dispose();
-            this.Simulation.Dispose();
             this.Content.Dispose();
             this.BindingContext.Dispose();
             AudioDevice.Close();

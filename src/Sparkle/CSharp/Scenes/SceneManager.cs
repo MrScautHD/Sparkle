@@ -1,4 +1,5 @@
 using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Physics;
 
 namespace Sparkle.CSharp.Scenes;
 
@@ -9,6 +10,8 @@ public static class SceneManager {
     public static Cam3D? MainCam3D { get; private set; }
     public static Cam2D? MainCam2D { get; private set; }
 
+    public static Simulation? Simulation => ActiveScene?.Simulation;
+    
     /// <summary>
     /// Initializes the current scene and sets the main camera if available.
     /// </summary>

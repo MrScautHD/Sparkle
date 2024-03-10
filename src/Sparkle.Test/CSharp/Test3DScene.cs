@@ -1,5 +1,5 @@
 using System.Numerics;
-using JoltPhysicsSharp;
+using Jitter2.Collision.Shapes;
 using Raylib_cs;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Effects.Types;
@@ -30,18 +30,18 @@ public class Test3DScene : Scene {
         
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 12; j++) {
-                TestEntity test = new TestEntity(new Vector3(i, 1, j));
+                TestEntity test = new TestEntity(new Vector3(i * 2, 30, j * 2));
                 this.AddEntity(test);
             }
         }
-        
-        // TEST ENTITY
-        //TestEntity entity = new TestEntity(new Vector3(0, 20, 0));
-        //this.AddEntity(entity);
 
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
-        ground.AddComponent(new Rigidbody(new BoxShape(new Vector3(100000, 1, 100000)), MotionType.Static));
+        
+        List<Shape> shapes = new List<Shape>();
+        shapes.Add(new BoxShape(100000, 1, 100000));
+        
+        ground.AddComponent(new RigidBody(shapes, true, true));
         this.AddEntity(ground);
     }
 

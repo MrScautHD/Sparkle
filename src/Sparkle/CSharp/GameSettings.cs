@@ -1,6 +1,5 @@
 using System.Reflection;
 using Raylib_cs;
-using Sparkle.CSharp.Physics;
 
 namespace Sparkle.CSharp;
 
@@ -14,7 +13,6 @@ public struct GameSettings {
     public int TargetFps { get; init; }
     public int FixedTimeStep { get; init; }
     public ConfigFlags WindowFlags { get; init; }
-    public PhysicsSettings PhysicsSettings { get; init; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="GameSettings"/> with default values for various game settings such as window size, icon path, log directory, content directory, and more.
@@ -28,6 +26,5 @@ public struct GameSettings {
         this.TargetFps = 0;
         this.FixedTimeStep = 60;
         this.WindowFlags = ConfigFlags.VSyncHint | ConfigFlags.ResizableWindow;
-        this.PhysicsSettings = new PhysicsSettings();
     }
 }

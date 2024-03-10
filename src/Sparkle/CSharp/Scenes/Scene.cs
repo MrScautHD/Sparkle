@@ -1,11 +1,14 @@
 using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Physics;
 
 namespace Sparkle.CSharp.Scenes;
 
 public abstract class Scene : Disposable {
     
     public readonly string Name;
+    
     public readonly SceneType Type;
+    public readonly Simulation Simulation;
     
     private readonly Dictionary<int, Entity> _entities;
     private int _entityIds;
@@ -17,9 +20,11 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="name">The scene name.</param>
     /// <param name="type">The scene type (3D or 2D).</param>
-    protected Scene(string name, SceneType type) {
+    /// <param name="settings">The physics settings.</param>
+    protected Scene(string name, SceneType type, PhysicsSettings? settings = default) {
         this.Name = name;
         this.Type = type;
+        this.Simulation = new Simulation(settings ?? new PhysicsSettings());
         this._entities = new Dictionary<int, Entity>();
     }
     
@@ -53,6 +58,8 @@ public abstract class Scene : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() {
+        this.Simulation.Step(1.0F / Game.Instance.Settings.FixedTimeStep);
+        
         foreach (Entity entity in this._entities.Values) {
             entity.FixedUpdate();
         }
@@ -133,6 +140,8 @@ public abstract class Scene : Disposable {
             
             this._entities.Clear();
             this._entityIds = 0;
+            
+            this.Simulation.Dispose();
         }
     }
 }

@@ -30,7 +30,7 @@ public class Cam3D : Entity {
         this.Projection = projection;
         this.Mode = mode;
         this.MouseSensitivity = 0.03F;
-        this.MovementSpeed = 0.09F;
+        this.MovementSpeed = 10.0F;
         this.OrbitalSpeed = 0.5F;
     }
     
@@ -97,27 +97,27 @@ public class Cam3D : Entity {
                     this.SetPitch(this.GetPitch() - Input.GetMouseDelta().Y * this.MouseSensitivity, true, false, false);
 
                     if (Input.IsKeyDown(KeyboardKey.W)) {
-                        this.MoveForward(this.MovementSpeed, true);
+                        this.MoveForward(this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.S)) {
-                        this.MoveForward(-this.MovementSpeed, true);
+                        this.MoveForward(-this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.A)) {
-                        this.MoveRight(-this.MovementSpeed, true);
+                        this.MoveRight(-this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.D)) {
-                        this.MoveRight(this.MovementSpeed, true);
+                        this.MoveRight(this.MovementSpeed * Time.Delta, true);
                     }
 
                     if (Input.IsKeyDown(KeyboardKey.Space)) {
-                        this.MoveUp(this.MovementSpeed);
+                        this.MoveUp(this.MovementSpeed * Time.Delta);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.LeftShift)) {
-                        this.MoveUp(-this.MovementSpeed);
+                        this.MoveUp(-this.MovementSpeed * Time.Delta);
                     }
                 }
                 else {
@@ -125,27 +125,27 @@ public class Cam3D : Entity {
                     this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.RightY) * 2) * this.MouseSensitivity, true, false, false);
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightTrigger2)) {
-                        this.MoveForward(this.MovementSpeed, true);
+                        this.MoveForward(this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.LeftTrigger2)) {
-                        this.MoveForward(-this.MovementSpeed, true);
+                        this.MoveForward(-this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightTrigger1)) {
-                        this.MoveRight(this.MovementSpeed, true);
+                        this.MoveRight(this.MovementSpeed * Time.Delta, true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.LeftTrigger1)) {
-                        this.MoveRight(-this.MovementSpeed, true);
+                        this.MoveRight(-this.MovementSpeed * Time.Delta, true);
                     }
 
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightFaceUp)) {
-                        this.MoveUp(this.MovementSpeed);
+                        this.MoveUp(this.MovementSpeed * Time.Delta);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightFaceDown)) {
-                        this.MoveUp(-this.MovementSpeed);
+                        this.MoveUp(-this.MovementSpeed * Time.Delta);
                     }
                 }
                 break;
