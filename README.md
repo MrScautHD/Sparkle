@@ -7,9 +7,8 @@
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q6K0XC0)
-
-[<img src="https://user-images.githubusercontent.com/65916181/229357115-d601e227-e80a-459d-974e-92905e192b08.png" width="125" height="40">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/1023302120755187753/1216795862072688740/image-1.png?ex=6601b074&is=65ef3b74&hm=8c2c0e9bdafae052b6118485b7d4bca0438ebd10f73d30980d6d064fa4f75fd2&" width="186" height="60">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216797507963584592/image.png?ex=6601b1fc&is=65ef3cfc&hm=34db74904787110fdf047ded64c3d3d2e1b77f5b5738f8d0c45bf7bad8a781b5&" width="186" height="60">](https://github.com/sponsors/MrScautHD)
 
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ========================
