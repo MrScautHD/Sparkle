@@ -11,18 +11,25 @@
 [<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216797507963584592/image.png?ex=6601b1fc&is=65ef3cfc&hm=34db74904787110fdf047ded64c3d3d2e1b77f5b5738f8d0c45bf7bad8a781b5&" width="186" height="60">](https://github.com/sponsors/MrScautHD)
 
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
-========================
+==================================================================
 <!-- Make sure to update this as new versions come out. Doing this makes it easier for people to copy paste, us devs are lazy -->
 ```
 dotnet add package Sparkle --version 2.2.0
 ```
 
 ⭐ Getting Started
-===========
+===================
 We trust you'll relish your time with Sparkle! To kick things off, head over to our [Wiki](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) for a seamless start.
 
+‍💻 Platforms
+=============
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813998356562073/image.png?ex=6601c158&is=65ef4c58&hm=80bd4e40a9e3d4fcd88ae87633e56929a23ed5caf83ecb85a999446bb4cb7225&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997433688225/image.png?ex=6601c158&is=65ef4c58&hm=8b536653194045beb90ce072b09c677151a274da8520657c89cd64d998ad2241&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997873954866/image.png?ex=6601c158&is=65ef4c58&hm=fd50dfd9bdbda75f636a09dfa243aa04756c41e7d66ec1ea2980abef01377e6c&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+
+
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
-==============================================
+======================================================
 - [RayLib](https://www.raylib.com)
 - [OpenTK](https://github.com/opentk/opentk)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
