@@ -21,13 +21,6 @@ dotnet add package Sparkle --version 2.2.0
 ===================
 We trust you'll relish your time with Sparkle! To kick things off, head over to our [Wiki](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) for a seamless start.
 
-‍💻 Platforms
-=============
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813998356562073/image.png?ex=6601c158&is=65ef4c58&hm=80bd4e40a9e3d4fcd88ae87633e56929a23ed5caf83ecb85a999446bb4cb7225&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997433688225/image.png?ex=6601c158&is=65ef4c58&hm=8b536653194045beb90ce072b09c677151a274da8520657c89cd64d998ad2241&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997873954866/image.png?ex=6601c158&is=65ef4c58&hm=fd50dfd9bdbda75f636a09dfa243aa04756c41e7d66ec1ea2980abef01377e6c&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
-
-
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
 - [RayLib](https://www.raylib.com)
@@ -40,7 +33,13 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 - [OpenGl](https://www.opengl.org/)
 - [Angle](https://github.com/google/angle) `(Vulkan, Direct3D, Metal...)`
 
-💻 Contributors
+‍💻 Platforms
+=============
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813998356562073/image.png?ex=6601c158&is=65ef4c58&hm=80bd4e40a9e3d4fcd88ae87633e56929a23ed5caf83ecb85a999446bb4cb7225&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997433688225/image.png?ex=6601c158&is=65ef4c58&hm=8b536653194045beb90ce072b09c677151a274da8520657c89cd64d998ad2241&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997873954866/image.png?ex=6601c158&is=65ef4c58&hm=fd50dfd9bdbda75f636a09dfa243aa04756c41e7d66ec1ea2980abef01377e6c&" width="70" height="70">](https://discord.gg/7XKw6YQa76)
+
+🧑 Contributors
 ==================
 <a href="https://github.com/mrscauthd/sparkle/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=mrscauthd/sparkle&max=500&columns=20&anon=1" />
