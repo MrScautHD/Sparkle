@@ -4,6 +4,10 @@ using Raylib_cs;
 namespace Sparkle.CSharp;
 
 public static class Input {
+    
+    /// <inheritdoc cref="Raylib.PollInputEvents"/>
+    public static void PollInputEvents() => Raylib.PollInputEvents();
+    
 
     /// <inheritdoc cref="Raylib.IsKeyPressed"/>
     public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);

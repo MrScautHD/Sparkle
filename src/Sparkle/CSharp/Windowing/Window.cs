@@ -16,6 +16,9 @@ public static class Window {
     
     /// <inheritdoc cref="Raylib.TakeScreenshot(string)"/>
     public static void TakeScreenshot(string path) => Raylib.TakeScreenshot(path);
+
+    /// <inheritdoc cref="Raylib.OpenURL(string)"/>
+    public static void OpenUrl(string url) => Raylib.OpenURL(url);
     
     
     /// <inheritdoc cref="Raylib.IsWindowReady"/>

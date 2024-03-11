@@ -65,7 +65,7 @@ public class Game : Disposable {
         Logger.Info("Initialize Raylib logger...");
         Logger.SetupRaylibLogger();
         
-        this.SetTargetFps(this.Settings.TargetFps);
+        Time.SetTargetFps(this.Settings.TargetFps);
 
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager();
@@ -186,15 +186,6 @@ public class Game : Disposable {
     protected virtual void OnClose() {
         Logger.Warn("Application shuts down!");
     }
-    
-    /// <inheritdoc cref="Raylib.GetFPS"/>
-    public int GetFps() => Raylib.GetFPS();
-
-    /// <inheritdoc cref="Raylib.SetTargetFPS"/>
-    public void SetTargetFps(int fps) => Raylib.SetTargetFPS(fps);
-
-    /// <inheritdoc cref="Raylib.OpenURL(string)"/>
-    public void OpenUrl(string url) => Raylib.OpenURL(url);
 
     protected override void Dispose(bool disposing) {
         if (disposing) {

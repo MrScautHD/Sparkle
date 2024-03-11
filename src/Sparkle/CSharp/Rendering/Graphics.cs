@@ -4,9 +4,12 @@ namespace Sparkle.CSharp.Rendering;
 
 public static class Graphics {
     
+    /// <inheritdoc cref="Raylib.SwapScreenBuffer"/>
+    public static void SwapScreenBuffer() => Raylib.SwapScreenBuffer();
+    
+    
     /// <inheritdoc cref="Raylib.ClearBackground"/>
     public static void ClearBackground(Color color) => Raylib.ClearBackground(color);
-    
     
     /// <inheritdoc cref="Raylib.BeginDrawing"/>
     public static void BeginDrawing() => Raylib.BeginDrawing();
