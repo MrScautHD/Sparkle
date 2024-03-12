@@ -55,7 +55,7 @@ public class GameTest : Game {
     public GameTest(GameSettings settings) : base(settings) {
         
         // Create your own config file!
-        Config config = new ConfigBuilder("config", "test")
+        JsonConfig config = new JsonConfigBuilder("config", "test")
             .Add("Hello", "Hello World!")
             .Add("Bye", 1000)
             .Build();
@@ -67,7 +67,7 @@ public class GameTest : Game {
         base.Init();
         
         // Open a url.
-        this.OpenUrl("https://www.youtube.com/");
+        Window.OpenUrl("https://www.youtube.com/");
     }
 
     protected override void Load() {
