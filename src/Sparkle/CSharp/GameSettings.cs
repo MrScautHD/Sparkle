@@ -18,7 +18,7 @@ public struct GameSettings {
     /// Initializes a new instance of the <see cref="GameSettings"/> with default values for various game settings such as window size, icon path, log directory, content directory, and more.
     /// </summary>
     public GameSettings() {
-        this.Title = Assembly.GetEntryAssembly()!.GetName().Name ?? "Sparkle";
+        this.Title = Assembly.GetEntryAssembly()?.GetName().Name ?? "Sparkle";
         this.Width = 1280;
         this.Height = 720;
         this.IconPath = string.Empty;
