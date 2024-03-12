@@ -8,4 +8,4 @@ GameSettings settings = new GameSettings() {
 };
 
 using TestGame game = new TestGame(settings);
-game.Run(new Test3DScene("test"));
+game.Run(new Test3DScene("3D"));

@@ -13,6 +13,7 @@ public static class Time {
     /// <inheritdoc cref="Raylib.GetTime"/>
     public static double Total => Raylib.GetTime();
     
+    
     /// <inheritdoc cref="Raylib.SetTargetFPS"/>
     public static void SetTargetFps(int fps) => Raylib.SetTargetFPS(fps);
 
