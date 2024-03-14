@@ -21,7 +21,7 @@ using Registry = Registry;
 public class Game : Disposable {
     
     public static Game Instance { get; private set; }
-    public static readonly Version Version = new Version(3, 0, 0);
+    public static readonly Version Version = new Version(3, 0, 2);
     
     private readonly double _fixedTimeStep;
     private double _timer;
