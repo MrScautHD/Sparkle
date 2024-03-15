@@ -1,5 +1,5 @@
 <p align="center" style="margin-bottom: 0px !important;">
-  <img width="512" src="https://cdn.discordapp.com/attachments/1036960672715644939/1131937257578836088/imaged.png" alt="Logo" align="center">
+  <img width="512" src="https://github.com/MrScautHD/Sparkle/assets/65916181/9f378f17-5468-4dd4-bc72-ffd396a90639" alt="Logo" align="center">
 </p>
 
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
@@ -14,7 +14,7 @@
 ==================================================================
 <!-- Make sure to update this as new versions come out. Doing this makes it easier for people to copy paste, us devs are lazy -->
 ```
-dotnet add package Sparkle --version 3.0.0
+dotnet add package Sparkle --version 3.0.2
 ```
 
 ⭐ Getting Started
