@@ -2,6 +2,7 @@ using System.Numerics;
 using Jitter2.Collision.Shapes;
 using Jitter2.LinearMath;
 using Raylib_cs;
+using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Registries.Types;
@@ -29,9 +30,8 @@ public class TestEntity : Entity {
             .Build();
 
         // RENDERER
-        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr/*, default, TestGame.Animations*/);
-        //modelRenderer.AnimationPlayer.Play(1, true);
-        
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr, default);
+        //modelRenderer.AnimationPlayer.Play(0, true, 0);
         this.AddComponent(modelRenderer);
         
         // PHYSICS
@@ -49,5 +49,29 @@ public class TestEntity : Entity {
         if (!body.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out Shape? shape, out JVector normal, out float fraction)) {
             body.JBody.AddForce(new JVector(0, 200, 0));
         }
+    }
+
+    protected override void Update() {
+        base.Update();
+
+        /*
+        if (Input.IsKeyPressed(KeyboardKey.U)) {
+            this.GetComponent<ModelRenderer>().AnimationPlayer.Play(1, true, 0.5F);
+        }
+        
+        if (Input.IsKeyPressed(KeyboardKey.I)) {
+            this.GetComponent<ModelRenderer>().AnimationPlayer.Play(0, true, 0.5F);
+        }
+        
+        if (Input.IsKeyPressed(KeyboardKey.O)) {
+            this.GetComponent<ModelRenderer>().AnimationPlayer.Stop();
+        }
+        
+        if (Input.IsKeyPressed(KeyboardKey.P)) {
+            this.GetComponent<ModelRenderer>().AnimationPlayer.Pause();
+        }
+        if (Input.IsKeyPressed(KeyboardKey.L)) {
+            this.GetComponent<ModelRenderer>().AnimationPlayer.UnPause();
+        }*/
     }
 }

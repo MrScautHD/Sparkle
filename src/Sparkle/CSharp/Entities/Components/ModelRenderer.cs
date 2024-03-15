@@ -21,7 +21,7 @@ public class ModelRenderer : Component {
     private bool _drawWires;
     
     public ModelRenderer(Model model, Material[] materials, Effect? effect = default, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) {
-        this.AnimationPlayer = new ModelAnimationPlayer(animations ?? Array.Empty<ModelAnimation>());
+        this.AnimationPlayer = new ModelAnimationPlayer(model, animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
         this._box = ModelHelper.GetBoundingBox(this._model);
         this._materials = materials;
@@ -48,7 +48,7 @@ public class ModelRenderer : Component {
 
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
-        this.AnimationPlayer.FixedUpdate(this._model);
+        this.AnimationPlayer.FixedUpdate();
     }
     
     protected internal override unsafe void Draw() {

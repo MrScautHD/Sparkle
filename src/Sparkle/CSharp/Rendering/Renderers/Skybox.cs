@@ -1,4 +1,3 @@
-using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
