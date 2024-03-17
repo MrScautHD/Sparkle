@@ -21,7 +21,7 @@ public class Test3DScene : Scene {
     public Model Cubes;
 
     public Test3DScene(string name) : base(name, SceneType.Scene3D) {
-        this.MarchingCubes = new MarchingCubes(RandomHelper.GetRandomValue(10, 102020), 60, 25, 0.07F, 0.1F, 0.5F);
+        this.MarchingCubes = new MarchingCubes(123, 100, 35, 0.87F, 0.87F, 0.9F, false);
     }
     
     protected override void Init() {
@@ -38,12 +38,12 @@ public class Test3DScene : Scene {
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
         
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 12; j++) {
-                TestEntity test = new TestEntity(new Vector3(i * 2, 30, j * 2));
-                this.AddEntity(test);
-            }
-        }
+        //for (int i = 0; i < 12; i++) {
+        //    for (int j = 0; j < 12; j++) {
+        //        TestEntity test = new TestEntity(new Vector3(i * 2, 30, j * 2));
+        //        this.AddEntity(test);
+        //    }
+        //}
         
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
@@ -73,7 +73,7 @@ public class Test3DScene : Scene {
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
-        ModelHelper.DrawModel(this.Cubes, Vector3.Zero, 1, Color.Orange);
+        ModelHelper.DrawModel(this.Cubes, Vector3.Zero, 1, Color.White);
         
         Graphics.EndShaderMode();
     }

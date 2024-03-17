@@ -2,7 +2,7 @@ using Raylib_cs;
 
 namespace Sparkle.CSharp.Terrain;
 
-public class PerlinNoise {
+public class Perlin {
     
     private readonly Random _random;
     private readonly int _gradientSizeTable;
@@ -14,7 +14,7 @@ public class PerlinNoise {
     /// Initializes a new instance of the PerlinNoise class with the specified seed.
     /// </summary>
     /// <param name="seed">Seed value for initializing the random number generator.</param>
-    public PerlinNoise(int seed) {
+    public Perlin(int seed) {
         this._random = new Random(seed);
         this._gradientSizeTable = 256;
         this._perm = new int[this._gradientSizeTable * 2];

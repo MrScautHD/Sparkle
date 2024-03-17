@@ -2,7 +2,6 @@ using System.Numerics;
 using Jitter2.Collision.Shapes;
 using Jitter2.LinearMath;
 using Raylib_cs;
-using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Registries.Types;

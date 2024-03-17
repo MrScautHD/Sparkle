@@ -6,7 +6,7 @@ namespace Sparkle.CSharp.Terrain;
 
 public class MarchingCubes {
 
-    private PerlinNoise _perlinNoise;
+    private Perlin _perlin;
     
     private int _width;
     private int _height;
@@ -36,7 +36,7 @@ public class MarchingCubes {
     /// <param name="heightThreshold">Threshold value determining the surface generation.</param>
     /// <param name="use3DNoise">Optional parameter indicating whether to use 3D noise for generating terrain.</param>
     public MarchingCubes(int seed, int width, int height, float resolution, float scale, float heightThreshold, bool use3DNoise = false) {
-        this._perlinNoise = new PerlinNoise(seed);
+        this._perlin = new Perlin(seed);
         this._width = width;
         this._height = height;
         this._resolution = resolution;
@@ -53,7 +53,7 @@ public class MarchingCubes {
     /// Initializes the MarchingCubes object by setting heights and marching cubes
     /// </summary>
     public void Init() {
-        this._perlinNoise.Init();
+        //this._perlin.Init();
         this.SetHeights();
         this.MarchCubes();
         this.HasInitialized = true;
@@ -110,7 +110,7 @@ public class MarchingCubes {
                         this._heights[x, y, z] = this.PerlinNoise3D((float) x / this._width * this._scale, (float) y / this._height * this._scale, (float) z / this._width * this._scale);
                     }
                     else {
-                        float currentHeight = this._height * this._perlinNoise.Noise(x * this._scale, z * this._scale);
+                        float currentHeight = this._height * this._perlin.Noise(x * this._scale, z * this._scale);
                         float distToSurface;
 
                         if (y <= currentHeight - 0.5f) {
@@ -141,14 +141,14 @@ public class MarchingCubes {
     /// <param name="z">The z-coordinate.</param>
     /// <returns>The Perlin noise value.</returns>
     private float PerlinNoise3D(float x, float y, float z) {
-        float xy = this._perlinNoise.Noise(x, y);
-        float xz = this._perlinNoise.Noise(x, z);
-        float yz = this._perlinNoise.Noise(y, z);
-
-        float yx = this._perlinNoise.Noise(y, x);
-        float zx = this._perlinNoise.Noise(z, x);
-        float zy = this._perlinNoise.Noise(z, y);
-
+        float xy = this._perlin.Noise(x, y);
+        float xz = this._perlin.Noise(x, z);
+        float yz = this._perlin.Noise(y, z);
+        
+        float yx = this._perlin.Noise(y, x);
+        float zx = this._perlin.Noise(z, x);
+        float zy = this._perlin.Noise(z, y);
+        
         return (xy + xz + yz + yx + zx + zy) / 6;
     }
 
