@@ -4,6 +4,7 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Configs.Json;
 using Sparkle.CSharp.Overlays;
+using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.Test.CSharp;
@@ -79,6 +80,12 @@ public class TestGame : Game {
             Input.DisableCursor();
             Window.ToggleBorderless();
         }
+    }
+
+    protected override void Draw() {
+        base.Draw();
+        
+        FontHelper.DrawFps(50, 50);
     }
 
     private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {

@@ -18,16 +18,24 @@ namespace Sparkle.Test.CSharp;
 public class Test3DScene : Scene {
 
     public MarchingCubes MarchingCubes;
-    public Model Cubes;
+    public List<MarchingCubesChunk> MarchingCubesChunks;
 
     public Test3DScene(string name) : base(name, SceneType.Scene3D) {
-        this.MarchingCubes = new MarchingCubes(123, 100, 35, 0.87F, 0.87F, 0.9F, false);
+        this.MarchingCubes = new MarchingCubes(123, 16, 16, 0.007F, 0.5F, false);
+        this.MarchingCubesChunks = new List<MarchingCubesChunk>();
     }
     
     protected override void Init() {
-        this.MarchingCubes.Init();
-        this.Cubes = this.MarchingCubes.GenerateModel();
-        MaterialHelper.SetTexture(ref this.Cubes, 0, MaterialMapIndex.Albedo, ref TestGame.SpriteTexture);
+        int chunks = 50;
+        
+        for (int i = 0; i < chunks * 16; i += 16) {
+            for (int j = 0; j < chunks * 16; j += 16) {
+                MarchingCubesChunk chunk = new MarchingCubesChunk(this.MarchingCubes, new Vector3(i, 0, j), 16, 16);
+                chunk.Generate();
+                
+                this.MarchingCubesChunks.Add(chunk);
+            }
+        }
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
@@ -73,8 +81,21 @@ public class Test3DScene : Scene {
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
-        ModelHelper.DrawModel(this.Cubes, Vector3.Zero, 1, Color.White);
+
+        foreach (MarchingCubesChunk chunk in this.MarchingCubesChunks) {
+            //ModelHelper.DrawModel(chunk.Mesh, Vector3.Zero, 1, Color.White);
+        }
         
         Graphics.EndShaderMode();
+    }
+
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        
+        if (disposing) {
+            foreach (MarchingCubesChunk chunk in this.MarchingCubesChunks) {
+                chunk.Dispose();
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@
   
   <ItemGroup>
     <PackageReference Include="Jitter2" Version="2.2.0" />
+    <PackageReference Include="LibNoise" Version="0.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK.Graphics" Version="5.0.0-pre.10" />
     <PackageReference Include="Raylib-cs" Version="6.0.0" />
