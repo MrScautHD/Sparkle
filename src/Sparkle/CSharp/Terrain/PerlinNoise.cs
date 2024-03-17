@@ -34,11 +34,10 @@ public class PerlinNoise {
     private void SetupPermutation() {
         for (int i = 0; i < this._gradientSizeTable; i++) {
             int source = this._random.Next(this._gradientSizeTable - i) + i;
-            
-            int temp = this._perm[i];
-            this._perm[i] = i;
-            this._perm[i + this._gradientSizeTable] = temp;
-            this._perm[source] = temp;
+
+            this._perm[i + this._gradientSizeTable] = this._perm[source];
+            this._perm[i] = this._perm[i + this._gradientSizeTable];
+            this._perm[source] = this._perm[i];
         }
     }
 
