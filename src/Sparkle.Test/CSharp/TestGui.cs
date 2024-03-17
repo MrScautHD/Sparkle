@@ -24,7 +24,6 @@ public class TestGui : Gui {
             HoverColor = Color.Gray,
             Rotation = 0
         };
-        
         this.AddElement(new LabelElement("label", labelData, Anchor.BottomCenter, Vector2.Zero));
         
         ButtonData buttonData = new ButtonData() {
@@ -44,7 +43,6 @@ public class TestGui : Gui {
             Logger.Error("BUTTON GET PRESSED!");
             return true;
         }));
-
 
         ToggleData toggleData = new ToggleData() {
             ToggledText = "Checked",

@@ -1,4 +1,3 @@
-using System.Reflection;
 using OpenTK.Graphics;
 using Raylib_cs;
 using Sparkle.CSharp.Audio;
@@ -16,12 +15,10 @@ using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.CSharp;
 
-using Registry = Registry;
-
 public class Game : Disposable {
     
     public static Game Instance { get; private set; }
-    public static readonly Version Version = new Version(3, 0, 2);
+    public static readonly Version Version = new Version(3, 1, 0);
     
     private readonly double _fixedTimeStep;
     private double _timer;

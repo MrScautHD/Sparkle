@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#12, Net8, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>3.0.2</Version>
+    <Version>3.1.0</Version>
     <PackageIcon>icon.png</PackageIcon>
     <LangVersion>12</LangVersion>
   </PropertyGroup>

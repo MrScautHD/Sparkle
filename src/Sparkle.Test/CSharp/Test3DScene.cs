@@ -11,14 +11,23 @@ using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
+using Sparkle.CSharp.Terrain;
 
 namespace Sparkle.Test.CSharp;
 
 public class Test3DScene : Scene {
-    
-    public Test3DScene(string name) : base(name, SceneType.Scene3D) { }
+
+    public MarchingCubes MarchingCubes;
+    public Model Cubes;
+
+    public Test3DScene(string name) : base(name, SceneType.Scene3D) {
+        this.MarchingCubes = new MarchingCubes(RandomHelper.GetRandomValue(10, 102020), 60, 25, 0.07F, 0.1F, 0.5F);
+    }
     
     protected override void Init() {
+        this.MarchingCubes.Init();
+        this.Cubes = this.MarchingCubes.GenerateModel();
+        MaterialHelper.SetTexture(ref this.Cubes, 0, MaterialMapIndex.Albedo, ref TestGame.SpriteTexture);
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
@@ -35,7 +44,7 @@ public class Test3DScene : Scene {
                 this.AddEntity(test);
             }
         }
-
+        
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
         
@@ -64,6 +73,7 @@ public class Test3DScene : Scene {
         
         ModelHelper.DrawGrid(100, 1);
         ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
+        ModelHelper.DrawModel(this.Cubes, Vector3.Zero, 1, Color.Orange);
         
         Graphics.EndShaderMode();
     }
