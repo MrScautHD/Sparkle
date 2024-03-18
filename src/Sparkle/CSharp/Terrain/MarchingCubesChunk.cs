@@ -27,8 +27,9 @@ public class MarchingCubesChunk : Disposable {
         this._height = height;
     }
 
+
     /// <summary>
-    /// Generate the marching cubes terrain mesh.
+    /// Generates a Marching Cubes chunk.
     /// </summary>
     public void Generate() {
         this.MarchingCubes.SetHeights(this._position, this._width, this._height);

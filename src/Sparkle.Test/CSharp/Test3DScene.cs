@@ -83,7 +83,7 @@ public class Test3DScene : Scene {
         ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
 
         foreach (MarchingCubesChunk chunk in this.MarchingCubesChunks) {
-            //ModelHelper.DrawModel(chunk.Mesh, Vector3.Zero, 1, Color.White);
+            ModelHelper.DrawModel(chunk.Model, Vector3.Zero, 1, new Color(RandomHelper.GetRandomValue(1, 255), RandomHelper.GetRandomValue(1, 255), RandomHelper.GetRandomValue(1, 255), 255));
         }
         
         Graphics.EndShaderMode();

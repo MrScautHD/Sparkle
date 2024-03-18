@@ -98,12 +98,13 @@ public class MarchingCubes {
         this._normals.Clear();
         this._texCoords.Clear();
         this._triangles.Clear();
-
+        
+        float[] corners = new float[8];
+        
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < width; z++) {
-                    float[] corners = new float[8];
-
+                    
                     for (int i = 0; i < 8; i++) {
                         Vector3 corner = new Vector3(x, y, z) + MarchingCubesTables.Corners[i];
                         corners[i] = this._heights[(int) corner.X, (int) corner.Y, (int) corner.Z];
