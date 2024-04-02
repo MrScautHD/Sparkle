@@ -9,9 +9,9 @@ public class MarchingCubesChunk : Disposable {
     public MarchingCubes MarchingCubes { get; private set; }
     public Model Model { get; private set; }
     
-    private Vector3 _position;
-    private int _width;
-    private int _height;
+    public Vector3 Position { get; private set; }
+    public int Width { get; private set; }
+    public int Height { get; private set; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="MarchingCubesChunk"/> class.
@@ -22,9 +22,9 @@ public class MarchingCubesChunk : Disposable {
     /// <param name="height">The height of the chunk in units.</param>
     public MarchingCubesChunk(MarchingCubes marchingCubes, Vector3 position, int width, int height) {
         this.MarchingCubes = marchingCubes;
-        this._position = position;
-        this._width = width;
-        this._height = height;
+        this.Position = position;
+        this.Width = width;
+        this.Height = height;
     }
 
 
@@ -32,8 +32,8 @@ public class MarchingCubesChunk : Disposable {
     /// Generates a Marching Cubes chunk.
     /// </summary>
     public void Generate() {
-        this.MarchingCubes.SetHeights(this._position, this._width, this._height);
-        this.MarchingCubes.MarchCubes(this._position, this._width, this._height);
+        this.MarchingCubes.SetHeights(this.Position, this.Width, this.Height);
+        this.MarchingCubes.MarchCubes(this.Position, this.Width, this.Height);
         this.Model = this.MarchingCubes.GenerateModel();
     }
 

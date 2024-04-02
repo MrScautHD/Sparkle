@@ -48,7 +48,7 @@ public class NativeBindingContext : IBindingsContext, IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (disposing) {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-                ((WinBindingContext) this._context!).Dispose();
+                ((WinBindingContext) this._context!)?.Dispose();
             }
         }
     }

@@ -17,9 +17,9 @@ public class WinBindingContext : IBindingsContext, IDisposable {
     }
     
     public IntPtr GetProcAddress(string procName) {
-        IntPtr wgladdress = GetWglProcAddress(procName);
+        IntPtr wglAddress = GetWglProcAddress(procName);
         
-        if (wgladdress == IntPtr.Zero) {
+        if (wglAddress == IntPtr.Zero) {
             IntPtr procAddress = GetProcAddress(this._openGlHandle, procName);
 
             if (procAddress == IntPtr.Zero) {
@@ -29,7 +29,7 @@ public class WinBindingContext : IBindingsContext, IDisposable {
             return procAddress;
         }
 
-        return wgladdress;
+        return wglAddress;
     }
 
     /// <summary>

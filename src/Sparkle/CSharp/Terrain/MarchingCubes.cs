@@ -186,9 +186,21 @@ public class MarchingCubes {
             meshTriangle[i] = this._triangles[i];
         }
         
-        MeshHelper.Upload(ref mesh, false);
+        MeshHelper.Upload(ref mesh, false); // UPDATE BUFFER FOR TERRAIN MANIPLUATION
         
         return ModelHelper.LoadFromMesh(mesh);
+    }
+
+    /// <summary>
+    /// Update the mesh by updating the vertex buffer with the new vertices data.
+    /// </summary>
+    /// <param name="mesh">The mesh to update.</param>
+    private unsafe void UpdateMesh(Mesh mesh) {
+        fixed (Vector3* verticesPtr = this._vertices.ToArray()) {
+            for (int i = 0; i < this._vertices.Count; i++) {
+                MeshHelper.UpdateBuffer(mesh, i, verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
+            }
+        }
     }
     
     /// <summary>

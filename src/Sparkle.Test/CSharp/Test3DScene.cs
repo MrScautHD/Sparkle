@@ -1,5 +1,7 @@
 using System.Numerics;
+using Jitter2.Collision;
 using Jitter2.Collision.Shapes;
+using Jitter2.LinearMath;
 using Raylib_cs;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Effects.Types;
@@ -32,7 +34,7 @@ public class Test3DScene : Scene {
             for (int j = 0; j < chunks * 16; j += 16) {
                 MarchingCubesChunk chunk = new MarchingCubesChunk(this.MarchingCubes, new Vector3(i, 0, j), 16, 16);
                 chunk.Generate();
-                
+
                 this.MarchingCubesChunks.Add(chunk);
             }
         }
@@ -45,14 +47,7 @@ public class Test3DScene : Scene {
         Entity light = new Entity(new Vector3(1, 3, 0));
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
         this.AddEntity(light);
-        
-        //for (int i = 0; i < 12; i++) {
-        //    for (int j = 0; j < 12; j++) {
-        //        TestEntity test = new TestEntity(new Vector3(i * 2, 30, j * 2));
-        //        this.AddEntity(test);
-        //    }
-        //}
-        
+         
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
         
@@ -83,7 +78,17 @@ public class Test3DScene : Scene {
         ModelHelper.DrawCube(SceneManager.MainCam3D!.Target, 2, 2, 2, Color.Red);
 
         foreach (MarchingCubesChunk chunk in this.MarchingCubesChunks) {
-            ModelHelper.DrawModel(chunk.Model, Vector3.Zero, 1, new Color(RandomHelper.GetRandomValue(1, 255), RandomHelper.GetRandomValue(1, 255), RandomHelper.GetRandomValue(1, 255), 255));
+            Vector3 startPos = new Vector3(chunk.Position.X, SceneManager.MainCam3D.Position.Y - 50, chunk.Position.Z);
+            Vector3 endPos = new Vector3(chunk.Position.X, SceneManager.MainCam3D.Position.Y + 50, chunk.Position.Z);
+
+            Graphics.EndShaderMode();
+            ModelHelper.DrawLine3D(startPos, endPos, Color.Red);
+            ModelHelper.DrawLine3D(new Vector3(startPos.X + 8, startPos.Y, startPos.Z + 8), new Vector3(endPos.X + 8, endPos.Y, endPos.Z + 8), Color.Red);
+            ModelHelper.DrawLine3D(new Vector3(startPos.X + 8, startPos.Y, startPos.Z + 0), new Vector3(endPos.X + 8, endPos.Y, endPos.Z + 0), Color.Red);
+            ModelHelper.DrawLine3D(new Vector3(startPos.X + 0, startPos.Y, startPos.Z + 8), new Vector3(endPos.X + 0, endPos.Y, endPos.Z + 8), Color.Red);
+            Graphics.BeginShaderMode(EffectRegistry.Pbr.Shader);
+            
+            ModelHelper.DrawModel(chunk.Model, Vector3.Zero, 1, Color.DarkGreen);
         }
         
         Graphics.EndShaderMode();
