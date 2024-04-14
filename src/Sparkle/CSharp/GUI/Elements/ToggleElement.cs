@@ -83,7 +83,6 @@ public class ToggleElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        Rectangle source = new Rectangle(0, 0, this.ScaledSize.X, this.ScaledSize.Y);
         Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
@@ -93,6 +92,7 @@ public class ToggleElement : GuiElement {
         Color textColor = this.IsHovered ? this.TextHoverColor : (this.IsToggled ? this.ToggledTextColor : this.TextColor);
         
         if (texture != null) {
+            Rectangle source = new Rectangle(0, 0, texture.Value.Width, texture.Value.Height);
             this.DrawTexture(texture.Value, source, dest, origin, this.Rotation, color);
         }
         else {

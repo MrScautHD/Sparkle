@@ -4,6 +4,7 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Configs.Json;
 using Sparkle.CSharp.Overlays;
+using Sparkle.CSharp.Rendering.Gifs;
 using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Windowing;
 
@@ -17,6 +18,9 @@ public class TestGame : Game {
     
     // IMAGES
     public static Image Skybox;
+    
+    // GIF
+    public static Gif Gif;
     
     // MODELS
     public static Model PlayerModel;
@@ -66,9 +70,12 @@ public class TestGame : Game {
         // IMAGES
         Skybox = this.Content.Load(new ImageContent("content/skybox.png"));
         
+        // GIF
+        Gif = this.Content.Load(new GifContent("content/test.gif", 3));
+        
         // MODELS
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
-        
+
         // MODEL ANIMATIONS
         //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
     }
@@ -84,7 +91,6 @@ public class TestGame : Game {
 
     protected override void Draw() {
         base.Draw();
-        
         FontHelper.DrawFps(50, 50);
     }
 

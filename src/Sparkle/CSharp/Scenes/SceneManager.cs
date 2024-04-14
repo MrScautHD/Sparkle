@@ -7,8 +7,8 @@ public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
     
-    public static Cam3D? MainCam3D { get; private set; }
-    public static Cam2D? MainCam2D { get; private set; }
+    public static Cam3D? ActiveCam3D;
+    public static Cam2D? ActiveCam2D;
 
     public static Simulation? Simulation => ActiveScene?.Simulation;
     
@@ -17,8 +17,8 @@ public static class SceneManager {
     /// </summary>
     internal static void Init() {
         ActiveScene?.Init();
-        MainCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-        MainCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+        ActiveCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        ActiveCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
     }
     
     /// <summary>
@@ -50,15 +50,15 @@ public static class SceneManager {
         switch (ActiveScene?.Type) {
             
             case SceneType.Scene3D:
-                MainCam3D?.BeginMode3D();
+                ActiveCam3D?.BeginMode3D();
                 ActiveScene.Draw();
-                MainCam3D?.EndMode3D();
+                ActiveCam3D?.EndMode3D();
                 break;
             
             case SceneType.Scene2D:
-                MainCam2D?.BeginMode2D();
+                ActiveCam2D?.BeginMode2D();
                 ActiveScene.Draw();
-                MainCam2D?.EndMode2D();
+                ActiveCam2D?.EndMode2D();
                 break;
         }
     }
@@ -79,7 +79,7 @@ public static class SceneManager {
         ActiveScene?.Dispose();
         ActiveScene = scene;
         ActiveScene?.Init();
-        MainCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-        MainCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+        ActiveCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        ActiveCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
     }
 }

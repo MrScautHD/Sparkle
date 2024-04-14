@@ -41,7 +41,7 @@ public class Test2DScene : Scene {
             player.Position.X += 50.0F * Time.Delta;
         }
         
-        SceneManager.MainCam2D!.Target = new Vector2(player.Position.X, player.Position.Y);
+        SceneManager.ActiveCam2D!.Target = new Vector2(player.Position.X, player.Position.Y);
     }
 
     protected override void Draw() {

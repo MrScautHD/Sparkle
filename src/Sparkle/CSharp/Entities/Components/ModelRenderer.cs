@@ -3,7 +3,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Rendering.Util;
+using Sparkle.CSharp.Rendering.Models;
 using Sparkle.CSharp.Scenes;
 using BoundingBox = Raylib_cs.BoundingBox;
 
@@ -33,7 +33,6 @@ public class ModelRenderer : Component {
 
     protected internal override void Update() {
         base.Update();
-        
         this._effect.UpdateMaterialParameters(this._materials);
         
         Vector3 dimension = this._box.Max - this._box.Min;
@@ -45,7 +44,7 @@ public class ModelRenderer : Component {
         this._box.Max.Y = this.Entity.Position.Y + dimension.Y;
         this._box.Max.Z = this.Entity.Position.Z + dimension.Z / 2;
     }
-
+    
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
         this.AnimationPlayer.FixedUpdate();
@@ -54,7 +53,7 @@ public class ModelRenderer : Component {
     protected internal override unsafe void Draw() {
         base.Draw();
         
-        if (SceneManager.MainCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.Entity.Position, this.Entity.Rotation)) {
+        if (SceneManager.ActiveCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.Entity.Position, this.Entity.Rotation)) {
             Vector3 axis;
             float angle;
            

@@ -9,8 +9,10 @@ public class Effect : Disposable {
     public bool HasInitialized { get; private set; }
     
     /// <summary>
-    /// Represents an effect that applies a shader to a rendering object.
+    /// Constructor for creating an Effect object.
     /// </summary>
+    /// <param name="vertPath">Path to the vertex shader file.</param>
+    /// <param name="fragPath">Path to the fragment shader file.</param>
     public Effect(string vertPath, string fragPath) {
         this.Shader = Game.Instance.Content.Load(new ShaderContent(vertPath, fragPath));
     }
@@ -49,5 +51,9 @@ public class Effect : Disposable {
     /// <param name="materials">Array of materials to be updated.</param>
     protected internal virtual void UpdateMaterialParameters(Material[] materials) { }
 
-    protected override void Dispose(bool disposing) { }
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            EffectManager.Effects.Remove(this);
+        }
+    }
 }

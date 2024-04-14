@@ -5,6 +5,7 @@ in vec3 fragPosition;
 
 // Input uniform values
 uniform samplerCube environmentMap;
+uniform vec4 colDiffuse;
 
 // Output fragment color
 out vec4 finalColor;
@@ -14,5 +15,5 @@ void main() {
     
     color = texture(environmentMap, fragPosition).rgb;
     
-    finalColor = vec4(color, 1.0);
+    finalColor = vec4(color, 1.0) * colDiffuse;
 }

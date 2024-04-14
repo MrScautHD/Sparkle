@@ -27,6 +27,7 @@ public class TestGui : Gui {
         this.AddElement(new LabelElement("label", labelData, Anchor.BottomCenter, Vector2.Zero));
         
         ButtonData buttonData = new ButtonData() {
+            Texture = TestGame.SpriteTexture,
             Color = Color.Orange
         };
         

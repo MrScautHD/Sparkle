@@ -21,20 +21,20 @@ public static class RegistryManager {
     }
     
     /// <summary>
-    /// Used for Initializes objects.
-    /// </summary>
-    internal static void Init() {
-        foreach (Registry registry in RegisterTypes) {
-            registry.Init();
-        }
-    }
-    
-    /// <summary>
     /// Used for loading resources.
     /// </summary>
     internal static void Load(ContentManager content) {
         foreach (Registry registry in RegisterTypes) {
             registry.Load(content);
+        }
+    }
+    
+    /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
+    internal static void Init() {
+        foreach (Registry registry in RegisterTypes) {
+            registry.Init();
         }
     }
 }

@@ -1,6 +1,7 @@
 using Raylib_cs;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Rendering.Gifs;
 
 namespace Sparkle.CSharp.Content;
 
@@ -19,6 +20,7 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
+        this.AddProcessors(typeof(Gif), new GifProcessor());
         this.AddProcessors(typeof(ModelAnimation[]), new ModelAnimationProcessor());
         this.AddProcessors(typeof(Material[]), new MaterialProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());

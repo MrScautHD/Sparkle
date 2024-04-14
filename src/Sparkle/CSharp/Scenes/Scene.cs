@@ -1,5 +1,6 @@
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Physics;
+using Sparkle.CSharp.Rendering.Renderers;
 
 namespace Sparkle.CSharp.Scenes;
 
@@ -9,6 +10,8 @@ public abstract class Scene : Disposable {
     
     public readonly SceneType Type;
     public readonly Simulation Simulation;
+
+    public Skybox? Skybox { get; private set; }
     
     private readonly Dictionary<int, Entity> _entities;
     private int _entityIds;
@@ -69,6 +72,8 @@ public abstract class Scene : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal virtual void Draw() {
+        this.Skybox?.Draw();
+        
         foreach (Entity entity in this._entities.Values) {
             entity.Draw();
         }
@@ -79,6 +84,11 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="entity">The entity to be added.</param>
     public void AddEntity(Entity entity) {
+        if (this._entities.ContainsValue(entity)) {
+            Logger.Warn($"The entity with the id: {entity.Id} is already present in the Scene!");
+            return;
+        }
+        
         entity.Id = this._entityIds++;
         entity.Init();
         
@@ -90,6 +100,11 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="id">The ID of the entity to be removed.</param>
     public void RemoveEntity(int id) {
+        if (!this._entities.ContainsKey(id)) {
+            Logger.Warn($"The entity with the id: {id} is already removed from the Scene!");
+            return;
+        }
+        
         this._entities[id].Dispose();
         this._entities.Remove(id);
     }
@@ -118,17 +133,30 @@ public abstract class Scene : Disposable {
     public Entity[] GetEntities() {
         return this._entities.Values.ToArray();
     }
-    
+
     /// <summary>
-    /// Retrieves entities from the collection that have a specific tag.
+    /// Returns an array of entities with the specified tag.
     /// </summary>
-    /// <param name="tag">The tag used to filter entities.</param>
-    /// <returns>An enumerable of entities with the specified tag.</returns>
+    /// <param name="tag">The tag to filter entities by.</param>
+    /// <returns>An IEnumerable of Entity objects with the specified tag.</returns>
     public IEnumerable<Entity> GetEntitiesWithTag(string tag) {
         foreach (Entity entity in this._entities.Values) {
             if (entity.Tag == tag) {
                 yield return entity;
             }
+        }
+    }
+    
+    /// <summary>
+    /// Sets the skybox for the 3D camera.
+    /// </summary>
+    /// <param name="skybox">The skybox to set.</param>
+    public void SetSkybox(Skybox? skybox) {
+        this.Skybox?.Dispose();
+        this.Skybox = skybox;
+        
+        if (this.Skybox != null && !this.Skybox.HasInitialized) {
+            this.Skybox.Init();
         }
     }
     
@@ -141,6 +169,7 @@ public abstract class Scene : Disposable {
             this._entities.Clear();
             this._entityIds = 0;
             
+            this.Skybox?.Dispose();
             this.Simulation.Dispose();
         }
     }

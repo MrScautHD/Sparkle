@@ -1,13 +1,14 @@
+using System.Numerics;
 using Raylib_cs;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Rendering.Renderers;
 
 public class Skybox : Disposable {
 
     public readonly Image CubeMap;
+    public Color Color;
     
     private Texture2D _cubeMap;
     private Model _box;
@@ -17,10 +18,14 @@ public class Skybox : Disposable {
     /// <summary>
     /// Represents a skybox in a 3D scene.
     /// </summary>
-    public Skybox(Image cubeMap) {
+    public Skybox(Image cubeMap, Color? color = default) {
         this.CubeMap = cubeMap;
+        this.Color = color ?? Color.White;
     }
-
+    
+    /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
     protected internal void Init() {
         this.HasInitialized = true;
         
@@ -32,11 +37,14 @@ public class Skybox : Disposable {
         MaterialHelper.SetShader(ref this._box, 0, ref shader);
     }
     
+    /// <summary>
+    /// Is called every tick, used for rendering stuff.
+    /// </summary>
     protected internal void Draw() {
         Rlgl.DisableBackfaceCulling();
         Rlgl.DisableDepthMask();
-
-        ModelHelper.DrawModel(this._box, SceneManager.MainCam3D!.Position, 1, Color.White);
+        
+        ModelHelper.DrawModel(this._box, Vector3.Zero, 1, this.Color);
         
         Rlgl.EnableBackfaceCulling();
         Rlgl.EnableDepthMask();

@@ -3,6 +3,7 @@ using Raylib_cs;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Renderers;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -12,7 +13,6 @@ public class Cam3D : Entity {
     private Frustum _frustum;
     
     public CameraMode Mode;
-    public Skybox? Skybox { get; private set; }
     
     public float MouseSensitivity;
     public float MovementSpeed;
@@ -21,7 +21,7 @@ public class Cam3D : Entity {
     /// <summary>
     /// Represents a 3D camera for rendering 3D scenes.
     /// </summary>
-    public Cam3D(Vector3 position, Vector3 target, Vector3 up, float fov, CameraProjection projection, CameraMode mode = CameraMode.Free, Skybox? skybox = default) : base(Vector3.Zero) {
+    public Cam3D(Vector3 position, Vector3 target, Vector3 up, float fov, CameraProjection projection, CameraMode mode = CameraMode.Free) : base(Vector3.Zero) {
         this.Tag = "camera3D";
         this._camera3D = new Camera3D();
         this._frustum = new Frustum();
@@ -31,7 +31,6 @@ public class Cam3D : Entity {
         this.Fov = fov;
         this.Projection = projection;
         this.Mode = mode;
-        this.Skybox = skybox;
         this.MouseSensitivity = 0.03F;
         this.MovementSpeed = 10.0F;
         this.OrbitalSpeed = 0.5F;
@@ -87,16 +86,9 @@ public class Cam3D : Entity {
         set => this._camera3D.Projection = value;
     }
 
-    protected internal override void Init() {
-        base.Init();
-        
-        if (this.Skybox != null && !this.Skybox.HasInitialized) {
-            this.Skybox.Init();
-        }
-    }
-
     protected internal override void Update() {
         base.Update();
+        if (SceneManager.ActiveCam3D != this) return;
 
         switch (this.Mode) {
             
@@ -132,8 +124,8 @@ public class Cam3D : Entity {
                     }
                 }
                 else {
-                    this.SetYaw(this.GetYaw() + (Input.GetGamepadAxisMovement(0, GamepadAxis.RightX) * 2) * this.MouseSensitivity, false);
-                    this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.RightY) * 2) * this.MouseSensitivity, true, false, false);
+                    this.SetYaw(this.GetYaw() + (Input.GetGamepadAxisMovement(0, GamepadAxis.RightX) * 4) * this.MouseSensitivity, false);
+                    this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.RightY) * 4) * this.MouseSensitivity, true, false, false);
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightTrigger2)) {
                         this.MoveForward(this.MovementSpeed * Time.Delta, true);
@@ -198,11 +190,6 @@ public class Cam3D : Entity {
                 }
                 break;
         }
-    }
-
-    protected internal override void Draw() {
-        base.Draw();
-        this.Skybox?.Draw();
     }
 
     /// <inheritdoc cref="Raylib.GetCameraForward(ref Camera3D)"/>
@@ -301,19 +288,6 @@ public class Cam3D : Entity {
         
         Raylib.CameraRoll(ref this._camera3D, difference);
     }
-
-    /// <summary>
-    /// Sets the skybox for the 3D camera.
-    /// </summary>
-    /// <param name="skybox">The skybox to set.</param>
-    public void SetSkybox(Skybox? skybox) {
-        this.Skybox?.Dispose();
-        this.Skybox = skybox;
-        
-        if (this.Skybox != null && !this.Skybox.HasInitialized) {
-            this.Skybox.Init();
-        }
-    }
     
     /// <summary>
     /// Retrieves the Frustum associated with the current instance.
@@ -345,13 +319,5 @@ public class Cam3D : Entity {
     /// </summary>
     public void EndMode3D() {
         Raylib.EndMode3D();
-    }
-
-    protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-
-        if (disposing) {
-            this.Skybox?.Dispose();
-        }
     }
 }

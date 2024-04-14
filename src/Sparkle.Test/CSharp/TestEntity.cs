@@ -5,7 +5,7 @@ using Raylib_cs;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Util;
+using Sparkle.CSharp.Rendering.Models;
 
 namespace Sparkle.Test.CSharp;
 
@@ -29,7 +29,7 @@ public class TestEntity : Entity {
             .Build();
 
         // RENDERER
-        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr, default);
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr);
         //modelRenderer.AnimationPlayer.Play(0, true, 0);
         this.AddComponent(modelRenderer);
         

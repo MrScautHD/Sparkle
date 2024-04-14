@@ -64,7 +64,6 @@ public class ButtonElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        Rectangle source = new Rectangle(0, 0, this.ScaledSize.X, this.ScaledSize.Y);
         Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
@@ -72,7 +71,10 @@ public class ButtonElement : GuiElement {
         Color textColor = this.IsHovered ? this.TextHoverColor : this.TextColor;
         
         if (this.Texture != null) {
-            this.DrawTexture(this.Texture.Value, source, dest, origin, this.Rotation, color);
+            Texture2D texture = this.Texture.Value;
+            Rectangle source = new Rectangle(0, 0, texture.Width, texture.Height);
+            
+            this.DrawTexture(texture, source, dest, origin, this.Rotation, color);
         }
         else {
             this.DrawRectangle(dest, origin, this.Rotation, color);

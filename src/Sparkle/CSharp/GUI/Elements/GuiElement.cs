@@ -33,7 +33,7 @@ public abstract class GuiElement : Disposable {
     /// <param name="offset">An optional offset for fine-tuning the position.</param>
     /// <param name="size">The size of the GUI element.</param>
     /// <param name="clickClickFunc">An optional function to handle click events.</param>
-    public GuiElement(string name, Anchor anchor, Vector2 offset, Vector2 size, Func<bool>? clickClickFunc) {
+    protected GuiElement(string name, Anchor anchor, Vector2 offset, Vector2 size, Func<bool>? clickClickFunc) {
         this.Name = name;
         this.Enabled = true;
         this.AnchorPoint = anchor;

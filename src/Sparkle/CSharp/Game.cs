@@ -9,6 +9,7 @@ using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
+using Sparkle.CSharp.Rendering.Gifs;
 using Sparkle.CSharp.Rendering.Gl;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Windowing;
@@ -120,16 +121,6 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Used for Initializes objects.
-    /// </summary>
-    protected virtual void Init() {
-        RegistryManager.Init();
-        EffectManager.Init();
-        SceneManager.Init();
-        OverlayManager.Init();
-    }
-
-    /// <summary>
     /// Used for loading resources.
     /// </summary>
     protected virtual void Load() {
@@ -137,10 +128,22 @@ public class Game : Disposable {
     }
     
     /// <summary>
+    /// Used for Initializes objects.
+    /// </summary>
+    protected virtual void Init() {
+        RegistryManager.Init();
+        GifManager.Init();
+        EffectManager.Init();
+        SceneManager.Init();
+        OverlayManager.Init();
+    }
+    
+    /// <summary>
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected virtual void Update() {
         EffectManager.Update();
+        GifManager.Update();
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
@@ -150,6 +153,7 @@ public class Game : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected virtual void AfterUpdate() {
+        GifManager.AfterUpdate();
         EffectManager.AfterUpdate();
         SceneManager.AfterUpdate();
         GuiManager.AfterUpdate();
@@ -161,6 +165,7 @@ public class Game : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
+        GifManager.FixedUpdate();
         EffectManager.FixedUpdate();
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
@@ -171,6 +176,7 @@ public class Game : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected virtual void Draw() {
+        GifManager.Draw();
         EffectManager.Draw();
         SceneManager.Draw();
         GuiManager.Draw();
@@ -196,6 +202,10 @@ public class Game : Disposable {
 
             foreach (Effect effect in EffectManager.Effects.ToList()) {
                 effect.Dispose();
+            }
+            
+            foreach (Gif gif in GifManager.Gifs.ToList()) {
+                gif.Dispose();
             }
             
             GuiManager.ActiveGui?.Dispose();

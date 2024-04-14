@@ -3,15 +3,6 @@ namespace Sparkle.CSharp.Effects;
 public static class EffectManager {
     
     internal static List<Effect> Effects = new();
-
-    /// <summary>
-    /// Adds an effect to the list of effects.
-    /// </summary>
-    /// <param name="effect">The effect to be added.</param>
-    public static void Add(Effect effect) {
-        Logger.Info($"Added Effect: {effect.GetType().Name}");
-        Effects.Add(effect);
-    }
     
     /// <summary>
     /// Used for Initializes objects.
@@ -67,5 +58,14 @@ public static class EffectManager {
                 effect.Draw();
             }
         }
+    }
+    
+    /// <summary>
+    /// Adds an effect to the list of effects.
+    /// </summary>
+    /// <param name="effect">The effect to be added.</param>
+    public static void Add(Effect effect) {
+        Logger.Info($"Added Effect: {effect.GetType().Name}");
+        Effects.Add(effect);
     }
 }

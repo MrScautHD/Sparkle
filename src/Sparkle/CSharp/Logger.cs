@@ -88,8 +88,8 @@ public static class Logger {
             }
         }
 
-        MethodBase? info = new StackFrame(skipFrames).GetMethod();
-        string text = $"[{info!.DeclaringType!.FullName} :: {info.Name}] {msg}";
+        MethodBase? stackFrame = new StackFrame(skipFrames).GetMethod();
+        string text = $"[{stackFrame!.DeclaringType!} :: {stackFrame.Name}] {msg}";
         
         if (LogPath != null) {
             FileAccessor.WriteLine(LogPath, text);

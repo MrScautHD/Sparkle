@@ -5,15 +5,6 @@ public static class OverlayManager {
     internal static List<Overlay> Overlays = new();
     
     /// <summary>
-    /// Adds an overlay to the system and logs the addition for tracking purposes.
-    /// </summary>
-    /// <param name="overlay">The overlay to be added.</param>
-    public static void Add(Overlay overlay) {
-        Logger.Info($"Added Overlay: {overlay.Name}");
-        Overlays.Add(overlay);
-    }
-    
-    /// <summary>
     /// Used for Initializes objects.
     /// </summary>
     internal static void Init() {
@@ -67,5 +58,14 @@ public static class OverlayManager {
                 overlay.Draw();
             }
         }
+    }
+    
+    /// <summary>
+    /// Adds an overlay to the system and logs the addition for tracking purposes.
+    /// </summary>
+    /// <param name="overlay">The overlay to be added.</param>
+    public static void Add(Overlay overlay) {
+        Logger.Info($"Added Overlay: {overlay.Name}");
+        Overlays.Add(overlay);
     }
 }

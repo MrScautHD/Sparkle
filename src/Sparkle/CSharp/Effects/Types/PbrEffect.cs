@@ -148,7 +148,7 @@ public class PbrEffect : Effect {
     /// Updates the values of the light source for shader rendering.
     /// </summary>
     private unsafe void UpdateValues() {
-        if (SceneManager.MainCam3D == null) return;
+        if (SceneManager.ActiveCam3D == null) return;
         
         ShaderHelper.SetValue(this.Shader, this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
         
@@ -160,7 +160,7 @@ public class PbrEffect : Effect {
         ShaderHelper.SetValue(this.Shader, this.UseTexMraLoc, 1, ShaderUniformDataType.Int);
         ShaderHelper.SetValue(this.Shader, this.UseTexEmissiveLoc, 1, ShaderUniformDataType.Int);
         
-        ShaderHelper.SetValue(this.Shader, this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.MainCam3D.Position, ShaderUniformDataType.Vec3);
+        ShaderHelper.SetValue(this.Shader, this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.ActiveCam3D.Position, ShaderUniformDataType.Vec3);
         
         GL.UseProgram((int) this.Shader.Id);
         GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);

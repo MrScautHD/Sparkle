@@ -1,19 +1,36 @@
 using System.Numerics;
 using Raylib_cs;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Rendering.Helpers;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Particles;
 
+// TODO: WIP!!!
 public class Particle : Disposable {
 
-    public Vector2 Position;
-    public Vector2 Speed;
-    public int Size;
+    public Texture2D Texture;
+    public Vector3 Position;
+    public Vector2 Size;
+    public float Rotation;
     public Color Color;
     
     public bool HasInitialized { get; private set; }
-    
-    public Particle() {
-        
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Particle"/> class.
+    /// </summary>
+    /// <param name="texture">The texture of the particle.</param>
+    /// <param name="position">The position of the particle in 3D space.</param>
+    /// <param name="size">The size of the particle.</param>
+    /// <param name="rotation">The rotation of the particle in radians.</param>
+    /// <param name="color">The color of the particle.</param>
+    public Particle(Texture2D texture, Vector3 position, Vector2 size, float rotation, Color color) {
+        this.Texture = texture;
+        this.Position = position;
+        this.Size = size;
+        this.Rotation = rotation;
+        this.Color = color;
     }
     
     /// <summary>
@@ -38,11 +55,20 @@ public class Particle : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() { }
-    
+
     /// <summary>
     /// Is called every tick, used for rendering stuff.
     /// </summary>
-    protected internal virtual void Draw() { }
+    public virtual void Draw() {
+        Cam3D? cam = SceneManager.ActiveCam3D;
+        if (cam == null) return;
+        
+        Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
+        Rectangle dest = new Rectangle(this.Position.X + (this.Size.X / 2), this.Position.Y + (this.Size.Y / 2), this.Size.X, this.Size.Y);
+        Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
+        
+        ModelHelper.DrawBillboardPro(cam, this.Texture, source, this.Position, cam.Up, this.Size, origin, this.Rotation, this.Color);
+    }
     
     protected override void Dispose(bool disposing) { }
 }

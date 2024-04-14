@@ -27,7 +27,6 @@ public class MarchingCubesChunk : Disposable {
         this.Height = height;
     }
 
-
     /// <summary>
     /// Generates a Marching Cubes chunk.
     /// </summary>
