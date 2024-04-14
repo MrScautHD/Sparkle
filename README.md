@@ -7,8 +7,8 @@
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
 
-[<img src="https://cdn.discordapp.com/attachments/1023302120755187753/1216795862072688740/image-1.png?ex=6601b074&is=65ef3b74&hm=8c2c0e9bdafae052b6118485b7d4bca0438ebd10f73d30980d6d064fa4f75fd2&" width="186" height="60">](https://discord.gg/7XKw6YQa76)
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216797507963584592/image.png?ex=6601b1fc&is=65ef3cfc&hm=34db74904787110fdf047ded64c3d3d2e1b77f5b5738f8d0c45bf7bad8a781b5&" width="186" height="60">](https://github.com/sponsors/MrScautHD)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/87b291cd-6506-4fb5-b032-abf3170a28c4" alt="windows" width="186" height="60">](https://www.microsoft.com/de-at/windows)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/de09f016-db11-4554-aa56-4d1bd6c2464f" alt="macOS" width="186" height="60">](https://www.microsoft.com/de-at/windows)
 
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ==================================================================
@@ -36,9 +36,9 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 
 ‍💻 Platforms
 =============
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813998356562073/image.png?ex=6601c158&is=65ef4c58&hm=80bd4e40a9e3d4fcd88ae87633e56929a23ed5caf83ecb85a999446bb4cb7225&" width="70" height="70">](https://www.microsoft.com/de-at/windows)
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997433688225/image.png?ex=6601c158&is=65ef4c58&hm=8b536653194045beb90ce072b09c677151a274da8520657c89cd64d998ad2241&" width="70" height="70">](https://ubuntu.com/)
-[<img src="https://cdn.discordapp.com/attachments/821002652376367114/1216813997873954866/image.png?ex=6601c158&is=65ef4c58&hm=fd50dfd9bdbda75f636a09dfa243aa04756c41e7d66ec1ea2980abef01377e6c&" width="70" height="70">](https://www.apple.com/at/macos/sonoma/)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/a92bd5fa-517b-44c2-ab58-cc01b5ae5751" alt="windows" width="70" height="70">](https://www.microsoft.com/de-at/windows)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/e37eb15f-4237-47ae-9ae7-e4455f7c3d92" alt="macOS" width="70" height="70">](https://www.microsoft.com/de-at/windows)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/f9e643a8-4d46-450c-91ac-d220394ecd42" alt="Linux" width="70" height="70">](https://www.microsoft.com/de-at/windows)
 
 🧑 Contributors
 ==================
