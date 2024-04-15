@@ -180,11 +180,21 @@ void main() {
         discard;
     }
 
-    //HDR tonemapping
+    // HDR tonemapping
     color = vec4(pow(color.rgb, color.rgb + vec3(1.0)), color.w);
 
-    //gamma correction
+    // Gamma correction
     color = vec4(pow(color.rgb, vec3(1.0 / 2.2)), color.w);
+    
+    // Fog calculation
+    float dist = length(viewPos - fragPosition);
+    
+    // Fog parameters
+    const vec4 fogColor = vec4(0.5, 0.5, 0.5, 1);
+    const float fogDensity = 0.06;
+    
+    float fogFactor = 1.0 / exp((dist * fogDensity) * (dist * fogDensity));
+    fogFactor = clamp(fogFactor, 0.0, 1.0);
 
-    finalColor = color;
+    finalColor = mix(fogColor, color, fogFactor);
 }
