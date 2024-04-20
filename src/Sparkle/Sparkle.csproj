@@ -35,7 +35,7 @@
     <PackageReference Include="OpenTK.Graphics" Version="5.0.0-pre.10" />
     <PackageReference Include="Raylib-cs" Version="6.0.0" />
   </ItemGroup>
-
+  
   <!-- Icon -->
   <ItemGroup>
     <None Include="content\images\icon.png" Pack="true" PackagePath=""/>
