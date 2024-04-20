@@ -21,8 +21,13 @@ public class RigidBody : Component {
     private float _restitution;
 
     /// <summary>
-    /// Represents a rigid body component that provides physics simulation for an entity.
+    /// Constructor for creating a RigidBody object.
     /// </summary>
+    /// <param name="shapes">List of shapes composing the rigid body.</param>
+    /// <param name="setMassInertia">Flag indicating whether to set mass and inertia.</param>
+    /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
+    /// <param name="friction">Friction coefficient.</param>
+    /// <param name="restitution">Restitution coefficient.</param>
     public RigidBody(List<Shape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) {
         this._shapes = new ReadOnlyList<Shape>(shapes);
         this._setMassInertia = setMassInertia;

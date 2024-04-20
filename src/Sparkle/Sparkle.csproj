@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -7,17 +7,22 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
+    <LangVersion>12</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
+    <Version>3.1.0</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
     <Description>A fast, Cross-platform .NET 8 C# 12 game engine.</Description>
     <PackageProjectUrl>https://sparkle-engine.com/</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#12, Net8, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>3.1.0</Version>
     <PackageIcon>icon.png</PackageIcon>
-    <LangVersion>12</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>

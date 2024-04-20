@@ -22,7 +22,6 @@ public abstract class Overlay : Disposable {
     /// </summary>
     public bool Enabled {
         get => this._enabled;
-        
         set {
             if (!this.HasDisposed) {
                 this._enabled = value;

@@ -4,6 +4,8 @@ public static class EffectManager {
     
     internal static List<Effect> Effects = new();
     
+    public static bool HasInitialized { get; private set; }
+    
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
@@ -13,6 +15,7 @@ public static class EffectManager {
                 effect.Init();
             }
         }
+        HasInitialized = true;
     }
     
     /// <summary>
@@ -65,6 +68,10 @@ public static class EffectManager {
     /// </summary>
     /// <param name="effect">The effect to be added.</param>
     public static void Add(Effect effect) {
+        if (HasInitialized) {
+            effect.Init();
+        }
+        
         Logger.Info($"Added Effect: {effect.GetType().Name}");
         Effects.Add(effect);
     }

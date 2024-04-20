@@ -41,7 +41,7 @@ public class Test3DScene : Scene {
         }
         
         // SKYBOX
-        this.SetSkybox(new Skybox(TestGame.Skybox, Color.Red));
+        this.SetSkybox(new Skybox(TestGame.Skybox, Color.Green));
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
@@ -54,7 +54,7 @@ public class Test3DScene : Scene {
         this.AddEntity(light);
         
         // PARTICLE
-        this.Particle = new Particle(TestGame.Gif.Texture, Vector3.One, new Vector2(32, 32), 0, Color.White);
+        this.Particle = new Particle(TestGame.Gif.Texture, new Vector3(40, 10, 0), new Vector2(2, 2), 0, Color.White);
         
         // TEST ENTITIES
         for (int x = 0; x < 12; x++) {
@@ -63,7 +63,7 @@ public class Test3DScene : Scene {
                 this.AddEntity(testEntity);
             }
         }
-         
+        
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
         

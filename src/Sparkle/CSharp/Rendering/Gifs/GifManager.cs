@@ -4,6 +4,8 @@ public static class GifManager {
     
     internal static List<Gif> Gifs = new();
     
+    public static bool HasInitialized { get; private set; }
+    
     /// <summary>
     /// Initializes the current scene and sets the main camera if available.
     /// </summary>
@@ -13,6 +15,7 @@ public static class GifManager {
                 gif.Init();
             }
         }
+        HasInitialized = true;
     }
     
     /// <summary>
@@ -66,6 +69,10 @@ public static class GifManager {
     /// </summary>
     /// <param name="gif">The gif to be added.</param>
     public static void Add(Gif gif) {
+        if (HasInitialized) {
+            gif.Init();
+        }
+        
         Logger.Info($"Added Gif with texture ID [{gif.Texture.Id}] successfully.");
         Gifs.Add(gif);
     }
