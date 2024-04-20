@@ -1,11 +1,24 @@
+using System.Numerics;
+
 namespace Sparkle.CSharp.Entities.Components;
 
 public abstract class Component : Disposable {
     
     protected internal Entity Entity { get; internal set; }
+
+    public Vector3 GlobalPos => this.Entity.Position + this.OffsetPos;
+    public Vector3 OffsetPos;
     
     public bool HasInitialized { get; private set; }
-
+    
+    /// <summary>
+    /// Constructor for creating a Component object.
+    /// </summary>
+    /// <param name="offsetPos">Offset position of the component.</param>
+    public Component(Vector3 offsetPos) {
+        this.OffsetPos = offsetPos;
+    }
+    
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>

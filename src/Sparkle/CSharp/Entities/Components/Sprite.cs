@@ -12,13 +12,14 @@ public class Sprite : Component {
     public float Rotation;
 
     /// <summary>
-    /// Represents a sprite object.
+    /// Constructor for creating a Sprite object.
     /// </summary>
-    /// <param name="texture">The texture of the sprite.</param>
-    /// <param name="size">The size of the sprite. If null, the size will be the same as the texture.</param>
-    /// <param name="color">The color of the sprite. If null, the color will be white.</param>
-    /// <param name="rotation">The rotation angle of the sprite. Default value is 0.</param>
-    public Sprite(Texture2D texture, Vector2? size = default, Color? color = default, float rotation = 0) {
+    /// <param name="texture">Texture of the sprite.</param>
+    /// <param name="offsetPos">Offset position of the sprite.</param>
+    /// <param name="size">Size of the sprite.</param>
+    /// <param name="color">Color of the sprite.</param>
+    /// <param name="rotation">Rotation of the sprite.</param>
+    public Sprite(Texture2D texture, Vector3 offsetPos, Vector2? size = default, Color? color = default, float rotation = 0) : base(offsetPos) {
         this.Texture = texture;
         this.Size = size ?? new Vector2(texture.Width, texture.Height);
         this.Color = color ?? Color.White;

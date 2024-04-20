@@ -6,7 +6,6 @@ using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.GUI;
-using Sparkle.CSharp.Particles;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Helpers;
@@ -50,11 +49,11 @@ public class Test3DScene : Scene {
         
         // LIGHTS
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Color.Red));
+        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Red));
         this.AddEntity(light);
         
         // PARTICLE
-        this.Particle = new Particle(TestGame.Gif.Texture, new Vector3(40, 10, 0), new Vector2(2, 2), 0, Color.White);
+        //this.Particle = new Particle(TestGame.Gif.Texture, new Vector3(40, 10, 0), new Vector2(2, 2), 0, Color.White);
         
         // TEST ENTITIES
         for (int x = 0; x < 12; x++) {
@@ -70,7 +69,7 @@ public class Test3DScene : Scene {
         List<Shape> shapes = new List<Shape>();
         shapes.Add(new BoxShape(100000, 1, 100000));
         
-        ground.AddComponent(new RigidBody(shapes, true, true));
+        ground.AddComponent(new RigidBody(shapes, Vector3.Zero, true, true));
         this.AddEntity(ground);
     }
     
@@ -88,8 +87,6 @@ public class Test3DScene : Scene {
 
     protected override void Draw() {
         base.Draw();
-        this.Particle.Draw();
-        
         Graphics.BeginShaderMode(EffectRegistry.Pbr.Shader);
         
         ModelHelper.DrawGrid(100, 1);

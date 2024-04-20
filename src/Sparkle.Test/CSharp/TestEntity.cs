@@ -29,7 +29,7 @@ public class TestEntity : Entity {
             .Build();
 
         // RENDERER
-        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, materials, EffectRegistry.Pbr);
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, materials, EffectRegistry.Pbr);
         //modelRenderer.AnimationPlayer.Play(0, true, 0);
         this.AddComponent(modelRenderer);
         
@@ -37,7 +37,7 @@ public class TestEntity : Entity {
         List<Shape> shapes = new List<Shape>();
         shapes.Add(new BoxShape(2, 4, 2));
         
-        this.AddComponent(new RigidBody(shapes));
+        this.AddComponent(new RigidBody(shapes, Vector3.Zero));
     }
     
     protected override void FixedUpdate() {

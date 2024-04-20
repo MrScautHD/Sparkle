@@ -9,6 +9,7 @@
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
     <LangVersion>12</LangVersion>
+    <NoWarn>$(NoWarn);CS8618</NoWarn>
   </PropertyGroup>
 
   <!-- Nuget -->
