@@ -25,7 +25,6 @@ public class Game : Disposable {
     private double _timer;
     
     public readonly GameSettings Settings;
-    
     public bool ShouldClose;
     
     public NativeBindingContext BindingContext { get; private set; }
