@@ -68,11 +68,16 @@ public static class EffectManager {
     /// </summary>
     /// <param name="effect">The effect to be added.</param>
     public static void Add(Effect effect) {
+        if (Effects.Contains(effect)) {
+            Logger.Warn($"The Effect with the shader ID [{effect.Shader.Id}] is already present in the EffectManager!");
+            return;
+        }
+        
         if (HasInitialized) {
             effect.Init();
         }
         
-        Logger.Info($"Added Effect: {effect.GetType().Name}");
+        Logger.Info($"Added Effect with shader ID [{effect.Shader.Id}] successfully.");
         Effects.Add(effect);
     }
 }

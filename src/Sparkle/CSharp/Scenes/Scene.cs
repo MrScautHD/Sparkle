@@ -85,7 +85,7 @@ public abstract class Scene : Disposable {
     /// <param name="entity">The entity to be added.</param>
     public void AddEntity(Entity entity) {
         if (this._entities.ContainsValue(entity)) {
-            Logger.Warn($"The entity with the id: {entity.Id} is already present in the Scene!");
+            Logger.Warn($"The entity with the id: [{entity.Id}] is already present in the Scene!");
             return;
         }
         
@@ -101,7 +101,7 @@ public abstract class Scene : Disposable {
     /// <param name="id">The ID of the entity to be removed.</param>
     public void RemoveEntity(int id) {
         if (!this._entities.ContainsKey(id)) {
-            Logger.Warn($"The entity with the id: {id} is already removed from the Scene!");
+            Logger.Warn($"The entity with the id: [{id}] is already removed from the Scene!");
             return;
         }
         

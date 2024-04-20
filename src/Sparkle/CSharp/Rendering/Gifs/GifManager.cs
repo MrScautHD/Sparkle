@@ -69,6 +69,11 @@ public static class GifManager {
     /// </summary>
     /// <param name="gif">The gif to be added.</param>
     public static void Add(Gif gif) {
+        if (Gifs.Contains(gif)) {
+            Logger.Warn($"The Gif with the texture ID [{gif.Texture.Id}] is already present in the GifManager!");
+            return;
+        }
+        
         if (HasInitialized) {
             gif.Init();
         }

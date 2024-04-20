@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+
+  <!-- Project -->
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,6 +11,7 @@
     <LangVersion>12</LangVersion>
   </PropertyGroup>
 
+  <!-- Nuget -->
   <PropertyGroup>
     <Title>Sparkle</Title>
     <Authors>MrScautHD</Authors>
@@ -24,7 +26,8 @@
     <PackageTags>OpenGL, Angle, Game, Engine, Renderer, Graphics, C#12, Net8, dotnet, Modern, Sparkle, 2D, 3D, Raylib, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
-  
+
+  <!-- Libraries -->
   <ItemGroup>
     <PackageReference Include="Jitter2" Version="2.2.0" />
     <PackageReference Include="LibNoise" Version="0.2.0" />
@@ -33,10 +36,12 @@
     <PackageReference Include="Raylib-cs" Version="6.0.0" />
   </ItemGroup>
 
+  <!-- Icon -->
   <ItemGroup>
     <None Include="content\images\icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
-  
+
+  <!-- Content -->
   <ItemGroup>
     <Content Include="content/**/*" Pack="true">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

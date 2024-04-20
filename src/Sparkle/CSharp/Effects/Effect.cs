@@ -4,7 +4,7 @@ using Sparkle.CSharp.Content.Types;
 namespace Sparkle.CSharp.Effects;
 
 public class Effect : Disposable {
-
+    
     public Shader Shader { get; private set; }
     public bool HasInitialized { get; private set; }
     

@@ -65,6 +65,11 @@ public static class OverlayManager {
     /// </summary>
     /// <param name="overlay">The overlay to be added.</param>
     public static void Add(Overlay overlay) {
+        if (Overlays.Contains(overlay)) {
+            Logger.Warn($"The Overlay [{overlay.Name}] is already present in the OverlayManager!");
+            return;
+        }
+        
         Logger.Info($"Added Overlay: {overlay.Name}");
         Overlays.Add(overlay);
     }
