@@ -93,6 +93,7 @@ public class Test3DScene : Scene {
                 .SetSizeOverLifeTime(new Vector2(2, 2), Vector2.Zero)
                 .SetRotationOverLifeTime(0, 360)
                 .SetColorOverLifeTime(Color.White, Color.Red)
+                .SetVelocityOverLifeTime(new Vector3(0, -1, 0), new Vector3(0, -10 ,0))
                 .Build();
             
             Particle particle = new Particle(TestGame.Gif.Texture, new Vector3(SceneManager.ActiveCam3D!.Position.X + x, SceneManager.ActiveCam3D!.Position.Y - 6, SceneManager.ActiveCam3D!.Position.Z + z), lifeTime, data);

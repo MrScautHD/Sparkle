@@ -95,6 +95,29 @@ public class ParticleBuilder {
     }
 
     /// <summary>
+    /// Sets the velocity of the particle to the specified value.
+    /// </summary>
+    /// <param name="velocity">The velocity of the particle.</param>
+    /// <returns>The particle builder object with the updated velocity.</returns>
+    public ParticleBuilder SetVelocity(Vector3 velocity) {
+        this._data.StartVelocity = velocity;
+        this._data.EndVelocity = velocity;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the velocity of the particle over its lifetime to the specified values.
+    /// </summary>
+    /// <param name="startVelocity">The starting velocity of the particle.</param>
+    /// <param name="endVelocity">The ending velocity of the particle.</param>
+    /// <returns>The particle builder object with the updated velocity.</returns>
+    public ParticleBuilder SetVelocityOverLifeTime(Vector3 startVelocity, Vector3 endVelocity) {
+        this._data.StartVelocity = startVelocity;
+        this._data.EndVelocity = endVelocity;
+        return this;
+    }
+
+    /// <summary>
     /// Builds a ParticleData object with the provided settings.
     /// </summary>
     /// <returns>The built ParticleData object.</returns>

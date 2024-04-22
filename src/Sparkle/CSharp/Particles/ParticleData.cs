@@ -17,6 +17,9 @@ public struct ParticleData {
     
     public Color StartColor { get; internal set; }
     public Color EndColor { get; internal set; }
+    
+    public Vector3 StartVelocity { get; internal set; }
+    public Vector3 EndVelocity { get; internal set; }
 
     /// <summary>
     /// Default constructor for creating a ParticleData struct.
@@ -29,5 +32,7 @@ public struct ParticleData {
         this.EndRotation = 0f;
         this.StartColor = Color.White;
         this.EndColor = Color.White;
+        this.StartVelocity = Vector3.Zero;
+        this.EndVelocity = Vector3.Zero;
     }
 }

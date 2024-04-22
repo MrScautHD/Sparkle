@@ -54,7 +54,8 @@ public class Particle : Disposable {
             SceneManager.ActiveScene?.RemoveParticle(this);
         }
 
-        // this.Position.Y += Time.Delta * 1;
+        Vector3 velocity = Raymath.Vector3Lerp(this._data.StartVelocity, this._data.EndVelocity, this._interpolationFactor);
+        this.Position += velocity * Time.Delta;
     }
     
     /// <summary>
