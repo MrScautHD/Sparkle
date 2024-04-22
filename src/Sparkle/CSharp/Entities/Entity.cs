@@ -1,5 +1,6 @@
 using System.Numerics;
 using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -130,6 +131,7 @@ public class Entity : Disposable {
             foreach (Component component in this._components.Values) {
                 component.Dispose();
             }
+            
             this._components.Clear();
         }
     }
