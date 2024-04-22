@@ -30,7 +30,7 @@ public class Sprite : Component {
         base.Draw();
         
         Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
-        Rectangle dest = new Rectangle(this.Entity.Position.X, this.Entity.Position.Y, this.Size.X, this.Size.Y);
+        Rectangle dest = new Rectangle(this.GlobalPos.X, this.GlobalPos.Y, this.Size.X, this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         TextureHelper.DrawPro(this.Texture, source, dest, origin, this.Rotation, this.Color);
     }

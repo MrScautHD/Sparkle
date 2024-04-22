@@ -1,4 +1,5 @@
 using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Particles;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Rendering.Renderers;
 
@@ -12,6 +13,9 @@ public abstract class Scene : Disposable {
     public readonly Simulation Simulation;
 
     public Skybox? Skybox { get; private set; }
+    
+    private readonly Dictionary<int, Particle> _particles;
+    private int _particleIds;
     
     private readonly Dictionary<int, Entity> _entities;
     private int _entityIds;
@@ -28,6 +32,7 @@ public abstract class Scene : Disposable {
         this.Name = name;
         this.Type = type;
         this.Simulation = new Simulation(settings ?? new PhysicsSettings());
+        this._particles = new Dictionary<int, Particle>();
         this._entities = new Dictionary<int, Entity>();
     }
     
@@ -42,6 +47,10 @@ public abstract class Scene : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
+        foreach (Particle particle in this._particles.Values) {
+            particle.Update();
+        }
+        
         foreach (Entity entity in this._entities.Values) {
             entity.Update();
         }
@@ -51,6 +60,10 @@ public abstract class Scene : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected internal virtual void AfterUpdate() {
+        foreach (Particle particle in this._particles.Values) {
+            particle.AfterUpdate();
+        }
+        
         foreach (Entity entity in this._entities.Values) {
             entity.AfterUpdate();
         }
@@ -63,6 +76,10 @@ public abstract class Scene : Disposable {
     protected internal virtual void FixedUpdate() {
         this.Simulation.Step(1.0F / Game.Instance.Settings.FixedTimeStep);
         
+        foreach (Particle particle in this._particles.Values) {
+            particle.FixedUpdate();
+        }
+        
         foreach (Entity entity in this._entities.Values) {
             entity.FixedUpdate();
         }
@@ -74,9 +91,68 @@ public abstract class Scene : Disposable {
     protected internal virtual void Draw() {
         this.Skybox?.Draw();
         
+        foreach (Particle particle in this._particles.Values) {
+            particle.Draw();
+        }
+        
         foreach (Entity entity in this._entities.Values) {
             entity.Draw();
         }
+    }
+
+    /// <summary>
+    /// Adds a particle to the scene.
+    /// </summary>
+    /// <param name="particle">The particle to add.</param>
+    public void AddParticle(Particle particle) {
+        if (this._particles.ContainsValue(particle)) {
+            Logger.Warn($"The particle with the id: [{particle.Id}] is already present in the Scene!");
+            return;
+        }
+
+        particle.Id = this._particleIds++;
+        particle.Init();
+        
+        this._particles.Add(particle.Id, particle);
+    }
+
+    /// <summary>
+    /// Removes a particle from the scene.
+    /// </summary>
+    /// <param name="id">The id of the particle to remove.</param>
+    public void RemoveParticle(int id) {
+        if (!this._particles.ContainsKey(id)) {
+            Logger.Warn($"The particle with the id: [{id}] is already removed from the Scene!");
+            return;
+        }
+        
+        this._particles[id].Dispose();
+        this._particles.Remove(id);
+    }
+
+    /// <summary>
+    /// Removes a particle from the scene.
+    /// </summary>
+    /// <param name="particle">The id of the particle to remove.</param>
+    public void RemoveParticle(Particle particle) {
+        this.RemoveParticle(particle.Id);
+    }
+
+    /// <summary>
+    /// Retrieves a particle by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the particle.</param>
+    /// <returns>The particle with the specified ID.</returns>
+    public Particle GetParticle(int id) {
+        return this._particles[id];
+    }
+
+    /// <summary>
+    /// Retrieves all particles in the scene.
+    /// </summary>
+    /// <returns>An array of particles.</returns>
+    public Particle[] GetAllParticles() {
+        return this._particles.Values.ToArray();
     }
     
     /// <summary>
@@ -166,8 +242,15 @@ public abstract class Scene : Disposable {
                 entity.Dispose();
             }
             
+            foreach (Particle particle in this._particles.Values) {
+                particle.Dispose();
+            }
+            
             this._entities.Clear();
             this._entityIds = 0;
+            
+            this._particles.Clear();
+            this._particleIds = 0;
             
             this.Skybox?.Dispose();
             this.Simulation.Dispose();

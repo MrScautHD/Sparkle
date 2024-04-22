@@ -71,7 +71,7 @@ public class TestGame : Game {
         Skybox = this.Content.Load(new ImageContent("content/skybox.png"));
         
         // GIF
-        Gif = this.Content.Load(new GifContent("content/test.gif", 3));
+        Gif = this.Content.Load(new GifContent("content/flame.gif", 20));
         
         // MODELS
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));

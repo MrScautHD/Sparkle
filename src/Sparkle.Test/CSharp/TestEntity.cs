@@ -37,7 +37,7 @@ public class TestEntity : Entity {
         List<Shape> shapes = new List<Shape>();
         shapes.Add(new BoxShape(2, 4, 2));
         
-        this.AddComponent(new RigidBody(shapes, Vector3.Zero));
+        this.AddComponent(new RigidBody(shapes));
     }
     
     protected override void FixedUpdate() {
