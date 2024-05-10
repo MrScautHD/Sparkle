@@ -1,4 +1,5 @@
-using Raylib_cs;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Textures;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 

@@ -1,5 +1,5 @@
 using System.Reflection;
-using Raylib_cs;
+using Raylib_CSharp.Windowing;
 
 namespace Sparkle.CSharp;
 

@@ -1,5 +1,5 @@
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Materials;
+using Raylib_CSharp.Shaders;
 
 namespace Sparkle.CSharp.Effects.Types;
 
@@ -19,13 +19,13 @@ public class SkyboxEffect : Effect {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private void SetLocations() {
-        this.EnvironmentMapLoc = ShaderHelper.GetLocation(this.Shader, "environmentMap");
+        this.EnvironmentMapLoc = Shader.GetLocation(this.Shader, "environmentMap");
     }
 
     /// <summary>
     /// Updates the values of the light source for shader rendering.
     /// </summary>
     private void UpdateValues() {
-        ShaderHelper.SetValue(this.Shader, this.EnvironmentMapLoc, (int) MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
+        Shader.SetValue(this.Shader, this.EnvironmentMapLoc, MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
     }
 }

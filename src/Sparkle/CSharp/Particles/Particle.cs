@@ -1,9 +1,12 @@
+using System.Drawing;
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp;
+using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Entities;
-using Sparkle.CSharp.Rendering;
-using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
+using Color = Raylib_CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.Particles;
 
@@ -47,15 +50,15 @@ public class Particle : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
-        this._timer += Time.Delta;
-        this._interpolationFactor = Raymath.Clamp(this._timer / this._lifeTime, 0.0F, 1.0F);
+        this._timer += Time.GetFrameTime();
+        this._interpolationFactor = RayMath.Clamp(this._timer / this._lifeTime, 0.0F, 1.0F);
 
         if (this._timer >= this._lifeTime) {
             SceneManager.ActiveScene?.RemoveParticle(this);
         }
 
-        Vector3 velocity = Raymath.Vector3Lerp(this._data.StartVelocity, this._data.EndVelocity, this._interpolationFactor);
-        this.Position += velocity * Time.Delta;
+        Vector3 velocity = RayMath.Vector3Lerp(this._data.StartVelocity, this._data.EndVelocity, this._interpolationFactor);
+        this.Position += velocity * Time.GetFrameTime();
     }
     
     /// <summary>
@@ -76,22 +79,22 @@ public class Particle : Disposable {
         Cam3D? cam = SceneManager.ActiveCam3D;
         if (cam == null) return;
         
-        Vector2 size = Raymath.Vector2Lerp(this._data.StartSize, this._data.EndSize, this._interpolationFactor);
-        float rotation = Raymath.Lerp(this._data.StartRotation, this._data.EndRotation, this._interpolationFactor);
+        Vector2 size = RayMath.Vector2Lerp(this._data.StartSize, this._data.EndSize, this._interpolationFactor);
+        float rotation = RayMath.Lerp(this._data.StartRotation, this._data.EndRotation, this._interpolationFactor);
         
         Color color = new Color() {
-            R = (byte) Raymath.Lerp(this._data.StartColor.R, this._data.EndColor.R, this._interpolationFactor),
-            G = (byte) Raymath.Lerp(this._data.StartColor.G, this._data.EndColor.G, this._interpolationFactor),
-            B = (byte) Raymath.Lerp(this._data.StartColor.B, this._data.EndColor.B, this._interpolationFactor),
-            A = (byte) Raymath.Lerp(this._data.StartColor.A, this._data.EndColor.A, this._interpolationFactor)
+            R = (byte) RayMath.Lerp(this._data.StartColor.R, this._data.EndColor.R, this._interpolationFactor),
+            G = (byte) RayMath.Lerp(this._data.StartColor.G, this._data.EndColor.G, this._interpolationFactor),
+            B = (byte) RayMath.Lerp(this._data.StartColor.B, this._data.EndColor.B, this._interpolationFactor),
+            A = (byte) RayMath.Lerp(this._data.StartColor.A, this._data.EndColor.A, this._interpolationFactor)
         };
         
-        Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
-        Rectangle dest = new Rectangle(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
+        RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
+        RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
         Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
         
         Graphics.BeginShaderMode(this._data.Effect.Shader);
-        ModelHelper.DrawBillboardPro(cam, this.Texture, source, this.Position, cam.Up, size, origin, rotation, color);
+        Graphics.DrawBillboardPro(cam.GetCamera3D(), this.Texture, source, this.Position, cam.Up, size, origin, rotation, color);
         Graphics.EndShaderMode();
     }
 

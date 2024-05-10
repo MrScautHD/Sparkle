@@ -1,8 +1,9 @@
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.CSharp;
+using Raylib_CSharp;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Interact;
+using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Entities;
-using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.Test.CSharp;
@@ -26,19 +27,19 @@ public class Test2DScene : Scene {
         Test2DEntity player = (Test2DEntity) this.GetEntity(1);
 
         if (Input.IsKeyDown(KeyboardKey.W)) {
-            player.Position.Y -= 50.0F * Time.Delta;
+            player.Position.Y -= 50.0F * Time.GetFrameTime();
         }
         
         if (Input.IsKeyDown(KeyboardKey.S)) {
-            player.Position.Y += 50.0F * Time.Delta;
+            player.Position.Y += 50.0F * Time.GetFrameTime();
         }
         
         if (Input.IsKeyDown(KeyboardKey.A)) {
-            player.Position.X -= 50.0F * Time.Delta;
+            player.Position.X -= 50.0F * Time.GetFrameTime();
         }
         
         if (Input.IsKeyDown(KeyboardKey.D)) {
-            player.Position.X += 50.0F * Time.Delta;
+            player.Position.X += 50.0F * Time.GetFrameTime();
         }
         
         SceneManager.ActiveCam2D!.Target = new Vector2(player.Position.X, player.Position.Y);
@@ -48,7 +49,7 @@ public class Test2DScene : Scene {
         base.Draw();
         
         // OBJECTS
-        ShapeHelper.DrawRectangle(45, 123, 5, 5, Color.White);
-        ShapeHelper.DrawRectangle(5, 12, 30, 50, new Color(192, 112, 162, 100));
+        Graphics.DrawRectangle(45, 123, 5, 5, Color.White);
+        Graphics.DrawRectangle(5, 12, 30, 50, new Color(192, 112, 162, 100));
     }
 }

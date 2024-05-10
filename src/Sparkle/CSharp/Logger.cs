@@ -1,9 +1,8 @@
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Raylib_cs;
+using Raylib_CSharp.Logging;
 using Sparkle.CSharp.IO;
+using RLogger = Raylib_CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp;
 
@@ -13,6 +12,18 @@ public static class Logger {
     public static event OnMessage? Message;
     
     public static string? LogPath { get; private set; }
+    
+    public static bool HasInitialized { get; private set; }
+
+    /// <summary>
+    /// Initializes the logger.
+    /// </summary>
+    internal static void Init() {
+        RLogger.Init();
+        RLogger.Message += RaylibLogger;
+
+        HasInitialized = true;
+    }
 
     /// <summary>
     /// Logs a debug message with optional stack frame information.
@@ -115,37 +126,34 @@ public static class Logger {
     }
 
     /// <summary>
-    /// Configures a custom <see cref="Raylib"/> log by setting a trace log callback.
+    /// Sends a log message to the logger with the specified log level and text.
     /// </summary>
-    internal static unsafe void SetupRaylibLogger() {
-        Raylib.SetTraceLogCallback(&RaylibLogger);
-    }
-    
-    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
-    private static unsafe void RaylibLogger(int logLevel, sbyte* text, sbyte* args) {
-        string message = Logging.GetLogMessage(new IntPtr(text), new IntPtr(args));
-
-        switch ((TraceLogLevel) logLevel) {
+    /// <param name="level">The level of the log message.</param>
+    /// <param name="msg">The text of the log message.</param>
+    private static bool RaylibLogger(TraceLogLevel level, string msg) {
+        switch (level) {
             case TraceLogLevel.Debug:
-                Debug(message, 3);
-                break;
+                Debug(msg, 3);
+                return true;
 
             case TraceLogLevel.Info:
-                Info(message, 3);
-                break;
+                Info(msg, 3);
+                return true;
             
             case TraceLogLevel.Warning:
-                Warn(message, 3);
-                break;
+                Warn(msg, 3);
+                return true;
             
             case TraceLogLevel.Error:
-                Error(message, 3);
-                break;
+                Error(msg, 3);
+                return true;
             
             case TraceLogLevel.Fatal:
-                Fatal(message, 3);
-                break;
+                Fatal(msg, 3);
+                return true;
         }
+
+        return false;
     }
 
     /// <summary>

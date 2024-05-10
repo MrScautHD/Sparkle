@@ -1,6 +1,5 @@
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Geometry;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -38,7 +37,7 @@ public class MarchingCubesChunk : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            ModelHelper.Unload(this.Model);
+            Model.Unload(this.Model);
         }
     }
 }

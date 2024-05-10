@@ -3,7 +3,7 @@ using Jitter2;
 using Jitter2.Collision.Shapes;
 using Jitter2.DataStructures;
 using Jitter2.LinearMath;
-using Raylib_cs;
+using Raylib_CSharp;
 using Sparkle.CSharp.Physics.Conversions;
 using Sparkle.CSharp.Scenes;
 
@@ -104,7 +104,7 @@ public class RigidBody : Component {
         Quaternion entityRot = Quaternion.Conjugate(this.Entity.Rotation);
         Quaternion bodyRot = PhysicsConversion.FromJQuaternion(JQuaternion.CreateFromMatrix(this.JBody.Orientation));
         
-        if (Raymath.QuaternionEquals(entityRot, bodyRot) == 0) {
+        if (RayMath.QuaternionEquals(entityRot, bodyRot) == 0) {
             this.JBody.Orientation = JMatrix.CreateFromQuaternion(PhysicsConversion.ToJQuaternion(entityRot));
         }
     }

@@ -1,7 +1,7 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Effects.Types;
-using Sparkle.CSharp.Rendering.Helpers;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -59,10 +59,10 @@ public class Light : Component {
         
         if (this.DrawSphere) {
             if (this.Enabled) {
-                ModelHelper.DrawSphere(this.GlobalPos, 0.05F * this.Intensity, 16, 16, this.Color);
+                Graphics.DrawSphereEx(this.GlobalPos, 0.05F * this.Intensity, 16, 16, this.Color);
             }
             else {
-                ModelHelper.DrawSphereWires(this.GlobalPos, 0.05F * this.Intensity, 16, 16, this.Color);
+                Graphics.DrawSphereWires(this.GlobalPos, 0.05F * this.Intensity, 16, 16, this.Color);
             }
         }
     }

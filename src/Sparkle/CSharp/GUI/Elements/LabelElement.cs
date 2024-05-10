@@ -1,8 +1,9 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Fonts;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -41,8 +42,8 @@ public class LabelElement : GuiElement {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.CalcFontSize = this.FontSize * scale * GuiManager.Scale;
         
-        this.Size = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
-        this.ScaledSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        this.Size = TextManager.MeasureTextEx(this.Font, this.Text, this.FontSize, this.Spacing);
+        this.ScaledSize = TextManager.MeasureTextEx(this.Font, this.Text, this.CalcFontSize, this.Spacing);
     }
 
     protected internal override void Draw() {
@@ -57,6 +58,6 @@ public class LabelElement : GuiElement {
     protected virtual void DrawText() {
         Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
         Vector2 origin = new Vector2(this.ScaledSize.X / 2, this.ScaledSize.Y / 2);
-        FontHelper.DrawText(this.Font, this.Text, pos, origin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
+        Graphics.DrawTextPro(this.Font, this.Text, pos, origin, this.Rotation, this.CalcFontSize, this.Spacing, this.IsHovered ? this.HoverColor : this.Color);
     }
 }

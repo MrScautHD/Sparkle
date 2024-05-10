@@ -1,8 +1,8 @@
+using System.Drawing;
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Windowing;
-using Rectangle = Raylib_cs.Rectangle;
+using Raylib_CSharp.Interact;
+using Raylib_CSharp.Shapes;
+using Raylib_CSharp.Windowing;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -56,8 +56,8 @@ public abstract class GuiElement : Disposable {
         this.CalculateSize();
         this.CalculatePosition();
         
-        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
-        if (ShapeHelper.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
+        RectangleF rec = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
+        if (Shape.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {

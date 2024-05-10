@@ -1,5 +1,5 @@
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Fonts;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -18,7 +18,7 @@ public struct LabelData : IData {
     /// Represents data for a label element.
     /// </summary>
     public LabelData() {
-        this.Font = FontHelper.GetDefault();
+        this.Font = Font.GetDefault();
         this.Text = string.Empty;
         this.FontSize = 18;
         this.Spacing = 4;

@@ -1,8 +1,11 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp;
+using Raylib_CSharp.Camera.Cam3D;
+using Raylib_CSharp.Collision;
+using Raylib_CSharp.Interact;
+using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Rendering;
-using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
@@ -50,7 +53,7 @@ public class Cam3D : Entity {
     public new Quaternion Rotation {
         get {
             Matrix4x4 lookAt = Matrix4x4.CreateLookAt(this.Position, this.Target, this.Up);
-            return Raymath.QuaternionFromMatrix(lookAt);
+            return RayMath.QuaternionFromMatrix(lookAt);
         }
     }
     
@@ -100,27 +103,27 @@ public class Cam3D : Entity {
                     this.SetPitch(this.GetPitch() - Input.GetMouseDelta().Y * this.MouseSensitivity, true, false, false);
 
                     if (Input.IsKeyDown(KeyboardKey.W)) {
-                        this.MoveForward(this.MovementSpeed * Time.Delta, true);
+                        this.MoveForward(this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.S)) {
-                        this.MoveForward(-this.MovementSpeed * Time.Delta, true);
+                        this.MoveForward(-this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.A)) {
-                        this.MoveRight(-this.MovementSpeed * Time.Delta, true);
+                        this.MoveRight(-this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.D)) {
-                        this.MoveRight(this.MovementSpeed * Time.Delta, true);
+                        this.MoveRight(this.MovementSpeed * Time.GetFrameTime(), true);
                     }
 
                     if (Input.IsKeyDown(KeyboardKey.Space)) {
-                        this.MoveUp(this.MovementSpeed * Time.Delta);
+                        this.MoveUp(this.MovementSpeed * Time.GetFrameTime());
                     }
                     
                     if (Input.IsKeyDown(KeyboardKey.LeftShift)) {
-                        this.MoveUp(-this.MovementSpeed * Time.Delta);
+                        this.MoveUp(-this.MovementSpeed * Time.GetFrameTime());
                     }
                 }
                 else {
@@ -128,33 +131,33 @@ public class Cam3D : Entity {
                     this.SetPitch(this.GetPitch() - (Input.GetGamepadAxisMovement(0, GamepadAxis.RightY) * 4) * this.MouseSensitivity, true, false, false);
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightTrigger2)) {
-                        this.MoveForward(this.MovementSpeed * Time.Delta, true);
+                        this.MoveForward(this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.LeftTrigger2)) {
-                        this.MoveForward(-this.MovementSpeed * Time.Delta, true);
+                        this.MoveForward(-this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightTrigger1)) {
-                        this.MoveRight(this.MovementSpeed * Time.Delta, true);
+                        this.MoveRight(this.MovementSpeed * Time.GetFrameTime(), true);
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.LeftTrigger1)) {
-                        this.MoveRight(-this.MovementSpeed * Time.Delta, true);
+                        this.MoveRight(-this.MovementSpeed * Time.GetFrameTime(), true);
                     }
 
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightFaceUp)) {
-                        this.MoveUp(this.MovementSpeed * Time.Delta);
+                        this.MoveUp(this.MovementSpeed * Time.GetFrameTime());
                     }
                     
                     if (Input.IsGamepadButtonDown(0, GamepadButton.RightFaceDown)) {
-                        this.MoveUp(-this.MovementSpeed * Time.Delta);
+                        this.MoveUp(-this.MovementSpeed * Time.GetFrameTime());
                     }
                 }
                 break;
             
             case CameraMode.Orbital:
-                Matrix4x4 rotation = Raymath.MatrixRotate(this.Up, -this.OrbitalSpeed * Time.Delta);
+                Matrix4x4 rotation = RayMath.MatrixRotate(this.Up, -this.OrbitalSpeed * Time.GetFrameTime());
                 Vector3 view = this.Position - this.Target;
                 Vector3 transform = Vector3.Transform(view, rotation);
                 this.Position = this.Target + transform;
@@ -192,51 +195,51 @@ public class Cam3D : Entity {
         }
     }
 
-    /// <inheritdoc cref="Raylib.GetCameraForward(ref Camera3D)"/>
-    public Vector3 GetForward() => Raylib.GetCameraForward(ref this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetForward"/>
+    public Vector3 GetForward() => Camera3D.GetForward(ref this._camera3D);
     
-    /// <inheritdoc cref="Raylib.GetCameraUp(ref Camera3D)"/>
-    public Vector3 GetUp() => Raylib.GetCameraUp(ref this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetUp"/>
+    public Vector3 GetUp() => Camera3D.GetUp(ref this._camera3D);
     
-    /// <inheritdoc cref="Raylib.GetCameraRight(ref Camera3D)"/>
-    public Vector3 GetRight() => Raylib.GetCameraRight(ref this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetRight"/>
+    public Vector3 GetRight() => Camera3D.GetRight(ref this._camera3D);
     
-    /// <inheritdoc cref="Raylib.CameraMoveForward(ref Camera3D, float, CBool)"/>
-    public void MoveForward(float distance, bool moveInWorldPlane) => Raylib.CameraMoveForward(ref this._camera3D, distance, moveInWorldPlane);
+    /// <inheritdoc cref="Camera3D.MoveForward"/>
+    public void MoveForward(float distance, bool moveInWorldPlane) => Camera3D.MoveForward(ref this._camera3D, distance, moveInWorldPlane);
     
-    /// <inheritdoc cref="Raylib.CameraMoveUp(ref Camera3D, float)"/>
-    public void MoveUp(float distance) => Raylib.CameraMoveUp(ref this._camera3D, distance);
+    /// <inheritdoc cref="Camera3D.MoveUp"/>
+    public void MoveUp(float distance) => Camera3D.MoveUp(ref this._camera3D, distance);
     
-    /// <inheritdoc cref="Raylib.CameraMoveRight(ref Camera3D, float, CBool)"/>
-    public void MoveRight(float distance, bool moveInWorldPlane) => Raylib.CameraMoveRight(ref this._camera3D, distance, moveInWorldPlane);
+    /// <inheritdoc cref="Camera3D.MoveRight"/>
+    public void MoveRight(float distance, bool moveInWorldPlane) => Camera3D.MoveRight(ref this._camera3D, distance, moveInWorldPlane);
     
-    /// <inheritdoc cref="Raylib.CameraMoveToTarget(ref Camera3D, float)"/>
-    public void MoveToTarget(float delta) => Raylib.CameraMoveToTarget(ref this._camera3D, delta);
+    /// <inheritdoc cref="Camera3D.MoveToTarget"/>
+    public void MoveToTarget(float delta) => Camera3D.MoveToTarget(ref this._camera3D, delta);
 
-    /// <inheritdoc cref="Raylib.GetCameraViewMatrix(ref Camera3D)"/>
-    public Matrix4x4 GetView() => Raylib.GetCameraViewMatrix(ref this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetViewMatrix"/>
+    public Matrix4x4 GetView() => Camera3D.GetViewMatrix(ref this._camera3D);
     
-    /// <inheritdoc cref="Raylib.GetCameraProjectionMatrix(ref Camera3D, float)"/>
-    public Matrix4x4 GetProjection(float aspect) => Raylib.GetCameraProjectionMatrix(ref this._camera3D, aspect);
+    /// <inheritdoc cref="Camera3D.GetProjectionMatrix"/>
+    public Matrix4x4 GetProjection(float aspect) => Camera3D.GetProjectionMatrix(ref this._camera3D, aspect);
     
-    /// <inheritdoc cref="Raylib.GetCameraMatrix"/>
-    public Matrix4x4 GetTransformMatrix() => Raylib.GetCameraMatrix(this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetMatrix"/>
+    public Matrix4x4 GetMatrix() => Camera3D.GetMatrix(this._camera3D);
     
-    /// <inheritdoc cref="Raylib.GetWorldToScreen"/>
-    public Vector2 GetWorldToScreen(Vector3 position) => Raylib.GetWorldToScreen(position, this._camera3D);
+    /// <inheritdoc cref="Camera3D.GetWorldToScreen"/>
+    public Vector2 GetWorldToScreen(Vector3 position) => Camera3D.GetWorldToScreen(position, this._camera3D);
     
-    /// <inheritdoc cref="Raylib.GetWorldToScreenEx"/>
-    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => Raylib.GetWorldToScreenEx(position, this._camera3D, width, height);
+    /// <inheritdoc cref="Camera3D.GetWorldToScreenEx"/>
+    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => Camera3D.GetWorldToScreenEx(position, this._camera3D, width, height);
     
-    /// <inheritdoc cref="Raylib.GetMouseRay"/>
-    public Ray GetMouseRay(Vector2 mousePosition, Camera3D camera) => Raylib.GetMouseRay(mousePosition, camera);
+    /// <inheritdoc cref="Camera3D.GetMouseRay"/>
+    public Ray GetMouseRay(Vector2 mousePosition, Camera3D camera) => Camera3D.GetMouseRay(mousePosition, camera);
     
     /// <summary>
     /// Gets the yaw (horizontal rotation) of the 3D camera in degrees.
     /// </summary>
     /// <returns>The yaw angle of the camera in degrees.</returns>
     public float GetYaw() {
-        return Raymath.QuaternionToEuler(this.Rotation).Y * Raylib.RAD2DEG;
+        return RayMath.QuaternionToEuler(this.Rotation).Y * RayMath.Rad2Deg;
     }
 
     /// <summary>
@@ -244,7 +247,7 @@ public class Cam3D : Entity {
     /// </summary>
     /// <returns>The pitch angle of the camera in degrees.</returns>
     public float GetPitch() {
-        return Raymath.QuaternionToEuler(this.Rotation).X * Raylib.RAD2DEG;
+        return RayMath.QuaternionToEuler(this.Rotation).X * RayMath.Rad2Deg;
     }
 
     /// <summary>
@@ -252,7 +255,7 @@ public class Cam3D : Entity {
     /// </summary>
     /// <returns>The roll angle of the camera in degrees.</returns>
     public float GetRoll() {
-        return Raymath.QuaternionToEuler(this.Rotation).Z * Raylib.RAD2DEG;
+        return RayMath.QuaternionToEuler(this.Rotation).Z * RayMath.Rad2Deg;
     }
 
     /// <summary>
@@ -261,9 +264,9 @@ public class Cam3D : Entity {
     /// <param name="angle">The target yaw angle in degrees.</param>
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
     public void SetYaw(float angle, bool rotateAroundTarget) {
-        float difference = this.GetYaw() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
+        float difference = this.GetYaw() * RayMath.Deg2Rad - angle * RayMath.Deg2Rad;
         
-        Raylib.CameraYaw(ref this._camera3D, difference, rotateAroundTarget);
+        Camera3D.RotateYaw(ref this._camera3D, difference, rotateAroundTarget);
     }
     
     /// <summary>
@@ -274,9 +277,9 @@ public class Cam3D : Entity {
     /// <param name="rotateAroundTarget">Specifies whether to rotate around the camera's target position.</param>
     /// <param name="rotateUp">Specifies whether to rotate upwards.</param>
     public void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
-        float difference = angle * Raylib.DEG2RAD - this.GetPitch() * Raylib.DEG2RAD;
+        float difference = angle * RayMath.Deg2Rad - this.GetPitch() * RayMath.Deg2Rad;
         
-        Raylib.CameraPitch(ref this._camera3D, difference, lockView, rotateAroundTarget, rotateUp);
+        Camera3D.RotatePitch(ref this._camera3D, difference, lockView, rotateAroundTarget, rotateUp);
     }
 
     /// <summary>
@@ -284,9 +287,9 @@ public class Cam3D : Entity {
     /// </summary>
     /// <param name="angle">The target roll angle in degrees.</param>
     public void SetRoll(float angle) {
-        float difference = this.GetRoll() * Raylib.DEG2RAD - angle * Raylib.DEG2RAD;
+        float difference = this.GetRoll() * RayMath.Deg2Rad - angle * RayMath.Deg2Rad;
         
-        Raylib.CameraRoll(ref this._camera3D, difference);
+        Camera3D.RotateRoll(ref this._camera3D, difference);
     }
     
     /// <summary>
@@ -303,7 +306,7 @@ public class Cam3D : Entity {
     /// Retrieves the internal 3D camera used for rendering.
     /// </summary>
     /// <returns>The Camera3D object representing the current camera settings.</returns>
-    internal Camera3D GetCamera3D() {
+    public Camera3D GetCamera3D() {
         return this._camera3D;
     }
     
@@ -311,13 +314,13 @@ public class Cam3D : Entity {
     /// Prepares the rendering context for 3D graphics by configuring matrices, projection, and depth testing.
     /// </summary>
     public void BeginMode3D() {
-        Raylib.BeginMode3D(this._camera3D);
+        Graphics.BeginMode3D(this._camera3D);
     }
     
     /// <summary>
     /// Ends the 3D rendering mode and performs necessary cleanup.
     /// </summary>
     public void EndMode3D() {
-        Raylib.EndMode3D();
+        Graphics.EndMode3D();
     }
 }

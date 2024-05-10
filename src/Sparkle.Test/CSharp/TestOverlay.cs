@@ -1,6 +1,6 @@
-using Raylib_cs;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Overlays;
-using Sparkle.CSharp.Rendering.Helpers;
 
 namespace Sparkle.Test.CSharp;
 
@@ -11,6 +11,6 @@ public class TestOverlay : Overlay {
     }
 
     protected override void Draw() {
-        ShapeHelper.DrawCircle(70, 70, 30, Color.Red);
+        Graphics.DrawCircle(70, 70, 30, Color.Red);
     }
 }

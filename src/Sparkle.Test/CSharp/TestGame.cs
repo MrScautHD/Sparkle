@@ -1,12 +1,15 @@
 using Newtonsoft.Json.Linq;
-using Raylib_cs;
+using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Images;
+using Raylib_CSharp.Interact;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Configs.Json;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Rendering.Gifs;
-using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.Test.CSharp;
 
@@ -26,7 +29,7 @@ public class TestGame : Game {
     public static Model PlayerModel;
     
     // MODEL ANIMATIONS
-    //public static ModelAnimation[] Animations;
+    public static ModelAnimation[] Animations;
     
     // OVERLAY
     public TestOverlay Overlay;
@@ -77,7 +80,7 @@ public class TestGame : Game {
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
 
         // MODEL ANIMATIONS
-        //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
+        Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
     }
 
     protected override void Update() {
@@ -91,7 +94,7 @@ public class TestGame : Game {
 
     protected override void Draw() {
         base.Draw();
-        FontHelper.DrawFps(50, 50);
+        Graphics.DrawFps(50, 50);
     }
 
     private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {

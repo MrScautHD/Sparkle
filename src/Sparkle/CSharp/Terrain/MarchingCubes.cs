@@ -1,8 +1,8 @@
 using System.Numerics;
 using LibNoise;
 using LibNoise.Primitive;
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp;
+using Raylib_CSharp.Geometry;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -160,35 +160,30 @@ public class MarchingCubes {
     /// <returns>A Model object representing the generated mesh.</returns>
     public Model GenerateModel() {
         Mesh mesh = new Mesh(this._vertices.Count, this._triangles.Count);
+        
         mesh.AllocVertices();
-        mesh.AllocNormals();
-        mesh.AllocTexCoords();
-        mesh.AllocIndices();
-        
-        Span<Vector3> meshVertices = mesh.VerticesAs<Vector3>();
-        Span<Vector3> meshNormals = mesh.NormalsAs<Vector3>();
-        Span<Vector2> meshTexCoords = mesh.TexCoordsAs<Vector2>();
-        Span<ushort> meshTriangle = mesh.IndicesAs<ushort>();
-        
         for (int i = 0; i < this._vertices.Count; i++) {
-            meshVertices[i] = this._vertices[i];
+            mesh.Vertices[i] = this._vertices[i];
         }
-        
+       
+        mesh.AllocNormals(); 
         for (int i = 0; i < this._normals.Count; i++) {
-            meshNormals[i] = this._normals[i];
+            mesh.Normals[i] = this._normals[i];
         }
-        
+       
+        mesh.AllocTexCoords();
         for (int i = 0; i < this._texCoords.Count; i++) {
-            meshTexCoords[i] = this._texCoords[i];
+            mesh.TexCoords[i] = this._texCoords[i];
         }
-
+        
+        mesh.AllocIndices();
         for (int i = 0; i < this._triangles.Count; i++) {
-            meshTriangle[i] = this._triangles[i];
+            mesh.Indices[i] = this._triangles[i];
         }
         
-        MeshHelper.Upload(ref mesh, false); // UPDATE BUFFER FOR TERRAIN MANIPLUATION
+        Mesh.Upload(ref mesh, false); // UPDATE BUFFER FOR TERRAIN MANIPULATION
         
-        return ModelHelper.LoadFromMesh(mesh);
+        return Model.LoadFromMesh(mesh);
     }
 
     /// <summary>
@@ -198,7 +193,7 @@ public class MarchingCubes {
     private unsafe void UpdateMesh(Mesh mesh) {
         fixed (Vector3* verticesPtr = this._vertices.ToArray()) {
             for (int i = 0; i < this._vertices.Count; i++) {
-                MeshHelper.UpdateBuffer(mesh, i, verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
+                Mesh.UpdateBuffer(mesh, i, (nint) verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
             }
         }
     }

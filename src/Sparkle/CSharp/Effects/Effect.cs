@@ -1,4 +1,5 @@
-using Raylib_cs;
+using Raylib_CSharp.Materials;
+using Raylib_CSharp.Shaders;
 using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Effects;

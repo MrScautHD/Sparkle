@@ -1,5 +1,7 @@
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Materials;
+using Raylib_CSharp.Textures;
 
 namespace Sparkle.CSharp.Rendering.Models;
 
@@ -34,7 +36,7 @@ public class MaterialBuilder {
     /// <returns>A reference to the MaterialBuilder instance for method chaining.</returns>
     public MaterialBuilder Add(MaterialMapIndex mapIndex, Texture2D texture) {
         for (int i = 0; i < this._materials.Length; i++) {
-            MaterialHelper.SetTexture(ref this._materials[i], mapIndex, texture);
+            Material.SetTexture(ref this._materials[i], mapIndex, texture);
         }
         
         return this;
@@ -48,7 +50,7 @@ public class MaterialBuilder {
     /// <returns>The updated material builder.</returns>
     public MaterialBuilder Add(MaterialMapIndex mapIndex, Color color) {
         for (int i = 0; i < this._materials.Length; i++) {
-            MaterialHelper.SetColor(ref this._materials[i], mapIndex, color);
+            Material.SetColor(ref this._materials[i], mapIndex, color);
         }
         
         return this;
@@ -62,7 +64,7 @@ public class MaterialBuilder {
     /// <returns>The updated MaterialBuilder object.</returns>
     public MaterialBuilder Add(MaterialMapIndex mapIndex, float value) {
         for (int i = 0; i < this._materials.Length; i++) {
-            MaterialHelper.SetValue(ref this._materials[i], mapIndex, value);
+            Material.SetValue(ref this._materials[i], mapIndex, value);
         }
         
         return this;

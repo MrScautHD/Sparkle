@@ -1,6 +1,5 @@
 using System.Numerics;
 using Sparkle.CSharp.Entities.Components;
-using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
 

@@ -1,4 +1,4 @@
-﻿using Raylib_cs;
+﻿using Raylib_CSharp.Geometry;
 
 namespace Sparkle.CSharp.Content.Types;
 

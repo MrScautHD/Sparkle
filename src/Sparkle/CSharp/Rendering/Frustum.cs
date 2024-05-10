@@ -1,5 +1,6 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp;
+using Raylib_CSharp.Collision;
 
 namespace Sparkle.CSharp.Rendering;
 
@@ -18,7 +19,7 @@ public class Frustum {
     /// Extracts frustum planes from the view-projection matrix.
     /// </summary>
     public void Extract() {
-        Matrix4x4 viewProjection = Matrix4x4.Transpose(Rlgl.GetMatrixModelview()) * Matrix4x4.Transpose(Rlgl.GetMatrixProjection());
+        Matrix4x4 viewProjection = Matrix4x4.Transpose(RlGl.GetMatrixModelView()) * Matrix4x4.Transpose(RlGl.GetMatrixProjection());
         
         // LEFT
         this._planes[0] = Plane.Normalize(new Plane(

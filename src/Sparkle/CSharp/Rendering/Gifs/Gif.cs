@@ -1,5 +1,5 @@
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Images;
+using Raylib_CSharp.Textures;
 
 namespace Sparkle.CSharp.Rendering.Gifs;
 
@@ -32,10 +32,10 @@ public class Gif : Disposable {
     /// Used for Initializes objects.
     /// </summary>
     protected internal void Init() {
-        this.Image = ImageHelper.LoadAnim(this._path, out int frames);
+        this.Image = Image.LoadAnim(this._path, out int frames);
         this.AnimFrames = frames;
         
-        this.Texture = TextureHelper.LoadFromImage(this.Image);
+        this.Texture = Texture2D.LoadFromImage(this.Image);
         this.HasInitialized = true;
     }
     
@@ -53,7 +53,7 @@ public class Gif : Disposable {
     /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
-    protected internal virtual unsafe void FixedUpdate() {
+    protected internal virtual void FixedUpdate() {
         this.FrameCounter++;
         if (this.FrameCounter >= this.FrameDelay) {
             
@@ -64,7 +64,7 @@ public class Gif : Disposable {
 
             int nextFrameDataOffset = this.Image.Width * this.Image.Height * 4 * this.CurrentAnimFrame;
             
-            Raylib.UpdateTexture(this.Texture, (byte*) this.Image.Data + nextFrameDataOffset);
+            Texture2D.Update(this.Texture, this.Image.Data + nextFrameDataOffset);
 
             this.FrameCounter = 0;
         }
@@ -77,8 +77,8 @@ public class Gif : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            ImageHelper.Unload(this.Image);
-            TextureHelper.Unload(this.Texture);
+            Image.Unload(this.Image);
+            Texture2D.Unload(this.Texture);
             GifManager.Gifs.Remove(this);
         }
     }

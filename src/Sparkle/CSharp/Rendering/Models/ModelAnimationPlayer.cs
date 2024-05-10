@@ -1,6 +1,6 @@
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp;
+using Raylib_CSharp.Geometry;
 
 namespace Sparkle.CSharp.Rendering.Models;
 
@@ -40,7 +40,7 @@ public class ModelAnimationPlayer {
                     this.BlendAnimation();
                 }
                 
-                ModelHelper.UpdateAnimation(this._model, this._animations[this._playingIndex], this._frameCount);
+                ModelAnimation.Update(this._model, this._animations[this._playingIndex], this._frameCount);
             }
             else {
                 if (this._isLoop) {
@@ -60,7 +60,8 @@ public class ModelAnimationPlayer {
     private void BlendAnimation() {
         ModelAnimation currentAnimation = this._animations[this._playingIndex];
         ModelAnimation nextAnimation = this._animations[this._oldPlayingIndex];
-        
+        // TODO DONE IT
+        /*
         for (int frameIndex = 0; frameIndex < currentAnimation.FrameCount; frameIndex++) {
             FramePoses currentFramePoses = currentAnimation.FramePosesColl[frameIndex];
             FramePoses nextFramePoses = nextAnimation.FramePosesColl[frameIndex];
@@ -69,7 +70,7 @@ public class ModelAnimationPlayer {
                 Transform interpolatedPose = this.InterpolatePoses(currentFramePoses[boneIndex], nextFramePoses[boneIndex], this._blendFactor);
                 currentFramePoses[boneIndex] = interpolatedPose;
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -115,7 +116,7 @@ public class ModelAnimationPlayer {
     /// Stops the playback of the animation.
     /// </summary>
     public void Stop() {
-        ModelHelper.UpdateAnimation(this._model, this._animations[this._playingIndex], 0);
+        ModelAnimation.Update(this._model, this._animations[this._playingIndex], 0);
         this._frameCount = 0;
         this._playingIndex = 0;
         this._oldPlayingIndex = 0;

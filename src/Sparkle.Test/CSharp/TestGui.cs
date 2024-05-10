@@ -1,10 +1,10 @@
 using System.Numerics;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Fonts;
 using Sparkle.CSharp;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Sparkle.CSharp.Rendering.Helpers;
-using Color = Raylib_cs.Color;
 
 namespace Sparkle.Test.CSharp;
 
@@ -16,7 +16,7 @@ public class TestGui : Gui {
         base.Init();
 
         LabelData labelData = new LabelData() {
-            Font = FontHelper.GetDefault(),
+            Font = Font.GetDefault(),
             FontSize = 50,
             Spacing = 4,
             Text = "Sparkle Engine!",
@@ -32,7 +32,7 @@ public class TestGui : Gui {
         };
         
         LabelData buttonLabelData = new LabelData() {
-            Font = FontHelper.GetDefault(),
+            Font = Font.GetDefault(),
             FontSize = 25,
             Spacing = 4,
             Text = "Sparkle Engine!",
@@ -52,7 +52,7 @@ public class TestGui : Gui {
         };
         
         LabelData toggleLabelData = new LabelData() {
-            Font = FontHelper.GetDefault(),
+            Font = Font.GetDefault(),
             FontSize = 25,
             Spacing = 4,
             Text = "Check",

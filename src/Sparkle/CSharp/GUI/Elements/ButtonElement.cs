@@ -1,8 +1,11 @@
+using System.Drawing;
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp.Fonts;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Sparkle.CSharp.Rendering.Helpers;
-using Sparkle.CSharp.Windowing;
+using Color = Raylib_CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -59,12 +62,12 @@ public class ButtonElement : GuiElement {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.CalcFontSize = this.FontSize * scale * GuiManager.Scale;
         
-        this.TextSize = FontHelper.MeasureText(this.Font, this.Text, this.FontSize, this.Spacing);
-        this.ScaledTextSize = FontHelper.MeasureText(this.Font, this.Text, this.CalcFontSize, this.Spacing);
+        this.TextSize = TextManager.MeasureTextEx(this.Font, this.Text, this.FontSize, this.Spacing);
+        this.ScaledTextSize = TextManager.MeasureTextEx(this.Font, this.Text, this.CalcFontSize, this.Spacing);
     }
 
     protected internal override void Draw() {
-        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        RectangleF dest = new RectangleF(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
         Color color = this.IsHovered ? this.HoverColor : this.Color;
@@ -72,7 +75,7 @@ public class ButtonElement : GuiElement {
         
         if (this.Texture != null) {
             Texture2D texture = this.Texture.Value;
-            Rectangle source = new Rectangle(0, 0, texture.Width, texture.Height);
+            RectangleF source = new RectangleF(0, 0, texture.Width, texture.Height);
             
             this.DrawTexture(texture, source, dest, origin, this.Rotation, color);
         }
@@ -88,18 +91,18 @@ public class ButtonElement : GuiElement {
     /// <summary>
     /// Draws a button with a textured background on the GUI.
     /// </summary>
-    protected virtual void DrawTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) {
-        TextureHelper.DrawPro(texture, source, dest, origin, rotation, color);
+    protected virtual void DrawTexture(Texture2D texture, RectangleF source, RectangleF dest, Vector2 origin, float rotation, Color color) {
+        Graphics.DrawTexturePro(texture, source, dest, origin, rotation, color);
     }
 
     /// <summary>
     /// Draws a color button on the screen.
     /// </summary>
-    protected virtual void DrawRectangle(Rectangle dest, Vector2 origin, float rotation, Color color) {
-        ShapeHelper.DrawRectangle(dest, origin, rotation, color);
+    protected virtual void DrawRectangle(RectangleF dest, Vector2 origin, float rotation, Color color) {
+        Graphics.DrawRectanglePro(dest, origin, rotation, color);
 
-        Rectangle rec = new Rectangle(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
-        ShapeHelper.DrawRectangleLines(rec, 4, ColorHelper.Brightness(color, -0.5F));
+        RectangleF rec = new RectangleF(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
+        Graphics.DrawRectangleLinesEx(rec, 4, Color.Brightness(color, -0.5F));
     }
 
     /// <summary>
@@ -108,6 +111,6 @@ public class ButtonElement : GuiElement {
     protected virtual void DrawText(Font font, string text, float rotation, float fontSize, int spacing, Color color) {
         Vector2 pos = new Vector2(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2));
         Vector2 origin = new Vector2(this.ScaledTextSize.X / 2, this.ScaledTextSize.Y / 2);
-        FontHelper.DrawText(font, text, pos, origin, rotation, fontSize, spacing, color);
+        Graphics.DrawTextPro(font, text, pos, origin, rotation, fontSize, spacing, color);
     }
 }

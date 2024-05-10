@@ -1,7 +1,11 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp;
+using Raylib_CSharp.Camera.Cam2D;
+using Raylib_CSharp.Camera.Cam3D;
+using Raylib_CSharp.Interact;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI;
-using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -120,7 +124,7 @@ public class Cam2D : Entity {
         
         if (length > this.MinFollowEffectLength) {
             float speed = Math.Max(this.FractionFollowSpeed * length, this.MinFollowSpeed);
-            this.Position += diff * (speed * Time.Delta / length);
+            this.Position += diff * (speed * Time.GetFrameTime() / length);
         }
     }
     
@@ -138,7 +142,7 @@ public class Cam2D : Entity {
     /// </summary>
     /// <returns>The 2D transformation matrix based on the camera's configuration.</returns>
     public Matrix4x4 GetMatrix2D() {
-        return Raylib.GetCameraMatrix2D(this._camera2D);
+        return Camera2D.GetMatrix(this._camera2D);
     }
 
     /// <summary>
@@ -147,7 +151,7 @@ public class Cam2D : Entity {
     /// <param name="position">The screen-space position to be converted.</param>
     /// <returns>The world-space representation of the provided position.</returns>
     public Vector2 GetScreenToWorld2D(Vector2 position) {
-        return Raylib.GetScreenToWorld2D(position, this._camera2D);
+        return Camera2D.GetScreenToWorld(position, this._camera2D);
     }
     
     /// <summary>
@@ -156,14 +160,14 @@ public class Cam2D : Entity {
     /// <param name="position">The world-space position to be converted.</param>
     /// <returns>The screen-space representation of the provided position.</returns>
     public Vector2 GetWorldToScreen2D(Vector2 position) {
-        return Raylib.GetWorldToScreen2D(position, this._camera2D);
+        return Camera2D.GetWorldToScreen(position, this._camera2D);
     }
     
     /// <summary>
     /// Retrieves the internal 2D camera used for rendering.
     /// </summary>
     /// <returns>The Camera2D object representing the current camera settings.</returns>
-    internal Camera2D GetCamera2D() {
+    public Camera2D GetCamera2D() {
         return this._camera2D;
     }
     
@@ -171,13 +175,13 @@ public class Cam2D : Entity {
     /// Begins a 2D rendering mode with the current camera settings.
     /// </summary>
     public void BeginMode2D() {
-        Raylib.BeginMode2D(this._camera2D);
+        Graphics.BeginMode2D(this._camera2D);
     }
 
     /// <summary>
     /// Ends the 2D rendering mode, restoring the default rendering state.
     /// </summary>
     public void EndMode2D() {
-        Raylib.EndMode2D();
+        Graphics.EndMode2D();
     }
 }

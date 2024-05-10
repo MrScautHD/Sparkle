@@ -1,4 +1,10 @@
-using Raylib_cs;
+using Raylib_CSharp.Audio;
+using Raylib_CSharp.Fonts;
+using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Images;
+using Raylib_CSharp.Materials;
+using Raylib_CSharp.Shaders;
+using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Rendering.Gifs;
@@ -35,8 +41,7 @@ public class ContentManager : Disposable {
     /// </summary>
     /// <param name="type">The type of content for which the processor is sought.</param>
     /// <returns>
-    /// The content processor associated with the specified content type,
-    /// or null if a matching processor is not found.
+    /// The content processor associated with the specified content type, or null if a matching processor is not found.
     /// </returns>
     public IContentProcessor TryGetProcessor(Type type) {
         if (!this._processors.TryGetValue(type, out IContentProcessor? processor)) {
@@ -53,25 +58,6 @@ public class ContentManager : Disposable {
     /// <param name="processor">The content processor to add.</param>
     public void AddProcessors(Type type, IContentProcessor processor) {
         this._processors.Add(type, processor);
-    }
-
-    /// <summary>
-    /// Adds a item of unmanaged content to the content manager.
-    /// </summary>
-    /// <typeparam name="T">The type of content being added.</typeparam>
-    /// <param name="item">The item to be added.</param>
-    public void AddUnmanagedContent<T>(T item) {
-        if (this._processors.ContainsKey(item!.GetType())) {
-            if (!this._content.Contains(item)) {
-                this._content.Add(item);
-            }
-            else {
-                Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
-            }
-        }
-        else {
-            Logger.Warn($"This item is of an unsupported type: {typeof(T)}!");
-        }
     }
     
     /// <summary>

@@ -1,16 +1,15 @@
-using Raylib_cs;
+using Raylib_CSharp.Images;
 using Sparkle.CSharp.Content.Types;
-using Sparkle.CSharp.Rendering.Helpers;
 
 namespace Sparkle.CSharp.Content.Processors;
 
 public class ImageProcessor : IContentProcessor {
     
     public object Load<T>(IContentType<T> type) {
-        return ImageHelper.Load(type.Path);
+        return Image.Load(type.Path);
     }
 
     public void Unload(object item) {
-        ImageHelper.Unload((Image) item);
+        Image.Unload((Image) item);
     }
 }

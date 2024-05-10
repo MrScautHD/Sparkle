@@ -1,6 +1,10 @@
 using OpenTK.Graphics;
-using Raylib_cs;
-using Sparkle.CSharp.Audio;
+using Raylib_CSharp;
+using Raylib_CSharp.Audio;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Images;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Effects;
@@ -8,11 +12,9 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Rendering.Gifs;
 using Sparkle.CSharp.Rendering.Gl;
 using Sparkle.CSharp.Scenes;
-using Sparkle.CSharp.Windowing;
 
 namespace Sparkle.CSharp;
 
@@ -58,10 +60,10 @@ public class Game : Disposable {
         Logger.Info($"\tMEMORY: {SystemInfo.MemorySize} GB");
         Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
         Logger.Info($"\tOS: {SystemInfo.Os}");
-        Logger.Info($"\tAPI: {Rlgl.GetVersion()}");
+        Logger.Info($"\tAPI: {RlGl.GetVersion()}");
         
-        Logger.Info("Initialize Raylib logger...");
-        Logger.SetupRaylibLogger();
+        Logger.Info("Initialize logger...");
+        Logger.Init();
         
         Time.SetTargetFps(this.Settings.TargetFps);
 
@@ -72,7 +74,7 @@ public class Game : Disposable {
         AudioDevice.Init();
 
         Logger.Info("Initialize window...");
-        Window.SetConfigFlags(this.Settings.WindowFlags);
+        Raylib.SetConfigFlags(this.Settings.WindowFlags);
         Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
         
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
@@ -98,7 +100,7 @@ public class Game : Disposable {
             this.Update();
             this.AfterUpdate();
             
-            this._timer += Time.Delta;
+            this._timer += Time.GetFrameTime();
             while (this._timer >= this._fixedTimeStep) {
                 this.FixedUpdate();
                 this._timer -= this._fixedTimeStep;

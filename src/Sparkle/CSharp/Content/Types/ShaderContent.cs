@@ -1,4 +1,4 @@
-using Raylib_cs;
+using Raylib_CSharp.Shaders;
 
 namespace Sparkle.CSharp.Content.Types;
 

@@ -1,5 +1,5 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp.Colors;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Registries.Types;
 

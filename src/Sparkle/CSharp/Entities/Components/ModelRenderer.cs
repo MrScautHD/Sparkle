@@ -1,11 +1,14 @@
 using System.Numerics;
-using Raylib_cs;
+using Raylib_CSharp;
+using Raylib_CSharp.Collision;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Materials;
+using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Helpers;
 using Sparkle.CSharp.Rendering.Models;
 using Sparkle.CSharp.Scenes;
-using BoundingBox = Raylib_cs.BoundingBox;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -33,7 +36,7 @@ public class ModelRenderer : Component {
     public ModelRenderer(Model model, Vector3 offsetPos, Material[] materials, Effect? effect = default, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) : base(offsetPos) {
         this.AnimationPlayer = new ModelAnimationPlayer(model, animations ?? Array.Empty<ModelAnimation>());
         this._model = model;
-        this._box = ModelHelper.GetBoundingBox(this._model);
+        this._box = Model.GetBoundingBox(this._model);
         this._materials = materials;
         this._effect = effect ?? EffectRegistry.DiscardAlpha;
         this._color = color ?? Color.White;
@@ -60,20 +63,18 @@ public class ModelRenderer : Component {
         this.AnimationPlayer.FixedUpdate();
     }
     
-    protected internal override unsafe void Draw() {
+    protected internal override void Draw() {
         base.Draw();
         
         if (SceneManager.ActiveCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Rotation)) {
-            Vector3 axis;
-            float angle;
            
-            Raymath.QuaternionToAxisAngle(this.Entity.Rotation, &axis, &angle);
+            RayMath.QuaternionToAxisAngle(this.Entity.Rotation, out Vector3 axis, out float angle);
             
             if (this._drawWires) {
-                ModelHelper.DrawModelWires(this._model, this.GlobalPos, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+                Graphics.DrawModelWiresEx(this._model, this.GlobalPos, axis, angle * RayMath.Rad2Deg, this.Entity.Scale, this._color);
             }
             else {
-                ModelHelper.DrawModel(this._model, this.GlobalPos, axis, angle * Raylib.RAD2DEG, this.Entity.Scale, this._color);
+                Graphics.DrawModelEx(this._model, this.GlobalPos, axis, angle * RayMath.Rad2Deg, this.Entity.Scale, this._color);
             }
         }
     }
@@ -81,7 +82,7 @@ public class ModelRenderer : Component {
     /// <summary>
     /// Sets up the materials for the model.
     /// </summary>
-    private unsafe void SetupMaterial() {
+    private void SetupMaterial() {
         for (int i = 0; i < this._model.MaterialCount; i++) {
             this._model.Materials[i] = this._materials[i];
             this._model.Materials[i].Shader = this._effect.Shader;

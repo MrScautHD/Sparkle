@@ -1,6 +1,8 @@
+using System.Drawing;
 using System.Numerics;
-using Raylib_cs;
-using Sparkle.CSharp.Rendering.Helpers;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
+using Color = Raylib_CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -29,10 +31,10 @@ public class Sprite : Component {
     protected internal override void Draw() {
         base.Draw();
         
-        Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
-        Rectangle dest = new Rectangle(this.GlobalPos.X, this.GlobalPos.Y, this.Size.X, this.Size.Y);
+        RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
+        RectangleF dest = new RectangleF(this.GlobalPos.X, this.GlobalPos.Y, this.Size.X, this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
-        TextureHelper.DrawPro(this.Texture, source, dest, origin, this.Rotation, this.Color);
+        Graphics.DrawTexturePro(this.Texture, source, dest, origin, this.Rotation, this.Color);
     }
 
     protected override void Dispose(bool disposing) { }
