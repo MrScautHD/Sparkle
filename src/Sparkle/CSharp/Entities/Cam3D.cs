@@ -217,10 +217,10 @@ public class Cam3D : Entity {
     public void MoveToTarget(float delta) => Camera3D.MoveToTarget(ref this._camera3D, delta);
 
     /// <inheritdoc cref="Camera3D.GetViewMatrix"/>
-    public Matrix4x4 GetView() => Camera3D.GetViewMatrix(ref this._camera3D);
+    public Matrix4x4 GetViewMatrix() => Camera3D.GetViewMatrix(ref this._camera3D);
     
     /// <inheritdoc cref="Camera3D.GetProjectionMatrix"/>
-    public Matrix4x4 GetProjection(float aspect) => Camera3D.GetProjectionMatrix(ref this._camera3D, aspect);
+    public Matrix4x4 GetProjectionMatrix(float aspect) => Camera3D.GetProjectionMatrix(ref this._camera3D, aspect);
     
     /// <inheritdoc cref="Camera3D.GetMatrix"/>
     public Matrix4x4 GetMatrix() => Camera3D.GetMatrix(this._camera3D);
@@ -303,9 +303,9 @@ public class Cam3D : Entity {
     }
     
     /// <summary>
-    /// Retrieves the internal 3D camera used for rendering.
+    /// Returns the Camera3D object associated with the Cam3D instance.
     /// </summary>
-    /// <returns>The Camera3D object representing the current camera settings.</returns>
+    /// <returns>The Camera3D object associated with the Cam3D instance.</returns>
     public Camera3D GetCamera3D() {
         return this._camera3D;
     }

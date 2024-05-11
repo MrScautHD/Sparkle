@@ -141,7 +141,7 @@ public class Cam2D : Entity {
     /// Retrieves the 2D transformation matrix representing the current camera settings.
     /// </summary>
     /// <returns>The 2D transformation matrix based on the camera's configuration.</returns>
-    public Matrix4x4 GetMatrix2D() {
+    public Matrix4x4 GetMatrix() {
         return Camera2D.GetMatrix(this._camera2D);
     }
 
@@ -150,7 +150,7 @@ public class Cam2D : Entity {
     /// </summary>
     /// <param name="position">The screen-space position to be converted.</param>
     /// <returns>The world-space representation of the provided position.</returns>
-    public Vector2 GetScreenToWorld2D(Vector2 position) {
+    public Vector2 GetScreenToWorld(Vector2 position) {
         return Camera2D.GetScreenToWorld(position, this._camera2D);
     }
     
@@ -159,14 +159,14 @@ public class Cam2D : Entity {
     /// </summary>
     /// <param name="position">The world-space position to be converted.</param>
     /// <returns>The screen-space representation of the provided position.</returns>
-    public Vector2 GetWorldToScreen2D(Vector2 position) {
+    public Vector2 GetWorldToScreen(Vector2 position) {
         return Camera2D.GetWorldToScreen(position, this._camera2D);
     }
     
     /// <summary>
-    /// Retrieves the internal 2D camera used for rendering.
+    /// Returns the Camera2D object associated with the Cam2D instance.
     /// </summary>
-    /// <returns>The Camera2D object representing the current camera settings.</returns>
+    /// <returns>The Camera2D object associated with the Cam3D instance.</returns>
     public Camera2D GetCamera2D() {
         return this._camera2D;
     }
