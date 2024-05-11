@@ -22,7 +22,7 @@ public class MaterialBuilder {
     /// <summary>
     /// Sets up the materials for the model with the specified shader.
     /// </summary>
-    private unsafe void SetupMaterial() {
+    private void SetupMaterial() {
         for (int i = 0; i < this._model.MaterialCount; i++) {
             this._materials[i] = this._model.Materials[i];
         }

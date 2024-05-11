@@ -148,7 +148,7 @@ public class PbrEffect : Effect {
     /// <summary>
     /// Updates the values of the light source for shader rendering.
     /// </summary>
-    private unsafe void UpdateValues() {
+    private void UpdateValues() {
         if (SceneManager.ActiveCam3D == null) return;
         
         Shader.SetValue(this.Shader, this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
@@ -167,10 +167,10 @@ public class PbrEffect : Effect {
         GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
         GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
 
-        GL.BufferData(BufferTarget.UniformBuffer, sizeof(LightData) * 815, IntPtr.Zero, BufferUsage.DynamicDraw);
+        GL.BufferData(BufferTarget.UniformBuffer, Marshal.SizeOf(typeof(LightData)) * 815, IntPtr.Zero, BufferUsage.DynamicDraw);
         
         for (int i = 0; i < this._lights.Count; i++) {
-            GL.BufferSubData(BufferTarget.UniformBuffer, IntPtr.Zero, sizeof(LightData) * (i + 1), this._lights[i]);
+            GL.BufferSubData(BufferTarget.UniformBuffer, IntPtr.Zero, Marshal.SizeOf(typeof(LightData)) * (i + 1), this._lights[i]);
         }
         
         GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
