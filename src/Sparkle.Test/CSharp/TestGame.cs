@@ -29,7 +29,7 @@ public class TestGame : Game {
     public static Model PlayerModel;
     
     // MODEL ANIMATIONS
-    public static ModelAnimation[] Animations;
+    //public static ReadOnlySpanData<ModelAnimation> Animations;
     
     // OVERLAY
     public TestOverlay Overlay;
@@ -80,7 +80,7 @@ public class TestGame : Game {
         PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
 
         // MODEL ANIMATIONS
-        Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
+        //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
     }
 
     protected override void Update() {

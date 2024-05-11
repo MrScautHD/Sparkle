@@ -5,6 +5,7 @@ using Raylib_CSharp.Images;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Textures;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Rendering.Gifs;
@@ -27,8 +28,8 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
         this.AddProcessors(typeof(Gif), new GifProcessor());
-        this.AddProcessors(typeof(ModelAnimation[]), new ModelAnimationProcessor());
-        this.AddProcessors(typeof(Material[]), new MaterialProcessor());
+        this.AddProcessors(typeof(ReadOnlySpanData<ModelAnimation>), new ModelAnimationProcessor());
+        this.AddProcessors(typeof(ReadOnlySpanData<Material>), new MaterialProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(Shader), new ShaderProcessor());
         this.AddProcessors(typeof(Sound), new SoundProcessor());

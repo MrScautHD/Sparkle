@@ -1,8 +1,9 @@
 using Raylib_CSharp.Materials;
+using Raylib_CSharp.Unsafe.Spans.Data;
 
 namespace Sparkle.CSharp.Content.Types;
 
-public class MaterialContent : IContentType<Material[]> {
+public class MaterialContent : IContentType<ReadOnlySpanData<Material>> {
     
     public string Path { get; }
 

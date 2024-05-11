@@ -1,8 +1,9 @@
 ﻿using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Unsafe.Spans.Data;
 
 namespace Sparkle.CSharp.Content.Types;
 
-public class ModelAnimationContent : IContentType<ModelAnimation[]> {
+public class ModelAnimationContent : IContentType<ReadOnlySpanData<ModelAnimation>> {
     
     public string Path { get; }
 

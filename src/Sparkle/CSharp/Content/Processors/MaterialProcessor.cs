@@ -1,4 +1,5 @@
 using Raylib_CSharp.Materials;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Content.Processors;
@@ -6,15 +7,12 @@ namespace Sparkle.CSharp.Content.Processors;
 public class MaterialProcessor : IContentProcessor {
     
     public object Load<T>(IContentType<T> type) {
-        ReadOnlySpan<Material> span = Material.Load(type.Path);
-        Material[] materials = span.ToArray();
-
-        foreach (Material material in span) {
-            Material.Unload(material);
-        }
-
-        return materials;
+        return new ReadOnlySpanData<Material>(Material.Load(type.Path));
     }
 
-    public void Unload(object item) { }
+    public void Unload(object item) {
+        foreach (Material material in ((ReadOnlySpanData<Material>) item).GetSpan()) {
+            Material.Unload(material);
+        }
+    }
 }

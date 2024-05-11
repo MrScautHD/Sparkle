@@ -1,4 +1,5 @@
 using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Content.Processors;
@@ -6,12 +7,10 @@ namespace Sparkle.CSharp.Content.Processors;
 public class ModelAnimationProcessor : IContentProcessor {
     
     public object Load<T>(IContentType<T> type) {
-        ReadOnlySpan<ModelAnimation> span = ModelAnimation.Load(type.Path);
-        ModelAnimation[] animations = span.ToArray();
-        ModelAnimation.Unload(span);
-
-        return animations;
+        return new ReadOnlySpanData<ModelAnimation>(ModelAnimation.Load(type.Path));
     }
 
-    public void Unload(object item) { }
+    public void Unload(object item) {
+        ModelAnimation.Unload(((ReadOnlySpanData<ModelAnimation>) item).GetSpan());
+    }
 }
