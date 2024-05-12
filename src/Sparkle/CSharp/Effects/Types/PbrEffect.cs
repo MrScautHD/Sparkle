@@ -8,6 +8,7 @@ using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
+// TODO FIX IT!
 public class PbrEffect : Effect {
     
     public Color AmbientColor;

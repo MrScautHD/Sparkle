@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Numerics;
+using Raylib_CSharp;
 using Raylib_CSharp.Fonts;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
@@ -119,9 +120,17 @@ public class ToggleElement : GuiElement {
     /// </summary>
     protected virtual void DrawRectangle(RectangleF dest, Vector2 origin, float rotation, Color color) {
         Graphics.DrawRectanglePro(dest, origin, rotation, color);
-
-        RectangleF rec = new RectangleF(dest.X - (dest.Width / 2), dest.Y - (dest.Height / 2), dest.Width, dest.Height);
+        
+        RlGl.PushMatrix();
+        
+        RlGl.TranslateF(dest.X, dest.Y, 0);
+        RlGl.RotateF(rotation, 0, 0, 1);
+        RlGl.TranslateF(-origin.X, -origin.Y, 0);
+        
+        RectangleF rec = new RectangleF(0, 0, dest.Width, dest.Height);
         Graphics.DrawRectangleLinesEx(rec, 4, Color.Brightness(color, -0.5F));
+        
+        RlGl.PopMatrix();
     }
 
     /// <summary>

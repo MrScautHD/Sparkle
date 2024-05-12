@@ -80,21 +80,22 @@ public class Particle : Disposable {
         if (cam == null) return;
         
         Vector2 size = RayMath.Vector2Lerp(this._data.StartSize, this._data.EndSize, this._interpolationFactor);
-        float rotation = RayMath.Lerp(this._data.StartRotation, this._data.EndRotation, this._interpolationFactor);
-        
-        Color color = new Color() {
-            R = (byte) RayMath.Lerp(this._data.StartColor.R, this._data.EndColor.R, this._interpolationFactor),
-            G = (byte) RayMath.Lerp(this._data.StartColor.G, this._data.EndColor.G, this._interpolationFactor),
-            B = (byte) RayMath.Lerp(this._data.StartColor.B, this._data.EndColor.B, this._interpolationFactor),
-            A = (byte) RayMath.Lerp(this._data.StartColor.A, this._data.EndColor.A, this._interpolationFactor)
-        };
-        
-        RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
-        RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
-        Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
-        
         BoundingBox box = new BoundingBox(this.Position - new Vector3(size.X / 2, size.Y / 2, size.X / 2), this.Position + new Vector3(size.X / 2, size.Y / 2, size.X / 2));
+        
         if (SceneManager.ActiveCam3D!.GetFrustum().ContainsBox(box)) {
+            float rotation = RayMath.Lerp(this._data.StartRotation, this._data.EndRotation, this._interpolationFactor);
+        
+            Color color = new Color() {
+                R = (byte) RayMath.Lerp(this._data.StartColor.R, this._data.EndColor.R, this._interpolationFactor),
+                G = (byte) RayMath.Lerp(this._data.StartColor.G, this._data.EndColor.G, this._interpolationFactor),
+                B = (byte) RayMath.Lerp(this._data.StartColor.B, this._data.EndColor.B, this._interpolationFactor),
+                A = (byte) RayMath.Lerp(this._data.StartColor.A, this._data.EndColor.A, this._interpolationFactor)
+            };
+        
+            RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
+            RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
+            Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
+            
             Graphics.BeginShaderMode(this._data.Effect.Shader);
             Graphics.DrawBillboardPro(cam.GetCamera3D(), this.Texture, source, this.Position, cam.Up, size, origin, rotation, color);
             Graphics.EndShaderMode();

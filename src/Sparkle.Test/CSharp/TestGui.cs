@@ -49,6 +49,7 @@ public class TestGui : Gui {
             ToggledText = "Checked",
             ToggledColor = Color.Green,
             ToggledTextColor = Color.DarkGreen,
+            Rotation = 60
         };
         
         LabelData toggleLabelData = new LabelData() {
