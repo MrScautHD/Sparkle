@@ -13,7 +13,7 @@
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ==================================================================
 ```
-dotnet add package Sparkle --version 3.0.2
+dotnet add package Sparkle --version 4.0.0
 ```
 
 ⭐ Getting Started
@@ -22,7 +22,7 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
-- [RayLib](https://www.raylib.com)
+- [RayLib-CSharp](https://github.com/MrScautHD/Raylib-CSharp)
 - [OpenTK](https://github.com/opentk/opentk)
 - [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
 - [Jitter2](https://www.nuget.org/packages/Jitter2)
