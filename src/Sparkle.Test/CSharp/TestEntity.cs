@@ -30,8 +30,8 @@ public class TestEntity : Entity {
             .Build();
 
         // RENDERER
-        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, materials, EffectRegistry.Pbr);
-        //modelRenderer.AnimationPlayer.Play(0, true, 0);
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, materials, EffectRegistry.Pbr, Color.White);
+        //modelRenderer.AnimationPlayer?.Play(0, true, 0);
         this.AddComponent(modelRenderer);
         
         // PHYSICS

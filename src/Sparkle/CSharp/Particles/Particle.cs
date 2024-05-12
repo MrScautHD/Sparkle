@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Numerics;
 using Raylib_CSharp;
-using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Collision;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Entities;
@@ -16,7 +16,7 @@ public class Particle : Disposable {
 
     public Texture2D Texture;
     public Vector3 Position;
-
+    
     private float _lifeTime;
     private ParticleData _data;
 
@@ -93,9 +93,12 @@ public class Particle : Disposable {
         RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
         Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
         
-        Graphics.BeginShaderMode(this._data.Effect.Shader);
-        Graphics.DrawBillboardPro(cam.GetCamera3D(), this.Texture, source, this.Position, cam.Up, size, origin, rotation, color);
-        Graphics.EndShaderMode();
+        BoundingBox box = new BoundingBox(this.Position - new Vector3(size.X / 2, size.Y / 2, size.X / 2), this.Position + new Vector3(size.X / 2, size.Y / 2, size.X / 2));
+        if (SceneManager.ActiveCam3D!.GetFrustum().ContainsBox(box)) {
+            Graphics.BeginShaderMode(this._data.Effect.Shader);
+            Graphics.DrawBillboardPro(cam.GetCamera3D(), this.Texture, source, this.Position, cam.Up, size, origin, rotation, color);
+            Graphics.EndShaderMode();
+        }
     }
 
     protected override void Dispose(bool disposing) { }

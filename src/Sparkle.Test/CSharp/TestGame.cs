@@ -4,6 +4,7 @@ using Raylib_CSharp.Images;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;

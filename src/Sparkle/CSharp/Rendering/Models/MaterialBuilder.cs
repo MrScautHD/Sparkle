@@ -13,7 +13,7 @@ public class MaterialBuilder {
     /// <summary>
     /// Represents a builder class for creating materials.
     /// </summary>
-    public MaterialBuilder(Model model) { // TODO REWORK THAT FOR SPAN!
+    public MaterialBuilder(Model model) {
         this._model = model;
         this._materials = new Material[this._model.MaterialCount];
         this.SetupMaterial();

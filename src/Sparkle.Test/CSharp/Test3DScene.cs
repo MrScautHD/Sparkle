@@ -84,7 +84,6 @@ public class Test3DScene : Scene {
         for (int i = 0; i < 1; i++) {
             int x = new Random().Next(-2, 2);
             int z = new Random().Next(-2, 2);
-
             int lifeTime = new Random().Next(5, 10);
             
             ParticleData data = new ParticleBuilder()

@@ -56,11 +56,13 @@ public class Game : Disposable {
         }
 
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
-        Logger.Info($"\tCPU: {SystemInfo.Cpu}");
-        Logger.Info($"\tMEMORY: {SystemInfo.MemorySize} GB");
-        Logger.Info($"\tTHREADS: {SystemInfo.Threads}");
-        Logger.Info($"\tOS: {SystemInfo.Os}");
-        Logger.Info($"\tAPI: {RlGl.GetVersion()}");
+        Logger.Info($"\t> CPU: {SystemInfo.Cpu}");
+        Logger.Info($"\t> MEMORY: {SystemInfo.MemorySize} GB");
+        Logger.Info($"\t> THREADS: {SystemInfo.Threads}");
+        Logger.Info($"\t> OS: {SystemInfo.Os}");
+        Logger.Info($"\t> Raylib-CSharp: {Raylib.Version}");
+        Logger.Info($"\t> Raylib: {Raylib.RlVersion}");
+        Logger.Info($"\t> API: {RlGl.GetVersion()}");
         
         Logger.Info("Initialize logger...");
         Logger.Init();
@@ -80,7 +82,7 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
-        Logger.Info("Initialize OpenTK binding..."); // TODO Remove it when Raylib-5.1 release 
+        Logger.Info("Initialize OpenTK binding..."); // TODO Remove it when Raylib-5.1 release
         this.BindingContext = new NativeBindingContext();
         GLLoader.LoadBindings(this.BindingContext);
         

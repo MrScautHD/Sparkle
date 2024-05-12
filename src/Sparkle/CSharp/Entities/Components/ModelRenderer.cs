@@ -5,6 +5,7 @@ using Raylib_CSharp.Colors;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Models;
@@ -14,7 +15,7 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class ModelRenderer : Component {
 
-    public ModelAnimationPlayer AnimationPlayer { get; }
+    public ModelAnimationPlayer? AnimationPlayer { get; }
     
     private Model _model;
     private BoundingBox _box;
@@ -33,8 +34,10 @@ public class ModelRenderer : Component {
     /// <param name="color">Color of the model.</param>
     /// <param name="animations">Array of animations for the model.</param>
     /// <param name="drawWires">Flag indicating whether to draw wires.</param>
-    public ModelRenderer(Model model, Vector3 offsetPos, Material[] materials, Effect? effect = default, Color? color = default, ModelAnimation[]? animations = default, bool drawWires = false) : base(offsetPos) {
-        this.AnimationPlayer = new ModelAnimationPlayer(model, animations ?? Array.Empty<ModelAnimation>());
+    public ModelRenderer(Model model, Vector3 offsetPos, Material[] materials, Effect? effect = default, Color? color = default, ReadOnlySpanData<ModelAnimation>? animations = default, bool drawWires = false) : base(offsetPos) {
+        if (animations != null) {
+            this.AnimationPlayer = new ModelAnimationPlayer(model, animations);
+        }
         this._model = model;
         this._box = Model.GetBoundingBox(this._model);
         this._materials = materials;
@@ -60,14 +63,13 @@ public class ModelRenderer : Component {
     
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
-        this.AnimationPlayer.FixedUpdate();
+        this.AnimationPlayer?.FixedUpdate();
     }
     
     protected internal override void Draw() {
         base.Draw();
         
         if (SceneManager.ActiveCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Rotation)) {
-           
             RayMath.QuaternionToAxisAngle(this.Entity.Rotation, out Vector3 axis, out float angle);
             
             if (this._drawWires) {
