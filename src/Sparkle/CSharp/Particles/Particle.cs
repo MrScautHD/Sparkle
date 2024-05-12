@@ -93,7 +93,7 @@ public class Particle : Disposable {
             };
         
             RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
-            RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y); // TODO FIX FOR GUI THE ROTATION (CHECK IF IT EVEN BROKEN, I THINK NOT)
+            RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y);
             Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
             
             Graphics.BeginShaderMode(this._data.Effect.Shader);
