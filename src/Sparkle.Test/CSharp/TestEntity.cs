@@ -14,7 +14,8 @@ public class TestEntity : Entity {
     
     public TestEntity(Vector3 position) : base(position) {
         
-        Material[] materials = new MaterialBuilder(TestGame.PlayerModel)
+        // TODO REWORK THIS (By setting in the ModelRenderer the Materials it set the materials to the model (global) because the pointer so it makes no scenes to place the materials into the ModelRenderer).
+        Material[] materials = new MaterialBuilder(TestGame.PlayerModel) //TODO Maybe rename it to "MaterialManipulator"
             .Add(MaterialMapIndex.Albedo, TestGame.PlayerTexture)
             .Add(MaterialMapIndex.Metalness, TestGame.PlayerTexture)
             .Add(MaterialMapIndex.Normal, TestGame.PlayerTexture)
@@ -35,10 +36,7 @@ public class TestEntity : Entity {
         this.AddComponent(modelRenderer);
         
         // PHYSICS
-        List<Shape> shapes = new List<Shape>();
-        shapes.Add(new BoxShape(2, 4, 2));
-        
-        this.AddComponent(new RigidBody(shapes));
+        this.AddComponent(new RigidBody(new BoxShape(2, 4, 2)));
     }
     
     protected override void FixedUpdate() {

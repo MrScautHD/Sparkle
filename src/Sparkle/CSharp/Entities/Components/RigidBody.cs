@@ -6,13 +6,14 @@ using Jitter2.LinearMath;
 using Raylib_CSharp;
 using Sparkle.CSharp.Physics.Conversions;
 using Sparkle.CSharp.Scenes;
+using JRigidBody = Jitter2.Dynamics.RigidBody;
 
 namespace Sparkle.CSharp.Entities.Components;
 
 public class RigidBody : Component {
     
     public World World => SceneManager.Simulation!.World;
-    public Jitter2.Dynamics.RigidBody JBody { get; private set; }
+    public JRigidBody JBody { get; private set; }
 
     private ReadOnlyList<Shape> _shapes;
     private bool _setMassInertia;
@@ -20,6 +21,20 @@ public class RigidBody : Component {
     private float _friction;
     private float _restitution;
 
+    /// <summary>
+    /// Constructor for creating a RigidBody object with a single shape.
+    /// </summary>
+    /// <param name="shape">The shape of the rigid body.</param>
+    /// <param name="setMassInertia">Flag indicating whether to set mass and inertia.</param>
+    /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
+    /// <param name="friction">Friction coefficient.</param>
+    /// <param name="restitution">Restitution coefficient.</param>
+    public RigidBody(Shape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([], setMassInertia, nonMoving, friction, restitution) {
+        List<Shape> shapes = new List<Shape>();
+        shapes.Add(shape);
+        this._shapes = new ReadOnlyList<Shape>(shapes);
+    }
+    
     /// <summary>
     /// Constructor for creating a RigidBody object.
     /// </summary>

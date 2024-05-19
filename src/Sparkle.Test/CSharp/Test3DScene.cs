@@ -48,7 +48,7 @@ public class Test3DScene : Scene {
         
         // LIGHTS
         Entity light = new Entity(new Vector3(1, 3, 0));
-        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Red));
+        light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Red, 4, true));
         this.AddEntity(light);
         
         // TEST ENTITIES
