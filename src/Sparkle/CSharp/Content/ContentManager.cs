@@ -62,6 +62,25 @@ public class ContentManager : Disposable {
     }
     
     /// <summary>
+    /// Adds a item of unmanaged content to the content manager.
+    /// </summary>
+    /// <typeparam name="T">The type of content being added.</typeparam>
+    /// <param name="item">The item to be added.</param>
+    public void AddUnmanagedItem<T>(T item) {
+        if (this._processors.ContainsKey(typeof(T))) {
+            if (!this._content.Contains(item!)) {
+                this._content.Add(item!);
+            }
+            else {
+                Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
+            }
+        }
+        else {
+            Logger.Warn($"This item is of an unsupported type: {typeof(T)}!");
+        }
+    }
+    
+    /// <summary>
     /// Loads an item of type T from the specified directory using the provided content type.
     /// </summary>
     /// <typeparam name="T">The type of item to load.</typeparam>
@@ -69,16 +88,9 @@ public class ContentManager : Disposable {
     /// <returns>The loaded item of type T.</returns>
     public T Load<T>(IContentType<T> type) {
         IContentProcessor processor = this.TryGetProcessor(typeof(T));
-        
         T item = (T) processor.Load(type);
-
-        if (!this._content.Contains(item!)) {
-            this._content.Add(item!);
-        }
-        else {
-            Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
-        }
         
+        this._content.Add(item!);
         return item;
     }
     

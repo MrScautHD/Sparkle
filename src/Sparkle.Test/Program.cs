@@ -9,9 +9,10 @@ GameSettings settings = new GameSettings() {
 
 using TestGame game = new TestGame(settings);
 
-try {
+// TODO MAKE IT BETTER
+//try {
     game.Run(new Test3DScene("3D"));
-}
-catch (Exception e) {
-    Logger.Error($"{e.Message}\n{e.StackTrace}");
-}
+//}
+//catch (Exception e) {
+//    Logger.Error($"{e.Message}\n{e.StackTrace}");
+//}

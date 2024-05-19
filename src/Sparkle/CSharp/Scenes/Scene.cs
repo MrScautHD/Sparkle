@@ -164,7 +164,7 @@ public abstract class Scene : Disposable {
             Logger.Warn($"The entity with the id: [{entity.Id}] is already present in the Scene!");
             return;
         }
-        
+
         entity.Id = this._entityIds++;
         entity.Init();
         
