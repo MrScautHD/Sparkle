@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Numerics;
 using Raylib_CSharp;
 using Raylib_CSharp.Fonts;
@@ -7,6 +6,7 @@ using Raylib_CSharp.Textures;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Color = Raylib_CSharp.Colors.Color;
+using Rectangle = Raylib_CSharp.Rectangle;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -68,7 +68,7 @@ public class ButtonElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        RectangleF dest = new RectangleF(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
         Color color = this.IsHovered ? this.HoverColor : this.Color;
@@ -76,7 +76,7 @@ public class ButtonElement : GuiElement {
         
         if (this.Texture != null) {
             Texture2D texture = this.Texture.Value;
-            RectangleF source = new RectangleF(0, 0, texture.Width, texture.Height);
+            Rectangle source = new Rectangle(0, 0, texture.Width, texture.Height);
             
             this.DrawTexture(texture, source, dest, origin, this.Rotation, color);
         }
@@ -92,14 +92,14 @@ public class ButtonElement : GuiElement {
     /// <summary>
     /// Draws a button with a textured background on the GUI.
     /// </summary>
-    protected virtual void DrawTexture(Texture2D texture, RectangleF source, RectangleF dest, Vector2 origin, float rotation, Color color) {
+    protected virtual void DrawTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) {
         Graphics.DrawTexturePro(texture, source, dest, origin, rotation, color);
     }
 
     /// <summary>
     /// Draws a color button on the screen.
     /// </summary>
-    protected virtual void DrawRectangle(RectangleF dest, Vector2 origin, float rotation, Color color) {
+    protected virtual void DrawRectangle(Rectangle dest, Vector2 origin, float rotation, Color color) {
         Graphics.DrawRectanglePro(dest, origin, rotation, color);
         
         RlGl.PushMatrix();
@@ -108,7 +108,7 @@ public class ButtonElement : GuiElement {
         RlGl.RotateF(rotation, 0, 0, 1);
         RlGl.TranslateF(-origin.X, -origin.Y, 0);
         
-        RectangleF rec = new RectangleF(0, 0, dest.Width, dest.Height);
+        Rectangle rec = new Rectangle(0, 0, dest.Width, dest.Height);
         Graphics.DrawRectangleLinesEx(rec, 4, Color.Brightness(color, -0.5F));
         
         RlGl.PopMatrix();

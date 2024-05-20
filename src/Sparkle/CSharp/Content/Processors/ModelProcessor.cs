@@ -10,7 +10,8 @@ namespace Sparkle.CSharp.Content.Processors;
 public class ModelProcessor : IContentProcessor {
 
     public unsafe object Load<T>(IContentType<T> type) {
-        Model model = Model.Load(type.Path);
+        ModelContent contentType = (ModelContent) type;
+        Model model = Model.Load(contentType.Path);
         
         for (int i = 0; i < model.MeshCount; i++) {
             if (model.Meshes[i].TangentsPtr == default) {
@@ -36,6 +37,7 @@ public class ModelProcessor : IContentProcessor {
             }
         }
         
+        contentType.Manipulator?.Build(ref model);
         return model;
     }
     

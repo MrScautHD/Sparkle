@@ -1,7 +1,7 @@
 using System.Numerics;
 using Jitter2.LinearMath;
 
-namespace Sparkle.CSharp.Physics.Conversions;
+namespace Sparkle.CSharp.Physics.Dim3.Conversions;
 
 public static class PhysicsConversion {
     

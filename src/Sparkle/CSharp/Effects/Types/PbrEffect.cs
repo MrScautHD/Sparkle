@@ -8,7 +8,6 @@ using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
-// TODO FIX IT!
 public class PbrEffect : Effect {
     
     public Color AmbientColor;
@@ -50,12 +49,12 @@ public class PbrEffect : Effect {
         this.UpdateValues();
     }
     
-    protected internal override void UpdateMaterialParameters(Material[] materials) {
-        base.UpdateMaterialParameters(materials);
+    protected internal override void UpdateMaterialParameters(Material material) {
+        base.UpdateMaterialParameters(material);
         
-        Shader.SetValue(this.Shader, this.TilingLoc, new Vector2(0.5F, 0.5F), ShaderUniformDataType.Vec2);
-        Shader.SetValue(this.Shader, this.EmissiveColorLoc, Color.Normalize(materials[0].Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
-        Shader.SetValue(this.Shader, this.EmissivePowerLoc, materials[0].Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
+        Shader.SetValue(this.Shader, this.TilingLoc, new Vector2(material.Param[0], material.Param[1]), ShaderUniformDataType.Vec2);
+        Shader.SetValue(this.Shader, this.EmissiveColorLoc, Color.Normalize(material.Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
+        Shader.SetValue(this.Shader, this.EmissivePowerLoc, material.Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
     }
 
     /// <summary>

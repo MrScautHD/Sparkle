@@ -35,6 +35,9 @@ public class JsonConfigBuilder {
     /// </summary>
     /// <returns>The created JSON configuration file.</returns>
     public JsonConfig Build() {
-        return new JsonConfig(this._directory, this._name, this._values, this._encryptKey);
+        JsonConfig config = new JsonConfig(this._directory, this._name, this._values, this._encryptKey);
+        this._values.Clear();
+        
+        return config;
     }
 }

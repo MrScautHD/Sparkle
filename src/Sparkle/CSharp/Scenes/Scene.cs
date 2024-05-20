@@ -1,6 +1,8 @@
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Particles;
 using Sparkle.CSharp.Physics;
+using Sparkle.CSharp.Physics.Dim2;
+using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Rendering.Renderers;
 
 namespace Sparkle.CSharp.Scenes;
@@ -28,10 +30,17 @@ public abstract class Scene : Disposable {
     /// <param name="name">The scene name.</param>
     /// <param name="type">The scene type (3D or 2D).</param>
     /// <param name="settings">The physics settings.</param>
-    protected Scene(string name, SceneType type, PhysicsSettings? settings = default) {
+    protected Scene(string name, SceneType type, IPhysicsSettings? settings = default) {
         this.Name = name;
         this.Type = type;
-        this.Simulation = new Simulation(settings ?? new PhysicsSettings());
+        
+        if (type == SceneType.Scene3D) {
+            this.Simulation = new Simulation3D((PhysicsSettings3D)(settings ?? new PhysicsSettings3D()));
+        }
+        else {
+            this.Simulation = new Simulation2D((PhysicsSettings2D)(settings ?? new PhysicsSettings2D()));
+        }
+        
         this._particles = new Dictionary<int, Particle>();
         this._entities = new Dictionary<int, Entity>();
     }

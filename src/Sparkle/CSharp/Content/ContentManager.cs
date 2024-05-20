@@ -27,11 +27,11 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
+        this.AddProcessors(typeof(Shader), new ShaderProcessor());
         this.AddProcessors(typeof(Gif), new GifProcessor());
         this.AddProcessors(typeof(ReadOnlySpanData<ModelAnimation>), new ModelAnimationProcessor());
         this.AddProcessors(typeof(ReadOnlySpanData<Material>), new MaterialProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
-        this.AddProcessors(typeof(Shader), new ShaderProcessor());
         this.AddProcessors(typeof(Sound), new SoundProcessor());
         this.AddProcessors(typeof(Wave), new WaveProcessor());
         this.AddProcessors(typeof(Music), new MusicProcessor());

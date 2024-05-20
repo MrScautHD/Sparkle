@@ -4,15 +4,16 @@ using Jitter2.Collision.Shapes;
 using Jitter2.DataStructures;
 using Jitter2.LinearMath;
 using Raylib_CSharp;
-using Sparkle.CSharp.Physics.Conversions;
+using Sparkle.CSharp.Physics.Dim3;
+using Sparkle.CSharp.Physics.Dim3.Conversions;
 using Sparkle.CSharp.Scenes;
 using JRigidBody = Jitter2.Dynamics.RigidBody;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class RigidBody : Component {
+public class RigidBody3D : Component {
     
-    public World World => SceneManager.Simulation!.World;
+    public World World => ((Simulation3D) SceneManager.Simulation!).World;
     public JRigidBody JBody { get; private set; }
 
     private ReadOnlyList<Shape> _shapes;
@@ -29,7 +30,7 @@ public class RigidBody : Component {
     /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
     /// <param name="friction">Friction coefficient.</param>
     /// <param name="restitution">Restitution coefficient.</param>
-    public RigidBody(Shape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([], setMassInertia, nonMoving, friction, restitution) {
+    public RigidBody3D(Shape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([], setMassInertia, nonMoving, friction, restitution) {
         List<Shape> shapes = new List<Shape>();
         shapes.Add(shape);
         this._shapes = new ReadOnlyList<Shape>(shapes);
@@ -43,7 +44,7 @@ public class RigidBody : Component {
     /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
     /// <param name="friction">Friction coefficient.</param>
     /// <param name="restitution">Restitution coefficient.</param>
-    public RigidBody(List<Shape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : base(Vector3.Zero) {
+    public RigidBody3D(List<Shape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : base(Vector3.Zero) {
         this._shapes = new ReadOnlyList<Shape>(shapes);
         this._setMassInertia = setMassInertia;
         this._nonMoving = nonMoving;

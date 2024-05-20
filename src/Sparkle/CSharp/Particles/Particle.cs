@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Numerics;
 using Raylib_CSharp;
 using Raylib_CSharp.Collision;
@@ -92,8 +91,8 @@ public class Particle : Disposable {
                 A = (byte) RayMath.Lerp(this._data.StartColor.A, this._data.EndColor.A, this._interpolationFactor)
             };
         
-            RectangleF source = new RectangleF(0, 0, this.Texture.Width, this.Texture.Height);
-            RectangleF dest = new RectangleF(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y);
+            Rectangle source = new Rectangle(0, 0, this.Texture.Width, this.Texture.Height);
+            Rectangle dest = new Rectangle(this.Position.X + (source.X / 2), this.Position.Y + (source.Y / 2), source.X, source.Y);
             Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
             
             Graphics.BeginShaderMode(this._data.Effect.Shader);

@@ -65,7 +65,7 @@ public class Test3DScene : Scene {
         List<Shape> shapes = new List<Shape>();
         shapes.Add(new BoxShape(100000, 1, 100000));
         
-        ground.AddComponent(new RigidBody(shapes, true, true));
+        ground.AddComponent(new RigidBody3D(shapes, true, true));
         this.AddEntity(ground);
     }
     
@@ -98,7 +98,6 @@ public class Test3DScene : Scene {
             this.AddParticle(particle);
         }
     }
-
     
     protected override void Draw() {
         base.Draw();

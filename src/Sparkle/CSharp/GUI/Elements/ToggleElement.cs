@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Numerics;
 using Raylib_CSharp;
 using Raylib_CSharp.Fonts;
@@ -87,7 +86,7 @@ public class ToggleElement : GuiElement {
     }
 
     protected internal override void Draw() {
-        RectangleF dest = new RectangleF(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle dest = new Rectangle(this.Position.X + (this.ScaledSize.X / 2), this.Position.Y + (this.ScaledSize.Y / 2), this.ScaledSize.X, this.ScaledSize.Y);
         Vector2 origin = new Vector2(dest.Width / 2, dest.Height / 2);
         
         Texture2D? texture = this.IsToggled ? this.ToggledTexture : this.Texture;
@@ -111,14 +110,14 @@ public class ToggleElement : GuiElement {
     /// <summary>
     /// Draws a button with a textured background on the GUI.
     /// </summary>
-    protected virtual void DrawTexture(Texture2D texture, RectangleF source, RectangleF dest, Vector2 origin, float rotation, Color color) {
+    protected virtual void DrawTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color color) {
         Graphics.DrawTexturePro(texture, source, dest, origin, rotation, color);
     }
 
     /// <summary>
     /// Draws a color button on the screen.
     /// </summary>
-    protected virtual void DrawRectangle(RectangleF dest, Vector2 origin, float rotation, Color color) {
+    protected virtual void DrawRectangle(Rectangle dest, Vector2 origin, float rotation, Color color) {
         Graphics.DrawRectanglePro(dest, origin, rotation, color);
         
         RlGl.PushMatrix();
@@ -127,7 +126,7 @@ public class ToggleElement : GuiElement {
         RlGl.RotateF(rotation, 0, 0, 1);
         RlGl.TranslateF(-origin.X, -origin.Y, 0);
         
-        RectangleF rec = new RectangleF(0, 0, dest.Width, dest.Height);
+        Rectangle rec = new Rectangle(0, 0, dest.Width, dest.Height);
         Graphics.DrawRectangleLinesEx(rec, 4, Color.Brightness(color, -0.5F));
         
         RlGl.PopMatrix();

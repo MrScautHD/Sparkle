@@ -1,9 +1,13 @@
 using System.Numerics;
+using Box2D.NetStandard.Collision.Shapes;
+using Box2D.NetStandard.Dynamics.Bodies;
 using Raylib_CSharp;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.Test.CSharp;
@@ -18,35 +22,53 @@ public class Test2DScene : Scene {
         Cam2D cam2D = new Cam2D(new Vector2(0, 0), new Vector2(0, 0), Cam2D.CameraFollowMode.Smooth);
         this.AddEntity(cam2D);
 
-        Test2DEntity player = new Test2DEntity(new Vector2(0, 0));
+        Test2DEntity player = new Test2DEntity(new Vector2(0, -40));
         this.AddEntity(player);
+        player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(1, 1)) {
+            Density = 1.0F,
+        }));
+        
+        Test2DEntity entity = new Test2DEntity(new Vector2(0, 0));
+        this.AddEntity(entity);
+        entity.AddComponent(new RigidBody2D(new BodyDefinition() {
+            Type = BodyType.Static
+        }, new FixtureDefinition(new PolygonShape(100, 10))));
     }
 
     protected override void Update() {
         base.Update();
-        Test2DEntity player = (Test2DEntity) this.GetEntity(1);
+        RigidBody2D body = this.GetEntity(1).GetComponent<RigidBody2D>();
 
+        if (Input.IsKeyDown(KeyboardKey.G)) {
+            this.GetEntity(1).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 15 * RayMath.Deg2Rad);
+        }
+        
         if (Input.IsKeyDown(KeyboardKey.W)) {
-            player.Position.Y -= 50.0F * Time.GetFrameTime();
+            body.Body.ApplyForceToCenter(new Vector2(0, -50));
         }
         
         if (Input.IsKeyDown(KeyboardKey.S)) {
-            player.Position.Y += 50.0F * Time.GetFrameTime();
+            body.Body.ApplyForceToCenter(new Vector2(0, 50));
         }
         
         if (Input.IsKeyDown(KeyboardKey.A)) {
-            player.Position.X -= 50.0F * Time.GetFrameTime();
+            body.Body.ApplyForceToCenter(new Vector2(-50, 0));
         }
         
         if (Input.IsKeyDown(KeyboardKey.D)) {
-            player.Position.X += 50.0F * Time.GetFrameTime();
+            body.Body.ApplyForceToCenter(new Vector2(50, 0));
         }
         
-        SceneManager.ActiveCam2D!.Target = new Vector2(player.Position.X, player.Position.Y);
+        SceneManager.ActiveCam2D!.Target = new Vector2(body.Body.Position.X, body.Body.Position.Y);
     }
 
     protected override void Draw() {
         base.Draw();
+        
+        RlGl.PushMatrix();
+        RlGl.RotateF(90, 1, 0, 0);
+        Graphics.DrawGrid(50, 10);
+        RlGl.PopMatrix();
         
         // OBJECTS
         Graphics.DrawRectangle(45, 123, 5, 5, Color.White);

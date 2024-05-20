@@ -7,7 +7,6 @@ using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Effects;
-using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Models;
 using Sparkle.CSharp.Scenes;
 
@@ -19,8 +18,6 @@ public class ModelRenderer : Component {
     
     private Model _model;
     private BoundingBox _box;
-    private Material[] _materials;
-    private Effect _effect;
     private Color _color;
     private bool _drawWires;
     
@@ -29,27 +26,30 @@ public class ModelRenderer : Component {
     /// </summary>
     /// <param name="model">The 3D model to render.</param>
     /// <param name="offsetPos">Offset position of the model renderer.</param>
-    /// <param name="materials">Array of materials applied to the model.</param>
-    /// <param name="effect">Effect to apply to the model.</param>
     /// <param name="color">Color of the model.</param>
     /// <param name="animations">Array of animations for the model.</param>
     /// <param name="drawWires">Flag indicating whether to draw wires.</param>
-    public ModelRenderer(Model model, Vector3 offsetPos, Material[] materials, Effect? effect = default, Color? color = default, ReadOnlySpanData<ModelAnimation>? animations = default, bool drawWires = false) : base(offsetPos) {
+    public ModelRenderer(Model model, Vector3 offsetPos, Color? color = default, ReadOnlySpanData<ModelAnimation>? animations = default, bool drawWires = false) : base(offsetPos) {
         if (animations != null) {
             this.AnimationPlayer = new ModelAnimationPlayer(model, animations);
         }
         this._model = model;
         this._box = Model.GetBoundingBox(this._model);
-        this._materials = materials;
-        this._effect = effect ?? EffectRegistry.DiscardAlpha;
         this._color = color ?? Color.White;
         this._drawWires = drawWires;
-        this.SetupMaterial();
     }
 
     protected internal override void Update() {
         base.Update();
-        this._effect.UpdateMaterialParameters(this._materials);
+
+        foreach (Material material in this._model.Materials) {
+            foreach (var effect in EffectManager.Effects) {
+                if (effect.Shader.Id == material.Shader.Id) {
+                    effect.UpdateMaterialParameters(material);
+                    break;
+                }
+            }
+        }
         
         Vector3 dimension = this._box.Max - this._box.Min;
         this._box.Min.X = this.GlobalPos.X - dimension.X / 2;
@@ -78,16 +78,6 @@ public class ModelRenderer : Component {
             else {
                 Graphics.DrawModelEx(this._model, this.GlobalPos, axis, angle * RayMath.Rad2Deg, this.Entity.Scale, this._color);
             }
-        }
-    }
-    
-    /// <summary>
-    /// Sets up the materials for the model.
-    /// </summary>
-    private void SetupMaterial() {
-        for (int i = 0; i < this._model.MaterialCount; i++) {
-            this._model.Materials[i] = this._materials[i];
-            this._model.Materials[i].Shader = this._effect.Shader;
         }
     }
 

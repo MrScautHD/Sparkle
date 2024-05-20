@@ -1,16 +1,19 @@
 using Newtonsoft.Json.Linq;
+using Raylib_CSharp.Colors;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Images;
 using Raylib_CSharp.Interact;
+using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
-using Raylib_CSharp.Unsafe.Spans.Data;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Configs.Json;
 using Sparkle.CSharp.Overlays;
+using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Gifs;
+using Sparkle.CSharp.Rendering.Models;
 
 namespace Sparkle.Test.CSharp;
 
@@ -77,11 +80,28 @@ public class TestGame : Game {
         // GIF
         Gif = this.Content.Load(new GifContent("content/flame.gif", 20));
         
-        // MODELS
-        PlayerModel = this.Content.Load(new ModelContent("content/model.glb"));
-
         // MODEL ANIMATIONS
         //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
+        
+        // MODELS
+        MaterialManipulator manipulator = new MaterialManipulator()
+            .Set(1, EffectRegistry.Pbr)
+            .Set(1, MaterialMapIndex.Albedo, PlayerTexture)
+            .Set(1, MaterialMapIndex.Metalness, PlayerTexture)
+            .Set(1, MaterialMapIndex.Normal, PlayerTexture)
+            .Set(1, MaterialMapIndex.Emission, PlayerTexture)
+            
+            .Set(1, MaterialMapIndex.Albedo, Color.White)
+            .Set(1, MaterialMapIndex.Emission, new Color(255, 162, 0, 255))
+            
+            .Set(1, MaterialMapIndex.Metalness, 0.0F)
+            .Set(1, MaterialMapIndex.Roughness, 0.0F)
+            .Set(1, MaterialMapIndex.Occlusion, 1.0F)
+            .Set(1, MaterialMapIndex.Emission, 0.01F)
+            .Set(1, 0, 0.5F)
+            .Set(1, 1, 0.5F);
+        
+        PlayerModel = this.Content.Load(new ModelContent("content/model.glb", manipulator));
     }
 
     protected override void Update() {

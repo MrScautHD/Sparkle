@@ -1,5 +1,6 @@
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Physics;
+using Sparkle.CSharp.Physics.Dim3;
 
 namespace Sparkle.CSharp.Scenes;
 

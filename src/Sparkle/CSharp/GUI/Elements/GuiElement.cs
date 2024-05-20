@@ -1,5 +1,5 @@
-using System.Drawing;
 using System.Numerics;
+using Raylib_CSharp;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Shapes;
 using Raylib_CSharp.Windowing;
@@ -56,7 +56,7 @@ public abstract class GuiElement : Disposable {
         this.CalculateSize();
         this.CalculatePosition();
         
-        RectangleF rec = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
+        Rectangle rec = new Rectangle(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         if (Shape.CheckCollisionPointRec(Input.GetMousePosition(), rec)) {
             this.IsHovered = true;
 
