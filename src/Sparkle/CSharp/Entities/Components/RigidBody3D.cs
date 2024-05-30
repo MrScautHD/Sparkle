@@ -21,13 +21,13 @@ public class RigidBody3D : Component {
 
     public ulong BodyId => this.Body.RigidBodyId;
     public bool IsActive => this.Body.IsActive;
-    public float Mass => this.Body.Mass;
     public ref RigidBodyData Data => ref this.Body.Data;
     public JHandle<RigidBodyData> Handle => this.Body.Handle;
+    public ReadOnlyList<Shape> Shapes => this.Body.Shapes;
+    public float Mass => this.Body.Mass;
     public Island Island => this.Body.Island;
     public List<RigidBody> Connections => this.Body.Connections;
     public HashSet<Constraint> Constraints => this.Body.Constraints;
-    public ReadOnlyList<Shape> Shapes => this.Body.Shapes;
     public Matrix4x4 InverseInertia => PhysicsConversion.FromJMatrix(this.Body.InverseInertia);
     
     private ReadOnlyList<Shape> _shapes;
