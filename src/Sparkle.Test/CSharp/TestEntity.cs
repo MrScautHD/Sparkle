@@ -26,7 +26,7 @@ public class TestEntity : Entity {
         RigidBody3D body3D = this.GetComponent<RigidBody3D>();
         
         if (!body3D.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out Shape? shape, out JVector normal, out float fraction)) {
-            body3D.JBody.AddForce(new JVector(0, 200, 0));
+            body3D.Body.AddForce(new JVector(0, 200, 0));
         }
     }
 

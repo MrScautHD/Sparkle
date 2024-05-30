@@ -2,19 +2,19 @@ using System.Numerics;
 using Jitter2;
 using Jitter2.Collision.Shapes;
 using Jitter2.DataStructures;
+using Jitter2.Dynamics;
 using Jitter2.LinearMath;
 using Raylib_CSharp;
 using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Physics.Dim3.Conversions;
 using Sparkle.CSharp.Scenes;
-using JRigidBody = Jitter2.Dynamics.RigidBody;
 
 namespace Sparkle.CSharp.Entities.Components;
 
 public class RigidBody3D : Component {
     
     public World World => ((Simulation3D) SceneManager.Simulation!).World;
-    public JRigidBody JBody { get; private set; }
+    public RigidBody Body { get; private set; }
 
     private ReadOnlyList<Shape> _shapes;
     private bool _setMassInertia;
@@ -75,21 +75,21 @@ public class RigidBody3D : Component {
     /// Creates the body for the rigid body component.
     /// </summary>
     private void CreateBody() {
-        this.JBody = this.World.CreateRigidBody();
-        this.JBody.AddShape(this._shapes, this._setMassInertia);
-        this.JBody.IsStatic = this._nonMoving;
-        this.JBody.Friction = this._friction;
-        this.JBody.Restitution = this._restitution;
-        this.JBody.Position = PhysicsConversion.ToJVector(this.Entity.Position);
-        this.JBody.Orientation = PhysicsConversion.ToJQuaternion(Quaternion.Conjugate(this.Entity.Rotation));
+        this.Body = this.World.CreateRigidBody();
+        this.Body.AddShape(this._shapes, this._setMassInertia);
+        this.Body.IsStatic = this._nonMoving;
+        this.Body.Friction = this._friction;
+        this.Body.Restitution = this._restitution;
+        this.Body.Position = PhysicsConversion.ToJVector(this.Entity.Position);
+        this.Body.Orientation = PhysicsConversion.ToJQuaternion(Quaternion.Conjugate(this.Entity.Rotation));
     }
 
     /// <summary>
     /// Update the position of the entity based on the position of the rigid body.
     /// </summary>
     private void UpdateEntityPosition() {
-        if (this.JBody.IsActive) {
-            this.Entity.Position = PhysicsConversion.FromJVector(this.JBody.Position);
+        if (this.Body.IsActive) {
+            this.Entity.Position = PhysicsConversion.FromJVector(this.Body.Position);
         }
     }
 
@@ -99,8 +99,8 @@ public class RigidBody3D : Component {
     private void UpdateBodyPosition() {
         JVector entityPos = PhysicsConversion.ToJVector(this.Entity.Position);
 
-        if (this.JBody.Position != entityPos) {
-            this.JBody.Position = entityPos;
+        if (this.Body.Position != entityPos) {
+            this.Body.Position = entityPos;
         }
     }
 
@@ -108,8 +108,8 @@ public class RigidBody3D : Component {
     /// Updates the rotation of the entity based on the rotation of the rigid body.
     /// </summary>
     private void UpdateEntityRotation() {
-        if (this.JBody.IsActive) {
-            this.Entity.Rotation = PhysicsConversion.FromJQuaternion(this.JBody.Orientation);
+        if (this.Body.IsActive) {
+            this.Entity.Rotation = PhysicsConversion.FromJQuaternion(this.Body.Orientation);
         }
     }
 
@@ -118,16 +118,16 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateBodyRotation() {
         Quaternion entityRot = Quaternion.Conjugate(this.Entity.Rotation);
-        Quaternion bodyRot = PhysicsConversion.FromJQuaternion(this.JBody.Orientation);
+        Quaternion bodyRot = PhysicsConversion.FromJQuaternion(this.Body.Orientation);
         
         if (RayMath.QuaternionEquals(entityRot, bodyRot) == 0) {
-            this.JBody.Orientation = PhysicsConversion.ToJQuaternion(entityRot);
+            this.Body.Orientation = PhysicsConversion.ToJQuaternion(entityRot);
         }
     }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            this.World.Remove(this.JBody);
+            this.World.Remove(this.Body);
         }
     }
 }
