@@ -97,6 +97,28 @@ public abstract class GuiElement : Disposable {
         float scale = Window.GetRenderHeight() / (float) Game.Instance.Settings.Height;
         this.ScaledSize = this.Size * scale * GuiManager.Scale;
     }
+    
+    /// <summary>
+    /// Checks if a given point collides with a specified rectangle in the GUI element.
+    /// </summary>
+    /// <param name="point">The point to check for collision.</param>
+    /// <param name="rec">The rectangle to check for collision.</param>
+    /// <param name="rotation">The rotation of the rectangle in degrees.</param>
+    /// <returns>True if the point collides with the rectangle, false otherwise.</returns>
+    protected bool CheckCollisionPointRec(Vector2 point, Rectangle rec, float rotation) {
+        float rotationInRadians = rotation * RayMath.Deg2Rad;
+        
+        float centerX = rec.X + rec.Width / 2f;
+        float centerY = rec.Y + rec.Height / 2f;
+
+        float deltaX = point.X - centerX;
+        float deltaY = point.Y - centerY;
+
+        float rotatedX = centerX + (deltaX * MathF.Cos(rotationInRadians) - deltaY * MathF.Sin(rotationInRadians));
+        float rotatedY = centerY + (deltaX * MathF.Sin(rotationInRadians) + deltaY * MathF.Cos(rotationInRadians));
+
+        return rotatedX >= rec.X && rotatedY >= rec.Y && rotatedX <= (rec.X + rec.Width) && rotatedY <= (rec.Y + rec.Height);
+    }
 
     /// <summary>
     /// Calculates the position of the GUI element based on its anchor point and offset.
@@ -149,28 +171,6 @@ public abstract class GuiElement : Disposable {
         pos.Y += this.Offset.Y;
         
         this.Position = pos;
-    }
-    
-    /// <summary>
-    /// Checks if a given point collides with a specified rectangle in the GUI element.
-    /// </summary>
-    /// <param name="point">The point to check for collision.</param>
-    /// <param name="rec">The rectangle to check for collision.</param>
-    /// <param name="rotation">The rotation of the rectangle in degrees.</param>
-    /// <returns>True if the point collides with the rectangle, false otherwise.</returns>
-    private bool CheckCollisionPointRec(Vector2 point, Rectangle rec, float rotation) {
-        float rotationInRadians = rotation * RayMath.Deg2Rad;
-        
-        float centerX = rec.X + rec.Width / 2f;
-        float centerY = rec.Y + rec.Height / 2f;
-
-        float deltaX = point.X - centerX;
-        float deltaY = point.Y - centerY;
-
-        float rotatedX = centerX + (deltaX * MathF.Cos(rotationInRadians) - deltaY * MathF.Sin(rotationInRadians));
-        float rotatedY = centerY + (deltaX * MathF.Sin(rotationInRadians) + deltaY * MathF.Cos(rotationInRadians));
-
-        return rotatedX >= rec.X && rotatedY >= rec.Y && rotatedX <= (rec.X + rec.Width) && rotatedY <= (rec.Y + rec.Height);
     }
     
     protected override void Dispose(bool disposing) {

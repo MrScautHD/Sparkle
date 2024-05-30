@@ -17,6 +17,11 @@ public class RigidBody2D : Component {
     private BodyDefinition _bodyDefinition;
     private FixtureDefinition _fixtureDefinition;
     
+    /// <summary>
+    /// Constructor for creating a RigidBody2D object.
+    /// </summary>
+    /// <param name="bodyDefinition">The body definition for the rigid body.</param>
+    /// <param name="fixtureDefinition">The fixture definition for the rigid body.</param>
     public RigidBody2D(BodyDefinition bodyDefinition, FixtureDefinition fixtureDefinition) : base(Vector3.Zero) {
         this._bodyDefinition = bodyDefinition;
         this._fixtureDefinition = fixtureDefinition;
@@ -29,16 +34,20 @@ public class RigidBody2D : Component {
 
     protected internal override void AfterUpdate() {
         base.AfterUpdate();
-        this.UpdateBodyPositionAndRot();
+        
+        this.UpdateBodyPosition();
+        this.UpdateBodyRotation();
     }
 
     protected internal override void FixedUpdate() {
         base.FixedUpdate();
-        this.UpdateEntityPositionAndRot();
+        
+        this.UpdateEntityPosition();
+        this.UpdateEntityRotation();
     }
     
     /// <summary>
-    /// Creates the body for the rigid body using the specified definition and shape.
+    /// Creates the body for the rigid body component.
     /// </summary>
     private void CreateBody() {
         this.Body = this.World.CreateBody(new BodyDef() {
@@ -53,7 +62,7 @@ public class RigidBody2D : Component {
             angularVelocity = this._bodyDefinition.AngularVelocity,
             linearVelocity = this._bodyDefinition.LinearVelocity,
             type = this._bodyDefinition.Type,
-            angle = RayMath.QuaternionToEuler(this.Entity.Rotation).Z * RayMath.Rad2Deg,
+            angle = RayMath.QuaternionToEuler(this.Entity.Rotation).Z,
             position = new Vector2(this.Entity.Position.X, this.Entity.Position.Y)
         });
         
@@ -66,25 +75,44 @@ public class RigidBody2D : Component {
             restitution = this._fixtureDefinition.Restitution
         });
     }
-    
+
     /// <summary>
     /// Update the position of the entity based on the position of the rigid body.
     /// </summary>
-    private void UpdateEntityPositionAndRot() {
+    private void UpdateEntityPosition() {
         if (this.Body.IsAwake()) {
             this.Entity.Position = new Vector3(this.Body.Position.X, this.Body.Position.Y, 0);
-            this.Entity.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, this.Body.GetTransform().GetAngle());
         }
     }
 
     /// <summary>
-    /// Updates the position of the rigid body to match the Entity's position.
+    /// Updates the position of the RigidBody to match the Entity's position.
     /// </summary>
-    private void UpdateBodyPositionAndRot() {
+    private void UpdateBodyPosition() {
         Vector2 entityPos = new Vector2(this.Entity.Position.X, this.Entity.Position.Y);
-
+        
         if (this.Body.Position != entityPos) {
-            this.Body.SetTransform(entityPos, RayMath.QuaternionToEuler(this.Entity.Rotation).Z * RayMath.Rad2Deg);
+            this.Body.SetTransform(entityPos, 0);
+        }
+    }
+
+    /// <summary>
+    /// Updates the rotation of the entity based on the rotation of the rigid body.
+    /// </summary>
+    private void UpdateEntityRotation() {
+        if (this.Body.IsAwake()) {
+            this.Entity.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, this.Body.GetAngle());
+        }
+    }
+    
+    /// <summary>
+    /// Updates the rotation of the RigidBody to match the Entity's rotation.
+    /// </summary>
+    private void UpdateBodyRotation() {
+        float entityRot = RayMath.QuaternionToEuler(this.Entity.Rotation).Z;
+        
+        if (RayMath.FloatEquals(entityRot, this.Body.GetAngle()) == 0) {
+            this.Body.SetTransform(this.Body.GetPosition(), entityRot);
         }
     }
 

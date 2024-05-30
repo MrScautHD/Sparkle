@@ -23,7 +23,7 @@ public class RigidBody3D : Component {
     private float _restitution;
 
     /// <summary>
-    /// Constructor for creating a RigidBody object with a single shape.
+    /// Constructor for creating a RigidBody3D object with a single shape.
     /// </summary>
     /// <param name="shape">The shape of the rigid body.</param>
     /// <param name="setMassInertia">Flag indicating whether to set mass and inertia.</param>
@@ -37,7 +37,7 @@ public class RigidBody3D : Component {
     }
     
     /// <summary>
-    /// Constructor for creating a RigidBody object.
+    /// Constructor for creating a RigidBody3D object.
     /// </summary>
     /// <param name="shapes">List of shapes composing the rigid body.</param>
     /// <param name="setMassInertia">Flag indicating whether to set mass and inertia.</param>

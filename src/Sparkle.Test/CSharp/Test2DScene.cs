@@ -23,13 +23,16 @@ public class Test2DScene : Scene {
         this.AddEntity(cam2D);
 
         Test2DEntity player = new Test2DEntity(new Vector2(0, -40));
+        player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
         this.AddEntity(player);
+        
         player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(1, 1)) {
             Density = 1.0F,
         }));
         
         Test2DEntity entity = new Test2DEntity(new Vector2(0, 0));
         this.AddEntity(entity);
+        
         entity.AddComponent(new RigidBody2D(new BodyDefinition() {
             Type = BodyType.Static
         }, new FixtureDefinition(new PolygonShape(100, 10))));
@@ -40,7 +43,11 @@ public class Test2DScene : Scene {
         RigidBody2D body = this.GetEntity(1).GetComponent<RigidBody2D>();
 
         if (Input.IsKeyDown(KeyboardKey.G)) {
-            this.GetEntity(1).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 15 * RayMath.Deg2Rad);
+            this.GetEntity(1).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.H)) {
+            this.GetEntity(1).Position += Vector3.One;
         }
         
         if (Input.IsKeyDown(KeyboardKey.W)) {
