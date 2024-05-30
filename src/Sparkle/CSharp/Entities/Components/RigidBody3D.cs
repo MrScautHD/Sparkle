@@ -209,12 +209,12 @@ public class RigidBody3D : Component {
     /// </summary>
     private void CreateBody() {
         this.Body = this.World.CreateRigidBody();
-        this.Body.AddShape(this._shapes, this._setMassInertia);
-        this.Body.IsStatic = this._nonMoving;
-        this.Body.Friction = this._friction;
-        this.Body.Restitution = this._restitution;
-        this.Body.Position = PhysicsConversion.ToJVector(this.Entity.Position);
-        this.Body.Orientation = PhysicsConversion.ToJQuaternion(Quaternion.Conjugate(this.Entity.Rotation));
+        this.AddShape(this._shapes, this._setMassInertia);
+        this.IsStatic = this._nonMoving;
+        this.Friction = this._friction;
+        this.Restitution = this._restitution;
+        this.Position = this.Entity.Position;
+        this.Orientation = Quaternion.Conjugate(this.Entity.Rotation);
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateEntityPosition() {
         if (this.Body.IsActive) {
-            this.Entity.Position = PhysicsConversion.FromJVector(this.Body.Position);
+            this.Entity.Position = this.Position;
         }
     }
 
@@ -230,10 +230,8 @@ public class RigidBody3D : Component {
     /// Updates the position of the RigidBody to match the Entity's position.
     /// </summary>
     private void UpdateBodyPosition() {
-        JVector entityPos = PhysicsConversion.ToJVector(this.Entity.Position);
-
-        if (this.Body.Position != entityPos) {
-            this.Body.Position = entityPos;
+        if (this.Position != this.Entity.Position) {
+            this.Position = this.Entity.Position;
         }
     }
 
@@ -242,7 +240,7 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateEntityRotation() {
         if (this.Body.IsActive) {
-            this.Entity.Rotation = PhysicsConversion.FromJQuaternion(this.Body.Orientation);
+            this.Entity.Rotation = this.Orientation;
         }
     }
 
@@ -251,10 +249,9 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateBodyRotation() {
         Quaternion entityRot = Quaternion.Conjugate(this.Entity.Rotation);
-        Quaternion bodyRot = PhysicsConversion.FromJQuaternion(this.Body.Orientation);
         
-        if (RayMath.QuaternionEquals(entityRot, bodyRot) == 0) {
-            this.Body.Orientation = PhysicsConversion.ToJQuaternion(entityRot);
+        if (RayMath.QuaternionEquals(entityRot, this.Orientation) == 0) {
+            this.Orientation = entityRot;
         }
     }
 
