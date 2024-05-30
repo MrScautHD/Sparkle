@@ -37,7 +37,7 @@ public class MarchingCubesChunk : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            Model.Unload(this.Model);
+            this.Model.Unload();
         }
     }
 }

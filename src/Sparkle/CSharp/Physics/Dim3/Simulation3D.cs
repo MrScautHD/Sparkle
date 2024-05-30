@@ -8,7 +8,7 @@ namespace Sparkle.CSharp.Physics.Dim3;
 public class Simulation3D : Simulation {
 
     public readonly World World;
-
+    
     private PhysicsSettings3D _settings;
     
     /// <summary>
@@ -27,7 +27,7 @@ public class Simulation3D : Simulation {
         this.World.BroadPhaseFilter = new BroadPhaseCollisionFilter(this.World);
         this.World.NarrowPhaseFilter = new TriangleEdgeCollisionFilter();
     }
-    
+
     protected internal override void Step(float timeStep) {
         this.World.Step(timeStep, this._settings.MultiThreaded);
     }

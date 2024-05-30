@@ -34,7 +34,7 @@ public class ModelRenderer : Component {
             this.AnimationPlayer = new ModelAnimationPlayer(model, animations);
         }
         this._model = model;
-        this._box = Model.GetBoundingBox(this._model);
+        this._box = model.GetBoundingBox();
         this._color = color ?? Color.White;
         this._drawWires = drawWires;
     }

@@ -10,6 +10,6 @@ public class WaveProcessor : IContentProcessor {
     }
 
     public void Unload(object item) {
-        Wave.Unload((Wave) item);
+        ((Wave) item).Unload();
     }
 }

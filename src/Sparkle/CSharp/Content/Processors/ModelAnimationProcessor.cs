@@ -7,10 +7,10 @@ namespace Sparkle.CSharp.Content.Processors;
 public class ModelAnimationProcessor : IContentProcessor {
     
     public object Load<T>(IContentType<T> type) {
-        return new ReadOnlySpanData<ModelAnimation>(ModelAnimation.Load(type.Path));
+        return new ReadOnlySpanData<ModelAnimation>(ModelAnimation.LoadAnimations(type.Path));
     }
 
     public void Unload(object item) {
-        ModelAnimation.Unload(((ReadOnlySpanData<ModelAnimation>) item).GetSpan());
+        ModelAnimation.UnloadAnimations(((ReadOnlySpanData<ModelAnimation>) item).GetSpan());
     }
 }

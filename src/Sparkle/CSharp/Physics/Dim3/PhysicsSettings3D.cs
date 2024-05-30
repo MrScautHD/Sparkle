@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Sparkle.CSharp.Physics.Dim3;
 
-public struct PhysicsSettings3D : IPhysicsSettings {
+public struct PhysicsSettings3D {
 
     public Vector3 Gravity;
     public int MaxBodies;

@@ -10,10 +10,9 @@ namespace Sparkle.CSharp.Scenes;
 public abstract class Scene : Disposable {
     
     public readonly string Name;
-    
     public readonly SceneType Type;
-    public readonly Simulation Simulation;
-
+    
+    public Simulation Simulation { get; private set; }
     public Skybox? Skybox { get; private set; }
     
     private readonly Dictionary<int, Particle> _particles;
@@ -29,18 +28,11 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="name">The scene name.</param>
     /// <param name="type">The scene type (3D or 2D).</param>
-    /// <param name="settings">The physics settings.</param>
-    protected Scene(string name, SceneType type, IPhysicsSettings? settings = default) {
+    /// <param name="simulation">The physics simulation.</param>
+    protected Scene(string name, SceneType type, Simulation? simulation = default) {
         this.Name = name;
         this.Type = type;
-        
-        if (type == SceneType.Scene3D) {
-            this.Simulation = new Simulation3D((PhysicsSettings3D)(settings ?? new PhysicsSettings3D()));
-        }
-        else {
-            this.Simulation = new Simulation2D((PhysicsSettings2D)(settings ?? new PhysicsSettings2D()));
-        }
-        
+        this.Simulation = simulation ?? (type == SceneType.Scene3D ? new Simulation3D(new PhysicsSettings3D()) : new Simulation2D(new PhysicsSettings2D()));
         this._particles = new Dictionary<int, Particle>();
         this._entities = new Dictionary<int, Entity>();
     }

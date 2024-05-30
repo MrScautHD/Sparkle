@@ -115,7 +115,7 @@ public class TestGame : Game {
 
     protected override void Draw() {
         base.Draw();
-        Graphics.DrawFps(50, 50);
+        Graphics.DrawFPS(50, 50);
     }
 
     private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {

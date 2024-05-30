@@ -67,7 +67,7 @@ public class Game : Disposable {
         Logger.Info("Initialize logger...");
         Logger.Init();
         
-        Time.SetTargetFps(this.Settings.TargetFps);
+        Time.SetTargetFPS(this.Settings.TargetFps);
 
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager();

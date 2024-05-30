@@ -35,8 +35,8 @@ public class Skybox : Disposable {
         this._cubeMap = Texture2D.LoadCubemap(this.CubeMap, CubemapLayout.AutoDetect);
         this._box = Model.LoadFromMesh(Mesh.GenCube(1, 1, 1));
         
-        Model.SetMaterialTexture(ref this._box, 0, MaterialMapIndex.Cubemap, this._cubeMap);
-        Model.SetMaterialShader(ref this._box, 0, EffectRegistry.Skybox.Shader);
+        this._box.SetMaterialTexture(0, MaterialMapIndex.Cubemap, this._cubeMap);
+        this._box.SetMaterialShader(0, EffectRegistry.Skybox.Shader);
         
         this.HasInitialized = true;
     }
@@ -56,8 +56,8 @@ public class Skybox : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            Model.Unload(this._box);
-            Texture2D.Unload(this._cubeMap);
+            this._box.Unload();
+            this._cubeMap.Unload();
         }
     }
 }

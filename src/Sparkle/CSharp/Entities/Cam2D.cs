@@ -1,7 +1,6 @@
 using System.Numerics;
 using Raylib_CSharp;
 using Raylib_CSharp.Camera.Cam2D;
-using Raylib_CSharp.Camera.Cam3D;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Windowing;
@@ -142,7 +141,7 @@ public class Cam2D : Entity {
     /// </summary>
     /// <returns>The 2D transformation matrix based on the camera's configuration.</returns>
     public Matrix4x4 GetMatrix() {
-        return Camera2D.GetMatrix(this._camera2D);
+        return this._camera2D.GetMatrix();
     }
 
     /// <summary>
@@ -151,7 +150,7 @@ public class Cam2D : Entity {
     /// <param name="position">The screen-space position to be converted.</param>
     /// <returns>The world-space representation of the provided position.</returns>
     public Vector2 GetScreenToWorld(Vector2 position) {
-        return Camera2D.GetScreenToWorld(position, this._camera2D);
+        return this._camera2D.GetScreenToWorld(position);
     }
     
     /// <summary>
@@ -160,7 +159,7 @@ public class Cam2D : Entity {
     /// <param name="position">The world-space position to be converted.</param>
     /// <returns>The screen-space representation of the provided position.</returns>
     public Vector2 GetWorldToScreen(Vector2 position) {
-        return Camera2D.GetWorldToScreen(position, this._camera2D);
+        return this._camera2D.GetWorldToScreen(position);
     }
     
     /// <summary>

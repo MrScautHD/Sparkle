@@ -81,7 +81,7 @@ public class RigidBody3D : Component {
         this.JBody.Friction = this._friction;
         this.JBody.Restitution = this._restitution;
         this.JBody.Position = PhysicsConversion.ToJVector(this.Entity.Position);
-        this.JBody.Orientation = JMatrix.CreateFromQuaternion(PhysicsConversion.ToJQuaternion(Quaternion.Conjugate(this.Entity.Rotation)));
+        this.JBody.Orientation = PhysicsConversion.ToJQuaternion(Quaternion.Conjugate(this.Entity.Rotation));
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateEntityRotation() {
         if (this.JBody.IsActive) {
-            this.Entity.Rotation = Quaternion.CreateFromRotationMatrix(PhysicsConversion.FromJMatrix(this.JBody.Orientation));
+            this.Entity.Rotation = PhysicsConversion.FromJQuaternion(this.JBody.Orientation);
         }
     }
 
@@ -118,10 +118,10 @@ public class RigidBody3D : Component {
     /// </summary>
     private void UpdateBodyRotation() {
         Quaternion entityRot = Quaternion.Conjugate(this.Entity.Rotation);
-        Quaternion bodyRot = PhysicsConversion.FromJQuaternion(JQuaternion.CreateFromMatrix(this.JBody.Orientation));
+        Quaternion bodyRot = PhysicsConversion.FromJQuaternion(this.JBody.Orientation);
         
         if (RayMath.QuaternionEquals(entityRot, bodyRot) == 0) {
-            this.JBody.Orientation = JMatrix.CreateFromQuaternion(PhysicsConversion.ToJQuaternion(entityRot));
+            this.JBody.Orientation = PhysicsConversion.ToJQuaternion(entityRot);
         }
     }
 

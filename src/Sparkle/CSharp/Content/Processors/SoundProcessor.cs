@@ -10,6 +10,6 @@ public class SoundProcessor : IContentProcessor {
     }
 
     public void Unload(object item) {
-        Sound.Unload((Sound) item);
+        ((Sound) item).Unload();
     }
 }

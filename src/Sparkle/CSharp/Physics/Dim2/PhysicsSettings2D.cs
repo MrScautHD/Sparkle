@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace Sparkle.CSharp.Physics.Dim2;
 
-public struct PhysicsSettings2D : IPhysicsSettings {
+public struct PhysicsSettings2D {
     
     public Vector2 Gravity;
     public int VelocityIterations;

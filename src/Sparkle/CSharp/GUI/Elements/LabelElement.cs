@@ -13,7 +13,6 @@ public class LabelElement : GuiElement {
     public string Text;
     public float FontSize;
     public int Spacing;
-    public float Rotation;
     public Color Color;
     public Color HoverColor;
     

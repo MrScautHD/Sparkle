@@ -52,9 +52,9 @@ public class PbrEffect : Effect {
     protected internal override void UpdateMaterialParameters(Material material) {
         base.UpdateMaterialParameters(material);
         
-        Shader.SetValue(this.Shader, this.TilingLoc, new Vector2(material.Param[0], material.Param[1]), ShaderUniformDataType.Vec2);
-        Shader.SetValue(this.Shader, this.EmissiveColorLoc, Color.Normalize(material.Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
-        Shader.SetValue(this.Shader, this.EmissivePowerLoc, material.Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.TilingLoc, new Vector2(material.Param[0], material.Param[1]), ShaderUniformDataType.Vec2);
+        this.Shader.SetValue(this.EmissiveColorLoc, Color.Normalize(material.Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
+        this.Shader.SetValue(this.EmissivePowerLoc, material.Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
     }
 
     /// <summary>
@@ -123,26 +123,26 @@ public class PbrEffect : Effect {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private void SetLocations() {
-        this.Shader.Locs[(int) ShaderLocationIndex.MapAlbedo] = Shader.GetLocation(this.Shader, "albedoMap");
-        this.Shader.Locs[(int) ShaderLocationIndex.MapMetalness] = Shader.GetLocation(this.Shader, "mraMap");
-        this.Shader.Locs[(int) ShaderLocationIndex.MapNormal] = Shader.GetLocation(this.Shader, "normalMap");
-        this.Shader.Locs[(int) ShaderLocationIndex.MapEmission] = Shader.GetLocation(this.Shader, "emissiveMap");
-        this.Shader.Locs[(int) ShaderLocationIndex.ColorDiffuse] = Shader.GetLocation(this.Shader, "albedoColor");
-        this.Shader.Locs[(int) ShaderLocationIndex.VectorView] = Shader.GetLocation(this.Shader, "viewPos");
+        this.Shader.Locs[(int) ShaderLocationIndex.MapAlbedo] = this.Shader.GetLocation("albedoMap");
+        this.Shader.Locs[(int) ShaderLocationIndex.MapMetalness] = this.Shader.GetLocation("mraMap");
+        this.Shader.Locs[(int) ShaderLocationIndex.MapNormal] = this.Shader.GetLocation("normalMap");
+        this.Shader.Locs[(int) ShaderLocationIndex.MapEmission] = this.Shader.GetLocation("emissiveMap");
+        this.Shader.Locs[(int) ShaderLocationIndex.ColorDiffuse] = this.Shader.GetLocation("albedoColor");
+        this.Shader.Locs[(int) ShaderLocationIndex.VectorView] = this.Shader.GetLocation("viewPos");
         
-        this.LightCountLoc = Shader.GetLocation(this.Shader, "numOfLights");
+        this.LightCountLoc = this.Shader.GetLocation("numOfLights");
         
-        this.AmbientLoc = Shader.GetLocation(this.Shader, "ambient");
-        this.AmbientColorLoc = Shader.GetLocation(this.Shader, "ambientColor");
+        this.AmbientLoc = this.Shader.GetLocation("ambient");
+        this.AmbientColorLoc = this.Shader.GetLocation("ambientColor");
         
-        this.EmissivePowerLoc = Shader.GetLocation(this.Shader, "emissivePower");
-        this.EmissiveColorLoc = Shader.GetLocation(this.Shader, "emissiveColor");
-        this.TilingLoc = Shader.GetLocation(this.Shader, "tiling");
+        this.EmissivePowerLoc = this.Shader.GetLocation("emissivePower");
+        this.EmissiveColorLoc = this.Shader.GetLocation("emissiveColor");
+        this.TilingLoc = this.Shader.GetLocation("tiling");
 
-        this.UseTexAlbedoLoc = Shader.GetLocation(this.Shader, "useTexAlbedo");
-        this.UseTexNormalLoc = Shader.GetLocation(this.Shader, "useTexNormal");
-        this.UseTexMraLoc = Shader.GetLocation(this.Shader, "useTexMRA");
-        this.UseTexEmissiveLoc = Shader.GetLocation(this.Shader, "useTexEmissive");
+        this.UseTexAlbedoLoc = this.Shader.GetLocation("useTexAlbedo");
+        this.UseTexNormalLoc = this.Shader.GetLocation("useTexNormal");
+        this.UseTexMraLoc = this.Shader.GetLocation("useTexMRA");
+        this.UseTexEmissiveLoc = this.Shader.GetLocation("useTexEmissive");
     }
     
     /// <summary>
@@ -151,17 +151,17 @@ public class PbrEffect : Effect {
     private void UpdateValues() {
         if (SceneManager.ActiveCam3D == null) return;
         
-        Shader.SetValue(this.Shader, this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
         
-        Shader.SetValue(this.Shader, this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
-        Shader.SetValue(this.Shader, this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
+        this.Shader.SetValue(this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
         
-        Shader.SetValue(this.Shader, this.UseTexAlbedoLoc, 1, ShaderUniformDataType.Int);
-        Shader.SetValue(this.Shader, this.UseTexNormalLoc, 1, ShaderUniformDataType.Int);
-        Shader.SetValue(this.Shader, this.UseTexMraLoc, 1, ShaderUniformDataType.Int);
-        Shader.SetValue(this.Shader, this.UseTexEmissiveLoc, 1, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.UseTexAlbedoLoc, 1, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.UseTexNormalLoc, 1, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.UseTexMraLoc, 1, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.UseTexEmissiveLoc, 1, ShaderUniformDataType.Int);
         
-        Shader.SetValue(this.Shader, this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.ActiveCam3D.Position, ShaderUniformDataType.Vec3);
+        this.Shader.SetValue(this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.ActiveCam3D.Position, ShaderUniformDataType.Vec3);
         
         GL.UseProgram((int) this.Shader.Id);
         GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);

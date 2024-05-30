@@ -10,6 +10,6 @@ public class TextureProcessor : IContentProcessor {
     }
     
     public void Unload(object item) {
-        Texture2D.Unload((Texture2D) item);
+        ((Texture2D) item).Unload();
     }
 }

@@ -196,43 +196,43 @@ public class Cam3D : Entity {
     }
 
     /// <inheritdoc cref="Camera3D.GetForward"/>
-    public Vector3 GetForward() => Camera3D.GetForward(ref this._camera3D);
+    public Vector3 GetForward() => this._camera3D.GetForward();
     
     /// <inheritdoc cref="Camera3D.GetUp"/>
-    public Vector3 GetUp() => Camera3D.GetUp(ref this._camera3D);
+    public Vector3 GetUp() => this._camera3D.GetUp();
     
     /// <inheritdoc cref="Camera3D.GetRight"/>
-    public Vector3 GetRight() => Camera3D.GetRight(ref this._camera3D);
+    public Vector3 GetRight() => this._camera3D.GetRight();
     
     /// <inheritdoc cref="Camera3D.MoveForward"/>
-    public void MoveForward(float distance, bool moveInWorldPlane) => Camera3D.MoveForward(ref this._camera3D, distance, moveInWorldPlane);
+    public void MoveForward(float distance, bool moveInWorldPlane) => this._camera3D.MoveForward(distance, moveInWorldPlane);
     
     /// <inheritdoc cref="Camera3D.MoveUp"/>
-    public void MoveUp(float distance) => Camera3D.MoveUp(ref this._camera3D, distance);
+    public void MoveUp(float distance) => this._camera3D.MoveUp(distance);
     
     /// <inheritdoc cref="Camera3D.MoveRight"/>
-    public void MoveRight(float distance, bool moveInWorldPlane) => Camera3D.MoveRight(ref this._camera3D, distance, moveInWorldPlane);
+    public void MoveRight(float distance, bool moveInWorldPlane) => this._camera3D.MoveRight(distance, moveInWorldPlane);
     
     /// <inheritdoc cref="Camera3D.MoveToTarget"/>
-    public void MoveToTarget(float delta) => Camera3D.MoveToTarget(ref this._camera3D, delta);
+    public void MoveToTarget(float delta) => this._camera3D.MoveToTarget(delta);
 
     /// <inheritdoc cref="Camera3D.GetViewMatrix"/>
-    public Matrix4x4 GetViewMatrix() => Camera3D.GetViewMatrix(ref this._camera3D);
+    public Matrix4x4 GetViewMatrix() => this._camera3D.GetViewMatrix();
     
     /// <inheritdoc cref="Camera3D.GetProjectionMatrix"/>
-    public Matrix4x4 GetProjectionMatrix(float aspect) => Camera3D.GetProjectionMatrix(ref this._camera3D, aspect);
+    public Matrix4x4 GetProjectionMatrix(float aspect) => this._camera3D.GetProjectionMatrix(aspect);
     
     /// <inheritdoc cref="Camera3D.GetMatrix"/>
-    public Matrix4x4 GetMatrix() => Camera3D.GetMatrix(this._camera3D);
+    public Matrix4x4 GetMatrix() => this._camera3D.GetMatrix();
     
     /// <inheritdoc cref="Camera3D.GetWorldToScreen"/>
-    public Vector2 GetWorldToScreen(Vector3 position) => Camera3D.GetWorldToScreen(position, this._camera3D);
+    public Vector2 GetWorldToScreen(Vector3 position) => this._camera3D.GetWorldToScreen(position);
     
     /// <inheritdoc cref="Camera3D.GetWorldToScreenEx"/>
-    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => Camera3D.GetWorldToScreenEx(position, this._camera3D, width, height);
+    public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => this._camera3D.GetWorldToScreenEx(position, width, height);
     
     /// <inheritdoc cref="Camera3D.GetMouseRay"/>
-    public Ray GetMouseRay(Vector2 mousePosition, Camera3D camera) => Camera3D.GetMouseRay(mousePosition, camera);
+    public Ray GetMouseRay(Vector2 mousePosition) => this._camera3D.GetMouseRay(mousePosition);
     
     /// <summary>
     /// Gets the yaw (horizontal rotation) of the 3D camera in degrees.
@@ -266,7 +266,7 @@ public class Cam3D : Entity {
     public void SetYaw(float angle, bool rotateAroundTarget) {
         float difference = this.GetYaw() * RayMath.Deg2Rad - angle * RayMath.Deg2Rad;
         
-        Camera3D.RotateYaw(ref this._camera3D, difference, rotateAroundTarget);
+        this._camera3D.RotateYaw(difference, rotateAroundTarget);
     }
     
     /// <summary>
@@ -279,7 +279,7 @@ public class Cam3D : Entity {
     public void SetPitch(float angle, bool lockView, bool rotateAroundTarget, bool rotateUp) {
         float difference = angle * RayMath.Deg2Rad - this.GetPitch() * RayMath.Deg2Rad;
         
-        Camera3D.RotatePitch(ref this._camera3D, difference, lockView, rotateAroundTarget, rotateUp);
+        this._camera3D.RotatePitch(difference, lockView, rotateAroundTarget, rotateUp);
     }
 
     /// <summary>
@@ -289,7 +289,7 @@ public class Cam3D : Entity {
     public void SetRoll(float angle) {
         float difference = this.GetRoll() * RayMath.Deg2Rad - angle * RayMath.Deg2Rad;
         
-        Camera3D.RotateRoll(ref this._camera3D, difference);
+        this._camera3D.RotateRoll(difference);
     }
     
     /// <summary>

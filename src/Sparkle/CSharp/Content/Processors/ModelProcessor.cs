@@ -1,8 +1,6 @@
 using Raylib_CSharp;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Materials;
-using Raylib_CSharp.Shaders;
-using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Content.Processors;
@@ -15,13 +13,13 @@ public class ModelProcessor : IContentProcessor {
         
         for (int i = 0; i < model.MeshCount; i++) {
             if (model.Meshes[i].TangentsPtr == default) {
-                Mesh.GenTangents(ref model.Meshes[i]);
+                model.Meshes[i].GenTangents();
             }
         }
 
         foreach (Material material in model.Materials) {
             if (material.Shader.Id != RlGl.GetShaderIdDefault()) {
-                if (Shader.IsReady(material.Shader)) {
+                if (material.Shader.IsReady()) {
                     Game.Instance.Content.AddUnmanagedItem(material.Shader);
                 }
             }
@@ -30,7 +28,7 @@ public class ModelProcessor : IContentProcessor {
                 MaterialMap map = material.Maps[i];
 
                 if (map.Texture.Id != RlGl.GetTextureIdDefault()) {
-                    if (Texture2D.IsReady(map.Texture)) {
+                    if (map.Texture.IsReady()) {
                         Game.Instance.Content.AddUnmanagedItem(map.Texture);
                     }
                 }
@@ -42,6 +40,6 @@ public class ModelProcessor : IContentProcessor {
     }
     
     public void Unload(object item) {
-        Model.Unload((Model) item);
+        ((Model) item).Unload();
     }
 }

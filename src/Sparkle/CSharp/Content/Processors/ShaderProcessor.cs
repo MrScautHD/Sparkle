@@ -10,6 +10,6 @@ public class ShaderProcessor : IContentProcessor {
     }
 
     public void Unload(object item) {
-        Shader.Unload((Shader) item);
+        ((Shader) item).Unload();
     }
 }

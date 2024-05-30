@@ -90,19 +90,19 @@ public struct MaterialManipulator {
     /// <param name="model">The model to apply the material properties to.</param>
     internal void Build(ref Model model) {
         foreach (var effect in this._effects) {
-            Model.SetMaterialShader(ref model, effect.Item1, effect.Item2.Shader);
+            model.SetMaterialShader(effect.Item1, effect.Item2.Shader);
         }
         
         foreach (var texture in this._textures) {
-            Model.SetMaterialTexture(ref model, texture.Item1, texture.Item2, texture.Item3);
+            model.SetMaterialTexture(texture.Item1, texture.Item2, texture.Item3);
         }
         
         foreach (var color in this._colors) {
-            Model.SetMaterialColor(ref model, color.Item1, color.Item2, color.Item3);
+            model.SetMaterialColor(color.Item1, color.Item2, color.Item3);
         }
         
         foreach (var value in this._values) {
-            Model.SetMaterialValue(ref model, value.Item1, value.Item2, value.Item3);
+            model.SetMaterialValue(value.Item1, value.Item2, value.Item3);
         }
         
         foreach (var param in this._params) {

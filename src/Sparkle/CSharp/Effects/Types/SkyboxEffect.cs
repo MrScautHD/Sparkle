@@ -19,13 +19,13 @@ public class SkyboxEffect : Effect {
     /// Sets shader locations for light source parameters.
     /// </summary>
     private void SetLocations() {
-        this.EnvironmentMapLoc = Shader.GetLocation(this.Shader, "environmentMap");
+        this.EnvironmentMapLoc = this.Shader.GetLocation("environmentMap");
     }
 
     /// <summary>
     /// Updates the values of the light source for shader rendering.
     /// </summary>
     private void UpdateValues() {
-        Shader.SetValue(this.Shader, this.EnvironmentMapLoc, MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.EnvironmentMapLoc, MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
     }
 }

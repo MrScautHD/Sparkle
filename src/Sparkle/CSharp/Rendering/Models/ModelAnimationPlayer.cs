@@ -1,6 +1,6 @@
 using System.Numerics;
-using Raylib_CSharp;
 using Raylib_CSharp.Geometry;
+using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Unsafe.Spans.Data;
 
 namespace Sparkle.CSharp.Rendering.Models;
@@ -41,7 +41,7 @@ public class ModelAnimationPlayer {
                     this.BlendAnimation();
                 }
                 
-                ModelAnimation.Update(this._model, this._animations.GetSpan()[this._playingIndex], this._frameCount);
+                this._animations.GetSpan()[this._playingIndex].Update(this._model, this._frameCount);
             }
             else {
                 if (this._isLoop) {
@@ -117,7 +117,7 @@ public class ModelAnimationPlayer {
     /// Stops the playback of the animation.
     /// </summary>
     public void Stop() {
-        ModelAnimation.Update(this._model, this._animations.GetSpan()[this._playingIndex], 0);
+        this._animations.GetSpan()[this._playingIndex].Update(this._model, 0);
         this._frameCount = 0;
         this._playingIndex = 0;
         this._oldPlayingIndex = 0;

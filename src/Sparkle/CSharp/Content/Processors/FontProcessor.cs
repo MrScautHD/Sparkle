@@ -10,6 +10,6 @@ public class FontProcessor : IContentProcessor {
     }
 
     public void Unload(object item) {
-        Font.Unload((Font) item);
+        ((Font) item).Unload();
     }
 }

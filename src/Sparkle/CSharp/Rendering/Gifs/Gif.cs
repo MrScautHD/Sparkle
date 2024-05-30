@@ -64,7 +64,7 @@ public class Gif : Disposable {
 
             int nextFrameDataOffset = this.Image.Width * this.Image.Height * 4 * this.CurrentAnimFrame;
             
-            Texture2D.Update(this.Texture, this.Image.Data + nextFrameDataOffset);
+            this.Texture.Update(this.Image.Data + nextFrameDataOffset);
 
             this.FrameCounter = 0;
         }
@@ -77,8 +77,8 @@ public class Gif : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            Image.Unload(this.Image);
-            Texture2D.Unload(this.Texture);
+            this.Image.Unload();
+            this.Texture.Unload();
             GifManager.Gifs.Remove(this);
         }
     }

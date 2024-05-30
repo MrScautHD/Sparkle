@@ -181,7 +181,7 @@ public class MarchingCubes {
             mesh.Indices[i] = this._triangles[i];
         }
         
-        Mesh.Upload(ref mesh, false); // UPDATE BUFFER FOR TERRAIN MANIPULATION
+        mesh.Upload(false); //Todo UPDATE BUFFER FOR TERRAIN MANIPULATION
         
         return Model.LoadFromMesh(mesh);
     }
@@ -193,7 +193,7 @@ public class MarchingCubes {
     private unsafe void UpdateMesh(Mesh mesh) {
         fixed (Vector3* verticesPtr = this._vertices.ToArray()) {
             for (int i = 0; i < this._vertices.Count; i++) {
-                Mesh.UpdateBuffer(mesh, i, (nint) verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
+                mesh.UpdateBuffer(i, (nint) verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
             }
         }
     }

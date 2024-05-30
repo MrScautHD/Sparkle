@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_CSharp;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
+using Raylib_CSharp.Transformations;
 using Color = Raylib_CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.Entities.Components;

@@ -3,6 +3,7 @@ using Raylib_CSharp;
 using Raylib_CSharp.Fonts;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
+using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Color = Raylib_CSharp.Colors.Color;
@@ -13,7 +14,6 @@ public class ToggleElement : GuiElement {
     
     public Texture2D? Texture;
     public Texture2D? ToggledTexture;
-    public float Rotation;
     public Color Color;
     public Color HoverColor;
     public Color ToggledColor;

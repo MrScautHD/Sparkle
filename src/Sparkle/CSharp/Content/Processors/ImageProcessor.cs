@@ -10,6 +10,6 @@ public class ImageProcessor : IContentProcessor {
     }
 
     public void Unload(object item) {
-        Image.Unload((Image) item);
+        ((Image) item).Unload();
     }
 }
