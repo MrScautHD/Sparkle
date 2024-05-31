@@ -22,6 +22,7 @@ public class Test2DScene : Scene {
         Cam2D cam2D = new Cam2D(new Vector2(0, 0), new Vector2(0, 0), Cam2D.CameraFollowMode.Smooth);
         this.AddEntity(cam2D);
 
+        // PLAYER
         Test2DEntity player = new Test2DEntity(new Vector2(0, -40));
         player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
         this.AddEntity(player);
@@ -30,6 +31,7 @@ public class Test2DScene : Scene {
             Density = 1.0F,
         }));
         
+        // GROUND
         Test2DEntity entity = new Test2DEntity(new Vector2(0, 0));
         this.AddEntity(entity);
         

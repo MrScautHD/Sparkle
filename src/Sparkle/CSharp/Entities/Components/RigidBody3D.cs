@@ -5,7 +5,6 @@ using Jitter2.Collision.Shapes;
 using Jitter2.DataStructures;
 using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
-using Jitter2.LinearMath;
 using Jitter2.UnmanagedMemory;
 using Raylib_CSharp;
 using Sparkle.CSharp.Physics.Dim3;
