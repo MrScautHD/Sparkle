@@ -15,6 +15,7 @@ public static class GifManager {
                 gif.Init();
             }
         }
+        
         HasInitialized = true;
     }
     
@@ -75,7 +76,9 @@ public static class GifManager {
         }
         
         if (HasInitialized) {
-            gif.Init();
+            if (!gif.HasInitialized) {
+                gif.Init();
+            }
         }
         
         Logger.Info($"Added Gif with texture ID [{gif.Texture.Id}] successfully.");

@@ -4,6 +4,8 @@ public static class OverlayManager {
     
     internal static List<Overlay> Overlays = new();
     
+    public static bool HasInitialized { get; private set; }
+    
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
@@ -13,6 +15,8 @@ public static class OverlayManager {
                 overlay.Init();
             }
         }
+
+        HasInitialized = true;
     }
     
     /// <summary>
@@ -68,6 +72,12 @@ public static class OverlayManager {
         if (Overlays.Contains(overlay)) {
             Logger.Warn($"The Overlay [{overlay.Name}] is already present in the OverlayManager!");
             return;
+        }
+        
+        if (HasInitialized) {
+            if (!overlay.HasInitialized) {
+                overlay.Init();
+            }
         }
         
         Logger.Info($"Added Overlay: {overlay.Name}");

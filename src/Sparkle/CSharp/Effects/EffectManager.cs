@@ -74,7 +74,9 @@ public static class EffectManager {
         }
         
         if (HasInitialized) {
-            effect.Init();
+            if (!effect.HasInitialized) {
+                effect.Init();
+            }
         }
         
         Logger.Info($"Added Effect with shader ID [{effect.Shader.Id}] successfully.");

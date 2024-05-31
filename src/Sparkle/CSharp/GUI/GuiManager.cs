@@ -42,8 +42,8 @@ public static class GuiManager {
         ActiveGui?.Dispose();
         ActiveGui = gui;
         
-        if (ActiveGui != null && !ActiveGui.HasInitialized) {
-            ActiveGui.Init();
+        if (gui != null && !gui.HasInitialized) {
+            gui.Init();
         }
     }
 

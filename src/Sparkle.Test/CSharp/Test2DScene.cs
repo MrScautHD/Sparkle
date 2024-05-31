@@ -23,21 +23,41 @@ public class Test2DScene : Scene {
         this.AddEntity(cam2D);
 
         // PLAYER
-        Test2DEntity player = new Test2DEntity(new Vector2(0, -40));
+        Test2DEntity player = new Test2DEntity(new Vector2(0, -32));
         player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
         this.AddEntity(player);
         
-        player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(1, 1)) {
+        player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2)) {
             Density = 1.0F,
         }));
         
         // GROUND
-        Test2DEntity entity = new Test2DEntity(new Vector2(0, 0));
+        Test2DEntity entity = new Test2DEntity(new Vector2(0, -8));
         this.AddEntity(entity);
         
         entity.AddComponent(new RigidBody2D(new BodyDefinition() {
             Type = BodyType.Static
-        }, new FixtureDefinition(new PolygonShape(100, 10))));
+        }, new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2))));
+        
+        // ELEMENTS
+        for (int i = 0; i < 6; i++) {
+            Test2DEntity element = new Test2DEntity(new Vector2(32 + (16 * i), -48));
+            this.AddEntity(element);
+        
+            element.AddComponent(new RigidBody2D(new BodyDefinition() {
+                Type = BodyType.Static
+            }, new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2))));
+        }
+        
+        // ELEMENTS STAIRS
+        for (int i = 0; i < 5; i++) {
+            Test2DEntity element = new Test2DEntity(new Vector2(128 + (16 * i), -48 - (16 * i)));
+            this.AddEntity(element);
+        
+            element.AddComponent(new RigidBody2D(new BodyDefinition() {
+                Type = BodyType.Static
+            }, new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2))));
+        }
     }
 
     protected override void Update() {
@@ -53,19 +73,19 @@ public class Test2DScene : Scene {
         }
         
         if (Input.IsKeyDown(KeyboardKey.W)) {
-            body.Body.ApplyForceToCenter(new Vector2(0, -50));
+            body.ApplyForceToCenter(new Vector2(0, -50 * 9));
         }
         
         if (Input.IsKeyDown(KeyboardKey.S)) {
-            body.Body.ApplyForceToCenter(new Vector2(0, 50));
+            body.ApplyForceToCenter(new Vector2(0, 50 * 9));
         }
         
         if (Input.IsKeyDown(KeyboardKey.A)) {
-            body.Body.ApplyForceToCenter(new Vector2(-50, 0));
+            body.ApplyForceToCenter(new Vector2(-50 * 9, 0));
         }
         
         if (Input.IsKeyDown(KeyboardKey.D)) {
-            body.Body.ApplyForceToCenter(new Vector2(50, 0));
+            body.ApplyForceToCenter(new Vector2(50 * 9, 0));
         }
         
         SceneManager.ActiveCam2D!.Target = new Vector2(body.Body.Position.X, body.Body.Position.Y);
@@ -74,13 +94,12 @@ public class Test2DScene : Scene {
     protected override void Draw() {
         base.Draw();
         
+        // Pink Layer
+        Graphics.DrawRectangle(-200, -200, 400, 200, new Color(192, 112, 162, 100));
+        
         RlGl.PushMatrix();
         RlGl.RotateF(90, 1, 0, 0);
-        Graphics.DrawGrid(50, 10);
+        Graphics.DrawGrid(50, 8);
         RlGl.PopMatrix();
-        
-        // OBJECTS
-        Graphics.DrawRectangle(45, 123, 5, 5, Color.White);
-        Graphics.DrawRectangle(5, 12, 30, 50, new Color(192, 112, 162, 100));
     }
 }
