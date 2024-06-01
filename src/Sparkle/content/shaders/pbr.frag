@@ -1,6 +1,6 @@
 #version 330
 
-#define MAX_LIGHTS 815
+#define MAX_LIGHTS 1024
 #define PI 3.14159265358979323846
 
 // Light Types
@@ -14,7 +14,6 @@ struct Light {
     vec3 position;
     vec3 target;
     vec4 color;
-    float intensity;
 };
 
 layout(std140) uniform LightBuffer {
@@ -127,7 +126,7 @@ vec4 ComputePBR() {
             case LIGHT_DIRECTIONAL:
                 L = -normalize(light.target - light.position);
                 H = normalize(V + L);
-                radiance = light.color.rgb * light.intensity; // calc input radiance,light energy comming in
+                radiance = light.color.rgb; // calc input radiance,light energy comming in
                 break;
             
             case LIGHT_SPOT:
@@ -139,7 +138,7 @@ vec4 ComputePBR() {
                 // Check if the fragment is within the spot cone
                 float spotCosine = dot(normalize(light.target - light.position), -L);
                 float spotFactor = smoothstep(light.target.y, light.target.y + light.color.a, spotCosine);
-                radiance = light.color.rgb * light.intensity * attenuation * spotFactor; // calc input radiance,light energy comming in
+                radiance = light.color.rgb * attenuation * spotFactor; // calc input radiance,light energy comming in
                 break;
             
             case LIGHT_POINT:
@@ -147,7 +146,7 @@ vec4 ComputePBR() {
                 H = normalize(V + L); // calc halfway bisecting vector
                 dist = length(light.position - fragPosition); // calc distance to light
                 attenuation = 1.0 / (dist * dist * 0.23); // calc attenuation
-                radiance = light.color.rgb * light.intensity * attenuation; // calc input radiance,light energy comming in
+                radiance = light.color.rgb * attenuation; // calc input radiance,light energy comming in
                 break;
         }
         

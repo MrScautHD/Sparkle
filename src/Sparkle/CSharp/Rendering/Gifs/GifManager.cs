@@ -1,3 +1,5 @@
+using Sparkle.CSharp.Logging;
+
 namespace Sparkle.CSharp.Rendering.Gifs;
 
 public static class GifManager {

@@ -35,7 +35,7 @@
     <PackageReference Include="LibNoise" Version="0.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK.Graphics" Version="5.0.0-pre.10" />
-    <PackageReference Include="Raylib-CSharp" Version="4.0.1" />
+    <PackageReference Include="Raylib-CSharp" Version="4.0.2" />
   </ItemGroup>
   
   <!-- Icon -->

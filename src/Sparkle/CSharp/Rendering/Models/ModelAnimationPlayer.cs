@@ -2,6 +2,7 @@ using System.Numerics;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Unsafe.Spans.Data;
+using Sparkle.CSharp.Logging;
 
 namespace Sparkle.CSharp.Rendering.Models;
 

@@ -1,3 +1,5 @@
+using Sparkle.CSharp.Logging;
+
 namespace Sparkle.CSharp.Overlays;
 
 public static class OverlayManager {

@@ -54,6 +54,7 @@ public class Effect : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            Game.Instance.Content.Unload(this.Shader);
             EffectManager.Effects.Remove(this);
         }
     }

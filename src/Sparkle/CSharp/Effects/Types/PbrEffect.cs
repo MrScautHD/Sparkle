@@ -4,6 +4,7 @@ using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
+using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
@@ -71,7 +72,7 @@ public class PbrEffect : Effect {
     public bool AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
         id = this._lightIds++;
         
-        if (this._lights.Count >= 815) {
+        if (this._lights.Count >= 1024) {
             Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
             return false;
         }
@@ -81,8 +82,7 @@ public class PbrEffect : Effect {
             Type = (int) type,
             Position = position,
             Target = target,
-            Color = Color.Normalize(color),
-            Intensity = intensity
+            Color = Color.Normalize(color) * intensity,
         };
         
         this._lights.Add(id, lightData);
@@ -113,8 +113,7 @@ public class PbrEffect : Effect {
         lightData.Type = (int) type;
         lightData.Position = position;
         lightData.Target = target;
-        lightData.Color = Color.Normalize(color);
-        lightData.Intensity = intensity;
+        lightData.Color = Color.Normalize(color) * intensity;
 
         this._lights[id] = lightData;
     }
@@ -167,7 +166,7 @@ public class PbrEffect : Effect {
         GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
         GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
 
-        GL.BufferData(BufferTarget.UniformBuffer, Marshal.SizeOf(typeof(LightData)) * 815, IntPtr.Zero, BufferUsage.DynamicDraw);
+        GL.BufferData(BufferTarget.UniformBuffer, Marshal.SizeOf(typeof(LightData)) * 1024, IntPtr.Zero, BufferUsage.DynamicDraw);
         
         for (int i = 0; i < this._lights.Count; i++) {
             GL.BufferSubData(BufferTarget.UniformBuffer, IntPtr.Zero, Marshal.SizeOf(typeof(LightData)) * (i + 1), this._lights[i]);
@@ -180,14 +179,13 @@ public class PbrEffect : Effect {
     /// <summary>
     /// Represents light data.
     /// </summary>
-    [StructLayout(LayoutKind.Explicit, Size = 80)]
+    [StructLayout(LayoutKind.Explicit, Size = 64)]
     private struct LightData {
         [FieldOffset(0)] public int Enabled;
         [FieldOffset(4)] public int Type;
         [FieldOffset(16)] public Vector3 Position;
         [FieldOffset(32)] public Vector3 Target;
         [FieldOffset(48)] public Vector4 Color;
-        [FieldOffset(64)] public float Intensity;
     }
     
     /// <summary>

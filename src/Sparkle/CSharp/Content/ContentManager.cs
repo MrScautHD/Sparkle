@@ -8,6 +8,7 @@ using Raylib_CSharp.Textures;
 using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Rendering.Gifs;
 
 namespace Sparkle.CSharp.Content;

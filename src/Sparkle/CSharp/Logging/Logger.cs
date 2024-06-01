@@ -4,7 +4,7 @@ using Raylib_CSharp.Logging;
 using Sparkle.CSharp.IO;
 using RLogger = Raylib_CSharp.Logging.Logger;
 
-namespace Sparkle.CSharp;
+namespace Sparkle.CSharp.Logging;
 
 public static class Logger {
     
@@ -157,13 +157,10 @@ public static class Logger {
     }
 
     /// <summary>
-    /// Enumeration of log types used in the Logger class.
+    /// Destroys the logger and cleans up any resources used.
     /// </summary>
-    public enum LogType {
-        Debug,
-        Info,
-        Warn,
-        Error,
-        Fatal
+    public static void Destroy() {
+        Message = null;
+        RLogger.Destroy();
     }
 }

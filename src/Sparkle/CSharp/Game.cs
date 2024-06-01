@@ -9,6 +9,7 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;

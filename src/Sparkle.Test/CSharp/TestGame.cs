@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Images;
@@ -10,6 +11,7 @@ using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.IO.Configs.Json;
+using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Gifs;
@@ -44,6 +46,8 @@ public class TestGame : Game {
     
     protected override void Init() {
         base.Init();
+
+        Logger.Error(GL.GetString(StringName.Extensions) + "");
         
         this.Overlay = new TestOverlay("Sparkle.Test");
         this.Overlay.Enabled = false;
@@ -118,7 +122,7 @@ public class TestGame : Game {
         Graphics.DrawFPS(50, 50);
     }
 
-    private bool CustomLog(Logger.LogType type, string msg, int skipFrames, ConsoleColor color) {
+    private bool CustomLog(LogType type, string msg, int skipFrames, ConsoleColor color) {
         /*if (type == Logger.LogType.Debug) {
             Console.WriteLine(msg);
             return true;

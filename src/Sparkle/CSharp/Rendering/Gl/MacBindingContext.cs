@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using OpenTK;
+using Sparkle.CSharp.Logging;
 
 namespace Sparkle.CSharp.Rendering.Gl;
 
