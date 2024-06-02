@@ -150,10 +150,6 @@ vec4 ComputePBR() {
                 break;
         }
 
-        if (light.enabled == 0) {
-            return vec4(radiance, 1.0);;
-        }
-
         // Cook-Torrance BRDF distribution function
         float nDotV = max(dot(N, V), 0.0000001);
         float nDotL = max(dot(N, L), 0.0000001);
