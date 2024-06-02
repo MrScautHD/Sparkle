@@ -46,8 +46,6 @@ public class TestGame : Game {
     
     protected override void Init() {
         base.Init();
-
-        Logger.Error(GL.GetString(StringName.Extensions) + "");
         
         this.Overlay = new TestOverlay("Sparkle.Test");
         this.Overlay.Enabled = false;

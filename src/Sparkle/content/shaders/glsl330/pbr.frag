@@ -115,32 +115,32 @@ vec4 ComputePBR() {
 
     for (int i = 0; i < numOfLights; ++i) {
         Light light = lights[i];
-        
+
         vec3 L;
         vec3 H;
         float dist;
         float attenuation;
         vec3 radiance;
-        
+
         switch (light.type) {
             case LIGHT_DIRECTIONAL:
                 L = -normalize(light.target - light.position);
                 H = normalize(V + L);
                 radiance = light.color.rgb; // calc input radiance,light energy comming in
                 break;
-            
+
             case LIGHT_SPOT:
                 L = normalize(light.position - fragPosition);
                 H = normalize(V + L);
                 dist = length(light.position - fragPosition);
                 attenuation = 1.0 / (dist * dist * 0.23);
 
-                // Check if the fragment is within the spot cone
+        // Check if the fragment is within the spot cone
                 float spotCosine = dot(normalize(light.target - light.position), -L);
                 float spotFactor = smoothstep(light.target.y, light.target.y + light.color.a, spotCosine);
                 radiance = light.color.rgb * attenuation * spotFactor; // calc input radiance,light energy comming in
                 break;
-            
+
             case LIGHT_POINT:
                 L = normalize(light.position - fragPosition); // calc light vector
                 H = normalize(V + L); // calc halfway bisecting vector
@@ -149,7 +149,11 @@ vec4 ComputePBR() {
                 radiance = light.color.rgb * attenuation; // calc input radiance,light energy comming in
                 break;
         }
-        
+
+        if (light.enabled == 0) {
+            return vec4(radiance, 1.0);;
+        }
+
         // Cook-Torrance BRDF distribution function
         float nDotV = max(dot(N, V), 0.0000001);
         float nDotL = max(dot(N, L), 0.0000001);
@@ -167,7 +171,7 @@ vec4 ComputePBR() {
         kD *= 1.0 - metallic;
         lightAccum += ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * light.enabled; // angle of light has impact on result
     }
-    
+
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;
     return vec4(ambient_final + lightAccum * ao + emissive, albedo_tex.w);
 }

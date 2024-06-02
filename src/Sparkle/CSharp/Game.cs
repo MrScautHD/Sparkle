@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp;
 using Raylib_CSharp.Audio;
 using Raylib_CSharp.Colors;

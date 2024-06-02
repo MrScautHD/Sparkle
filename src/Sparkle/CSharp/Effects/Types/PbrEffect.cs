@@ -1,8 +1,10 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
+using Raylib_CSharp;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Materials;
+using Raylib_CSharp.Rendering.Gl;
 using Raylib_CSharp.Shaders;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Scenes;
@@ -11,12 +13,14 @@ namespace Sparkle.CSharp.Effects.Types;
 
 public class PbrEffect : Effect {
     
+    public GlVersion GlVersion { get; private set; }
+    
     public Color AmbientColor;
     public float AmbientIntensity;
     
     private int _lightBuffer;
-    private int _lightIds;
     
+    private int _lightIds;
     private Dictionary<int, LightData> _lights;
     
     public int LightCountLoc { get; private set; }
@@ -33,7 +37,8 @@ public class PbrEffect : Effect {
     public int UseTexMraLoc { get; private set; }
     public int UseTexEmissiveLoc { get; private set; }
     
-    public PbrEffect(string vertPath, string fragPath, Color ambientColor, float ambientIntensity = 0.02F) : base(vertPath, fragPath) {
+    public PbrEffect(string vertPath, string fragPath, GlVersion glVersion, Color ambientColor, float ambientIntensity = 0.02F) : base(vertPath, fragPath) {
+        this.GlVersion = glVersion;
         this.AmbientColor = ambientColor;
         this.AmbientIntensity = ambientIntensity;
         this._lights = new Dictionary<int, LightData>();
@@ -41,7 +46,7 @@ public class PbrEffect : Effect {
 
     protected internal override void Init() {
         base.Init();
-        GL.GenBuffers(1, ref this._lightBuffer);
+        this.LoadBuffer();
         this.SetLocations();
     }
 
@@ -71,10 +76,12 @@ public class PbrEffect : Effect {
     /// <returns>Returns true if the light was successfully added, false otherwise.</returns>
     public bool AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
         id = this._lightIds++;
-        
-        if (this._lights.Count >= 1024) {
-            Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
-            return false;
+
+        if (this.GlVersion == GlVersion.OpenGl33) {
+            if (this._lights.Count >= 1024) {
+                Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
+                return false;
+            }
         }
         
         LightData lightData = new LightData() {
@@ -162,18 +169,52 @@ public class PbrEffect : Effect {
         
         this.Shader.SetValue(this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.ActiveCam3D.Position, ShaderUniformDataType.Vec3);
         
-        GL.UseProgram((int) this.Shader.Id);
-        GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
-        GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
+        this.UpdateBuffer();
+    }
 
-        GL.BufferData(BufferTarget.UniformBuffer, Marshal.SizeOf(typeof(LightData)) * 1024, IntPtr.Zero, BufferUsage.DynamicDraw);
-        
-        for (int i = 0; i < this._lights.Count; i++) {
-            GL.BufferSubData(BufferTarget.UniformBuffer, IntPtr.Zero, Marshal.SizeOf(typeof(LightData)) * (i + 1), this._lights[i]);
+    private void LoadBuffer() {
+        if (this.GlVersion == GlVersion.OpenGl33) {
+            GL.GenBuffers(1, ref this._lightBuffer);
         }
+        else {
+            this._lightBuffer = (int) RlGl.LoadShaderBuffer(0, nint.Zero, RlGl.DynamicCopy);
+        }
+    }
+
+    public void UpdateBuffer() {
+        LightData[] lightData = this._lights.Values.ToArray();
         
-        GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
-        GL.BindBuffer(BufferTarget.UniformBuffer, 0);
+        if (this.GlVersion == GlVersion.OpenGl33) {
+            
+            // TODO: Replace this System with Textures and remove "OpenTK".
+            GL.UseProgram((int) this.Shader.Id);
+            GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
+            GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
+            
+            GL.BufferData(BufferTarget.UniformBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.UniformBuffer, 0, lightData);
+            
+            GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
+            GL.BindBuffer(BufferTarget.UniformBuffer, 0);
+        }
+        else {
+            GCHandle pinnedArray = GCHandle.Alloc(lightData, GCHandleType.Pinned);
+            RlGl.UpdateShaderBuffer((uint) this._lightBuffer, pinnedArray.AddrOfPinnedObject() , (uint) (lightData.Length * Marshal.SizeOf(typeof(LightData))), 0);
+            pinnedArray.Free();
+            
+            RlGl.EnableShader(this.Shader.Id);
+            RlGl.BindShaderBuffer(this.Shader.Id, 0);
+            RlGl.DisableShader();
+        }
+    }
+
+    private void UnloadBuffer() {
+        if (this.GlVersion == GlVersion.OpenGl33) {
+            GL.DeleteBuffers(1, this._lightBuffer);
+        }
+        else {
+            RlGl.UnloadShaderBuffer((uint) this._lightBuffer);
+        }
     }
 
     /// <summary>
@@ -201,7 +242,7 @@ public class PbrEffect : Effect {
         base.Dispose(disposing);
         
         if (disposing) {
-            GL.DeleteBuffers(1, this._lightBuffer);
+            this.UnloadBuffer();
         }
     }
 }
