@@ -51,6 +51,10 @@ public class Test3DScene : Scene {
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Red, 4, true));
         this.AddEntity(light);
         
+        Entity light2 = new Entity(new Vector3(10, 6, 0));
+        light2.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Blue, 4, true));
+        this.AddEntity(light2);
+        
         // TEST ENTITIES
         for (int x = -3; x < 3; x++) {
             for (int z = -3; z < 3; z++) {

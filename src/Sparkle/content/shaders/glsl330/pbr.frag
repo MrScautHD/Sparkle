@@ -16,9 +16,11 @@ struct Light {
     vec4 color;
 };
 
-layout(std140) uniform LightBuffer {
-    Light lights[MAX_LIGHTS];
-};
+//layout(std140) uniform lightBuffer {
+//    Light lights[MAX_LIGHTS];
+//};
+
+uniform samplerBuffer lightBuffer;
 
 uniform int numOfLights;
 
@@ -114,7 +116,8 @@ vec4 ComputePBR() {
     vec3 lightAccum = vec3(0.0); // acumulate lighting lum
 
     for (int i = 0; i < numOfLights; ++i) {
-        Light light = lights[i];
+        Light light;
+        light.enabled = int(texelFetch(lightBuffer, i * 12).r);
 
         vec3 L;
         vec3 H;

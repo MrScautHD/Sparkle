@@ -15,7 +15,7 @@ struct Light {
     vec4 color;
 };
 
-layout(std430, binding = 0) buffer LightBuffer {
+layout(std430, binding = 0) buffer lightBuffer {
     Light lights[];
 };
 
