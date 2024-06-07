@@ -89,8 +89,6 @@ public class Game : Disposable {
         this.BindingContext = new NativeBindingsContext();
         GLLoader.LoadBindings(this.BindingContext);
         
-        Logger.Error($"\t> REAL GL: {GL.GetString(StringName.Version)}");
-        
         this.OnRun();
         
         Logger.Info("Load content...");
