@@ -1,16 +1,12 @@
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
-using Raylib_CSharp;
 using Raylib_CSharp.Colors;
-using Raylib_CSharp.Images;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering.Gl;
 using Raylib_CSharp.Shaders;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Scenes;
-using PixelFormat = Raylib_CSharp.Images.PixelFormat;
 
 namespace Sparkle.CSharp.Effects.Types;
 
@@ -176,14 +172,7 @@ public class PbrEffect : Effect {
     }
 
     private void LoadBuffer() {
-        if (this.GlVersion == GlVersion.OpenGl33) {
-            //this._lightBuffer = (int) RlGl.LoadTexture(nint.Zero, 0, 0, PixelFormat.CompressedDxt1Rgba, 0);
-            GL.GenBuffers(1, ref this._lightBuffer);
-        }
-        else {
-            //GL.GenBuffers(1, ref this._lightBuffer);
-            this._lightBuffer = (int) RlGl.LoadShaderBuffer((uint) (1 * Marshal.SizeOf(typeof(LightData))), nint.Zero, RlGl.DynamicCopy);
-        }
+        GL.GenBuffers(1, ref this._lightBuffer);
     }
 
     public unsafe void UpdateBuffer() {
@@ -191,9 +180,7 @@ public class PbrEffect : Effect {
         
         if (this.GlVersion == GlVersion.OpenGl33) {
             
-            //RlGl.UpdateTexture();
-            
-            // TODO: Replace this System with Textures and remove "OpenTK".
+            // TODO: Replace this System with Textures one.
             GL.UseProgram((int) this.Shader.Id);
             GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
@@ -203,65 +190,26 @@ public class PbrEffect : Effect {
             
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             GL.BindBuffer(BufferTarget.UniformBuffer, 0);
+            
+            GL.UseProgram(0);
         }
         else {
-            //GL.UseProgram((int) this.Shader.Id);
-            //GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
-            //
-            //GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            //GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData);
+            GL.UseProgram((int) this.Shader.Id);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, this._lightBuffer);
+            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData);
             
+            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
             
-            //GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
-            
-            
-            
-            
-            //GL.UseProgram((int) this.Shader.Id);
-            //GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
-            //
-            //GL.BindBuffer(BufferTarget.ShaderStorageBuffer, this._lightBuffer); //GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            //fixed (void* dataPtr = lightData) {
-            //    GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData.Length * Marshal.SizeOf(typeof(LightData)), dataPtr);
-            //}
-            //GL.UseProgram(0);
-            
-            
-            
-            
-            //RlGl.EnableShader(this.Shader.Id);
-            //RlGl.BindShaderBuffer(this.Shader.Id, 0);
-            //
-            //GCHandle pinnedArray = GCHandle.Alloc(lightData, GCHandleType.Pinned);
-            //RlGl.UpdateShaderBuffer((uint) this._lightBuffer, pinnedArray.AddrOfPinnedObject(), (uint) (lightData.Length * Marshal.SizeOf(typeof(LightData))), 0);
-            //pinnedArray.Free();
-            //
-            //RlGl.DisableShader();
-            
-            
-            
-            
-            //RlGl.EnableShader(this.Shader.Id);
-            //RlGl.BindShaderBuffer(this.Shader.Id, 0);
-            //
-            //fixed (void* dataPtr = lightData) {
-            //    RlGl.UpdateShaderBuffer((uint) this._lightBuffer, (nint) dataPtr, (uint) (lightData.Length * Marshal.SizeOf(typeof(LightData))), 0);
-            //}
-            //
-            //RlGl.DisableShader();
+            GL.UseProgram(0);
         }
     }
 
     private void UnloadBuffer() {
-        if (this.GlVersion == GlVersion.OpenGl33) {
-            GL.DeleteBuffers(1, this._lightBuffer);
-        }
-        else {
-            //GL.DeleteBuffers(1, this._lightBuffer);
-
-            RlGl.UnloadShaderBuffer((uint) this._lightBuffer);
-        }
+        GL.DeleteBuffers(1, this._lightBuffer);
     }
 
     /// <summary>

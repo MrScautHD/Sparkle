@@ -47,14 +47,14 @@ public class Test3DScene : Scene {
         this.AddEntity(cam3D);
         
         // LIGHTS
-        Entity light = new Entity(new Vector3(1, 3, 0));
+        Entity light = new Entity(new Vector3(1, 6, 0));
         light.AddComponent(new Light(EffectRegistry.Pbr, PbrEffect.LightType.Point, Vector3.Zero, Vector3.Zero, Color.Red, 4, true));
         this.AddEntity(light);
         
         // TEST ENTITIES
-        for (int x = 0; x < 12; x++) {
-            for (int z = 0; z < 12; z++) {
-                TestEntity testEntity = new TestEntity(new Vector3(x * 2, 1, z * 2));
+        for (int x = -3; x < 3; x++) {
+            for (int z = -3; z < 3; z++) {
+                TestEntity testEntity = new TestEntity(new Vector3(x * 2.5F, 1, z * 2.5F));
                 this.AddEntity(testEntity);
             }
         }
@@ -63,7 +63,7 @@ public class Test3DScene : Scene {
         Entity ground = new Entity(new Vector3(0, -2, 0));
         
         List<Shape> shapes = new List<Shape>();
-        shapes.Add(new BoxShape(100000, 1, 100000));
+        shapes.Add(new BoxShape(1000, 1, 1000));
         
         ground.AddComponent(new RigidBody3D(shapes, true, true));
         this.AddEntity(ground);

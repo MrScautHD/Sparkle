@@ -55,24 +55,23 @@ public class ModelAnimationPlayer {
         }
     }
 
-    // TODO Check this system when Raylib-v5.1 release and the GLTF/GLB Blockbench bug is fixed.
+    // TODO Fix it!
     /// <summary>
     /// Blend two animations based on the given blend factor.
     /// </summary>
     private void BlendAnimation() {
         ModelAnimation currentAnimation = this._animations.GetSpan()[this._playingIndex];
         ModelAnimation nextAnimation = this._animations.GetSpan()[this._oldPlayingIndex];
-        // TODO DONE IT
-        /*
+        
         for (int frameIndex = 0; frameIndex < currentAnimation.FrameCount; frameIndex++) {
-            FramePoses currentFramePoses = currentAnimation.FramePosesColl[frameIndex];
-            FramePoses nextFramePoses = nextAnimation.FramePosesColl[frameIndex];
+            Span<Transform> currentFramePoses = currentAnimation.FramePosesCollection[frameIndex];
+            Span<Transform> nextFramePoses = nextAnimation.FramePosesCollection[frameIndex];
 
             for (int boneIndex = 0; boneIndex < currentAnimation.BoneCount; boneIndex++) {
                 Transform interpolatedPose = this.InterpolatePoses(currentFramePoses[boneIndex], nextFramePoses[boneIndex], this._blendFactor);
                 currentFramePoses[boneIndex] = interpolatedPose;
             }
-        }*/
+        }
     }
 
     /// <summary>

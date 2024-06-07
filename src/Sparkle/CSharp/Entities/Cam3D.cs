@@ -222,8 +222,6 @@ public class Cam3D : Entity {
     /// <inheritdoc cref="Camera3D.GetProjectionMatrix"/>
     public Matrix4x4 GetProjectionMatrix(float aspect) => this._camera3D.GetProjectionMatrix(aspect);
     
-    /// <inheritdoc cref="Camera3D.GetMatrix"/>
-    public Matrix4x4 GetMatrix() => this._camera3D.GetMatrix();
     
     /// <inheritdoc cref="Camera3D.GetWorldToScreen"/>
     public Vector2 GetWorldToScreen(Vector3 position) => this._camera3D.GetWorldToScreen(position);
@@ -231,8 +229,14 @@ public class Cam3D : Entity {
     /// <inheritdoc cref="Camera3D.GetWorldToScreenEx"/>
     public Vector2 GetWorldToScreen(Vector3 position, int width, int height) => this._camera3D.GetWorldToScreenEx(position, width, height);
     
-    /// <inheritdoc cref="Camera3D.GetMouseRay"/>
-    public Ray GetMouseRay(Vector2 mousePosition) => this._camera3D.GetMouseRay(mousePosition);
+    /// <inheritdoc cref="Camera3D.GetScreenToWorldRay"/>
+    public Ray GetMouseRay(Vector2 position) => this._camera3D.GetScreenToWorldRay(position);
+    
+    /// <inheritdoc cref="Camera3D.GetScreenToWorldRayEx"/>
+    public Ray GetMouseRay(Vector2 position, int width, int height) => this._camera3D.GetScreenToWorldRayEx(position, width, height);
+    
+    /// <inheritdoc cref="Camera3D.GetMatrix"/>
+    public Matrix4x4 GetMatrix() => this._camera3D.GetMatrix();
     
     /// <summary>
     /// Gets the yaw (horizontal rotation) of the 3D camera in degrees.

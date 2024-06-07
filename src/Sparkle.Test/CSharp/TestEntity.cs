@@ -2,6 +2,7 @@ using System.Numerics;
 using Jitter2.Collision.Shapes;
 using Jitter2.LinearMath;
 using Raylib_CSharp.Colors;
+using Raylib_CSharp.Interact;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 
@@ -12,8 +13,8 @@ public class TestEntity : Entity {
     public TestEntity(Vector3 position) : base(position) {
         
         // RENDERER
-        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, Color.White);
-        //modelRenderer.AnimationPlayer?.Play(0, true, 0);
+        ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, Color.White, TestGame.Animations);
+        modelRenderer.AnimationPlayer?.Play(2, true, 0.0F);
         this.AddComponent(modelRenderer);
         
         // PHYSICS
@@ -33,24 +34,29 @@ public class TestEntity : Entity {
     protected override void Update() {
         base.Update();
         
-        /*
-        if (Input.IsKeyPressed(KeyboardKey.U)) {
-            this.GetComponent<ModelRenderer>().AnimationPlayer.Play(1, true, 0.5F);
-        }
         
-        if (Input.IsKeyPressed(KeyboardKey.I)) {
-            this.GetComponent<ModelRenderer>().AnimationPlayer.Play(0, true, 0.5F);
-        }
-        
-        if (Input.IsKeyPressed(KeyboardKey.O)) {
-            this.GetComponent<ModelRenderer>().AnimationPlayer.Stop();
-        }
-        
-        if (Input.IsKeyPressed(KeyboardKey.P)) {
-            this.GetComponent<ModelRenderer>().AnimationPlayer.Pause();
-        }
-        if (Input.IsKeyPressed(KeyboardKey.L)) {
-            this.GetComponent<ModelRenderer>().AnimationPlayer.UnPause();
-        }*/
+        //if (Input.IsKeyPressed(KeyboardKey.One)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.Play(0, false, 0.5F);
+        //}
+        //
+        //if (Input.IsKeyPressed(KeyboardKey.Two)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.Play(1, false, 0.5F);
+        //}
+        //        
+        //if (Input.IsKeyPressed(KeyboardKey.Three)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.Play(2, false, 0.5F);
+        //}
+        //
+        //if (Input.IsKeyPressed(KeyboardKey.O)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.Stop();
+        //}
+        //
+        //if (Input.IsKeyPressed(KeyboardKey.P)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.Pause();
+        //}
+        //
+        //if (Input.IsKeyPressed(KeyboardKey.L)) {
+        //    this.GetComponent<ModelRenderer>().AnimationPlayer?.UnPause();
+        //}
     }
 }

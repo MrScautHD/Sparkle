@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Linq;
-using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Images;
@@ -7,6 +6,7 @@ using Raylib_CSharp.Interact;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
+using Raylib_CSharp.Unsafe.Spans.Data;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content.Types;
@@ -35,7 +35,7 @@ public class TestGame : Game {
     public static Model PlayerModel;
     
     // MODEL ANIMATIONS
-    //public static ReadOnlySpanData<ModelAnimation> Animations;
+    public static ReadOnlySpanData<ModelAnimation> Animations;
     
     // OVERLAY
     public TestOverlay Overlay;
@@ -44,7 +44,7 @@ public class TestGame : Game {
         Logger.Message += this.CustomLog;
     }
     
-    protected override void Init() {
+    protected override unsafe void Init() {
         base.Init();
         
         this.Overlay = new TestOverlay("Sparkle.Test");
@@ -83,7 +83,7 @@ public class TestGame : Game {
         Gif = this.Content.Load(new GifContent("content/flame.gif", 20));
         
         // MODEL ANIMATIONS
-        //Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
+        Animations = this.Content.Load(new ModelAnimationContent("content/model.glb"));
         
         // MODELS
         MaterialManipulator manipulator = new MaterialManipulator()

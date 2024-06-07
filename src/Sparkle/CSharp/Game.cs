@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp;
@@ -32,7 +32,7 @@ public class Game : Disposable {
     public readonly GameSettings Settings;
     public bool ShouldClose;
     
-    public NativeBindingContext BindingContext { get; private set; }
+    public NativeBindingsContext BindingContext { get; private set; }
     public ContentManager Content { get; private set; }
     
     public Image Logo { get; private set; }
@@ -85,9 +85,11 @@ public class Game : Disposable {
         this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
         Window.SetIcon(this.Logo);
         
-        Logger.Info("Initialize OpenTK binding..."); // TODO Remove it when Raylib-5.1 release
-        this.BindingContext = new NativeBindingContext();
+        Logger.Info("Initialize OpenTK binding...");
+        this.BindingContext = new NativeBindingsContext();
         GLLoader.LoadBindings(this.BindingContext);
+        
+        Logger.Error($"\t> REAL GL: {GL.GetString(StringName.Version)}");
         
         this.OnRun();
         

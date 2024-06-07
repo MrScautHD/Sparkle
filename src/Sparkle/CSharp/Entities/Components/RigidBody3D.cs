@@ -25,8 +25,8 @@ public class RigidBody3D : Component {
     public ReadOnlyList<Shape> Shapes => this.Body.Shapes;
     public float Mass => this.Body.Mass;
     public Island Island => this.Body.Island;
-    public List<RigidBody> Connections => this.Body.Connections;
-    public HashSet<Constraint> Constraints => this.Body.Constraints;
+    public ReadOnlyList<RigidBody> Connections => this.Body.Connections;
+    public ReadOnlyHashSet<Constraint> Constraints => this.Body.Constraints;
     public Matrix4x4 InverseInertia => PhysicsConversion.FromJMatrix(this.Body.InverseInertia);
     
     private ReadOnlyList<Shape> _shapes;
