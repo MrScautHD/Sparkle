@@ -8,9 +8,8 @@ namespace Sparkle.CSharp.Entities.Components;
 public class Light : Component {
     
     public PbrEffect Effect { get; private set; }
-    public int Id { get; private set; }
+    public uint Id { get; private set; }
 
-    public bool Enabled;
     public bool DrawSphere;
     
     public PbrEffect.LightType Type;
@@ -31,7 +30,6 @@ public class Light : Component {
     /// <param name="intensity">Intensity of the light.</param>
     /// <param name="drawSphere">Flag indicating whether to draw a sphere for visualization.</param>
     public Light(PbrEffect effect, PbrEffect.LightType type, Vector3 offsetPos, Vector3 target, Color color, float intensity = 4, bool drawSphere = false) : base(offsetPos) {
-        this.Enabled = true;
         this.DrawSphere = drawSphere;
         this.Effect = effect;
         this.Type = type;
@@ -39,9 +37,21 @@ public class Light : Component {
         this.Color = color;
         this.Intensity = intensity;
     }
+
+    /// <summary>
+    /// Gets or sets the enabled state of the Light component.
+    /// </summary>
+    public bool Enabled {
+        get => this._result && this.Effect.GetActiveState(this.Id);
+        set {
+            if (this._result) {
+                this.Effect.SetActiveState(this.Id, value);
+            }
+        }
+    }
     
     protected internal override void Init() {
-        this._result = this.Effect.AddLight(this.Enabled, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity, out int id);
+        this._result = this.Effect.AddLight(this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity, out uint id);
         this.Id = id;
         
         if (this._result) {
@@ -51,7 +61,9 @@ public class Light : Component {
 
     protected internal override void Update() {
         base.Update();
-        this.Effect.UpdateLightParameters(this.Id, this.Enabled, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity);
+        if (this._result) {
+            this.Effect.UpdateLightParameters(this.Id, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity);
+        }
     }
 
     protected internal override void Draw() {
@@ -71,6 +83,7 @@ public class Light : Component {
         if (disposing) {
             if (this._result) {
                 this.Effect.RemoveLight(this.Id);
+                this._result = false;
             }
         }
     }

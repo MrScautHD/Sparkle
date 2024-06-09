@@ -6,7 +6,7 @@ namespace Sparkle.CSharp.Entities;
 
 public class Entity : Disposable {
     
-    public int Id { get; internal set; }
+    public uint Id { get; internal set; }
 
     public string Tag;
 

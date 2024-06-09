@@ -54,7 +54,7 @@ public class Particle : Disposable {
         this._interpolationFactor = RayMath.Clamp(this._timer / this._lifeTime, 0.0F, 1.0F);
 
         if (this._timer >= this._lifeTime) {
-            SceneManager.ActiveScene?.RemoveParticle(this);
+            //SceneManager.ActiveScene?.RemoveParticle(this);
         }
 
         Vector3 velocity = RayMath.Vector3Lerp(this._data.StartVelocity, this._data.EndVelocity, this._interpolationFactor);

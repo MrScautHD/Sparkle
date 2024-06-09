@@ -1,7 +1,6 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
-using Raylib_CSharp;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering.Gl;
@@ -21,8 +20,9 @@ public class PbrEffect : Effect {
     private int _lightBuffer;
     private int _lightTexture;
     
-    private int _lightIds;
-    private Dictionary<int, LightData> _lights;
+    private uint _lightIds;
+    private Dictionary<uint, LightData> _activeLights;
+    private Dictionary<uint, LightData> _lights;
     
     public int LightCountLoc { get; private set; }
     
@@ -38,11 +38,22 @@ public class PbrEffect : Effect {
     public int UseTexMraLoc { get; private set; }
     public int UseTexEmissiveLoc { get; private set; }
     
+    public int LightBufferLoc { get; private set; }
+    
+    /// <summary>
+    /// Constructor for creating a PbrEffect object.
+    /// </summary>
+    /// <param name="vertPath">Path to the vertex shader file.</param>
+    /// <param name="fragPath">Path to the fragment shader file.</param>
+    /// <param name="glVersion">OpenGL version.</param>
+    /// <param name="ambientColor">Ambient color for the effect.</param>
+    /// <param name="ambientIntensity">Ambient intensity for the effect.</param>
     public PbrEffect(string vertPath, string fragPath, GlVersion glVersion, Color ambientColor, float ambientIntensity = 0.02F) : base(vertPath, fragPath) {
         this.GlVersion = glVersion;
         this.AmbientColor = ambientColor;
         this.AmbientIntensity = ambientIntensity;
-        this._lights = new Dictionary<int, LightData>();
+        this._activeLights = new Dictionary<uint, LightData>();
+        this._lights = new Dictionary<uint, LightData>();
     }
 
     protected internal override void Init() {
@@ -67,33 +78,31 @@ public class PbrEffect : Effect {
     /// <summary>
     /// Adds a light to the PbrEffect.
     /// </summary>
-    /// <param name="enabled">Whether the light should be enabled or disabled.</param>
     /// <param name="type">The type of the light.</param>
     /// <param name="position">The position of the light.</param>
     /// <param name="target">The target direction of the light.</param>
     /// <param name="color">The color of the light.</param>
     /// <param name="intensity">The intensity of the light.</param>
-    /// <param name="id">An output parameter to store the ID of the added light.</param>
+    /// <param name="id">The ID of the light.</param>
     /// <returns>Returns true if the light was successfully added, false otherwise.</returns>
-    public bool AddLight(bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity, out int id) {
-        id = this._lightIds++;
-
+    public bool AddLight(LightType type, Vector3 position, Vector3 target, Color color, float intensity, out uint id) {
+        id = ++this._lightIds;
+        
         if (this.GlVersion == GlVersion.OpenGl33) {
-            if (this._lights.Count >= 1024) {
+            if (this._activeLights.Count >= 1024) {
                 Logger.Warn($"The light with ID: [{id}] cannot be added because the maximum size of the light buffer has been reached.");
                 return false;
             }
         }
         
         LightData lightData = new LightData() {
-            Enabled = enabled ? 1 : 0,
             Type = (int) type,
             Position = position,
             Target = target,
             Color = Color.Normalize(color) * intensity,
         };
         
-        this._lights.Add(id, lightData);
+        this._activeLights.Add(id, lightData);
         return true;
     }
     
@@ -101,29 +110,67 @@ public class PbrEffect : Effect {
     /// Removes a light from the PBR effect.
     /// </summary>
     /// <param name="id">The ID of the light</param>
-    public void RemoveLight(int id) {
-        this._lights.Remove(id);
+    public void RemoveLight(uint id) {
+        if (this._activeLights.ContainsKey(id)) {
+            this._activeLights.Remove(id);
+        }
+        else if (this._lights.ContainsKey(id)) {
+            this._lights.Remove(id);
+        }
+        else {
+            Logger.Warn($"The light with ID: [{id}] can not be found.");
+        }
+    }
+
+    /// <summary>
+    /// Gets the active state of a light in the PbrEffect.
+    /// </summary>
+    /// <param name="id">The ID of the light.</param>
+    /// <returns>Returns true if the light is active, false otherwise.</returns>
+    public bool GetActiveState(uint id) {
+        return this._activeLights.ContainsKey(id);
+    }
+
+    /// <summary>
+    /// Sets the active state of a light in the PbrEffect. If active is true, the light becomes active,
+    /// if active is false, the light becomes inactive.
+    /// </summary>
+    /// <param name="id">The ID of the light to change the state.</param>
+    /// <param name="active">The desired active state of the light.</param>
+    public void SetActiveState(uint id, bool active) {
+        if (active) {
+            if (!this.GetActiveState(id) && this._lights.ContainsKey(id)) {
+                this._activeLights.Add(id, this._lights[id]);
+                this._lights.Remove(id);
+            }
+        }
+        else {
+            if (this.GetActiveState(id) && !this._lights.ContainsKey(id)) {
+                this._lights.Add(id, this._activeLights[id]);
+                this._activeLights.Remove(id);
+            }
+        }
     }
 
     /// <summary>
     /// Updates the parameters of a specific light.
     /// </summary>
     /// <param name="id">The ID of the light to update.</param>
-    /// <param name="enabled">Whether the light is enabled or disabled.</param>
     /// <param name="type">The type of the light.</param>
     /// <param name="position">The position of the light.</param>
     /// <param name="target">The target of the light.</param>
     /// <param name="color">The color of the light.</param>
     /// <param name="intensity">The intensity of the light.</param>
-    public void UpdateLightParameters(int id, bool enabled, LightType type, Vector3 position, Vector3 target, Color color, float intensity) {
-        LightData lightData = this._lights[id];
-        lightData.Enabled = enabled ? 1 : 0;
-        lightData.Type = (int) type;
-        lightData.Position = position;
-        lightData.Target = target;
-        lightData.Color = Color.Normalize(color) * intensity;
+    public void UpdateLightParameters(uint id, LightType type, Vector3 position, Vector3 target, Color color, float intensity) {
+        if (this.GetActiveState(id)) {
+            LightData lightData = this._activeLights[id];
+            lightData.Type = (int) type;
+            lightData.Position = position;
+            lightData.Target = target;
+            lightData.Color = Color.Normalize(color) * intensity;
 
-        this._lights[id] = lightData;
+            this._activeLights[id] = lightData;
+        }
     }
     
     /// <summary>
@@ -150,6 +197,8 @@ public class PbrEffect : Effect {
         this.UseTexNormalLoc = this.Shader.GetLocation("useTexNormal");
         this.UseTexMraLoc = this.Shader.GetLocation("useTexMRA");
         this.UseTexEmissiveLoc = this.Shader.GetLocation("useTexEmissive");
+        
+        this.LightBufferLoc = this.Shader.GetLocation("lightBuffer");
     }
     
     /// <summary>
@@ -158,7 +207,7 @@ public class PbrEffect : Effect {
     private void UpdateValues() {
         if (SceneManager.ActiveCam3D == null) return;
         
-        this.Shader.SetValue(this.LightCountLoc, this._lights.Count, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.LightCountLoc, this._activeLights.Count, ShaderUniformDataType.Int);
         
         this.Shader.SetValue(this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
         this.Shader.SetValue(this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
@@ -175,95 +224,89 @@ public class PbrEffect : Effect {
 
     private void LoadBuffer() {
         if (this.GlVersion == GlVersion.OpenGl33) {
-            GL.GenBuffers(1, ref this._lightBuffer);
-            GL.GenTextures(1, ref this._lightTexture);
+            GL.GenBuffer(out this._lightBuffer);
+            GL.GenTexture(out this._lightTexture);
         }
         else {
-            this._lightBuffer = (int) RlGl.LoadShaderBuffer((uint) (1 * Marshal.SizeOf(typeof(LightData))), nint.Zero, RlGl.DynamicCopy);
-            //GL.GenBuffers(1, ref this._lightBuffer);
+            GL.GenBuffer(out this._lightBuffer);
         }
     }
 
     public void UpdateBuffer() {
-        LightData[] lightData = this._lights.Values.ToArray();
+        LightData[] lightData = this._activeLights.Values.ToArray();
         
         if (this.GlVersion == GlVersion.OpenGl33) {
             
             // TODO: Replace this System with Textures one.
-            //GL.UseProgram((int) this.Shader.Id);
-            //GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
-            //GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
-            //
-            //GL.BufferData(BufferTarget.UniformBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            //GL.BufferSubData(BufferTarget.UniformBuffer, 0, lightData);
-            //
-            //GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
-            //GL.BindBuffer(BufferTarget.UniformBuffer, 0);
-            //
-            //GL.UseProgram(0);
-            
             GL.UseProgram((int) this.Shader.Id);
+            GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
+            GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             
-            GL.BindTexture(TextureTarget.TextureBuffer, this._lightTexture);
-            GL.BindBuffer(BufferTarget.TextureBuffer, this._lightBuffer);
-            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
+            GL.BufferData(BufferTarget.UniformBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.UniformBuffer, 0, lightData);
             
-            GL.BufferData(BufferTarget.TextureBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            GL.BufferSubData(BufferTarget.TextureBuffer, 0, lightData);
-            GL.TexBuffer(TextureTarget.TextureBuffer, SizedInternalFormat.R32f, this._lightBuffer);
-
-            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, 0);
-            GL.BindBuffer(BufferTarget.TextureBuffer, 0);
-            GL.BindTexture(TextureTarget.TextureBuffer, 0);
+            GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
+            GL.BindBuffer(BufferTarget.UniformBuffer, 0);
             
             GL.UseProgram(0);
-        }
-        else {
+            
             //GL.UseProgram((int) this.Shader.Id);
-            //GL.BindBuffer(BufferTarget.ShaderStorageBuffer, this._lightBuffer);
-            //GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             //
-            //GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            //GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData);
+            //GL.ActiveTexture(TextureUnit.Texture6);
+            //GL.BindTexture(TextureTarget.TextureBuffer, this._lightTexture);
+            //GL.Uniform1i(this.LightBufferLoc, 6);
             //
-            //GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
-            //GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
+            //GL.BindBuffer(BufferTarget.TextureBuffer, this._lightBuffer);
+            //
+            //GL.BufferData(BufferTarget.TextureBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            //GL.BufferSubData(BufferTarget.TextureBuffer, 0, lightData);
+            //GL.TexBuffer(TextureTarget.TextureBuffer, SizedInternalFormat.R32f, this._lightBuffer);
+//
+            //GL.BindBuffer(BufferTarget.TextureBuffer, 0);
+            //GL.BindTexture(TextureTarget.TextureBuffer, 0);
             //
             //GL.UseProgram(0);
             
             
+            // Error checking
+            ErrorCode error = GL.GetError();
             
+            if (error != ErrorCode.NoError) {
+                Logger.Error($"OpenGL Error: {error}");
+            }
+        }
+        else {
+            GL.UseProgram((int) this.Shader.Id);
             
-            RlGl.EnableShader(this.Shader.Id);
-            RlGl.BindShaderBuffer((uint) this._lightBuffer, 0);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, this._lightBuffer);
+            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             
-            GCHandle pinnedArray = GCHandle.Alloc(lightData, GCHandleType.Pinned);
-            RlGl.UpdateShaderBuffer((uint) this._lightBuffer, pinnedArray.AddrOfPinnedObject(), (uint) (lightData.Length * Marshal.SizeOf(typeof(LightData))), 2);
-            pinnedArray.Free();
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData);
             
-            RlGl.BindShaderBuffer((uint) this._lightBuffer, 0);
+            GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
             
-            RlGl.DisableShader();
+            GL.UseProgram(0);
         }
     }
 
     private void UnloadBuffer() {
         if (this.GlVersion == GlVersion.OpenGl33) {
-            GL.DeleteBuffers(1, this._lightBuffer);
-            GL.DeleteTextures(1, this._lightTexture);
+            GL.DeleteBuffer(this._lightBuffer);
+            GL.DeleteTexture(this._lightTexture);
         }
         else {
-            GL.DeleteBuffers(1, this._lightBuffer);
+            GL.DeleteBuffer(this._lightBuffer);
         }
     }
 
     /// <summary>
     /// Represents light data.
     /// </summary>
-    [StructLayout(LayoutKind.Explicit, Size = 64)]
+    [StructLayout(LayoutKind.Explicit)]
     private struct LightData {
-        [FieldOffset(0)] public int Enabled;
-        [FieldOffset(4)] public int Type;
+        [FieldOffset(0)] public int Type;
         [FieldOffset(16)] public Vector3 Position;
         [FieldOffset(32)] public Vector3 Target;
         [FieldOffset(48)] public Vector4 Color;

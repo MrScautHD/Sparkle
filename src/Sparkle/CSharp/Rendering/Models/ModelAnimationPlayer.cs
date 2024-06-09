@@ -55,7 +55,7 @@ public class ModelAnimationPlayer {
         }
     }
 
-    // TODO Fix it!
+    // TODO Fix it! (https://github.com/jeangit/raylib/commit/54189ff44383a04d7edde975a17561caf2fa28f0, https://github.com/raylib-extras/examples-cpp/tree/main/interpolated_animation_gpu)
     /// <summary>
     /// Blend two animations based on the given blend factor.
     /// </summary>

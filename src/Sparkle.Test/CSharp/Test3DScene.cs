@@ -3,6 +3,7 @@ using Jitter2.Collision.Shapes;
 using Raylib_CSharp.Camera.Cam3D;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
+using Raylib_CSharp.Logging;
 using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Entities;
@@ -13,6 +14,7 @@ using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
+using Logger = Sparkle.CSharp.Logging.Logger;
 
 namespace Sparkle.Test.CSharp;
 
@@ -75,6 +77,16 @@ public class Test3DScene : Scene {
     
     protected override void Update() {
         base.Update();
+
+        if (Input.IsKeyPressed(KeyboardKey.O)) {
+            this.GetEntity(2).GetComponent<Light>().Enabled = false;
+            Logger.Error(this.GetEntity(2).GetComponent<Light>().Id + "");
+        }
+        
+        if (Input.IsKeyPressed(KeyboardKey.I)) {
+            this.GetEntity(2).GetComponent<Light>().Enabled = true;
+            Logger.Error(this.GetEntity(2).GetComponent<Light>().Id + "");
+        }
         
         if (Input.IsKeyPressed(KeyboardKey.E)) {
             GuiManager.SetGui(new TestGui("Sparkle.Test"));
@@ -85,22 +97,22 @@ public class Test3DScene : Scene {
         }
         
         // PARTICLE
-        for (int i = 0; i < 1; i++) {
-            int x = new Random().Next(-2, 2);
-            int z = new Random().Next(-2, 2);
-            int lifeTime = new Random().Next(5, 10);
-            
-            ParticleData data = new ParticleBuilder()
-                .SetEffect(EffectRegistry.DiscardAlpha)
-                .SetSizeOverLifeTime(new Vector2(2, 2), Vector2.Zero)
-                .SetRotationOverLifeTime(0, 360)
-                .SetColorOverLifeTime(Color.White, Color.Red)
-                .SetVelocityOverLifeTime(new Vector3(0, -1, 0), new Vector3(0, -10 ,0))
-                .Build();
-            
-            Particle particle = new Particle(TestGame.Gif.Texture, new Vector3(SceneManager.ActiveCam3D!.Position.X + x, SceneManager.ActiveCam3D!.Position.Y - 6, SceneManager.ActiveCam3D!.Position.Z + z), lifeTime, data);
-            this.AddParticle(particle);
-        }
+        //for (int i = 0; i < 1; i++) {
+        //    int x = new Random().Next(-2, 2);
+        //    int z = new Random().Next(-2, 2);
+        //    int lifeTime = new Random().Next(5, 10);
+        //    
+        //    ParticleData data = new ParticleBuilder()
+        //        .SetEffect(EffectRegistry.DiscardAlpha)
+        //        .SetSizeOverLifeTime(new Vector2(2, 2), Vector2.Zero)
+        //        .SetRotationOverLifeTime(0, 360)
+        //        .SetColorOverLifeTime(Color.White, Color.Red)
+        //        .SetVelocityOverLifeTime(new Vector3(0, -1, 0), new Vector3(0, -10 ,0))
+        //        .Build();
+        //    
+        //    Particle particle = new Particle(TestGame.Gif.Texture, new Vector3(SceneManager.ActiveCam3D!.Position.X + x, SceneManager.ActiveCam3D!.Position.Y - 6, SceneManager.ActiveCam3D!.Position.Z + z), lifeTime, data);
+        //    this.AddParticle(particle);
+        //}
     }
     
     protected override void Draw() {

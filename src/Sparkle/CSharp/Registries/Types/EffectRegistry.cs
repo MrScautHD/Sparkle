@@ -9,7 +9,7 @@ namespace Sparkle.CSharp.Registries.Types;
 
 public class EffectRegistry : Registry {
 
-    public static string GlslVersion => RlGl.GetVersion() == GlVersion.OpenGl33 ? "glsl330" : "glsl430";
+    public static string GlslVersion => RlGl.GetVersion() == GlVersion.OpenGl33 ? "glsl330" : "glsl330";
 
     public static Effect DiscardAlpha { get; private set; }
     public static SkyboxEffect Skybox { get; private set; }
@@ -24,7 +24,7 @@ public class EffectRegistry : Registry {
         Skybox = new SkyboxEffect("content/shaders/skybox.vert", "content/shaders/skybox.frag");
         EffectManager.Add(Skybox);
         
-        Pbr = new PbrEffect($"content/shaders/{GlslVersion}/pbr.vert", $"content/shaders/{GlslVersion}/pbr.frag", RlGl.GetVersion(), Color.Blue);
+        Pbr = new PbrEffect($"content/shaders/{GlslVersion}/pbr.vert", $"content/shaders/{GlslVersion}/pbr.frag", GlVersion.OpenGl33, Color.Blue);
         EffectManager.Add(Pbr);
     }
 }

@@ -8,7 +8,6 @@
 #define LIGHT_SPOT 2
 
 struct Light {
-    int enabled;
     int type;
     vec3 position;
     vec3 target;
@@ -168,7 +167,7 @@ vec4 ComputePBR() {
         vec3 kD = vec3(1.0) - F;
         // mult kD by the inverse of metallnes , only non-metals should have diffuse light
         kD *= 1.0 - metallic;
-        lightAccum += ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * light.enabled; // angle of light has impact on result
+        lightAccum += (kD * albedo.rgb / PI + spec) * radiance * nDotL; // angle of light has impact on result
     }
     
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;

@@ -9,18 +9,17 @@
 #define LIGHT_SPOT 2
 
 struct Light {
-    int enabled;
     int type;
     vec3 position;
     vec3 target;
     vec4 color;
 };
 
-//layout(std140) uniform lightBuffer {
-//    Light lights[MAX_LIGHTS];
-//};
+layout(std140) uniform lightBuffer {
+    Light lights[MAX_LIGHTS];
+};
 
-uniform samplerBuffer lightBuffer;
+//uniform samplerBuffer lightBuffer;
 
 uniform int numOfLights;
 
@@ -116,8 +115,8 @@ vec4 ComputePBR() {
     vec3 lightAccum = vec3(0.0); // acumulate lighting lum
 
     for (int i = 0; i < numOfLights; ++i) {
-        Light light;
-        light.enabled = int(texelFetch(lightBuffer, i * 12).r);
+        Light light = lights[i];
+        //light.enabled = int(texelFetch(lightBuffer, i).r);
 
         vec3 L;
         vec3 H;
@@ -138,7 +137,7 @@ vec4 ComputePBR() {
                 dist = length(light.position - fragPosition);
                 attenuation = 1.0 / (dist * dist * 0.23);
 
-        // Check if the fragment is within the spot cone
+                // Check if the fragment is within the spot cone
                 float spotCosine = dot(normalize(light.target - light.position), -L);
                 float spotFactor = smoothstep(light.target.y, light.target.y + light.color.a, spotCosine);
                 radiance = light.color.rgb * attenuation * spotFactor; // calc input radiance,light energy comming in
@@ -168,7 +167,7 @@ vec4 ComputePBR() {
         vec3 kD = vec3(1.0) - F;
         // mult kD by the inverse of metallnes , only non-metals should have diffuse light
         kD *= 1.0 - metallic;
-        lightAccum += ((kD * albedo.rgb / PI + spec) * radiance * nDotL) * light.enabled; // angle of light has impact on result
+        lightAccum += (kD * albedo.rgb / PI + spec) * radiance * nDotL; // angle of light has impact on result
     }
 
     vec3 ambient_final = (ambientColor + albedo) * ambient * 0.5;
