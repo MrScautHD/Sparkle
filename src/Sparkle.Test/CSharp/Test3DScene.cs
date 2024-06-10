@@ -41,7 +41,7 @@ public class Test3DScene : Scene {
         }
         
         // SKYBOX
-        this.SetSkybox(new Skybox(TestGame.Skybox, Color.Green));
+        this.SetSkybox(new Skybox(TestGame.Skybox, Color.Blue));
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);

@@ -16,14 +16,14 @@ public class SkyboxEffect : Effect {
     }
 
     /// <summary>
-    /// Sets shader locations for light source parameters.
+    /// Sets the locations of shader parameters.
     /// </summary>
     private void SetLocations() {
         this.EnvironmentMapLoc = this.Shader.GetLocation("environmentMap");
     }
 
     /// <summary>
-    /// Updates the values of the light source for shader rendering.
+    /// Updates the shader parameters for the skybox material.
     /// </summary>
     private void UpdateValues() {
         this.Shader.SetValue(this.EnvironmentMapLoc, MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);

@@ -1,11 +1,12 @@
-using OpenTK;
+using System.Numerics;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using Raylib_CSharp;
 using Raylib_CSharp.Audio;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Images;
 using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
+using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
@@ -34,6 +35,7 @@ public class Game : Disposable {
     
     public NativeBindingsContext BindingContext { get; private set; }
     public ContentManager Content { get; private set; }
+    public RenderTexture2D RenderTexture { get; private set; }
     
     public Image Logo { get; private set; }
     
@@ -91,6 +93,9 @@ public class Game : Disposable {
         
         this.OnRun();
         
+        Logger.Info("Initialize render texture...");
+        this.RenderTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
+        
         Logger.Info("Load content...");
         this.Load();
         
@@ -111,9 +116,22 @@ public class Game : Disposable {
                 this._timer -= this._fixedTimeStep;
             }
             
-            Graphics.BeginDrawing();
+            // TODO: PLACE THAT ALL INTO SCENE MANAGER.
+            if (Window.IsResized()) {
+                this.RenderTexture.Unload();
+                this.RenderTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
+            }
+            
+            Graphics.BeginTextureMode(this.RenderTexture);
             Graphics.ClearBackground(Color.SkyBlue);
             this.Draw();
+            Graphics.EndTextureMode();
+            
+            Graphics.BeginDrawing();
+            Graphics.ClearBackground(Color.SkyBlue);
+            Graphics.BeginShaderMode(EffectRegistry.Fxaa.Shader);
+            Graphics.DrawTextureRec(this.RenderTexture.Texture, new Rectangle(0, 0, this.RenderTexture.Texture.Width, -this.RenderTexture.Texture.Height), Vector2.Zero, Color.White);
+            Graphics.EndShaderMode();
             Graphics.EndDrawing();
         }
         
