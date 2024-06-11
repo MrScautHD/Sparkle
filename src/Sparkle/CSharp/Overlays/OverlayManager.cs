@@ -85,4 +85,13 @@ public static class OverlayManager {
         Logger.Info($"Added Overlay: {overlay.Name}");
         Overlays.Add(overlay);
     }
+    
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        foreach (Overlay overlay in Overlays.ToList()) {
+            overlay.Dispose();
+        }
+    }
 }

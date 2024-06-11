@@ -1,6 +1,7 @@
 using System.Numerics;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
@@ -52,7 +53,7 @@ public class FxaaEffect : Effect {
     /// Updates the values of the shader.
     /// </summary>
     private void UpdateValues() {
-        this.Shader.SetValueTexture(this.TextureLoc, Game.Instance.RenderTexture.Texture);
+        this.Shader.SetValueTexture(this.TextureLoc, SceneManager.FilterTexture.Texture);
         this.Shader.SetValue(this.ResolutionLoc, new Vector2(Window.GetRenderWidth(), Window.GetRenderHeight()), ShaderUniformDataType.Vec2);
         
         this.Shader.SetValue(this.ReduceMinLoc, this.ReduceMin, ShaderUniformDataType.Float);

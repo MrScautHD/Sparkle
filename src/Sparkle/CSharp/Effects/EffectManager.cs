@@ -84,4 +84,13 @@ public static class EffectManager {
         Logger.Info($"Added Effect with shader ID [{effect.Shader.Id}] successfully.");
         Effects.Add(effect);
     }
+    
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        foreach (Effect effect in Effects.ToList()) {
+            effect.Dispose();
+        }
+    }
 }

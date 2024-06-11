@@ -38,4 +38,13 @@ public static class RegistryManager {
             registry.Init();
         }
     }
+    
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        foreach (Registry registry in RegisterTypes.ToList()) {
+            registry.Dispose();
+        }
+    }
 }

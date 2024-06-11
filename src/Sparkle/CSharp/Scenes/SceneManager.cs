@@ -1,3 +1,9 @@
+using System.Numerics;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Textures;
+using Raylib_CSharp.Transformations;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Physics;
 
@@ -6,10 +12,11 @@ namespace Sparkle.CSharp.Scenes;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
+    public static RenderTexture2D FilterTexture { get; private set; }
     
     public static Cam3D? ActiveCam3D;
     public static Cam2D? ActiveCam2D;
-
+    
     public static Simulation? Simulation => ActiveScene?.Simulation;
     
     /// <summary>
@@ -17,6 +24,7 @@ public static class SceneManager {
     /// </summary>
     internal static void Init() {
         ActiveScene?.Init();
+        FilterTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
         ActiveCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
         ActiveCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
     }
@@ -47,6 +55,14 @@ public static class SceneManager {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     internal static void Draw() {
+        if (Window.IsResized()) {
+            FilterTexture.Unload();
+            FilterTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
+        }
+        
+        Graphics.BeginTextureMode(FilterTexture);
+        Graphics.ClearBackground(Color.SkyBlue);
+        
         switch (ActiveScene?.Type) {
             
             case SceneType.Scene3D:
@@ -60,6 +76,17 @@ public static class SceneManager {
                 ActiveScene.Draw();
                 ActiveCam2D?.EndMode2D();
                 break;
+        }
+        
+        Graphics.EndTextureMode();
+
+        if (ActiveScene?.FilterEffect != null) {
+            Graphics.BeginShaderMode(ActiveScene.FilterEffect.Shader);
+            Graphics.DrawTextureRec(FilterTexture.Texture, new Rectangle(0, 0, FilterTexture.Texture.Width, -FilterTexture.Texture.Height), Vector2.Zero, Color.White);
+            Graphics.EndShaderMode();
+        }
+        else {
+            Graphics.DrawTextureRec(FilterTexture.Texture, new Rectangle(0, 0, FilterTexture.Texture.Width, -FilterTexture.Texture.Height), Vector2.Zero, Color.White);
         }
     }
     
@@ -81,5 +108,13 @@ public static class SceneManager {
         ActiveScene?.Init();
         ActiveCam3D = (Cam3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
         ActiveCam2D = (Cam2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+    }
+
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        ActiveScene?.Dispose();
+        FilterTexture.Unload();
     }
 }

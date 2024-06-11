@@ -3,13 +3,11 @@ using Jitter2.Collision.Shapes;
 using Raylib_CSharp.Camera.Cam3D;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
-using Raylib_CSharp.Logging;
 using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.GUI;
-using Sparkle.CSharp.Particles;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
@@ -42,6 +40,9 @@ public class Test3DScene : Scene {
         
         // SKYBOX
         this.SetSkybox(new Skybox(TestGame.Skybox, Color.Blue));
+        
+        // FXAA
+        this.SetFilterEffect(EffectRegistry.Fxaa);
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);

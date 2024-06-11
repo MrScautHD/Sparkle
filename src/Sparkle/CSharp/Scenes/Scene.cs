@@ -1,3 +1,4 @@
+using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Physics;
@@ -14,6 +15,7 @@ public abstract class Scene : Disposable {
     
     public Simulation Simulation { get; private set; }
     public Skybox? Skybox { get; private set; }
+    public Effect? FilterEffect { get; private set; }
 
     private readonly Dictionary<uint, Entity> _entities;
     private uint _entityIds;
@@ -21,11 +23,11 @@ public abstract class Scene : Disposable {
     public bool HasInitialized { get; private set; }
     
     /// <summary>
-    /// Represents an abstract scene in the game.
+    /// Initializes a new instance of the Scene class with the specified parameters.
     /// </summary>
-    /// <param name="name">The scene name.</param>
-    /// <param name="type">The scene type (3D or 2D).</param>
-    /// <param name="simulation">The physics simulation.</param>
+    /// <param name="name">The name of the scene.</param>
+    /// <param name="type">The type of the scene.</param>
+    /// <param name="simulation">Optional simulation for the scene. If not provided, a default simulation is created based on the scene type.</param>
     protected Scene(string name, SceneType type, Simulation? simulation = default) {
         this.Name = name;
         this.Type = type;
@@ -160,6 +162,14 @@ public abstract class Scene : Disposable {
         if (this.Skybox != null && !this.Skybox.HasInitialized) {
             this.Skybox.Init();
         }
+    }
+
+    /// <summary>
+    /// Sets the filter effect for the scene.
+    /// </summary>
+    /// <param name="effect">The filter effect to apply to the scene. Pass null to remove the filter effect.</param>
+    public void SetFilterEffect(Effect? effect) {
+        this.FilterEffect = effect;
     }
     
     protected override void Dispose(bool disposing) {

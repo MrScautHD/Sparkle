@@ -86,4 +86,13 @@ public static class GifManager {
         Logger.Info($"Added Gif with texture ID [{gif.Texture.Id}] successfully.");
         Gifs.Add(gif);
     }
+    
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        foreach (Gif gif in Gifs.ToList()) {
+            gif.Dispose();
+        }
+    }
 }

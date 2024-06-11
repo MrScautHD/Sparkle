@@ -1,12 +1,9 @@
-using System.Numerics;
 using OpenTK.Graphics;
 using Raylib_CSharp;
 using Raylib_CSharp.Audio;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Images;
 using Raylib_CSharp.Rendering;
-using Raylib_CSharp.Textures;
-using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
@@ -35,7 +32,6 @@ public class Game : Disposable {
     
     public NativeBindingsContext BindingContext { get; private set; }
     public ContentManager Content { get; private set; }
-    public RenderTexture2D RenderTexture { get; private set; }
     
     public Image Logo { get; private set; }
     
@@ -92,10 +88,7 @@ public class Game : Disposable {
         GLLoader.LoadBindings(this.BindingContext);
         
         this.OnRun();
-        
-        Logger.Info("Initialize render texture...");
-        this.RenderTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
-        
+
         Logger.Info("Load content...");
         this.Load();
         
@@ -115,23 +108,10 @@ public class Game : Disposable {
                 this.FixedUpdate();
                 this._timer -= this._fixedTimeStep;
             }
-            
-            // TODO: PLACE THAT ALL INTO SCENE MANAGER.
-            if (Window.IsResized()) {
-                this.RenderTexture.Unload();
-                this.RenderTexture = RenderTexture2D.Load(Window.GetRenderWidth(), Window.GetRenderHeight());
-            }
-            
-            Graphics.BeginTextureMode(this.RenderTexture);
-            Graphics.ClearBackground(Color.SkyBlue);
-            this.Draw();
-            Graphics.EndTextureMode();
-            
+
             Graphics.BeginDrawing();
             Graphics.ClearBackground(Color.SkyBlue);
-            Graphics.BeginShaderMode(EffectRegistry.Fxaa.Shader);
-            Graphics.DrawTextureRec(this.RenderTexture.Texture, new Rectangle(0, 0, this.RenderTexture.Texture.Width, -this.RenderTexture.Texture.Height), Vector2.Zero, Color.White);
-            Graphics.EndShaderMode();
+            this.Draw();
             Graphics.EndDrawing();
         }
         
@@ -217,24 +197,12 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (Registry registry in RegistryManager.RegisterTypes.ToList()) {
-                registry.Dispose();
-            }
-            
-            foreach (Overlay overlay in OverlayManager.Overlays.ToList()) {
-                overlay.Dispose();
-            }
-
-            foreach (Effect effect in EffectManager.Effects.ToList()) {
-                effect.Dispose();
-            }
-            
-            foreach (Gif gif in GifManager.Gifs.ToList()) {
-                gif.Dispose();
-            }
-            
-            GuiManager.ActiveGui?.Dispose();
-            SceneManager.ActiveScene?.Dispose();
+            RegistryManager.Destroy();
+            OverlayManager.Destroy();
+            EffectManager.Destroy();
+            GifManager.Destroy();
+            GuiManager.Destroy();
+            SceneManager.Destroy();
             this.Content.Dispose();
             this.BindingContext.Dispose();
             AudioDevice.Close();

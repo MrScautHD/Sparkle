@@ -54,4 +54,11 @@ public static class GuiManager {
     public static void SetScale(float scale) {
         Scale = Math.Clamp(scale, 0.5F, 1);
     }
+    
+    /// <summary>
+    /// Performs cleanup operations.
+    /// </summary>
+    public static void Destroy() {
+        ActiveGui?.Dispose();
+    }
 }
