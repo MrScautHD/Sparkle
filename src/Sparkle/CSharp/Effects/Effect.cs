@@ -8,7 +8,7 @@ public class Effect : Disposable {
     
     public Shader Shader { get; private set; }
     public bool HasInitialized { get; private set; }
-    
+
     /// <summary>
     /// Constructor for creating an Effect object.
     /// </summary>

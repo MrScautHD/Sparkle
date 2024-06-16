@@ -1,22 +1,19 @@
 using System.Numerics;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
-using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
 public class FxaaEffect : Effect {
     
-    public float ReduceMin;
-    public float ReduceMul;
-    public float SpanMax;
-    
-    public int TextureLoc { get; private set; }
     public int ResolutionLoc { get; private set; }
-    
     public int ReduceMinLoc { get; private set; }
     public int ReduceMulLoc { get; private set; }
     public int SpanMaxLoc { get; private set; }
+    
+    private float _reduceMin;
+    private float _reduceMul;
+    private float _spanMax;
 
     /// <summary>
     /// Constructor for creating a Fxaa effect object.
@@ -27,22 +24,59 @@ public class FxaaEffect : Effect {
     /// <param name="reduceMul">Reduction multiplier value.</param>
     /// <param name="spanMax">Maximum span value.</param>
     public FxaaEffect(string vertPath, string fragPath, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F) : base(vertPath, fragPath) {
-        this.ReduceMin = reduceMin;
-        this.ReduceMul = reduceMul;
-        this.SpanMax = spanMax;
+        this._reduceMin = reduceMin;
+        this._reduceMul = reduceMul;
+        this._spanMax = spanMax;
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum reduction value.
+    /// </summary>
+    public float ReduceMin {
+        get => this._reduceMin;
+        set {
+            this._reduceMin = value;
+            this.Shader.SetValue(this.ReduceMinLoc, this._reduceMin, ShaderUniformDataType.Float);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the reduction multiplier value.
+    /// </summary>
+    public float ReduceMul {
+        get => this._reduceMul;
+        set {
+            this._reduceMul = value;
+            this.Shader.SetValue(this.ReduceMulLoc, this._reduceMul, ShaderUniformDataType.Float);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the maximum span value.
+    /// </summary>
+    public float SpanMax {
+        get => this._spanMax;
+        set {
+            this._spanMax = value;
+            this.Shader.SetValue(this.SpanMaxLoc, this._spanMax, ShaderUniformDataType.Float);
+        }
     }
     
     protected internal override void Init() {
         base.Init();
         this.SetLocations();
+        this.UpdateResolution();
+    }
+
+    protected internal override void Update() {
+        base.Update();
         this.UpdateValues();
     }
-    
+
     /// <summary>
     /// Sets the locations of shader parameters.
     /// </summary>
     private void SetLocations() {
-        this.TextureLoc = this.Shader.GetLocation("texture0");
         this.ResolutionLoc = this.Shader.GetLocation("resolution");
         this.ReduceMinLoc = this.Shader.GetLocation("reduceMin");
         this.ReduceMulLoc = this.Shader.GetLocation("reduceMul");
@@ -50,14 +84,18 @@ public class FxaaEffect : Effect {
     }
     
     /// <summary>
-    /// Updates the values of the shader.
+    /// Updates the shader parameters.
     /// </summary>
     private void UpdateValues() {
-        this.Shader.SetValueTexture(this.TextureLoc, SceneManager.FilterTexture.Texture);
+        if (Window.IsResized()) {
+            this.UpdateResolution();
+        }
+    }
+
+    /// <summary>
+    /// Updates the resolution of the shader parameter.
+    /// </summary>
+    private void UpdateResolution() {
         this.Shader.SetValue(this.ResolutionLoc, new Vector2(Window.GetRenderWidth(), Window.GetRenderHeight()), ShaderUniformDataType.Vec2);
-        
-        this.Shader.SetValue(this.ReduceMinLoc, this.ReduceMin, ShaderUniformDataType.Float);
-        this.Shader.SetValue(this.ReduceMulLoc, this.ReduceMul, ShaderUniformDataType.Float);
-        this.Shader.SetValue(this.SpanMaxLoc, this.SpanMax, ShaderUniformDataType.Float);
     }
 }

@@ -24,18 +24,17 @@ public class Game : Disposable {
     public static Game Instance { get; private set; }
     public static readonly Version Version = new Version(3, 1, 0);
     
-    private readonly double _fixedTimeStep;
-    private double _timer;
-    
     public readonly GameSettings Settings;
     public bool ShouldClose;
     
     public NativeBindingsContext BindingContext { get; private set; }
     public ContentManager Content { get; private set; }
-    
     public Image Logo { get; private set; }
     
     public bool HasInitialized { get; private set; }
+    
+    private readonly double _fixedTimeStep;
+    private double _timer;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Game"/>, setting the static Instance to this object, initializing game settings, and calculating the delay based on the FixedTimeStep.
@@ -137,8 +136,8 @@ public class Game : Disposable {
     /// </summary>
     protected virtual void Init() {
         RegistryManager.Init();
-        GifManager.Init();
         EffectManager.Init();
+        GifManager.Init();
         SceneManager.Init();
         OverlayManager.Init();
     }
@@ -158,8 +157,8 @@ public class Game : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected virtual void AfterUpdate() {
-        GifManager.AfterUpdate();
         EffectManager.AfterUpdate();
+        GifManager.AfterUpdate();
         SceneManager.AfterUpdate();
         GuiManager.AfterUpdate();
         OverlayManager.AfterUpdate();
@@ -170,8 +169,8 @@ public class Game : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
-        GifManager.FixedUpdate();
         EffectManager.FixedUpdate();
+        GifManager.FixedUpdate();
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
         OverlayManager.FixedUpdate();
@@ -181,8 +180,8 @@ public class Game : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected virtual void Draw() {
-        GifManager.Draw();
         EffectManager.Draw();
+        GifManager.Draw();
         SceneManager.Draw();
         GuiManager.Draw();
         OverlayManager.Draw();

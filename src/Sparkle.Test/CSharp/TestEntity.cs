@@ -2,7 +2,6 @@ using System.Numerics;
 using Jitter2.Collision.Shapes;
 using Jitter2.LinearMath;
 using Raylib_CSharp.Colors;
-using Raylib_CSharp.Interact;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 
@@ -10,7 +9,10 @@ namespace Sparkle.Test.CSharp;
 
 public class TestEntity : Entity {
     
-    public TestEntity(Vector3 position) : base(position) {
+    public TestEntity(Vector3 position) : base(position) { }
+
+    protected override void Init() {
+        base.Init();
         
         // RENDERER
         ModelRenderer modelRenderer = new ModelRenderer(TestGame.PlayerModel, Vector3.Zero, Color.White, TestGame.Animations);
@@ -20,7 +22,7 @@ public class TestEntity : Entity {
         // PHYSICS
         this.AddComponent(new RigidBody3D(new BoxShape(2, 4, 2)));
     }
-    
+
     protected override void FixedUpdate() {
         base.FixedUpdate();
         

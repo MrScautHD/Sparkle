@@ -202,7 +202,7 @@ public class PbrEffect : Effect {
     }
     
     /// <summary>
-    /// Updates the values of the light source for shader rendering.
+    /// Updates the shader parameters.
     /// </summary>
     private void UpdateValues() {
         if (SceneManager.ActiveCam3D == null) return;
@@ -222,6 +222,9 @@ public class PbrEffect : Effect {
         this.UpdateBuffer();
     }
 
+    /// <summary>
+    /// Loads the light buffer and texture.
+    /// </summary>
     private void LoadBuffer() {
         if (this.GlVersion == GlVersion.OpenGl33) {
             GL.GenBuffer(out this._lightBuffer);
@@ -291,6 +294,9 @@ public class PbrEffect : Effect {
         }
     }
 
+    /// <summary>
+    /// Unloads the buffer and texture.
+    /// </summary>
     private void UnloadBuffer() {
         if (this.GlVersion == GlVersion.OpenGl33) {
             GL.DeleteBuffer(this._lightBuffer);

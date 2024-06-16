@@ -7,7 +7,6 @@ using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Effects;
-using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Rendering.Models;
 using Sparkle.CSharp.Scenes;
 

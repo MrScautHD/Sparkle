@@ -44,7 +44,7 @@ public class TestGame : Game {
         Logger.Message += this.CustomLog;
     }
     
-    protected override unsafe void Init() {
+    protected override void Init() {
         base.Init();
         
         this.Overlay = new TestOverlay("Sparkle.Test");

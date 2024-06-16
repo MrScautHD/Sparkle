@@ -25,11 +25,6 @@ public abstract class Overlay : Disposable {
         set {
             if (!this.HasDisposed) {
                 this._enabled = value;
-                
-                if (!this.HasInitialized) {
-                    this.Init();
-                    this.HasInitialized = true;
-                }
             }
         }
     }

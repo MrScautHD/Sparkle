@@ -42,7 +42,7 @@ public class Test3DScene : Scene {
         this.SetSkybox(new Skybox(TestGame.Skybox, Color.Blue));
         
         // FXAA
-        this.SetFilterEffect(EffectRegistry.Fxaa);
+        this.SetFilterEffect(EffectRegistry.Blur);
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);

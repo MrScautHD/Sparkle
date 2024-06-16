@@ -23,7 +23,7 @@ public class SkyboxEffect : Effect {
     }
 
     /// <summary>
-    /// Updates the shader parameters for the skybox material.
+    /// Updates the shader parameters.
     /// </summary>
     private void UpdateValues() {
         this.Shader.SetValue(this.EnvironmentMapLoc, MaterialMapIndex.Cubemap, ShaderUniformDataType.Int);
