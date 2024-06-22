@@ -22,17 +22,16 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
-- [RayLib-CSharp](https://github.com/MrScautHD/Raylib-CSharp)
-- [OpenTK](https://github.com/opentk/opentk)
-- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
-- [Jitter2](https://www.nuget.org/packages/Jitter2)
-- [Box2D](https://www.nuget.org/packages/Box2D.NetStandard/)
-- [LibNoise](https://www.nuget.org/packages/LibNoise)
+- [`RayLib-CSharp`](https://github.com/MrScautHD/Raylib-CSharp)
+- [`OpenTK`](https://github.com/opentk/opentk)
+- [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
+- [`Jitter2`](https://www.nuget.org/packages/Jitter2)
+- [`Box2D`](https://www.nuget.org/packages/Box2D.NetStandard/)
+- [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
 🌋 Graphic Engine
 ==================
-- [OpenGl](https://www.opengl.org/)
-- [Angle](https://github.com/google/angle) `(Vulkan, Direct3D, Metal...)`
+- [`OpenGL`](https://www.opengl.org/)
 
 ‍💻 Platforms
 =============
