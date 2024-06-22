@@ -29,10 +29,6 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 - [`Box2D`](https://www.nuget.org/packages/Box2D.NetStandard/)
 - [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
-🌋 Graphic Engine
-==================
-- [`OpenGL`](https://www.opengl.org/)
-
 # 💻 Platforms
 [<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/a92bd5fa-517b-44c2-ab58-cc01b5ae5751" alt="windows" width="70" height="70" align="right">](https://www.microsoft.com/de-at/windows)
 ### Windows
