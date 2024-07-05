@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
 
@@ -9,11 +10,10 @@ public class BlurEffect : Effect {
     public int ResolutionLoc { get; private set; }
 
     /// <summary>
-    /// Initializes a new instance of the BlurEffect class.
+    /// Constructor for creating a BlurEffect object.
     /// </summary>
-    /// <param name="vertPath">Path to the vertex shader file.</param>
-    /// <param name="fragPath">Path to the fragment shader file.</param>
-    public BlurEffect(string vertPath, string fragPath) : base(vertPath, fragPath) { }
+    /// <param name="shader">The shader to be used by the blur effect.</param>
+    public BlurEffect(Shader shader) : base(shader) { }
 
     protected internal override void Init() {
         base.Init();
@@ -21,9 +21,12 @@ public class BlurEffect : Effect {
         this.UpdateResolution();
     }
 
-    protected internal override void Update() {
-        base.Update();
-        this.UpdateValues();
+    public override void Apply(Material? material = default) {
+        base.Apply(material);
+        
+        if (Window.IsResized()) {
+            this.UpdateResolution();
+        }
     }
 
     /// <summary>
@@ -31,15 +34,6 @@ public class BlurEffect : Effect {
     /// </summary>
     private void SetLocations() {
         this.ResolutionLoc = this.Shader.GetLocation("resolution");
-    }
-
-    /// <summary>
-    /// Updates the shader parameters.
-    /// </summary>
-    private void UpdateValues() {
-        if (Window.IsResized()) {
-            this.UpdateResolution();
-        }
     }
 
     /// <summary>

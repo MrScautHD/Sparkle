@@ -41,15 +41,6 @@ public class ModelRenderer : Component {
 
     protected internal override void Update() {
         base.Update();
-
-        foreach (Material material in this._model.Materials) {
-            foreach (var effect in EffectManager.Effects) {
-                if (effect.Shader.Id == material.Shader.Id) {
-                    effect.UpdateMaterialParameters(material);
-                    break;
-                }
-            }
-        }
         
         Vector3 dimension = this._box.Max - this._box.Min;
         this._box.Min.X = this.GlobalPos.X - dimension.X / 2;
@@ -68,8 +59,19 @@ public class ModelRenderer : Component {
     
     protected internal override void Draw() {
         base.Draw();
+        Cam3D? cam = SceneManager.ActiveCam3D;
+        if (cam == null) return;
         
-        if (SceneManager.ActiveCam3D!.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Rotation)) {
+        foreach (Material material in this._model.Materials) {
+            foreach (var effect in EffectManager.Effects) {
+                if (effect.Shader.Id == material.Shader.Id) {
+                    effect.Apply(material);
+                    break;
+                }
+            }
+        }
+        
+        if (cam.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Rotation)) {
             RayMath.QuaternionToAxisAngle(this.Entity.Rotation, out Vector3 axis, out float angle);
             
             if (this._drawWires) {

@@ -6,8 +6,7 @@ namespace Sparkle.CSharp.Content.Processors;
 public class GifProcessor : IContentProcessor {
     
     public object Load<T>(IContentType<T> type) {
-        GifContent contentType = (GifContent) type;
-        Gif gif = new Gif(contentType.Path, contentType.FrameDelay);
+        Gif gif = new Gif(type.Path);
         GifManager.Add(gif);
         
         return gif;

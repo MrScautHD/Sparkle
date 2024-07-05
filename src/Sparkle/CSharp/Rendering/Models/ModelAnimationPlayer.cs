@@ -1,6 +1,5 @@
-using System.Numerics;
+using Raylib_CSharp;
 using Raylib_CSharp.Geometry;
-using Raylib_CSharp.Transformations;
 using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Logging;
 
@@ -8,16 +7,15 @@ namespace Sparkle.CSharp.Rendering.Models;
 
 public class ModelAnimationPlayer {
 
-    private readonly Model _model;
+    private Model _model;
     private readonly ReadOnlySpanData<ModelAnimation> _animations;
     
     private int _frameCount;
     private int _playingIndex;
-    private int _oldPlayingIndex;
-    private bool _isPlaying;
-    private float _blendFactor;
-    private bool _isLoop;
-    private bool _isPause;
+    
+    public bool IsPlaying { get; private set; }
+    public bool IsLooped { get; private set; }
+    public bool IsPaused { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ModelAnimationPlayer"/> class.
@@ -34,18 +32,14 @@ public class ModelAnimationPlayer {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal void FixedUpdate() {
-        if (!this._isPause && this._isPlaying) {
+        if (!this.IsPaused && this.IsPlaying) {
             this._frameCount++;
 
             if (this._frameCount <= this._animations.GetSpan()[this._playingIndex].FrameCount) {
-                if (this._blendFactor > 0) {
-                    this.BlendAnimation();
-                }
-                
                 this._animations.GetSpan()[this._playingIndex].Update(this._model, this._frameCount);
             }
             else {
-                if (this._isLoop) {
+                if (this.IsLooped) {
                     this._frameCount = 0;
                 }
                 else {
@@ -55,89 +49,57 @@ public class ModelAnimationPlayer {
         }
     }
 
-    // TODO Fix it! (https://github.com/jeangit/raylib/commit/54189ff44383a04d7edde975a17561caf2fa28f0, https://github.com/raylib-extras/examples-cpp/tree/main/interpolated_animation_gpu)
-    /// <summary>
-    /// Blend two animations based on the given blend factor.
-    /// </summary>
-    private void BlendAnimation() {
-        ModelAnimation currentAnimation = this._animations.GetSpan()[this._playingIndex];
-        ModelAnimation nextAnimation = this._animations.GetSpan()[this._oldPlayingIndex];
-        
-        for (int frameIndex = 0; frameIndex < currentAnimation.FrameCount; frameIndex++) {
-            Span<Transform> currentFramePoses = currentAnimation.FramePosesCollection[frameIndex];
-            Span<Transform> nextFramePoses = nextAnimation.FramePosesCollection[frameIndex];
-
-            for (int boneIndex = 0; boneIndex < currentAnimation.BoneCount; boneIndex++) {
-                Transform interpolatedPose = this.InterpolatePoses(currentFramePoses[boneIndex], nextFramePoses[boneIndex], this._blendFactor);
-                currentFramePoses[boneIndex] = interpolatedPose;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Interpolates between two poses based on a blend factor.
-    /// </summary>
-    /// <param name="currentPose">The current pose to interpolate from.</param>
-    /// <param name="nextPose">The next pose to interpolate to.</param>
-    /// <param name="blendFactor">The blend factor for interpolation. Should be a value between 0 and 1.</param>
-    /// <returns>The interpolated pose.</returns>
-    private Transform InterpolatePoses(Transform currentPose, Transform nextPose, float blendFactor) {
-        Vector3 interpolatedTranslation = Vector3.Lerp(currentPose.Translation, nextPose.Translation, blendFactor);
-        Quaternion interpolatedRotation = Quaternion.Slerp(currentPose.Rotation, nextPose.Rotation, blendFactor);
-        Vector3 interpolatedScale = Vector3.Lerp(currentPose.Scale, nextPose.Scale, blendFactor);
-
-        return new Transform() {
-            Translation = interpolatedTranslation,
-            Rotation = interpolatedRotation,
-            Scale = interpolatedScale
-        };
-    }
-
     /// <summary>
     /// Plays the specified animation.
     /// </summary>
     /// <param name="index">The index of the animation to play.</param>
     /// <param name="loop">If set to <c>true</c>, the animation will loop; otherwise, it will play once.</param>
-    /// <param name="blendFactor">The blend factor between animations.</param>
-    public void Play(int index, bool loop, float blendFactor) {
+    public void Play(int index, bool loop) {
         if (index > this._animations.GetSpan().Length - 1) {
             Logger.Error($"Unable to play the animation at index [{index}], the maximum number of available animations is [{this._animations.GetSpan().Length}].");
             return;
         }
 
-        this._oldPlayingIndex = 0;
         this._playingIndex = index;
-        this._isPlaying = true;
-        this._blendFactor = blendFactor;
-        this._isLoop = loop;
-        this._isPause = false;
+        this.IsPlaying = true;
+        this.IsLooped = loop;
+        this.IsPaused = false;
     }
 
     /// <summary>
     /// Stops the playback of the animation.
     /// </summary>
     public void Stop() {
-        this._animations.GetSpan()[this._playingIndex].Update(this._model, 0);
         this._frameCount = 0;
         this._playingIndex = 0;
-        this._oldPlayingIndex = 0;
-        this._isPlaying = false;
-        this._blendFactor = 0;
-        this._isLoop = false;
-        this._isPause = false;
+        this.IsPlaying = false;
+        this.IsLooped = false;
+        this.IsPaused = false;
+        this._animations.GetSpan()[this._playingIndex].Update(this._model, 0);
+        this.ResetPose();
     }
-
+    
     /// <summary>
     /// Set the pause flag to true, indicating a pause state.
     /// </summary>
     public void Pause() {
-        this._isPause = true;
+        this.IsPaused = true;
     }
 
     /// <summary>
     /// Unpauses the application.
     /// </summary>
     public void UnPause() {
-        this._isPause = false;
+        this.IsPaused = false;
+    }
+
+    /// <summary>
+    /// Resets the pose of the 3D model by updating the vertex and normal buffers of each mesh in the model.
+    /// </summary>
+    private unsafe void ResetPose() {
+        foreach (Mesh mesh in this._model.Meshes) {
+            RlGl.UpdateVertexBuffer(mesh.VboId[0], (nint) mesh.VerticesPtr, mesh.VertexCount * 3 * sizeof(float), 0);
+            RlGl.UpdateVertexBuffer(mesh.VboId[2], (nint) mesh.NormalsPtr, mesh.VertexCount * 3 * sizeof(float), 0);
+        }
     }
 }

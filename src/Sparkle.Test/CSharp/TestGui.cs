@@ -6,6 +6,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Logging;
+using Sparkle.Test.CSharp.Dim3;
 
 namespace Sparkle.Test.CSharp;
 
@@ -28,7 +29,7 @@ public class TestGui : Gui {
         this.AddElement(new LabelElement("label", labelData, Anchor.BottomCenter, Vector2.Zero));
         
         ButtonData buttonData = new ButtonData() {
-            Texture = TestGame.SpriteTexture,
+            Texture = ContentRegistry.SpriteTexture,
             Color = Color.Orange
         };
         

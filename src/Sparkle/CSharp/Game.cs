@@ -87,7 +87,7 @@ public class Game : Disposable {
         GLLoader.LoadBindings(this.BindingContext);
         
         this.OnRun();
-
+        
         Logger.Info("Load content...");
         this.Load();
         
@@ -125,12 +125,12 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Used for loading resources.
+    /// Used for Initializes objects.
     /// </summary>
     protected virtual void Load() {
         RegistryManager.Load(this.Content);
     }
-    
+
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
@@ -146,8 +146,6 @@ public class Game : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected virtual void Update() {
-        EffectManager.Update();
-        GifManager.Update();
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
@@ -157,8 +155,6 @@ public class Game : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected virtual void AfterUpdate() {
-        EffectManager.AfterUpdate();
-        GifManager.AfterUpdate();
         SceneManager.AfterUpdate();
         GuiManager.AfterUpdate();
         OverlayManager.AfterUpdate();
@@ -169,8 +165,6 @@ public class Game : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected virtual void FixedUpdate() {
-        EffectManager.FixedUpdate();
-        GifManager.FixedUpdate();
         SceneManager.FixedUpdate();
         GuiManager.FixedUpdate();
         OverlayManager.FixedUpdate();
@@ -180,8 +174,6 @@ public class Game : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected virtual void Draw() {
-        EffectManager.Draw();
-        GifManager.Draw();
         SceneManager.Draw();
         GuiManager.Draw();
         OverlayManager.Draw();

@@ -5,80 +5,53 @@ namespace Sparkle.CSharp.Rendering.Gifs;
 
 public class Gif : Disposable {
     
-    public Texture2D Texture { get; private set; }
-    public Image Image { get; private set; }
-    
-    public int FrameCounter { get; private set; }
-    public int FrameDelay { get; private set; }
-    
-    public int AnimFrames { get; private set; }
-    public int CurrentAnimFrame { get; private set; }
+    public uint Id { get; private set; }
+    public int Frames { get; private set; }
     
     public bool HasInitialized { get; private set; }
 
-    private readonly string _path;
+    private string _path;
+    
+    private Image _gif;
+    private Texture2D _frame;
     
     /// <summary>
     /// Constructor for creating a Gif object.
     /// </summary>
-    /// <param name="path">Path to the GIF file.</param>
-    /// <param name="frameDelay">Delay between frames in milliseconds.</param>
-    public Gif(string path, int frameDelay) {
+    /// <param name="path">The path to the GIF file.</param>
+    public Gif(string path) {
         this._path = path;
-        this.FrameDelay = frameDelay;
     }
 
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
     protected internal void Init() {
-        this.Image = Image.LoadAnim(this._path, out int frames);
-        this.AnimFrames = frames;
+        this._gif = Image.LoadAnim(this._path, out int frames);
+        this.Frames = frames;
         
-        this.Texture = Texture2D.LoadFromImage(this.Image);
+        this._frame = Texture2D.LoadFromImage(this._gif);
+        this.Id = this._frame.Id;
+        
         this.HasInitialized = true;
     }
-    
-    /// <summary>
-    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
-    /// </summary>
-    protected internal virtual void Update() { }
-    
-    /// <summary>
-    /// Called after the Update method on each tick to further update dynamic elements and game logic.
-    /// </summary>
-    protected internal virtual void AfterUpdate() { }
 
     /// <summary>
-    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
-    /// It is used for handling physics and other fixed-time operations.
+    /// Returns the specified frame of the GIF as a Texture2D object.
     /// </summary>
-    protected internal virtual void FixedUpdate() {
-        this.FrameCounter++;
-        if (this.FrameCounter >= this.FrameDelay) {
-            
-            this.CurrentAnimFrame++;
-            if (this.CurrentAnimFrame >= this.AnimFrames) {
-                this.CurrentAnimFrame = 0;
-            }
-
-            int nextFrameDataOffset = this.Image.Width * this.Image.Height * 4 * this.CurrentAnimFrame;
-            
-            this.Texture.Update(this.Image.Data + nextFrameDataOffset);
-
-            this.FrameCounter = 0;
-        }
+    /// <param name="frame">The index of the frame to retrieve.</param>
+    /// <returns>The specified frame of the GIF as a Texture2D object.</returns>
+    public Texture2D GetFrame(int frame) {
+        int dataOffset = this._gif.Width * this._gif.Height * 4 * frame;
+        this._frame.Update(this._gif.Data + dataOffset);
+        
+        return this._frame;
     }
-    
-    /// <summary>
-    /// Is called every tick, used for rendering stuff.
-    /// </summary>
-    protected internal virtual void Draw() { }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            this.Image.Unload();
-            this.Texture.Unload();
+            this._gif.Unload();
+            this._frame.Unload();
             GifManager.Gifs.Remove(this);
         }
     }

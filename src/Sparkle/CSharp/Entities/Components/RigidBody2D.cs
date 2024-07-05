@@ -10,7 +10,6 @@ using Raylib_CSharp;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Scenes;
-using FixtureDef = Box2D.NetStandard.Dynamics.Fixtures.FixtureDef;
 
 namespace Sparkle.CSharp.Entities.Components;
 

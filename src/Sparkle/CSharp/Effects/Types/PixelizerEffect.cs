@@ -1,4 +1,6 @@
 using System.Numerics;
+using Raylib_CSharp;
+using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
 
@@ -6,23 +8,39 @@ namespace Sparkle.CSharp.Effects.Types;
 
 public class PixelizerEffect : Effect {
     
-    public Vector2 PixelSize;
-    
     public int ResolutionLoc { get; private set; }
     public int PixelSizeLoc { get; private set; }
 
-    public PixelizerEffect(string vertPath, string fragPath, Vector2? pixelSize = default) : base(vertPath, fragPath) {
+    private Vector2 PixelSize;
+    
+    private Vector2 _pixelSize;
+
+    /// <summary>
+    /// Constructor for creating a PixelizerEffect object.
+    /// </summary>
+    /// <param name="shader">The shader to be used by the pixelizer effect.</param>
+    /// <param name="pixelSize">Optional pixel size for the effect. Defaults to (5.0, 5.0) if not provided.</param>
+    public PixelizerEffect(Shader shader, Vector2? pixelSize = default) : base(shader) {
         this.PixelSize = pixelSize ?? new Vector2(5.0F, 5.0F);
     }
 
     protected internal override void Init() {
         base.Init();
         this.SetLocations();
+        this.UpdateResolution();
     }
 
-    protected internal override void Update() {
-        base.Update();
-        this.UpdateValues();
+    public override void Apply(Material? material = default) {
+        base.Apply(material);
+        
+        if (Window.IsResized()) {
+            this.UpdateResolution();
+        }
+
+        if (RayMath.Vector2Equals(this.PixelSize, this._pixelSize) != 1) {
+            this.Shader.SetValue(this.PixelSizeLoc, this._pixelSize, ShaderUniformDataType.Vec2);
+            this._pixelSize = this.PixelSize;
+        }
     }
 
     /// <summary>
@@ -32,12 +50,11 @@ public class PixelizerEffect : Effect {
         this.ResolutionLoc = this.Shader.GetLocation("resolution");
         this.PixelSizeLoc = this.Shader.GetLocation("pixelSize");
     }
-
+    
     /// <summary>
-    /// Updates the shader parameters.
+    /// Updates the resolution of the shader parameter.
     /// </summary>
-    private void UpdateValues() {
+    private void UpdateResolution() {
         this.Shader.SetValue(this.ResolutionLoc, new Vector2(Window.GetRenderWidth(), Window.GetRenderHeight()), ShaderUniformDataType.Vec2);
-        this.Shader.SetValue(this.PixelSizeLoc, this.PixelSize, ShaderUniformDataType.Vec2);
     }
 }

@@ -14,7 +14,7 @@ using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Logger = Sparkle.CSharp.Logging.Logger;
 
-namespace Sparkle.Test.CSharp;
+namespace Sparkle.Test.CSharp.Dim3;
 
 public class Test3DScene : Scene {
 
@@ -39,10 +39,10 @@ public class Test3DScene : Scene {
         }
         
         // SKYBOX
-        this.SetSkybox(new Skybox(TestGame.Skybox, Color.Blue));
+        this.SetSkybox(new Skybox(ContentRegistry.Skybox, Color.Magenta));
         
         // FXAA
-        this.SetFilterEffect(EffectRegistry.Blur);
+        this.SetFilterEffect(EffectRegistry.Fxaa);
         
         // CAMERA
         Vector3 pos = new Vector3(10.0f, 10.0f, 10.0f);
@@ -59,12 +59,14 @@ public class Test3DScene : Scene {
         this.AddEntity(light2);
         
         // TEST ENTITIES
-        for (int x = -3; x < 3; x++) {
-            for (int z = -3; z < 3; z++) {
-                TestEntity testEntity = new TestEntity(new Vector3(x * 2.5F, 1, z * 2.5F));
-                this.AddEntity(testEntity);
-            }
-        }
+        //for (int x = -3; x < 3; x++) {
+        //    for (int z = -3; z < 3; z++) {
+        //        TestEntity testEntity = new TestEntity(new Vector3(x * 2.5F, 1, z * 2.5F));
+        //        this.AddEntity(testEntity);
+        //    }
+        //}
+        
+        this.AddEntity(new TestEntity(Vector3.One));
         
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Raylib_CSharp;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Effects.Types;
@@ -16,6 +17,11 @@ public class Light : Component {
     public Vector3 Target;
     public Color Color;
     public float Intensity;
+
+    private PbrEffect.LightType _oldType;
+    private Vector3 _oldTarget;
+    private Color _oldColor;
+    private float _oldIntensity;
 
     private bool _result;
     
@@ -62,7 +68,13 @@ public class Light : Component {
     protected internal override void Update() {
         base.Update();
         if (this._result) {
-            this.Effect.UpdateLightParameters(this.Id, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity);
+            if (this.Type != this._oldType || this.Target != this._oldTarget || !Color.ColorIsEqual(this.Color, this._oldColor) || RayMath.FloatEquals(this.Intensity, this._oldIntensity) != 1) {
+                this.Effect.UpdateLightParams(this.Id, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity);
+                this._oldType = this.Type;
+                this._oldTarget = this.Target;
+                this._oldColor = this.Color;
+                this._oldIntensity = this.Intensity;
+            }
         }
     }
 

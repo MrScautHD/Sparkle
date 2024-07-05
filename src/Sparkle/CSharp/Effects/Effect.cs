@@ -1,6 +1,5 @@
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
-using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Effects;
 
@@ -8,14 +7,13 @@ public class Effect : Disposable {
     
     public Shader Shader { get; private set; }
     public bool HasInitialized { get; private set; }
-
+    
     /// <summary>
     /// Constructor for creating an Effect object.
     /// </summary>
-    /// <param name="vertPath">Path to the vertex shader file.</param>
-    /// <param name="fragPath">Path to the fragment shader file.</param>
-    public Effect(string vertPath, string fragPath) {
-        this.Shader = Game.Instance.Content.Load(new ShaderContent(vertPath, fragPath));
+    /// <param name="shader">The shader to be used by the effect.</param>
+    public Effect(Shader shader) {
+        this.Shader = shader;
     }
     
     /// <summary>
@@ -24,37 +22,14 @@ public class Effect : Disposable {
     protected internal virtual void Init() {
         this.HasInitialized = true;
     }
-    
-    /// <summary>
-    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
-    /// </summary>
-    protected internal virtual void Update() { }
-    
-    /// <summary>
-    /// Updates the shader parameters for the materials, called from the ModelRenderer.
-    /// </summary>
-    /// <param name="material">The material to be updated.</param>
-    protected internal virtual void UpdateMaterialParameters(Material material) { }
-    
-    /// <summary>
-    /// Called after the Update method on each tick to further update dynamic elements and game logic.
-    /// </summary>
-    protected internal virtual void AfterUpdate() { }
-    
-    /// <summary>
-    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
-    /// It is used for handling physics and other fixed-time operations.
-    /// </summary>
-    protected internal virtual void FixedUpdate() { }
-    
-    /// <summary>
-    /// Is called every tick, used for rendering stuff.
-    /// </summary>
-    protected internal virtual void Draw() { }
 
+    /// <summary>
+    /// Apply the state effect immediately before rendering it.
+    /// </summary>
+    public virtual void Apply(Material? material = default) { }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            Game.Instance.Content.Unload(this.Shader);
             EffectManager.Effects.Remove(this);
         }
     }

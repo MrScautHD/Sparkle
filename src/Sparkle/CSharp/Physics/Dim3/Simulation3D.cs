@@ -8,13 +8,12 @@ namespace Sparkle.CSharp.Physics.Dim3;
 public class Simulation3D : Simulation {
 
     public readonly World World;
-    
-    private PhysicsSettings3D _settings;
+    private readonly PhysicsSettings3D _settings;
     
     /// <summary>
-    /// Initializes a new instance of the Simulation class with the specified physics settings.
+    /// Constructor for creating a Simulation3D object.
     /// </summary>
-    /// <param name="settings">The physics settings to configure the simulation.</param>
+    /// <param name="settings">The physics settings for the 3D simulation.</param>
     public Simulation3D(PhysicsSettings3D settings) {
         this._settings = settings;
         

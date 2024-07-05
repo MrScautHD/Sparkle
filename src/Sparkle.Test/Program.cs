@@ -1,6 +1,7 @@
 ﻿using Raylib_CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.Test.CSharp;
+using Sparkle.Test.CSharp.Dim3;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]",

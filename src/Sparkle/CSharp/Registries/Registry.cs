@@ -4,12 +4,15 @@ namespace Sparkle.CSharp.Registries;
 
 public abstract class Registry : Disposable {
     
+    public bool HasLoaded { get; private set; }
     public bool HasInitialized { get; private set; }
-
+    
     /// <summary>
     /// Used for loading resources.
     /// </summary>
-    protected internal virtual void Load(ContentManager content) { }
+    protected internal virtual void Load(ContentManager content) {
+        this.HasLoaded = true;
+    }
     
     /// <summary>
     /// Used for Initializes objects.

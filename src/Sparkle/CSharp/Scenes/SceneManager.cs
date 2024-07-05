@@ -81,6 +81,8 @@ public static class SceneManager {
         Graphics.EndTextureMode();
 
         if (ActiveScene?.FilterEffect != null) {
+            ActiveScene.FilterEffect.Apply();
+            
             Graphics.BeginShaderMode(ActiveScene.FilterEffect.Shader);
             Graphics.DrawTextureRec(FilterTexture.Texture, new Rectangle(0, 0, FilterTexture.Texture.Width, -FilterTexture.Texture.Height), Vector2.Zero, Color.White);
             Graphics.EndShaderMode();

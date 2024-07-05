@@ -9,8 +9,9 @@ using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Scenes;
+using Sparkle.Test.CSharp.Dim3;
 
-namespace Sparkle.Test.CSharp;
+namespace Sparkle.Test.CSharp.Dim2;
 
 public class Test2DScene : Scene {
     
@@ -23,17 +24,19 @@ public class Test2DScene : Scene {
         this.AddEntity(cam2D);
 
         // PLAYER
-        Test2DEntity player = new Test2DEntity(new Vector2(0, -32));
+        Entity player = new Entity(new Vector3(0, -32, 0));
         player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
         this.AddEntity(player);
+        player.AddComponent(new Sprite(ContentRegistry.SpriteTexture, Vector3.Zero));
         
         player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2)) {
             Density = 1.0F,
         }));
         
         // GROUND
-        Test2DEntity entity = new Test2DEntity(new Vector2(0, -8));
+        Entity entity = new Entity(new Vector3(0, -8, 0));
         this.AddEntity(entity);
+        entity.AddComponent(new Sprite(ContentRegistry.SpriteTexture, Vector3.Zero));
         
         entity.AddComponent(new RigidBody2D(new BodyDefinition() {
             Type = BodyType.Static
@@ -41,8 +44,9 @@ public class Test2DScene : Scene {
         
         // ELEMENTS
         for (int i = 0; i < 6; i++) {
-            Test2DEntity element = new Test2DEntity(new Vector2(32 + (16 * i), -48));
+            Entity element = new Entity(new Vector3(32 + (16 * i), -48, 0));
             this.AddEntity(element);
+            element.AddComponent(new Sprite(ContentRegistry.SpriteTexture, Vector3.Zero));
         
             element.AddComponent(new RigidBody2D(new BodyDefinition() {
                 Type = BodyType.Static
@@ -51,8 +55,9 @@ public class Test2DScene : Scene {
         
         // ELEMENTS STAIRS
         for (int i = 0; i < 5; i++) {
-            Test2DEntity element = new Test2DEntity(new Vector2(128 + (16 * i), -48 - (16 * i)));
+            Entity element = new Entity(new Vector3(128 + (16 * i), -48 - (16 * i), 0));
             this.AddEntity(element);
+            element.AddComponent(new Sprite(ContentRegistry.SpriteTexture, Vector3.Zero));
         
             element.AddComponent(new RigidBody2D(new BodyDefinition() {
                 Type = BodyType.Static
@@ -62,14 +67,14 @@ public class Test2DScene : Scene {
 
     protected override void Update() {
         base.Update();
-        RigidBody2D body = this.GetEntity(1).GetComponent<RigidBody2D>();
+        RigidBody2D body = this.GetEntity(2).GetComponent<RigidBody2D>();
 
         if (Input.IsKeyDown(KeyboardKey.G)) {
-            this.GetEntity(1).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
+            this.GetEntity(2).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
         }
         
         if (Input.IsKeyDown(KeyboardKey.H)) {
-            this.GetEntity(1).Position += Vector3.One;
+            this.GetEntity(2).Position += Vector3.One;
         }
         
         if (Input.IsKeyDown(KeyboardKey.W)) {
