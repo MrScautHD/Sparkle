@@ -22,23 +22,25 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
-- [RayLib-CSharp](https://github.com/MrScautHD/Raylib-CSharp)
-- [OpenTK](https://github.com/opentk/opentk)
-- [Newtonsoft.Json](https://www.nuget.org/packages/Newtonsoft.Json)
-- [Jitter2](https://www.nuget.org/packages/Jitter2)
-- [Box2D](https://www.nuget.org/packages/Box2D.NetStandard/)
-- [LibNoise](https://www.nuget.org/packages/LibNoise)
+- [`RayLib-CSharp`](https://github.com/MrScautHD/Raylib-CSharp)
+- [`OpenTK`](https://github.com/opentk/opentk)
+- [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
+- [`Jitter2`](https://www.nuget.org/packages/Jitter2)
+- [`Box2D`](https://www.nuget.org/packages/Box2D.NetStandard/)
+- [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
-🌋 Graphic Engine
-==================
-- [OpenGl](https://www.opengl.org/)
-- [Angle](https://github.com/google/angle) `(Vulkan, Direct3D, Metal...)`
+# 💻 Platforms
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/a92bd5fa-517b-44c2-ab58-cc01b5ae5751" alt="windows" width="70" height="70" align="right">](https://www.microsoft.com/de-at/windows)
+### Windows
+- Using `OpenGL-4.3`
 
-‍💻 Platforms
-=============
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/a92bd5fa-517b-44c2-ab58-cc01b5ae5751" alt="windows" width="70" height="70">](https://www.microsoft.com/de-at/windows)
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/e37eb15f-4237-47ae-9ae7-e4455f7c3d92" alt="macOS" width="70" height="70">](https://www.apple.com/at/macos/sonoma/)
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/f9e643a8-4d46-450c-91ac-d220394ecd42" alt="Linux" width="70" height="70">](https://www.ubuntu.com/)
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/f9e643a8-4d46-450c-91ac-d220394ecd42" alt="Linux" width="70" height="70" align="right">](https://www.ubuntu.com/)
+### Linux
+- Using `OpenGL-4.3`
+
+[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/e37eb15f-4237-47ae-9ae7-e4455f7c3d92" alt="macOS" width="70" height="70" align="right">](https://www.apple.com/at/macos/sonoma/)
+### MacOS
+- Using `OpenGL-3.3`
 
 🧑 Contributors
 ==================
