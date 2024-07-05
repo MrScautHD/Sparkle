@@ -31,7 +31,6 @@
   <!-- Libraries -->
   <ItemGroup>
     <PackageReference Include="Box2D.NetStandard" Version="2.4.7-alpha" />
-    <PackageReference Include="FFMpegCore" Version="5.1.0" />
     <PackageReference Include="Jitter2" Version="2.3.1" />
     <PackageReference Include="LibNoise" Version="0.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -12,7 +12,7 @@ using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
-// TODO: Optimize it more!
+// TODO: Optimize it more! (FIX IT)
 public class PbrEffect : Effect {
     
     public GlVersion GlVersion { get; private set; }

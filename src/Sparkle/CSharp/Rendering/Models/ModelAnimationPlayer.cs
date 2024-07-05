@@ -5,6 +5,7 @@ using Sparkle.CSharp.Logging;
 
 namespace Sparkle.CSharp.Rendering.Models;
 
+// TODO: ADD GPU ANIMATIONS
 public class ModelAnimationPlayer {
 
     private Model _model;

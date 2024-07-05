@@ -11,9 +11,9 @@ public class PixelizerEffect : Effect {
     public int ResolutionLoc { get; private set; }
     public int PixelSizeLoc { get; private set; }
 
-    private Vector2 PixelSize;
+    public Vector2 PixelSize;
     
-    private Vector2 _pixelSize;
+    private Vector2 _oldPixelSize;
 
     /// <summary>
     /// Constructor for creating a PixelizerEffect object.
@@ -37,9 +37,9 @@ public class PixelizerEffect : Effect {
             this.UpdateResolution();
         }
 
-        if (RayMath.Vector2Equals(this.PixelSize, this._pixelSize) != 1) {
-            this.Shader.SetValue(this.PixelSizeLoc, this._pixelSize, ShaderUniformDataType.Vec2);
-            this._pixelSize = this.PixelSize;
+        if (RayMath.Vector2Equals(this.PixelSize, this._oldPixelSize) != 1) {
+            this.Shader.SetValue(this.PixelSizeLoc, this._oldPixelSize, ShaderUniformDataType.Vec2);
+            this._oldPixelSize = this.PixelSize;
         }
     }
 
