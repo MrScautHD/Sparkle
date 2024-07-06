@@ -10,6 +10,7 @@ using Color = Raylib_CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.Particles;
 
+// Replace this system with GPU Particles (For better performance)
 public class Particle : Disposable {
     
     public int Id { get; internal set; }
