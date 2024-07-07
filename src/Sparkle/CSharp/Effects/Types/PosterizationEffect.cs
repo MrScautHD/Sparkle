@@ -1,4 +1,3 @@
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 
@@ -11,9 +10,6 @@ public class PosterizationEffect : Effect {
     
     public float Gamma;
     public int NumOfColors;
-    
-    private float _oldGamma;
-    private int _oldNumOfColors;
 
     /// <summary>
     /// Constructor for creating a PosterizationEffect object.
@@ -34,15 +30,8 @@ public class PosterizationEffect : Effect {
     public override void Apply(Material? material = default) {
         base.Apply(material);
 
-        if (RayMath.FloatEquals(this.Gamma, this._oldGamma) != 1) {
-            this.Shader.SetValue(this.GammaLoc, this.Gamma, ShaderUniformDataType.Float);
-            this._oldGamma = this.Gamma;
-        }
-
-        if (this.NumOfColors != this._oldNumOfColors) {
-            this.Shader.SetValue(this.NumOfColorsLoc, this.NumOfColors, ShaderUniformDataType.Int);
-            this._oldNumOfColors = this.NumOfColors;
-        }
+        this.Shader.SetValue(this.GammaLoc, this.Gamma, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.NumOfColorsLoc, this.NumOfColors, ShaderUniformDataType.Int);
     }
 
     /// <summary>

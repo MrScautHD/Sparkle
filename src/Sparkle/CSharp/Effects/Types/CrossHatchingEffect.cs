@@ -1,4 +1,3 @@
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 
@@ -17,12 +16,6 @@ public class CrossHatchingEffect : Effect {
     public float LumThreshold02;
     public float LumThreshold03;
     public float LumThreshold04;
-    
-    private float _oldHatchOffsetY;
-    private float _oldLumThreshold01;
-    private float _oldLumThreshold02;
-    private float _oldLumThreshold03;
-    private float _oldLumThreshold04;
     
     /// <summary>
     /// Constructor for creating a CrossHatchingEffect object.
@@ -48,31 +41,12 @@ public class CrossHatchingEffect : Effect {
 
     public override void Apply(Material? material = default) {
         base.Apply(material);
-
-        if (RayMath.FloatEquals(this.HatchOffsetY, this._oldHatchOffsetY) != 1) {
-            this.Shader.SetValue(this.HatchOffsetYLoc, this.HatchOffsetY, ShaderUniformDataType.Float);
-            this._oldHatchOffsetY = this.HatchOffsetY;
-        }
         
-        if (RayMath.FloatEquals(this.LumThreshold01, this._oldLumThreshold01) != 1) {
-            this.Shader.SetValue(this.LumThreshold01Loc, this.LumThreshold01, ShaderUniformDataType.Float);
-            this._oldLumThreshold01 = this.LumThreshold01;
-        }
-        
-        if (RayMath.FloatEquals(this.LumThreshold02, this._oldLumThreshold02) != 1) {
-            this.Shader.SetValue(this.LumThreshold02Loc, this.LumThreshold02, ShaderUniformDataType.Float);
-            this._oldLumThreshold02 = this.LumThreshold02;
-        }
-        
-        if (RayMath.FloatEquals(this.LumThreshold03, this._oldLumThreshold03) != 1) {
-            this.Shader.SetValue(this.LumThreshold03Loc, this.LumThreshold03, ShaderUniformDataType.Float);
-            this._oldLumThreshold03 = this.LumThreshold03;
-        }
-        
-        if (RayMath.FloatEquals(this.LumThreshold04, this._oldLumThreshold04) != 1) {
-            this.Shader.SetValue(this.LumThreshold04Loc, this.LumThreshold04, ShaderUniformDataType.Float);
-            this._oldLumThreshold04 = this.LumThreshold04;
-        }
+        this.Shader.SetValue(this.HatchOffsetYLoc, this.HatchOffsetY, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.LumThreshold01Loc, this.LumThreshold01, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.LumThreshold02Loc, this.LumThreshold02, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.LumThreshold03Loc, this.LumThreshold03, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.LumThreshold04Loc, this.LumThreshold04, ShaderUniformDataType.Float);
     }
 
     /// <summary>

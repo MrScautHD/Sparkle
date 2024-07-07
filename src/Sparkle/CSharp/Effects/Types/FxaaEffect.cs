@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
@@ -16,10 +15,6 @@ public class FxaaEffect : Effect {
     public float ReduceMin;
     public float ReduceMul;
     public float SpanMax;
-    
-    private float _oldReduceMin;
-    private float _oldReduceMul;
-    private float _oldSpanMax;
     
     /// <summary>
     /// Constructor for creating a FxaaEffect object.
@@ -47,20 +42,9 @@ public class FxaaEffect : Effect {
             this.UpdateResolution();
         }
         
-        if (RayMath.FloatEquals(this.ReduceMin, this._oldReduceMin) != 1) {
-            this.Shader.SetValue(this.ReduceMinLoc, this.ReduceMin, ShaderUniformDataType.Float);
-            this._oldReduceMin = this.ReduceMin;
-        }
-        
-        if (RayMath.FloatEquals(this.ReduceMul, this._oldReduceMul) != 1) {
-            this.Shader.SetValue(this.ReduceMulLoc, this.ReduceMul, ShaderUniformDataType.Float);
-            this._oldReduceMul = this.ReduceMul;
-        }
-        
-        if (RayMath.FloatEquals(this.SpanMax, this._oldSpanMax) != 1) {
-            this.Shader.SetValue(this.SpanMaxLoc, this.SpanMax, ShaderUniformDataType.Float);
-            this._oldSpanMax = this.SpanMax;
-        }
+        this.Shader.SetValue(this.ReduceMinLoc, this.ReduceMin, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.ReduceMulLoc, this.ReduceMul, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.SpanMaxLoc, this.SpanMax, ShaderUniformDataType.Float);
     }
 
     /// <summary>

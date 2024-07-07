@@ -1,7 +1,6 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL;
-using Raylib_CSharp;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Rendering.Gl;
@@ -12,7 +11,6 @@ using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Effects.Types;
 
-// TODO: Optimize it more! (FIX IT)
 public class PbrEffect : Effect {
     
     public GlVersion GlVersion { get; private set; }
@@ -35,20 +33,13 @@ public class PbrEffect : Effect {
     
     public Color AmbientColor;
     public float AmbientIntensity;
-
-    private Color _oldAmbientColor;
-    private float _oldAmbientIntensity;
-
-    private int _oldLightCount;
-    private Vector3 _oldCamPos;
-
-    private bool _bufferUpdate;
     
     private int _lightBuffer;
     
-    private uint _lightIds;
     private Dictionary<uint, LightData> _activeLights;
     private Dictionary<uint, LightData> _inactiveLights;
+    
+    private uint _lightIds;
     
     /// <summary>
     /// Constructor for creating a PbrEffect object.
@@ -73,8 +64,8 @@ public class PbrEffect : Effect {
 
     public override void Apply(Material? material = default) {
         base.Apply(material);
-        if (SceneManager.ActiveCam3D == null) return;
-        Cam3D cam = SceneManager.ActiveCam3D;
+        Cam3D? cam = SceneManager.ActiveCam3D;
+        if (cam == null) return;
 
         if (material != null) {
             Material mat = material.Value;
@@ -82,36 +73,18 @@ public class PbrEffect : Effect {
             this.Shader.SetValue(this.EmissiveColorLoc, Color.Normalize(mat.Maps[(int) MaterialMapIndex.Emission].Color), ShaderUniformDataType.Vec4);
             this.Shader.SetValue(this.EmissivePowerLoc, mat.Maps[(int) MaterialMapIndex.Emission].Value, ShaderUniformDataType.Float);
             
-            this.Shader.SetValue(this.UseTexAlbedoLoc, mat.Maps[(int) MaterialMapIndex.Albedo].Texture.Id != RlGl.GetTextureIdDefault() ? 1 : 0, ShaderUniformDataType.Int);
-            this.Shader.SetValue(this.UseTexNormalLoc, mat.Maps[(int) MaterialMapIndex.Normal].Texture.Id != RlGl.GetTextureIdDefault() ? 1 : 0, ShaderUniformDataType.Int);
-            this.Shader.SetValue(this.UseTexMraLoc, mat.Maps[(int) MaterialMapIndex.Metalness].Texture.Id != RlGl.GetTextureIdDefault() ? 1 : 0, ShaderUniformDataType.Int);
-            this.Shader.SetValue(this.UseTexEmissiveLoc, mat.Maps[(int) MaterialMapIndex.Emission].Texture.Id != RlGl.GetTextureIdDefault() ? 1 : 0, ShaderUniformDataType.Int);
+            this.Shader.SetValue(this.UseTexAlbedoLoc, mat.Maps[(int) MaterialMapIndex.Albedo].Texture.Id != 0 ? 1 : 0, ShaderUniformDataType.Int);
+            this.Shader.SetValue(this.UseTexNormalLoc, mat.Maps[(int) MaterialMapIndex.Normal].Texture.Id != 0 ? 1 : 0, ShaderUniformDataType.Int);
+            this.Shader.SetValue(this.UseTexMraLoc, mat.Maps[(int) MaterialMapIndex.Metalness].Texture.Id != 0 ? 1 : 0, ShaderUniformDataType.Int);
+            this.Shader.SetValue(this.UseTexEmissiveLoc, mat.Maps[(int) MaterialMapIndex.Emission].Texture.Id != 0 ? 1 : 0, ShaderUniformDataType.Int);
         }
         
-        if (!Color.IsEqual(this.AmbientColor, this._oldAmbientColor)) {
-            this.Shader.SetValue(this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
-            this._oldAmbientColor = this.AmbientColor;
-        }
-
-        if (RayMath.FloatEquals(this.AmbientIntensity, this._oldAmbientIntensity) != 1) {
-            this.Shader.SetValue(this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
-            this._oldAmbientIntensity = this.AmbientIntensity;
-        }
-
-        if (this._activeLights.Count != this._oldLightCount) {
-            this.Shader.SetValue(this.LightCountLoc, this._activeLights.Count, ShaderUniformDataType.Int);
-            this._oldLightCount = this._inactiveLights.Count;
-        }
+        this.Shader.SetValue(this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
+        this.Shader.SetValue(this.AmbientLoc, this.AmbientIntensity, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.LightCountLoc, this._activeLights.Count, ShaderUniformDataType.Int);
+        this.Shader.SetValue(this.Shader.Locs[(int) ShaderLocationIndex.VectorView], cam.Position, ShaderUniformDataType.Vec3);
         
-        if (RayMath.Vector3Equals(cam.Position, this._oldCamPos) != 1) {
-            this.Shader.SetValue(this.Shader.Locs[(int) ShaderLocationIndex.VectorView], SceneManager.ActiveCam3D.Position, ShaderUniformDataType.Vec3);
-            this._oldCamPos = cam.Position;
-        }
-
-        if (this._bufferUpdate) {
-            this.UpdateBuffer();
-            this._bufferUpdate = false;
-        }
+        this.UpdateBuffer();
     }
     
     /// <summary>
@@ -170,7 +143,6 @@ public class PbrEffect : Effect {
         };
         
         this._activeLights.Add(id, lightData);
-        this._bufferUpdate = true;
         return true;
     }
     
@@ -181,7 +153,6 @@ public class PbrEffect : Effect {
     public void RemoveLight(uint id) {
         if (this._activeLights.ContainsKey(id)) {
             this._activeLights.Remove(id);
-            this._bufferUpdate = true;
         }
         else if (this._inactiveLights.ContainsKey(id)) {
             this._inactiveLights.Remove(id);
@@ -219,8 +190,6 @@ public class PbrEffect : Effect {
                 this._activeLights.Remove(id);
             }
         }
-        
-        this._bufferUpdate = true;
     }
 
     /// <summary>
@@ -241,7 +210,6 @@ public class PbrEffect : Effect {
             lightData.Color = Color.Normalize(color) * intensity;
 
             this._activeLights[id] = lightData;
-            this._bufferUpdate = true;
         }
     }
 
@@ -251,18 +219,16 @@ public class PbrEffect : Effect {
     private void LoadBuffer() {
         GL.GenBuffer(out this._lightBuffer);
     }
-
+    
     public void UpdateBuffer() {
-        LightData[] lightData = this._activeLights.Values.ToArray();
-        
         if (this.GlVersion == GlVersion.OpenGl33) {
             GL.UseProgram((int) this.Shader.Id);
             
             GL.BindBuffer(BufferTarget.UniformBuffer, this._lightBuffer);
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             
-            GL.BufferData(BufferTarget.UniformBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            GL.BufferSubData(BufferTarget.UniformBuffer, 0, lightData);
+            GL.BufferData(BufferTarget.UniformBuffer, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.UniformBuffer, 0, this._activeLights.Values.ToArray());
             
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             GL.BindBuffer(BufferTarget.UniformBuffer, 0);
@@ -275,8 +241,8 @@ public class PbrEffect : Effect {
             GL.BindBuffer(BufferTarget.ShaderStorageBuffer, this._lightBuffer);
             GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             
-            GL.BufferData(BufferTarget.ShaderStorageBuffer, lightData.Length * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, lightData);
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
+            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, this._activeLights.Values.ToArray());
             
             GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);

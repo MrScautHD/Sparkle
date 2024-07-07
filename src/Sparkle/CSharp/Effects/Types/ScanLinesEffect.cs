@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
@@ -12,8 +11,6 @@ public class ScanLinesEffect : Effect {
     public int OffestLoc { get; private set; }
     
     public float Offset;
-    
-    private float _oldOffset;
     
     /// <summary>
     /// Constructor for creating a ScanLinesEffect object.
@@ -37,10 +34,7 @@ public class ScanLinesEffect : Effect {
             this.UpdateResolution();
         }
         
-        if (RayMath.FloatEquals(this.Offset, this._oldOffset) != 1) {
-            this.Shader.SetValue(this.OffestLoc, this.Offset, ShaderUniformDataType.Float);
-            this._oldOffset = this.Offset;
-        }
+        this.Shader.SetValue(this.OffestLoc, this.Offset, ShaderUniformDataType.Float);
     }
 
     /// <summary>

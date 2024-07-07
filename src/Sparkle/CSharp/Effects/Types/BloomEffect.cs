@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
@@ -14,10 +13,7 @@ public class BloomEffect : Effect {
 
     public float Samples;
     public float Quality;
-
-    private float _oldSamples;
-    private float _oldQuality;
-
+    
     /// <summary>
     /// Constructor for creating a BloomEffect object.
     /// </summary>
@@ -42,15 +38,8 @@ public class BloomEffect : Effect {
             this.UpdateResolution();
         }
         
-        if (RayMath.FloatEquals(this.Samples, this._oldSamples) != 1) {
-            this.Shader.SetValue(this.SamplesLoc, this.Samples, ShaderUniformDataType.Float);
-            this._oldSamples = this.Samples;
-        }
-        
-        if (RayMath.FloatEquals(this.Quality, this._oldQuality) != 1) {
-            this.Shader.SetValue(this.QualityLoc, this.Quality, ShaderUniformDataType.Float);
-            this._oldQuality = this.Quality;
-        }
+        this.Shader.SetValue(this.SamplesLoc, this.Samples, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.QualityLoc, this.Quality, ShaderUniformDataType.Float);
     }
 
     /// <summary>

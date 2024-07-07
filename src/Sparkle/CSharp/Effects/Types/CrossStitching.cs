@@ -1,5 +1,4 @@
 using System.Numerics;
-using Raylib_CSharp;
 using Raylib_CSharp.Materials;
 using Raylib_CSharp.Shaders;
 using Raylib_CSharp.Windowing;
@@ -14,9 +13,6 @@ public class CrossStitching : Effect {
     
     public float StitchingSize;
     public bool Invert;
-    
-    private float _oldStitchingSize;
-    private bool _oldInvert;
     
     /// <summary>
     /// Constructor for creating a CrossStitching object.
@@ -42,15 +38,8 @@ public class CrossStitching : Effect {
             this.UpdateResolution();
         }
         
-        if (RayMath.FloatEquals(this.StitchingSize, this._oldStitchingSize) != 1) {
-            this.Shader.SetValue(this.StitchingSizeLoc, this.StitchingSize, ShaderUniformDataType.Float);
-            this._oldStitchingSize = this.StitchingSize;
-        }
-        
-        if (this.Invert != this._oldInvert) {
-            this.Shader.SetValue(this.InvertLoc, this.Invert ? 1 : 0, ShaderUniformDataType.Float);
-            this._oldInvert = this.Invert;
-        }
+        this.Shader.SetValue(this.StitchingSizeLoc, this.StitchingSize, ShaderUniformDataType.Float);
+        this.Shader.SetValue(this.InvertLoc, this.Invert ? 1 : 0, ShaderUniformDataType.Float);
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
 using System.Numerics;
 using LibNoise;
 using LibNoise.Primitive;
-using Raylib_CSharp;
 using Raylib_CSharp.Geometry;
 
 namespace Sparkle.CSharp.Terrain;
