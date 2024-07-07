@@ -13,7 +13,7 @@
 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ==================================================================
 ```
-dotnet add package Sparkle --version 4.0.1
+dotnet add package Sparkle --version 4.0.0
 ```
 
 ⭐ Getting Started
@@ -23,7 +23,7 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
 - [`RayLib-CSharp`](https://github.com/MrScautHD/Raylib-CSharp)
-- [`OpenTK`](https://github.com/opentk/opentk)
+- [`OpenTK.Graphics`](https://github.com/opentk/opentk)
 - [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`Box2D`](https://www.nuget.org/packages/Box2D.NetStandard/)
@@ -68,9 +68,6 @@ public class GameTest : Game {
 
     protected override void Init() {
         base.Init();
-        
-        // Open a url.
-        Window.OpenUrl("https://www.youtube.com/");
     }
 
     protected override void Load() {
@@ -90,7 +87,7 @@ public class GameTest : Game {
 
         // Draw texture if "B" down.
         if (Input.IsKeyDown(KeyboardKey.B)) {
-            TextureHelper.Draw(this.Texture, Vector3.Zero, Color.White);
+            Graphics.DrawTexture(this.Texture, Vector3.Zero, Color.White);
         }
     }
 }
