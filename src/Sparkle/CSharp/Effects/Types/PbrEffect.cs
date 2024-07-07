@@ -88,7 +88,7 @@ public class PbrEffect : Effect {
             this.Shader.SetValue(this.UseTexEmissiveLoc, mat.Maps[(int) MaterialMapIndex.Emission].Texture.Id != RlGl.GetTextureIdDefault() ? 1 : 0, ShaderUniformDataType.Int);
         }
         
-        if (!Color.ColorIsEqual(this.AmbientColor, this._oldAmbientColor)) {
+        if (!Color.IsEqual(this.AmbientColor, this._oldAmbientColor)) {
             this.Shader.SetValue(this.AmbientColorLoc, Color.Normalize(this.AmbientColor), ShaderUniformDataType.Vec3);
             this._oldAmbientColor = this.AmbientColor;
         }

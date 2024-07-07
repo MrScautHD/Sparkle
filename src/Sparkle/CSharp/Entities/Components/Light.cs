@@ -68,7 +68,7 @@ public class Light : Component {
     protected internal override void Update() {
         base.Update();
         if (this._result) {
-            if (this.Type != this._oldType || this.Target != this._oldTarget || !Color.ColorIsEqual(this.Color, this._oldColor) || RayMath.FloatEquals(this.Intensity, this._oldIntensity) != 1) {
+            if (this.Type != this._oldType || this.Target != this._oldTarget || !Color.IsEqual(this.Color, this._oldColor) || RayMath.FloatEquals(this.Intensity, this._oldIntensity) != 1) {
                 this.Effect.UpdateLightParams(this.Id, this.Type, this.GlobalPos, this.Target, this.Color, this.Intensity);
                 this._oldType = this.Type;
                 this._oldTarget = this.Target;
