@@ -8,15 +8,14 @@ in vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 
+uniform vec2 resolution;
+
 // Output fragment color
 out vec4 finalColor;
 
-// NOTE: Add here your custom variables
-uniform vec2 resolution = vec2(800, 450);
-
 void main() {
-    float x = 1.0/resolution.x;
-    float y = 1.0/resolution.y;
+    float x = 1.0 / resolution.x;
+    float y = 1.0 / resolution.y;
 
     vec4 horizEdge = vec4(0.0);
     horizEdge -= texture2D(texture0, vec2(fragTexCoord.x - x, fragTexCoord.y - y)) * 1.0;

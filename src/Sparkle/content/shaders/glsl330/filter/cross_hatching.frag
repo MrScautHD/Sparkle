@@ -8,11 +8,11 @@ in vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 
-uniform float hatchOffsetY = 5.0;
-uniform float lumThreshold01 = 0.9;
-uniform float lumThreshold02 = 0.7;
-uniform float lumThreshold03 = 0.5;
-uniform float lumThreshold04 = 0.3;
+uniform float hatchOffsetY;
+uniform float lumThreshold01;
+uniform float lumThreshold02;
+uniform float lumThreshold03;
+uniform float lumThreshold04;
 
 // Output fragment color
 out vec4 finalColor;

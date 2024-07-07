@@ -8,23 +8,17 @@ in vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 
+uniform vec2 resolution;
+uniform float stitchingSize;
+uniform int invert;
+
 // Output fragment color
 out vec4 finalColor;
-
-// NOTE: Add here your custom variables
-
-// NOTE: Render size values must be passed from code
-const float renderWidth = 800.0;
-const float renderHeight = 450.0;
-
-float stitchingSize = 6.0;
-
-uniform int invert = 0;
 
 vec4 PostFX(sampler2D tex, vec2 uv) {
     vec4 c = vec4(0.0);
     float size = stitchingSize;
-    vec2 cPos = uv * vec2(renderWidth, renderHeight);
+    vec2 cPos = uv * resolution;
     vec2 tlPos = floor(cPos / vec2(size, size));
     tlPos *= size;
 
@@ -36,17 +30,17 @@ vec4 PostFX(sampler2D tex, vec2 uv) {
     vec2 blPos = tlPos;
     blPos.y += (size - 1.0);
 
-    if ((remX == remY) || (((int(cPos.x) - int(blPos.x)) == (int(blPos.y) - int(cPos.y))))) {
+    if (remX == remY || (int(cPos.x) - int(blPos.x)) == (int(blPos.y) - int(cPos.y))) {
         if (invert == 1) {
             c = vec4(0.2, 0.15, 0.05, 1.0);
         }
         else {
-            c = texture(tex, tlPos * vec2(1.0 / renderWidth, 1.0 / renderHeight)) * 1.4;
+            c = texture(tex, tlPos * vec2(1.0 / resolution.x, 1.0 / resolution.y)) * 1.4;
         }
     }
     else {
         if (invert == 1) {
-            c = texture(tex, tlPos * vec2(1.0 / renderWidth, 1.0 / renderHeight)) * 1.4;
+            c = texture(tex, tlPos * vec2(1.0 / resolution.x, 1.0 / resolution.y)) * 1.4;
         }
         else {
             c = vec4(0.0, 0.0, 0.0, 1.0);

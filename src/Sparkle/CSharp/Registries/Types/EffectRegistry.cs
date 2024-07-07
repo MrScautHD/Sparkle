@@ -23,10 +23,13 @@ public class EffectRegistry : Registry {
     public static PosterizationEffect Posterization { get; private set; }
     public static Effect DreamVision { get; private set; }
     public static PixelizerEffect Pixelizer { get; private set; }
-    public static Effect CrossHatching { get; private set; }
-    public static Effect CrossStitching { get; private set; }
-    
-    
+    public static CrossHatchingEffect CrossHatching { get; private set; }
+    public static CrossStitching CrossStitching { get; private set; }
+    public static Effect Predator { get; private set; }
+    public static ScanLinesEffect ScanLines { get; private set; }
+    public static Effect FishEye { get; private set; }
+    public static SobelEffect Sobel { get; private set; }
+    public static BloomEffect Bloom { get; private set; }
     public static BlurEffect Blur { get; private set; }
     
     protected internal override void Load(ContentManager content) {
@@ -58,11 +61,26 @@ public class EffectRegistry : Registry {
         Pixelizer = new PixelizerEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/pixelizer.frag")));
         EffectManager.Add(Pixelizer);
                 
-        CrossHatching = new Effect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/cross_hatching.frag")));
+        CrossHatching = new CrossHatchingEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/cross_hatching.frag")));
         EffectManager.Add(CrossHatching);
         
-        CrossStitching = new Effect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/cross_stitching.frag")));
+        CrossStitching = new CrossStitching(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/cross_stitching.frag")));
         EffectManager.Add(CrossStitching);
+        
+        Predator = new Effect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/predator.frag")));
+        EffectManager.Add(Predator);
+        
+        ScanLines = new ScanLinesEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/scan_lines.frag")));
+        EffectManager.Add(ScanLines);
+        
+        FishEye = new Effect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/fish_eye.frag")));
+        EffectManager.Add(FishEye);
+        
+        Sobel = new SobelEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/sobel.frag")));
+        EffectManager.Add(Sobel);
+        
+        Bloom = new BloomEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/bloom.frag")));
+        EffectManager.Add(Bloom);
         
         Blur = new BlurEffect(content.Load(new ShaderContent(null!, "content/shaders/glsl330/filter/blur.frag")));
         EffectManager.Add(Blur);

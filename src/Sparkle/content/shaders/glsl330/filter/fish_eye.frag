@@ -1,15 +1,16 @@
 #version 330
 
+#define PI 3.14159265358979323846
+
+// Input vertex attributes (from vertex shader)
 in vec2 fragTexCoord;
 
-out vec4 fragColor;
-
+// Input uniform values
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 
-// NOTE: Add here your custom variables
-
-const float PI = 3.1415926535;
+// Output fragment color
+out vec4 fragColor;
 
 void main() {
     float aperture = 178.0;

@@ -6,8 +6,9 @@ in vec4 fragColor;
 
 // Input uniform values
 uniform sampler2D texture0;
-uniform vec2 resolution;
+uniform vec4 colDiffuse;
 
+uniform vec2 resolution;
 uniform float reduceMin;
 uniform float reduceMul;
 uniform float spanMax;
@@ -53,6 +54,6 @@ void main() {
         finalColor = vec4(rgbA, 1.0);
     } 
     else {
-        finalColor = vec4(rgbB,1.0);
+        finalColor = vec4(rgbB, 1.0);
     }
 }

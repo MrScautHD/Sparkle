@@ -98,7 +98,7 @@ public class PbrEffect : Effect {
             this._oldAmbientIntensity = this.AmbientIntensity;
         }
 
-        if (this._inactiveLights.Count != this._oldLightCount) {
+        if (this._activeLights.Count != this._oldLightCount) {
             this.Shader.SetValue(this.LightCountLoc, this._activeLights.Count, ShaderUniformDataType.Int);
             this._oldLightCount = this._inactiveLights.Count;
         }

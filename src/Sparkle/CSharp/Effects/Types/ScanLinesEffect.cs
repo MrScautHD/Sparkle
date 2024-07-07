@@ -6,24 +6,24 @@ using Raylib_CSharp.Windowing;
 
 namespace Sparkle.CSharp.Effects.Types;
 
-public class PixelizerEffect : Effect {
+public class ScanLinesEffect : Effect {
     
     public int ResolutionLoc { get; private set; }
-    public int PixelSizeLoc { get; private set; }
-
-    public Vector2 PixelSize;
+    public int OffestLoc { get; private set; }
     
-    private Vector2 _oldPixelSize;
-
+    public float Offset;
+    
+    private float _oldOffset;
+    
     /// <summary>
-    /// Constructor for creating a PixelizerEffect object.
+    /// Constructor for creating a ScanLinesEffect object.
     /// </summary>
-    /// <param name="shader">The shader to be used by the pixelizer effect.</param>
-    /// <param name="pixelSize">Optional pixel size for the effect. Defaults to (5.0, 5.0) if not provided.</param>
-    public PixelizerEffect(Shader shader, Vector2? pixelSize = default) : base(shader) {
-        this.PixelSize = pixelSize ?? new Vector2(5.0F, 5.0F);
+    /// <param name="shader">The shader to be used by the scan lines effect.</param>
+    /// <param name="offset">The offset for the scan lines.</param>
+    public ScanLinesEffect(Shader shader, float offset = 0) : base(shader) {
+        this.Offset = offset;
     }
-
+    
     protected internal override void Init() {
         base.Init();
         this.SetLocations();
@@ -36,10 +36,10 @@ public class PixelizerEffect : Effect {
         if (Window.IsResized()) {
             this.UpdateResolution();
         }
-
-        if (RayMath.Vector2Equals(this.PixelSize, this._oldPixelSize) != 1) {
-            this.Shader.SetValue(this.PixelSizeLoc, this.PixelSize, ShaderUniformDataType.Vec2);
-            this._oldPixelSize = this.PixelSize;
+        
+        if (RayMath.FloatEquals(this.Offset, this._oldOffset) != 1) {
+            this.Shader.SetValue(this.OffestLoc, this.Offset, ShaderUniformDataType.Float);
+            this._oldOffset = this.Offset;
         }
     }
 
@@ -48,7 +48,7 @@ public class PixelizerEffect : Effect {
     /// </summary>
     private void SetLocations() {
         this.ResolutionLoc = this.Shader.GetLocation("resolution");
-        this.PixelSizeLoc = this.Shader.GetLocation("pixelSize");
+        this.OffestLoc = this.Shader.GetLocation("offset");
     }
     
     /// <summary>
