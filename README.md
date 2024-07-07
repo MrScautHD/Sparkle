@@ -68,9 +68,6 @@ public class GameTest : Game {
 
     protected override void Init() {
         base.Init();
-        
-        // Open a url.
-        Window.OpenUrl("https://www.youtube.com/");
     }
 
     protected override void Load() {
@@ -90,7 +87,7 @@ public class GameTest : Game {
 
         // Draw texture if "B" down.
         if (Input.IsKeyDown(KeyboardKey.B)) {
-            TextureHelper.Draw(this.Texture, Vector3.Zero, Color.White);
+            Graphics.DrawTexture(this.Texture, Vector3.Zero, Color.White);
         }
     }
 }
