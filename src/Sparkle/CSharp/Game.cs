@@ -22,7 +22,7 @@ namespace Sparkle.CSharp;
 public class Game : Disposable {
     
     public static Game Instance { get; private set; }
-    public static readonly Version Version = new Version(4, 1, 0);
+    public static readonly Version Version = new Version(4, 1, 1);
     
     public readonly GameSettings Settings;
     public bool ShouldClose;
