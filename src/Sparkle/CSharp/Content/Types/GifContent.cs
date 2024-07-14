@@ -1,4 +1,4 @@
-using Sparkle.CSharp.Rendering.Gifs;
+using Sparkle.CSharp.Gifs;
 
 namespace Sparkle.CSharp.Content.Types;
 

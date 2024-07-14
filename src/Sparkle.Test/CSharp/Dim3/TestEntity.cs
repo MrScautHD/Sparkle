@@ -5,7 +5,7 @@ using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
-using Sparkle.CSharp.Rendering.Models;
+using Sparkle.CSharp.Models;
 
 namespace Sparkle.Test.CSharp.Dim3;
 

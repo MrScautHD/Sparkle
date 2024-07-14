@@ -27,7 +27,7 @@ public class TestGame : Game {
 
     protected override void OnRun() {
         base.OnRun();
-        RegistryManager.AddType(new ContentRegistry());
+        RegistryManager.Add(new ContentRegistry());
     }
 
     protected override void Init() {
@@ -42,7 +42,7 @@ public class TestGame : Game {
         jList.Add(22);
         jList.Add(23);
         
-        JsonConfig jsonConfig = new JsonConfigBuilder("config", "jsonConfig")
+        JsonConfig jsonConfig = new JsonConfigBuilder("config", "jsonConfig", "0856wjfgao8314asfrjtj2948tqapkgf")
             .Add("Number", 12345.02F)
             .Add("Check", true)
             .Add("Text", "Hello")

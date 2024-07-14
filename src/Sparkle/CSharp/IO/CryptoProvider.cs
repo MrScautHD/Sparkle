@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Sparkle.CSharp.IO;
 
-public class CryptoProvider {
+public static class CryptoProvider {
     
     /// <summary>
     /// Encrypts a string using AES encryption with the provided key.
@@ -24,8 +24,9 @@ public class CryptoProvider {
         
         using MemoryStream memoryStream = new MemoryStream();
         using CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
-        using StreamWriter streamWriter = new StreamWriter(cryptoStream);
-        streamWriter.Write(text);
+        using (StreamWriter streamWriter = new StreamWriter(cryptoStream)) {
+            streamWriter.Write(text);
+        }
         
         return Convert.ToBase64String(memoryStream.ToArray(), Base64FormattingOptions.InsertLineBreaks);
     }

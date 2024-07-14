@@ -85,6 +85,14 @@ public static class OverlayManager {
         Logger.Info($"Added Overlay: {overlay.Name}");
         Overlays.Add(overlay);
     }
+
+    /// <summary>
+    /// Removes an overlay from the system and disposes it.
+    /// </summary>
+    /// <param name="overlay">The overlay to be removed.</param>
+    public static void Remove(Overlay overlay) {
+        overlay.Dispose();
+    }
     
     /// <summary>
     /// Performs cleanup operations.

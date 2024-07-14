@@ -46,7 +46,7 @@ public class JsonConfig {
         }
         else {
             FileAccessor.Clear(this.Path);
-            FileAccessor.WriteLine(this.Path, JsonConvert.SerializeObject(this._defaultValues, Formatting.Indented));
+            FileAccessor.WriteLine(this.Path, CryptoProvider.Encrypt(JsonConvert.SerializeObject(this._defaultValues, Formatting.Indented), this._encryptKey));
             Logger.Warn($"Successfully rewrote '{this.Name}'.");
         }
     }

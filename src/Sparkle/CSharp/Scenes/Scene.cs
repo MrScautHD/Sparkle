@@ -17,7 +17,7 @@ public abstract class Scene : Disposable {
     public Skybox? Skybox { get; private set; }
     public Effect? FilterEffect { get; private set; }
 
-    private readonly Dictionary<uint, Entity> _entities;
+    internal readonly Dictionary<uint, Entity> Entities;
     private uint _entityIds;
     
     public bool HasInitialized { get; private set; }
@@ -32,7 +32,7 @@ public abstract class Scene : Disposable {
         this.Name = name;
         this.Type = type;
         this.Simulation = simulation ?? (type == SceneType.Scene3D ? new Simulation3D(new PhysicsSettings3D()) : new Simulation2D(new PhysicsSettings2D()));
-        this._entities = new Dictionary<uint, Entity>();
+        this.Entities = new Dictionary<uint, Entity>();
     }
     
     /// <summary>
@@ -46,7 +46,7 @@ public abstract class Scene : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
-        foreach (Entity entity in this._entities.Values) {
+        foreach (Entity entity in this.Entities.Values) {
             entity.Update();
         }
     }
@@ -55,7 +55,7 @@ public abstract class Scene : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected internal virtual void AfterUpdate() {
-        foreach (Entity entity in this._entities.Values) {
+        foreach (Entity entity in this.Entities.Values) {
             entity.AfterUpdate();
         }
     }
@@ -67,7 +67,7 @@ public abstract class Scene : Disposable {
     protected internal virtual void FixedUpdate() {
         this.Simulation.Step(1.0F / Game.Instance.Settings.FixedTimeStep);
         
-        foreach (Entity entity in this._entities.Values) {
+        foreach (Entity entity in this.Entities.Values) {
             entity.FixedUpdate();
         }
     }
@@ -78,56 +78,18 @@ public abstract class Scene : Disposable {
     protected internal virtual void Draw() {
         this.Skybox?.Draw();
         
-        foreach (Entity entity in this._entities.Values) {
+        foreach (Entity entity in this.Entities.Values) {
             entity.Draw();
         }
     }
     
-    /// <summary>
-    /// Adds an entity to the collection and initializes it.
-    /// </summary>
-    /// <param name="entity">The entity to be added.</param>
-    public void AddEntity(Entity entity) {
-        if (this._entities.ContainsValue(entity)) {
-            Logger.Warn($"The entity with the id: [{entity.Id}] is already present in the Scene!");
-            return;
-        }
-
-        entity.Id = ++this._entityIds;
-        entity.Init();
-        
-        this._entities.Add(entity.Id, entity);
-    }
-    
-    /// <summary>
-    /// Removes an entity from the collection and disposes of it.
-    /// </summary>
-    /// <param name="id">The ID of the entity to be removed.</param>
-    public void RemoveEntity(uint id) {
-        if (!this._entities.ContainsKey(id)) {
-            Logger.Warn($"The entity with the id: [{id}] is already removed from the Scene!");
-            return;
-        }
-        
-        this._entities[id].Dispose();
-        this._entities.Remove(id);
-    }
-    
-    /// <summary>
-    /// Removes an entity from the collection and disposes of it.
-    /// </summary>
-    /// <param name="entity">The entity to be removed.</param>
-    public void RemoveEntity(Entity entity) {
-        this.RemoveEntity(entity.Id);
-    }
-
     /// <summary>
     /// Retrieves an entity from the collection by its ID.
     /// </summary>
     /// <param name="id">The ID of the entity to be retrieved.</param>
     /// <returns>The entity associated with the specified ID.</returns>
     public Entity GetEntity(uint id) {
-        return this._entities[id];
+        return this.Entities[id];
     }
 
     /// <summary>
@@ -135,7 +97,7 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <returns>An array containing all entities in the collection.</returns>
     public Entity[] GetEntities() {
-        return this._entities.Values.ToArray();
+        return this.Entities.Values.ToArray();
     }
 
     /// <summary>
@@ -144,11 +106,43 @@ public abstract class Scene : Disposable {
     /// <param name="tag">The tag to filter entities by.</param>
     /// <returns>An IEnumerable of Entity objects with the specified tag.</returns>
     public IEnumerable<Entity> GetEntitiesWithTag(string tag) {
-        foreach (Entity entity in this._entities.Values) {
+        foreach (Entity entity in this.Entities.Values) {
             if (entity.Tag == tag) {
                 yield return entity;
             }
         }
+    }
+    
+    /// <summary>
+    /// Adds an entity to the collection and initializes it.
+    /// </summary>
+    /// <param name="entity">The entity to be added.</param>
+    public void AddEntity(Entity entity) {
+        if (this.Entities.ContainsValue(entity)) {
+            Logger.Warn($"The entity with the id: [{entity.Id}] is already present in the Scene!");
+            return;
+        }
+
+        entity.Id = ++this._entityIds;
+        entity.Init();
+        
+        this.Entities.Add(entity.Id, entity);
+    }
+    
+    /// <summary>
+    /// Removes an entity from the collection and disposes of it.
+    /// </summary>
+    /// <param name="id">The ID of the entity to be removed.</param>
+    public void RemoveEntity(uint id) {
+        this.Entities[id].Dispose();
+    }
+    
+    /// <summary>
+    /// Removes an entity from the collection and disposes of it.
+    /// </summary>
+    /// <param name="entity">The entity to be removed.</param>
+    public void RemoveEntity(Entity entity) {
+        this.RemoveEntity(entity.Id);
     }
     
     /// <summary>
@@ -174,11 +168,10 @@ public abstract class Scene : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (Entity entity in this._entities.Values) {
+            foreach (Entity entity in this.Entities.Values) {
                 entity.Dispose();
             }
             
-            this._entities.Clear();
             this._entityIds = 0;
             
             this.Skybox?.Dispose();

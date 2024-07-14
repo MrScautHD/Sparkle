@@ -13,7 +13,6 @@ using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Gifs;
 using Sparkle.CSharp.Rendering.Gl;
 using Sparkle.CSharp.Scenes;
 
@@ -121,7 +120,7 @@ public class Game : Disposable {
     /// This method is called when the game starts.
     /// </summary>
     protected virtual void OnRun() {
-        RegistryManager.AddType(new EffectRegistry());
+        RegistryManager.Add(new EffectRegistry());
     }
     
     /// <summary>
@@ -137,7 +136,6 @@ public class Game : Disposable {
     protected virtual void Init() {
         RegistryManager.Init();
         EffectManager.Init();
-        GifManager.Init();
         SceneManager.Init();
         OverlayManager.Init();
     }
@@ -191,7 +189,6 @@ public class Game : Disposable {
             RegistryManager.Destroy();
             OverlayManager.Destroy();
             EffectManager.Destroy();
-            GifManager.Destroy();
             GuiManager.Destroy();
             SceneManager.Destroy();
             this.Content.Dispose();

@@ -10,7 +10,10 @@ public abstract class Disposable : IDisposable {
     /// Disposes of the object, allowing for proper resource cleanup and finalization.
     /// </summary>
     public void Dispose() {
-        if (this.HasDisposed) return;
+        if (this.HasDisposed) {
+            Logger.Warn($"This object of type [{this.GetType().Name}] has already been disposed.");
+            return;
+        }
         
         this.Dispose(true);
         GC.SuppressFinalize(this);

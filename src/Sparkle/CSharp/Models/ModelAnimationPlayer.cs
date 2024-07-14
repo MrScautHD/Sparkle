@@ -3,7 +3,7 @@ using Raylib_CSharp.Geometry;
 using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Logging;
 
-namespace Sparkle.CSharp.Rendering.Models;
+namespace Sparkle.CSharp.Models;
 
 // TODO: ADD GPU ANIMATIONS
 public class ModelAnimationPlayer {
@@ -61,6 +61,7 @@ public class ModelAnimationPlayer {
             return;
         }
 
+        this._frameCount = 0;
         this._playingIndex = index;
         this.IsPlaying = true;
         this.IsLooped = loop;

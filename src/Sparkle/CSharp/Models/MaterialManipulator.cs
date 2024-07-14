@@ -4,7 +4,7 @@ using Raylib_CSharp.Materials;
 using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Effects;
 
-namespace Sparkle.CSharp.Rendering.Models;
+namespace Sparkle.CSharp.Models;
 
 public struct MaterialManipulator {
 

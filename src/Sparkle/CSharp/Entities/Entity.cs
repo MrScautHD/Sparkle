@@ -1,6 +1,7 @@
 using System.Numerics;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Logging;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -14,7 +15,7 @@ public class Entity : Disposable {
     public Vector3 Scale;
     public Quaternion Rotation;
     
-    private readonly Dictionary<Type, Component> _components;
+    internal readonly Dictionary<Type, Component> Components;
 
     public bool HasInitialized { get; private set; }
     
@@ -29,14 +30,14 @@ public class Entity : Disposable {
         this.Position = position;
         this.Scale = Vector3.One;
         this.Rotation = Quaternion.Identity;
-        this._components = new Dictionary<Type, Component>();
+        this.Components = new Dictionary<Type, Component>();
     }
 
     /// <summary>
     /// Used for Initializes objects.
     /// </summary>
     protected internal virtual void Init() {
-        foreach (Component component in this._components.Values) {
+        foreach (Component component in this.Components.Values) {
             if (!component.HasInitialized) {
                 component.Init();
             }
@@ -49,7 +50,7 @@ public class Entity : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
-        foreach (Component component in this._components.Values) {
+        foreach (Component component in this.Components.Values) {
             if (component.HasInitialized) {
                 component.Update();
             }
@@ -60,7 +61,7 @@ public class Entity : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected internal virtual void AfterUpdate() {
-        foreach (Component component in this._components.Values) {
+        foreach (Component component in this.Components.Values) {
             if (component.HasInitialized) {
                 component.AfterUpdate();
             }
@@ -72,7 +73,7 @@ public class Entity : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() {
-        foreach (Component component in this._components.Values) {
+        foreach (Component component in this.Components.Values) {
             if (component.HasInitialized) {
                 component.FixedUpdate();
             }
@@ -83,7 +84,7 @@ public class Entity : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal virtual void Draw() {
-        foreach (Component component in this._components.Values) {
+        foreach (Component component in this.Components.Values) {
             if (component.HasInitialized) {
                 component.Draw();
             }
@@ -91,17 +92,46 @@ public class Entity : Disposable {
     }
     
     /// <summary>
+    /// Retrieves a component of the specified type from the entity.
+    /// </summary>
+    /// <typeparam name="T">The type of component to retrieve.</typeparam>
+    /// <returns>The component of the specified type.</returns>
+    public T GetComponent<T>() where T : Component {
+        if (!this.Components.TryGetValue(typeof(T), out Component? component)) {
+            Logger.Error($"Unable to locate Component for type [{typeof(T)}]!");
+        }
+
+        return (T) component!;
+    }
+
+    /// <summary>
+    /// Returns an array of all components associated with the entity.
+    /// </summary>
+    /// <returns>An array of components associated with the entity.</returns>
+    public Component[] GetComponents() {
+        return this.Components.Values.ToArray();
+    }
+    
+    /// <summary>
     /// Adds a component to the entity and initializes it if the entity has been initialized.
     /// </summary>
     /// <param name="component">The component to be added.</param>
     public void AddComponent(Component component) {
-        component.Entity = this;
-
-        if (this.HasInitialized) {
-            component.Init();
+        if (Components.Any(comp => comp.GetType() == component.GetType())) {
+            Logger.Warn($"The component type [{component.GetType().Name}] is already present in the Entity[{this.Id}]!");
+            return;
         }
         
-        this._components.Add(component.GetType(), component);
+        if (!component.HasInitialized) {
+            component.Entity = this;
+            component.Init();
+        }
+        else {
+            Logger.Warn($"This component has already been added to a different Entity[{component.Entity.Id}]. Please create a new component to add it to this Entity[{this.Id}].");
+            return;
+        }
+        
+        this.Components.Add(component.GetType(), component);
     }
     
     /// <summary>
@@ -109,30 +139,16 @@ public class Entity : Disposable {
     /// </summary>
     /// <param name="component">The component to be removed.</param>
     public void RemoveComponent(Component component) {
-        this._components.Remove(component.GetType());
         component.Dispose();
-    }
-
-    /// <summary>
-    /// Retrieves a component of the specified type from the entity.
-    /// </summary>
-    /// <typeparam name="T">The type of component to retrieve.</typeparam>
-    /// <returns>The component of the specified type.</returns>
-    public T GetComponent<T>() where T : Component {
-        if (!this._components.TryGetValue(typeof(T), out Component? component)) {
-            Logger.Error($"Unable to locate Component for type [{typeof(T)}]!");
-        }
-
-        return (T) component!;
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (Component component in this._components.Values) {
+            foreach (Component component in this.Components.Values) {
                 component.Dispose();
             }
             
-            this._components.Clear();
+            SceneManager.ActiveScene?.Entities.Remove(this.Id);
         }
     }
 }

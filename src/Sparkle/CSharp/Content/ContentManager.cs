@@ -9,7 +9,7 @@ using Raylib_CSharp.Unsafe.Spans.Data;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Logging;
-using Sparkle.CSharp.Rendering.Gifs;
+using Sparkle.CSharp.Gifs;
 
 namespace Sparkle.CSharp.Content;
 

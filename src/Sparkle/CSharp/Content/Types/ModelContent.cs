@@ -1,5 +1,5 @@
 using Raylib_CSharp.Geometry;
-using Sparkle.CSharp.Rendering.Models;
+using Sparkle.CSharp.Models;
 
 namespace Sparkle.CSharp.Content.Types;
 

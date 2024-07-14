@@ -1,7 +1,7 @@
 using Raylib_CSharp.Images;
 using Raylib_CSharp.Textures;
 
-namespace Sparkle.CSharp.Rendering.Gifs;
+namespace Sparkle.CSharp.Gifs;
 
 public class Gif : Disposable {
     
@@ -52,7 +52,6 @@ public class Gif : Disposable {
         if (disposing) {
             this._gif.Unload();
             this._frame.Unload();
-            GifManager.Gifs.Remove(this);
         }
     }
 }

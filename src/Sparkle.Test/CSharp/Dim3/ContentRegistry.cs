@@ -8,8 +8,8 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Gifs;
-using Sparkle.CSharp.Rendering.Models;
+using Sparkle.CSharp.Gifs;
+using Sparkle.CSharp.Models;
 
 namespace Sparkle.Test.CSharp.Dim3;
 

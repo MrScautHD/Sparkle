@@ -40,6 +40,14 @@ public static class EffectManager {
         Logger.Info($"Added Effect with shader ID [{effect.Shader.Id}] successfully.");
         Effects.Add(effect);
     }
+
+    /// <summary>
+    /// Removes the specified effect from the list of effects and disposes it.
+    /// </summary>
+    /// <param name="effect">The effect to be removed.</param>
+    public static void Remove(Effect effect) {
+        effect.Dispose();
+    }
     
     /// <summary>
     /// Performs cleanup operations.

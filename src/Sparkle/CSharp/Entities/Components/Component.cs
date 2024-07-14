@@ -46,4 +46,10 @@ public abstract class Component : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal virtual void Draw() { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this.Entity.Components.Remove(this.GetType());
+        }
+    }
 }
