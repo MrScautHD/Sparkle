@@ -5,8 +5,9 @@ namespace Sparkle.CSharp.GUI;
 public abstract class Gui : Disposable {
     
     public readonly string Name;
+    public readonly bool IsLoadingScreen;
 
-    private Dictionary<string, GuiElement> _elements;
+    internal Dictionary<string, GuiElement> Elements;
     
     public bool HasInitialized { get; private set; }
 
@@ -16,7 +17,7 @@ public abstract class Gui : Disposable {
     /// <param name="name">The name of the Gui instance.</param>
     public Gui(string name) {
         this.Name = name;
-        this._elements = new Dictionary<string, GuiElement>();
+        this.Elements = new Dictionary<string, GuiElement>();
     }
     
     /// <summary>
@@ -30,7 +31,7 @@ public abstract class Gui : Disposable {
     /// Is invoked during each tick and is used for updating dynamic elements and game logic.
     /// </summary>
     protected internal virtual void Update() {
-        foreach (GuiElement element in this._elements.Values) {
+        foreach (GuiElement element in this.Elements.Values) {
             element.Update();
         }
     }
@@ -39,7 +40,7 @@ public abstract class Gui : Disposable {
     /// Called after the Update method on each tick to further update dynamic elements and game logic.
     /// </summary>
     protected internal virtual void AfterUpdate() {
-        foreach (GuiElement element in this._elements.Values) {
+        foreach (GuiElement element in this.Elements.Values) {
             element.AfterUpdate();
         }
     }
@@ -49,7 +50,7 @@ public abstract class Gui : Disposable {
     /// It is used for handling physics and other fixed-time operations.
     /// </summary>
     protected internal virtual void FixedUpdate() {
-        foreach (GuiElement element in this._elements.Values) {
+        foreach (GuiElement element in this.Elements.Values) {
             element.FixedUpdate();
         }
     }
@@ -58,11 +59,28 @@ public abstract class Gui : Disposable {
     /// Is called every tick, used for rendering stuff.
     /// </summary>
     protected internal virtual void Draw() {
-        foreach (GuiElement element in this._elements.Values) {
+        foreach (GuiElement element in this.Elements.Values) {
             if (element.Enabled) {
                 element.Draw();
             }
         }
+    }
+    
+    /// <summary>
+    /// Retrieves a GUI element from the collection by its name.
+    /// </summary>
+    /// <param name="name">The name of the GUI element to be retrieved.</param>
+    /// <returns>The GUI element associated with the specified name.</returns>
+    protected GuiElement GetElement(string name) {
+        return this.Elements[name];
+    }
+
+    /// <summary>
+    /// Retrieves an array of all GUI elements currently in the collection.
+    /// </summary>
+    /// <returns>An array containing all GUI elements in the collection.</returns>
+    protected GuiElement[] GetElements() {
+        return this.Elements.Values.ToArray();
     }
     
     /// <summary>
@@ -71,7 +89,7 @@ public abstract class Gui : Disposable {
     /// <param name="element">The GUI element to be added.</param>
     protected void AddElement(GuiElement element) {
         element.Init();
-        this._elements.Add(element.Name, element);
+        this.Elements.Add(element.Name, element);
     }
     
     /// <summary>
@@ -79,7 +97,7 @@ public abstract class Gui : Disposable {
     /// </summary>
     /// <param name="name">The name of the GUI element to be removed.</param>
     protected void RemoveElement(string name) {
-        this._elements.Remove(name);
+        this.Elements[name].Dispose();
     }
     
     /// <summary>
@@ -89,31 +107,12 @@ public abstract class Gui : Disposable {
     protected void RemoveElement(GuiElement element) {
         this.RemoveElement(element.Name);
     }
-
-    /// <summary>
-    /// Retrieves a GUI element from the collection by its name.
-    /// </summary>
-    /// <param name="name">The name of the GUI element to be retrieved.</param>
-    /// <returns>The GUI element associated with the specified name.</returns>
-    protected GuiElement GetElement(string name) {
-        return this._elements[name];
-    }
-
-    /// <summary>
-    /// Retrieves an array of all GUI elements currently in the collection.
-    /// </summary>
-    /// <returns>An array containing all GUI elements in the collection.</returns>
-    protected GuiElement[] GetElements() {
-        return this._elements.Values.ToArray();
-    }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (GuiElement element in this._elements.Values) {
+            foreach (GuiElement element in this.Elements.Values) {
                 element.Dispose();
             }
-            
-            this._elements.Clear();
         }
     }
 }

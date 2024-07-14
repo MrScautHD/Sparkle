@@ -176,6 +176,7 @@ public abstract class GuiElement : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.Enabled = false;
+            GuiManager.ActiveGui?.Elements.Remove(this.Name);
         }
     }
 }
