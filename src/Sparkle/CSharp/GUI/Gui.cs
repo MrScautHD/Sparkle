@@ -5,16 +5,15 @@ namespace Sparkle.CSharp.GUI;
 public abstract class Gui : Disposable {
     
     public readonly string Name;
-    public readonly bool IsLoadingScreen;
 
     internal Dictionary<string, GuiElement> Elements;
     
     public bool HasInitialized { get; private set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Gui"/>, setting its name and initializing an empty dictionary to hold Gui elements.
+    /// Constructor for creating a Gui object.
     /// </summary>
-    /// <param name="name">The name of the Gui instance.</param>
+    /// <param name="name">The name of the GUI.</param>
     public Gui(string name) {
         this.Name = name;
         this.Elements = new Dictionary<string, GuiElement>();
