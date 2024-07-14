@@ -5,7 +5,7 @@ using Sparkle.CSharp.Logging;
 
 namespace Sparkle.CSharp.Scenes.Saving;
 
-public class StoreSettings : Disposable {
+public class DataStorage : Disposable {
 
     public readonly string Directory;
     public readonly string Name;
@@ -14,7 +14,7 @@ public class StoreSettings : Disposable {
     private Dictionary<string, object> _values;
     private string _encryptKey;
 
-    public StoreSettings(string directory, string name, string encryptKey = "") {
+    public DataStorage(string directory, string name, string encryptKey = "") {
         this.Directory = directory;
         this.Name = name;
         this.Path = FileAccessor.GetPath(this.Directory, $"{this.Name}.json");

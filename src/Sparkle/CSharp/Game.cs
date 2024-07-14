@@ -30,6 +30,7 @@ public class Game : Disposable {
     public ContentManager Content { get; private set; }
     public Image Logo { get; private set; }
     
+    public bool HasLoaded { get; private set; }
     public bool HasInitialized { get; private set; }
     
     private readonly double _fixedTimeStep;
@@ -86,9 +87,10 @@ public class Game : Disposable {
         GLLoader.LoadBindings(this.BindingContext);
         
         this.OnRun();
-        
+
         Logger.Info("Load content...");
         this.Load();
+        this.HasLoaded = true;
         
         Logger.Info("Set default scene...");
         SceneManager.SetDefaultScene(scene);
@@ -124,7 +126,7 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Used for Initializes objects.
+    /// Used for loading resources.
     /// </summary>
     protected virtual void Load() {
         RegistryManager.Load(this.Content);
