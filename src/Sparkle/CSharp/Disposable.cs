@@ -9,6 +9,13 @@ public abstract class Disposable : IDisposable {
     /// <summary>
     /// Disposes of the object, allowing for proper resource cleanup and finalization.
     /// </summary>
+    ~Disposable() {
+        this.Dispose();
+    }
+    
+    /// <summary>
+    /// Disposes of the object, allowing for proper resource cleanup and finalization.
+    /// </summary>
     public void Dispose() {
         if (this.HasDisposed) {
             Logger.Warn($"This object of type [{this.GetType().Name}] has already been disposed.");
