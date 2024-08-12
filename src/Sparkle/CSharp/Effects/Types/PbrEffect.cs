@@ -228,7 +228,7 @@ public class PbrEffect : Effect {
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             
             GL.BufferData(BufferTarget.UniformBuffer, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            GL.BufferSubData(BufferTarget.UniformBuffer, 0, this._activeLights.Values.ToArray());
+            GL.BufferSubData(BufferTarget.UniformBuffer, 0, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), this._activeLights.Values.ToArray());
             
             GL.BindBufferBase(BufferTarget.UniformBuffer, 0, this._lightBuffer);
             GL.BindBuffer(BufferTarget.UniformBuffer, 0);
@@ -242,7 +242,7 @@ public class PbrEffect : Effect {
             GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             
             GL.BufferData(BufferTarget.ShaderStorageBuffer, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), nint.Zero, BufferUsage.DynamicCopy);
-            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, this._activeLights.Values.ToArray());
+            GL.BufferSubData(BufferTarget.ShaderStorageBuffer, 0, this._activeLights.Count * Marshal.SizeOf(typeof(LightData)), this._activeLights.Values.ToArray());
             
             GL.BindBufferBase(BufferTarget.ShaderStorageBuffer, 0, this._lightBuffer);
             GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);

@@ -71,7 +71,7 @@ public class Test3DScene : Scene {
         // GROUND
         Entity ground = new Entity(new Vector3(0, -2, 0));
         
-        List<Shape> shapes = new List<Shape>();
+        List<RigidBodyShape> shapes = new List<RigidBodyShape>();
         shapes.Add(new BoxShape(1000, 1, 1000));
         
         ground.AddComponent(new RigidBody3D(shapes, true, true));

@@ -22,14 +22,14 @@ public class RigidBody3D : Component {
     public bool IsActive => this.Body.IsActive;
     public ref RigidBodyData Data => ref this.Body.Data;
     public JHandle<RigidBodyData> Handle => this.Body.Handle;
-    public ReadOnlyList<Shape> Shapes => this.Body.Shapes;
+    public ReadOnlyList<RigidBodyShape> Shapes => this.Body.Shapes;
     public float Mass => this.Body.Mass;
     public Island Island => this.Body.Island;
     public ReadOnlyList<RigidBody> Connections => this.Body.Connections;
     public ReadOnlyHashSet<Constraint> Constraints => this.Body.Constraints;
     public Matrix4x4 InverseInertia => PhysicsConversion.FromJMatrix(this.Body.InverseInertia);
     
-    private ReadOnlyList<Shape> _shapes;
+    private ReadOnlyList<RigidBodyShape> _shapes;
     private bool _setMassInertia;
     private bool _nonMoving;
     private float _friction;
@@ -43,10 +43,10 @@ public class RigidBody3D : Component {
     /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
     /// <param name="friction">Friction coefficient.</param>
     /// <param name="restitution">Restitution coefficient.</param>
-    public RigidBody3D(Shape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([], setMassInertia, nonMoving, friction, restitution) {
-        List<Shape> shapes = new List<Shape>();
+    public RigidBody3D(RigidBodyShape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([], setMassInertia, nonMoving, friction, restitution) {
+        List<RigidBodyShape> shapes = new List<RigidBodyShape>();
         shapes.Add(shape);
-        this._shapes = new ReadOnlyList<Shape>(shapes);
+        this._shapes = new ReadOnlyList<RigidBodyShape>(shapes);
     }
     
     /// <summary>
@@ -57,8 +57,8 @@ public class RigidBody3D : Component {
     /// <param name="nonMoving">Flag indicating whether the body is non-moving.</param>
     /// <param name="friction">Friction coefficient.</param>
     /// <param name="restitution">Restitution coefficient.</param>
-    public RigidBody3D(List<Shape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : base(Vector3.Zero) {
-        this._shapes = new ReadOnlyList<Shape>(shapes);
+    public RigidBody3D(List<RigidBodyShape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : base(Vector3.Zero) {
+        this._shapes = new ReadOnlyList<RigidBodyShape>(shapes);
         this._setMassInertia = setMassInertia;
         this._nonMoving = nonMoving;
         this._friction = friction;
@@ -267,7 +267,7 @@ public class RigidBody3D : Component {
     /// </summary>
     /// <param name="shape">The shape to add.</param>
     /// <param name="setMassInertia">Flag indicating whether to set the mass and inertia.</param>
-    public void AddShape(Shape shape, bool setMassInertia = true) {
+    public void AddShape(RigidBodyShape shape, bool setMassInertia = true) {
         this.Body.AddShape(shape, setMassInertia);
     }
 
@@ -276,7 +276,7 @@ public class RigidBody3D : Component {
     /// </summary>
     /// <param name="shapes">The shapes to be added.</param>
     /// <param name="setMassInertia">Flag indicating whether to set mass and inertia.</param>
-    public void AddShape(IEnumerable<Shape> shapes, bool setMassInertia = true) {
+    public void AddShape(IEnumerable<RigidBodyShape> shapes, bool setMassInertia = true) {
         this.Body.AddShape(shapes, setMassInertia);
     }
 
@@ -285,7 +285,7 @@ public class RigidBody3D : Component {
     /// </summary>
     /// <param name="shape">The shape to remove.</param>
     /// <param name="setMassInertia">Flag indicating whether to update mass and inertia.</param>
-    public void RemoveShape(Shape shape, bool setMassInertia = true) {
+    public void RemoveShape(RigidBodyShape shape, bool setMassInertia = true) {
         this.Body.RemoveShape(shape, setMassInertia);
     }
 
@@ -294,7 +294,7 @@ public class RigidBody3D : Component {
     /// </summary>
     /// <param name="shapes">The shapes to be removed.</param>
     /// <param name="setMassInertia">Flag indicating whether to set mass and inertia after removing the shape.</param>
-    public void RemoveShape(IEnumerable<Shape> shapes, bool setMassInertia = true) {
+    public void RemoveShape(IEnumerable<RigidBodyShape> shapes, bool setMassInertia = true) {
         this.Body.RemoveShape(shapes, setMassInertia);
     }
 

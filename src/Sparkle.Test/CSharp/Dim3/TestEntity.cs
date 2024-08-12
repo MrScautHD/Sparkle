@@ -1,4 +1,5 @@
 using System.Numerics;
+using Jitter2.Collision;
 using Jitter2.Collision.Shapes;
 using Jitter2.LinearMath;
 using Raylib_CSharp.Colors;
@@ -30,7 +31,7 @@ public class TestEntity : Entity {
         
         RigidBody3D body3D = this.GetComponent<RigidBody3D>();
         
-        if (!body3D.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out Shape? shape, out JVector normal, out float fraction)) {
+        if (!body3D.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
             body3D.AddForce(new Vector3(0, 200, 0));
         }
     }
