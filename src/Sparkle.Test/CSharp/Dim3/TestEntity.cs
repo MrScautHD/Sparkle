@@ -38,7 +38,7 @@ public class TestEntity : Entity {
 
     protected override void Update() {
         base.Update();
-
+        
         ModelAnimationPlayer player = this.GetComponent<ModelRenderer>().AnimationPlayer!;
         
         if (Input.IsKeyPressed(KeyboardKey.One)) {
