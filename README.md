@@ -82,7 +82,7 @@ public class GameTest : Game {
         
         // Draw circle if "A" down.
         if (Input.IsKeyDown(KeyboardKey.A)) {
-            ShapeHelper.DrawCircle(new Vector2(50, 50), 20, Color.Blue);
+            Graphics.DrawCircle(new Vector2(50, 50), 20, Color.Blue);
         }
 
         // Draw texture if "B" down.
