@@ -114,6 +114,19 @@ public abstract class Scene : Disposable {
     }
     
     /// <summary>
+    /// Returns an array of entities with the specified name.
+    /// </summary>
+    /// <param name="name">The entity name to filter entities by.</param>
+    /// <returns>An IEnumerable of Entity objects with the specified name.</returns>
+    public IEnumerable<Entity> GetEntitiesWithName(string name) {
+        foreach (Entity entity in this.Entities.Values) {
+            if (entity.Name == name) {
+                yield return entity;
+            }
+        }
+    }
+    
+    /// <summary>
     /// Adds an entity to the collection and initializes it.
     /// </summary>
     /// <param name="entity">The entity to be added.</param>

@@ -9,6 +9,7 @@ public class Entity : Disposable {
     
     public uint Id { get; internal set; }
 
+    public string Name;
     public string Tag;
 
     public Vector3 Position;
@@ -26,6 +27,7 @@ public class Entity : Disposable {
     /// </summary>
     /// <param name="position">Initial position of the entity in 3D space, specified as a Vector3.</param>
     public Entity(Vector3 position) {
+        this.Name = "Entity";
         this.Tag = string.Empty;
         this.Position = position;
         this.Scale = Vector3.One;
