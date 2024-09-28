@@ -83,8 +83,7 @@ public class ModelRenderer : Component {
         }
     }
 
-    public override Component Clone()
-    {
+    public override Component Clone() {
         return new ModelRenderer(this._model, this.OffsetPos, this._color, default, this._drawWires);
     }
 

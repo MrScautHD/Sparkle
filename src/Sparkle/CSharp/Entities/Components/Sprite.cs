@@ -35,8 +35,7 @@ public class Sprite : Component {
         Graphics.DrawTexturePro(this.Texture, source, dest, origin, RayMath.QuaternionToEuler(this.Entity.Rotation).Z * RayMath.Rad2Deg, this.Color);
     }
 
-    public override Component Clone()
-    {
+    public override Component Clone() {
         return new Sprite(this.Texture, this.OffsetPos, this.Size, this.Color);
     }
 

@@ -578,8 +578,7 @@ public class RigidBody2D : Component {
         this.Body.ApplyAngularImpulse(impulse, wake);
     }
 
-    public override Component Clone()
-    {
+    public override Component Clone() {
         return new RigidBody2D(this._bodyDefinition, this._fixtureDefinition);
     }
 

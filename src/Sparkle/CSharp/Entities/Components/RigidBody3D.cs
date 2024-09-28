@@ -356,8 +356,7 @@ public class RigidBody3D : Component {
         this.Body.DebugDraw(drawer);
     }
     
-    public override Component Clone()
-    {
+    public override Component Clone() {
         var shapesList = new List<RigidBodyShape>(this._shapes);
         
         return new RigidBody3D(shapesList, this._setMassInertia, this._nonMoving, this._friction, this._restitution);
