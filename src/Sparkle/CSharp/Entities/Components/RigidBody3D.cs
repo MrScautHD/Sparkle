@@ -356,8 +356,7 @@ public class RigidBody3D : Component {
     /// Debug draws the rigid body using the specified debug drawer.
     /// </summary>
     /// <param name="drawer">The debug drawer used to draw the rigid body.</param>
-    public void DebugDraw(IDebugDrawer drawer)
-    {
+    public void DebugDraw(IDebugDrawer drawer) {
         this.Body.DebugDraw(drawer);
     }
 
