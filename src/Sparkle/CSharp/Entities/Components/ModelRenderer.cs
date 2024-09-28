@@ -15,7 +15,8 @@ namespace Sparkle.CSharp.Entities.Components;
 public class ModelRenderer : Component {
 
     public ModelAnimationPlayer? AnimationPlayer { get; }
-    
+
+    private ReadOnlySpanData<ModelAnimation>? _animations;
     private Model _model;
     private BoundingBox _box;
     private Color _color;
@@ -33,6 +34,7 @@ public class ModelRenderer : Component {
         if (animations != null) {
             this.AnimationPlayer = new ModelAnimationPlayer(model, animations);
         }
+        this._animations = animations;
         this._model = model;
         this._box = model.GetBoundingBox();
         this._color = color ?? Color.White;
@@ -82,9 +84,9 @@ public class ModelRenderer : Component {
             }
         }
     }
-
+    
     public override Component Clone() {
-        return new ModelRenderer(this._model, this.OffsetPos, this._color, default, this._drawWires);
+        return new ModelRenderer(this._model, this.OffsetPos, this._color, this._animations, this._drawWires);
     }
 
     protected override void Dispose(bool disposing) { }
