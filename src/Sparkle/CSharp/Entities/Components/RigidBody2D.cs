@@ -50,6 +50,10 @@ public class RigidBody2D : Component {
         this.UpdateEntityRotation();
     }
     
+    public override Component Clone() {
+        return new RigidBody2D(this._bodyDefinition, this._fixtureDefinition);
+    }
+    
     /// <summary>
     /// Creates the body for the rigid body component.
     /// </summary>
@@ -576,10 +580,6 @@ public class RigidBody2D : Component {
     /// <param name="wake">Determines if the RigidBody should be woken up.</param>
     public void ApplyAngularImpulse(float impulse, bool wake = true) {
         this.Body.ApplyAngularImpulse(impulse, wake);
-    }
-
-    public override Component Clone() {
-        return new RigidBody2D(this._bodyDefinition, this._fixtureDefinition);
     }
 
     protected override void Dispose(bool disposing) {
