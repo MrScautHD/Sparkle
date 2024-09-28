@@ -80,6 +80,10 @@ public class Light : Component {
         }
     }
 
+    public override Component Clone() {
+        return new Light(this.Effect, this.Type, this.OffsetPos, this.Target, this.Color, this.Intensity, this.DrawSphere);
+    }
+
     protected override void Dispose(bool disposing) {
         if (disposing) {
             if (this._result) {

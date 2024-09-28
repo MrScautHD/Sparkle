@@ -203,6 +203,10 @@ public class RigidBody3D : Component {
         this.UpdateEntityRotation();
     }
     
+    public override Component Clone() {
+        return new RigidBody3D(this._shapes.ToList(), this._setMassInertia, this._nonMoving, this._friction, this._restitution);
+    }
+    
     /// <summary>
     /// Creates the body for the rigid body component.
     /// </summary>

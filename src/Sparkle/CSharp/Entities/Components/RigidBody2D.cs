@@ -50,6 +50,10 @@ public class RigidBody2D : Component {
         this.UpdateEntityRotation();
     }
     
+    public override Component Clone() {
+        return new RigidBody2D(this._bodyDefinition, this._fixtureDefinition);
+    }
+    
     /// <summary>
     /// Creates the body for the rigid body component.
     /// </summary>
