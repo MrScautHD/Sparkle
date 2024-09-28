@@ -47,6 +47,10 @@ public abstract class Component : Disposable {
     /// </summary>
     protected internal virtual void Draw() { }
 
+    /// <summary>
+    /// Creates a copy of the current component instance.
+    /// </summary>
+    /// <returns>A new instance of the <see cref="Component"/> that is a clone of the original.</returns>
     public abstract Component Clone();
     
     protected override void Dispose(bool disposing) {
