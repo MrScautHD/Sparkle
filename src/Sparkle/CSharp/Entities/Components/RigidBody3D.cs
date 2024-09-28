@@ -203,6 +203,10 @@ public class RigidBody3D : Component {
         this.UpdateEntityRotation();
     }
     
+    public override Component Clone() {
+        return new RigidBody3D(this._shapes.ToList(), this._setMassInertia, this._nonMoving, this._friction, this._restitution);
+    }
+    
     /// <summary>
     /// Creates the body for the rigid body component.
     /// </summary>
@@ -352,14 +356,11 @@ public class RigidBody3D : Component {
     /// Debug draws the rigid body using the specified debug drawer.
     /// </summary>
     /// <param name="drawer">The debug drawer used to draw the rigid body.</param>
-    public void DebugDraw(IDebugDrawer drawer) {
+    public void DebugDraw(IDebugDrawer drawer)
+    {
         this.Body.DebugDraw(drawer);
     }
-    
-    public override Component Clone() {
-        return new RigidBody3D(this._shapes.ToList(), this._setMassInertia, this._nonMoving, this._friction, this._restitution);
-    }
-    
+
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.World.Remove(this.Body);
