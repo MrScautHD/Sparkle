@@ -578,6 +578,11 @@ public class RigidBody2D : Component {
         this.Body.ApplyAngularImpulse(impulse, wake);
     }
 
+    public override Component Clone()
+    {
+        return new RigidBody2D(this._bodyDefinition, this._fixtureDefinition);
+    }
+
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.World.DestroyBody(this.Body);

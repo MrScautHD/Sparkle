@@ -47,6 +47,9 @@ public abstract class Component : Disposable {
     /// </summary>
     protected internal virtual void Draw() { }
 
+    public abstract Component Clone();
+
+
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.Entity.Components.Remove(this.GetType());
