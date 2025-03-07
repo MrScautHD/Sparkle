@@ -3,18 +3,32 @@
 </p>
 
 <h1 align="center" style="margin-top: 0px;">Welcome to Sparkle 🎉</h1>
-<h4 align="center">A fast, Cross-platform .NET 8 C# 12 game engine.</h4>
+<h4 align="center">A fast, Cross-platform .NET 9 C# 13 game engine.</h4>
 
 ![grafik](https://user-images.githubusercontent.com/65916181/220327780-328a50de-def5-485a-b769-1f98b5c292ad.png)
 
 [<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/87b291cd-6506-4fb5-b032-abf3170a28c4" alt="discord" width="186" height="60">](https://discord.gg/7XKw6YQa76)
 [<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/de09f016-db11-4554-aa56-4d1bd6c2464f" alt="sponsor" width="186" height="60">](https://github.com/sponsors/MrScautHD)
 
-🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
-==================================================================
+# ✨ Features ✨
+- 🎬 Scene system for seamless transitions and organization
+- 🏗️ Entity system for flexible game object management
+- 🚜 Terrain system for efficient rendering and dynamic landscapes
+- ⚙️ Powerful 2D/3D physics system for realistic interactions
+- 💨 Particle system for stunning visual effects
+- 🖥️ Overlay system for intuitive UI and HUD elements
+- 🖌️ GUI system for easy-to-use interfaces
+- 📦 Content manager for streamlined asset loading and organization
+
+# 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ```
-dotnet add package Sparkle --version 4.0.1
+dotnet add package Sparkle --version [VERSION]
 ```
+
+# 📖 [Installation - From source]
+> 1. Clone this repository.
+> 2. Add `Sparkle.csproj` as a reference to your project.
+---
 
 ⭐ Getting Started
 ===================
@@ -22,25 +36,33 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
-- [`RayLib-CSharp`](https://github.com/MrScautHD/Raylib-CSharp)
-- [`OpenTK.Graphics`](https://github.com/opentk/opentk)
+- [`Bliss`](https://www.nuget.org/packages/Bliss)
 - [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`Box2D`](https://www.nuget.org/packages/Box2D.NetStandard/)
 - [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
 # 💻 Platforms
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/a92bd5fa-517b-44c2-ab58-cc01b5ae5751" alt="windows" width="70" height="70" align="right">](https://www.microsoft.com/de-at/windows)
+
+[<img src="https://github.com/user-attachments/assets/f8b66880-9037-4ba8-acc4-6ea390e1dde9" alt="windows" width="70" height="70" align="left">](https://www.microsoft.com/de-at/windows)
 ### Windows
-- Using `OpenGL-4.3`
+- Graphics APIs: `Direct3D11`, `Vulkan`, `OpenGL`, `OpenGL-ES`
 
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/f9e643a8-4d46-450c-91ac-d220394ecd42" alt="Linux" width="70" height="70" align="right">](https://www.ubuntu.com/)
+[<img src="https://github.com/user-attachments/assets/814ce8c3-5242-47f4-a51b-b185680d38ff" alt="Linux" width="70" height="70" align="left">](https://www.ubuntu.com/)
 ### Linux
-- Using `OpenGL-4.3`
+- Graphics APIs: `Vulkan`, `OpenGL`, `OpenGL-ES`
 
-[<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/e37eb15f-4237-47ae-9ae7-e4455f7c3d92" alt="macOS" width="70" height="70" align="right">](https://www.apple.com/at/macos/sonoma/)
+[<img src="https://github.com/user-attachments/assets/99605868-0590-42ce-a72a-f6feb1cabf6e" alt="macOS" width="70" height="70" align="left">](https://www.apple.com/at/macos/sonoma/)
 ### MacOS
-- Using `OpenGL-3.3`
+- Graphics APIs: `Metal`, `OpenGL`, `OpenGL-ES`
+
+[<img src="https://github.com/user-attachments/assets/8ec16850-3a1e-42e1-b35e-cf3d3ea32d46" alt="macOS" width="70" height="70" align="left">](https://www.apple.com/at/macos/sonoma/)
+### Android
+- Graphics APIs: `Vulkan`, `OpenGL-ES` (Planned!)
+
+[<img src="https://github.com/user-attachments/assets/a0f33f2f-bd7c-4049-a207-85d3a67bef78" alt="macOS" width="70" height="70" align="left">](https://www.apple.com/at/macos/sonoma/)
+### iOS
+- Graphics APIs: `Metal`, `OpenGL-ES` (Planned!)
 
 🧑 Contributors
 ==================
@@ -48,51 +70,5 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
   <img src="https://contrib.rocks/image?repo=mrscauthd/sparkle&max=500&columns=20&anon=1" />
 </a>
 
-
-## 🖥️ Basic Example
-```csharp
-public class GameTest : Game {
-
-    public Texture2D Texture;
-    
-    public GameTest(GameSettings settings) : base(settings) {
-        
-        // Create your own config file!
-        JsonConfig config = new JsonConfigBuilder("config", "test")
-            .Add("Hello", "Hello World!")
-            .Add("Bye", 1000)
-            .Build();
-
-        Logger.Info(config.GetValue<string>("Hello"));
-    }
-
-    protected override void Init() {
-        base.Init();
-    }
-
-    protected override void Load() {
-        base.Load();
-        
-        // Load resources.
-        this.Texture = this.Content.Load(new TextureContent("icon.png"));
-    }
-
-    protected override void Draw() {
-        base.Draw();
-        
-        // Draw circle if "A" down.
-        if (Input.IsKeyDown(KeyboardKey.A)) {
-            Graphics.DrawCircle(new Vector2(50, 50), 20, Color.Blue);
-        }
-
-        // Draw texture if "B" down.
-        if (Input.IsKeyDown(KeyboardKey.B)) {
-            Graphics.DrawTexture(this.Texture, Vector3.Zero, Color.White);
-        }
-    }
-}
-```
-
-💸 Sponsors
-============
-Please consider [SPONSOR](https://github.com/sponsors/MrScautHD) me to further help development and to allow faster issue triaging and new features to be implemented.
+# ✍️ Acknowledgement
+This library is available under the [MIT](https://github.com/MrScautHD/Bliss/blob/main/LICENSE) license.
