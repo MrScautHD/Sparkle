@@ -1,7 +1,12 @@
 using System.Numerics;
+using Bliss.CSharp;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.VertexTypes;
+using Bliss.CSharp.Materials;
 using LibNoise;
 using LibNoise.Primitive;
-using Raylib_CSharp.Geometry;
+using Veldrid;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -16,11 +21,9 @@ public class MarchingCubes {
     private float _heightThreshold;
 
     private bool _use3DNoise;
-    
-    private List<Vector3> _vertices;
-    private List<Vector3> _normals;
-    private List<Vector2> _texCoords;
-    private List<ushort> _triangles;
+
+    private List<Vertex3D> _vertices;
+    private List<uint> _inidces;
     private float[,,] _heights;
     
     /// <summary>
@@ -39,10 +42,8 @@ public class MarchingCubes {
         this._scale = scale;
         this._heightThreshold = heightThreshold;
         this._use3DNoise = use3DNoise;
-        this._vertices = new List<Vector3>();
-        this._normals = new List<Vector3>();
-        this._texCoords = new List<Vector2>();
-        this._triangles = new List<ushort>();
+        this._vertices = new List<Vertex3D>();
+        this._inidces = new List<uint>();
     }
     
     /// <summary>
@@ -94,10 +95,8 @@ public class MarchingCubes {
     /// <param name="height">The height of the region in units.</param>
     public void MarchCubes(Vector3 position, int width, int height) {
         this._vertices.Clear();
-        this._normals.Clear();
-        this._texCoords.Clear();
-        this._triangles.Clear();
-        
+        this._inidces.Clear();
+
         float[] corners = new float[8];
         
         for (int x = 0; x < width; x++) {
@@ -140,61 +139,37 @@ public class MarchingCubes {
                 Vector3 edgeStart = position + MarchingCubesTables.Edges[triTableValue, 0];
                 Vector3 edgeEnd = position + MarchingCubesTables.Edges[triTableValue, 1];
 
-                Vector3 vertex = (edgeStart + edgeEnd) / 2;
+                Vector3 pos = (edgeStart + edgeEnd) / 2;
                 Vector3 normal = Vector3.Normalize(edgeEnd - edgeStart);
 
-                this._vertices.Add(vertex);
-                this._normals.Add(normal);
-                this._texCoords.Add(new Vector2(edgeIndex / (float) this._width, edgeIndex / (float) this._height));
-                this._triangles.Add((ushort) (this._vertices.Count - 1));
-
+                // Add vertex.
+                this._vertices.Add(new Vertex3D() {
+                    Position = pos,
+                    Normal = normal,
+                    TexCoords = new Vector2(edgeIndex / (float) this._width, edgeIndex / (float) this._height)
+                });
+                
+                // Add index.
+                this._inidces.Add((ushort) (this._vertices.Count - 1));
+                
                 edgeIndex++;
             }
         }
     }
-    
-    /// <summary>
-    /// Generates a mesh from the Marching Cubes algorithm using the stored vertices, normals, and triangles.
-    /// </summary>
-    /// <returns>A Model object representing the generated mesh.</returns>
-    public Model GenerateModel() {
-        Mesh mesh = new Mesh(this._vertices.Count, this._triangles.Count);
-        
-        mesh.AllocVertices();
-        for (int i = 0; i < this._vertices.Count; i++) {
-            mesh.Vertices[i] = this._vertices[i];
-        }
-       
-        mesh.AllocNormals(); 
-        for (int i = 0; i < this._normals.Count; i++) {
-            mesh.Normals[i] = this._normals[i];
-        }
-       
-        mesh.AllocTexCoords();
-        for (int i = 0; i < this._texCoords.Count; i++) {
-            mesh.TexCoords[i] = this._texCoords[i];
-        }
-        
-        mesh.AllocIndices();
-        for (int i = 0; i < this._triangles.Count; i++) {
-            mesh.Indices[i] = this._triangles[i];
-        }
-        
-        mesh.Upload(false); //Todo UPDATE BUFFER FOR TERRAIN MANIPULATION
-        
-        return Model.LoadFromMesh(mesh);
-    }
 
     /// <summary>
-    /// Update the mesh by updating the vertex buffer with the new vertices data.
+    /// Generates a mesh based on the vertices, normals, texture coordinates, and indices
+    /// stored within the MarchingCubes instance.
     /// </summary>
-    /// <param name="mesh">The mesh to update.</param>
-    private unsafe void UpdateMesh(Mesh mesh) {
-        fixed (Vector3* verticesPtr = this._vertices.ToArray()) {
-            for (int i = 0; i < this._vertices.Count; i++) {
-                mesh.UpdateBuffer(i, (nint) verticesPtr, this._vertices.Count * sizeof(Vector3), 0);
-            }
-        }
+    public Mesh GenMesh(GraphicsDevice graphicsDevice) {
+        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
+    
+        material.AddMaterialMap(MaterialMapType.Albedo.GetName(), new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White
+        });
+        
+        return new Mesh(graphicsDevice, material, this._vertices.ToArray(), this._inidces.ToArray());
     }
     
     /// <summary>

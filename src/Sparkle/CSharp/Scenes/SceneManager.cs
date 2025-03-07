@@ -1,9 +1,5 @@
 using System.Numerics;
-using Raylib_CSharp.Colors;
-using Raylib_CSharp.Rendering;
-using Raylib_CSharp.Textures;
-using Raylib_CSharp.Transformations;
-using Raylib_CSharp.Windowing;
+using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Physics;
 

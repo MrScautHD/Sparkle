@@ -4,6 +4,7 @@ using Raylib_CSharp.Camera.Cam3D;
 using Raylib_CSharp.Collision;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Windowing;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Rendering;
 using Sparkle.CSharp.Scenes;

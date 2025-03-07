@@ -4,6 +4,8 @@ namespace Sparkle.CSharp.Content.Processors;
 
 public interface IContentProcessor {
     
+    // TODO: Add ByteCode, Stream
+    
     /// <summary>
     /// Loads the content of the specified type.
     /// </summary>

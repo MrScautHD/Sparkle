@@ -1,4 +1,4 @@
-using Raylib_CSharp.Textures;
+using Bliss.CSharp.Textures;
 
 namespace Sparkle.CSharp.Content.Types;
 

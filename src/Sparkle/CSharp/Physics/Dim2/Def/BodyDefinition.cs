@@ -5,22 +5,63 @@ namespace Sparkle.CSharp.Physics.Dim2.Def;
 
 public struct BodyDefinition {
 
+    /// <summary>
+    /// Indicates if the body is enabled.
+    /// </summary>
     public bool Enabled;
+    
+    /// <summary>
+    /// Indicates if the body is allowed to sleep.
+    /// </summary>
     public bool AllowSleep;
+    
+    /// <summary>
+    /// Indicates if the body is awake.
+    /// </summary>
     public bool Awake;
+    
+    /// <summary>
+    /// Specifies if the body is a bullet (moves through other objects).
+    /// </summary>
     public bool Bullet;
+    
+    /// <summary>
+    /// Specifies if the body has a fixed rotation.
+    /// </summary>
     public bool FixedRotation;
     
+    /// <summary>
+    /// The scale of gravity applied to the body.
+    /// </summary>
     public float GravityScale;
+    
+    /// <summary>
+    /// The linear damping of the body (resistance to movement).
+    /// </summary>
     public float LinearDamping;
+    
+    /// <summary>
+    /// The angular damping of the body (resistance to rotation).
+    /// </summary>
     public float AngularDamping;
+    
+    /// <summary>
+    /// The angular velocity of the body.
+    /// </summary>
     public float AngularVelocity;
     
+    /// <summary>
+    /// The linear velocity of the body.
+    /// </summary>
     public Vector2 LinearVelocity;
+    
+    /// <summary>
+    /// The <see cref="BodyType"/> of the body (e.g., static, dynamic).
+    /// </summary>
     public BodyType Type;
 
     /// <summary>
-    /// Represents the definition of a physics body in a 2D physics simulation.
+    /// Initializes a new instance of the <see cref="BodyDefinition"/> struct with default values.
     /// </summary>
     public BodyDefinition() {
         this.Enabled = true;

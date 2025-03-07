@@ -8,7 +8,7 @@ using Raylib_CSharp.Rendering;
 using Raylib_CSharp.Textures;
 using Sparkle.CSharp.Registries.Types;
 
-namespace Sparkle.CSharp.Rendering.Renderers;
+namespace Sparkle.CSharp.Graphics.Renderers;
 
 public class Skybox : Disposable {
 

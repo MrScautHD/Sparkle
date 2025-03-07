@@ -1,11 +1,9 @@
-﻿using Raylib_CSharp.Windowing;
-using Sparkle.CSharp;
+﻿using Sparkle.CSharp;
 using Sparkle.Test.CSharp;
 using Sparkle.Test.CSharp.Dim3;
 
 GameSettings settings = new GameSettings() {
-    Title = "Sparkle - [Test]",
-    WindowFlags = /*ConfigFlags.Msaa4XHint |*/ ConfigFlags.ResizableWindow
+    Title = "Sparkle - [Test]"
 };
 
 using TestGame game = new TestGame(settings);

@@ -1,10 +1,8 @@
 using System.Numerics;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Keyboards;
 using Box2D.NetStandard.Collision.Shapes;
 using Box2D.NetStandard.Dynamics.Bodies;
-using Raylib_CSharp;
-using Raylib_CSharp.Colors;
-using Raylib_CSharp.Interact;
-using Raylib_CSharp.Rendering;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Physics.Dim2.Def;
@@ -20,18 +18,19 @@ public class Test2DScene : Scene {
     protected override void Init() {
         base.Init();
         
-        Cam2D cam2D = new Cam2D(new Vector2(0, 0), new Vector2(0, 0), Cam2D.CameraFollowMode.Smooth);
+        Cam2D cam2D = new Cam2D(new Vector2(0, 0), new Vector2(0, 0), Cam2D.CameraFollowMode.Normal);
         this.AddEntity(cam2D);
 
         // PLAYER
         Entity player = new Entity(new Vector3(0, -32, 0));
-        player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
-        this.AddEntity(player);
+        player.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, float.DegreesToRadians(90));
         player.AddComponent(new Sprite(ContentRegistry.SpriteTexture, Vector3.Zero));
         
         player.AddComponent(new RigidBody2D(new BodyDefinition(), new FixtureDefinition(new PolygonShape(16.0F / 2, 16.0F / 2)) {
             Density = 1.0F,
         }));
+        
+        this.AddEntity(player);
         
         // GROUND
         Entity entity = new Entity(new Vector3(0, -8, 0));
@@ -70,7 +69,7 @@ public class Test2DScene : Scene {
         RigidBody2D body = this.GetEntity(2).GetComponent<RigidBody2D>();
 
         if (Input.IsKeyDown(KeyboardKey.G)) {
-            this.GetEntity(2).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90 * RayMath.Deg2Rad);
+            this.GetEntity(2).Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, float.DegreesToRadians(90));
         }
         
         if (Input.IsKeyDown(KeyboardKey.H)) {

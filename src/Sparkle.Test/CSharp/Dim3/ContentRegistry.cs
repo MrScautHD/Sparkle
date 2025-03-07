@@ -18,6 +18,7 @@ public class ContentRegistry : Registry {
     // TEXTURES
     public static Texture2D PlayerTexture;
     public static Texture2D SpriteTexture;
+    public static Texture2D BlissLogo;
     
     // IMAGES
     public static Image Skybox;
@@ -37,6 +38,7 @@ public class ContentRegistry : Registry {
         // TEXTURES
         PlayerTexture = content.Load(new TextureContent("content/texture.png"));
         SpriteTexture = content.Load(new TextureContent("content/sprite.png"));
+        BlissLogo = content.Load(new TextureContent("content/logo.png"));
         
         // IMAGES
         Skybox = content.Load(new ImageContent("content/skybox.png"));

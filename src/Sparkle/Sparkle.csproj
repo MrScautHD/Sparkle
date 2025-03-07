@@ -2,13 +2,13 @@
 
   <!-- Project -->
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sparkle</AssemblyName>
     <RootNamespace>Sparkle</RootNamespace>
-    <LangVersion>12</LangVersion>
+    <LangVersion>13</LangVersion>
     <NoWarn>$(NoWarn);CS8618</NoWarn>
   </PropertyGroup>
 
@@ -30,12 +30,11 @@
 
   <!-- Libraries -->
   <ItemGroup>
+    <PackageReference Include="Bliss" Version="1.3.0" />
     <PackageReference Include="Box2D.NetStandard" Version="2.4.7-alpha" />
-    <PackageReference Include="Jitter2" Version="2.4.0" />
+    <PackageReference Include="Jitter2" Version="2.5.5" />
     <PackageReference Include="LibNoise" Version="0.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OpenTK.Graphics" Version="5.0.0-pre.11" />
-    <PackageReference Include="Raylib-CSharp" Version="4.1.8" />
   </ItemGroup>
   
   <!-- Icon -->

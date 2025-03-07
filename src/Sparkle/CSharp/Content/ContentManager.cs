@@ -1,11 +1,10 @@
-using Raylib_CSharp.Audio;
-using Raylib_CSharp.Fonts;
-using Raylib_CSharp.Geometry;
-using Raylib_CSharp.Images;
-using Raylib_CSharp.Materials;
-using Raylib_CSharp.Shaders;
-using Raylib_CSharp.Textures;
-using Raylib_CSharp.Unsafe.Spans.Data;
+using Bliss.CSharp;
+using Bliss.CSharp.Effects;
+using Bliss.CSharp.Fonts;
+using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Images;
+using Bliss.CSharp.Textures;
+using MiniAudioEx;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Logging;
@@ -23,19 +22,14 @@ public class ContentManager : Disposable {
     /// </summary>
     public ContentManager() {
         this._content = new List<object>();
-        
         this._processors = new Dictionary<Type, IContentProcessor>();
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Image), new ImageProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
-        this.AddProcessors(typeof(Shader), new ShaderProcessor());
-        this.AddProcessors(typeof(Gif), new GifProcessor());
-        this.AddProcessors(typeof(ReadOnlySpanData<ModelAnimation>), new ModelAnimationProcessor());
-        this.AddProcessors(typeof(ReadOnlySpanData<Material>), new MaterialProcessor());
+        this.AddProcessors(typeof(Effect), new ShaderProcessor());
+        this.AddProcessors(typeof(Gif), new AnimatedImageProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
-        this.AddProcessors(typeof(Sound), new SoundProcessor());
-        this.AddProcessors(typeof(Wave), new WaveProcessor());
-        this.AddProcessors(typeof(Music), new MusicProcessor());
+        this.AddProcessors(typeof(AudioClip), new SoundProcessor());
     }
     
     /// <summary>
@@ -63,25 +57,6 @@ public class ContentManager : Disposable {
     }
     
     /// <summary>
-    /// Adds a item of unmanaged content to the content manager.
-    /// </summary>
-    /// <typeparam name="T">The type of content being added.</typeparam>
-    /// <param name="item">The item to be added.</param>
-    public void AddUnmanagedItem<T>(T item) {
-        if (this._processors.ContainsKey(typeof(T))) {
-            if (!this._content.Contains(item!)) {
-                this._content.Add(item!);
-            }
-            else {
-                Logger.Warn($"The item is already present in the Content for the specified type: {typeof(T)}!");
-            }
-        }
-        else {
-            Logger.Warn($"This item is of an unsupported type: {typeof(T)}!");
-        }
-    }
-    
-    /// <summary>
     /// Loads an item of type T from the specified directory using the provided content type.
     /// </summary>
     /// <typeparam name="T">The type of item to load.</typeparam>
@@ -94,6 +69,8 @@ public class ContentManager : Disposable {
         this._content.Add(item!);
         return item;
     }
+    
+    // TODO: ADD "AddUnmanged" back for Gen methods like Mesh.GenCube();
     
     /// <summary>
     /// Unloads the specified content item.

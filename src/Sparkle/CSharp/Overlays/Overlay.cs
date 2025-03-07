@@ -1,3 +1,5 @@
+using Bliss.CSharp;
+
 namespace Sparkle.CSharp.Overlays;
 
 public abstract class Overlay : Disposable {

@@ -15,7 +15,7 @@ namespace Sparkle.CSharp.Entities.Components;
 public class ModelRenderer : Component {
 
     public ModelAnimationPlayer? AnimationPlayer { get; }
-    
+
     private Model _model;
     private BoundingBox _box;
     private Color _color;

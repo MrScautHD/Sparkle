@@ -1,4 +1,4 @@
-using Raylib_CSharp.Fonts;
+using Bliss.CSharp.Fonts;
 using Sparkle.CSharp.Content.Types;
 
 namespace Sparkle.CSharp.Content.Processors;
@@ -6,10 +6,10 @@ namespace Sparkle.CSharp.Content.Processors;
 public class FontProcessor : IContentProcessor {
 
     public object Load<T>(IContentType<T> type) {
-        return Font.Load(type.Path);
+        return new Font(type.Path);
     }
 
     public void Unload(object item) {
-        ((Font) item).Unload();
+        ((Font) item).Dispose();
     }
 }

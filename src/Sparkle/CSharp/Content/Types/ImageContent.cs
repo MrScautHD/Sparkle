@@ -1,4 +1,4 @@
-using Raylib_CSharp.Images;
+using Bliss.CSharp.Images;
 
 namespace Sparkle.CSharp.Content.Types;
 

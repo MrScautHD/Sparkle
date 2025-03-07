@@ -1,8 +1,8 @@
-using Raylib_CSharp.Shaders;
+using Bliss.CSharp.Effects;
 
 namespace Sparkle.CSharp.Content.Types;
 
-public class ShaderContent : IContentType<Shader> {
+public class ShaderContent : IContentType<Effect> {
     
     public string Path { get; }
     public string FragPath { get; }

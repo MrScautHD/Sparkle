@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp;
 
 namespace Sparkle.CSharp.Entities.Components;
 

@@ -1,9 +1,11 @@
 using System.Numerics;
 using Jitter2.Collision.Shapes;
+using Raylib_CSharp;
 using Raylib_CSharp.Camera.Cam3D;
 using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
 using Raylib_CSharp.Rendering;
+using Raylib_CSharp.Transformations;
 using Sparkle.CSharp.Effects.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
@@ -13,6 +15,7 @@ using Sparkle.CSharp.Rendering.Renderers;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Logger = Sparkle.CSharp.Logging.Logger;
+using ShapeHelper = Raylib_CSharp.Collision.ShapeHelper;
 
 namespace Sparkle.Test.CSharp.Dim3;
 
@@ -59,12 +62,12 @@ public class Test3DScene : Scene {
         this.AddEntity(light2);
         
         // TEST ENTITIES
-        //for (int x = -3; x < 3; x++) {
-        //    for (int z = -3; z < 3; z++) {
-        //        TestEntity testEntity = new TestEntity(new Vector3(x * 2.5F, 1, z * 2.5F));
-        //        this.AddEntity(testEntity);
-        //    }
-        //}
+        for (int x = 0; x < 60; x++) {
+            for (int z = 0; z < 60; z++) {
+                TestEntity testEntity = new TestEntity(new Vector3(x * 2.5F, 1, z * 2.5F));
+                this.AddEntity(testEntity);
+            }
+        }
         
         this.AddEntity(new TestEntity(Vector3.One));
         
@@ -124,7 +127,9 @@ public class Test3DScene : Scene {
         
         Graphics.DrawGrid(100, 1);
         Graphics.DrawCube(SceneManager.ActiveCam3D!.Target, 2, 2, 2, Color.Red);
-
+        
+        Graphics.DrawBillboard(SceneManager.ActiveCam3D.GetCamera3D(), ContentRegistry.BlissLogo, Vector3.One, 1, Color.Red);
+        
         foreach (MarchingCubesChunk chunk in this.MarchingCubesChunks) {
             Vector3 startPos = new Vector3(chunk.Position.X, SceneManager.ActiveCam3D.Position.Y - 50, chunk.Position.Z);
             Vector3 endPos = new Vector3(chunk.Position.X, SceneManager.ActiveCam3D.Position.Y + 50, chunk.Position.Z);
@@ -134,7 +139,7 @@ public class Test3DScene : Scene {
             Graphics.DrawLine3D(new Vector3(startPos.X + 8, startPos.Y, startPos.Z + 0), new Vector3(endPos.X + 8, endPos.Y, endPos.Z + 0), Color.Red);
             Graphics.DrawLine3D(new Vector3(startPos.X + 0, startPos.Y, startPos.Z + 8), new Vector3(endPos.X + 0, endPos.Y, endPos.Z + 8), Color.Red);
             
-            Graphics.DrawModel(chunk.Model, Vector3.Zero, 1, Color.DarkGreen);
+            Graphics.DrawModel(chunk.Mesh, Vector3.Zero, 1, Color.DarkGreen);
         }
         
         Graphics.EndShaderMode();

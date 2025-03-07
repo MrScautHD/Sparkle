@@ -1,13 +1,19 @@
 using Jitter2;
 using Jitter2.Collision;
 using Jitter2.SoftBodies;
-using Sparkle.CSharp.Physics.Dim3.Conversions;
 
 namespace Sparkle.CSharp.Physics.Dim3;
 
 public class Simulation3D : Simulation {
 
+    /// <summary>
+    /// The physics world that manages all physical objects and interactions.
+    /// </summary>
     public readonly World World;
+    
+    /// <summary>
+    /// The physics settings used to configure the simulation.
+    /// </summary>
     private readonly PhysicsSettings3D _settings;
     
     /// <summary>
@@ -16,10 +22,9 @@ public class Simulation3D : Simulation {
     /// <param name="settings">The physics settings for the 3D simulation.</param>
     public Simulation3D(PhysicsSettings3D settings) {
         this._settings = settings;
-        
-        this.World = new World(settings.MaxBodies, settings.MaxContacts, settings.MaxConstraints) {
-            Gravity = PhysicsConversion.ToJVector(settings.Gravity),
-            UseFullEPASolver = settings.UseFullEPASolver
+
+        this.World = new World(settings.Capacity) {
+            Gravity = settings.Gravity
         };
         
         this.World.DynamicTree.Filter = DynamicTreeCollisionFilter.Filter;

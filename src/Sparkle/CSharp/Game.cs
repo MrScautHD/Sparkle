@@ -1,58 +1,114 @@
-using OpenTK.Graphics;
-using Raylib_CSharp;
-using Raylib_CSharp.Audio;
-using Raylib_CSharp.Colors;
-using Raylib_CSharp.Images;
-using Raylib_CSharp.Rendering;
-using Raylib_CSharp.Windowing;
+using Bliss.CSharp;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Images;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Contexts;
+using Bliss.CSharp.Logging;
+using Bliss.CSharp.Transformations;
+using Bliss.CSharp.Windowing;
+using MiniAudioEx;
 using Sparkle.CSharp.Content;
-using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Rendering.Gl;
 using Sparkle.CSharp.Scenes;
+using Veldrid;
 
 namespace Sparkle.CSharp;
 
 public class Game : Disposable {
     
+    /// <summary>
+    /// The version of the game engine (Sparkle).
+    /// </summary>
+    public static readonly Version Version = new Version(5, 0, 0);
+
+    /// <summary>
+    /// The singleton instance of the game.
+    /// </summary>
     public static Game Instance { get; private set; }
-    public static readonly Version Version = new Version(4, 0, 1);
-    
-    public readonly GameSettings Settings;
-    public bool ShouldClose;
-    
-    public NativeBindingsContext BindingContext { get; private set; }
-    public ContentManager Content { get; private set; }
-    public Image Logo { get; private set; }
-    
-    public bool HasLoaded { get; private set; }
-    public bool HasInitialized { get; private set; }
-    
-    private readonly double _fixedTimeStep;
-    private double _timer;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="Game"/>, setting the static Instance to this object, initializing game settings, and calculating the delay based on the FixedTimeStep.
+    /// The settings for the game.
     /// </summary>
-    /// <param name="settings">The game settings to be used for this Game instance.</param>
+    public GameSettings Settings { get; private set; }
+    
+    /// <summary>
+    /// The main window of the game.
+    /// </summary>
+    public IWindow MainWindow { get; private set; }
+    
+    /// <summary>
+    /// The graphics device for rendering.
+    /// </summary>
+    public GraphicsDevice GraphicsDevice { get; private set; }
+    
+    /// <summary>
+    /// The command list used for rendering commands.
+    /// </summary>
+    public CommandList CommandList { get; private set; }
+    
+    /// <summary>
+    /// The content manager used to load game assets.
+    /// </summary>
+    public ContentManager Content { get; private set; }
+    
+    /// <summary>
+    /// Flag to indicate if the game should close.
+    /// </summary>
+    public bool ShouldClose;
+    
+    /// <summary>
+    /// Flag to indicate if the game has finished loading.
+    /// </summary>
+    public bool HasLoaded { get; private set; }
+    
+    /// <summary>
+    /// Flag to indicate if the game has been initialized.
+    /// </summary>
+    public bool HasInitialized { get; private set; }
+
+    /// <summary>
+    /// The log file writer used for logging messages to a file.
+    /// </summary>
+    private LogFileWriter _logFileWriter;
+    
+    /// <summary>
+    /// The fixed frame rate for the game.
+    /// </summary>
+    private double _fixedFrameRate;
+    
+    /// <summary>
+    /// The time step for fixed updates.
+    /// </summary>
+    private readonly double _fixedUpdateTimeStep;
+    
+    /// <summary>
+    /// The timer for tracking the fixed update time.
+    /// </summary>
+    private double _fixedUpdateTimer;
+    
+    /// <summary>
+    /// Initializes the game with specified settings.
+    /// </summary>
+    /// <param name="settings">The game settings.</param>
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
-        this._fixedTimeStep = 1.0F / settings.FixedTimeStep;
+        this._fixedUpdateTimeStep = settings.FixedTimeStep;
     }
     
     /// <summary>
-    /// Starts the <see cref="Game"/>.
+    /// Starts the game loop, initializing all necessary components and running the game.
     /// </summary>
-    /// <param name="scene">The initial <see cref="Scene"/> to start with.</param>
+    /// <param name="scene">The scene to load initially.</param>
     public void Run(Scene? scene) {
         if (this.Settings.LogDirectory != string.Empty) {
-            Logger.CreateLogFile(this.Settings.LogDirectory);
+            this._logFileWriter = new LogFileWriter(this.Settings.LogDirectory);
+            Logger.Message += this._logFileWriter.WriteFileMsg;
         }
 
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
@@ -60,80 +116,112 @@ public class Game : Disposable {
         Logger.Info($"\t> MEMORY: {SystemInfo.MemorySize} GB");
         Logger.Info($"\t> THREADS: {SystemInfo.Threads}");
         Logger.Info($"\t> OS: {SystemInfo.Os}");
-        Logger.Info($"\t> Raylib-CSharp: {Raylib.Version}");
-        Logger.Info($"\t> Raylib: {Raylib.RlVersion}");
-        Logger.Info($"\t> API: {RlGl.GetVersion()}");
         
-        Logger.Info("Initialize logger...");
-        Logger.Init();
+        Logger.Info("Initialize window and graphics device...");
+        GraphicsDeviceOptions options = new GraphicsDeviceOptions() {
+            Debug = false,
+            HasMainSwapchain = true,
+            SwapchainDepthFormat = PixelFormat.D32FloatS8UInt,
+            SyncToVerticalBlank = this.Settings.VSync,
+            ResourceBindingModel = ResourceBindingModel.Improved,
+            PreferDepthRangeZeroToOne = true,
+            PreferStandardClipSpaceYDirection = true,
+            SwapchainSrgbFormat = false
+        };
         
-        Time.SetTargetFPS(this.Settings.TargetFps);
-
+        this.MainWindow = Window.CreateWindow(WindowType.Sdl3, this.Settings.Width, this.Settings.Height, this.Settings.Title, this.Settings.WindowFlags, options, this.Settings.Backend, out GraphicsDevice graphicsDevice);
+        this.MainWindow.Resized += () => this.OnResize(new Rectangle(this.MainWindow.GetX(), this.MainWindow.GetY(), this.MainWindow.GetWidth(), this.MainWindow.GetHeight()));
+        this.GraphicsDevice = graphicsDevice;
+        
+        Logger.Info("Loading window icon...");
+        this.MainWindow.SetIcon(this.Settings.IconPath != string.Empty ? new Image(this.Settings.IconPath) : new Image("content/images/icon.png"));
+        
+        Logger.Info("Initialize time...");
+        Time.Init();
+        
+        Logger.Info($"Set target FPS to: {this.Settings.TargetFps}");
+        this.SetTargetFps(this.Settings.TargetFps);
+        
+        Logger.Info("Initialize command list...");
+        this.CommandList = graphicsDevice.ResourceFactory.CreateCommandList();
+        
+        Logger.Info("Initialize global resources...");
+        GlobalResource.Init(graphicsDevice);
+        
+        Logger.Info("Initialize input...");
+        if (this.MainWindow is Sdl3Window) {
+            Input.Init(new Sdl3InputContext(this.MainWindow));
+        }
+        else {
+            Logger.Fatal("This type of window is not supported by the InputContext!");
+        }
+        
+        Logger.Info("Initialize audio device...");
+        AudioContext.Initialize(44100, 2);
+        
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager();
         
-        Logger.Info("Initialize audio device...");
-        AudioDevice.Init();
-
-        Logger.Info("Initialize window...");
-        Raylib.SetConfigFlags(this.Settings.WindowFlags);
-        Window.Init(this.Settings.Width, this.Settings.Height, this.Settings.Title);
-        
-        this.Logo = this.Settings.IconPath == string.Empty ? this.Content.Load(new ImageContent("content/images/icon.png")) : this.Content.Load(new ImageContent(this.Settings.IconPath));
-        Window.SetIcon(this.Logo);
-        
-        Logger.Info("Initialize OpenTK binding...");
-        this.BindingContext = new NativeBindingsContext();
-        GLLoader.LoadBindings(this.BindingContext);
-        
         this.OnRun();
-
+        
         Logger.Info("Load content...");
         this.Load();
         this.HasLoaded = true;
-        
+
         Logger.Info("Set default scene...");
         SceneManager.SetDefaultScene(scene);
         
         this.Init();
         this.HasInitialized = true;
-        
-        Logger.Info("Run ticks...");
-        while (!this.ShouldClose && !Window.ShouldClose()) {
+
+        Logger.Info("Start main loops...");
+        while (!this.ShouldClose && this.MainWindow.Exists) {
+            if (this.GetTargetFps() != 0 && Time.Timer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
+                continue;
+            }
+            Time.Update();
+            
+            this.MainWindow.PumpEvents();
+            Input.Begin();
+            
+            if (this.ShouldClose || !this.MainWindow.Exists) {
+                break;
+            }
+            
+            AudioContext.Update();
             this.Update();
             this.AfterUpdate();
-            
-            this._timer += Time.GetFrameTime();
-            while (this._timer >= this._fixedTimeStep) {
-                this.FixedUpdate();
-                this._timer -= this._fixedTimeStep;
-            }
 
-            Graphics.BeginDrawing();
-            Graphics.ClearBackground(Color.SkyBlue);
-            this.Draw();
-            Graphics.EndDrawing();
+            this._fixedUpdateTimer += Time.Delta;
+            while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
+                this.FixedUpdate();
+                this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+            }
+            
+            this.Draw(graphicsDevice, this.CommandList);
+            Input.End();
         }
         
+        Logger.Warn("Application shuts down!");
         this.OnClose();
     }
-
+    
     /// <summary>
-    /// This method is called when the game starts.
+    /// Virtual method for additional setup when the game starts.
     /// </summary>
     protected virtual void OnRun() {
         RegistryManager.Add(new EffectRegistry());
     }
-    
+
     /// <summary>
-    /// Used for loading resources.
+    /// Loads the required game content and resources.
     /// </summary>
     protected virtual void Load() {
         RegistryManager.Load(this.Content);
     }
-
+    
     /// <summary>
-    /// Used for Initializes objects.
+    /// Initializes global game resources.
     /// </summary>
     protected virtual void Init() {
         RegistryManager.Init();
@@ -141,28 +229,27 @@ public class Game : Disposable {
         SceneManager.Init();
         OverlayManager.Init();
     }
-    
+
     /// <summary>
-    /// Is invoked during each tick and is used for updating dynamic elements and game logic.
+    /// Updates the game state, including scene and UI management.
     /// </summary>
     protected virtual void Update() {
         SceneManager.Update();
         GuiManager.Update();
         OverlayManager.Update();
     }
-
+    
     /// <summary>
-    /// Called after the Update method on each tick to further update dynamic elements and game logic.
+    /// Final update after regular updates are completed.
     /// </summary>
     protected virtual void AfterUpdate() {
         SceneManager.AfterUpdate();
         GuiManager.AfterUpdate();
         OverlayManager.AfterUpdate();
     }
-
+    
     /// <summary>
-    /// Is invoked at a fixed rate of every <see cref="GameSettings.FixedTimeStep"/> frames following the <see cref="AfterUpdate"/> method.
-    /// It is used for handling physics and other fixed-time operations.
+    /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
     protected virtual void FixedUpdate() {
         SceneManager.FixedUpdate();
@@ -171,32 +258,61 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Is called every tick, used for rendering stuff.
+    /// Renders the game scene to the screen.
     /// </summary>
-    protected virtual void Draw() {
+    protected virtual void Draw(GraphicsDevice graphicsDevice, CommandList commandList) { // TODO: Do a Framebuffer for MSAA (Here) and one for Post-Processing (Scene)
+        commandList.Begin();
+        commandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
+        commandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+        
         SceneManager.Draw();
         GuiManager.Draw();
         OverlayManager.Draw();
+        
+        commandList.End();
+        graphicsDevice.SubmitCommands(commandList);
+        graphicsDevice.SwapBuffers();
     }
+
+    /// <summary>
+    /// Handles window resizing events.
+    /// </summary>
+    protected virtual void OnResize(Rectangle rectangle) {
+        this.GraphicsDevice.MainSwapchain.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+    }
+
+    /// <summary>
+    /// Handles the logic to be executed when the application shuts down.
+    /// This method can be overridden by derived classes to include custom shutdown behavior.
+    /// </summary>
+    protected virtual void OnClose() { }
     
     /// <summary>
-    /// Is called when the <see cref="Game"/> is shutting down.
+    /// Gets the target frames per second.
     /// </summary>
-    protected virtual void OnClose() {
-        Logger.Warn("Application shuts down!");
+    public int GetTargetFps() {
+        return (int) (1.0F / this._fixedFrameRate);
+    }
+
+    /// <summary>
+    /// Sets the target frames per second.
+    /// </summary>
+    public void SetTargetFps(int fps) {
+        this._fixedFrameRate = 1.0F / fps;
     }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            RegistryManager.Destroy();
-            OverlayManager.Destroy();
-            EffectManager.Destroy();
-            GuiManager.Destroy();
             SceneManager.Destroy();
+            OverlayManager.Destroy();
+            GuiManager.Destroy();
+            AudioContext.Deinitialize();
+            RegistryManager.Destroy();
+            this.CommandList.Dispose();
+            this.GraphicsDevice.Dispose();
+            this.MainWindow.Dispose();
             this.Content.Dispose();
-            this.BindingContext.Dispose();
-            AudioDevice.Close();
-            Window.Close();
+            Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
     }
 }

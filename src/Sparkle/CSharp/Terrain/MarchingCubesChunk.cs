@@ -1,12 +1,13 @@
 using System.Numerics;
-using Raylib_CSharp.Geometry;
+using Bliss.CSharp;
+using Bliss.CSharp.Geometry;
 
 namespace Sparkle.CSharp.Terrain;
 
 public class MarchingCubesChunk : Disposable {
     
     public MarchingCubes MarchingCubes { get; private set; }
-    public Model Model { get; private set; }
+    public Mesh Mesh { get; private set; }
     
     public Vector3 Position { get; private set; }
     public int Width { get; private set; }
@@ -32,12 +33,12 @@ public class MarchingCubesChunk : Disposable {
     public void Generate() {
         this.MarchingCubes.SetHeights(this.Position, this.Width, this.Height);
         this.MarchingCubes.MarchCubes(this.Position, this.Width, this.Height);
-        this.Model = this.MarchingCubes.GenerateModel();
+        //this.Mesh = this.MarchingCubes.GenMesh(); //TODO: IDK YET
     }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            this.Model.Unload();
+            //this.Mesh.Unload();
         }
     }
 }

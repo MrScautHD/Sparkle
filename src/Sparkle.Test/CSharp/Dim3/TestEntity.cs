@@ -6,6 +6,7 @@ using Raylib_CSharp.Colors;
 using Raylib_CSharp.Interact;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Models;
 
 namespace Sparkle.Test.CSharp.Dim3;
@@ -19,21 +20,22 @@ public class TestEntity : Entity {
         
         // RENDERER
         ModelRenderer modelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, Vector3.Zero, Color.White, ContentRegistry.Animations);
-        modelRenderer.AnimationPlayer?.Play(0, true);
+        Logger.Error(ContentRegistry.Animations.GetSpan()[2].FrameCount + "");
+        //modelRenderer.AnimationPlayer?.Play(0, true);
         this.AddComponent(modelRenderer);
         
         // PHYSICS
-        this.AddComponent(new RigidBody3D(new BoxShape(2, 4, 2)));
+        //this.AddComponent(new RigidBody3D(new BoxShape(2, 4, 2)));
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
         
-        RigidBody3D body3D = this.GetComponent<RigidBody3D>();
-        
-        if (!body3D.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
-            body3D.AddForce(new Vector3(0, 200, 0));
-        }
+        //RigidBody3D body3D = this.GetComponent<RigidBody3D>();
+        //
+        //if (!body3D.World.RayCast(new JVector(this.Position.X, this.Position.Y - 8, this.Position.Z), -JVector.UnitY, default, default, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
+        //    body3D.AddForce(new Vector3(0, 200, 0));
+        //}
     }
 
     protected override void Update() {

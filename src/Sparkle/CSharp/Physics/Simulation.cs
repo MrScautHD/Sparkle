@@ -1,3 +1,5 @@
+using Bliss.CSharp;
+
 namespace Sparkle.CSharp.Physics;
 
 public abstract class Simulation : Disposable {
