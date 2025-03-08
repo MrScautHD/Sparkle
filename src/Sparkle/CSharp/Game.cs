@@ -343,6 +343,11 @@ public class Game : Disposable {
             this.CommandList.Dispose();
             this.GraphicsDevice.Dispose();
             this.MainWindow.Dispose();
+            this.GlobalImmediateRenderer.Dispose();
+            this.GlobalPrimitiveBatch.Dispose();
+            this.GlobalSpriteBatch.Dispose();
+            this.MsaaRenderPass.Dispose();
+            this.MsaaRenderTexture.Dispose();
             this.Content.Dispose();
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
