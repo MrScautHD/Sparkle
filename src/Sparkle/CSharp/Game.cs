@@ -1,14 +1,21 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
+using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Passes;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Contexts;
 using Bliss.CSharp.Logging;
+using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
 using MiniAudioEx;
 using Sparkle.CSharp.Content;
+using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Logging;
+using Sparkle.CSharp.Overlays;
 using Veldrid;
 
 namespace Sparkle.CSharp;
@@ -44,6 +51,36 @@ public class Game : Disposable {
     /// The command list used for rendering commands.
     /// </summary>
     public CommandList CommandList { get; private set; }
+
+    /// <summary>
+    /// The render pass used for draw the Multi-Sampled RenderTexture. 
+    /// </summary>
+    public FullScreenRenderPass MsaaRenderPass { get; private set; }
+
+    /// <summary>
+    /// The MSAA RenderTexture used for handling Anti-Aliasing (MSAA).
+    /// </summary>
+    public RenderTexture2D MsaaRenderTexture { get; private set; }
+
+    /// <summary>
+    /// The default (global) sprite batch used for rendering 2D sprites.
+    /// </summary>
+    public SpriteBatch GlobalSpriteBatch { get; private set; }
+
+    /// <summary>
+    /// The default (global) primitive batch used for rendering 2D geometric primitives.
+    /// </summary>
+    public PrimitiveBatch GlobalPrimitiveBatch { get; private set; }
+
+    /// <summary>
+    /// The default (global) immediate renderer used for rendering (Vertices...) in immediate mode.
+    /// </summary>
+    public ImmediateRenderer GlobalImmediateRenderer { get; private set; }
+
+    /// <summary>
+    /// An instance encapsulating core graphics rendering components associated with the game.
+    /// </summary>
+    public GraphicsContext GraphicsContext { get; private set; }
     
     /// <summary>
     /// The content manager used to load game assets.
@@ -76,7 +113,7 @@ public class Game : Disposable {
     private double _fixedUpdateTimer;
     
     /// <summary>
-    /// Initializes the game with specified settings.
+    /// Initializes the <see cref="Game"/> with specified settings.
     /// </summary>
     /// <param name="settings">The game settings.</param>
     public Game(GameSettings settings) {
@@ -120,18 +157,6 @@ public class Game : Disposable {
         Logger.Info("Loading window icon...");
         this.MainWindow.SetIcon(this.Settings.IconPath != string.Empty ? new Image(this.Settings.IconPath) : new Image("content/images/icon.png"));
         
-        Logger.Info("Initialize time...");
-        Time.Init();
-        
-        Logger.Info($"Set target FPS to: {this.Settings.TargetFps}");
-        this.SetTargetFps(this.Settings.TargetFps);
-        
-        Logger.Info("Initialize commandlist...");
-        this.CommandList = graphicsDevice.ResourceFactory.CreateCommandList();
-        
-        Logger.Info("Initialize global resources...");
-        GlobalResource.Init(graphicsDevice);
-        
         Logger.Info("Initialize input...");
         if (this.MainWindow is Sdl3Window) {
             Input.Init(new Sdl3InputContext(this.MainWindow));
@@ -140,8 +165,38 @@ public class Game : Disposable {
             Logger.Fatal("This type of window is not supported by the InputContext!");
         }
         
+        Logger.Info("Initialize command list...");
+        this.CommandList = graphicsDevice.ResourceFactory.CreateCommandList();
+        
+        Logger.Info("Initialize time...");
+        Time.Init();
+        
+        Logger.Info($"Set target FPS to: {this.Settings.TargetFps}");
+        this.SetTargetFps(this.Settings.TargetFps);
+        
         Logger.Info("Initialize audio device...");
         AudioContext.Initialize(44100, 2);
+        
+        Logger.Info("Initialize global resources...");
+        GlobalResource.Init(graphicsDevice);
+        
+        Logger.Info("Initialize render pass...");
+        this.MsaaRenderPass = new FullScreenRenderPass(graphicsDevice, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+        
+        Logger.Info("Initialize MSAA render texture...");
+        this.MsaaRenderTexture = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
+        
+        Logger.Info("Initialize global sprite batch...");
+        this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        
+        Logger.Info("Initialize global primitive batch...");
+        this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        
+        Logger.Info("Initialize global immediate renderer...");
+        this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        
+        Logger.Info("Initialize graphics context...");
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -156,7 +211,7 @@ public class Game : Disposable {
         
         this.Init();
 
-        Logger.Info("Start main loops...");
+        Logger.Info("Start game loop...");
         while (!this.ShouldClose && this.MainWindow.Exists) {
             if (this.GetTargetFps() != 0 && Time.Timer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
@@ -176,7 +231,30 @@ public class Game : Disposable {
                 this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
             }
             
-            this.Draw(graphicsDevice, this.CommandList);
+            this.CommandList.Begin();
+            this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
+            this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+        
+            this.Draw(this.GraphicsContext);
+
+            this.CommandList.End();
+            graphicsDevice.SubmitCommands(this.CommandList);
+            
+            this.CommandList.Begin();
+
+            if (this.MsaaRenderTexture.SampleCount != TextureSampleCount.Count1) {
+                this.CommandList.ResolveTexture(this.MsaaRenderTexture.ColorTexture, this.MsaaRenderTexture.DestinationTexture);
+            }
+            
+            this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
+            this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+            
+            this.MsaaRenderPass.Draw(this.CommandList, this.MsaaRenderTexture);
+            
+            this.CommandList.End();
+            graphicsDevice.SubmitCommands(this.CommandList);
+            graphicsDevice.SwapBuffers();
+            
             Input.End();
         }
         
@@ -200,37 +278,35 @@ public class Game : Disposable {
     /// Initializes global game resources.
     /// </summary>
     protected virtual void Init() {
+        OverlayManager.Init();
     }
 
     /// <summary>
     /// Updates the game state, including scene and UI management.
     /// </summary>
     protected virtual void Update() {
+        OverlayManager.Update();
     }
     
     /// <summary>
     /// Final update after regular updates are completed.
     /// </summary>
     protected virtual void AfterUpdate() {
+        OverlayManager.AfterUpdate();
     }
     
     /// <summary>
     /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
     protected virtual void FixedUpdate() {
+        OverlayManager.FixedUpdate();
     }
     
     /// <summary>
     /// Renders the game scene to the screen.
     /// </summary>
-    protected virtual void Draw(GraphicsDevice graphicsDevice, CommandList commandList) { // TODO: Do a Framebuffer for MSAA (Here) and one for Post-Processing (Scene)
-        commandList.Begin();
-        commandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
-        commandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-        
-        commandList.End();
-        graphicsDevice.SubmitCommands(commandList);
-        graphicsDevice.SwapBuffers();
+    protected virtual void Draw(GraphicsContext context) {
+        OverlayManager.Draw(context);
     }
 
     /// <summary>
@@ -262,6 +338,7 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            OverlayManager.Destroy();
             AudioContext.Deinitialize();
             this.CommandList.Dispose();
             this.GraphicsDevice.Dispose();

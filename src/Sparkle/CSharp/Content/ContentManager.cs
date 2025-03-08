@@ -53,7 +53,7 @@ public class ContentManager : Disposable {
     /// <returns>True if a processor was found, otherwise false.</returns>
     public bool TryGetProcessor(Type type, out IContentProcessor? processor) {
         if (!this._processors.TryGetValue(type, out processor)) {
-            Logger.Error($"Unable to locate ContentProcessor for type: [{type}]!");
+            Logger.Error($"Unable to locate ContentProcessor for type: [{type}]");
             return false;
         }
 
@@ -83,14 +83,14 @@ public class ContentManager : Disposable {
     public void AddUnmanagedItem<T>(T item) {
         if (!this._content.Contains(item!)) {
             if (!this._processors.ContainsKey(typeof(T))) {
-                Logger.Warn($"This item is of an unsupported type: [{typeof(T)}]!");
+                Logger.Warn($"This item is of an unsupported type: [{typeof(T)}]");
             }
             else {
                 this._content.Add(item!);
             }
         }
         else {
-            Logger.Warn($"The item is already present in the content manager for the specified type: [{typeof(T)}]!");
+            Logger.Warn($"The item is already present in the content manager for the specified type: [{typeof(T)}]");
         }
     }
 
