@@ -7,6 +7,7 @@ using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
 using MiniAudioEx;
+using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Logging;
 using Veldrid;
 
@@ -47,7 +48,7 @@ public class Game : Disposable {
     /// <summary>
     /// The content manager used to load game assets.
     /// </summary>
-    //public ContentManager Content { get; private set; }
+    public ContentManager Content { get; private set; }
     
     /// <summary>
     /// Flag to indicate if the game should close.
@@ -142,13 +143,13 @@ public class Game : Disposable {
         Logger.Info("Initialize audio device...");
         AudioContext.Initialize(44100, 2);
         
-        //Logger.Info("Initialize content manager...");
-        //this.Content = new ContentManager();
+        Logger.Info("Initialize content manager...");
+        this.Content = new ContentManager(graphicsDevice);
         
         this.OnRun();
         
         Logger.Info("Load content...");
-        this.Load();
+        this.Load(this.Content);
 
         //Logger.Info("Set default scene...");
         //SceneManager.SetDefaultScene(scene);
@@ -192,7 +193,7 @@ public class Game : Disposable {
     /// <summary>
     /// Loads the required game content and resources.
     /// </summary>
-    protected virtual void Load() {
+    protected virtual void Load(ContentManager content) {
     }
     
     /// <summary>
@@ -265,6 +266,7 @@ public class Game : Disposable {
             this.CommandList.Dispose();
             this.GraphicsDevice.Dispose();
             this.MainWindow.Dispose();
+            this.Content.Dispose();
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
     }
