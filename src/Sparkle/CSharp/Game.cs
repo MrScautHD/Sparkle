@@ -7,14 +7,7 @@ using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
 using MiniAudioEx;
-using Sparkle.CSharp.Content;
-using Sparkle.CSharp.Effects;
-using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Logging;
-using Sparkle.CSharp.Overlays;
-using Sparkle.CSharp.Registries;
-using Sparkle.CSharp.Registries.Types;
-using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp;
@@ -54,23 +47,13 @@ public class Game : Disposable {
     /// <summary>
     /// The content manager used to load game assets.
     /// </summary>
-    public ContentManager Content { get; private set; }
+    //public ContentManager Content { get; private set; }
     
     /// <summary>
     /// Flag to indicate if the game should close.
     /// </summary>
     public bool ShouldClose;
     
-    /// <summary>
-    /// Flag to indicate if the game has finished loading.
-    /// </summary>
-    public bool HasLoaded { get; private set; }
-    
-    /// <summary>
-    /// Flag to indicate if the game has been initialized.
-    /// </summary>
-    public bool HasInitialized { get; private set; }
-
     /// <summary>
     /// The log file writer used for logging messages to a file.
     /// </summary>
@@ -105,7 +88,7 @@ public class Game : Disposable {
     /// Starts the game loop, initializing all necessary components and running the game.
     /// </summary>
     /// <param name="scene">The scene to load initially.</param>
-    public void Run(Scene? scene) {
+    public void Run(/*Scene? scene*/) {
         if (this.Settings.LogDirectory != string.Empty) {
             this._logFileWriter = new LogFileWriter(this.Settings.LogDirectory);
             Logger.Message += this._logFileWriter.WriteFileMsg;
@@ -142,7 +125,7 @@ public class Game : Disposable {
         Logger.Info($"Set target FPS to: {this.Settings.TargetFps}");
         this.SetTargetFps(this.Settings.TargetFps);
         
-        Logger.Info("Initialize command list...");
+        Logger.Info("Initialize commandlist...");
         this.CommandList = graphicsDevice.ResourceFactory.CreateCommandList();
         
         Logger.Info("Initialize global resources...");
@@ -159,20 +142,18 @@ public class Game : Disposable {
         Logger.Info("Initialize audio device...");
         AudioContext.Initialize(44100, 2);
         
-        Logger.Info("Initialize content manager...");
-        this.Content = new ContentManager();
+        //Logger.Info("Initialize content manager...");
+        //this.Content = new ContentManager();
         
         this.OnRun();
         
         Logger.Info("Load content...");
         this.Load();
-        this.HasLoaded = true;
 
-        Logger.Info("Set default scene...");
-        SceneManager.SetDefaultScene(scene);
+        //Logger.Info("Set default scene...");
+        //SceneManager.SetDefaultScene(scene);
         
         this.Init();
-        this.HasInitialized = true;
 
         Logger.Info("Start main loops...");
         while (!this.ShouldClose && this.MainWindow.Exists) {
@@ -183,10 +164,6 @@ public class Game : Disposable {
             
             this.MainWindow.PumpEvents();
             Input.Begin();
-            
-            if (this.ShouldClose || !this.MainWindow.Exists) {
-                break;
-            }
             
             AudioContext.Update();
             this.Update();
@@ -210,51 +187,36 @@ public class Game : Disposable {
     /// Virtual method for additional setup when the game starts.
     /// </summary>
     protected virtual void OnRun() {
-        RegistryManager.Add(new EffectRegistry());
     }
 
     /// <summary>
     /// Loads the required game content and resources.
     /// </summary>
     protected virtual void Load() {
-        RegistryManager.Load(this.Content);
     }
     
     /// <summary>
     /// Initializes global game resources.
     /// </summary>
     protected virtual void Init() {
-        RegistryManager.Init();
-        EffectManager.Init();
-        SceneManager.Init();
-        OverlayManager.Init();
     }
 
     /// <summary>
     /// Updates the game state, including scene and UI management.
     /// </summary>
     protected virtual void Update() {
-        SceneManager.Update();
-        GuiManager.Update();
-        OverlayManager.Update();
     }
     
     /// <summary>
     /// Final update after regular updates are completed.
     /// </summary>
     protected virtual void AfterUpdate() {
-        SceneManager.AfterUpdate();
-        GuiManager.AfterUpdate();
-        OverlayManager.AfterUpdate();
     }
     
     /// <summary>
     /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
     protected virtual void FixedUpdate() {
-        SceneManager.FixedUpdate();
-        GuiManager.FixedUpdate();
-        OverlayManager.FixedUpdate();
     }
     
     /// <summary>
@@ -264,10 +226,6 @@ public class Game : Disposable {
         commandList.Begin();
         commandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
         commandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-        
-        SceneManager.Draw();
-        GuiManager.Draw();
-        OverlayManager.Draw();
         
         commandList.End();
         graphicsDevice.SubmitCommands(commandList);
@@ -303,15 +261,10 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            SceneManager.Destroy();
-            OverlayManager.Destroy();
-            GuiManager.Destroy();
             AudioContext.Deinitialize();
-            RegistryManager.Destroy();
             this.CommandList.Dispose();
             this.GraphicsDevice.Dispose();
             this.MainWindow.Dispose();
-            this.Content.Dispose();
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
     }

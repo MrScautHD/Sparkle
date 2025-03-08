@@ -5,12 +5,31 @@ using Newtonsoft.Json.Linq;
 namespace Sparkle.CSharp.IO.Configs.Json;
 
 public class JsonConfig {
+    
+    /// <summary>
+    /// Gets the directory where the JSON configuration file is stored.
+    /// </summary>
+    public string Directory { get; private set; }
+    
+    /// <summary>
+    /// Gets the name of the JSON configuration file, excluding the extension.
+    /// </summary>
+    public string Name { get; private set; }
+    
+    /// <summary>
+    /// Gets the full file path of the JSON configuration file.
+    /// </summary>
+    public string Path { get; private set; }
 
-    public readonly string Directory;
-    public readonly string Name;
-    public readonly string Path;
+    /// <summary>
+    /// Stores default values for the JSON configuration file.
+    /// These values are used to initialize the configuration or validate missing keys.
+    /// </summary>
+    private Dictionary<string, object> _defaultValues;
 
-    private readonly Dictionary<string, object> _defaultValues;
+    /// <summary>
+    /// Stores the encryption key used for encrypting and decrypting the JSON configuration file content.
+    /// </summary>
     private string _encryptKey;
 
     /// <summary>

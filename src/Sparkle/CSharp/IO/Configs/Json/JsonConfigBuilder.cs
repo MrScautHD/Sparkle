@@ -2,10 +2,24 @@ namespace Sparkle.CSharp.IO.Configs.Json;
 
 public class JsonConfigBuilder {
     
+    /// <summary>
+    /// Represents the directory where the JSON configuration files are stored.
+    /// </summary>
     private string _directory;
+
+    /// <summary>
+    /// Represents the name of the JSON configuration file.
+    /// </summary>
     private string _name;
+
+    /// <summary>
+    /// Represents the encryption key used for securing the JSON configuration file.
+    /// </summary>
     private string _encryptKey;
-    
+
+    /// <summary>
+    /// Represents the key-value pairs used as configuration data in the JSON configuration builder.
+    /// </summary>
     private Dictionary<string, object> _values;
 
     /// <summary>

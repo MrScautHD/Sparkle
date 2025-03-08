@@ -36,23 +36,23 @@ public class LogFileWriter {
         switch (type) {
             case LogType.Debug:
                 FileAccessor.WriteLine(this.FilePath, $"[DEBUG]: {msg}");
-                return true;
+                return false;
             
             case LogType.Info:
                 FileAccessor.WriteLine(this.FilePath, $"[INFO]: {msg}");
-                return true;
+                return false;
             
             case LogType.Warn:
                 FileAccessor.WriteLine(this.FilePath, $"[WARN]: {msg}");
-                return true;
+                return false;
             
             case LogType.Error:
                 FileAccessor.WriteLine(this.FilePath, $"[ERROR]: {msg}");
-                return true;
+                return false;
             
             case LogType.Fatal:
                 FileAccessor.WriteLine(this.FilePath, $"[FATAL]: {msg}");
-                return true;
+                return false;
         }
 
         return false;
