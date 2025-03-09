@@ -41,32 +41,38 @@ public static class RegistryManager {
     }
 
     /// <summary>
-    /// Attempts to add a new registry to the registry manager.
+    /// Attempts to add a new registry to the list of managed registries.
     /// </summary>
-    /// <param name="type">The registry instance to be added.</param>
-    /// <returns>True if the registry was successfully added; otherwise, false if a registry of the same type is already present.</returns>
-    public static bool TryAdd(Registry type) {
-        if (RegistryTypes.Any(registry => registry.GetType() == type.GetType())) {
-            Logger.Warn($"The registry type [{type.GetType().Name}] is already present in the RegistryManager!");
+    /// <param name="registry">The registry to be added.</param>
+    /// <returns>True if the registry is successfully added; otherwise, false if a registry of the same type already exists.</returns>
+    public static bool TryAdd(Registry registry) {
+        if (RegistryTypes.Any(reg => reg.GetType() == registry.GetType())) {
+            Logger.Warn($"The registry type [{registry.GetType().Name}] is already present in the RegistryManager!");
             return false;
         }
         
-        RegistryTypes.Add(type);
+        RegistryTypes.Add(registry);
         return true;
     }
 
     /// <summary>
-    /// Attempts to remove and dispose of the specified registry from the registry manager.
+    /// Attempts to remove a specified registry from the list of managed registries.
     /// </summary>
-    /// <param name="type">The registry instance to be removed and disposed.</param>
-    /// <returns>True if the registry was successfully removed and disposed; otherwise, false if the registry was not found in the manager.</returns>
-    public static bool TryRemove(Registry type) {
-        if (!RegistryTypes.Contains(type)) {
-            Logger.Warn($"Failed to Remove/Dispose the registry type [{type.GetType().Name}] from the RegistryManager!");
+    /// <param name="registry">The registry to be removed.</param>
+    /// <returns>True if the registry is successfully removed; otherwise, false if the registry does not exist in the list.</returns>
+    public static bool TryRemove(Registry registry) {
+        if (!RegistryTypes.Contains(registry)) {
+            Logger.Warn($"Failed to Remove/Dispose the registry type [{registry.GetType().Name}] from the RegistryManager!");
             return false;
         }
         
-        type.Dispose();
+        registry.Dispose();
+        
+        // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
+        if (RegistryTypes.Contains(registry)) {
+            RegistryTypes.Remove(registry);
+        }
+        
         return true;
     }
 
@@ -84,6 +90,12 @@ public static class RegistryManager {
         }
     
         registry.Dispose();
+        
+        // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
+        if (RegistryTypes.Contains(registry)) {
+            RegistryTypes.Remove(registry);
+        }
+        
         return true;
     }
 
@@ -91,9 +103,14 @@ public static class RegistryManager {
     /// Clears all registries.
     /// </summary>
     internal static void Destroy() {
-        while (RegistryTypes.Count > 0) {
-            Registry registry = RegistryTypes[0];
+        for (int i = RegistryTypes.Count - 1; i >= 0; i--) {
+            Registry registry = RegistryTypes[i];
             registry.Dispose();
+
+            // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
+            if (RegistryTypes.Contains(registry)) {
+                RegistryTypes.RemoveAt(i);
+            }
         }
     }
 }

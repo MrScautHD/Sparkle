@@ -11,6 +11,7 @@ public class GameTest : Game {
     protected override void OnRun() {
         base.OnRun();
         RegistryManager.TryAdd(new ContentRegistry());
+        RegistryManager.TryAdd(new TestRegistry());
     }
 
     protected override void Init() {
