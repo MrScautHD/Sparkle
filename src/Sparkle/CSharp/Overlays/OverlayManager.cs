@@ -20,7 +20,7 @@ public static class OverlayManager {
     /// <summary>
     /// Updates all enabled overlays.
     /// </summary>
-    internal static void Update() {
+    internal static void OnUpdate() {
         foreach (Overlay overlay in Overlays) {
             if (overlay.Enabled) {
                 overlay.Update();
@@ -31,7 +31,7 @@ public static class OverlayManager {
     /// <summary>
     /// Executes logic after the update step for all enabled overlays.
     /// </summary>
-    internal static void AfterUpdate() {
+    internal static void OnAfterUpdate() {
         foreach (Overlay overlay in Overlays) {
             if (overlay.Enabled) {
                 overlay.AfterUpdate();
@@ -42,7 +42,7 @@ public static class OverlayManager {
     /// <summary>
     /// Executes fixed-step updates for all enabled overlays.
     /// </summary>
-    internal static void FixedUpdate() {
+    internal static void OnFixedUpdate() {
         foreach (Overlay overlay in Overlays) {
             if (overlay.Enabled) {
                 overlay.FixedUpdate();
@@ -54,7 +54,7 @@ public static class OverlayManager {
     /// Draws all enabled overlays.
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
-    internal static void Draw(GraphicsContext context) {
+    internal static void OnDraw(GraphicsContext context) {
         foreach (Overlay overlay in Overlays) {
             if (overlay.Enabled) {
                 overlay.Draw(context);
@@ -71,7 +71,6 @@ public static class OverlayManager {
             Logger.Warn($"The overlay [{overlay.Name}] is already present in the OverlayManager!");
         }
         else {
-            Logger.Info($"Added overlay successfully: [{overlay.Name}]");
             Overlays.Add(overlay);
         }
     }

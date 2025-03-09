@@ -3,9 +3,9 @@ using System.Diagnostics;
 namespace Sparkle.CSharp;
 
 public static class SystemInfo {
-
+    
     /// <summary>
-    /// Gets the CPU identifier string or "Unknown" if not available.
+    /// Gets the name of the processor used in the system.
     /// </summary>
     public static readonly string Cpu = GetProcessorName();
 

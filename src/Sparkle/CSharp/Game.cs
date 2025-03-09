@@ -16,6 +16,7 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
+using Sparkle.CSharp.Registries;
 using Veldrid;
 
 namespace Sparkle.CSharp;
@@ -201,6 +202,12 @@ public class Game : Disposable {
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
         
+        Logger.Info("Initialize overlay manager...");
+        OverlayManager.Init();
+        
+        Logger.Info("Initialize registry manager...");
+        RegistryManager.Init();
+        
         this.OnRun();
         
         Logger.Info("Load content...");
@@ -265,48 +272,48 @@ public class Game : Disposable {
     /// <summary>
     /// Virtual method for additional setup when the game starts.
     /// </summary>
-    protected virtual void OnRun() {
-    }
+    protected virtual void OnRun() { }
 
     /// <summary>
     /// Loads the required game content and resources.
     /// </summary>
     protected virtual void Load(ContentManager content) {
+        RegistryManager.OnLoad(content);
     }
     
     /// <summary>
     /// Initializes global game resources.
     /// </summary>
     protected virtual void Init() {
-        OverlayManager.Init();
+        RegistryManager.OnInit();
     }
 
     /// <summary>
     /// Updates the game state, including scene and UI management.
     /// </summary>
     protected virtual void Update() {
-        OverlayManager.Update();
+        OverlayManager.OnUpdate();
     }
     
     /// <summary>
     /// Final update after regular updates are completed.
     /// </summary>
     protected virtual void AfterUpdate() {
-        OverlayManager.AfterUpdate();
+        OverlayManager.OnAfterUpdate();
     }
     
     /// <summary>
     /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
     protected virtual void FixedUpdate() {
-        OverlayManager.FixedUpdate();
+        OverlayManager.OnFixedUpdate();
     }
     
     /// <summary>
     /// Renders the game scene to the screen.
     /// </summary>
     protected virtual void Draw(GraphicsContext context) {
-        OverlayManager.Draw(context);
+        OverlayManager.OnDraw(context);
     }
 
     /// <summary>
@@ -339,16 +346,24 @@ public class Game : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             OverlayManager.Destroy();
-            AudioContext.Deinitialize();
-            this.CommandList.Dispose();
-            this.GraphicsDevice.Dispose();
-            this.MainWindow.Dispose();
+            RegistryManager.Destroy();
+            
+            this.Content.Dispose();
+            
+            this.MsaaRenderTexture.Dispose();
+            this.MsaaRenderPass.Dispose();
+            
             this.GlobalImmediateRenderer.Dispose();
             this.GlobalPrimitiveBatch.Dispose();
             this.GlobalSpriteBatch.Dispose();
-            this.MsaaRenderPass.Dispose();
-            this.MsaaRenderTexture.Dispose();
-            this.Content.Dispose();
+            
+            this.CommandList.Dispose();
+            
+            AudioContext.Deinitialize();
+            
+            this.GraphicsDevice.Dispose();
+            this.MainWindow.Dispose();
+
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
     }
