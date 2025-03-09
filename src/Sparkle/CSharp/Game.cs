@@ -1,5 +1,6 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
 using Bliss.CSharp.Graphics.Rendering.Passes;
@@ -8,6 +9,7 @@ using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Contexts;
 using Bliss.CSharp.Logging;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
@@ -181,7 +183,7 @@ public class Game : Disposable {
         Logger.Info("Initialize global resources...");
         GlobalResource.Init(graphicsDevice);
         
-        Logger.Info("Initialize render pass...");
+        Logger.Info("Initialize MSAA render pass...");
         this.MsaaRenderPass = new FullScreenRenderPass(graphicsDevice, graphicsDevice.SwapchainFramebuffer.OutputDescription);
         
         Logger.Info("Initialize MSAA render texture...");
@@ -268,7 +270,7 @@ public class Game : Disposable {
         Logger.Warn("Application shuts down!");
         this.OnClose();
     }
-    
+
     /// <summary>
     /// Virtual method for additional setup when the game starts.
     /// </summary>

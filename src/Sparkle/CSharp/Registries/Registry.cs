@@ -15,4 +15,10 @@ public abstract class Registry : Disposable {
     /// Initializes the registry after content has been loaded.
     /// </summary>
     protected internal virtual void Init() { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            RegistryManager.RegistryTypes.Remove(this);
+        }
+    }
 }
