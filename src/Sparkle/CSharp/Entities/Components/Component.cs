@@ -28,6 +28,11 @@ public abstract class Component : Disposable {
     protected Component(Vector3 offsetPos) {
         this.OffsetPos = offsetPos;
     }
+
+    /// <summary>
+    /// Called when the component is first initialized.
+    /// </summary>
+    protected internal virtual void Init() { }
     
     /// <summary>
     /// Called every frame to update the component's logic.

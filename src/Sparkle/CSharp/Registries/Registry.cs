@@ -18,7 +18,7 @@ public abstract class Registry : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            RegistryManager.RegistryTypes.Remove(this);
+            RegistryManager.Registries.Remove(this.GetType());
         }
     }
 }

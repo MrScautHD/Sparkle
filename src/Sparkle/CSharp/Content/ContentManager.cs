@@ -38,11 +38,41 @@ public class ContentManager : Disposable {
         this._processors = new Dictionary<Type, IContentProcessor>();
         
         // Add default processors.
-        this.TryAddProcessors(typeof(Font), new FontProcessor());
-        this.TryAddProcessors(typeof(Texture2D), new TextureProcessor());
-        this.TryAddProcessors(typeof(Effect), new EffectProcessor());
-        this.TryAddProcessors(typeof(Model), new ModelProcessor());
-        this.TryAddProcessors(typeof(AudioClip), new AudioClipProcessor());
+        this.AddProcessors(typeof(Font), new FontProcessor());
+        this.AddProcessors(typeof(Texture2D), new TextureProcessor());
+        this.AddProcessors(typeof(Effect), new EffectProcessor());
+        this.AddProcessors(typeof(Model), new ModelProcessor());
+        this.AddProcessors(typeof(AudioClip), new AudioClipProcessor());
+    }
+
+    /// <summary>
+    /// Retrieves all registered content processors.
+    /// </summary>
+    /// <returns>An array of <see cref="IContentProcessor"/> instances representing the registered processors.</returns>
+    public IContentProcessor[] GetProcessors() {
+        return this._processors.Values.ToArray();
+    }
+
+    /// <summary>
+    /// Determines whether a content processor exists for the specified type.
+    /// </summary>
+    /// <param name="type">The type to check for an associated content processor.</param>
+    /// <returns>True if a processor exists for the specified type; otherwise, false.</returns>
+    public bool HasProcessor(Type type) {
+        return GetProcessor(type) != null;
+    }
+
+    /// <summary>
+    /// Retrieves a content processor for the specified type, if one exists.
+    /// </summary>
+    /// <param name="type">The type of content for which the processor is requested.</param>
+    /// <returns>The content processor for the specified type, or null if no processor is registered.</returns>
+    public IContentProcessor? GetProcessor(Type type) {
+        if (!this.TryGetProcessor(type, out IContentProcessor? processor)) {
+            return null;
+        }
+
+        return processor;
     }
     
     /// <summary>
@@ -58,6 +88,15 @@ public class ContentManager : Disposable {
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Adds a new content processor for a specific content type.
+    /// </summary>
+    /// <param name="type">The type of content the processor will handle.</param>
+    /// <param name="processor">The content processor to associate with the specified type.</param>
+    public void AddProcessors(Type type, IContentProcessor processor) {
+        this.TryAddProcessors(type, processor);
     }
     
     /// <summary>
@@ -134,12 +173,7 @@ public class ContentManager : Disposable {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             foreach (object item in this._content) {
-                if (!this.TryGetProcessor(item.GetType(), out IContentProcessor? processor)) {
-                    Logger.Error($"Failed to find a valid ContentProcessor for type: [{item.GetType()}]");
-                }
-                else {
-                    processor!.Unload(item!);
-                }
+                this.GetProcessor(item.GetType())!.Unload(item);
             }
             
             this._content.Clear();
