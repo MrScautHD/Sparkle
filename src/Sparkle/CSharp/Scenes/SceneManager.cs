@@ -1,4 +1,3 @@
-using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -21,9 +20,9 @@ public static class SceneManager {
 
     public static Simulation? Simulation => ActiveScene?.Simulation;
 
-    internal static void Init(GraphicsDevice graphicsDevice, IWindow window, OutputDescription output, Scene? defaultScene = null) {
+    internal static void Init(GraphicsDevice graphicsDevice, IWindow window, Scene? defaultScene = null) {
         ActiveScene = defaultScene;
-        FilterRenderPass = new FullScreenRenderPass(graphicsDevice, output); // TODO: Make bliss compatible with dynamic effect set.
+        FilterRenderPass = new FullScreenRenderPass(graphicsDevice);
         FilterRenderTexture = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight());
     }
 

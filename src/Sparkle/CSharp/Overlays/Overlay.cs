@@ -28,16 +28,19 @@ public abstract class Overlay {
     /// <summary>
     /// Updates the overlay each frame.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) { }
     
     /// <summary>
     /// Executes logic after the update step.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) { }
     
     /// <summary>
     /// Executes fixed-step updates for the overlay.
     /// </summary>
+    /// <param name="timeStep">The fixed time step interval for the update.</param>
     protected internal virtual void FixedUpdate(double timeStep) { }
 
     /// <summary>

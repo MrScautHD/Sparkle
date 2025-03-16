@@ -1,4 +1,5 @@
 using Bliss.CSharp;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
@@ -14,6 +15,7 @@ public abstract class Scene : Disposable {
     public SceneType Type { get; private set; }
     
     public Simulation Simulation { get; private set; }
+    public Effect? FilterEffect { get; private set; }
     // TODO: Add Skybox
     // TODO: Add FilterEffect
 
@@ -147,6 +149,14 @@ public abstract class Scene : Disposable {
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Sets the filter effect to be applied to the scene during rendering.
+    /// </summary>
+    /// <param name="effect">The filter effect to apply. Pass null to remove the current filter effect.</param>
+    public void SetFilterEffect(Effect? effect) {
+        this.FilterEffect = effect;
     }
 
     protected override void Dispose(bool disposing) {

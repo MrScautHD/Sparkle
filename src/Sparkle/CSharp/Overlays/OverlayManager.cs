@@ -21,6 +21,7 @@ public static class OverlayManager {
     /// <summary>
     /// Updates all enabled overlays.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     internal static void OnUpdate(double delta) {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
@@ -32,6 +33,7 @@ public static class OverlayManager {
     /// <summary>
     /// Executes logic after the update step for all enabled overlays.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     internal static void OnAfterUpdate(double delta) {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
@@ -43,6 +45,7 @@ public static class OverlayManager {
     /// <summary>
     /// Executes fixed-step updates for all enabled overlays.
     /// </summary>
+    /// <param name="timeStep">The fixed time step interval for the update.</param>
     internal static void OnFixedUpdate(double timeStep) {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {

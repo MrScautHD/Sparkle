@@ -51,6 +51,7 @@ public class Entity : Disposable {
     /// <summary>
     /// Called every tick to update the entity's logic.  
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) {
         foreach (Component component in this.Components.Values) {
             component.Update(delta);
@@ -60,6 +61,7 @@ public class Entity : Disposable {
     /// <summary>
     /// Called after the main update phase.  
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) {
         foreach (Component component in this.Components.Values) {
             component.AfterUpdate(delta);
@@ -69,6 +71,7 @@ public class Entity : Disposable {
     /// <summary>
     /// Called at fixed time intervals to handle physics-related updates.  
     /// </summary>
+    /// <param name="timeStep">The fixed time step interval for the update.</param>
     protected internal virtual void FixedUpdate(double timeStep) {
         foreach (Component component in this.Components.Values) {
             component.FixedUpdate(timeStep);

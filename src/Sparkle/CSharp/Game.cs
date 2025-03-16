@@ -1,6 +1,5 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
 using Bliss.CSharp.Graphics.Rendering.Passes;
@@ -9,7 +8,6 @@ using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Contexts;
 using Bliss.CSharp.Logging;
-using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
@@ -185,19 +183,19 @@ public class Game : Disposable {
         GlobalResource.Init(graphicsDevice);
         
         Logger.Info("Initialize MSAA render pass...");
-        this.MsaaRenderPass = new FullScreenRenderPass(graphicsDevice, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+        this.MsaaRenderPass = new FullScreenRenderPass(graphicsDevice);
         
         Logger.Info("Initialize MSAA render texture...");
         this.MsaaRenderTexture = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
         
         Logger.Info("Initialize global sprite batch...");
-        this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize global primitive batch...");
         this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription);
         
         Logger.Info("Initialize global immediate renderer...");
-        this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
         
         Logger.Info("Initialize graphics context...");
         this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.MsaaRenderTexture.Framebuffer);
@@ -212,7 +210,7 @@ public class Game : Disposable {
         RegistryManager.Init();
         
         Logger.Info("Initialize scene manager...");
-        SceneManager.Init(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription, scene);
+        SceneManager.Init(graphicsDevice, this.MainWindow, scene);
         
         this.OnRun();
         
@@ -259,7 +257,7 @@ public class Game : Disposable {
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
-            this.MsaaRenderPass.Draw(this.CommandList, this.MsaaRenderTexture);
+            this.MsaaRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
             this.CommandList.End();
             graphicsDevice.SubmitCommands(this.CommandList);
@@ -295,6 +293,7 @@ public class Game : Disposable {
     /// <summary>
     /// Updates the game state, including scene and UI management.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected virtual void Update(double delta) {
         SceneManager.OnUpdate(delta);
         OverlayManager.OnUpdate(delta);
@@ -303,6 +302,7 @@ public class Game : Disposable {
     /// <summary>
     /// Final update after regular updates are completed.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected virtual void AfterUpdate(double delta) {
         SceneManager.OnAfterUpdate(delta);
         OverlayManager.OnAfterUpdate(delta);
@@ -311,6 +311,7 @@ public class Game : Disposable {
     /// <summary>
     /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
+    /// <param name="timeStep">The fixed time step interval for the update.</param>
     protected virtual void FixedUpdate(double timeStep) {
         SceneManager.OnFixedUpdate(timeStep);
         OverlayManager.OnFixedUpdate(timeStep);

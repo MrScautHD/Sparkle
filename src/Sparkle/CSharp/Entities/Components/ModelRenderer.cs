@@ -1,7 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
@@ -11,20 +10,51 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class ModelRenderer : Component {
 
-    private Model _model;
-    private BoundingBox _box;
-    private Sampler? _sampler;
-    private Color _color;
-    private bool _drawWires;
+    /// <summary>
+    /// The model to be rendered.
+    /// </summary>
+    public Model Model { get; private set; }
     
-    public ModelRenderer(Model model, Vector3 offsetPos, Sampler? sampler = null, bool drawWires = false, Color? color = null) : base(offsetPos) {
-        this._model = model;
-        this._box = model.BoundingBox;
-        this._sampler = sampler;
-        this._color = color ?? Color.White;
-        this._drawWires = drawWires;
-    }
+    /// <summary>
+    /// The sampler used for texturing the model, can be null.
+    /// </summary>
+    public Sampler? Sampler;
+    
+    /// <summary>
+    /// The color applied to the model. Defaults to white if not provided.
+    /// </summary>
+    public Color Color;
+    
+    /// <summary>
+    /// Indicates whether the model should be rendered as a wireframe.
+    /// </summary>
+    public bool DrawWires;
 
+    /// <summary>
+    /// The bounding box of the model used for visibility checks.
+    /// </summary>
+    private BoundingBox _box;
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModelRenderer"/> class.
+    /// </summary>
+    /// <param name="model">The model to render.</param>
+    /// <param name="offsetPos">The position offset of the model relative to its parent entity.</param>
+    /// <param name="sampler">Optional sampler to apply to the model's textures.</param>
+    /// <param name="drawWires">Whether to draw the model in wireframe mode.</param>
+    /// <param name="color">Optional color to apply to the model.</param>
+    public ModelRenderer(Model model, Vector3 offsetPos, Sampler? sampler = null, bool drawWires = false, Color? color = null) : base(offsetPos) {
+        this.Model = model;
+        this.Sampler = sampler;
+        this.Color = color ?? Color.White;
+        this.DrawWires = drawWires;
+        this._box = model.BoundingBox;
+    }
+    
+    /// <summary>
+    /// Updates the bounding box of the model based on its position and dimensions.
+    /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
         
@@ -47,7 +77,7 @@ public class ModelRenderer : Component {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Transform.Rotation)) {
-            this._model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Framebuffer.OutputDescription, this._sampler, this._drawWires, this._color);
+            this.Model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Framebuffer.OutputDescription, this.Sampler, this.DrawWires, this.Color);
         }
     }
 }

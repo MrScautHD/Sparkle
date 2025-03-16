@@ -34,21 +34,26 @@ public abstract class Component : Disposable {
     /// Called when the component is first initialized.
     /// </summary>
     protected internal virtual void Init() { }
-    
+
     /// <summary>
     /// Called every frame to update the component's logic.
     /// </summary>
-    protected internal virtual void Update(double delta) { }
-    
+    /// <param name="delta">The time delta since the last update.</param>
+    protected internal virtual void Update(double delta) {
+    }
+
     /// <summary>
     /// Called after the main update phase to handle additional logic.
     /// </summary>
+    /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) { }
-    
+
     /// <summary>
     /// Called at fixed time intervals for physics-related updates.
     /// </summary>
-    protected internal virtual void FixedUpdate(double timeStep) { }
+    /// <param name="timeStep">The fixed time step interval for the update.</param>
+    protected internal virtual void FixedUpdate(double timeStep) {
+    }
 
     /// <summary>
     /// Called to render the component.

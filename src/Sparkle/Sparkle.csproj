@@ -28,7 +28,7 @@
 
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.3.3" />
+        <PackageReference Include="Bliss" Version="1.3.4" />
         <PackageReference Include="Box2D.NetStandard" Version="2.4.7-alpha" />
         <PackageReference Include="Jitter2" Version="2.5.6" />
         <PackageReference Include="LibNoise" Version="0.2.0" />
