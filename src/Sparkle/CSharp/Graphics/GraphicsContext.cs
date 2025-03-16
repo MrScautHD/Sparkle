@@ -31,12 +31,12 @@ public class GraphicsContext {
     /// The immediate renderer for low-level rendering operations.
     /// </summary>
     public ImmediateRenderer ImmediateRenderer { get; private set; }
-    
+
     /// <summary>
-    /// The output description that defines the rendering target format.
+    /// The framebuffer used for rendering operations.
     /// </summary>
-    public OutputDescription Output { get; private set; }
-    
+    public Framebuffer Framebuffer { get; private set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
@@ -45,13 +45,13 @@ public class GraphicsContext {
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering shapes.</param>
     /// <param name="immediateRenderer">The immediate renderer for low-level drawing.</param>
-    /// <param name="output">The output description specifying rendering output details.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, OutputDescription output) {
+    /// <param name="framebuffer">The framebuffer to render into.</param>
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, Framebuffer framebuffer) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
         this.ImmediateRenderer = immediateRenderer;
-        this.Output = output;
+        this.Framebuffer = framebuffer;
     }
 }

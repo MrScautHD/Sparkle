@@ -200,7 +200,7 @@ public class Game : Disposable {
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.MsaaRenderTexture.Framebuffer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -212,7 +212,7 @@ public class Game : Disposable {
         RegistryManager.Init();
         
         Logger.Info("Initialize scene manager...");
-        SceneManager.Init(scene);
+        SceneManager.Init(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription, scene);
         
         this.OnRun();
         
@@ -356,6 +356,7 @@ public class Game : Disposable {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            SceneManager.Destroy();
             OverlayManager.Destroy();
             RegistryManager.Destroy();
             

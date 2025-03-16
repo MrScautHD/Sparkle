@@ -10,16 +10,13 @@ namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TestScene3D : Scene {
     
-    public TestScene3D(string name) : base(name, SceneType.Scene3D) {
-        
-    }
+    public TestScene3D(string name) : base(name, SceneType.Scene3D) { }
 
     protected override void Init() {
         base.Init();
-
-        float aspectRatio = (float) Game.Instance.MainWindow.GetWidth() / (float) Game.Instance.MainWindow.GetHeight();
         
         // CAMERA
+        float aspectRatio = (float) Game.Instance.MainWindow.GetWidth() / (float) Game.Instance.MainWindow.GetHeight();
         Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Orbital);
         this.AddEntity(camera3D);
         

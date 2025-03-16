@@ -1,21 +1,30 @@
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Passes;
+using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
+using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Physics;
+using Veldrid;
 
 namespace Sparkle.CSharp.Scenes;
 
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
+    public static FullScreenRenderPass FilterRenderPass { get; private set; }
+    public static RenderTexture2D FilterRenderTexture { get; private set; }
 
     public static Camera2D? ActiveCam2D;
     public static Camera3D? ActiveCam3D;
 
     public static Simulation? Simulation => ActiveScene?.Simulation;
 
-    internal static void Init(Scene? defaultScene = null) {
+    internal static void Init(GraphicsDevice graphicsDevice, IWindow window, OutputDescription output, Scene? defaultScene = null) {
         ActiveScene = defaultScene;
+        FilterRenderPass = new FullScreenRenderPass(graphicsDevice, output); // TODO: Make bliss compatible with dynamic effect set.
+        FilterRenderTexture = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight());
     }
 
     internal static void OnInit() {

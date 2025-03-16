@@ -47,7 +47,7 @@ public class ModelRenderer : Component {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Transform.Rotation)) {
-            this._model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Output, this._sampler, this._drawWires, this._color);
+            this._model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Framebuffer.OutputDescription, this._sampler, this._drawWires, this._color);
         }
     }
 }
