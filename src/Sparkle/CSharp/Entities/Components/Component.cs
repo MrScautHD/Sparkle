@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp;
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 
 namespace Sparkle.CSharp.Entities.Components;
@@ -37,21 +38,33 @@ public abstract class Component : Disposable {
     /// <summary>
     /// Called every frame to update the component's logic.
     /// </summary>
-    protected internal virtual void Update() { }
+    protected internal virtual void Update(double delta) { }
     
     /// <summary>
     /// Called after the main update phase to handle additional logic.
     /// </summary>
-    protected internal virtual void AfterUpdate() { }
+    protected internal virtual void AfterUpdate(double delta) { }
     
     /// <summary>
     /// Called at fixed time intervals for physics-related updates.
     /// </summary>
-    protected internal virtual void FixedUpdate() { }
+    protected internal virtual void FixedUpdate(double timeStep) { }
 
     /// <summary>
     /// Called to render the component.
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
     protected internal virtual void Draw(GraphicsContext context) { }
+    
+    /// <summary>
+    /// Called when the window is resized.
+    /// </summary>
+    /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
+    protected internal virtual void Resize(Rectangle rectangle) { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this.Entity.Components.Remove(this.GetType());
+        }
+    }
 }

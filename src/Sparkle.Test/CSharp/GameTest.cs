@@ -17,6 +17,6 @@ public class GameTest : Game {
         base.Init();
 
         TestOverlay overlay = new TestOverlay("TEST", true);
-        OverlayManager.Add(overlay);
+        OverlayManager.AddOverlay(overlay);
     }
 }

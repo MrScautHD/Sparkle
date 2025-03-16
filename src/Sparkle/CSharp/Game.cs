@@ -19,6 +19,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
+using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp;
@@ -129,7 +130,7 @@ public class Game : Disposable {
     /// Starts the game loop, initializing all necessary components and running the game.
     /// </summary>
     /// <param name="scene">The scene to load initially.</param>
-    public void Run(/*Scene? scene*/) {
+    public void Run(Scene? scene) {
         if (this.Settings.LogDirectory != string.Empty) {
             this._logFileWriter = new LogFileWriter(this.Settings.LogDirectory);
             Logger.Message += this._logFileWriter.WriteFileMsg;
@@ -199,7 +200,7 @@ public class Game : Disposable {
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.MsaaRenderTexture.Framebuffer.OutputDescription);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -210,13 +211,13 @@ public class Game : Disposable {
         Logger.Info("Initialize registry manager...");
         RegistryManager.Init();
         
+        Logger.Info("Initialize scene manager...");
+        SceneManager.Init(scene);
+        
         this.OnRun();
         
         Logger.Info("Load content...");
         this.Load(this.Content);
-
-        //Logger.Info("Set default scene...");
-        //SceneManager.SetDefaultScene(scene);
         
         this.Init();
 
@@ -231,12 +232,12 @@ public class Game : Disposable {
             Input.Begin();
             
             AudioContext.Update();
-            this.Update();
-            this.AfterUpdate();
+            this.Update(Time.Delta);
+            this.AfterUpdate(Time.Delta);
 
             this._fixedUpdateTimer += Time.Delta;
             while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
-                this.FixedUpdate();
+                this.FixedUpdate(1.0F / this._fixedUpdateTimeStep);
                 this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
             }
             
@@ -288,33 +289,38 @@ public class Game : Disposable {
     /// </summary>
     protected virtual void Init() {
         RegistryManager.OnInit();
+        SceneManager.OnInit();
     }
 
     /// <summary>
     /// Updates the game state, including scene and UI management.
     /// </summary>
-    protected virtual void Update() {
-        OverlayManager.OnUpdate();
+    protected virtual void Update(double delta) {
+        SceneManager.OnUpdate(delta);
+        OverlayManager.OnUpdate(delta);
     }
     
     /// <summary>
     /// Final update after regular updates are completed.
     /// </summary>
-    protected virtual void AfterUpdate() {
-        OverlayManager.OnAfterUpdate();
+    protected virtual void AfterUpdate(double delta) {
+        SceneManager.OnAfterUpdate(delta);
+        OverlayManager.OnAfterUpdate(delta);
     }
     
     /// <summary>
     /// Performs fixed update actions, usually for physics or time-based events.
     /// </summary>
-    protected virtual void FixedUpdate() {
-        OverlayManager.OnFixedUpdate();
+    protected virtual void FixedUpdate(double timeStep) {
+        SceneManager.OnFixedUpdate(timeStep);
+        OverlayManager.OnFixedUpdate(timeStep);
     }
     
     /// <summary>
     /// Renders the game scene to the screen.
     /// </summary>
     protected virtual void Draw(GraphicsContext context) {
+        SceneManager.OnDraw(context);
         OverlayManager.OnDraw(context);
     }
 
@@ -323,6 +329,9 @@ public class Game : Disposable {
     /// </summary>
     protected virtual void OnResize(Rectangle rectangle) {
         this.GraphicsDevice.MainSwapchain.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        this.MsaaRenderTexture.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        SceneManager.OnResize(rectangle);
+        OverlayManager.OnResize(rectangle);
     }
 
     /// <summary>

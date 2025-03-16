@@ -33,18 +33,25 @@ public class GraphicsContext {
     public ImmediateRenderer ImmediateRenderer { get; private set; }
     
     /// <summary>
+    /// The output description that defines the rendering target format.
+    /// </summary>
+    public OutputDescription Output { get; private set; }
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
-    /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/> used for rendering.</param>
-    /// <param name="commandList">The <see cref="CommandList"/> for submitting draw commands.</param>
-    /// <param name="spriteBatch">The <see cref="SpriteBatch"/> for rendering sprites.</param>
-    /// <param name="primitiveBatch">The <see cref="PrimitiveBatch"/> for drawing geometric shapes.</param>
-    /// <param name="immediateRenderer">The <see cref="ImmediateRenderer"/> for direct rendering operations.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
+    /// <param name="graphicsDevice">The graphics device to use.</param>
+    /// <param name="commandList">The command list for issuing rendering commands.</param>
+    /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
+    /// <param name="primitiveBatch">The primitive batch for rendering shapes.</param>
+    /// <param name="immediateRenderer">The immediate renderer for low-level drawing.</param>
+    /// <param name="output">The output description specifying rendering output details.</param>
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, OutputDescription output) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
         this.ImmediateRenderer = immediateRenderer;
+        this.Output = output;
     }
 }

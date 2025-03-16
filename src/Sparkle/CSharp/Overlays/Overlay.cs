@@ -1,3 +1,4 @@
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 
 namespace Sparkle.CSharp.Overlays;
@@ -27,21 +28,27 @@ public abstract class Overlay {
     /// <summary>
     /// Updates the overlay each frame.
     /// </summary>
-    protected internal virtual void Update() { }
+    protected internal virtual void Update(double delta) { }
     
     /// <summary>
     /// Executes logic after the update step.
     /// </summary>
-    protected internal virtual void AfterUpdate() { }
+    protected internal virtual void AfterUpdate(double delta) { }
     
     /// <summary>
     /// Executes fixed-step updates for the overlay.
     /// </summary>
-    protected internal virtual void FixedUpdate() { }
+    protected internal virtual void FixedUpdate(double timeStep) { }
 
     /// <summary>
     /// Draws the overlay.
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
     protected internal abstract void Draw(GraphicsContext context);
+    
+    /// <summary>
+    /// Executes when the window is resized.
+    /// </summary>
+    /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
+    protected internal virtual void Resize(Rectangle rectangle) {}
 }

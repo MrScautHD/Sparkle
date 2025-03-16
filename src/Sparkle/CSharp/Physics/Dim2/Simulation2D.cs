@@ -24,8 +24,12 @@ public class Simulation2D : Simulation {
         this.World = new World(this._settings.Gravity);
     }
 
-    protected internal override void Step(float timeStep) {
-        this.World.Step(timeStep, this._settings.VelocityIterations, this._settings.PositionIterations);
+    /// <summary>
+    /// Performs a single step in the 2D physics simulation based on the given time step.
+    /// </summary>
+    /// <param name="timeStep">The duration of the step in seconds.</param>
+    protected internal override void Step(double timeStep) {
+        this.World.Step((float) timeStep, this._settings.VelocityIterations, this._settings.PositionIterations);
     }
     
     protected override void Dispose(bool disposing) {

@@ -32,8 +32,12 @@ public class Simulation3D : Simulation {
         this.World.NarrowPhaseFilter = new TriangleEdgeCollisionFilter();
     }
 
-    protected internal override void Step(float timeStep) {
-        this.World.Step(timeStep, this._settings.MultiThreaded);
+    /// <summary>
+    /// Performs a single step in the 3D physics simulation based on the specified time step.
+    /// </summary>
+    /// <param name="timeStep">The duration of the simulation step in seconds.</param>
+    protected internal override void Step(double timeStep) {
+        this.World.Step((float) timeStep, this._settings.MultiThreaded);
     }
     
     protected override void Dispose(bool disposing) {

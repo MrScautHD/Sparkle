@@ -1,4 +1,5 @@
 using Bliss.CSharp.Logging;
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 
 namespace Sparkle.CSharp.Overlays;
@@ -8,22 +9,22 @@ public static class OverlayManager {
     /// <summary>
     /// List of active overlays.
     /// </summary>
-    internal static List<Overlay> Overlays;
+    private static List<Overlay> _overlays;
 
     /// <summary>
     /// Initializes the <see cref="OverlayManager"/>, creating the overlay list.
     /// </summary>
     internal static void Init() {
-        Overlays = new List<Overlay>();
+        _overlays = new List<Overlay>();
     }
 
     /// <summary>
     /// Updates all enabled overlays.
     /// </summary>
-    internal static void OnUpdate() {
-        foreach (Overlay overlay in Overlays) {
+    internal static void OnUpdate(double delta) {
+        foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.Update();
+                overlay.Update(delta);
             }
         }
     }
@@ -31,10 +32,10 @@ public static class OverlayManager {
     /// <summary>
     /// Executes logic after the update step for all enabled overlays.
     /// </summary>
-    internal static void OnAfterUpdate() {
-        foreach (Overlay overlay in Overlays) {
+    internal static void OnAfterUpdate(double delta) {
+        foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.AfterUpdate();
+                overlay.AfterUpdate(delta);
             }
         }
     }
@@ -42,10 +43,10 @@ public static class OverlayManager {
     /// <summary>
     /// Executes fixed-step updates for all enabled overlays.
     /// </summary>
-    internal static void OnFixedUpdate() {
-        foreach (Overlay overlay in Overlays) {
+    internal static void OnFixedUpdate(double timeStep) {
+        foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.FixedUpdate();
+                overlay.FixedUpdate(timeStep);
             }
         }
     }
@@ -55,7 +56,7 @@ public static class OverlayManager {
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
     internal static void OnDraw(GraphicsContext context) {
-        foreach (Overlay overlay in Overlays) {
+        foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
                 overlay.Draw(context);
             }
@@ -63,28 +64,45 @@ public static class OverlayManager {
     }
 
     /// <summary>
-    /// Adds an overlay to the manager.
+    /// Executes when the window is resized.
     /// </summary>
-    /// <param name="overlay">The overlay to add.</param>
-    public static void Add(Overlay overlay) {
-        if (Overlays.Contains(overlay)) {
-            Logger.Warn($"The overlay [{overlay.Name}] is already present in the OverlayManager!");
-        }
-        else {
-            Overlays.Add(overlay);
+    /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
+    internal static void OnResize(Rectangle rectangle) {
+        foreach (Overlay overlay in _overlays) {
+            if (overlay.Enabled) {
+                overlay.Resize(rectangle);
+            }
         }
     }
 
     /// <summary>
+    /// Retrieves the list of active overlays managed by the <see cref="OverlayManager"/>.
+    /// </summary>
+    /// <returns>A collection of overlays currently managed by the <see cref="OverlayManager"/>.</returns>
+    public static IEnumerable<Overlay> GetOverlays() {
+        return _overlays;
+    }
+
+    /// <summary>
+    /// Adds an overlay to the manager.
+    /// </summary>
+    /// <param name="overlay">The overlay to add.</param>
+    public static void AddOverlay(Overlay overlay) {
+        if (_overlays.Contains(overlay)) {
+            Logger.Warn($"The overlay: [{overlay.Name}] is already present in the OverlayManager!");
+        }
+        else {
+            _overlays.Add(overlay);
+        }
+    }
+    
+    /// <summary>
     /// Removes an overlay from the manager.
     /// </summary>
     /// <param name="overlay">The overlay to remove.</param>
-    public static void Remove(Overlay overlay) {
-        if (Overlays.Contains(overlay)) {
-            Overlays.Remove(overlay);
-        }
-        else {
-            Logger.Warn($"Failed to remove the overlay [{overlay.Name}] from the OverlayManager!");
+    public static void RemoveOverlay(Overlay overlay) {
+        if (!_overlays.Remove(overlay)) {
+            Logger.Warn($"Failed to remove the overlay: [{overlay.Name}] from the OverlayManager!");
         }
     }
 
@@ -92,6 +110,6 @@ public static class OverlayManager {
     /// Clears all overlays from the manager.
     /// </summary>
     internal static void Destroy() {
-        Overlays.Clear();
+        _overlays.Clear();
     }
 }

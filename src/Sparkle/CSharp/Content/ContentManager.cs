@@ -46,11 +46,11 @@ public class ContentManager : Disposable {
     }
 
     /// <summary>
-    /// Retrieves all registered content processors.
+    /// Retrieves all content processors currently registered in the content manager.
     /// </summary>
-    /// <returns>An array of <see cref="IContentProcessor"/> instances representing the registered processors.</returns>
-    public IContentProcessor[] GetProcessors() {
-        return this._processors.Values.ToArray();
+    /// <returns>An enumerable collection of the registered content processors.</returns>
+    public IEnumerable<IContentProcessor> GetProcessors() {
+        return this._processors.Values;
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class ContentManager : Disposable {
     /// <param name="type">The type to check for an associated content processor.</param>
     /// <returns>True if a processor exists for the specified type; otherwise, false.</returns>
     public bool HasProcessor(Type type) {
-        return GetProcessor(type) != null;
+        return this._processors.ContainsKey(type);
     }
 
     /// <summary>
@@ -82,12 +82,7 @@ public class ContentManager : Disposable {
     /// <param name="processor">The found content processor, or null if not found.</param>
     /// <returns>True if a processor was found, otherwise false.</returns>
     public bool TryGetProcessor(Type type, out IContentProcessor? processor) {
-        if (!this._processors.TryGetValue(type, out processor)) {
-            Logger.Error($"Unable to locate ContentProcessor for type: [{type}]");
-            return false;
-        }
-
-        return true;
+        return this._processors.TryGetValue(type, out processor);
     }
 
     /// <summary>
@@ -96,7 +91,9 @@ public class ContentManager : Disposable {
     /// <param name="type">The type of content the processor will handle.</param>
     /// <param name="processor">The content processor to associate with the specified type.</param>
     public void AddProcessors(Type type, IContentProcessor processor) {
-        this.TryAddProcessors(type, processor);
+        if (!this.TryAddProcessors(type, processor)) {
+            throw new Exception($"ContentProcessor for type: [{type}] already exists.");
+        }
     }
     
     /// <summary>
@@ -106,12 +103,7 @@ public class ContentManager : Disposable {
     /// <param name="processor">The content processor instance.</param>
     /// <returns>True if successfully added, otherwise false.</returns>
     public bool TryAddProcessors(Type type, IContentProcessor processor) {
-        if (!this._processors.TryAdd(type, processor)) {
-            Logger.Error($"ContentProcessor for type [{type}] already exists.");
-            return false;
-        }
-
-        return true;
+        return this._processors.TryAdd(type, processor);
     }
 
     /// <summary>
@@ -166,7 +158,7 @@ public class ContentManager : Disposable {
             }
         }
         else {
-           Logger.Warn($"Attempted to unload an item of type [{typeof(T)}] that was not loaded in the ContentManager.");
+           Logger.Warn($"Attempted to unload an item of type: [{typeof(T)}] that was not loaded in the ContentManager.");
         }
     }
     

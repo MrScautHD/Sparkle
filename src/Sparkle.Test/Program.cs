@@ -6,4 +6,4 @@ GameSettings settings = new GameSettings() {
 };
 
 using GameTest game = new GameTest(settings);
-game.Run();
+game.Run(null);

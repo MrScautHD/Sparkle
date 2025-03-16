@@ -1,4 +1,3 @@
-using Bliss.CSharp.Logging;
 using Sparkle.CSharp.Content;
 
 namespace Sparkle.CSharp.Registries;
@@ -41,11 +40,11 @@ public static class RegistryManager {
     }
 
     /// <summary>
-    /// Retrieves all registered <see cref="Registry"/> instances as an array.
+    /// Retrieves an enumerable collection of all active registry instances managed by the registry manager.
     /// </summary>
-    /// <returns>An array containing all registered <see cref="Registry"/> instances.</returns>
-    public static Registry[] GetRegistries() {
-        return Registries.Values.ToArray();
+    /// <returns>An enumerable collection of <see cref="Registry"/> instances currently registered.</returns>
+    public static IEnumerable<Registry> GetRegistries() {
+        return Registries.Values;
     }
 
     /// <summary>
@@ -54,7 +53,7 @@ public static class RegistryManager {
     /// <typeparam name="T">The type of the registry to check for.</typeparam>
     /// <returns>True if a registry of the specified type exists; otherwise, false.</returns>
     public static bool HasRegistry<T>() where T : Registry {
-        return GetRegistry<T>() != null;
+        return Registries.ContainsKey(typeof(T));
     }
 
     /// <summary>
@@ -78,7 +77,6 @@ public static class RegistryManager {
     /// <returns>Returns true if the registry is successfully located; otherwise, false.</returns>
     public static bool TryGetRegistry<T>(out T? registry) where T : Registry {
         if (!Registries.TryGetValue(typeof(T), out Registry? result)) {
-            Logger.Error($"Unable to locate Registry for type [{typeof(T)}]!");
             registry = null;
             return false;
         }
@@ -92,7 +90,9 @@ public static class RegistryManager {
     /// </summary>
     /// <param name="registry">The registry instance to add to the manager.</param>
     public static void AddRegistry(Registry registry) {
-        TryAddRegistry(registry);
+        if (!TryAddRegistry(registry)) {
+            throw new Exception($"The registry type: [{nameof(registry)}] is already present in the RegistryManager!");
+        }
     }
 
     /// <summary>
@@ -102,7 +102,6 @@ public static class RegistryManager {
     /// <returns>Returns true if the registry was successfully added; false if the registry type is already present.</returns>
     public static bool TryAddRegistry(Registry registry) {
         if (Registries.ContainsKey(registry.GetType())) {
-            Logger.Error($"The registry type [{registry.GetType().Name}] is already present in the RegistryManager!");
             return false;
         }
         
@@ -115,7 +114,9 @@ public static class RegistryManager {
     /// </summary>
     /// <param name="registry">The registry to be removed.</param>
     public static void RemoveRegistry(Registry registry) {
-        TryRemoveRegistry(registry);
+        if (!TryRemoveRegistry(registry)) {
+            throw new Exception($"Failed to Remove/Dispose the registry type: [{nameof(registry)}] from the RegistryManager!");
+        }
     }
 
     /// <summary>
@@ -125,7 +126,6 @@ public static class RegistryManager {
     /// <returns>True if the registry is successfully removed; otherwise, false if the registry does not exist in the list.</returns>
     public static bool TryRemoveRegistry(Registry registry) {
         if (!Registries.ContainsKey(registry.GetType())) {
-            Logger.Error($"Failed to Remove/Dispose the registry type [{registry.GetType().Name}] from the RegistryManager!");
             return false;
         }
         
@@ -144,7 +144,9 @@ public static class RegistryManager {
     /// </summary>
     /// <typeparam name="T">The type of the registry to remove.</typeparam>
     public static void RemoveRegistry<T>() where T : Registry {
-        TryRemoveRegistry<T>();
+        if (!TryRemoveRegistry<T>()) {
+            throw new Exception($"Failed to Remove/Dispose the registry type: [{nameof(T)}] from the RegistryManager!");
+        }
     }
 
     /// <summary>
@@ -154,7 +156,6 @@ public static class RegistryManager {
     /// <returns>True if the registry was successfully removed; otherwise, false.</returns>
     public static bool TryRemoveRegistry<T>() where T : Registry {
         if (!Registries.TryGetValue(typeof(T), out Registry? registry)) {
-            Logger.Error($"Failed to Remove/Dispose the registry type [{typeof(T).Name}] from the RegistryManager!");
             return false;
         }
     
