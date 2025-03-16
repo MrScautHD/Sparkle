@@ -37,7 +37,19 @@ public static class SceneManager {
     }
 
     internal static void OnDraw(GraphicsContext context) {
-        ActiveScene?.Draw(context);
+        switch (ActiveScene?.Type) {
+            case SceneType.Scene2D:
+                ActiveCam2D?.Begin(context.CommandList);
+                ActiveScene.Draw(context);
+                ActiveCam2D?.End();
+                break;
+            
+            case SceneType.Scene3D:
+                ActiveCam3D?.Begin(context.CommandList);
+                ActiveScene.Draw(context);
+                ActiveCam3D?.End();
+                break;
+        }
     }
 
     internal static void OnResize(Rectangle rectangle) {

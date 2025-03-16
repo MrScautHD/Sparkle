@@ -1,9 +1,10 @@
 using System.Numerics;
-using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
@@ -39,10 +40,12 @@ public class ModelRenderer : Component {
 
     protected internal override void Draw(GraphicsContext context) {
         base.Draw(context);
-
-        Cam3D cam3D = default;
-        // Cam code....
-
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D == null) {
+            return;
+        }
+        
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Transform.Rotation)) {
             this._model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Output, this._sampler, this._drawWires, this._color);
         }

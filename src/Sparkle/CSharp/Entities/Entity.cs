@@ -2,6 +2,7 @@ using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -250,6 +251,8 @@ public class Entity : Disposable {
                     this.Components.Remove(component.GetType());
                 }
             }
+
+            SceneManager.ActiveScene?.Entities.Remove(this.Id);
         }
     }
 }

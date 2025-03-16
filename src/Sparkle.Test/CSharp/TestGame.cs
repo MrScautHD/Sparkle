@@ -4,9 +4,9 @@ using Sparkle.CSharp.Registries;
 
 namespace Sparkle.Test.CSharp;
 
-public class GameTest : Game {
+public class TestGame : Game {
     
-    public GameTest(GameSettings settings) : base(settings) { }
+    public TestGame(GameSettings settings) : base(settings) { }
 
     protected override void OnRun() {
         base.OnRun();

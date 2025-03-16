@@ -1,9 +1,10 @@
 ﻿using Sparkle.CSharp;
 using Sparkle.Test.CSharp;
+using Sparkle.Test.CSharp.Dim3D;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]"
 };
 
-using GameTest game = new GameTest(settings);
-game.Run(null);
+using TestGame testGame = new TestGame(settings);
+testGame.Run(new TestScene3D("Test - [3D]"));

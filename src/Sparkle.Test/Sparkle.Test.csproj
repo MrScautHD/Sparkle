@@ -25,6 +25,5 @@
     
     <ItemGroup>
       <Folder Include="CSharp\Dim2D\" />
-      <Folder Include="CSharp\Dim3D\" />
     </ItemGroup>
 </Project>

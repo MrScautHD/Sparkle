@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities;
@@ -137,7 +138,11 @@ public class Camera3D : Entity {
     /// <param name="delta">The time elapsed since the last frame update, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-        this._cam3D.Update(Time.Delta);
+
+        // To make sure just the active camera moves from the input.
+        if (SceneManager.ActiveCam3D == this) {
+            this._cam3D.Update(Time.Delta);
+        }
     }
 
     /// <summary>

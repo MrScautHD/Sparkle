@@ -20,8 +20,6 @@ public abstract class Scene : Disposable {
     internal Dictionary<uint, Entity> Entities;
     private uint _entityIds;
     
-    //public bool HasInitialized { get; private set; }
-
     protected Scene(string name, SceneType type, Simulation? simulation = null) {
         this.Name = name;
         this.Type = type;
