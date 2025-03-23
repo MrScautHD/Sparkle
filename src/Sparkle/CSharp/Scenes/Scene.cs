@@ -6,6 +6,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim3;
+using Veldrid;
 
 namespace Sparkle.CSharp.Scenes;
 
@@ -51,9 +52,9 @@ public abstract class Scene : Disposable {
         }
     }
 
-    protected internal virtual void Draw(GraphicsContext context) {
+    protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         foreach (Entity entity in this.Entities.Values) {
-            entity.Draw(context);
+            entity.Draw(context, framebuffer);
         }
     }
 

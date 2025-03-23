@@ -68,8 +68,8 @@ public class ModelRenderer : Component {
         this._box.Max.Z = this.GlobalPos.Z + dimension.Z / 2;
     }
 
-    protected internal override void Draw(GraphicsContext context) {
-        base.Draw(context);
+    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        base.Draw(context, framebuffer);
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
         if (cam3D == null) {
@@ -77,7 +77,16 @@ public class ModelRenderer : Component {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.GlobalPos, this.Entity.Transform.Rotation)) {
-            this.Model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, context.Framebuffer.OutputDescription, this.Sampler, this.DrawWires, this.Color);
+            RasterizerStateDescription? rasterizerState = null;
+            
+            if (this.DrawWires) {
+                rasterizerState = RasterizerStateDescription.DEFAULT with {
+                    CullMode = FaceCullMode.None,
+                    FillMode = PolygonFillMode.Wireframe
+                };
+            }
+            
+            this.Model.Draw(context.CommandList, new Transform() { Translation = this.GlobalPos }, framebuffer.OutputDescription, this.Sampler, null, rasterizerState, this.Color);
         }
     }
 }

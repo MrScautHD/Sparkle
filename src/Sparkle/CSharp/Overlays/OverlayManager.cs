@@ -1,6 +1,8 @@
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Veldrid;
 
 namespace Sparkle.CSharp.Overlays;
 
@@ -53,15 +55,16 @@ public static class OverlayManager {
             }
         }
     }
-    
+
     /// <summary>
-    /// Draws all enabled overlays.
+    /// Draws all active overlays using the provided graphics context and framebuffer.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    internal static void OnDraw(GraphicsContext context) {
+    /// <param name="context">The graphics context used for rendering operations.</param>
+    /// <param name="framebuffer">The framebuffer to which the overlays are rendered.</param>
+    internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.Draw(context);
+                overlay.Draw(context, framebuffer);
             }
         }
     }

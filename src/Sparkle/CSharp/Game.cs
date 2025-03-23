@@ -192,13 +192,13 @@ public class Game : Disposable {
         this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize global primitive batch...");
-        this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+        this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize global immediate renderer...");
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.MsaaRenderTexture.Framebuffer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -210,7 +210,7 @@ public class Game : Disposable {
         RegistryManager.Init();
         
         Logger.Info("Initialize scene manager...");
-        SceneManager.Init(graphicsDevice, this.MainWindow, scene);
+        SceneManager.Init(graphicsDevice, this.MainWindow, scene, this.Settings.SampleCount);
         
         this.OnRun();
         
@@ -239,27 +239,32 @@ public class Game : Disposable {
                 this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
             }
             
+            // Draw.
             this.CommandList.Begin();
             this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-        
-            this.Draw(this.GraphicsContext);
-
-            this.CommandList.End();
-            graphicsDevice.SubmitCommands(this.CommandList);
             
-            this.CommandList.Begin();
-
+            this.GlobalSpriteBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+            this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+            
+            this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
+            
+            this.GlobalSpriteBatch.End();
+            this.GlobalPrimitiveBatch.End();
+            
+            // Apply MSAA.
             if (this.MsaaRenderTexture.SampleCount != TextureSampleCount.Count1) {
                 this.CommandList.ResolveTexture(this.MsaaRenderTexture.ColorTexture, this.MsaaRenderTexture.DestinationTexture);
             }
             
+            // Draw MSAA texture.
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
             this.MsaaRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
             this.CommandList.End();
+            graphicsDevice.WaitForIdle();
             graphicsDevice.SubmitCommands(this.CommandList);
             graphicsDevice.SwapBuffers();
             
@@ -320,9 +325,9 @@ public class Game : Disposable {
     /// <summary>
     /// Renders the game scene to the screen.
     /// </summary>
-    protected virtual void Draw(GraphicsContext context) {
-        SceneManager.OnDraw(context);
-        OverlayManager.OnDraw(context);
+    protected virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        SceneManager.OnDraw(context, framebuffer);
+        OverlayManager.OnDraw(context, framebuffer);
     }
 
     /// <summary>

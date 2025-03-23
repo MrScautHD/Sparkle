@@ -22,8 +22,4 @@
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="CSharp\Dim2D\" />
-    </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -39,8 +40,7 @@ public abstract class Component : Disposable {
     /// Called every frame to update the component's logic.
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
-    protected internal virtual void Update(double delta) {
-    }
+    protected internal virtual void Update(double delta) { }
 
     /// <summary>
     /// Called after the main update phase to handle additional logic.
@@ -52,15 +52,15 @@ public abstract class Component : Disposable {
     /// Called at fixed time intervals for physics-related updates.
     /// </summary>
     /// <param name="timeStep">The fixed time step interval for the update.</param>
-    protected internal virtual void FixedUpdate(double timeStep) {
-    }
+    protected internal virtual void FixedUpdate(double timeStep) { }
 
     /// <summary>
-    /// Called to render the component.
+    /// Called to render the component using the provided graphics context and framebuffer.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    protected internal virtual void Draw(GraphicsContext context) { }
-    
+    /// <param name="context">The graphics context used for rendering operations.</param>
+    /// <param name="framebuffer">The framebuffer where the rendering occurs.</param>
+    protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) { }
+
     /// <summary>
     /// Called when the window is resized.
     /// </summary>

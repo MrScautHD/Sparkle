@@ -3,6 +3,7 @@ using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
+using Veldrid;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -77,14 +78,15 @@ public class Entity : Disposable {
             component.FixedUpdate(timeStep);
         }
     }
-    
+
     /// <summary>
-    /// Called every frame to render the entity.  
+    /// Renders the entity and its components using the provided graphics context and framebuffer.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    protected internal virtual void Draw(GraphicsContext context) {
+    /// <param name="context">The graphics context that provides rendering utilities.</param>
+    /// <param name="framebuffer">The framebuffer to which the entity will be rendered.</param>
+    protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         foreach (Component component in this.Components.Values) {
-            component.Draw(context);
+            component.Draw(context, framebuffer);
         }
     }
 

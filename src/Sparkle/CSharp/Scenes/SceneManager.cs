@@ -1,3 +1,4 @@
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -12,18 +13,21 @@ namespace Sparkle.CSharp.Scenes;
 public static class SceneManager {
     
     public static Scene? ActiveScene { get; private set; }
-    public static FullScreenRenderPass FilterRenderPass { get; private set; }
-    public static RenderTexture2D FilterRenderTexture { get; private set; }
 
     public static Camera2D? ActiveCam2D;
     public static Camera3D? ActiveCam3D;
 
     public static Simulation? Simulation => ActiveScene?.Simulation;
 
-    internal static void Init(GraphicsDevice graphicsDevice, IWindow window, Scene? defaultScene = null) {
+    private static FullScreenRenderPass _filterRenderPass;
+    private static RenderTexture2D _filterRenderTexture;
+    private static TextureSampleCount _sampleCount;
+    
+    internal static void Init(GraphicsDevice graphicsDevice, IWindow window, Scene? defaultScene = null, TextureSampleCount sampleCount = TextureSampleCount.Count1) {
         ActiveScene = defaultScene;
-        FilterRenderPass = new FullScreenRenderPass(graphicsDevice);
-        FilterRenderTexture = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight());
+        _sampleCount = sampleCount;
+        _filterRenderPass = new FullScreenRenderPass(graphicsDevice);
+        _filterRenderTexture = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight(), sampleCount);
     }
 
     internal static void OnInit() {
@@ -44,24 +48,37 @@ public static class SceneManager {
         ActiveScene?.FixedUpdate(timeStep);
     }
 
-    internal static void OnDraw(GraphicsContext context) {
+    internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
+        context.CommandList.SetFramebuffer(_filterRenderTexture.Framebuffer);
+        context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+        
         switch (ActiveScene?.Type) {
             case SceneType.Scene2D:
                 ActiveCam2D?.Begin(context.CommandList);
-                ActiveScene.Draw(context);
+                ActiveScene.Draw(context, _filterRenderTexture.Framebuffer);
                 ActiveCam2D?.End();
                 break;
             
             case SceneType.Scene3D:
                 ActiveCam3D?.Begin(context.CommandList);
-                ActiveScene.Draw(context);
+                ActiveScene.Draw(context, _filterRenderTexture.Framebuffer);
                 ActiveCam3D?.End();
                 break;
         }
+        
+        // Apply MSAA. 
+        if (_sampleCount != TextureSampleCount.Count1) {
+            context.CommandList.ResolveTexture(_filterRenderTexture.ColorTexture, _filterRenderTexture.DestinationTexture);
+        }
+        
+        // Draw Post-Processing texture.
+        context.CommandList.SetFramebuffer(framebuffer);
+        _filterRenderPass.Draw(context.CommandList, _filterRenderTexture, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
     }
 
     internal static void OnResize(Rectangle rectangle) {
         ActiveScene?.Resize(rectangle);
+        _filterRenderTexture.Resize((uint) rectangle.Width, (uint) rectangle.Height);
     }
 
     public static void SetScene(Scene? scene) {
@@ -74,5 +91,7 @@ public static class SceneManager {
 
     internal static void Destroy() {
         ActiveScene?.Dispose();
+        _filterRenderPass.Dispose();
+        _filterRenderTexture.Dispose();
     }
 }

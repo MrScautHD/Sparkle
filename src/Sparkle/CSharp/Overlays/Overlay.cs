@@ -1,5 +1,6 @@
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Veldrid;
 
 namespace Sparkle.CSharp.Overlays;
 
@@ -47,8 +48,9 @@ public abstract class Overlay {
     /// Draws the overlay.
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
-    protected internal abstract void Draw(GraphicsContext context);
-    
+    /// <param name="framebuffer">The framebuffer to which the overlay is rendered.</param>
+    protected internal abstract void Draw(GraphicsContext context, Framebuffer framebuffer);
+
     /// <summary>
     /// Executes when the window is resized.
     /// </summary>
