@@ -32,7 +32,7 @@ public class Game : Disposable {
     /// <summary>
     /// The singleton instance of the game.
     /// </summary>
-    public static Game Instance { get; private set; }
+    public static Game? Instance { get; private set; }
     
     /// <summary>
     /// The settings for the game.
@@ -55,9 +55,9 @@ public class Game : Disposable {
     public CommandList CommandList { get; private set; }
 
     /// <summary>
-    /// The render pass used for draw the Multi-Sampled RenderTexture. 
+    /// Represents the fullscreen render pass used during the rendering process.
     /// </summary>
-    public FullScreenRenderPass MsaaRenderPass { get; private set; }
+    public FullScreenRenderPass FullScreenRenderPass { get; private set; }
 
     /// <summary>
     /// The MSAA RenderTexture used for handling Anti-Aliasing (MSAA).
@@ -182,8 +182,8 @@ public class Game : Disposable {
         Logger.Info("Initialize global resources...");
         GlobalResource.Init(graphicsDevice);
         
-        Logger.Info("Initialize MSAA render pass...");
-        this.MsaaRenderPass = new FullScreenRenderPass(graphicsDevice);
+        Logger.Info("Initialize full screen render pass...");
+        this.FullScreenRenderPass = new FullScreenRenderPass(graphicsDevice);
         
         Logger.Info("Initialize MSAA render texture...");
         this.MsaaRenderTexture = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
@@ -198,7 +198,7 @@ public class Game : Disposable {
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -261,7 +261,7 @@ public class Game : Disposable {
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
-            this.MsaaRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+            this.FullScreenRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
             this.CommandList.End();
             graphicsDevice.WaitForIdle();
@@ -369,7 +369,7 @@ public class Game : Disposable {
             this.Content.Dispose();
             
             this.MsaaRenderTexture.Dispose();
-            this.MsaaRenderPass.Dispose();
+            this.FullScreenRenderPass.Dispose();
             
             this.GlobalImmediateRenderer.Dispose();
             this.GlobalPrimitiveBatch.Dispose();

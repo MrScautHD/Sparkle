@@ -68,6 +68,11 @@ public class ModelRenderer : Component {
         this._box.Max.Z = this.GlobalPos.Z + dimension.Z / 2;
     }
 
+    /// <summary>
+    /// Renders the model associated with this component to the specified framebuffer if it is within the camera frustum.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering.</param>
+    /// <param name="framebuffer">The framebuffer to render into.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         Camera3D? cam3D = SceneManager.ActiveCam3D;

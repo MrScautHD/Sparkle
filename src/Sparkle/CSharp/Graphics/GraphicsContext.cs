@@ -1,5 +1,6 @@
 using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Veldrid;
 
@@ -16,6 +17,11 @@ public class GraphicsContext {
     /// The command list for submitting rendering commands.
     /// </summary>
     public CommandList CommandList { get; private set; }
+
+    /// <summary>
+    /// The full-screen render pass used for post-processing.
+    /// </summary>
+    public FullScreenRenderPass FullScreenRenderPass { get; private set; }
     
     /// <summary>
     /// The sprite batch used for efficient 2D sprite rendering.
@@ -37,12 +43,14 @@ public class GraphicsContext {
     /// </summary>
     /// <param name="graphicsDevice">The graphics device to use.</param>
     /// <param name="commandList">The command list for issuing rendering commands.</param>
+    /// <param name="fullScreenRenderPass">The render pass used for full-screen rendering operations.</param>
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
-    /// <param name="primitiveBatch">The primitive batch for rendering shapes.</param>
-    /// <param name="immediateRenderer">The immediate renderer for low-level drawing.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
+    /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
+    /// <param name="immediateRenderer">The immediate renderer for performing low-level custom rendering.</param>
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderPass fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
+        this.FullScreenRenderPass = fullScreenRenderPass;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
         this.ImmediateRenderer = immediateRenderer;
