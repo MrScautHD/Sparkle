@@ -7,57 +7,127 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
+using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Textures.Cubemaps;
-using Sparkle.CSharp.Graphics.VertexTypes;
+using Sparkle.CSharp.Registries.Types;
 using Veldrid;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 
 public class SkyBox : Disposable {
     
+    /// <summary>
+    /// The graphics device used for rendering.
+    /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
+
+    /// <summary>
+    /// The cubemap texture used for the skybox.
+    /// </summary>
+    public Cubemap Cubemap;
     
+    /// <summary>
+    /// The sampler used for texture sampling.
+    /// </summary>
+    public Sampler Sampler;
+    
+    /// <summary>
+    /// The color tint applied to the skybox.
+    /// </summary>
+    public Color Color;
+    
+    /// <summary>
+    /// The effect used for rendering the skybox.
+    /// </summary>
+    private Effect _effect;
+
+    /// <summary>
+    /// The vertex data for the skybox.
+    /// </summary>
+    private CubemapVertex3D[] _vertices;
+    
+    /// <summary>
+    /// The index data defining the skybox faces.
+    /// </summary>
+    private uint[] _indices;
+    
+    /// <summary>
+    /// The buffer containing vertex data.
+    /// </summary>
     private DeviceBuffer _vertexBuffer;
+    
+    /// <summary>
+    /// The buffer containing index data.
+    /// </summary>
     private DeviceBuffer _indexBuffer;
     
+    /// <summary>
+    /// The buffer containing the projection and view matrices.
+    /// </summary>
     private SimpleBuffer<Matrix4x4> _projViewBuffer;
 
+    /// <summary>
+    /// The description of the rendering pipeline used for the skybox.
+    /// </summary>
     private SimplePipelineDescription _pipelineDescription;
     
-    public SkyBox(GraphicsDevice graphicsDevice) {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SkyBox"/> class.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
+    /// <param name="cubemap">The cubemap texture used for the skybox.</param>
+    /// <param name="sampler">The optional texture sampler.</param>
+    /// <param name="color">The optional color tint applied to the skybox.</param>
+    public SkyBox(GraphicsDevice graphicsDevice, Cubemap cubemap, Sampler? sampler = null, Color? color = null) {
         this.GraphicsDevice = graphicsDevice;
-
+        this.Cubemap = cubemap;
+        this.Sampler = sampler ?? GraphicsHelper.GetSampler(graphicsDevice, SamplerType.Aniso4X);
+        this.Color = color ?? Color.White;
+        this._effect = GlobalRegistry.SkyboxEffect;
+        
         // Create vertex buffer.
         uint vertexBufferSize = (uint) Marshal.SizeOf<CubemapVertex3D>() * 8;
+        this._vertices = this.GenVertices();
         this._vertexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(vertexBufferSize, BufferUsage.VertexBuffer | BufferUsage.Dynamic));
-        graphicsDevice.UpdateBuffer(this._vertexBuffer, 0, this.GetVertices());
 
         // Create index buffer.
         uint indexBufferSize = sizeof(uint) * 36;
+        this._indices = this.GenIndices();
         this._indexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(indexBufferSize, BufferUsage.IndexBuffer | BufferUsage.Dynamic));
-        graphicsDevice.UpdateBuffer(this._vertexBuffer, 0, this.GetIndices());
+        graphicsDevice.UpdateBuffer(this._indexBuffer, 0, this._indices);
         
         // Create projection view buffer.
         this._projViewBuffer = new SimpleBuffer<Matrix4x4>(graphicsDevice, 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
         // Create pipeline.
         this._pipelineDescription = new SimplePipelineDescription() {
-            PrimitiveTopology = PrimitiveTopology.TriangleList
+            BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND,
+            DepthStencilState = DepthStencilStateDescription.DISABLED,
+            RasterizerState = new RasterizerStateDescription() {
+                CullMode = FaceCullMode.None,
+                FillMode = PolygonFillMode.Solid,
+                FrontFace = FrontFace.Clockwise,
+                DepthClipEnabled = true,
+                ScissorTestEnabled = false
+            },
+            BufferLayouts = this._effect.GetBufferLayouts(),
+            TextureLayouts = this._effect.GetTextureLayouts(),
+            ShaderSet = this._effect.ShaderSet,
+            PrimitiveTopology = PrimitiveTopology.TriangleList,
         };
     }
 
-    public void Draw(CommandList commandList, Cubemap cubemap, OutputDescription output, Effect? effect = null, Sampler? sampler = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null) {
+    /// <summary>
+    /// Renders the skybox using the specified command list and output description.
+    /// </summary>
+    /// <param name="commandList">The command list used for issuing draw commands.</param>
+    /// <param name="output">The output description of the current rendering target.</param>
+    public void Draw(CommandList commandList, OutputDescription output) {
         Cam3D? cam3D = Cam3D.ActiveCamera;
 
         if (cam3D == null) {
             return;
         }
-        
-        Effect finalEffect = effect ?? null;
-        Sampler finalSampler = sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.Point);
-        BlendStateDescription finalBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
-        DepthStencilStateDescription finalDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DISABLED;
-        RasterizerStateDescription finalRasterizerState = rasterizerState ?? RasterizerStateDescription.CULL_NONE;
         
         // Update projection/view buffer.
         this._projViewBuffer.SetValue(0, cam3D.GetProjection());
@@ -65,29 +135,30 @@ public class SkyBox : Disposable {
         this._projViewBuffer.UpdateBuffer(commandList);
         
         // Update pipeline description.
-        this._pipelineDescription.BlendState = finalBlendState;
-        this._pipelineDescription.DepthStencilState = finalDepthStencilState;
-        this._pipelineDescription.RasterizerState = finalRasterizerState;
-        this._pipelineDescription.BufferLayouts = finalEffect.GetBufferLayouts();
-        this._pipelineDescription.TextureLayouts = finalEffect.GetTextureLayouts();
-        this._pipelineDescription.ShaderSet = finalEffect.ShaderSet;
         this._pipelineDescription.Outputs = output;
+        
+        // Update vertex buffer.
+        for (int i = 0; i < this._vertices.Length; i++) {
+            this._vertices[i].Color = this.Color.ToRgbaFloatVec4();
+        }
+        
+        commandList.UpdateBuffer(this._vertexBuffer, 0, this._vertices);
         
         // Set vertex and index buffer.
         commandList.SetVertexBuffer(0, this._vertexBuffer);
-        commandList.SetIndexBuffer(this._indexBuffer, IndexFormat.UInt16);
+        commandList.SetIndexBuffer(this._indexBuffer, IndexFormat.UInt32);
         
         // Set pipeline.
-        commandList.SetPipeline(finalEffect.GetPipeline(this._pipelineDescription).Pipeline);
+        commandList.SetPipeline(this._effect.GetPipeline(this._pipelineDescription).Pipeline);
         
         // Set projection view buffer.
-        commandList.SetGraphicsResourceSet(0, this._projViewBuffer.GetResourceSet(finalEffect.GetBufferLayout("ProjectionViewBuffer")));
+        commandList.SetGraphicsResourceSet(0, this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
         
         // Set resourceSet of the cubemap.
-        commandList.SetGraphicsResourceSet(1, cubemap.GetResourceSet(finalSampler, finalEffect.GetTextureLayout("fCubemap")));
+        commandList.SetGraphicsResourceSet(1, this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap").Layout));
         
         // Apply effect.
-        finalEffect.Apply();
+        this._effect.Apply();
         
         // Draw.
         commandList.DrawIndexed(36);
@@ -97,7 +168,7 @@ public class SkyBox : Disposable {
     /// Generates and returns an array of vertices for the skybox.
     /// </summary>
     /// <returns>An array of <see cref="CubemapVertex3D"/> objects representing the vertices of the skybox.</returns>
-    private CubemapVertex3D[] GetVertices() {
+    private CubemapVertex3D[] GenVertices() {
         Color color = Color.White;
         
         return [
@@ -112,8 +183,12 @@ public class SkyBox : Disposable {
             new CubemapVertex3D(new Vector3(-1, 1, 1), color.ToRgbaFloatVec4())
         ];
     }
-    
-    private uint[] GetIndices() {
+
+    /// <summary>
+    /// Generates and returns an array of indices that define the connectivity of the vertices for the skybox.
+    /// </summary>
+    /// <returns>An array of unsigned integer values representing the vertex indices used to construct the skybox.</returns>
+    private uint[] GenIndices() {
         return [
             0, 1, 2,
             2, 3, 0,
@@ -139,6 +214,7 @@ public class SkyBox : Disposable {
         if (disposing) {
             this._vertexBuffer.Dispose();
             this._indexBuffer.Dispose();
+            this._projViewBuffer.Dispose();
         }
     }
 }

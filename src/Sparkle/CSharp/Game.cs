@@ -17,6 +17,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
+using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
 
@@ -278,7 +279,9 @@ public class Game : Disposable {
     /// <summary>
     /// Virtual method for additional setup when the game starts.
     /// </summary>
-    protected virtual void OnRun() { }
+    protected virtual void OnRun() {
+        RegistryManager.AddRegistry(new GlobalRegistry(this.GraphicsDevice));
+    }
 
     /// <summary>
     /// Loads the required game content and resources.

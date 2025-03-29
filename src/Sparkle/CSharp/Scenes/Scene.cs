@@ -1,8 +1,10 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Effects;
+using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim3;
@@ -31,8 +33,11 @@ public abstract class Scene : Disposable {
     /// Gets or sets the optional filter effect applied to the scene.
     /// </summary>
     public Effect? FilterEffect { get; private set; }
-    
-    // TODO: Add Skybox
+
+    /// <summary>
+    /// The skybox used in the scene.
+    /// </summary>
+    public SkyBox? SkyBox;
     
     /// <summary>
     /// Stores all entities within the scene.
@@ -61,7 +66,7 @@ public abstract class Scene : Disposable {
     /// Initializes the scene. Can be overridden in derived classes.
     /// </summary>
     protected internal virtual void Init() { }
-
+    
     /// <summary>
     /// Updates all entities in the scene.
     /// </summary>
@@ -100,6 +105,9 @@ public abstract class Scene : Disposable {
     /// <param name="context">The graphics context.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        this.SkyBox?.Draw(context.CommandList, framebuffer.OutputDescription);
+        
+        // Draw entities.
         foreach (Entity entity in this.Entities.Values) {
             entity.Draw(context, framebuffer);
         }

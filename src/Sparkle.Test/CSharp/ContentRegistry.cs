@@ -1,13 +1,14 @@
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Textures;
+using Bliss.CSharp.Textures.Cubemaps;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Registries;
 
 namespace Sparkle.Test.CSharp;
@@ -18,6 +19,8 @@ public class ContentRegistry : Registry {
     public static Model PlayerModel { get; private set; }
     public static Texture2D PlayerSprite { get; private set; }
     
+    public static SkyBox SkyBox { get; private set; }
+    
     public static Effect GrayScaleEffect { get; private set; }
 
     private static SimpleTextureLayout _textureLayout;
@@ -27,7 +30,8 @@ public class ContentRegistry : Registry {
         Fontoe = content.Load(new FontContent("content/fontoe.ttf"));
         PlayerModel = content.Load(new ModelContent("content/model.glb"));
         PlayerSprite = content.Load(new TextureContent("content/sprite.png"));
-
+        SkyBox = new SkyBox(content.GraphicsDevice, new Cubemap(content.GraphicsDevice, "content/skybox.png"));
+        
         _textureLayout = new SimpleTextureLayout(Game.Instance?.GraphicsDevice!, "fTexture");
         GrayScaleEffect = content.Load(new EffectContent(SpriteVertex2D.VertexLayout, "content/shaders/full_screen_render_pass.vert", "content/shaders/filters/gray_scale.frag"));
         GrayScaleEffect.AddTextureLayout(_textureLayout);

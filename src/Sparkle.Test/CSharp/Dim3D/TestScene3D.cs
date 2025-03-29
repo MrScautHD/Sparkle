@@ -20,9 +20,15 @@ public class TestScene3D : Scene {
     protected override void Init() {
         base.Init();
         
+        // RELATIVE MOUSE MODE.
+        Input.EnableRelativeMouseMode();
+        
+        // SKYBOX
+        this.SkyBox = ContentRegistry.SkyBox;
+        
         // CAMERA
-        float aspectRatio = (float) Game.Instance.MainWindow.GetWidth() / (float) Game.Instance.MainWindow.GetHeight();
-        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Orbital);
+        float aspectRatio = (float) Game.Instance!.MainWindow.GetWidth() / (float) Game.Instance.MainWindow.GetHeight();
+        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
         this.AddEntity(camera3D);
         
         // PLAYER
