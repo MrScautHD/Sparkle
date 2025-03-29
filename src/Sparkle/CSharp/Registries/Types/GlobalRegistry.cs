@@ -10,35 +10,88 @@ namespace Sparkle.CSharp.Registries.Types;
 
 public class GlobalRegistry : Registry {
     
+    /// <summary>
+    /// Gets the list of buffer layouts used in the graphics pipeline.
+    /// </summary>
     public static List<SimpleBufferLayout> BufferLayouts { get; private set; }
+    
+    /// <summary>
+    /// Gets the list of texture layouts used in the graphics pipeline.
+    /// </summary>
     public static List<SimpleTextureLayout> TextureLayouts { get; private set; }
     
+    /// <summary>
+    /// Gets the effect used for rendering skyboxes.
+    /// </summary>
     public static Effect SkyboxEffect { get; private set; }
     
+    /// <summary>
+    /// Gets the graphics device associated with this registry.
+    /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
-
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GlobalRegistry"/> class.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
     public GlobalRegistry(GraphicsDevice graphicsDevice) {
         this.GraphicsDevice = graphicsDevice;
     }
-
+    
+    /// <summary>
+    /// Loads the necessary resources and effects for the registry.
+    /// </summary>
+    /// <param name="content">The content manager used for loading assets.</param>
     protected internal override void Load(ContentManager content) {
         base.Load(content);
         
         // Skybox effect.
         SkyboxEffect = content.Load(new EffectContent(CubemapVertex3D.VertexLayout, "content/shaders/skybox.vert", "content/shaders/skybox.frag"));
-        SkyboxEffect.AddBufferLayout(new SimpleBufferLayout(this.GraphicsDevice, "ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
-        SkyboxEffect.AddTextureLayout(new SimpleTextureLayout(this.GraphicsDevice, "fCubemap"));
+        SkyboxEffect.AddBufferLayout(this.CreateBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
+        SkyboxEffect.AddTextureLayout(this.CreateTextureLayout("fCubemap"));
     }
     
+    /// <summary>
+    /// Creates and registers a new buffer layout.
+    /// </summary>
+    /// <param name="name">The name of the buffer layout.</param>
+    /// <param name="bufferType">The type of buffer.</param>
+    /// <param name="stages">The shader stages where the buffer will be used.</param>
+    /// <returns>A new <see cref="SimpleBufferLayout"/> instance.</returns>
     public SimpleBufferLayout CreateBufferLayout(string name, SimpleBufferType bufferType, ShaderStages stages) {
         SimpleBufferLayout bufferLayout = new SimpleBufferLayout(this.GraphicsDevice, name, bufferType, stages);
         BufferLayouts.Add(bufferLayout);
         return bufferLayout;
     }
     
+    /// <summary>
+    /// Creates and registers a new texture layout.
+    /// </summary>
+    /// <param name="name">The name of the texture layout.</param>
+    /// <returns>A new <see cref="SimpleTextureLayout"/> instance.</returns>
     public SimpleTextureLayout CreateTextureLayout(string name) {
         SimpleTextureLayout textureLayout = new SimpleTextureLayout(this.GraphicsDevice, name);
         TextureLayouts.Add(textureLayout);
         return textureLayout;
+    }
+
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+
+        if (disposing) {
+            SkyboxEffect.Dispose();
+
+            foreach (SimpleBufferLayout bufferLayout in BufferLayouts) {
+                bufferLayout.Dispose();
+            }
+            
+            BufferLayouts.Clear();
+
+            foreach (SimpleTextureLayout textureLayout in TextureLayouts) {
+                textureLayout.Dispose();
+            }
+            
+            TextureLayouts.Clear();
+        }
     }
 }
