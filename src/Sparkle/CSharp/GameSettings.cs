@@ -39,7 +39,7 @@ public struct GameSettings {
     /// <summary>
     /// The fixed time step for game updates, typically used for physics calculations.
     /// </summary>
-    public int FixedTimeStep { get; init; }
+    public float FixedTimeStep { get; init; }
     
     /// <summary>
     /// The window state flags that define the behavior and appearance of the game window.
@@ -71,7 +71,7 @@ public struct GameSettings {
         this.IconPath = string.Empty;
         this.LogDirectory = "logs";
         this.TargetFps = 0;
-        this.FixedTimeStep = 60;
+        this.FixedTimeStep = 1.0F / 60.0F;
         this.WindowFlags = WindowState.Resizable;
         this.Backend = Window.GetPlatformDefaultBackend();
         this.VSync = true;

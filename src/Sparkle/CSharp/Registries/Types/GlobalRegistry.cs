@@ -4,6 +4,7 @@ using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Registries.Types;
@@ -24,6 +25,11 @@ public class GlobalRegistry : Registry {
     /// Gets the effect used for rendering skyboxes.
     /// </summary>
     public static Effect SkyboxEffect { get; private set; }
+
+    /// <summary>
+    /// Gets the effect used for rendering physics debugging visuals in the graphics pipeline.
+    /// </summary>
+    public static Effect PhysicsDebugEffect { get; private set; }
     
     /// <summary>
     /// Gets the graphics device associated with this registry.
@@ -36,6 +42,8 @@ public class GlobalRegistry : Registry {
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
     public GlobalRegistry(GraphicsDevice graphicsDevice) {
         this.GraphicsDevice = graphicsDevice;
+        BufferLayouts = new List<SimpleBufferLayout>();
+        TextureLayouts = new List<SimpleTextureLayout>();
     }
     
     /// <summary>
@@ -49,6 +57,10 @@ public class GlobalRegistry : Registry {
         SkyboxEffect = content.Load(new EffectContent(CubemapVertex3D.VertexLayout, "content/shaders/skybox.vert", "content/shaders/skybox.frag"));
         SkyboxEffect.AddBufferLayout(this.CreateBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
         SkyboxEffect.AddTextureLayout(this.CreateTextureLayout("fCubemap"));
+        
+        // Physics debug effect.
+        PhysicsDebugEffect = content.Load(new EffectContent(PhysicsDebugVertex3D.VertexLayout, "content/shaders/physics_debug_drawer.vert", "content/shaders/physics_debug_drawer.frag"));
+        PhysicsDebugEffect.AddBufferLayout(this.CreateBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
     }
     
     /// <summary>
@@ -79,8 +91,6 @@ public class GlobalRegistry : Registry {
         base.Dispose(disposing);
 
         if (disposing) {
-            SkyboxEffect.Dispose();
-
             foreach (SimpleBufferLayout bufferLayout in BufferLayouts) {
                 bufferLayout.Dispose();
             }

@@ -219,7 +219,7 @@ public class Game : Disposable {
         this.Load(this.Content);
         
         this.Init();
-
+        
         Logger.Info("Start game loop...");
         while (!this.ShouldClose && this.MainWindow.Exists) {
             if (this.GetTargetFps() != 0 && Time.Timer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
@@ -236,7 +236,7 @@ public class Game : Disposable {
 
             this._fixedUpdateTimer += Time.Delta;
             while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
-                this.FixedUpdate(1.0F / this._fixedUpdateTimeStep);
+                this.FixedUpdate(this._fixedUpdateTimeStep);
                 this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
             }
             
@@ -317,12 +317,12 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Performs fixed update actions, usually for physics or time-based events.
+    /// Executes fixed update logic with the specified time step.
     /// </summary>
-    /// <param name="timeStep">The fixed time step interval for the update.</param>
-    protected virtual void FixedUpdate(double timeStep) {
-        SceneManager.OnFixedUpdate(timeStep);
-        OverlayManager.OnFixedUpdate(timeStep);
+    /// <param name="fixedStep">The fixed time step in seconds.</param>
+    protected virtual void FixedUpdate(double fixedStep) {
+        SceneManager.OnFixedUpdate(fixedStep);
+        OverlayManager.OnFixedUpdate(fixedStep);
     }
     
     /// <summary>

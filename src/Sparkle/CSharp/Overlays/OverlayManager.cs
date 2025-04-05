@@ -45,13 +45,13 @@ public static class OverlayManager {
     }
     
     /// <summary>
-    /// Executes fixed-step updates for all enabled overlays.
+    /// Executes fixed-step logic for all enabled overlays.
     /// </summary>
-    /// <param name="timeStep">The fixed time step interval for the update.</param>
-    internal static void OnFixedUpdate(double timeStep) {
+    /// <param name="fixedStep">The fixed time step duration.</param>
+    internal static void OnFixedUpdate(double fixedStep) {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.FixedUpdate(timeStep);
+                overlay.FixedUpdate(fixedStep);
             }
         }
     }

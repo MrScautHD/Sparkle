@@ -1,6 +1,5 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Effects;
-using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
@@ -88,14 +87,14 @@ public abstract class Scene : Disposable {
     }
 
     /// <summary>
-    /// Performs physics and other fixed timeStep updates.
+    /// Performs a fixed update for the current scene, updating the simulation and invoking the fixed update for all entities.
     /// </summary>
-    /// <param name="timeStep">The fixed timeStep duration.</param>
-    protected internal virtual void FixedUpdate(double timeStep) {
-        this.Simulation.Step(timeStep);
+    /// <param name="fixedStep">The fixed time interval to update the scene and entities.</param>
+    protected internal virtual void FixedUpdate(double fixedStep) {
+        this.Simulation.Step(fixedStep);
         
         foreach (Entity entity in this.Entities.Values) {
-            entity.FixedUpdate(timeStep);
+            entity.FixedUpdate(fixedStep);
         }
     }
 

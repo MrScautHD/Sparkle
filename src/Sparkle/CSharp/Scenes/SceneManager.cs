@@ -78,13 +78,13 @@ public static class SceneManager {
     internal static void OnAfterUpdate(double delta) {
         ActiveScene?.AfterUpdate(delta);
     }
-
+    
     /// <summary>
-    /// Performs fixed timeStep updates for physics and other deterministic logic.
+    /// Handles fixed time-step updates for the active scene.
     /// </summary>
-    /// <param name="timeStep">The fixed time step interval.</param>
-    internal static void OnFixedUpdate(double timeStep) {
-        ActiveScene?.FixedUpdate(timeStep);
+    /// <param name="fixedStep">The fixed time-step duration.</param>
+    internal static void OnFixedUpdate(double fixedStep) {
+        ActiveScene?.FixedUpdate(fixedStep);
     }
 
     /// <summary>

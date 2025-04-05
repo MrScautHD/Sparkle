@@ -33,11 +33,11 @@ public class Simulation3D : Simulation {
     }
 
     /// <summary>
-    /// Performs a single step in the 3D physics simulation based on the specified time step.
+    /// Executes a simulation step for the 3D physics world.
     /// </summary>
-    /// <param name="timeStep">The duration of the simulation step in seconds.</param>
-    protected internal override void Step(double timeStep) {
-        this.World.Step((float) timeStep, this._settings.MultiThreaded);
+    /// <param name="fixedStep">The fixed time interval for the simulation step.</param>
+    protected internal override void Step(double fixedStep) {
+        this.World.Step((float) fixedStep, this._settings.MultiThreaded);
     }
     
     protected override void Dispose(bool disposing) {

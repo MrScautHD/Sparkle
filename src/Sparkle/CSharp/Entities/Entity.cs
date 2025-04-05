@@ -68,14 +68,14 @@ public class Entity : Disposable {
             component.AfterUpdate(delta);
         }
     }
-    
+
     /// <summary>
-    /// Called at fixed time intervals to handle physics-related updates.  
+    /// Updates the entity and its components at fixed time intervals.
     /// </summary>
-    /// <param name="timeStep">The fixed time step interval for the update.</param>
-    protected internal virtual void FixedUpdate(double timeStep) {
+    /// <param name="fixedStep">The fixed time step interval at which the update occurs.</param>
+    protected internal virtual void FixedUpdate(double fixedStep) {
         foreach (Component component in this.Components.Values) {
-            component.FixedUpdate(timeStep);
+            component.FixedUpdate(fixedStep);
         }
     }
 

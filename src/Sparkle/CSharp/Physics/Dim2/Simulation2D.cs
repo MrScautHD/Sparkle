@@ -25,11 +25,11 @@ public class Simulation2D : Simulation {
     }
 
     /// <summary>
-    /// Performs a single step in the 2D physics simulation based on the given time step.
+    /// Advances the simulation by a fixed time step.
     /// </summary>
-    /// <param name="timeStep">The duration of the step in seconds.</param>
-    protected internal override void Step(double timeStep) {
-        this.World.Step((float) timeStep, this._settings.VelocityIterations, this._settings.PositionIterations);
+    /// <param name="fixedStep">The time step duration in seconds to advance the simulation.</param>
+    protected internal override void Step(double fixedStep) {
+        this.World.Step((float) fixedStep, this._settings.VelocityIterations, this._settings.PositionIterations);
     }
     
     protected override void Dispose(bool disposing) {
