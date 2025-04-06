@@ -93,7 +93,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class.
-    /// ⚠️!Important!⚠️ This is for debugging purposes only and is not optimized for performance.
+    /// !Important! This is for debugging purposes only and is not optimized for performance.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to allocate buffers and resources.</param>
     public Physics3DDebugDrawer(GraphicsDevice graphicsDevice) {

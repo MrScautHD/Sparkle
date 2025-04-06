@@ -10,6 +10,11 @@ public static class Time {
     public static double Delta { get; private set; }
 
     /// <summary>
+    /// Gets the fixed time step interval defined in the current game settings.
+    /// </summary>
+    public static double FixedStep => Game.Instance?.Settings.FixedTimeStep ?? 0;
+
+    /// <summary>
     /// Gets the total elapsed time since the start of the application.
     /// </summary>
     public static double Total => _watch.Elapsed.TotalSeconds;

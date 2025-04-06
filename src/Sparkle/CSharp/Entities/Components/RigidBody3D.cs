@@ -258,21 +258,21 @@ public class RigidBody3D : Component {
     }
 
     /// <summary>
-    /// Updates the body's physical position and rotation to match the entity if inactive.
-    /// </summary>
-    /// <param name="delta">The elapsed time, in seconds, since the last update.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
-        this.UpdateBodyPosition();
-        this.UpdateBodyRotation();
-    }
-
-    /// <summary>
     /// Updates the entity's transform based on the physics simulation.
     /// </summary>
     /// <param name="delta">The elapsed time since the last update, in seconds.</param>
     protected internal override void AfterUpdate(double delta) {
         base.AfterUpdate(delta);
+        this.UpdateBodyPosition();
+        this.UpdateBodyRotation();
+    }
+
+    /// <summary>
+    /// Executes logic that needs to be updated on every fixed time step of the physics simulation.
+    /// </summary>
+    /// <param name="fixedStep">The fixed time step duration in seconds.</param>
+    protected internal override void FixedUpdate(double fixedStep) {
+        base.FixedUpdate(fixedStep);
         this.UpdateEntityPosition();
         this.UpdateEntityRotation();
     }
@@ -418,7 +418,7 @@ public class RigidBody3D : Component {
         Quaternion bodyRot = Quaternion.Conjugate(this.Orientation);
         
         if (this.Body.IsActive && this.Entity.Transform.Rotation != bodyRot) {
-            this.Entity.Transform.Rotation = this.Orientation;
+            this.Entity.Transform.Rotation = bodyRot;
         }
     }
     
