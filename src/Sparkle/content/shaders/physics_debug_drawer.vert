@@ -15,4 +15,5 @@ void main() {
 
     vec4 v4Pos = vec4(vPosition, 1.0F);
     gl_Position = uProjection * uView * v4Pos;
+    gl_PointSize = 4.0F;
 }
