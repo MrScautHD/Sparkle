@@ -77,7 +77,7 @@ public class TestScene3D : Scene {
         RigidBody3D playerBody = this.GetEntity(2)!.GetComponent<RigidBody3D>()!;
         SoftBody3D softCubeBody = this.GetEntity(3)!.GetComponent<SoftBody3D>()!;
         
-        if (!playerBody.World.DynamicTree.RayCast(new Vector3(playerBody.Position.X, playerBody.Position.Y - 3, playerBody.Position.Z), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
+        if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 3), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
             playerBody.SetActivationState(true);
             playerBody.AddForce(new Vector3(0, 25, 0));
         }

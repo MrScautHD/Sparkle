@@ -104,6 +104,8 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
         }
     }
     
+    // TODO: Add load mesh method!
+    
     /// <summary>
     /// Renders debug visuals for the cube edges and center using the provided drawer.
     /// </summary>

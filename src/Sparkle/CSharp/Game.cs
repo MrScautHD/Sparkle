@@ -20,6 +20,7 @@ using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
+using JLogger = Jitter2.Logger;
 
 namespace Sparkle.CSharp;
 
@@ -99,6 +100,11 @@ public class Game : Disposable {
     /// The log file writer used for logging messages to a file.
     /// </summary>
     private LogFileWriter _logFileWriter;
+
+    /// <summary>
+    /// The logger for jitter.
+    /// </summary>
+    private LogJitter _logJitter;
     
     /// <summary>
     /// The fixed frame rate for the game.
@@ -135,6 +141,10 @@ public class Game : Disposable {
             Logger.Message += this._logFileWriter.WriteFileMsg;
         }
 
+        // Setup jitter logger.
+        this._logJitter = new LogJitter();
+        JLogger.Listener += this._logJitter.Log;
+        
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info($"\t> CPU: {SystemInfo.Cpu}");
         Logger.Info($"\t> MEMORY: {SystemInfo.MemorySize} GB");
@@ -385,6 +395,7 @@ public class Game : Disposable {
             this.GraphicsDevice.Dispose();
             this.MainWindow.Dispose();
 
+            JLogger.Listener -= this._logJitter.Log;
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }
     }
