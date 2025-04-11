@@ -6,7 +6,8 @@ using Veldrid;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]",
-    SampleCount = TextureSampleCount.Count8
+    SampleCount = TextureSampleCount.Count8,
+    Backend = GraphicsBackend.Vulkan
 };
 
 using TestGame testGame = new TestGame(settings);

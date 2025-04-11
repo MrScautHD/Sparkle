@@ -1,7 +1,7 @@
 using System.Numerics;
 using Jitter2;
-using Jitter2.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
+using Veldrid;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 
@@ -47,16 +47,17 @@ public class SoftBodyCubeFactory : ISoftBodyFactory {
         this.CenterInertia = centerInertia;
         this.Softness = softness;
     }
-    
+
     /// <summary>
     /// Creates a new soft body instance in the given world with specified parameters.
     /// </summary>
+    /// <param name="graphicsDevice">The graphics device used to render the soft body.</param>
     /// <param name="world">The simulation world to which the soft body will be added.</param>
     /// <param name="position">The position where the soft body will be placed.</param>
     /// <param name="rotation">The rotation of the soft body in the world.</param>
     /// <param name="scale">The scale factor for the size of the soft body.</param>
-    /// <returns>A new instance of a <see cref="SoftBody"/> initialized with the specified parameters.</returns>
-    public SoftBody CreateSoftBody(World world, Vector3 position, Quaternion rotation, Vector3 scale) {
-        return new SoftBodyCube(world, position, rotation, scale, this.Size, this.VertexMass, this.CenterMass, this.CenterInertia, this.Softness);
+    /// <returns>A new instance of a <see cref="SimpleSoftBody"/> initialized with the specified parameters.</returns>
+    public SimpleSoftBody CreateSoftBody(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 scale) {
+        return new SoftBodyCube(graphicsDevice, world, position, rotation, scale, this.Size, this.VertexMass, this.CenterMass, this.CenterInertia, this.Softness);
     }
 }

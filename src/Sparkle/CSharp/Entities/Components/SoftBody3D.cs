@@ -1,8 +1,9 @@
 using System.Numerics;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Transformations;
 using Jitter2;
-using Jitter2.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3;
+using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
 
@@ -19,7 +20,12 @@ public class SoftBody3D : Component {
     /// <summary>
     /// The soft body instance created and managed by this component.
     /// </summary>
-    public SoftBody SoftBody { get; private set; }
+    public SimpleSoftBody SoftBody { get; private set; }
+
+    /// <summary>
+    /// Gets the mesh associated with the soft body, if available.
+    /// </summary>
+    public Mesh Mesh => this.SoftBody.Mesh;
     
     /// <summary>
     /// Overrides the local offset position. Always returns zero for this component.
@@ -30,11 +36,7 @@ public class SoftBody3D : Component {
     /// The factory used to create the soft body instance.
     /// </summary>
     private ISoftBodyFactory _factory;
-
-    /// <summary>
-    /// Constructs a new <see cref="SoftBody3D"/> using the provided soft body factory.
-    /// </summary>
-    /// <param name="factory">The soft body factory used to generate the soft body instance.</param>
+    
     public SoftBody3D(ISoftBodyFactory factory) : base(Vector3.Zero) {
         this._factory = factory;
     }
@@ -52,7 +54,7 @@ public class SoftBody3D : Component {
     /// </summary>
     private void CreateSoftBody() {
         Transform transform = this.Entity.Transform;
-        this.SoftBody = this._factory.CreateSoftBody(this.World, transform.Translation, transform.Rotation, transform.Scale);
+        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, transform.Translation, Quaternion.Conjugate(transform.Rotation), transform.Scale);
     }
     
     protected override void Dispose(bool disposing) {

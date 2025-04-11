@@ -9,6 +9,11 @@ namespace Sparkle.CSharp.Entities.Components;
 public abstract class Component : Disposable {
     
     /// <summary>
+    /// Gets the graphics device used by the game.
+    /// </summary>
+    public GraphicsDevice GraphicsDevice => Game.Instance?.GraphicsDevice ?? throw new Exception("Run the game before trying to access the Graphics device!");
+    
+    /// <summary>
     /// Gets or sets the entity to which this component is attached.
     /// </summary>
     protected internal Entity Entity { get; internal set; }

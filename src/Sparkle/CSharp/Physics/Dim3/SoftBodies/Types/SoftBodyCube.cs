@@ -1,22 +1,28 @@
 using System.Numerics;
+using Bliss.CSharp;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.VertexTypes;
+using Bliss.CSharp.Materials;
 using Jitter2;
 using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
 using Jitter2.SoftBodies;
+using Veldrid;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 
-public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
+public class SoftBodyCube : SimpleSoftBody {
     
     /// <summary>
     /// Defines the edges connecting the vertices to form a cube.
     /// </summary>
-    public static readonly ValueTuple<int, int>[] Edges = [
+    public static readonly ValueTuple<int, int>[] Edges = {
         (0, 1), (1, 2), (2, 3), (3, 0),
         (4, 5), (5, 6), (6, 7), (7, 4),
         (0, 4), (1, 5), (2, 6), (3, 7)
-    ];
+    };
     
     /// <summary>
     /// The central rigid body around which the soft body cube is constrained.
@@ -36,6 +42,7 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
     /// <summary>
     /// Constructs a new soft body cube within the specified physics world.
     /// </summary>
+    /// <param name="graphicsDevice">The graphics device used for rendering-related operations.</param>
     /// <param name="world">The physics simulation world.</param>
     /// <param name="position">The initial position of the cube.</param>
     /// <param name="rotation">The rotation of the cube.</param>
@@ -46,11 +53,11 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
     /// <param name="centerInertia">Inertia tensor multiplier for the central body.</param>
     /// <param name="softness">Softness of the constraints connecting vertices to the center.</param>
     /// <exception cref="ArgumentException">Thrown if any size component is less than or equal to zero.</exception>
-    public SoftBodyCube(World world, Vector3 position, Quaternion rotation, Vector3 scale, Vector3 size, float vertexMass = 5.0F, float centerMass = 0.1F, float centerInertia = 0.05F, float softness = 1.0F) : base(world) {
+    public SoftBodyCube(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 scale, Vector3 size, float vertexMass = 5.0F, float centerMass = 0.1F, float centerInertia = 0.05F, float softness = 1.0F) : base(graphicsDevice, world) {
         if (size.X <= 0.0F || size.Y <= 0.0F || size.Z <= 0.0F) {
             throw new ArgumentException("Each size component (X, Y, Z) must be greater than zero.", nameof(size));
         }
-        
+
         // Create vertices.
         Vector3[] vertices = [
             new Vector3(1, -1, 1),
@@ -62,7 +69,7 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
             new Vector3(-1, 1, -1),
             new Vector3(-1, 1, 1)
         ];
-        
+
         // Center pos.
         Vector3 centerPos = Vector3.Zero;
 
@@ -103,15 +110,61 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
             this.Constraint.Softness = softness;
         }
     }
-    
-    // TODO: Add load mesh method!
-    
+
     /// <summary>
-    /// Renders debug visuals for the cube edges and center using the provided drawer.
+    /// Creates a mesh representation of the soft body cube for rendering purposes.
     /// </summary>
-    /// <param name="drawer">The debug drawer interface to draw points and segments.</param>
-    public void DebugDraw(IDebugDrawer drawer) {
-        foreach (var spring in Edges) {
+    /// <param name="graphicsDevice">The graphics device used for rendering-related operations.</param>
+    /// <returns>A new <see cref="Mesh"/> instance representing the soft body cube.</returns>
+    protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) { // TODO: FINISH IT!
+        List<Vertex3D> vertices = new List<Vertex3D>();
+        List<uint> indices = new List<uint>();
+        
+        for (int i = 0; i < this.Vertices.Count; i++) {
+            vertices.Add(new Vertex3D() {
+                Position = this.Vertices[i].Position,
+                TexCoords = new Vector2(this.Vertices[i].Position.X, this.Vertices[i].Position.Z),
+                Color = Color.White.ToRgbaFloatVec4()
+            });
+        }
+        
+        // Creating triangle indices using edges.
+        foreach ((int start, int end) in Edges) {
+            indices.Add((uint) start);
+            indices.Add((uint) end);
+        }
+        
+        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
+
+        material.AddMaterialMap(MaterialMapType.Albedo.GetName(), new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White
+        });
+        
+        return new Mesh(graphicsDevice, material, vertices.ToArray(), indices.ToArray());
+    }
+
+    /// <summary>
+    /// Updates the vertex data of the mesh to synchronize it with the current positions of the vertices in the soft body.
+    /// </summary>
+    /// <param name="commandList">The command list used for recording graphics commands.</param>
+    /// <param name="delta">The elapsed time, in seconds, since the last update.</param>
+    public override void UpdateMesh(CommandList commandList, double delta) { // TODO: FINISH IT!
+        for (int i = 0; i < this.Vertices.Count; i++) {
+            this.Mesh.SetVertexValue(i, new Vertex3D() {
+                Position = this.Vertices[i].Position,
+                TexCoords = new Vector2(this.Vertices[i].Position.X, this.Vertices[i].Position.Z),
+                Color = Color.White.ToRgbaFloatVec4()
+            });
+        }
+    }
+
+    /// <summary>
+    /// Renders the debug visualization for the soft body by drawing its edges and center.
+    /// </summary>
+    /// <param name="drawer">The debug drawer responsible for rendering shapes and points.</param>
+    public override void DebugDraw(IDebugDrawer drawer) {
+        foreach ((int, int ) spring in Edges) {
             drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position);
             drawer.DrawPoint(this.Center.Position);
         }
@@ -120,8 +173,9 @@ public class SoftBodyCube : SoftBody, IDebugDrawable, IDisposable {
     /// <summary>
     /// Releases all resources used by the <see cref="SoftBodyCube"/> instance.
     /// </summary>
-    public void Dispose() {
+    public override void Dispose() {
         this.Destroy();
         this.world.Remove(this.Center);
+        this.Mesh.Dispose();
     }
 }

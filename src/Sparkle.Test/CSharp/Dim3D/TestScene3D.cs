@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Transformations;
@@ -50,8 +51,11 @@ public class TestScene3D : Scene {
 
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(10, 3, 0) } );
+        //softCube.AddComponent(new MeshRenderer(Mesh.GenCube(GlobalResource.GraphicsDevice, 2, 2, 2), Vector3.Zero));
         softCube.AddComponent(new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1))));
         this.AddEntity(softCube);
+        softCube.AddComponent(new MeshRenderer(softCube.GetComponent<SoftBody3D>().Mesh, Vector3.Zero));
+
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
