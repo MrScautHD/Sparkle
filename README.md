@@ -10,6 +10,9 @@
 [<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/87b291cd-6506-4fb5-b032-abf3170a28c4" alt="discord" width="186" height="60">](https://discord.gg/7XKw6YQa76)
 [<img src="https://github.com/MrScautHD/Sparkle/assets/65916181/de09f016-db11-4554-aa56-4d1bd6c2464f" alt="sponsor" width="186" height="60">](https://github.com/sponsors/MrScautHD)
 
+> [!CAUTION]
+> This repository is still a work in progress.
+
 # ✨ Features ✨
 - 🎬 Scene system for seamless transitions and organization
 - 🏗️ Entity system for flexible game object management
