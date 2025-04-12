@@ -5,6 +5,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Jitter2.Collision;
 using Jitter2.Collision.Shapes;
@@ -51,11 +52,12 @@ public class TestScene3D : Scene {
 
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(10, 3, 0) } );
-        //softCube.AddComponent(new MeshRenderer(Mesh.GenCube(GlobalResource.GraphicsDevice, 2, 2, 2), Vector3.Zero));
-        softCube.AddComponent(new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1))));
+        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)));
+        softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
-        softCube.AddComponent(new MeshRenderer(softCube.GetComponent<SoftBody3D>().Mesh, Vector3.Zero));
-
+        
+        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite); // TODO: Find a way to use the Mesh before it is initialized.
+        softCube.AddComponent(new MeshRenderer(softBodyCube.Mesh, Vector3.Zero));
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
@@ -93,10 +95,19 @@ public class TestScene3D : Scene {
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        // Update soft body cube mesh.
+        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.SoftBody.UpdateMesh(context.CommandList);
+        
+        // Call main method.
         base.Draw(context, framebuffer);
+        
+        // Draw gird.
         context.ImmediateRenderer.DrawGird(context.CommandList, framebuffer.OutputDescription, new Transform(), 50, 1, Color.Gray);
         
+        // Prepare physics debug drawer.
         this._debugDrawer.Prepare(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
+        
+        // Draw physics debug renderers.
         this.GetEntity(2)!.GetComponent<RigidBody3D>()!.Body.DebugDraw(this._debugDrawer);
         this.GetEntity(4)!.GetComponent<RigidBody3D>()!.Body.DebugDraw(this._debugDrawer);
         ((SoftBodyCube) this.GetEntity(3)!.GetComponent<SoftBody3D>()!.SoftBody).DebugDraw(this._debugDrawer);

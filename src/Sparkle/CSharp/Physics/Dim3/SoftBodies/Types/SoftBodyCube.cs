@@ -18,11 +18,11 @@ public class SoftBodyCube : SimpleSoftBody {
     /// <summary>
     /// Defines the edges connecting the vertices to form a cube.
     /// </summary>
-    public static readonly ValueTuple<int, int>[] Edges = {
+    public static readonly ValueTuple<int, int>[] Edges = [
         (0, 1), (1, 2), (2, 3), (3, 0),
         (4, 5), (5, 6), (6, 7), (7, 4),
         (0, 4), (1, 5), (2, 6), (3, 7)
-    };
+    ];
     
     /// <summary>
     /// The central rigid body around which the soft body cube is constrained.
@@ -116,47 +116,147 @@ public class SoftBodyCube : SimpleSoftBody {
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering-related operations.</param>
     /// <returns>A new <see cref="Mesh"/> instance representing the soft body cube.</returns>
-    protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) { // TODO: FINISH IT!
-        List<Vertex3D> vertices = new List<Vertex3D>();
-        List<uint> indices = new List<uint>();
+    protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) {
+        Vertex3D[] vertices = new Vertex3D[24];
+        uint[] indices = new uint[36];
         
-        for (int i = 0; i < this.Vertices.Count; i++) {
-            vertices.Add(new Vertex3D() {
-                Position = this.Vertices[i].Position,
-                TexCoords = new Vector2(this.Vertices[i].Position.X, this.Vertices[i].Position.Z),
-                Color = Color.White.ToRgbaFloatVec4()
-            });
+        float uLeft = 0.0F;
+        float uRight = 1.0F;
+        float vTop = 1.0F;
+        float vBottom = 0.0F;
+        
+        // Generate the 6 faces.
+        for (int face = 0; face < 6; face++) {
+            
+            // Define face vertex indices.
+            (int, int, int, int) faceVertexIndices = face switch {
+                // Front.
+                0 => (0, 1, 5, 4),
+                // Back.
+                1 => (2, 3, 7, 6),
+                // Left.
+                2 => (3, 0, 4, 7),
+                // Right.
+                3 => (1, 2, 6, 5),
+                // Top.
+                4 => (4, 5, 6, 7),
+                // Bottom.
+                5 => (3, 2, 1, 0),
+                _ => (0, 0, 0, 0)
+            };
+            
+            // Generate the 4 corners for the current face.
+            for (int corner = 0; corner < 4; corner++) {
+                
+                // Calculate the face vertex index.
+                int faceVertexIndex = corner switch {
+                    0 => faceVertexIndices.Item1,
+                    1 => faceVertexIndices.Item2,
+                    2 => faceVertexIndices.Item3,
+                    3 => faceVertexIndices.Item4,
+                    _ => 0
+                };
+                
+                // Calculate texCoords.
+                Vector2 texCoord = corner switch {
+                    0 => new Vector2(uLeft, vTop),
+                    1 => new Vector2(uRight, vTop),
+                    2 => new Vector2(uRight, vBottom),
+                    3 => new Vector2(uLeft, vBottom),
+                    _ => Vector2.Zero
+                };
+                
+                // Add the generated vertex.
+                vertices[face * 4 + corner] = new Vertex3D() {
+                    Position = this.Vertices[faceVertexIndex].Position,
+                    TexCoords = texCoord,
+                    Color = Color.White.ToRgbaFloatVec4()
+                };
+            }
+            
+            // Add two triangles for the current face.
+            int baseIndex = face * 4;
+            int indexIndex = face * 6;
+            indices[indexIndex + 0] = (uint) (baseIndex + 0);
+            indices[indexIndex + 1] = (uint) (baseIndex + 2);
+            indices[indexIndex + 2] = (uint) (baseIndex + 1);
+            indices[indexIndex + 3] = (uint) (baseIndex + 2);
+            indices[indexIndex + 4] = (uint) (baseIndex + 0);
+            indices[indexIndex + 5] = (uint) (baseIndex + 3);
         }
-        
-        // Creating triangle indices using edges.
-        foreach ((int start, int end) in Edges) {
-            indices.Add((uint) start);
-            indices.Add((uint) end);
-        }
-        
-        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
 
+        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
+        
         material.AddMaterialMap(MaterialMapType.Albedo.GetName(), new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });
-        
-        return new Mesh(graphicsDevice, material, vertices.ToArray(), indices.ToArray());
+
+        return new Mesh(graphicsDevice, material, vertices, indices);
     }
 
     /// <summary>
     /// Updates the vertex data of the mesh to synchronize it with the current positions of the vertices in the soft body.
     /// </summary>
     /// <param name="commandList">The command list used for recording graphics commands.</param>
-    /// <param name="delta">The elapsed time, in seconds, since the last update.</param>
-    public override void UpdateMesh(CommandList commandList, double delta) { // TODO: FINISH IT!
-        for (int i = 0; i < this.Vertices.Count; i++) {
-            this.Mesh.SetVertexValue(i, new Vertex3D() {
-                Position = this.Vertices[i].Position,
-                TexCoords = new Vector2(this.Vertices[i].Position.X, this.Vertices[i].Position.Z),
-                Color = Color.White.ToRgbaFloatVec4()
-            });
+    public override void UpdateMesh(CommandList commandList) {
+        float uLeft = 0.0F;
+        float uRight = 1.0F;
+        float vTop = 1.0F;
+        float vBottom = 0.0F;
+
+        // Generate the 6 faces.
+        for (int face = 0; face < 6; face++) {
+            
+            // Define face vertex indices.
+            (int, int, int, int) faceVertexIndices = face switch {
+                // Front.
+                0 => (0, 1, 5, 4),
+                // Back.
+                1 => (2, 3, 7, 6),
+                // Left.
+                2 => (3, 0, 4, 7),
+                // Right.
+                3 => (1, 2, 6, 5),
+                // Top.
+                4 => (4, 5, 6, 7),
+                // Bottom.
+                5 => (3, 2, 1, 0),
+                _ => (0, 0, 0, 0)
+            };
+            
+            // Generate the 4 corners for the current face.
+            for (int corner = 0; corner < 4; corner++) {
+                
+                // Calculate the face vertex index.
+                int faceVertexIndex = corner switch {
+                    0 => faceVertexIndices.Item1,
+                    1 => faceVertexIndices.Item2,
+                    2 => faceVertexIndices.Item3,
+                    3 => faceVertexIndices.Item4,
+                    _ => 0
+                };
+                
+                // Calculate texCoords.
+                Vector2 texCoord = corner switch {
+                    0 => new Vector2(uLeft, vTop),
+                    1 => new Vector2(uRight, vTop),
+                    2 => new Vector2(uRight, vBottom),
+                    3 => new Vector2(uLeft, vBottom),
+                    _ => Vector2.Zero
+                };
+                
+                // Add the generated vertex.
+                this.Mesh.SetVertexValue(face * 4 + corner, new Vertex3D() {
+                    Position = this.Vertices[faceVertexIndex].Position,
+                    TexCoords = texCoord,
+                    Color = Color.White.ToRgbaFloatVec4()
+                });
+            }
         }
+
+        // Update the vertex buffer.
+        this.Mesh.UpdateVertexBuffer(commandList);
     }
 
     /// <summary>
@@ -164,7 +264,7 @@ public class SoftBodyCube : SimpleSoftBody {
     /// </summary>
     /// <param name="drawer">The debug drawer responsible for rendering shapes and points.</param>
     public override void DebugDraw(IDebugDrawer drawer) {
-        foreach ((int, int ) spring in Edges) {
+        foreach ((int, int) spring in Edges) {
             drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position);
             drawer.DrawPoint(this.Center.Position);
         }

@@ -42,8 +42,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable, IDisposable {
     /// Updates the mesh with the latest simulation data.
     /// </summary>
     /// <param name="commandList">The command list used to submit rendering commands.</param>
-    /// <param name="delta">The time step since the last update.</param>
-    public abstract void UpdateMesh(CommandList commandList, double delta);
+    public abstract void UpdateMesh(CommandList commandList);
 
     /// <summary>
     /// Draws debug visuals for this soft body using the specified debug drawer.
@@ -54,5 +53,8 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable, IDisposable {
     /// <summary>
     /// Releases all resources used by this soft body.
     /// </summary>
-    public abstract void Dispose();
+    public virtual void Dispose() {
+        this.Destroy();
+        this._mesh?.Dispose();
+    }
 }
