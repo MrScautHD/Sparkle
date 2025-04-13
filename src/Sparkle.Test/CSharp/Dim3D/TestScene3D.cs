@@ -15,6 +15,7 @@ using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
+using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 using Sparkle.CSharp.Scenes;
@@ -52,12 +53,11 @@ public class TestScene3D : Scene {
 
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(10, 3, 0) } );
-        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)));
+        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), Vector3.Zero, new SoftBodyRenderInfo() { DrawBoundingBox = false });
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
         
-        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite); // TODO: Find a way to use the Mesh before it is initialized.
-        softCube.AddComponent(new MeshRenderer(softBodyCube.Mesh, Vector3.Zero));
+        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
@@ -83,7 +83,7 @@ public class TestScene3D : Scene {
         RigidBody3D playerBody = this.GetEntity(2)!.GetComponent<RigidBody3D>()!;
         SoftBody3D softCubeBody = this.GetEntity(3)!.GetComponent<SoftBody3D>()!;
         
-        if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 3), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
+        if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 3.5F), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
             playerBody.SetActivationState(true);
             playerBody.AddForce(new Vector3(0, 25, 0));
         }
@@ -95,10 +95,6 @@ public class TestScene3D : Scene {
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        // Update soft body cube mesh.
-        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.SoftBody.UpdateMesh(context.CommandList);
-        
-        // Call main method.
         base.Draw(context, framebuffer);
         
         // Draw gird.
@@ -108,8 +104,8 @@ public class TestScene3D : Scene {
         this._debugDrawer.Prepare(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
         
         // Draw physics debug renderers.
-        this.GetEntity(2)!.GetComponent<RigidBody3D>()!.Body.DebugDraw(this._debugDrawer);
-        this.GetEntity(4)!.GetComponent<RigidBody3D>()!.Body.DebugDraw(this._debugDrawer);
-        ((SoftBodyCube) this.GetEntity(3)!.GetComponent<SoftBody3D>()!.SoftBody).DebugDraw(this._debugDrawer);
+        this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
+        this.GetEntity(4)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
+        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
     }
 }

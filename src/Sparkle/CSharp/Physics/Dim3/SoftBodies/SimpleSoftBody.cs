@@ -1,16 +1,22 @@
 using Bliss.CSharp.Geometry;
 using Jitter2;
+using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
 using Veldrid;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies;
 
-public abstract class SimpleSoftBody : SoftBody, IDebugDrawable, IDisposable {
+public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     
     /// <summary>
     /// The graphics device used to create and manage GPU resources.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
+
+    /// <summary>
+    /// The central rigid body representing the core of the soft body structure.
+    /// </summary>
+    public RigidBody Center { get; protected set; }
     
     /// <summary>
     /// The GPU mesh associated with the soft body. Created lazily on first access.
@@ -42,7 +48,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable, IDisposable {
     /// Updates the mesh with the latest simulation data.
     /// </summary>
     /// <param name="commandList">The command list used to submit rendering commands.</param>
-    public abstract void UpdateMesh(CommandList commandList);
+    protected internal abstract void UpdateMesh(CommandList commandList);
 
     /// <summary>
     /// Draws debug visuals for this soft body using the specified debug drawer.
@@ -50,11 +56,9 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable, IDisposable {
     /// <param name="drawer">The debug drawer to use for rendering visual helpers.</param>
     public abstract void DebugDraw(IDebugDrawer drawer);
 
-    /// <summary>
-    /// Releases all resources used by this soft body.
-    /// </summary>
-    public virtual void Dispose() {
-        this.Destroy();
+    public new virtual void Destroy() {
+        base.Destroy();
+        this.world.Remove(this.Center);
         this._mesh?.Dispose();
     }
 }

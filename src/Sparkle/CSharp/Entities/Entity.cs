@@ -1,4 +1,5 @@
 using Bliss.CSharp;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
@@ -165,6 +166,12 @@ public class Entity : Disposable {
     public bool TryAddComponent(Component component) {
         if (this.Components.ContainsKey(component.GetType())) {
             return false;
+        }
+
+        foreach (Component comp in this.Components.Values) {
+            if (component.ConflictsWith(comp)) {
+                return false;
+            }
         }
 
         if (component.Entity != null!) {

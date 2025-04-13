@@ -15,6 +15,14 @@ namespace Sparkle.CSharp.Entities.Components;
 public class RigidBody3D : Component {
     
     /// <summary>
+    /// Gets a list of component types that are incompatible with this component.
+    /// </summary>
+    public override IReadOnlyList<Type> InCompatibleTypes => [
+        typeof(RigidBody2D),
+        typeof(SoftBody3D)
+    ];
+
+    /// <summary>
     /// Gets the physics world from the current 3D simulation.
     /// </summary>
     public World World => ((Simulation3D) SceneManager.Simulation!).World;

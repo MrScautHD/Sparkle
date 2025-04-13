@@ -23,11 +23,6 @@ public class SoftBodyCube : SimpleSoftBody {
         (4, 5), (5, 6), (6, 7), (7, 4),
         (0, 4), (1, 5), (2, 6), (3, 7)
     ];
-    
-    /// <summary>
-    /// The central rigid body around which the soft body cube is constrained.
-    /// </summary>
-    public RigidBody Center { get; private set; }
 
     /// <summary>
     /// The tetrahedrons that compose the internal structure of the soft body cube.
@@ -199,7 +194,7 @@ public class SoftBodyCube : SimpleSoftBody {
     /// Updates the vertex data of the mesh to synchronize it with the current positions of the vertices in the soft body.
     /// </summary>
     /// <param name="commandList">The command list used for recording graphics commands.</param>
-    public override void UpdateMesh(CommandList commandList) {
+    protected internal override void UpdateMesh(CommandList commandList) {
         float uLeft = 0.0F;
         float uRight = 1.0F;
         float vTop = 1.0F;
@@ -268,14 +263,5 @@ public class SoftBodyCube : SimpleSoftBody {
             drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position);
             drawer.DrawPoint(this.Center.Position);
         }
-    }
-
-    /// <summary>
-    /// Releases all resources used by the <see cref="SoftBodyCube"/> instance.
-    /// </summary>
-    public override void Dispose() {
-        this.Destroy();
-        this.world.Remove(this.Center);
-        this.Mesh.Dispose();
     }
 }

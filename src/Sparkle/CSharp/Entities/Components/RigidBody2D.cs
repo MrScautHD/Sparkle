@@ -8,6 +8,14 @@ using Sparkle.CSharp.Scenes;
 namespace Sparkle.CSharp.Entities.Components;
 
 public class RigidBody2D : Component {
+    
+    /// <summary>
+    /// Gets a list of component types that are incompatible with this component.
+    /// </summary>
+    public override IReadOnlyList<Type> InCompatibleTypes => [
+        typeof(RigidBody3D),
+        typeof(SoftBody3D)
+    ];
 
     public World World => ((Simulation2D) SceneManager.Simulation!).World;
     public Body Body { get; private set; }

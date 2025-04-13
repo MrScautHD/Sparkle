@@ -19,6 +19,11 @@ public abstract class Component : Disposable {
     protected internal Entity Entity { get; internal set; }
     
     /// <summary>
+    /// The collection of component types that are incompatible.
+    /// </summary>
+    public virtual IReadOnlyList<Type> InCompatibleTypes => [];
+    
+    /// <summary>
     /// Gets the global position of the component, calculated as the entity's position plus the offset.
     /// </summary>
     public Vector3 GlobalPos => this.Entity.Transform.Translation + this.OffsetPos;
@@ -71,6 +76,15 @@ public abstract class Component : Disposable {
     /// </summary>
     /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
     protected internal virtual void Resize(Rectangle rectangle) { }
+
+    /// <summary>
+    /// Determines if the current component has a conflict with another specified component type.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to check for conflicts.</typeparam>
+    /// <returns>True if the current component conflicts with the specified component type; otherwise, false.</returns>
+    public bool ConflictsWith<T>(T component) where T : Component {
+        return this.InCompatibleTypes.Contains(component.GetType());
+    }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
