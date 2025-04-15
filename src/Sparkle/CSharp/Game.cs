@@ -55,6 +55,9 @@ public class Game : Disposable {
             Logger.CreateLogFile(this.Settings.LogDirectory);
         }
 
+        Logger.Info("Initialize logger...");
+        Logger.Init();
+
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info($"\t> CPU: {SystemInfo.Cpu}");
         Logger.Info($"\t> MEMORY: {SystemInfo.MemorySize} GB");
@@ -63,9 +66,6 @@ public class Game : Disposable {
         Logger.Info($"\t> Raylib-CSharp: {Raylib.Version}");
         Logger.Info($"\t> Raylib: {Raylib.RlVersion}");
         Logger.Info($"\t> API: {RlGl.GetVersion()}");
-        
-        Logger.Info("Initialize logger...");
-        Logger.Init();
         
         Time.SetTargetFPS(this.Settings.TargetFps);
 
