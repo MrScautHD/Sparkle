@@ -98,14 +98,10 @@ public class ModelRenderer : InterpolatedComponent {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.LerpedGlobalPosition, this.LerpedRotation)) {
-            RasterizerStateDescription? rasterizerState = null;
-            
-            if (this.DrawWires) {
-                rasterizerState = RasterizerStateDescription.DEFAULT with {
-                    CullMode = FaceCullMode.None,
-                    FillMode = PolygonFillMode.Wireframe
-                };
-            }
+            RasterizerStateDescription? rasterizerState = this.DrawWires ? RasterizerStateDescription.DEFAULT with {
+                CullMode = FaceCullMode.None,
+                FillMode = PolygonFillMode.Wireframe
+            } : null;
             
             Transform transform = new Transform() {
                 Translation = this.LerpedGlobalPosition,

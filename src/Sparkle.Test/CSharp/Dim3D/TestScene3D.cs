@@ -89,8 +89,9 @@ public class TestScene3D : Scene {
         }
 
         if (Input.IsKeyDown(KeyboardKey.H)) {
-            ((SoftBodyCube) softCubeBody.SoftBody).Center.SetActivationState(true);
-            ((SoftBodyCube) softCubeBody.SoftBody).Center.AddForce(new Vector3(0, 200, 0));
+            softCubeBody.Center.SetActivationState(true);
+            //softCubeBody.Center.AngularVelocity = new JVector(5, 0, 0);
+            softCubeBody.Center.AddForce(new Vector3(0, 200, 0));
         }
     }
 

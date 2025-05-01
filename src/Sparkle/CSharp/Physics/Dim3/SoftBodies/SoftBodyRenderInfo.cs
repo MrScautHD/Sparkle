@@ -14,30 +14,18 @@ public class SoftBodyRenderInfo {
     /// Whether to render the mesh in wireframe mode.
     /// </summary>
     public bool DrawWires;
-
-    /// <summary>
-    /// Whether to draw the bounding box of the mesh.
-    /// </summary>
-    public bool DrawBoundingBox;
     
     /// <summary>
     /// The color used to render the soft body mesh.
     /// </summary>
-    public Color MeshColor;
-
-    /// <summary>
-    /// The color used to render the bounding box.
-    /// </summary>
-    public Color BoxColor;
-
+    public Color Color;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="SoftBodyRenderInfo"/> class with default rendering settings.
     /// </summary>
     public SoftBodyRenderInfo() {
         this.Sampler = null;
         this.DrawWires = false;
-        this.DrawBoundingBox = false;
-        this.MeshColor = Color.White;
-        this.BoxColor = Color.White;
+        this.Color = Color.White;
     }
 }
