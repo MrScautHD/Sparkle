@@ -191,9 +191,9 @@ public class SoftBodyCube : SimpleSoftBody {
     }
 
     /// <summary>
-    /// Updates the vertex data of the mesh to synchronize it with the current positions of the vertices in the soft body.
+    /// Updates the vertex data of the mesh to match the current vertex positions of the soft body.
     /// </summary>
-    /// <param name="commandList">The command list used for recording graphics commands.</param>
+    /// <param name="commandList">The command list used for issuing graphics commands to the GPU.</param>
     protected internal override void UpdateMesh(CommandList commandList) {
         float uLeft = 0.0F;
         float uRight = 1.0F;
@@ -243,7 +243,7 @@ public class SoftBodyCube : SimpleSoftBody {
                 
                 // Add the generated vertex.
                 this.Mesh.SetVertexValue(face * 4 + corner, new Vertex3D() {
-                    Position = this.Vertices[faceVertexIndex].Position,
+                    Position = this.GetLerpedVertexPos(faceVertexIndex),
                     TexCoords = texCoord,
                     Color = Color.White.ToRgbaFloatVec4()
                 });

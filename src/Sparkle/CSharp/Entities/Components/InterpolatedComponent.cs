@@ -3,27 +3,27 @@ using System.Numerics;
 namespace Sparkle.CSharp.Entities.Components;
 
 public abstract class InterpolatedComponent : Component {
-    
+
     /// <summary>
     /// Interpolated local position.
     /// </summary>
-    public Vector3 LerpedPosition { get; private set; }
-    
+    public Vector3 LerpedPosition => Vector3.Lerp(this._previousPos, this._currentPos, (float) (Time.FixedAccumulator / Time.FixedStep));
+
     /// <summary>
     /// Interpolated global position.
     /// </summary>
-    public Vector3 LerpedGlobalPosition { get; private set; }
-    
+    public Vector3 LerpedGlobalPosition => Vector3.Lerp(this._previousGlobalPos, this._currentGlobalPos, (float) (Time.FixedAccumulator / Time.FixedStep));
+
     /// <summary>
     /// Interpolated rotation.
     /// </summary>
-    public Quaternion LerpedRotation { get; private set; }
-    
+    public Quaternion LerpedRotation => Quaternion.Slerp(this._previousRot, this._currentRot, (float) (Time.FixedAccumulator / Time.FixedStep));
+
     /// <summary>
-    /// Interpolated scale between.
+    /// Interpolated scale.
     /// </summary>
-    public Vector3 LerpedScale { get; private set; }
-    
+    public Vector3 LerpedScale => Vector3.Lerp(this._previousScale, this._currentScale, (float) (Time.FixedAccumulator / Time.FixedStep));
+
     /// <summary>
     /// The position of the component during the previous fixed update.
     /// </summary>
@@ -65,39 +65,10 @@ public abstract class InterpolatedComponent : Component {
     private Vector3 _currentScale;
 
     /// <summary>
-    /// The time accumulated since the last fixed update, used for interpolation.
-    /// </summary>
-    private double _accumulator;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="InterpolatedComponent"/> class.
     /// </summary>
     /// <param name="offsetPos">The offset position relative to the entity's transform.</param>
     protected InterpolatedComponent(Vector3 offsetPos) : base(offsetPos) { }
-
-    /// <summary>
-    /// Updates the component's state based on the provided time delta.
-    /// </summary>
-    /// <param name="delta">The time delta since the last update, typically in seconds.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
-        
-        // Lerp factor.
-        float lerpFactor = (float) (this._accumulator / Time.FixedStep);
-        
-        // Calculate lerped Pos, Rotation and scale.
-        this.LerpedPosition = Vector3.Lerp(this._previousPos, this._currentPos, lerpFactor);
-        this.LerpedGlobalPosition = Vector3.Lerp(this._previousGlobalPos, this._currentGlobalPos, lerpFactor);
-        this.LerpedRotation = Quaternion.Slerp(this._previousRot, this._currentRot, lerpFactor);
-        this.LerpedScale = Vector3.Lerp(this._previousScale, this._currentScale, lerpFactor);
-        
-        // Calculate accumulator.
-        this._accumulator += delta;
-
-        while (this._accumulator >= Time.FixedStep) {
-            this._accumulator -= Time.FixedStep;
-        }
-    }
 
     /// <summary>
     /// Updates the interpolated component's state in fixed intervals, aligning the current and previous

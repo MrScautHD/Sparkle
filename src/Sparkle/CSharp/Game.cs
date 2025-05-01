@@ -232,7 +232,7 @@ public class Game : Disposable {
         
         Logger.Info("Start game loop...");
         while (!this.ShouldClose && this.MainWindow.Exists) {
-            if (this.GetTargetFps() != 0 && Time.Timer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
+            if (this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
             }
             Time.Update();

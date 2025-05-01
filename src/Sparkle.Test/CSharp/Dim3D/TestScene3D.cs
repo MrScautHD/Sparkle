@@ -53,7 +53,7 @@ public class TestScene3D : Scene {
 
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(10, 3, 0) } );
-        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), Vector3.Zero, new SoftBodyRenderInfo() { DrawBoundingBox = false });
+        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), Vector3.Zero, new SoftBodyRenderInfo());
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
         
@@ -85,7 +85,7 @@ public class TestScene3D : Scene {
         
         if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 3.5F), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
             playerBody.SetActivationState(true);
-            playerBody.AddForce(new Vector3(0, 25, 0));
+            playerBody.AddForce(new Vector3(0, 250, 0));
         }
 
         if (Input.IsKeyDown(KeyboardKey.H)) {

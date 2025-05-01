@@ -19,7 +19,7 @@ public class SoftBodyRenderInfo {
     /// Whether to draw the bounding box of the mesh.
     /// </summary>
     public bool DrawBoundingBox;
-
+    
     /// <summary>
     /// The color used to render the soft body mesh.
     /// </summary>

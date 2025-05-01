@@ -11,7 +11,6 @@ using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
-using Logger = Bliss.CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -143,6 +142,8 @@ public class SoftBody3D : InterpolatedComponent {
             this.Center.Orientation = entityRot;
         }
     }
+    
+     // TODO: ADD Scale also for Rigidbody.
 
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
