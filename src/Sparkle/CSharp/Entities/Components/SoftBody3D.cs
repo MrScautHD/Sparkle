@@ -72,7 +72,7 @@ public class SoftBody3D : Component {
     /// <summary>
     /// The positional offset from the entity's origin. Always returns zero for this component.
     /// </summary>
-    public new Vector3 OffsetPos => Vector3.Zero;
+    public new Vector3 OffsetPosition => Vector3.Zero;
 
     /// <summary>
     /// The factory responsible for creating a soft body instance.
@@ -83,9 +83,8 @@ public class SoftBody3D : Component {
     /// Initializes a new instance of the <see cref="SoftBody3D"/> component.
     /// </summary>
     /// <param name="factory">The factory used to create the soft body instance.</param>
-    /// <param name="offsetPos">Offset position for initialization (unused internally).</param>
     /// <param name="renderInfo">Optional rendering configuration.</param>
-    public SoftBody3D(ISoftBodyFactory factory, Vector3 offsetPos, SoftBodyRenderInfo? renderInfo = null) : base(offsetPos) {
+    public SoftBody3D(ISoftBodyFactory factory, SoftBodyRenderInfo? renderInfo = null) : base(Vector3.Zero) {
         this._factory = factory;
         this.RenderInfo = renderInfo;
     }
@@ -137,14 +136,9 @@ public class SoftBody3D : Component {
             // Update mesh data.
             this.SoftBody.UpdateMesh(context.CommandList);
             
+            // Draw the mesh.
             if (this.Vertices.Any(v => cam3D.GetFrustum().ContainsPoint(this.GetLerpedVertexPos(this.Vertices.IndexOf(v))))) {
-                RasterizerStateDescription? rasterizerState = this.RenderInfo.DrawWires ? RasterizerStateDescription.DEFAULT with {
-                    CullMode = FaceCullMode.None,
-                    FillMode = PolygonFillMode.Wireframe
-                } : null;
-                
-                // Draw mesh.
-                this.Mesh.Draw(context.CommandList, new Transform(), framebuffer.OutputDescription, this.RenderInfo.Sampler, null, rasterizerState, this.RenderInfo.Color);
+                this.Mesh.Draw(context.CommandList, new Transform(), framebuffer.OutputDescription, this.RenderInfo.Sampler, this.RenderInfo.DepthStencilState, this.RenderInfo.RasterizerState, this.RenderInfo.Color);
             }
         }
     }
@@ -171,7 +165,7 @@ public class SoftBody3D : Component {
     /// </summary>
     private void CreateSoftBody() {
         Transform transform = this.Entity.Transform;
-        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, this.GlobalPos, Quaternion.Conjugate(transform.Rotation), transform.Scale);
+        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, this.GlobalPosition, transform.Rotation, transform.Scale);
     }
     
     /// <summary>
@@ -196,7 +190,7 @@ public class SoftBody3D : Component {
     /// Synchronizes the entity's rotation with the soft body center when active.
     /// </summary>
     private void UpdateEntityRotation() {
-        Quaternion bodyRot = Quaternion.Conjugate(this.Center.Orientation);
+        Quaternion bodyRot = this.Center.Orientation;
         
         if (this.IsActive && this.Entity.Transform.Rotation != bodyRot) {
             this.Entity.Transform.Rotation = bodyRot;
@@ -207,7 +201,7 @@ public class SoftBody3D : Component {
     /// Synchronizes the soft body center rotation with the entity when inactive.
     /// </summary>
     private void UpdateBodyRotation() {
-        Quaternion entityRot = Quaternion.Conjugate(this.Entity.Transform.Rotation);
+        Quaternion entityRot = this.Entity.Transform.Rotation;
 
         if (!this.IsActive && (Quaternion) this.Center.Orientation != entityRot) {
             this.Center.Orientation = entityRot;

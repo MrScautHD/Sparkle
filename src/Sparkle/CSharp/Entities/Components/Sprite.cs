@@ -29,14 +29,14 @@ public class Sprite : Component {
         
         // TODO: FIX THIS!
         Rectangle source = new Rectangle(0, 0, (int) this.Texture.Width, (int) this.Texture.Height);
-        Rectangle dest = new Rectangle((int) this.GlobalPos.X, (int) this.GlobalPos.Y, (int) this.Size.X, (int) this.Size.Y);
+        Rectangle dest = new Rectangle((int) this.GlobalPosition.X, (int) this.GlobalPosition.Y, (int) this.Size.X, (int) this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
         Vector2 scale = new Vector2(this.Entity.Transform.Scale.X, this.Entity.Transform.Scale.Y);
         float rotation = float.RadiansToDegrees(this.Entity.Transform.Rotation.ToEuler().Z);
         
         context.SpriteBatch.SetOutput(framebuffer.OutputDescription);
         context.SpriteBatch.SetView(SceneManager.ActiveCam2D?.GetView());
-        context.SpriteBatch.DrawTexture(this.Texture, new Vector2(this.GlobalPos.X, this.GlobalPos.Y), source, scale, origin, rotation, this.Color, this.Flip);
+        context.SpriteBatch.DrawTexture(this.Texture, new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y), source, scale, origin, rotation, this.Color, this.Flip);
         context.SpriteBatch.ResetSettings();
     }
 }

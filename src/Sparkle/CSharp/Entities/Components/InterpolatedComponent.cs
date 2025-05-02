@@ -67,8 +67,8 @@ public abstract class InterpolatedComponent : Component {
     /// <summary>
     /// Initializes a new instance of the <see cref="InterpolatedComponent"/> class.
     /// </summary>
-    /// <param name="offsetPos">The offset position relative to the entity's transform.</param>
-    protected InterpolatedComponent(Vector3 offsetPos) : base(offsetPos) { }
+    /// <param name="offsetPosition">The offset position relative to the entity's transform.</param>
+    protected InterpolatedComponent(Vector3 offsetPosition) : base(offsetPosition) { }
 
     /// <summary>
     /// Updates the interpolated component's state in fixed intervals, aligning the current and previous
@@ -81,7 +81,7 @@ public abstract class InterpolatedComponent : Component {
         this._currentPos = this.Entity.Transform.Translation;
         
         this._previousGlobalPos = this._currentGlobalPos;
-        this._currentGlobalPos = this.GlobalPos;
+        this._currentGlobalPos = this.GlobalPosition;
 
         this._previousRot = this._currentRot;
         this._currentRot = this.Entity.Transform.Rotation;

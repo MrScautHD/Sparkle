@@ -85,7 +85,7 @@ public class RigidBody3D : Component {
     /// <summary>
     /// The positional offset of this component, always zero for RigidBody3D.
     /// </summary>
-    public new Vector3 OffsetPos => Vector3.Zero;
+    public new Vector3 OffsetPosition => Vector3.Zero;
     
     /// <summary>
     /// Stores the initial list of shapes used to construct the rigid body.
@@ -213,7 +213,7 @@ public class RigidBody3D : Component {
     /// Gets or sets the position of the rigid body.
     /// </summary>
     public Vector3 Position {
-        get => (Vector3) this.Body.Position;
+        get => this.Body.Position;
         set => this.Body.Position = value;
     }
     
@@ -398,7 +398,7 @@ public class RigidBody3D : Component {
         this.Friction = this._friction;
         this.Restitution = this._restitution;
         this.Position = this.Entity.Transform.Translation;
-        this.Orientation = Quaternion.Conjugate(this.Entity.Transform.Rotation);
+        this.Orientation = this.Entity.Transform.Rotation;
     }
 
     /// <summary>
@@ -423,7 +423,7 @@ public class RigidBody3D : Component {
     /// Updates the entity’s rotation with the latest value from the physics simulation, if active.
     /// </summary>
     private void UpdateEntityRotation() {
-        Quaternion bodyRot = Quaternion.Conjugate(this.Orientation);
+        Quaternion bodyRot = this.Orientation;
         
         if (this.Body.IsActive && this.Entity.Transform.Rotation != bodyRot) {
             this.Entity.Transform.Rotation = bodyRot;
@@ -434,7 +434,7 @@ public class RigidBody3D : Component {
     /// Updates the physics body's orientation to match the entity’s transform if inactive.
     /// </summary>
     private void UpdateBodyRotation() {
-        Quaternion entityRot = Quaternion.Conjugate(this.Entity.Transform.Rotation);
+        Quaternion entityRot = this.Entity.Transform.Rotation;
 
         if (!this.Body.IsActive && this.Orientation != entityRot) {
             this.Orientation = entityRot;

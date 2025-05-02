@@ -25,14 +25,9 @@ public class SoftBodyCube : SimpleSoftBody {
     ];
 
     /// <summary>
-    /// The tetrahedrons that compose the internal structure of the soft body cube.
+    /// The central rigid body of the soft body.
     /// </summary>
-    public SoftBodyTetrahedron[] Tetrahedrons { get; private set; }
-    
-    /// <summary>
-    /// The ball socket constraint connecting the center to the vertices.
-    /// </summary>
-    public BallSocket Constraint { get; private set; }
+    public sealed override RigidBody Center { get; protected set; }
 
     /// <summary>
     /// Constructs a new soft body cube within the specified physics world.
@@ -78,7 +73,7 @@ public class SoftBodyCube : SimpleSoftBody {
         }
         
         // Create tetrahedrons.
-        this.Tetrahedrons = [
+        SoftBodyTetrahedron[] tetrahedrons = [
             new SoftBodyTetrahedron(this, this.Vertices[0], this.Vertices[1], this.Vertices[5], this.Vertices[2]),
             new SoftBodyTetrahedron(this, this.Vertices[2], this.Vertices[5], this.Vertices[6], this.Vertices[7]),
             new SoftBodyTetrahedron(this, this.Vertices[3], this.Vertices[0], this.Vertices[2], this.Vertices[7]),
@@ -88,21 +83,21 @@ public class SoftBodyCube : SimpleSoftBody {
         
         // Add tetrahedrons.
         for (int i = 0; i < 5; i++) {
-            this.Tetrahedrons[i].UpdateWorldBoundingBox();
-            world.DynamicTree.AddProxy(this.Tetrahedrons[i]);
-            this.Shapes.Add(this.Tetrahedrons[i]);
+            tetrahedrons[i].UpdateWorldBoundingBox();
+            world.DynamicTree.AddProxy(tetrahedrons[i]);
+            this.Shapes.Add(tetrahedrons[i]);
         }
 
-        // Create center body.
+        // Create a center body.
         this.Center = world.CreateRigidBody();
         this.Center.Position = centerPos / 8.0F;
         this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
 
-        // Create constraint.
+        // Create constraints.
         for (int i = 0; i < 8; i++) {
-            this.Constraint = world.CreateConstraint<BallSocket>(this.Center, this.Vertices[i]);
-            this.Constraint.Initialize(this.Vertices[i].Position);
-            this.Constraint.Softness = softness;
+            BallSocket constraint = world.CreateConstraint<BallSocket>(this.Center, this.Vertices[i]);
+            constraint.Initialize(this.Vertices[i].Position);
+            constraint.Softness = softness;
         }
     }
 

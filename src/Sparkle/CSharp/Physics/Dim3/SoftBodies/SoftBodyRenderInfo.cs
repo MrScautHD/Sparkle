@@ -11,9 +11,14 @@ public class SoftBodyRenderInfo {
     public Sampler? Sampler;
 
     /// <summary>
-    /// Whether to render the mesh in wireframe mode.
+    /// Defines the depth and stencil test settings used during rendering.
     /// </summary>
-    public bool DrawWires;
+    public DepthStencilStateDescription DepthStencilState;
+    
+    /// <summary>
+    /// Defines the rasterization behavior, including fill mode and face culling.
+    /// </summary>
+    public RasterizerStateDescription RasterizerState;
     
     /// <summary>
     /// The color used to render the soft body mesh.
@@ -25,7 +30,8 @@ public class SoftBodyRenderInfo {
     /// </summary>
     public SoftBodyRenderInfo() {
         this.Sampler = null;
-        this.DrawWires = false;
+        this.DepthStencilState = DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this.RasterizerState = RasterizerStateDescription.DEFAULT;
         this.Color = Color.White;
     }
 }

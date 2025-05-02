@@ -91,6 +91,8 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// </summary>
     private Color _currentColor;
     
+    // TODO: DO it to a Batch system! (the performance is terrible without)
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class.
     /// !Important! This is for debugging purposes only and is not optimized for performance.

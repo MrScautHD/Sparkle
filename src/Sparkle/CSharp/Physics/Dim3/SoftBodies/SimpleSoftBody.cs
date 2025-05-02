@@ -4,6 +4,7 @@ using Jitter2;
 using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
 using Veldrid;
+using Logger = Bliss.CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies;
 
@@ -17,7 +18,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     /// <summary>
     /// The central rigid body representing the core of the soft body structure.
     /// </summary>
-    public RigidBody Center { get; protected set; }
+    public abstract RigidBody Center { get; protected set; }
     
     /// <summary>
     /// The GPU mesh associated with the soft body. Created lazily on first access.
@@ -28,7 +29,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     /// Internal cached mesh instance.
     /// </summary>
     private Mesh? _mesh;
-
+    
     /// <summary>
     /// Maintains a history of vertex positions for interpolation.
     /// </summary>

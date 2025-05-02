@@ -19,11 +19,16 @@ public class ModelRenderer : InterpolatedComponent {
     /// The sampler used for texturing the model, can be null.
     /// </summary>
     public Sampler? Sampler;
+
+    /// <summary>
+    /// Defines the depth and stencil testing behavior during rendering.
+    /// </summary>
+    public DepthStencilStateDescription DepthStencilState;
     
     /// <summary>
-    /// Indicates whether the model should be rendered as a wireframe.
+    /// Defines rasterization settings such as fill mode and culling.
     /// </summary>
-    public bool DrawWires;
+    public RasterizerStateDescription RasterizerState;
 
     /// <summary>
     /// Indicates whether the bounding box around the model should be rendered.
@@ -48,17 +53,19 @@ public class ModelRenderer : InterpolatedComponent {
     /// <summary>
     /// Initializes a new instance of the <see cref="ModelRenderer"/> class.
     /// </summary>
-    /// <param name="model">The model to render.</param>
-    /// <param name="offsetPos">The position offset of the model relative to its parent entity.</param>
-    /// <param name="sampler">Optional sampler to apply to the model's textures.</param>
-    /// <param name="drawWires">Whether to render the model in wireframe mode.</param>
-    /// <param name="drawBoundingBox">Specifies whether to render the bounding box around the model.</param>
-    /// <param name="modelColor">Optional color to apply to the model. Defaults to white if not specified.</param>
-    /// <param name="boxColor">Optional color to apply to the bounding box. Defaults to white if not specified.</param>
-    public ModelRenderer(Model model, Vector3 offsetPos, Sampler? sampler = null, bool drawWires = false, bool drawBoundingBox = false, Color? modelColor = null, Color? boxColor = null) : base(offsetPos) {
+    /// <param name="model">The 3D model to render.</param>
+    /// <param name="offsetPosition">The position offset relative to the parent entity.</param>
+    /// <param name="sampler">Optional texture sampler to apply to the model.</param>
+    /// <param name="depthStencilState">Optional depth/stencil configuration. Defaults to depth-only testing.</param>
+    /// <param name="rasterizerState">Optional rasterization configuration. Defaults to solid fill with back-face culling.</param>
+    /// <param name="drawBoundingBox">If true, renders the bounding box around the model.</param>
+    /// <param name="modelColor">Optional color to tint the model. Defaults to white.</param>
+    /// <param name="boxColor">Optional color for the bounding box. Defaults to white.</param>
+    public ModelRenderer(Model model, Vector3 offsetPosition, Sampler? sampler = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, bool drawBoundingBox = false, Color? modelColor = null, Color? boxColor = null) : base(offsetPosition) {
         this.Model = model;
         this.Sampler = sampler;
-        this.DrawWires = drawWires;
+        this.DepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this.RasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
         this.DrawBoundingBox = drawBoundingBox;
         this.ModelColor = modelColor ?? Color.White;
         this.BoxColor = boxColor ?? Color.White;
@@ -98,21 +105,16 @@ public class ModelRenderer : InterpolatedComponent {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.LerpedGlobalPosition, this.LerpedRotation)) {
-            RasterizerStateDescription? rasterizerState = this.DrawWires ? RasterizerStateDescription.DEFAULT with {
-                CullMode = FaceCullMode.None,
-                FillMode = PolygonFillMode.Wireframe
-            } : null;
-            
             Transform transform = new Transform() {
                 Translation = this.LerpedGlobalPosition,
                 Rotation = this.LerpedRotation,
                 Scale = this.LerpedScale
             };
             
-            // Draw model.
-            this.Model.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, null, rasterizerState, this.ModelColor);
+            // Draw the model.
+            this.Model.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, this.DepthStencilState, this.RasterizerState, this.ModelColor);
 
-            // Draw bounding box.
+            // Draw the bounding box.
             if (this.DrawBoundingBox) {
                 context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, new Transform(), this._box, this.BoxColor);
             }

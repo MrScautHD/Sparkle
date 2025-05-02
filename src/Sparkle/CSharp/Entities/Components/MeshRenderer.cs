@@ -21,9 +21,14 @@ public class MeshRenderer : InterpolatedComponent {
     public Sampler? Sampler;
     
     /// <summary>
-    /// Whether to render the mesh as a wireframe.
+    /// Defines the depth and stencil testing behavior during rendering.
     /// </summary>
-    public bool DrawWires;
+    public DepthStencilStateDescription DepthStencilState;
+    
+    /// <summary>
+    /// Defines rasterization settings such as fill mode and culling.
+    /// </summary>
+    public RasterizerStateDescription RasterizerState;
     
     /// <summary>
     /// Whether to draw the bounding box around the mesh.
@@ -49,16 +54,18 @@ public class MeshRenderer : InterpolatedComponent {
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
     /// </summary>
     /// <param name="mesh">The mesh to render.</param>
-    /// <param name="offsetPos">The offset position of the component relative to the entity.</param>
+    /// <param name="offsetPosition">The position offset relative to the parent entity.</param>
     /// <param name="sampler">Optional texture sampler for the mesh.</param>
-    /// <param name="drawWires">Whether to render the mesh in wireframe mode.</param>
-    /// <param name="drawBoundingBox">Whether to render the mesh's bounding box.</param>
-    /// <param name="meshColor">Optional color for the mesh. Defaults to white.</param>
+    /// <param name="depthStencilState">Optional depth/stencil settings. Defaults to depth-only testing.</param>
+    /// <param name="rasterizerState">Optional rasterizer configuration. Defaults to solid fill with back-face culling.</param>
+    /// <param name="drawBoundingBox">If true, the mesh’s bounding box will be rendered.</param>
+    /// <param name="meshColor">Optional tint color for the mesh. Defaults to white.</param>
     /// <param name="boxColor">Optional color for the bounding box. Defaults to white.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPos, Sampler? sampler = null, bool drawWires = false, bool drawBoundingBox = false, Color? meshColor = null, Color? boxColor = null) : base(offsetPos) {
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Sampler? sampler = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, bool drawBoundingBox = false, Color? meshColor = null, Color? boxColor = null) : base(offsetPosition) {
         this.Mesh = mesh;
         this.Sampler = sampler;
-        this.DrawWires = drawWires;
+        this.DepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this.RasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
         this.DrawBoundingBox = drawBoundingBox;
         this.MeshColor = meshColor ?? Color.White;
         this.BoxColor = boxColor ?? Color.White;
@@ -98,21 +105,16 @@ public class MeshRenderer : InterpolatedComponent {
         }
         
         if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.LerpedGlobalPosition, this.LerpedRotation)) {
-            RasterizerStateDescription? rasterizerState = this.DrawWires ? RasterizerStateDescription.DEFAULT with {
-                CullMode = FaceCullMode.None,
-                FillMode = PolygonFillMode.Wireframe
-            } : null;
-            
             Transform transform = new Transform() {
                 Translation = this.LerpedGlobalPosition,
                 Rotation = this.LerpedRotation,
                 Scale = this.LerpedScale
             };
             
-            // Draw mesh.
-            this.Mesh.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, null, rasterizerState, this.MeshColor);
+            // Draw the mesh.
+            this.Mesh.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, this.DepthStencilState, this.RasterizerState, this.MeshColor);
 
-            // Draw bounding box.
+            // Draw the bounding box.
             if (this.DrawBoundingBox) {
                 context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, new Transform(), this._box, this.BoxColor);
             }

@@ -9,6 +9,8 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class RigidBody2D : Component {
     
+    // TODO: DONE THIS!
+    
     /// <summary>
     /// Gets a list of component types that are incompatible with this component.
     /// </summary>
@@ -23,7 +25,7 @@ public class RigidBody2D : Component {
     private BodyDefinition _bodyDefinition;
     private FixtureDefinition _fixtureDefinition;
     
-    public RigidBody2D(Vector3 offsetPos, BodyDefinition bodyDefinition, FixtureDefinition fixtureDefinition, Body body) : base(offsetPos) {
+    public RigidBody2D(Vector3 offsetPosition, BodyDefinition bodyDefinition, FixtureDefinition fixtureDefinition, Body body) : base(offsetPosition) {
         _bodyDefinition = bodyDefinition;
         _fixtureDefinition = fixtureDefinition;
         Body = body;
