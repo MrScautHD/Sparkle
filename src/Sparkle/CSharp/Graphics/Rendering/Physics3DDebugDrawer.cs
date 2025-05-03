@@ -471,7 +471,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             this._currentColor != this._requestedColor) {
             this.Flush();
         }
-
+        
         this._currentOutput = this._requestedOutput;
         this._currentBlendState = this._requestedBlendState;
         this._currentDepthStencilState = this._requestedDepthStencilState;

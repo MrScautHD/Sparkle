@@ -42,16 +42,16 @@ public class SoftBodyCloth : SimpleSoftBody {
     /// <param name="world">The physics world in which the cloth is simulated.</param>
     /// <param name="position">The position of the cloth in world space.</param>
     /// <param name="rotation">The rotation applied to the cloth's initial layout.</param>
-    /// <param name="vertexSpacing">The spacing between vertices in the grid.</param>
     /// <param name="gridWidth">The number of columns in the cloth grid.</param>
     /// <param name="gridHeight">The number of rows in the cloth grid.</param>
+    /// <param name="vertexSpacing">The spacing between vertices in the grid.</param>
     /// <param name="vertexMass">The mass of each individual vertex.</param>
     /// <param name="centerMass">The mass of the central rigid body.</param>
     /// <param name="centerInertia">The inertia of the central rigid body.</param>
     /// <param name="softness">The softness factor applied to the spring constraints.</param>
     /// <param name="useDynamicCenterVertexSelection">Whether to automatically choose multiple closest vertices to connect to the center.</param>
     /// <param name="useGridTexture">Whether to use a tiled grid texture layout for UV coordinates.</param>
-    public SoftBodyCloth(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector2 vertexSpacing, int gridWidth, int gridHeight, float vertexMass = 10.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.2F, bool useDynamicCenterVertexSelection = true, bool useGridTexture = false) : base(graphicsDevice, world) {
+    public SoftBodyCloth(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, int gridWidth, int gridHeight, Vector2 vertexSpacing, float vertexMass = 10.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.2F, bool useDynamicCenterVertexSelection = true, bool useGridTexture = false) : base(graphicsDevice, world) {
         this._useGridTexture = useGridTexture;
         List<JTriangle> triangles = new List<JTriangle>();
         

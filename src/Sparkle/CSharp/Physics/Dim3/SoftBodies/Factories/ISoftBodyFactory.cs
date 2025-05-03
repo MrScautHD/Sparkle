@@ -13,7 +13,6 @@ public interface ISoftBodyFactory {
     /// <param name="world">The physics world where the soft body will be created.</param>
     /// <param name="position">The initial position for the soft body.</param>
     /// <param name="rotation">The initial rotation for the soft body.</param>
-    /// <param name="scale">The scaling factor for the soft body.</param>
     /// <returns>A new instance of a soft body.</returns>
-    SimpleSoftBody CreateSoftBody(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 scale);
+    SimpleSoftBody CreateSoftBody(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation);
 }

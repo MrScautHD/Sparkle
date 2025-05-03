@@ -165,7 +165,7 @@ public class SoftBody3D : Component {
     /// </summary>
     private void CreateSoftBody() {
         Transform transform = this.Entity.Transform;
-        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, this.GlobalPosition, transform.Rotation, transform.Scale);
+        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, this.GlobalPosition, transform.Rotation);
     }
     
     /// <summary>

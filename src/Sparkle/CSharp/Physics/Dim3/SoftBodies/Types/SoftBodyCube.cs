@@ -36,14 +36,14 @@ public class SoftBodyCube : SimpleSoftBody {
     /// <param name="world">The physics simulation world.</param>
     /// <param name="position">The initial position of the cube.</param>
     /// <param name="rotation">The rotation of the cube.</param>
-    /// <param name="scale">Scale applied to the cube vertices before positioning.</param>
     /// <param name="size">The actual physical size of the cube.</param>
+    /// <param name="scale">Scale applied to the cube vertices before positioning.</param>
     /// <param name="vertexMass">Mass applied to each vertex body.</param>
     /// <param name="centerMass">Mass of the central rigid body.</param>
     /// <param name="centerInertia">Inertia tensor multiplier for the central body.</param>
     /// <param name="softness">Softness of the constraints connecting vertices to the center.</param>
     /// <exception cref="ArgumentException">Thrown if any size component is less than or equal to zero.</exception>
-    public SoftBodyCube(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 scale, Vector3 size, float vertexMass = 5.0F, float centerMass = 0.1F, float centerInertia = 0.05F, float softness = 1.0F) : base(graphicsDevice, world) {
+    public SoftBodyCube(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, float vertexMass = 5.0F, float centerMass = 0.1F, float centerInertia = 0.05F, float softness = 1.0F) : base(graphicsDevice, world) {
         if (size.X <= 0.0F || size.Y <= 0.0F || size.Z <= 0.0F) {
             throw new ArgumentException("Each size component (X, Y, Z) must be greater than zero.", nameof(size));
         }
@@ -261,9 +261,13 @@ public class SoftBodyCube : SimpleSoftBody {
     /// </summary>
     /// <param name="drawer">The debug drawer responsible for rendering shapes and points.</param>
     public override void DebugDraw(IDebugDrawer drawer) {
+        
+        // Draw edges.
         foreach ((int, int) spring in Edges) {
             drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position);
-            drawer.DrawPoint(this.Center.Position);
         }
+        
+        // Draw center point.
+        drawer.DrawPoint(this.Center.Position);
     }
 }

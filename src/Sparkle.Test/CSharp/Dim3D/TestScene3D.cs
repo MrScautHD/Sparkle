@@ -67,7 +67,7 @@ public class TestScene3D : Scene {
         
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
-        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10)), new SoftBodyRenderInfo() { RasterizerState = RasterizerStateDescription.CULL_NONE} );
+        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10)), new SoftBodyRenderInfo() { RasterizerState = RasterizerStateDescription.CULL_NONE });
         cloth.AddComponent(softBodyCloth);
         this.AddEntity(cloth);
         
@@ -88,6 +88,14 @@ public class TestScene3D : Scene {
         c3.Initialize(fb3.Position);
         
         softBodyCloth.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
+        
+        // SOFT SPHERE
+        Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 26, 0), Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90)});
+        SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 3, 1), subdivisions: 4), new SoftBodyRenderInfo());
+        sphere.AddComponent(softBodySphere);
+        this.AddEntity(sphere);
+        
+        softBodySphere.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
@@ -113,6 +121,7 @@ public class TestScene3D : Scene {
         RigidBody3D playerBody = this.GetEntity(2)!.GetComponent<RigidBody3D>()!;
         SoftBody3D softCubeBody = this.GetEntity(3)!.GetComponent<SoftBody3D>()!;
         SoftBody3D softClothBody= this.GetEntity(4)!.GetComponent<SoftBody3D>()!;
+        SoftBody3D softSphereBody= this.GetEntity(5)!.GetComponent<SoftBody3D>()!;
         
         //if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 6.5F), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
         //    playerBody.SetActivationState(true);
@@ -134,6 +143,11 @@ public class TestScene3D : Scene {
             softClothBody.Center.SetActivationState(true);
             softClothBody.Center.AddForce(new JVector(0, 100, 0));
         }
+        
+        if (Input.IsKeyDown(KeyboardKey.T)) {
+            softSphereBody.Center.SetActivationState(true);
+            softSphereBody.Center.AddForce(new JVector(0, 100, 0));
+        }
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
@@ -149,7 +163,8 @@ public class TestScene3D : Scene {
         this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
         this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
         this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(5)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
+        this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
+        this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
         
         this._debugDrawer.End();
     }

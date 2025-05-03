@@ -83,9 +83,8 @@ public class SoftBodyClothFactory : ISoftBodyFactory {
     /// <param name="world">The simulation world where the soft body will be created.</param>
     /// <param name="position">The position where the cloth will be placed.</param>
     /// <param name="rotation">The rotation of the cloth in the world.</param>
-    /// <param name="scale">The scale of the cloth.</param>
     /// <returns>A new instance of <see cref="SimpleSoftBody"/> representing the soft body cloth.</returns>
-    public SimpleSoftBody CreateSoftBody(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 scale) {
-        return new SoftBodyCloth(graphicsDevice, world, position, rotation, this.VertexSpacing, this.GirdWidth, this.GirdHeight, this.VertexMass, this.CenterMass, this.CenterInertia, this.Softness, this.UseDynamicCenterVertexSelection, this.UseGridTexture);
+    public SimpleSoftBody CreateSoftBody(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation) {
+        return new SoftBodyCloth(graphicsDevice, world, position, rotation, this.GirdWidth, this.GirdHeight, this.VertexSpacing, this.VertexMass, this.CenterMass, this.CenterInertia, this.Softness, this.UseDynamicCenterVertexSelection, this.UseGridTexture);
     }
 }
