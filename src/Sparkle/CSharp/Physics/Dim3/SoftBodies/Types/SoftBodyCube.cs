@@ -148,14 +148,36 @@ public class SoftBodyCube : SimpleSoftBody {
                 };
                 
                 // Calculate texCoords.
-                Vector2 texCoord = corner switch {
-                    0 => new Vector2(uLeft, vTop),
-                    1 => new Vector2(uRight, vTop),
-                    2 => new Vector2(uRight, vBottom),
-                    3 => new Vector2(uLeft, vBottom),
-                    _ => Vector2.Zero
+                Vector2 texCoord = face switch {
+                    
+                    // Top Face.
+                    4 => corner switch {
+                        0 => new Vector2(uLeft, vBottom),
+                        1 => new Vector2(uLeft, vTop),
+                        2 => new Vector2(uRight, vTop),
+                        3 => new Vector2(uRight, vBottom),
+                        _ => Vector2.Zero
+                    },
+                    
+                    // Bottom Face.
+                    5 => corner switch {
+                        0 => new Vector2(uLeft, vTop),
+                        1 => new Vector2(uLeft, vBottom),
+                        2 => new Vector2(uRight, vBottom),
+                        3 => new Vector2(uRight, vTop),
+                        _ => Vector2.Zero
+                    },
+                    
+                    // All Side Faces.
+                    _ => corner switch {
+                        0 => new Vector2(uLeft, vTop),
+                        1 => new Vector2(uRight, vTop),
+                        2 => new Vector2(uRight, vBottom),
+                        3 => new Vector2(uLeft, vBottom),
+                        _ => Vector2.Zero
+                    }
                 };
-                
+
                 // Add the generated vertex.
                 vertices[face * 4 + corner] = new Vertex3D() {
                     Position = this.Vertices[faceVertexIndex].Position,
@@ -190,12 +212,6 @@ public class SoftBodyCube : SimpleSoftBody {
     /// </summary>
     /// <param name="commandList">The command list used for issuing graphics commands to the GPU.</param>
     protected internal override void UpdateMesh(CommandList commandList) {
-        float uLeft = 0.0F;
-        float uRight = 1.0F;
-        float vTop = 1.0F;
-        float vBottom = 0.0F;
-
-        // Generate the 6 faces.
         for (int face = 0; face < 6; face++) {
             
             // Define face vertex indices.
@@ -227,19 +243,10 @@ public class SoftBodyCube : SimpleSoftBody {
                     _ => 0
                 };
                 
-                // Calculate texCoords.
-                Vector2 texCoord = corner switch {
-                    0 => new Vector2(uLeft, vTop),
-                    1 => new Vector2(uRight, vTop),
-                    2 => new Vector2(uRight, vBottom),
-                    3 => new Vector2(uLeft, vBottom),
-                    _ => Vector2.Zero
-                };
-                
                 // Add the generated vertex.
                 this.Mesh.SetVertexValue(face * 4 + corner, new Vertex3D() {
                     Position = this.GetLerpedVertexPos(faceVertexIndex),
-                    TexCoords = texCoord,
+                    TexCoords = this.Mesh.Vertices[face * 4 + corner].TexCoords,
                     Color = Color.White.ToRgbaFloatVec4()
                 });
             }

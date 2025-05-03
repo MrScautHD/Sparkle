@@ -19,21 +19,21 @@ public class SoftBodyCloth : SimpleSoftBody {
     /// The central rigid body of the soft body.
     /// </summary>
     public sealed override RigidBody Center { get; protected set; }
-
-    /// <summary>
-    /// The rigid body representing the minimum positional bounds of the soft body.
-    /// </summary>
-    public RigidBody MinBody { get; private set; }
-    
-    /// <summary>
-    /// The rigid body representing the maximum positional bounds of the soft body.
-    /// </summary>
-    public RigidBody MaxBody { get; private set; }
     
     /// <summary>
     /// Indicates whether the cloth mesh should use a grid texture layout for texture coordinates.
     /// </summary>
     private readonly bool _useGridTexture;
+
+    /// <summary>
+    /// The minimum position of the cloth's vertices within the soft body structure.
+    /// </summary>
+    private Vector3 _minBodyPosition;
+    
+    /// <summary>
+    /// The maximum position of the cloth's vertices within the soft body structure.
+    /// </summary>
+    private Vector3 _maxBodyPosition;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="SoftBodyCloth"/> class.
@@ -62,9 +62,9 @@ public class SoftBodyCloth : SimpleSoftBody {
         for (int row = 0; row < gridWidth; row++) {
             for (int col = 0; col < gridHeight; col++) {
                 float x0 = (-halfGridHeight + col) * (vertexSpacing.X * 0.1F);
-                float x1 = (-halfGridHeight + col + 1) * (vertexSpacing.X * 0.1F);
+                float x1 = (-halfGridHeight + col + 1.0F) * (vertexSpacing.X * 0.1F);
                 float z0 = (-halfGridWidth + row) * (vertexSpacing.Y * 0.1F);
-                float z1 = (-halfGridWidth + row + 1) * (vertexSpacing.Y * 0.1F);
+                float z1 = (-halfGridWidth + row + 1.0F) * (vertexSpacing.Y * 0.1F);
 
                 Vector3 v0 = Vector3.Transform(new Vector3(x0, 0.0F, z0), rotation) + position / 2.0F;
                 Vector3 v1 = Vector3.Transform(new Vector3(x0, 0.0F, z1), rotation) + position / 2.0F;
@@ -129,9 +129,9 @@ public class SoftBodyCloth : SimpleSoftBody {
             this.Vertices.Add(body);
         }
         
-        // Set min and max bodies.
-        this.MinBody = this.Vertices.First();
-        this.MaxBody = this.Vertices.Last();
+        // Set min and max body pos.
+        this._minBodyPosition = this.Vertices.First().Position;
+        this._maxBodyPosition = this.Vertices.Last().Position;
 
         // Create a center body.
         this.Center = world.CreateRigidBody();
@@ -190,7 +190,6 @@ public class SoftBodyCloth : SimpleSoftBody {
     protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) {
         Vertex3D[] vertices = new Vertex3D[this.Shapes.Count * 3];
         uint[] indices = new uint[this.Shapes.Count * 3];
-        int quadIndex = 0;
         
         // Calculate vertices and indices.
         for (int i = 0; i < this.Shapes.Count; i++) {
@@ -202,55 +201,32 @@ public class SoftBodyCloth : SimpleSoftBody {
                 Vector2 texCoord3;
                 
                 if (this._useGridTexture) {
-                    if (quadIndex % 2 == 0) {
-                        if (i % 2 == 0) {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 0);
-                            texCoord3 = new Vector2(0, 1);
-                        }
-                        else {
-                            texCoord1 = new Vector2(1, 0);
-                            texCoord2 = new Vector2(1, 1);
-                            texCoord3 = new Vector2(0, 1);
-                            quadIndex++;
-                        }
-                    }
-                    else {
-                        if (i % 2 == 0) {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 1);
-                            texCoord3 = new Vector2(0, 1);
-                        }
-                        else {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 0);
-                            texCoord3 = new Vector2(1, 1);
-                            quadIndex++;
-                        }
-                    }
+                    texCoord1 = new Vector2(triangle.Vertex1.Position.X, 1.0F - triangle.Vertex1.Position.Z);
+                    texCoord2 = new Vector2(triangle.Vertex2.Position.X, 1.0F - triangle.Vertex2.Position.Z);
+                    texCoord3 = new Vector2(triangle.Vertex3.Position.X, 1.0F - triangle.Vertex3.Position.Z);
                 }
                 else {
-                    float minX = this.Vertices.Min(v => v.Position.X);
-                    float maxX = this.Vertices.Max(v => v.Position.X);
-                    float minZ = this.Vertices.Min(v => v.Position.Z);
-                    float maxZ = this.Vertices.Max(v => v.Position.Z);
+                    float minX = this._minBodyPosition.X;
+                    float maxX = this._maxBodyPosition.X;
+                    float minZ = this._minBodyPosition.Z;
+                    float maxZ = this._maxBodyPosition.Z;
 
                     float width = maxX - minX;
                     float height = maxZ - minZ;
                     
                     texCoord1 = new Vector2(
                         (triangle.Vertex1.Position.X - minX) / width,
-                        (triangle.Vertex1.Position.Z - minZ) / height
+                        1.0F - (triangle.Vertex1.Position.Z - minZ) / height
                     );
                     
                     texCoord2 = new Vector2(
                         (triangle.Vertex2.Position.X - minX) / width,
-                        (triangle.Vertex2.Position.Z - minZ) / height
+                        1.0F - (triangle.Vertex2.Position.Z - minZ) / height
                     );
                     
                     texCoord3 = new Vector2(
                         (triangle.Vertex3.Position.X - minX) / width,
-                        (triangle.Vertex3.Position.Z - minZ) / height
+                        1.0F - (triangle.Vertex3.Position.Z - minZ) / height
                     );
                 }
                 
@@ -293,84 +269,25 @@ public class SoftBodyCloth : SimpleSoftBody {
     /// </summary>
     /// <param name="commandList">The command list used to update the vertex buffer with the new mesh data.</param>
     protected internal override void UpdateMesh(CommandList commandList) {
-        int quadIndex = 0;
-        
         for (int i = 0; i < this.Shapes.Count; i++) {
             if (this.Shapes[i] is SoftBodyTriangle triangle) {
                 int vertexIndex = i * 3;
                 
-                Vector2 texCoord1;
-                Vector2 texCoord2;
-                Vector2 texCoord3;
-                
-                if (this._useGridTexture) {
-                    if (quadIndex % 2 == 0) {
-                        if (i % 2 == 0) {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 0);
-                            texCoord3 = new Vector2(0, 1);
-                        }
-                        else {
-                            texCoord1 = new Vector2(1, 0);
-                            texCoord2 = new Vector2(1, 1);
-                            texCoord3 = new Vector2(0, 1);
-                            quadIndex++;
-                        }
-                    }
-                    else {
-                        if (i % 2 == 0) {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 1);
-                            texCoord3 = new Vector2(0, 1);
-                        }
-                        else {
-                            texCoord1 = new Vector2(0, 0);
-                            texCoord2 = new Vector2(1, 0);
-                            texCoord3 = new Vector2(1, 1);
-                            quadIndex++;
-                        }
-                    }
-                }
-                else {
-                    float minX = this.MinBody.Position.X;
-                    float maxX = this.MaxBody.Position.X;
-                    float minZ = this.MinBody.Position.Z;
-                    float maxZ = this.MaxBody.Position.Z;
-
-                    float width = maxX - minX;
-                    float height = maxZ - minZ;
-                    
-                    texCoord1 = new Vector2(
-                        (triangle.Vertex1.Position.X - minX) / width,
-                        (triangle.Vertex1.Position.Z - minZ) / height
-                    );
-                    
-                    texCoord2 = new Vector2(
-                        (triangle.Vertex2.Position.X - minX) / width,
-                        (triangle.Vertex2.Position.Z - minZ) / height
-                    );
-                    
-                    texCoord3 = new Vector2(
-                        (triangle.Vertex3.Position.X - minX) / width,
-                        (triangle.Vertex3.Position.Z - minZ) / height
-                    );
-                }
-                
                 this.Mesh.SetVertexValue(vertexIndex, new Vertex3D {
                     Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex1)),
-                    TexCoords = texCoord1,
+                    TexCoords = this.Mesh.Vertices[vertexIndex].TexCoords,
                     Color = Color.White.ToRgbaFloatVec4()
                 });
                 
                 this.Mesh.SetVertexValue(vertexIndex + 1, new Vertex3D {
                     Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex2)),
-                    TexCoords = texCoord2,
+                    TexCoords = this.Mesh.Vertices[vertexIndex + 1].TexCoords,
                     Color = Color.White.ToRgbaFloatVec4()
                 });
                 
                 this.Mesh.SetVertexValue(vertexIndex + 2, new Vertex3D {
                     Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex3)),
-                    TexCoords = texCoord3,
+                    TexCoords = this.Mesh.Vertices[vertexIndex + 2].TexCoords,
                     Color = Color.White.ToRgbaFloatVec4()
                 });
             }

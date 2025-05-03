@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
@@ -32,7 +33,7 @@ public class TestScene3D : Scene {
     protected override void Init() {
         base.Init();
 
-        this._debugDrawer = new Physics3DDebugDrawer(GlobalResource.GraphicsDevice);
+        this._debugDrawer = new Physics3DDebugDrawer(GlobalResource.GraphicsDevice, Game.Instance!.MainWindow);
         
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
@@ -46,18 +47,18 @@ public class TestScene3D : Scene {
         this.AddEntity(camera3D);
         
         // PLAYER
-        Entity player = new Entity(new Transform() { Translation = new Vector3(0, 23, 0)} );
+        Entity player = new Entity(new Transform() { Translation = new Vector3(2, 23, 0)} );
         RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)));
         player.AddComponent(playerBody);
         player.AddComponent(new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY));
         this.AddEntity(player);
         
         // PLAYER LOCK ROTATION (Cannot fall over).
-        //HingeAngle angleConstraint = playerBody.World.CreateConstraint<HingeAngle>(playerBody.Body, playerBody.World.NullBody);
-        //angleConstraint.Initialize(JVector.UnitY, AngularLimit.Full);
+        HingeAngle angleConstraint = playerBody.World.CreateConstraint<HingeAngle>(playerBody.Body, playerBody.World.NullBody);
+        angleConstraint.Initialize(JVector.UnitY, AngularLimit.Full);
 
         // SOFT CUBE
-        Entity softCube = new Entity(new Transform() { Translation = new Vector3(0, 18, 0) } );
+        Entity softCube = new Entity(new Transform() { Translation = new Vector3(0, 20, 0) } );
         SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), new SoftBodyRenderInfo());
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
@@ -113,9 +114,14 @@ public class TestScene3D : Scene {
         SoftBody3D softCubeBody = this.GetEntity(3)!.GetComponent<SoftBody3D>()!;
         SoftBody3D softClothBody= this.GetEntity(4)!.GetComponent<SoftBody3D>()!;
         
-        if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 6.5F), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
+        //if (!playerBody.World.DynamicTree.RayCast(playerBody.Position - (Vector3.UnitY * 6.5F), -Vector3.UnitY, null, null, out IDynamicTreeProxy? shape, out JVector normal, out float fraction)) {
+        //    playerBody.SetActivationState(true);
+        //    playerBody.AddForce(new Vector3(0, 250, 0));
+        //}
+
+        if (Input.IsKeyDown(KeyboardKey.I)) {
             playerBody.SetActivationState(true);
-            playerBody.AddForce(new Vector3(0, 250, 0));
+            playerBody.AddForce(new Vector3(0, 100, 0));
         }
 
         if (Input.IsKeyDown(KeyboardKey.H)) {
@@ -126,7 +132,7 @@ public class TestScene3D : Scene {
 
         if (Input.IsKeyDown(KeyboardKey.J)) {
             softClothBody.Center.SetActivationState(true);
-            softClothBody.Center.AddForce(new JVector(0, 14, 0));
+            softClothBody.Center.AddForce(new JVector(0, 100, 0));
         }
     }
 
@@ -137,13 +143,14 @@ public class TestScene3D : Scene {
         context.ImmediateRenderer.DrawGird(context.CommandList, framebuffer.OutputDescription, new Transform(), 50, 1, Color.Gray);
         
         // Prepare physics debug drawer.
-        this._debugDrawer.Prepare(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
+        this._debugDrawer.Begin(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
         
-        // TODO: ADD BACK WHEN IT REWORKED!
         // Draw physics debug renderers.
         this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(5)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
         this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
         this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
+        this.GetEntity(5)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
+        
+        this._debugDrawer.End();
     }
 }

@@ -6,6 +6,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
+using Bliss.CSharp.Windowing;
 using Jitter2;
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Graphics.VertexTypes;
@@ -15,92 +16,137 @@ using Veldrid;
 namespace Sparkle.CSharp.Graphics.Rendering;
 
 public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
-
+    
     /// <summary>
-    /// Gets the graphics device associated with this debug drawer.
+    /// Gets the graphics device used by the debug drawer.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
     
     /// <summary>
-    /// Gets the maximum number of vertices this drawer can handle per draw call.
+    /// Gets the window associated with the debug drawer.
+    /// </summary>
+    public IWindow Window { get; private set; }
+    
+    /// <summary>
+    /// Gets the maximum number of vertices the drawer can store.
     /// </summary>
     public uint Capacity { get; private set; }
     
     /// <summary>
-    /// The shader effect used to render debug geometry.
+    /// Gets the number of draw calls performed during the current frame.
+    /// </summary>
+    public int DrawCallCount { get; private set; }
+    
+    /// <summary>
+    /// The graphics effect used for rendering debug shapes.
     /// </summary>
     private Effect _effect;
     
     /// <summary>
-    /// The internal array storing vertex data before drawing.
+    /// The buffer of vertices to be drawn in the current batch.
     /// </summary>
     private PhysicsDebugVertex3D[] _vertices;
     
     /// <summary>
-    /// A temporary list used to accumulate vertices for the current draw call.
+    /// Temporary list of vertices used to accumulate draw calls before batching.
     /// </summary>
     private List<PhysicsDebugVertex3D> _tempVertices;
     
     /// <summary>
-    /// The GPU buffer used to upload vertex data.
+    /// The GPU buffer storing vertex data for rendering.
     /// </summary>
     private DeviceBuffer _vertexBuffer;
-
+    
     /// <summary>
-    /// The uniform buffer used to store projection and view matrices.
+    /// The buffer storing the projection and view matrices.
     /// </summary>
     private SimpleBuffer<Matrix4x4> _projViewBuffer;
     
     /// <summary>
-    /// Describes the pipeline configuration used when rendering.
+    /// Description of the graphics pipeline used for debug rendering.
     /// </summary>
     private SimplePipelineDescription _pipelineDescription;
     
     /// <summary>
-    /// Indicates whether the drawer has been prepared for rendering.
+    /// Indicates whether a draw session has begun.
     /// </summary>
-    private bool _prepared;
-
-    /// <summary>
-    /// The current command list used to issue draw calls.
-    /// </summary>
-    private CommandList _currentCommandList;
+    private bool _begun;
     
     /// <summary>
-    /// The current output description defining the render targets.
+    /// The command list currently in use for rendering.
+    /// </summary>
+    private CommandList _currentCommandList;
+
+    /// <summary>
+    /// The main <see cref="OutputDescription"/>.
+    /// </summary>
+    private OutputDescription _mainOutput;
+    
+    /// <summary>
+    /// The current <see cref="OutputDescription"/>.
     /// </summary>
     private OutputDescription _currentOutput;
     
     /// <summary>
-    /// The current blend state used for rendering.
+    /// The requested <see cref="OutputDescription"/>.
+    /// </summary>
+    private OutputDescription _requestedOutput;
+    
+    /// <summary>
+    /// The current <see cref="BlendStateDescription"/>.
     /// </summary>
     private BlendStateDescription _currentBlendState;
     
     /// <summary>
-    /// The current depth-stencil state used for rendering.
+    /// The requested <see cref="BlendStateDescription"/>.
+    /// </summary>
+    private BlendStateDescription _requestedBlendState;
+    
+    /// <summary>
+    /// The current <see cref="DepthStencilStateDescription"/>.
     /// </summary>
     private DepthStencilStateDescription _currentDepthStencilState;
     
     /// <summary>
-    /// The current rasterizer state used for rendering.
+    /// The requested <see cref="DepthStencilStateDescription"/>.
+    /// </summary>
+    private DepthStencilStateDescription _requestedDepthStencilState;
+    
+    /// <summary>
+    /// The current <see cref="RasterizerStateDescription"/>.
     /// </summary>
     private RasterizerStateDescription _currentRasterizerState;
+    
+    /// <summary>
+    /// The requested <see cref="RasterizerStateDescription"/>.
+    /// </summary>
+    private RasterizerStateDescription _requestedRasterizerState;
 
     /// <summary>
-    /// The current color.
+    /// The current <see cref="Color"/>.
     /// </summary>
     private Color _currentColor;
-    
-    // TODO: DO it to a Batch system! (the performance is terrible without)
+
+    /// <summary>
+    /// The requested <see cref="Color"/>.
+    /// </summary>
+    private Color _requestedColor;
+
+    /// <summary>
+    /// The number of vertices currently in the batch.
+    /// </summary>
+    private uint _currentBatchCount;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class.
-    /// !Important! This is for debugging purposes only and is not optimized for performance.
+    /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class with the specified graphics device, window, and optional capacity.
     /// </summary>
-    /// <param name="graphicsDevice">The graphics device used to allocate buffers and resources.</param>
-    public Physics3DDebugDrawer(GraphicsDevice graphicsDevice) {
+    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
+    /// <param name="window">The window associated with the rendering context.</param>
+    /// <param name="capacity">The maximum number of vertices that can be rendered in a single batch. Default is 30720.</param>
+    public Physics3DDebugDrawer(GraphicsDevice graphicsDevice, IWindow window, uint capacity = 30720) {
         this.GraphicsDevice = graphicsDevice;
-        this.Capacity = 6;
+        this.Window = window;
+        this.Capacity = capacity;
         this._effect = GlobalRegistry.PhysicsDebugEffect;
         
         // Create vertex buffer.
@@ -112,27 +158,198 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._projViewBuffer = new SimpleBuffer<Matrix4x4>(graphicsDevice, 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
         // Create pipeline description.
-        this._pipelineDescription = new SimplePipelineDescription();
+        this._pipelineDescription = new SimplePipelineDescription() {
+            BufferLayouts = this._effect.GetBufferLayouts(),
+            TextureLayouts = this._effect.GetTextureLayouts(),
+            ShaderSet = this._effect.ShaderSet,
+            PrimitiveTopology = PrimitiveTopology.LineList
+        };
     }
 
     /// <summary>
-    /// Prepares the debug drawer for rendering by configuring the command list, output description,
-    /// and optional rendering states such as blending, depth-stencil, rasterizer, and color.
+    /// Begins a new rendering session with the specified command list and output description.
     /// </summary>
-    /// <param name="commandList">The <see cref="CommandList"/> to be used for rendering commands.</param>
-    /// <param name="output">The <see cref="OutputDescription"/> defining the rendering target output.</param>
-    /// <param name="blendState">Optional blending state description. Defaults to single alpha blending if not specified.</param>
-    /// <param name="depthStencilState">Optional depth-stencil state description. Defaults to less-equal depth testing if not specified.</param>
-    /// <param name="rasterizerState">Optional rasterizer state description. Defaults to standard rasterizer settings if not specified.</param>
-    /// <param name="color">Optional parameter specifying the color used for rendering. Defaults to white if not specified.</param>
-    public void Prepare(CommandList commandList, OutputDescription output, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null) {
-        this._prepared = true;
+    /// <param name="commandList">The command list used for issuing rendering commands.</param>
+    /// <param name="output">The output description for rendering.</param>
+    /// <param name="blendState">Optional blend state description. If null, a default is used.</param>
+    /// <param name="depthStencilState">Optional depth-stencil state description. If null, a default is used.</param>
+    /// <param name="rasterizerState">Optional rasterizer state description. If null, a default is used.</param>
+    /// <param name="color">Optional color for rendering debug visuals. If null, white is used.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has already begun.</exception>
+    public void Begin(CommandList commandList, OutputDescription output, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null) {
+        if (this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has already begun!");
+        }
+
+        this._begun = true;
         this._currentCommandList = commandList;
-        this._currentOutput = output;
-        this._currentBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
-        this._currentDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
-        this._currentRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
-        this._currentColor = color ?? Color.White;
+        this._mainOutput = output;
+        this._currentOutput = this._requestedOutput = output;
+        this._currentBlendState = this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
+        this._currentDepthStencilState = this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this._currentRasterizerState = this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
+        this._currentColor = this._requestedColor = color ?? Color.White;
+        
+        this.DrawCallCount = 0;
+    }
+    
+    /// <summary>
+    /// Ends the current rendering session and flushes any remaining draw calls.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void End() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+
+        this._begun = false;
+        this.Flush();
+    }
+    
+    /// <summary>
+    /// Gets the current output description being used for rendering.
+    /// </summary>
+    /// <returns>The current <see cref="OutputDescription"/>.</returns>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public OutputDescription GetCurrentOutput() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+
+        return this._currentOutput;
+    }
+    
+    /// <summary>
+    /// Sets the output description for rendering.
+    /// </summary>
+    /// <param name="output">The new output description. If null, the main output is used.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void SetOutput(OutputDescription? output) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedOutput = output ?? this._mainOutput;
+    }
+    
+    /// <summary>
+    /// Gets the current blend state description being used for rendering.
+    /// </summary>
+    /// <returns>The current <see cref="BlendStateDescription"/>.</returns>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public BlendStateDescription GetCurrentBlendState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        return this._currentBlendState;
+    }
+    
+    /// <summary>
+    /// Sets the blend state description for rendering.
+    /// </summary>
+    /// <param name="blendState">The new blend state description. If null, a default is used.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void SetBlendState(BlendStateDescription? blendState) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
+    }
+    
+    /// <summary>
+    /// Gets the current depth-stencil state being used in rendering.
+    /// </summary>
+    /// <returns>The current depth-stencil state.</returns>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public DepthStencilStateDescription GetCurrentDepthStencilState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        return this._currentDepthStencilState;
+    }
+    
+    /// <summary>
+    /// Sets the depth-stencil state description for rendering.
+    /// </summary>
+    /// <param name="depthStencilState">The new depth-stencil state description. If null, a default is used.</param>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public void SetDepthStencilState(DepthStencilStateDescription? depthStencilState) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+    }
+    
+    /// <summary>
+    /// Gets the current rasterizer state being used in rendering.
+    /// </summary>
+    /// <returns>The current rasterizer state.</returns>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public RasterizerStateDescription GetCurrentRasterizerState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        return this._currentRasterizerState;
+    }
+    
+    /// <summary>
+    /// Sets the rasterizer state description for rendering.
+    /// </summary>
+    /// <param name="rasterizerState">The new rasterizer state description. If null, a default is used.</param>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public void SetRasterizerState(RasterizerStateDescription? rasterizerState) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
+    }
+
+    /// <summary>
+    /// Gets the current color used for rendering debug shapes.
+    /// </summary>
+    /// <returns>The current color used for rendering.</returns>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public Color GetCurrentColor() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+
+        return this._currentColor;
+    }
+
+    /// <summary>
+    /// Sets the color to use for rendering debug shapes.
+    /// </summary>
+    /// <param name="color">The new color to use for rendering. If null, a default is used.</param>
+    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
+    public void SetColor(Color? color) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+
+        this._requestedColor = color ?? Color.White;
+    }
+
+    /// <summary>
+    /// Resets the rendering settings of the current session to their default values.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if the rendering session has not begun.</exception>
+    public void ResetSettings() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this.SetOutput(null);
+        this.SetBlendState(null);
+        this.SetDepthStencilState(null);
+        this.SetRasterizerState(null);
+        this.SetColor(null);
     }
 
     /// <summary>
@@ -141,6 +358,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="pA">The <see cref="JVector"/> representing the starting point of the segment.</param>
     /// <param name="pB">The <see cref="JVector"/> representing the ending point of the segment.</param>
     public void DrawSegment(in JVector pA, in JVector pB) {
+        
         // Add start vertex.
         this._tempVertices.Add(new PhysicsDebugVertex3D() {
             Position = pA,
@@ -153,7 +371,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             Color = this._currentColor.ToRgbaFloatVec4()
         });
         
-        this.DrawVertices(this._tempVertices, PrimitiveTopology.LineList);
+        this.AddVertices(this._tempVertices);
     }
 
     /// <summary>
@@ -163,6 +381,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="pB">The <see cref="JVector"/> representing the second vertex of the triangle.</param>
     /// <param name="pC">The <see cref="JVector"/> representing the third vertex of the triangle.</param>
     public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC) {
+        
         // Add 1 side vertices.
         this._tempVertices.Add(new PhysicsDebugVertex3D() {
             Position = pA,
@@ -193,7 +412,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             Color = this._currentColor.ToRgbaFloatVec4()
         });
         
-        this.DrawVertices(this._tempVertices, PrimitiveTopology.LineList);
+        this.AddVertices(this._tempVertices);
     }
 
     /// <summary>
@@ -201,39 +420,95 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// </summary>
     /// <param name="p">The <see cref="JVector"/> representing the position of the point in 3D space.</param>
     public void DrawPoint(in JVector p) {
+        float size = 0.1f;
+        
+        // Add horizontal line (X-axis)
         this._tempVertices.Add(new PhysicsDebugVertex3D() {
-            Position = p,
+            Position = new JVector(p.X - size, p.Y, p.Z),
+            Color = this._currentColor.ToRgbaFloatVec4()
+        });
+        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Position = new JVector(p.X + size, p.Y, p.Z),
+            Color = this._currentColor.ToRgbaFloatVec4()
+        });
+        
+        // Add vertical line (Y-axis)
+        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Position = new JVector(p.X, p.Y + size, p.Z),
+            Color = this._currentColor.ToRgbaFloatVec4()
+        });
+        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Position = new JVector(p.X, p.Y - size, p.Z),
+            Color = this._currentColor.ToRgbaFloatVec4()
+        });
+        
+        // Add depth line (Z-axis)
+        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Position = new JVector(p.X, p.Y, p.Z + size),
+            Color = this._currentColor.ToRgbaFloatVec4()
+        });
+        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Position = new JVector(p.X, p.Y, p.Z - size),
             Color = this._currentColor.ToRgbaFloatVec4()
         });
 
-        this.DrawVertices(this._tempVertices, PrimitiveTopology.PointList);
+        this.AddVertices(this._tempVertices);
     }
 
     /// <summary>
-    /// Draws the provided vertices using the specified primitive topology.
+    /// Adds a collection of vertices to the debug drawer for rendering.
     /// </summary>
-    /// <param name="vertices">A list of <see cref="PhysicsDebugVertex3D"/> that defines the vertices to be rendered.</param>
-    /// <param name="topology">The <see cref="PrimitiveTopology"/> that determines the way the vertices will be rendered.</param>
-    private void DrawVertices(List<PhysicsDebugVertex3D> vertices, PrimitiveTopology topology) {
-        if (!this._prepared) {
-            throw new Exception("The Physics 3D debug drawer has not prepared yet!");
+    /// <param name="vertices">The list of vertices to be added for rendering.</param>
+    private void AddVertices(List<PhysicsDebugVertex3D> vertices) {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        if (!this._currentOutput.Equals(this._requestedOutput) ||
+            !this._currentBlendState.Equals(this._requestedBlendState) ||
+            !this._currentDepthStencilState.Equals(this._requestedDepthStencilState) ||
+            !this._currentRasterizerState.Equals(this._requestedRasterizerState) ||
+            this._currentColor != this._requestedColor) {
+            this.Flush();
+        }
+
+        this._currentOutput = this._requestedOutput;
+        this._currentBlendState = this._requestedBlendState;
+        this._currentDepthStencilState = this._requestedDepthStencilState;
+        this._currentRasterizerState = this._requestedRasterizerState;
+        this._currentColor = this._requestedColor;
+        
+        // Update pipeline description.
+        this._pipelineDescription.BlendState = this._currentBlendState;
+        this._pipelineDescription.DepthStencilState = this._currentDepthStencilState;
+        this._pipelineDescription.RasterizerState = this._currentRasterizerState;
+        this._pipelineDescription.Outputs = this._currentOutput;
+        
+        if (this._currentBatchCount + vertices.Count >= this._vertices.Length) {
+            this.Flush();
+        }
+        
+        for (int i = 0; i < vertices.Count; i++) {
+            this._vertices[this._currentBatchCount] = vertices[i];
+            this._currentBatchCount++;
+        }
+        
+        // Clear temp data.
+        this._tempVertices.Clear();
+    }
+
+    /// <summary>
+    /// Flushes the current batch of vertices to the GPU for rendering.
+    /// </summary>
+    private void Flush() {
+        if (this._currentBatchCount == 0) {
+            return;
         }
         
         Cam3D? cam3D = Cam3D.ActiveCamera;
 
         if (cam3D == null) {
-            // Clear temp data.
-            this._tempVertices.Clear();
             return;
-        }
-
-        if (vertices.Count > this.Capacity) {
-            throw new InvalidOperationException($"The number of provided vertices exceeds the capacity! [{vertices.Count} > {this.Capacity}]");
-        }
-
-        // Add vertices.
-        for (int i = 0; i < vertices.Count; i++) {
-            this._vertices[i] = vertices[i];
         }
         
         // Update projection view buffer.
@@ -241,18 +516,8 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._projViewBuffer.SetValue(1, cam3D.GetView());
         this._projViewBuffer.UpdateBuffer(this._currentCommandList);
         
-        // Update pipeline description.
-        this._pipelineDescription.BlendState = this._currentBlendState;
-        this._pipelineDescription.DepthStencilState = this._currentDepthStencilState;
-        this._pipelineDescription.RasterizerState = this._currentRasterizerState;
-        this._pipelineDescription.PrimitiveTopology = topology;
-        this._pipelineDescription.BufferLayouts = this._effect.GetBufferLayouts();
-        this._pipelineDescription.TextureLayouts = this._effect.GetTextureLayouts();
-        this._pipelineDescription.ShaderSet = this._effect.ShaderSet;
-        this._pipelineDescription.Outputs = this._currentOutput;
-        
         // Update vertex buffer.
-        this._currentCommandList.UpdateBuffer(this._vertexBuffer, 0, new ReadOnlySpan<PhysicsDebugVertex3D>(this._vertices, 0, vertices.Count));
+        this._currentCommandList.UpdateBuffer(this._vertexBuffer, 0, new ReadOnlySpan<PhysicsDebugVertex3D>(this._vertices, 0, (int) this._currentBatchCount));
         
         // Set vertex buffer.
         this._currentCommandList.SetVertexBuffer(0, this._vertexBuffer);
@@ -267,11 +532,13 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._effect.Apply();
         
         // Draw.
-        this._currentCommandList.Draw((uint) vertices.Count);
+        this._currentCommandList.Draw(this._currentBatchCount);
         
         // Clear data.
+        this._currentBatchCount = 0;
         Array.Clear(this._vertices);
-        this._tempVertices.Clear();
+
+        this.DrawCallCount++;
     }
     
     protected override void Dispose(bool disposing) {
