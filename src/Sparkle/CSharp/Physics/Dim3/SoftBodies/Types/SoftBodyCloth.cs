@@ -52,7 +52,7 @@ public class SoftBodyCloth : SimpleSoftBody {
     /// <param name="useDynamicCenterVertexSelection">Whether to automatically choose multiple closest vertices to connect to the center.</param>
     /// <param name="useGridTexture">Whether to use a tiled grid texture layout for UV coordinates.</param>
     public SoftBodyCloth(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, int gridWidth, int gridHeight, Vector2 vertexSpacing, float vertexMass = 10.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.2F, bool useDynamicCenterVertexSelection = true, bool useGridTexture = false) : base(graphicsDevice, world) {
-        this._useGridTexture = useGridTexture;
+        this._useGridTexture = useGridTexture;  // TODO: CHECK IF ROTATION WORKS!
         List<JTriangle> triangles = new List<JTriangle>();
         
         float halfGridWidth = gridWidth / 2.0F;
@@ -137,6 +137,7 @@ public class SoftBodyCloth : SimpleSoftBody {
         this.Center = world.CreateRigidBody();
         this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
         this.Center.Position = centerPos / vertices.Count;
+        this.Center.Orientation = rotation;
 
         int vertexSelectionCount = 1;
 
@@ -201,32 +202,45 @@ public class SoftBodyCloth : SimpleSoftBody {
                 Vector2 texCoord3;
                 
                 if (this._useGridTexture) {
-                    texCoord1 = new Vector2(triangle.Vertex1.Position.X, 1.0F - triangle.Vertex1.Position.Z);
-                    texCoord2 = new Vector2(triangle.Vertex2.Position.X, 1.0F - triangle.Vertex2.Position.Z);
-                    texCoord3 = new Vector2(triangle.Vertex3.Position.X, 1.0F - triangle.Vertex3.Position.Z);
+                    Vector3 localOrigin = this.Center.Position;
+                    Vector3 axisX = Vector3.Transform(Vector3.UnitX, this.Center.Orientation);
+                    Vector3 axisZ = Vector3.Transform(Vector3.UnitZ, this.Center.Orientation);
+
+                    texCoord1 = new Vector2(
+                        Vector3.Dot(triangle.Vertex1.Position - (JVector) localOrigin, axisX),
+                        1.0F - Vector3.Dot(triangle.Vertex1.Position - (JVector) localOrigin, axisZ)
+                    );
+
+                    texCoord2 = new Vector2(
+                        Vector3.Dot(triangle.Vertex2.Position - (JVector) localOrigin, axisX),
+                        1.0F - Vector3.Dot(triangle.Vertex2.Position - (JVector) localOrigin, axisZ)
+                    );
+
+                    texCoord3 = new Vector2(
+                        Vector3.Dot(triangle.Vertex3.Position - (JVector) localOrigin, axisX),
+                        1.0F - Vector3.Dot(triangle.Vertex3.Position - (JVector) localOrigin, axisZ)
+                    );
                 }
                 else {
-                    float minX = this._minBodyPosition.X;
-                    float maxX = this._maxBodyPosition.X;
-                    float minZ = this._minBodyPosition.Z;
-                    float maxZ = this._maxBodyPosition.Z;
+                    Vector3 axisX = Vector3.Transform(Vector3.UnitX, this.Center.Orientation);
+                    Vector3 axisZ = Vector3.Transform(Vector3.UnitZ, this.Center.Orientation);
 
-                    float width = maxX - minX;
-                    float height = maxZ - minZ;
-                    
+                    float width = Vector3.Dot(this._maxBodyPosition - this._minBodyPosition, axisX);
+                    float height = Vector3.Dot(this._maxBodyPosition - this._minBodyPosition, axisZ);
+
                     texCoord1 = new Vector2(
-                        (triangle.Vertex1.Position.X - minX) / width,
-                        1.0F - (triangle.Vertex1.Position.Z - minZ) / height
+                        Vector3.Dot(triangle.Vertex1.Position - (JVector) this._minBodyPosition, axisX) / width,
+                        1.0F - Vector3.Dot(triangle.Vertex1.Position - (JVector) this._minBodyPosition, axisZ) / height
                     );
-                    
+
                     texCoord2 = new Vector2(
-                        (triangle.Vertex2.Position.X - minX) / width,
-                        1.0F - (triangle.Vertex2.Position.Z - minZ) / height
+                        Vector3.Dot(triangle.Vertex2.Position - (JVector) this._minBodyPosition, axisX) / width,
+                        1.0F - Vector3.Dot(triangle.Vertex2.Position - (JVector) this._minBodyPosition, axisZ) / height
                     );
-                    
+
                     texCoord3 = new Vector2(
-                        (triangle.Vertex3.Position.X - minX) / width,
-                        1.0F - (triangle.Vertex3.Position.Z - minZ) / height
+                        Vector3.Dot(triangle.Vertex3.Position - (JVector) this._minBodyPosition, axisX) / width,
+                        1.0F - Vector3.Dot(triangle.Vertex3.Position - (JVector) this._minBodyPosition, axisZ) / height
                     );
                 }
                 

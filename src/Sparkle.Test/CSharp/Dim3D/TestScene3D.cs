@@ -47,7 +47,7 @@ public class TestScene3D : Scene {
         this.AddEntity(camera3D);
         
         // PLAYER
-        Entity player = new Entity(new Transform() { Translation = new Vector3(2, 23, 0)} );
+        Entity player = new Entity(new Transform() { Translation = new Vector3(2, 25, 0)} );
         RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)));
         player.AddComponent(playerBody);
         player.AddComponent(new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY));
@@ -58,7 +58,7 @@ public class TestScene3D : Scene {
         angleConstraint.Initialize(JVector.UnitY, AngularLimit.Full);
 
         // SOFT CUBE
-        Entity softCube = new Entity(new Transform() { Translation = new Vector3(0, 20, 0) } );
+        Entity softCube = new Entity(new Transform() { Translation = new Vector3(3, 19, 0) });
         SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), new SoftBodyRenderInfo());
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
@@ -90,11 +90,11 @@ public class TestScene3D : Scene {
         softBodyCloth.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
         
         // SOFT SPHERE
-        Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 26, 0), Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, 90)});
-        SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 3, 1), subdivisions: 4), new SoftBodyRenderInfo());
+        Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 1, 0) });
+        SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 1, 1), subdivisions: 3), new SoftBodyRenderInfo());
         sphere.AddComponent(softBodySphere);
         this.AddEntity(sphere);
-        
+
         softBodySphere.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
         
         // GROUND
@@ -146,7 +146,7 @@ public class TestScene3D : Scene {
         
         if (Input.IsKeyDown(KeyboardKey.T)) {
             softSphereBody.Center.SetActivationState(true);
-            softSphereBody.Center.AddForce(new JVector(0, 100, 0));
+            softSphereBody.Center.AngularVelocity = new JVector(5, 0, 0);
         }
     }
 

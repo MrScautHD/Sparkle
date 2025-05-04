@@ -37,12 +37,12 @@ public class SoftBodySphere : SimpleSoftBody {
     /// <param name="centerMass">The mass of the central rigid body connecting all vertices. Default is 1.0.</param>
     /// <param name="centerInertia">The inertia tensor scaling factor for the central body. Default is 0.05.</param>
     /// <param name="softness">The softness value used for spring constraints between the center and vertex bodies. Default is 0.5.</param>
-    public SoftBodySphere(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, int subdivisions = 4, float vertexMass = 120.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) : base(graphicsDevice, world) {
-        List<JTriangle> triangles = ShapeHelper.MakeHull(new UnitSphere(), subdivisions) // TODO: CHECK IF ROTATION WORKS!
+    public SoftBodySphere(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, int subdivisions = 4, float vertexMass = 200.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) : base(graphicsDevice, world) {
+        List<JTriangle> triangles = ShapeHelper.MakeHull(new UnitSphere(), subdivisions)
             .Select(t => new JTriangle(
-                Vector3.Transform(t.V0, rotation) * size / 2 * scale + position,
-                Vector3.Transform(t.V1, rotation) * size / 2 * scale + position,
-                Vector3.Transform(t.V2, rotation) * size / 2 * scale + position)
+                Vector3.Transform(t.V0, rotation) * (size / 2 * scale),
+                Vector3.Transform(t.V1, rotation) * (size / 2 * scale),
+                Vector3.Transform(t.V2, rotation) * (size / 2 * scale))
             ).ToList();
         
         // Process triangles.
@@ -80,6 +80,7 @@ public class SoftBodySphere : SimpleSoftBody {
         // Create a center body.
         this.Center = world.CreateRigidBody();
         this.Center.Position = centerPos / vertices.Count;
+        this.Center.Orientation = rotation;
         this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
         
         // Create constraints between center and vertices.
@@ -222,20 +223,23 @@ public class SoftBodySphere : SimpleSoftBody {
     /// <returns>A 2D vector representing the UV coordinates, where U and V are in the range [0, 1].</returns>
     private Vector2 CalculateSphereUv(Vector3 position) {
         
+        // Apply the rotation to the position relative to the sphere's center
+        Vector3 rotatedPosition = Vector3.Transform(position - (Vector3) this.Center.Position, this.Center.Orientation);
+    
         // Convert world position into a unit vector around the sphere center.
-        Vector3 local = Vector3.Normalize(position - (Vector3) this.Center.Position);
+        Vector3 local = Vector3.Normalize(rotatedPosition);
 
         // Compute angles: θ around the Y-axis, φ from the Y-axis down.
         float theta = MathF.Atan2(local.Z, local.X);
         float phi = MathF.Acos(local.Y);
 
         // Convert angles to UV range [0,1].
-        float u = (theta + MathF.PI) / (2.0f * MathF.PI);
+        float u = (theta + MathF.PI) / (2.0F * MathF.PI);
         float v = phi / MathF.PI;
 
         // Wrap U into [0,1) to handle the seam.
-        u = (u + 1.0f) % 1.0f;
-
+        u = (u + 0.5F) % 1.0F;
+        
         return new Vector2(u, v);
     }
 }

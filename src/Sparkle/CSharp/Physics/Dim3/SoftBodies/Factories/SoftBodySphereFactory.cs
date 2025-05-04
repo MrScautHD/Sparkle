@@ -48,11 +48,11 @@ public class SoftBodySphereFactory : ISoftBodyFactory {
     /// <param name="size">The base size of the soft-body sphere.</param>
     /// <param name="scale">Optional scaling factor to apply to the sphere. If null, defaults to <see cref="Vector3.One"/>.</param>
     /// <param name="subdivisions">The number of recursive subdivisions used to refine the unit sphere's mesh.</param>
-    /// <param name="vertexMass">The mass to assign to each vertex in the generated soft body. Default is 120.0.</param>
+    /// <param name="vertexMass">The mass to assign to each vertex in the generated soft body. Default is 200.0.</param>
     /// <param name="centerMass">The mass to assign to the central rigid body. Default is 1.0.</param>
     /// <param name="centerInertia">The inertia tensor scale to use for the central body. Default is 0.05.</param>
     /// <param name="softness">The softness value used for spring constraints between the center and vertex bodies. Default is 0.75.</param>
-    public SoftBodySphereFactory(Vector3 size, Vector3? scale = null, int subdivisions = 4, float vertexMass = 120.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) {
+    public SoftBodySphereFactory(Vector3 size, Vector3? scale = null, int subdivisions = 4, float vertexMass = 200.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) {
         this.Size = size;
         this.Scale = scale ?? Vector3.One;
         this.Subdivisions = subdivisions;
