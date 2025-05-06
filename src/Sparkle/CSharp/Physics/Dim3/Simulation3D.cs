@@ -31,7 +31,7 @@ public class Simulation3D : Simulation {
         this.World.BroadPhaseFilter = new BroadPhaseCollisionFilter(this.World);
         this.World.NarrowPhaseFilter = new TriangleEdgeCollisionFilter();
     }
-
+    
     /// <summary>
     /// Executes a simulation step for the 3D physics world.
     /// </summary>

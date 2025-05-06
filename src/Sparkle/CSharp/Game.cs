@@ -14,10 +14,10 @@ using Bliss.CSharp.Windowing;
 using MiniAudioEx;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
-using Sparkle.CSharp.Registries.Types;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
 using JLogger = Jitter2.Logger;
@@ -80,6 +80,11 @@ public class Game : Disposable {
     /// The default (global) immediate renderer used for rendering (Vertices...) in immediate mode.
     /// </summary>
     public ImmediateRenderer GlobalImmediateRenderer { get; private set; }
+
+    /// <summary>
+    /// The default (global) 3D physics debugging drawer that visualizes physics simulations in the game engine.
+    /// </summary>
+    public Physics3DDebugDrawer GlobalPhysics3DDebugDrawer { get; private set; }
 
     /// <summary>
     /// An instance encapsulating core graphics rendering components associated with the game.
@@ -193,6 +198,9 @@ public class Game : Disposable {
         Logger.Info("Initialize global resources...");
         GlobalResource.Init(graphicsDevice);
         
+        Logger.Info("Initialize global graphics assets...");
+        GlobalGraphicsAssets.Init(graphicsDevice, this.MainWindow);
+        
         Logger.Info("Initialize full screen render pass...");
         this.FullScreenRenderPass = new FullScreenRenderPass(graphicsDevice);
         
@@ -207,9 +215,12 @@ public class Game : Disposable {
         
         Logger.Info("Initialize global immediate renderer...");
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
+
+        Logger.Info("Initialize global physics 3D drawer...");
+        this.GlobalPhysics3DDebugDrawer = new Physics3DDebugDrawer(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.GlobalPhysics3DDebugDrawer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -255,11 +266,13 @@ public class Game : Disposable {
             this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
+            this.GlobalPhysics3DDebugDrawer.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             this.GlobalSpriteBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             
             this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
             
+            this.GlobalPhysics3DDebugDrawer.End();
             this.GlobalSpriteBatch.End();
             this.GlobalPrimitiveBatch.End();
             
@@ -289,9 +302,7 @@ public class Game : Disposable {
     /// <summary>
     /// Virtual method for additional setup when the game starts.
     /// </summary>
-    protected virtual void OnRun() {
-        RegistryManager.AddRegistry(new GlobalRegistry(this.GraphicsDevice));
-    }
+    protected virtual void OnRun() { }
 
     /// <summary>
     /// Loads the required game content and resources.
@@ -389,6 +400,9 @@ public class Game : Disposable {
             this.GlobalSpriteBatch.Dispose();
             
             this.CommandList.Dispose();
+            
+            GlobalGraphicsAssets.Destroy();
+            GlobalResource.Destroy();
             
             AudioContext.Deinitialize();
             

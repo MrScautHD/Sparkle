@@ -1,30 +1,24 @@
-using System.Numerics;
+using Box2D;
 
 namespace Sparkle.CSharp.Physics.Dim2;
 
 public struct PhysicsSettings2D {
     
     /// <summary>
-    /// Gravity for the 2D simulation.
+    /// The definition of the physics world, including its properties and settings.
     /// </summary>
-    public Vector2 Gravity;
-    
+    public WorldDef WorldDef;
+
     /// <summary>
-    /// Number of velocity iterations for the simulation.
+    /// The number of substeps used for physics simulations in a single timestep.
     /// </summary>
-    public int VelocityIterations;
-    
-    /// <summary>
-    /// Number of position iterations for the simulation.
-    /// </summary>
-    public int PositionIterations;
+    public int SubStepCount;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="PhysicsSettings2D"/> struct with default values.
     /// </summary>
     public PhysicsSettings2D() {
-        this.Gravity = new Vector2(0, 9.81F);
-        this.VelocityIterations = 6;
-        this.PositionIterations = 2;
+        this.WorldDef = new WorldDef();
+        this.SubStepCount = 4;
     }
 }

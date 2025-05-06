@@ -9,7 +9,6 @@ using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Textures.Cubemaps;
-using Sparkle.CSharp.Registries.Types;
 using Veldrid;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
@@ -83,7 +82,7 @@ public class SkyBox : Disposable {
         this.Cubemap = cubemap;
         this.Sampler = sampler ?? GraphicsHelper.GetSampler(graphicsDevice, SamplerType.Aniso4X);
         this.Color = color ?? Color.White;
-        this._effect = GlobalRegistry.SkyboxEffect;
+        this._effect = GlobalGraphicsAssets.SkyboxEffect;
         
         // Create vertex buffer.
         uint vertexBufferSize = (uint) Marshal.SizeOf<CubemapVertex3D>() * 8;

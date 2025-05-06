@@ -1,5 +1,4 @@
-using Box2D.NetStandard.Dynamics.Bodies;
-using Box2D.NetStandard.Dynamics.World;
+using Box2D;
 
 namespace Sparkle.CSharp.Physics.Dim2;
 
@@ -21,7 +20,7 @@ public class Simulation2D : Simulation {
     /// <param name="settings">The physics settings for the 2D simulation.</param>
     public Simulation2D(PhysicsSettings2D settings) {
         this._settings = settings;
-        this.World = new World(this._settings.Gravity);
+        this.World = new World(this._settings.WorldDef);
     }
 
     /// <summary>
@@ -29,14 +28,12 @@ public class Simulation2D : Simulation {
     /// </summary>
     /// <param name="fixedStep">The time step duration in seconds to advance the simulation.</param>
     protected internal override void Step(double fixedStep) {
-        this.World.Step((float) fixedStep, this._settings.VelocityIterations, this._settings.PositionIterations);
+        this.World.Step((float) fixedStep, this._settings.SubStepCount);
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            for (Body body = this.World.GetBodyList(); body != null; body = body.GetNext()) {
-                this.World.DestroyBody(body);
-            }
+            this.World.Destroy();
         }
     }
 }

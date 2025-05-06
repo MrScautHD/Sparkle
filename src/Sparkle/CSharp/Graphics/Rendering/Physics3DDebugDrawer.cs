@@ -10,7 +10,6 @@ using Bliss.CSharp.Windowing;
 using Jitter2;
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Graphics.VertexTypes;
-using Sparkle.CSharp.Registries.Types;
 using Veldrid;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
@@ -147,7 +146,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this.GraphicsDevice = graphicsDevice;
         this.Window = window;
         this.Capacity = capacity;
-        this._effect = GlobalRegistry.PhysicsDebugEffect;
+        this._effect = GlobalGraphicsAssets.PhysicsDebugEffect;
         
         // Create vertex buffer.
         this._vertices = new PhysicsDebugVertex3D[this.Capacity];

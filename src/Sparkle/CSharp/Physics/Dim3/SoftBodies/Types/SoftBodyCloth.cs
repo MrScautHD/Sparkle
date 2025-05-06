@@ -52,7 +52,7 @@ public class SoftBodyCloth : SimpleSoftBody {
     /// <param name="useDynamicCenterVertexSelection">Whether to automatically choose multiple closest vertices to connect to the center.</param>
     /// <param name="useGridTexture">Whether to use a tiled grid texture layout for UV coordinates.</param>
     public SoftBodyCloth(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, int gridWidth, int gridHeight, Vector2 vertexSpacing, float vertexMass = 10.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.2F, bool useDynamicCenterVertexSelection = true, bool useGridTexture = false) : base(graphicsDevice, world) {
-        this._useGridTexture = useGridTexture;  // TODO: CHECK IF ROTATION WORKS!
+        this._useGridTexture = useGridTexture;
         List<JTriangle> triangles = new List<JTriangle>();
         
         float halfGridWidth = gridWidth / 2.0F;
@@ -65,14 +65,14 @@ public class SoftBodyCloth : SimpleSoftBody {
                 float x1 = (-halfGridHeight + col + 1.0F) * (vertexSpacing.X * 0.1F);
                 float z0 = (-halfGridWidth + row) * (vertexSpacing.Y * 0.1F);
                 float z1 = (-halfGridWidth + row + 1.0F) * (vertexSpacing.Y * 0.1F);
-
+                
                 Vector3 v0 = Vector3.Transform(new Vector3(x0, 0.0F, z0), rotation) + position / 2.0F;
                 Vector3 v1 = Vector3.Transform(new Vector3(x0, 0.0F, z1), rotation) + position / 2.0F;
                 Vector3 v2 = Vector3.Transform(new Vector3(x1, 0.0F, z0), rotation) + position / 2.0F;
                 Vector3 v3 = Vector3.Transform(new Vector3(x1, 0.0F, z1), rotation) + position / 2.0F;
-
+                
                 bool isEven = (col + row) % 2 == 0;
-
+                
                 if (isEven) {
                     triangles.Add(new JTriangle(v0, v2, v1));
                     triangles.Add(new JTriangle(v2, v3, v1));
@@ -88,7 +88,7 @@ public class SoftBodyCloth : SimpleSoftBody {
         List<(ushort, ushort)> edges = new List<(ushort, ushort)>();
         List<JVector> vertices = new List<JVector>();
         List<(ushort, ushort, ushort)> tris = new List<(ushort, ushort, ushort)>();
-
+        
         // Process triangles.
         foreach (JTriangle tri in triangles) {
             if (!vertexIndices.TryGetValue(tri.V0, out ushort u0)) {
@@ -96,22 +96,22 @@ public class SoftBodyCloth : SimpleSoftBody {
                 vertexIndices[tri.V0] = u0;
                 vertices.Add(tri.V0);
             }
-
+            
             if (!vertexIndices.TryGetValue(tri.V1, out ushort u1)) {
                 u1 = (ushort) vertexIndices.Count;
                 vertexIndices[tri.V1] = u1;
                 vertices.Add(tri.V1);
             }
-
+            
             if (!vertexIndices.TryGetValue(tri.V2, out ushort u2)) {
                 u2 = (ushort) vertexIndices.Count;
                 vertexIndices[tri.V2] = u2;
                 vertices.Add(tri.V2);
             }
-
+            
             // Add triangles.
             tris.Add((u0, u1, u2));
-
+            
             // Add edges.
             edges.Add((u0, u1));
             edges.Add((u0, u2));
@@ -119,7 +119,7 @@ public class SoftBodyCloth : SimpleSoftBody {
         }
         
         Vector3 centerPos = Vector3.Zero;
-
+        
         // Create rigid bodies for vertices.
         foreach (Vector3 vertex in vertices) {
             RigidBody body = world.CreateRigidBody();
@@ -132,19 +132,19 @@ public class SoftBodyCloth : SimpleSoftBody {
         // Set min and max body pos.
         this._minBodyPosition = this.Vertices.First().Position;
         this._maxBodyPosition = this.Vertices.Last().Position;
-
+        
         // Create a center body.
         this.Center = world.CreateRigidBody();
         this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
         this.Center.Position = centerPos / vertices.Count;
         this.Center.Orientation = rotation;
-
+        
         int vertexSelectionCount = 1;
-
+        
         if (useDynamicCenterVertexSelection) {
             bool widthIsOdd = gridWidth % 2 != 0;
             bool heightIsOdd = gridHeight % 2 != 0;
-        
+            
             if (widthIsOdd && heightIsOdd) {
                 vertexSelectionCount = 4;
             }

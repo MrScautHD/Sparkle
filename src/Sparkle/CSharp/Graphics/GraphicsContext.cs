@@ -2,6 +2,7 @@ using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
 using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Sparkle.CSharp.Graphics.Rendering;
 using Veldrid;
 
 namespace Sparkle.CSharp.Graphics;
@@ -39,6 +40,11 @@ public class GraphicsContext {
     public ImmediateRenderer ImmediateRenderer { get; private set; }
 
     /// <summary>
+    /// The 3D physics debug drawer used for rendering debug visualization of physics objects.
+    /// </summary>
+    public Physics3DDebugDrawer Physics3DDebugDrawer { get; private set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device to use.</param>
@@ -47,12 +53,14 @@ public class GraphicsContext {
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
     /// <param name="immediateRenderer">The immediate renderer for performing low-level custom rendering.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderPass fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
+    /// <param name="physics3DDebugDrawer">The 3D physics debug drawer used for rendering debug visualization of physics objects.</param>
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderPass fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, Physics3DDebugDrawer physics3DDebugDrawer) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.FullScreenRenderPass = fullScreenRenderPass;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
         this.ImmediateRenderer = immediateRenderer;
+        this.Physics3DDebugDrawer = physics3DDebugDrawer;
     }
 }

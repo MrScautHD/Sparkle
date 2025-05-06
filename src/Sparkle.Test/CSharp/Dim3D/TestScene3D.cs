@@ -2,12 +2,10 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
-using Jitter2.Collision;
 using Jitter2.Collision.Shapes;
 using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
@@ -25,15 +23,11 @@ using Veldrid;
 namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TestScene3D : Scene {
-
-    private Physics3DDebugDrawer _debugDrawer;
     
     public TestScene3D(string name) : base(name, SceneType.Scene3D) { }
     
     protected override void Init() {
         base.Init();
-
-        this._debugDrawer = new Physics3DDebugDrawer(GlobalResource.GraphicsDevice, Game.Instance!.MainWindow);
         
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
@@ -156,16 +150,13 @@ public class TestScene3D : Scene {
         // Draw gird.
         context.ImmediateRenderer.DrawGird(context.CommandList, framebuffer.OutputDescription, new Transform(), 50, 1, Color.Gray);
         
-        // Prepare physics debug drawer.
-        this._debugDrawer.Begin(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
-        
-        // Draw physics debug renderers.
-        this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(this._debugDrawer);
-        this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(this._debugDrawer);
-        
-        this._debugDrawer.End();
+        // Draw physics 3D debug drawer.
+        context.Physics3DDebugDrawer.SetColor(Color.Green);
+        this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        context.Physics3DDebugDrawer.ResetSettings();
     }
 }
