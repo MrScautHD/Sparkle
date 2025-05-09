@@ -57,6 +57,11 @@ public struct GameSettings {
     public bool VSync { get; init; }
     
     /// <summary>
+    /// Indicates whether ImGui is enabled.
+    /// </summary>
+    public bool ImGui { get; init; }
+    
+    /// <summary>
     /// The sample count for anti-aliasing. Higher values result in smoother edges but increase performance cost.
     /// </summary>
     public TextureSampleCount SampleCount { get; init; }
@@ -75,6 +80,7 @@ public struct GameSettings {
         this.WindowFlags = WindowState.Resizable;
         this.Backend = Window.GetPlatformDefaultBackend();
         this.VSync = true;
+        this.ImGui = true;
         this.SampleCount = TextureSampleCount.Count1;
     }
 }

@@ -34,6 +34,7 @@
         <PackageReference Include="LibNoise" Version="0.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Management" Version="9.0.4" />
+        <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
     </ItemGroup>
   
     <!-- Icon -->
@@ -47,5 +48,17 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
+    </ItemGroup>
+
+    <!-- ImGui Shaders -->
+    <ItemGroup>
+        <EmbeddedResource Include="content/shaders/imgui/GLSL/imgui-vertex.glsl" LogicalName="imgui-vertex.glsl" />
+        <EmbeddedResource Include="content/shaders/imgui/GLSL/imgui-frag.glsl" LogicalName="imgui-frag.glsl" />
+        <EmbeddedResource Include="content/shaders/imgui/HLSL/imgui-vertex.hlsl.bytes" LogicalName="imgui-vertex.hlsl.bytes" />
+        <EmbeddedResource Include="content/shaders/imgui/HLSL/imgui-frag.hlsl.bytes" LogicalName="imgui-frag.hlsl.bytes" />
+        <EmbeddedResource Include="content/shaders/imgui/SPIR-V/imgui-vertex.spv" LogicalName="imgui-vertex.spv" />
+        <EmbeddedResource Include="content/shaders/imgui/SPIR-V/imgui-frag.spv" LogicalName="imgui-frag.spv" />
+        <EmbeddedResource Include="content/shaders/imgui/Metal/imgui-vertex.metallib" LogicalName="imgui-vertex.metallib" />
+        <EmbeddedResource Include="content/shaders/imgui/Metal/imgui-frag.metallib" LogicalName="imgui-frag.metallib" />
     </ItemGroup>
 </Project>

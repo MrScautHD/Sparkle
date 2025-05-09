@@ -110,6 +110,11 @@ public class Game : Disposable {
     /// The logger for jitter.
     /// </summary>
     private LogJitter _logJitter;
+
+    /// <summary>
+    /// The ImGui controller used for handling ImGui rendering data
+    /// </summary>
+    private ImGuiController? _imGuiController;
     
     /// <summary>
     /// The fixed frame rate for the game.
@@ -233,6 +238,15 @@ public class Game : Disposable {
         
         Logger.Info("Initialize scene manager...");
         SceneManager.Init(graphicsDevice, this.MainWindow, scene, this.Settings.SampleCount);
+
+        if (this.Settings.ImGui)
+        {
+            Logger.Info("Initialize ImGui overlay...");
+            this._imGuiController = new ImGuiController(
+                this.GraphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription,
+                this.MainWindow.GetWidth(), this.MainWindow.GetHeight()
+            );
+        }
         
         this.OnRun();
         
@@ -252,6 +266,7 @@ public class Game : Disposable {
             Input.Begin();
             
             AudioContext.Update();
+            this._imGuiController?.Update((float)Time.Delta);
             this.Update(Time.Delta);
             this.AfterUpdate(Time.Delta);
 
@@ -259,6 +274,11 @@ public class Game : Disposable {
             while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
                 this.FixedUpdate(this._fixedUpdateTimeStep);
                 this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+            }
+
+            if (this.Settings.ImGui)
+            {
+                this.OnImGui();
             }
             
             // Draw.
@@ -271,6 +291,7 @@ public class Game : Disposable {
             this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             
             this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
+            this._imGuiController?.Render(this.GraphicsDevice, this.CommandList);
             
             this.GlobalPhysics3DDebugDrawer.End();
             this.GlobalSpriteBatch.End();
@@ -303,6 +324,11 @@ public class Game : Disposable {
     /// Virtual method for additional setup when the game starts.
     /// </summary>
     protected virtual void OnRun() { }
+    
+    /// <summary>
+    /// Virtual method for rendering ImGui.
+    /// </summary>
+    protected virtual void OnImGui() { }
 
     /// <summary>
     /// Loads the required game content and resources.
@@ -360,6 +386,7 @@ public class Game : Disposable {
     protected virtual void OnResize(Rectangle rectangle) {
         this.GraphicsDevice.MainSwapchain.Resize((uint) rectangle.Width, (uint) rectangle.Height);
         this.MsaaRenderTexture.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        this._imGuiController?.Resize(rectangle.Width, rectangle.Height);
         SceneManager.OnResize(rectangle);
         OverlayManager.OnResize(rectangle);
     }
@@ -389,6 +416,7 @@ public class Game : Disposable {
             SceneManager.Destroy();
             OverlayManager.Destroy();
             RegistryManager.Destroy();
+            this._imGuiController?.Dispose();
             
             this.Content.Dispose();
             
