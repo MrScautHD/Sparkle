@@ -27,7 +27,7 @@ public class Sprite : Component {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         
-        // TODO: FIX THIS!
+        // TODO: FIX THIS! (also use InterpolatedComponent)
         Rectangle source = new Rectangle(0, 0, (int) this.Texture.Width, (int) this.Texture.Height);
         Rectangle dest = new Rectangle((int) this.GlobalPosition.X, (int) this.GlobalPosition.Y, (int) this.Size.X, (int) this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
