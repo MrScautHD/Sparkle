@@ -1,4 +1,3 @@
-using ImGuiNET;
 using Sparkle.CSharp;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
@@ -12,10 +11,6 @@ public class TestGame : Game {
     protected override void OnRun() {
         base.OnRun();
         RegistryManager.AddRegistry(new ContentRegistry());
-    }
-
-    protected override void OnImGui() {
-        ImGui.ShowDemoWindow();
     }
 
     protected override void Init() {
