@@ -13,6 +13,9 @@ public class Camera3D : Entity {
     /// The internal camera instance used for handling camera logic.
     /// </summary>
     private Cam3D _cam3D;
+
+    // TODO: Add summary
+    public bool Enabled { get; set; } = true;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Camera3D"/> class.
@@ -140,7 +143,7 @@ public class Camera3D : Entity {
         base.Update(delta);
 
         // To make sure just the active camera moves from the input.
-        if (SceneManager.ActiveCam3D == this) {
+        if (SceneManager.ActiveCam3D == this && this.Enabled) {
             this._cam3D.Update(Time.Delta);
         }
     }
