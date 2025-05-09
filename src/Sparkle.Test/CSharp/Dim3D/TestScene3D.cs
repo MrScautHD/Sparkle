@@ -1,5 +1,4 @@
 using System.Numerics;
-using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
@@ -14,7 +13,6 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
@@ -106,6 +104,19 @@ public class TestScene3D : Scene {
 
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
             this.SetFilterEffect(null);
+        }
+
+        if (Input.IsKeyPressed(KeyboardKey.Escape))
+        {
+            if (Input.IsRelativeMouseModeEnabled()) {
+                Input.DisableRelativeMouseMode();
+                if (SceneManager.ActiveCam3D is { } camera)
+                    camera.Enabled = false;
+            } else {
+                Input.EnableRelativeMouseMode();
+                if (SceneManager.ActiveCam3D is { } camera)
+                    camera.Enabled = true;
+            }
         }
     }
 
