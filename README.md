@@ -44,7 +44,6 @@ We trust you'll relish your time with Sparkle! To kick things off, head over to 
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`HughPH.Box2D`](https://www.nuget.org/packages/HughPH.Box2D)
 - [`LibNoise`](https://www.nuget.org/packages/LibNoise)
-- [`ImGui.NET`](https://www.nuget.org/packages/ImGui.NET)
 
 # 💻 Platforms
 
