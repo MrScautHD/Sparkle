@@ -467,15 +467,17 @@ public class ImGuiController : IDisposable
     {
         var io = ImGui.GetIO();
 
-        var mousePosition = Input.GetMousePosition();
-        io.AddMousePosEvent(mousePosition.X, mousePosition.Y);
-        io.AddMouseButtonEvent(0, Input.IsMouseButtonDown(MouseButton.Left));
-        io.AddMouseButtonEvent(1, Input.IsMouseButtonDown(MouseButton.Right));
-        io.AddMouseButtonEvent(2, Input.IsMouseButtonDown(MouseButton.Middle));
-        io.AddMouseButtonEvent(3, Input.IsMouseButtonDown(MouseButton.X1));
-        io.AddMouseButtonEvent(4, Input.IsMouseButtonDown(MouseButton.X2));
-        if (Input.IsMouseScrolling(out var wheelDelta))
-            io.AddMouseWheelEvent(0f, wheelDelta.Y);
+        if (!Input.IsRelativeMouseModeEnabled()) {
+            var mousePosition = Input.GetMousePosition();
+            io.AddMousePosEvent(mousePosition.X, mousePosition.Y);
+            io.AddMouseButtonEvent(0, Input.IsMouseButtonDown(MouseButton.Left));
+            io.AddMouseButtonEvent(1, Input.IsMouseButtonDown(MouseButton.Right));
+            io.AddMouseButtonEvent(2, Input.IsMouseButtonDown(MouseButton.Middle));
+            io.AddMouseButtonEvent(3, Input.IsMouseButtonDown(MouseButton.X1));
+            io.AddMouseButtonEvent(4, Input.IsMouseButtonDown(MouseButton.X2));
+            if (Input.IsMouseScrolling(out var wheelDelta))
+                io.AddMouseWheelEvent(0f, wheelDelta.Y);
+        }
 
         foreach (var ch in Input.GetPressedChars()) 
             io.AddInputCharacter(ch);

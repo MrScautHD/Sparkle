@@ -243,7 +243,7 @@ public class Game : Disposable {
         {
             Logger.Info("Initialize ImGui overlay...");
             this._imGuiController = new ImGuiController(
-                this.GraphicsDevice, this.MsaaRenderTexture.Framebuffer.OutputDescription,
+                this.GraphicsDevice, this.GraphicsDevice.MainSwapchain.Framebuffer.OutputDescription,
                 this.MainWindow.GetWidth(), this.MainWindow.GetHeight()
             );
         }
@@ -291,8 +291,7 @@ public class Game : Disposable {
             this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             
             this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
-            this._imGuiController?.Render(this.GraphicsDevice, this.CommandList);
-            
+
             this.GlobalPhysics3DDebugDrawer.End();
             this.GlobalSpriteBatch.End();
             this.GlobalPrimitiveBatch.End();
@@ -307,7 +306,8 @@ public class Game : Disposable {
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
             this.FullScreenRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
-            
+            this._imGuiController?.Render(this.GraphicsDevice, this.CommandList);
+
             this.CommandList.End();
             graphicsDevice.WaitForIdle();
             graphicsDevice.SubmitCommands(this.CommandList);
