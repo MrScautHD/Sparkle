@@ -11,9 +11,6 @@ public class Camera2D : Entity {
     /// The internal camera instance used for handling camera logic.
     /// </summary>
     private Cam2D _cam2D;
-
-    // TODO: Add summary
-    public bool Enabled { get; set; } = true;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Camera2D"/> class.
@@ -121,9 +118,7 @@ public class Camera2D : Entity {
     /// <param name="delta">The time elapsed since the last frame, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-        if (this.Enabled) {
-            this._cam2D.Update(Time.Delta);
-        }
+        this._cam2D.Update(Time.Delta);
     }
 
     /// <summary>
