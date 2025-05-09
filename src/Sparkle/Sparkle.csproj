@@ -33,6 +33,7 @@
         <PackageReference Include="Jitter2" Version="2.6.2" />
         <PackageReference Include="LibNoise" Version="0.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.Management" Version="9.0.4" />
     </ItemGroup>
   
     <!-- Icon -->

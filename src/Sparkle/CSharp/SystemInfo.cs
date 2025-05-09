@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Management;
 
 namespace Sparkle.CSharp;
 
@@ -46,24 +47,13 @@ public static class SystemInfo {
     /// Retrieves the processor name for the current system running on Windows.
     /// </summary>
     /// <returns>A string containing the processor name if successfully retrieved, otherwise "Unknown".</returns>
-    private static string GetProcessorNameWindows() {
+    private static string GetProcessorNameWindows()
+    {
         try {
-            ProcessStartInfo psi = new ProcessStartInfo {
-                FileName = "wmic",
-                Arguments = "cpu get Name",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+            var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
 
-            using (Process? process = Process.Start(psi)) {
-                if (process != null) {
-                    using (StreamReader reader = process.StandardOutput) {
-                        string[] lines = reader.ReadToEnd().Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                        return lines.Length > 1 ? lines[1].Trim() : "Unknown";
-                    }
-                }
-            }
+            foreach (var obj in searcher.Get())
+                return obj["Name"]?.ToString() ?? "Unknown";
         }
         catch (Exception ex) {
             // ignored.
