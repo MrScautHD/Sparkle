@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle", "src\Sparkle\Spar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle.Test", "src\Sparkle.Test\Sparkle.Test.csproj", "{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sparkle.ImGUI", "src\Sparkle.ImGUI\Sparkle.ImGUI.csproj", "{56A619D3-5AA8-4AB2-BB64-E60C15D68239}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D2CCB6F-FEF8-4789-8716-8D7D27DB5034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A619D3-5AA8-4AB2-BB64-E60C15D68239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A619D3-5AA8-4AB2-BB64-E60C15D68239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A619D3-5AA8-4AB2-BB64-E60C15D68239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A619D3-5AA8-4AB2-BB64-E60C15D68239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
