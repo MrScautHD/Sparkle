@@ -25,9 +25,15 @@ public class SoftBody3D : Component {
     ];
     
     /// <summary>
-    /// The physics simulation world this soft body belongs to.
+    /// Gets the current 3D simulation instance used by the scene.
+    /// Throws an <see cref="InvalidOperationException"/> if the simulation is not of type <see cref="Simulation3D"/>.
     /// </summary>
-    public World World => ((Simulation3D) SceneManager.Simulation!).World;
+    public Simulation3D Simulation => SceneManager.Simulation as Simulation3D ?? throw new InvalidOperationException("The current simulation must be of type Simulation3D.");
+    
+    /// <summary>
+    /// Gets the physics world from the current 3D simulation.
+    /// </summary>
+    public World World => this.Simulation.World;
     
     /// <summary>
     /// The internal soft body implementation.
@@ -80,6 +86,11 @@ public class SoftBody3D : Component {
     private ISoftBodyFactory _factory;
     
     /// <summary>
+    /// Indicates whether the synchronization process is currently active (When sync entity with body).
+    /// </summary>
+    private bool _isSyncing;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="SoftBody3D"/> component.
     /// </summary>
     /// <param name="factory">The factory used to create the soft body instance.</param>
@@ -95,27 +106,8 @@ public class SoftBody3D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateSoftBody();
-    }
-
-    /// <summary>
-    /// Called after the simulation update step to synchronize the soft body data with the entity position and rotation.
-    /// </summary>
-    /// <param name="delta">The time elapsed since the last update step, in seconds.</param>
-    protected internal override void AfterUpdate(double delta) {
-        base.AfterUpdate(delta);
-        this.UpdateBodyPosition();
-        this.UpdateBodyRotation();
-    }
-
-    /// <summary>
-    /// Called during the fixed simulation step to update physics-driven transformations
-    /// for the entity and its components.
-    /// </summary>
-    /// <param name="fixedStep">The fixed time step duration, typically used for consistent physics calculations.</param>
-    protected internal override void FixedUpdate(double fixedStep) {
-        base.FixedUpdate(fixedStep);
-        this.UpdateEntityPosition();
-        this.UpdateEntityRotation();
+        this.Simulation.BodyMoved += this.OnBodyMoving;
+        this.Entity.Transform.OnUpdate += this.OnEntityMoving;
     }
 
     /// <summary>
@@ -169,42 +161,61 @@ public class SoftBody3D : Component {
     }
     
     /// <summary>
-    /// Synchronizes the entity's position with the soft body center when active.
+    /// Handles the logic for syncing the entity's position and rotation with the associated physics body's movement.
     /// </summary>
-    private void UpdateEntityPosition() {
-        if (this.IsActive && (Vector3) this.Center.Position != this.Entity.Transform.Translation) {
-            this.Entity.Transform.Translation = this.Center.Position;
-        }
-    }
-    
-    /// <summary>
-    /// Synchronizes the soft body center position with the entity when inactive.
-    /// </summary>
-    private void UpdateBodyPosition() {
-        if (!this.IsActive && (Vector3) this.Center.Position != this.Entity.Transform.Translation) {
-            this.Center.Position = this.Entity.Transform.Translation;
-        }
-    }
-    
-    /// <summary>
-    /// Synchronizes the entity's rotation with the soft body center when active.
-    /// </summary>
-    private void UpdateEntityRotation() {
-        Quaternion bodyRot = this.Center.Orientation;
-        
-        if (this.IsActive && this.Entity.Transform.Rotation != bodyRot) {
-            this.Entity.Transform.Rotation = bodyRot;
-        }
-    }
-    
-    /// <summary>
-    /// Synchronizes the soft body center rotation with the entity when inactive.
-    /// </summary>
-    private void UpdateBodyRotation() {
-        Quaternion entityRot = this.Entity.Transform.Rotation;
+    private void OnBodyMoving(RigidBody body) {
+        if (body == this.Center) {
+            if (!this._isSyncing) {
+                this._isSyncing = true;
+                try {
+                    // Sync Position.
+                    Vector3 entityPos = this.Entity.Transform.Translation;
+                    Vector3 bodyPos = body.Position;
 
-        if (!this.IsActive && (Quaternion) this.Center.Orientation != entityRot) {
-            this.Center.Orientation = entityRot;
+                    if (bodyPos != entityPos) {
+                        this.Entity.Transform.Translation = bodyPos;
+                    }
+
+                    // Sync Rotation.
+                    Quaternion entityRot = this.Entity.Transform.Rotation;
+                    Quaternion bodyRot = body.Orientation;
+
+                    if (entityRot != bodyRot) {
+                        this.Entity.Transform.Rotation = bodyRot;
+                    }
+                } finally {
+                    this._isSyncing = false;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handles the logic for sync the body's position and rotation with the associated entity movement.
+    /// </summary>
+    /// <param name="transform">The transform of the entity.</param>
+    private void OnEntityMoving(Transform transform) {
+        if (!this._isSyncing) {
+            this._isSyncing = true;
+            try {
+                // Sync Position.
+                Vector3 entityPos = transform.Translation;
+                Vector3 bodyPos = this.Center.Position;
+
+                if (bodyPos != entityPos) {
+                    this.Center.Position = entityPos;
+                }
+
+                // Sync Rotation.
+                Quaternion entityRot = transform.Rotation;
+                Quaternion bodyRot = this.Center.Orientation;
+
+                if (entityRot != bodyRot) {
+                    this.Center.Orientation = entityRot;
+                }
+            } finally {
+                this._isSyncing = false;
+            }
         }
     }
     

@@ -4,6 +4,7 @@ using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
+using Bliss.CSharp.Textures.Cubemaps;
 using MiniAudioEx;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
@@ -40,6 +41,7 @@ public class ContentManager : Disposable {
         // Add default processors.
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
+        this.AddProcessors(typeof(Cubemap), new CubemapProcessor());
         this.AddProcessors(typeof(Effect), new EffectProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(AudioClip), new AudioClipProcessor());

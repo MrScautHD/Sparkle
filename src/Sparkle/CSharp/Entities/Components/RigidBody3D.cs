@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp.Transformations;
 using Jitter2;
 using Jitter2.Collision;
 using Jitter2.Collision.Shapes;
@@ -21,11 +22,17 @@ public class RigidBody3D : Component {
         typeof(RigidBody2D),
         typeof(SoftBody3D)
     ];
+    
+    /// <summary>
+    /// Gets the current 3D simulation instance used by the scene.
+    /// Throws an <see cref="InvalidOperationException"/> if the simulation is not of type <see cref="Simulation3D"/>.
+    /// </summary>
+    public Simulation3D Simulation => SceneManager.Simulation as Simulation3D ?? throw new InvalidOperationException("The current simulation must be of type Simulation3D.");
 
     /// <summary>
     /// Gets the physics world from the current 3D simulation.
     /// </summary>
-    public World World => ((Simulation3D) SceneManager.Simulation!).World;
+    public World World => this.Simulation.World;
     
     /// <summary>
     /// Gets the underlying main rigid body instance used in the simulation.
@@ -111,6 +118,11 @@ public class RigidBody3D : Component {
     /// The restitution (bounciness) value to assign to the rigid body during initialization.
     /// </summary>
     private float _restitution;
+    
+    /// <summary>
+    /// Indicates whether the synchronization process is currently active (When sync entity with body).
+    /// </summary>
+    private bool _isSyncing;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody3D"/> class with a single collision shape.
@@ -263,26 +275,8 @@ public class RigidBody3D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateBody();
-    }
-
-    /// <summary>
-    /// Updates the entity's transform based on the physics simulation.
-    /// </summary>
-    /// <param name="delta">The elapsed time since the last update, in seconds.</param>
-    protected internal override void AfterUpdate(double delta) {
-        base.AfterUpdate(delta);
-        this.UpdateBodyPosition();
-        this.UpdateBodyRotation();
-    }
-
-    /// <summary>
-    /// Executes logic that needs to be updated on every fixed time step of the physics simulation.
-    /// </summary>
-    /// <param name="fixedStep">The fixed time step duration in seconds.</param>
-    protected internal override void FixedUpdate(double fixedStep) {
-        base.FixedUpdate(fixedStep);
-        this.UpdateEntityPosition();
-        this.UpdateEntityRotation();
+        this.Simulation.BodyMoved += this.OnBodyMoving;
+        this.Entity.Transform.OnUpdate += this.OnEntityMoving;
     }
 
     /// <summary>
@@ -400,44 +394,63 @@ public class RigidBody3D : Component {
         this.Position = this.Entity.Transform.Translation;
         this.Orientation = this.Entity.Transform.Rotation;
     }
+    
+    /// <summary>
+    /// Handles the logic for syncing the entity's position and rotation with the associated physics body's movement.
+    /// </summary>
+    private void OnBodyMoving(RigidBody body) {
+        if (body == this.Body) {
+            if (!this._isSyncing) {
+                this._isSyncing = true;
+                try {
+                    // Sync Position.
+                    Vector3 entityPos = this.Entity.Transform.Translation;
+                    Vector3 bodyPos = body.Position;
+
+                    if (bodyPos != entityPos) {
+                        this.Entity.Transform.Translation = bodyPos;
+                    }
+
+                    // Sync Rotation.
+                    Quaternion entityRot = this.Entity.Transform.Rotation;
+                    Quaternion bodyRot = body.Orientation;
+
+                    if (entityRot != bodyRot) {
+                        this.Entity.Transform.Rotation = bodyRot;
+                    }
+                } finally {
+                    this._isSyncing = false;
+                }
+            }
+        }
+    }
 
     /// <summary>
-    /// Updates the entity’s transform with the latest position from the physics body, if active.
+    /// Handles the logic for sync the body's position and rotation with the associated entity movement.
     /// </summary>
-    private void UpdateEntityPosition() {
-        if (this.Body.IsActive && this.Position != this.Entity.Transform.Translation) {
-            this.Entity.Transform.Translation = this.Position;
-        }
-    }
-    
-    /// <summary>
-    /// Updates the physics body's position based on the entity’s transform if inactive.
-    /// </summary>
-    private void UpdateBodyPosition() {
-        if (!this.Body.IsActive && this.Position != this.Entity.Transform.Translation) {
-            this.Position = this.Entity.Transform.Translation;
-        }
-    }
-    
-    /// <summary>
-    /// Updates the entity’s rotation with the latest value from the physics simulation, if active.
-    /// </summary>
-    private void UpdateEntityRotation() {
-        Quaternion bodyRot = this.Orientation;
-        
-        if (this.Body.IsActive && this.Entity.Transform.Rotation != bodyRot) {
-            this.Entity.Transform.Rotation = bodyRot;
-        }
-    }
-    
-    /// <summary>
-    /// Updates the physics body's orientation to match the entity’s transform if inactive.
-    /// </summary>
-    private void UpdateBodyRotation() {
-        Quaternion entityRot = this.Entity.Transform.Rotation;
+    /// <param name="transform">The transform of the entity.</param>
+    private void OnEntityMoving(Transform transform) {
+        if (!this._isSyncing) {
+            this._isSyncing = true;
+            try {
+                // Sync Position.
+                Vector3 entityPos = transform.Translation;
+                Vector3 bodyPos = this.Position;
 
-        if (!this.Body.IsActive && this.Orientation != entityRot) {
-            this.Orientation = entityRot;
+                if (bodyPos != entityPos) {
+                    this.Position = entityPos;
+                }
+
+                // Sync Rotation.
+                Quaternion entityRot = transform.Rotation;
+                Quaternion bodyRot = this.Orientation;
+
+                if (entityRot != bodyRot) {
+                    this.Orientation = entityRot;
+                }
+            } finally {
+                this._isSyncing = false;
+            }
         }
     }
 

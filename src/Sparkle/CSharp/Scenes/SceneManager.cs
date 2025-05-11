@@ -95,16 +95,17 @@ public static class SceneManager {
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
         context.CommandList.SetFramebuffer(_filterRenderTexture.Framebuffer);
         context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+        context.CommandList.ClearDepthStencil(1.0F);
         
         switch (ActiveScene?.Type) {
             case SceneType.Scene2D:
-                ActiveCam2D?.Begin(context.CommandList);
+                ActiveCam2D?.Begin();
                 ActiveScene.Draw(context, _filterRenderTexture.Framebuffer);
                 ActiveCam2D?.End();
                 break;
             
             case SceneType.Scene3D:
-                ActiveCam3D?.Begin(context.CommandList);
+                ActiveCam3D?.Begin();
                 ActiveScene.Draw(context, _filterRenderTexture.Framebuffer);
                 ActiveCam3D?.End();
                 break;

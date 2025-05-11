@@ -157,9 +157,8 @@ public class Camera3D : Entity {
     /// <summary>
     /// Begins the camera rendering process.
     /// </summary>
-    /// <param name="commandList">The command list for rendering.</param>
-    public void Begin(CommandList commandList) {
-        this._cam3D.Begin(commandList);
+    public void Begin() {
+        this._cam3D.Begin();
     }
 
     /// <summary>

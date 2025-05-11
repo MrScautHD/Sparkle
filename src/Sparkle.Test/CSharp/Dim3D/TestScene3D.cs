@@ -1,5 +1,4 @@
 using System.Numerics;
-using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
@@ -10,11 +9,9 @@ using Jitter2.Collision.Shapes;
 using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
-using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
@@ -36,7 +33,7 @@ public class TestScene3D : Scene {
         //this.SkyBox = ContentRegistry.SkyBox;
         
         // CAMERA
-        float aspectRatio = (float) Game.Instance!.MainWindow.GetWidth() / (float) Game.Instance.MainWindow.GetHeight();
+        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
         Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
         this.AddEntity(camera3D);
         
@@ -57,7 +54,7 @@ public class TestScene3D : Scene {
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
         
-        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
+        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
         
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
@@ -81,7 +78,7 @@ public class TestScene3D : Scene {
         var c3 = softBodyCloth.World.CreateConstraint<BallSocket>(fb3, softBodyCloth.World.NullBody);
         c3.Initialize(fb3.Position);
         
-        softBodyCloth.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
+        softBodyCloth.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
         
         // SOFT SPHERE
         Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 1, 0) });
@@ -89,7 +86,7 @@ public class TestScene3D : Scene {
         sphere.AddComponent(softBodySphere);
         this.AddEntity(sphere);
 
-        softBodySphere.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.PlayerSprite);
+        softBodySphere.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
@@ -121,6 +118,14 @@ public class TestScene3D : Scene {
         //    playerBody.SetActivationState(true);
         //    playerBody.AddForce(new Vector3(0, 250, 0));
         //}
+
+        if (Input.IsKeyDown(KeyboardKey.G)) {
+            this.GetEntity(2)!.Transform.Rotation *= Quaternion.CreateFromYawPitchRoll(float.DegreesToRadians(2), 0, 0);
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.R)) {
+            this.GetEntity(2)!.Transform.Translation += Vector3.UnitY;
+        }
 
         if (Input.IsKeyDown(KeyboardKey.I)) {
             playerBody.SetActivationState(true);

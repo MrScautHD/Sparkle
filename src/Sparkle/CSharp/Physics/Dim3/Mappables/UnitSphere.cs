@@ -19,6 +19,6 @@ public class UnitSphere : ISupportMappable {
     /// </summary>
     /// <param name="point">The output parameter that will store the center point of the unit sphere.</param>
     public void GetCenter(out JVector point) {
-        throw new NotImplementedException();
+        point = JVector.Zero;
     }
 }
