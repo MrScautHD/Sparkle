@@ -1,10 +1,12 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
 using ImGuiNET;
 using Veldrid;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Sparkle.ImGUI;
 
@@ -29,8 +31,9 @@ public class ImGuiController : IDisposable
     private DeviceBuffer _projMatrixBuffer = null!;
     private Texture _fontTexture = null!;
     private TextureView _fontTextureView = null!;
-    private Shader _vertexShader = null!;
-    private Shader _fragmentShader = null!;
+    private Shader? _vertexShader;
+    private Shader? _fragmentShader;
+    private Effect? _effect;
     private ResourceLayout _layout = null!;
     private ResourceLayout _textureLayout = null!;
     private Pipeline _pipeline = null!;
@@ -108,29 +111,44 @@ public class ImGuiController : IDisposable
             BufferUsage.UniformBuffer | BufferUsage.Dynamic)
         );
         _projMatrixBuffer.Name = "ImGui.NET Projection Buffer";
-
-        var vertexShaderBytes = LoadEmbeddedShaderCode(gd.ResourceFactory, "imgui-vertex");
-        var fragmentShaderBytes = LoadEmbeddedShaderCode(gd.ResourceFactory, "imgui-frag");
         
-        _vertexShader = factory.CreateShader(new ShaderDescription(ShaderStages.Vertex, vertexShaderBytes, 
-            gd.BackendType == GraphicsBackend.Metal ? "VS" : "main")
-        );
-        
-        _fragmentShader = factory.CreateShader(new ShaderDescription(ShaderStages.Fragment, fragmentShaderBytes, 
-            gd.BackendType == GraphicsBackend.Metal ? "FS" : "main")
-        );
-
-        VertexLayoutDescription[] vertexLayouts =
-        [new(
+        var vertexLayoutDescription = new VertexLayoutDescription(
             new VertexElementDescription("in_position", VertexElementSemantic.Position, VertexElementFormat.Float2), 
             new VertexElementDescription("in_texCoord", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2),
-            new VertexElementDescription("in_color", VertexElementSemantic.Color, VertexElementFormat.Byte4Norm))
-        ];
+            new VertexElementDescription("in_color", VertexElementSemantic.Color, VertexElementFormat.Byte4Norm)
+        );
 
+        ShaderSetDescription shaderSet;
+        
+        if (_graphicsDevice.BackendType != GraphicsBackend.Direct3D11)
+        {
+            _effect = new Effect(_graphicsDevice, vertexLayoutDescription,
+                "Assets/Shaders/ImGui/default.vert",
+                "Assets/Shaders/ImGui/default.frag"
+            );
+
+            shaderSet = _effect.ShaderSet;
+        }
+        else
+        {
+            _vertexShader = factory.CreateShader(new ShaderDescription(ShaderStages.Vertex, 
+                File.ReadAllBytes("Assets/Shaders/ImGui/HLSL/imgui-vertex.hlsl.bytes"), "main")
+            );
+        
+            _fragmentShader = factory.CreateShader(new ShaderDescription(ShaderStages.Fragment, 
+                File.ReadAllBytes("Assets/Shaders/ImGui/HLSL/imgui-frag.hlsl.bytes"), "main")
+            );
+
+            shaderSet = new ShaderSetDescription(
+                [vertexLayoutDescription], 
+                [_vertexShader, _fragmentShader]
+            );
+        }
+        
         _layout = factory.CreateResourceLayout(new ResourceLayoutDescription(
             new ResourceLayoutElementDescription("ProjectionMatrixBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex),
-            new ResourceLayoutElementDescription("MainSampler", ResourceKind.Sampler, ShaderStages.Fragment))
-        );
+            new ResourceLayoutElementDescription("MainSampler", ResourceKind.Sampler, ShaderStages.Fragment)
+        ));
         
         _textureLayout = factory.CreateResourceLayout(new ResourceLayoutDescription(
             new ResourceLayoutElementDescription(
@@ -142,9 +160,9 @@ public class ImGuiController : IDisposable
         var pipelineDescription = new GraphicsPipelineDescription(
             BlendStateDescription.SINGLE_ALPHA_BLEND,
             new DepthStencilStateDescription(false, false, ComparisonKind.Always),
-            new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Solid, FrontFace.Clockwise, false, true),
+            new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Solid, FrontFace.Clockwise, true, true),
             PrimitiveTopology.TriangleList,
-            new ShaderSetDescription(vertexLayouts, [_vertexShader, _fragmentShader]),
+            shaderSet,
             [_layout, _textureLayout],
             outputDescription,
             ResourceBindingModel.Default
@@ -218,45 +236,6 @@ public class ImGuiController : IDisposable
         _viewsById.Clear();
         _autoViewsByTexture.Clear();
         _lastAssignedId = 100;
-    }
-
-    private static byte[] LoadEmbeddedShaderCode(ResourceFactory factory, string name)
-    {
-        switch (factory.BackendType)
-        {
-            case GraphicsBackend.Direct3D11:
-            {
-                var resourceName = name + ".hlsl.bytes";
-                return GetEmbeddedResourceBytes(resourceName);
-            }
-            case GraphicsBackend.OpenGL:
-            {
-                var resourceName = name + ".glsl";
-                return GetEmbeddedResourceBytes(resourceName);
-            }
-            case GraphicsBackend.Vulkan:
-            {
-                var resourceName = name + ".spv";
-                return GetEmbeddedResourceBytes(resourceName);
-            }
-            case GraphicsBackend.Metal:
-            {
-                var resourceName = name + ".metallib";
-                return GetEmbeddedResourceBytes(resourceName);
-            }
-            case GraphicsBackend.OpenGLES:
-            default:
-                throw new Exception("Unsupported GraphicsBackend");
-        }
-    }
-
-    private static byte[] GetEmbeddedResourceBytes(string resourceName)
-    {
-        var assembly = typeof(ImGuiController).Assembly;
-        using var s = assembly.GetManifestResourceStream(resourceName);
-        var ret = new byte[s!.Length];
-        _ = s.Read(ret, 0, (int)s.Length);
-        return ret;
     }
 
     /// <summary>
@@ -632,8 +611,9 @@ public class ImGuiController : IDisposable
         _projMatrixBuffer.Dispose();
         _fontTexture.Dispose();
         _fontTextureView.Dispose();
-        _vertexShader.Dispose();
-        _fragmentShader.Dispose();
+        _fragmentShader?.Dispose();
+        _vertexShader?.Dispose();
+        _effect?.Dispose();
         _layout.Dispose();
         _textureLayout.Dispose();
         _pipeline.Dispose();
