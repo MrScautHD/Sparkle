@@ -31,9 +31,7 @@ public class ImGuiController : IDisposable
     private DeviceBuffer _projMatrixBuffer = null!;
     private Texture _fontTexture = null!;
     private TextureView _fontTextureView = null!;
-    private Shader? _vertexShader;
-    private Shader? _fragmentShader;
-    private Effect? _effect;
+    private Effect _effect = null!;
     private ResourceLayout _layout = null!;
     private ResourceLayout _textureLayout = null!;
     private Pipeline _pipeline = null!;
@@ -113,37 +111,15 @@ public class ImGuiController : IDisposable
         _projMatrixBuffer.Name = "ImGui.NET Projection Buffer";
         
         var vertexLayoutDescription = new VertexLayoutDescription(
-            new VertexElementDescription("in_position", VertexElementSemantic.Position, VertexElementFormat.Float2), 
+            new VertexElementDescription("in_position", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2), 
             new VertexElementDescription("in_texCoord", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2),
-            new VertexElementDescription("in_color", VertexElementSemantic.Color, VertexElementFormat.Byte4Norm)
+            new VertexElementDescription("in_color", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Byte4Norm)
         );
-
-        ShaderSetDescription shaderSet;
         
-        if (_graphicsDevice.BackendType != GraphicsBackend.Direct3D11)
-        {
-            _effect = new Effect(_graphicsDevice, vertexLayoutDescription,
-                "Assets/Shaders/ImGui/default.vert",
-                "Assets/Shaders/ImGui/default.frag"
-            );
-
-            shaderSet = _effect.ShaderSet;
-        }
-        else
-        {
-            _vertexShader = factory.CreateShader(new ShaderDescription(ShaderStages.Vertex, 
-                File.ReadAllBytes("Assets/Shaders/ImGui/HLSL/imgui-vertex.hlsl.bytes"), "main")
-            );
-        
-            _fragmentShader = factory.CreateShader(new ShaderDescription(ShaderStages.Fragment, 
-                File.ReadAllBytes("Assets/Shaders/ImGui/HLSL/imgui-frag.hlsl.bytes"), "main")
-            );
-
-            shaderSet = new ShaderSetDescription(
-                [vertexLayoutDescription], 
-                [_vertexShader, _fragmentShader]
-            );
-        }
+        _effect = new Effect(_graphicsDevice, vertexLayoutDescription,
+            "Assets/Shaders/ImGui/default.vert",
+            "Assets/Shaders/ImGui/default.frag"
+        );
         
         _layout = factory.CreateResourceLayout(new ResourceLayoutDescription(
             new ResourceLayoutElementDescription("ProjectionMatrixBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex),
@@ -156,18 +132,18 @@ public class ImGuiController : IDisposable
                 ResourceKind.TextureReadOnly, ShaderStages.Fragment)
             )
         );
-
         var pipelineDescription = new GraphicsPipelineDescription(
             BlendStateDescription.SINGLE_ALPHA_BLEND,
             new DepthStencilStateDescription(false, false, ComparisonKind.Always),
             new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Solid, FrontFace.Clockwise, true, true),
             PrimitiveTopology.TriangleList,
-            shaderSet,
+            _effect.ShaderSet,
             [_layout, _textureLayout],
             outputDescription,
             ResourceBindingModel.Default
         );
-        
+
+
         _pipeline = factory.CreateGraphicsPipeline(ref pipelineDescription);
 
         _mainResourceSet = factory.CreateResourceSet(new ResourceSetDescription(
@@ -611,9 +587,7 @@ public class ImGuiController : IDisposable
         _projMatrixBuffer.Dispose();
         _fontTexture.Dispose();
         _fontTextureView.Dispose();
-        _fragmentShader?.Dispose();
-        _vertexShader?.Dispose();
-        _effect?.Dispose();
+        _effect.Dispose();
         _layout.Dispose();
         _textureLayout.Dispose();
         _pipeline.Dispose();
