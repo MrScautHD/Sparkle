@@ -24,8 +24,11 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">The text to be written to the file.</param>
     public static void Write(string path, string text) {
-        using StreamWriter writer = new StreamWriter(path, true);
-        writer.Write(text);
+        using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
+            using (StreamWriter writer = new StreamWriter(stream)) {
+                writer.Write(text);
+            }
+        }
     }
 
     /// <summary>
@@ -34,8 +37,11 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">The text to be written to the file.</param>
     public static void WriteLine(string path, string text) {
-        using StreamWriter writer = new StreamWriter(path, true);
-        writer.WriteLine(text);
+        using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
+            using (StreamWriter writer = new StreamWriter(stream)) {
+                writer.WriteLine(text);
+            }
+        }
     }
 
     /// <summary>

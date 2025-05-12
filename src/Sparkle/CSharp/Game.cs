@@ -265,16 +265,18 @@ public class Game : Disposable {
             this.CommandList.Begin();
             this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+            this.CommandList.ClearDepthStencil(1.0F);
             
-            this.GlobalPhysics3DDebugDrawer.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+            // TODO: Find a way to get rid of this Begin/End methods here.
             this.GlobalSpriteBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
+            this.GlobalPhysics3DDebugDrawer.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
             
             this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
             
             this.GlobalPhysics3DDebugDrawer.End();
-            this.GlobalSpriteBatch.End();
             this.GlobalPrimitiveBatch.End();
+            this.GlobalSpriteBatch.End();
             
             // Apply MSAA.
             if (this.MsaaRenderTexture.SampleCount != TextureSampleCount.Count1) {
@@ -284,6 +286,7 @@ public class Game : Disposable {
             // Draw MSAA texture.
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+            this.CommandList.ClearDepthStencil(1.0F);
             
             this.FullScreenRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             

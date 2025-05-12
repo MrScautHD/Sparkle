@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Management;
+using Microsoft.Win32;
 #pragma warning disable CA1416
 
 namespace Sparkle.CSharp;
@@ -50,14 +50,18 @@ public static class SystemInfo {
     /// <returns>A string containing the processor name if successfully retrieved, otherwise "Unknown".</returns>
     private static string GetProcessorNameWindows() {
         try {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
-
-            foreach (ManagementBaseObject obj in searcher.Get()) {
-                return obj["Name"]?.ToString() ?? "Unknown";
+            using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor\0")) {
+                if (key != null) {
+                    object? val = key.GetValue("ProcessorNameString");
+                    
+                    if (val != null) {
+                        return val.ToString() ?? "Unknown";
+                    }
+                }
             }
         }
         catch (Exception ex) {
-            // Ignored.
+            // ignored
         }
 
         return "Unknown";

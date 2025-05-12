@@ -133,9 +133,8 @@ public class Camera2D : Entity {
     /// <summary>
     /// Begins rendering with this camera.
     /// </summary>
-    /// <param name="commandList">The command list used for rendering.</param>
-    public void Begin(CommandList commandList) {
-        this._cam2D.Begin(commandList);
+    public void Begin() {
+        this._cam2D.Begin();
     }
 
     /// <summary>

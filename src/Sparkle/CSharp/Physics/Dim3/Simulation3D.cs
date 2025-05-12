@@ -1,5 +1,6 @@
 using Jitter2;
 using Jitter2.Collision;
+using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
 
 namespace Sparkle.CSharp.Physics.Dim3;
@@ -10,6 +11,11 @@ public class Simulation3D : Simulation {
     /// The physics world that manages all physical objects and interactions.
     /// </summary>
     public readonly World World;
+    
+    /// <summary>
+    /// Triggered when a body has moved during the physics simulation step.
+    /// </summary>
+    public event Action<RigidBody>? BodyMoved;
     
     /// <summary>
     /// The physics settings used to configure the simulation.
@@ -38,6 +44,11 @@ public class Simulation3D : Simulation {
     /// <param name="fixedStep">The fixed time interval for the simulation step.</param>
     protected internal override void Step(double fixedStep) {
         this.World.Step((float) fixedStep, this._settings.MultiThreaded);
+
+        for (int i = 0; i < this.World.RigidBodies.Active; i++) {
+            RigidBody body = this.World.RigidBodies[i];
+            this.BodyMoved?.Invoke(body);
+        }
     }
     
     protected override void Dispose(bool disposing) {

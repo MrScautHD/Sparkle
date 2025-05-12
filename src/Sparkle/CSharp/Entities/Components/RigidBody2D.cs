@@ -1,9 +1,13 @@
 using System.Numerics;
+using Bliss.CSharp.Logging;
 using Box2D;
-using Sparkle.CSharp.Mathematics;
 using Sparkle.CSharp.Physics.Dim2;
+using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Physics.Dim2.Shapes;
 using Sparkle.CSharp.Scenes;
+using Vortice.Mathematics;
+using BoxTransform = Box2D.Transform;
+using Transform = Bliss.CSharp.Transformations.Transform;
 
 namespace Sparkle.CSharp.Entities.Components;
 
@@ -28,9 +32,15 @@ public class RigidBody2D : Component {
     ];
 
     /// <summary>
+    /// Gets the current 2D simulation instance used by the scene.
+    /// Throws an <see cref="InvalidOperationException"/> if the simulation is not of type <see cref="Simulation2D"/>.
+    /// </summary>
+    public Simulation2D Simulation => SceneManager.Simulation as Simulation2D ?? throw new InvalidOperationException("The current simulation must be of type Simulation2D.");
+
+    /// <summary>
     /// Gets the physics world from the current 2D simulation.
     /// </summary>
-    public World World => ((Simulation2D) SceneManager.Simulation!).World;
+    public World World => this.Simulation.World;
     
     /// <summary>
     /// The positional offset of this component, always zero for RigidBody2D.
@@ -105,26 +115,31 @@ public class RigidBody2D : Component {
     /// <summary>
     /// Defines the body properties and behavior for a 2D rigid body.
     /// </summary>
-    private BodyDef _bodyDef;
+    private BodyDefinition _bodyDef;
 
     /// <summary>
     /// Represents a collection of 2D shapes associated with the rigid body.
     /// </summary>
     private List<IShape2D> _shapes;
+
+    /// <summary>
+    /// Indicates whether the synchronization process is currently active (When sync entity with body).
+    /// </summary>
+    private bool _isSyncing;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody2D"/> class with a single collision shape.
     /// </summary>
     /// <param name="bodyDef">The body definition containing physical properties.</param>
     /// <param name="shape">The collision shape to attach to the body.</param>
-    public RigidBody2D(BodyDef bodyDef, IShape2D shape) : this(bodyDef, [shape]) { }
+    public RigidBody2D(BodyDefinition bodyDef, IShape2D shape) : this(bodyDef, [shape]) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody2D"/> class with multiple collision shapes.
     /// </summary>
     /// <param name="bodyDef">The body definition containing physical properties.</param>
     /// <param name="shapes">The list of collision shapes to attach to the body.</param>
-    public RigidBody2D(BodyDef bodyDef, List<IShape2D> shapes) : base(Vector3.Zero) {
+    public RigidBody2D(BodyDefinition bodyDef, List<IShape2D> shapes) : base(Vector3.Zero) {
         this._bodyDef = bodyDef;
         this._shapes = shapes;
     }
@@ -156,7 +171,7 @@ public class RigidBody2D : Component {
     /// <summary>
     /// Gets or sets the transformation of the body, including its position and rotation in the world space.
     /// </summary>
-    public Transform Transform {
+    public BoxTransform Transform {
         get => this._body.Transform;
         set => this._body.Transform = value;
     }
@@ -263,26 +278,8 @@ public class RigidBody2D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateBody();
-    }
-
-    /// <summary>
-    /// Performs necessary updates after the simulation step is completed.
-    /// </summary>
-    /// <param name="delta">The time elapsed since the last update, in seconds.</param>
-    protected internal override void AfterUpdate(double delta) {
-        base.AfterUpdate(delta);
-        this.UpdateBodyPosition();
-        this.UpdateBodyRotation();
-    }
-
-    /// <summary>
-    /// Performs physics updates for the rigid body at fixed time intervals.
-    /// </summary>
-    /// <param name="fixedStep">The fixed time step duration in seconds.</param>
-    protected internal override void FixedUpdate(double fixedStep) {
-        base.FixedUpdate(fixedStep);
-        this.UpdateEntityPosition();
-        this.UpdateEntityRotation();
+        this.Simulation.BodyMoved += this.BodyMoving;
+        this.Entity.Transform.OnUpdate += this.OnEntityMoving;
     }
 
     /// <summary>
@@ -326,7 +323,7 @@ public class RigidBody2D : Component {
     /// </summary>
     /// <param name="target">The desired target transform for the rigid body.</param>
     /// <param name="timeStep">The time step over which the rigid body interpolates towards the target transform.</param>
-    public void SetTargetTransform(Transform target, float timeStep) {
+    public void SetTargetTransform(BoxTransform target, float timeStep) {
         this._body.SetTargetTransform(target, timeStep);
     }
 
@@ -473,65 +470,95 @@ public class RigidBody2D : Component {
     /// Creates and initializes a physical body in the 2D world using the specified body definition and associated shapes.
     /// </summary>
     private void CreateBody() {
-        this._body = this.World.CreateBody(this._bodyDef);
-
+        this._body = this.World.CreateBody(new BodyDef() {
+            Type = this._bodyDef.Type,
+            Position = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y),
+            Rotation = this.Entity.Transform.Rotation.ToEuler().Z,
+            LinearVelocity = this._bodyDef.LinearVelocity,
+            AngularVelocity = this._bodyDef.AngularVelocity,
+            LinearDamping = this._bodyDef.LinearDamping,
+            AngularDamping = this._bodyDef.AngularDamping,
+            GravityScale = this._bodyDef.GravityScale,
+            SleepThreshold = this._bodyDef.SleepThreshold,
+            Name = this._bodyDef.Name,
+            UserData = this._bodyDef.UserData,
+            EnableSleep = this._bodyDef.EnableSleep,
+            IsAwake = this._bodyDef.IsAwake,
+            FixedRotation = this._bodyDef.FixedRotation,
+            IsBullet = this._bodyDef.IsBullet,
+            IsEnabled = this._bodyDef.IsEnabled,
+            AllowFastRotation = this._bodyDef.AllowFastRotation
+        });
+        
         foreach (IShape2D shape in this._shapes) {
             shape.CreateShape(this._body);
         }
     }
+    
+    /// <summary>
+    /// Handles the logic for syncing the entity's position and rotation with the associated physics body's movement.
+    /// </summary>
+    /// <param name="moveEvent">The event data containing information about the body movement.</param>
+    private void BodyMoving(BodyMoveEvent moveEvent) {
+        if (moveEvent.Body == this._body) {
+            if (!this._isSyncing) {
+                this._isSyncing = true;
+                try {
+                    // Sync Position.
+                    Vector2 entityPos = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y);
+                    Vector2 bodyPos = moveEvent.Body.Position;
+
+                    if (bodyPos != entityPos) {
+                        this.Entity.Transform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0);
+                    }
+
+                    // Sync Rotation.
+                    Quaternion entityRot = this.Entity.Transform.Rotation;
+                    Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, moveEvent.Body.Rotation);
+
+                    if (entityRot != bodyRot) {
+                        this.Entity.Transform.Rotation = bodyRot;
+                    }
+                } finally {
+                    this._isSyncing = false;
+                }
+            }
+        }
+    }
 
     /// <summary>
-    /// Updates the entity’s transform with the latest position from the physics body, if active.
+    /// Handles the logic for sync the body's position and rotation with the associated entity movement.
     /// </summary>
-    private void UpdateEntityPosition() {
-        Vector2 entityPos = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y);
-        Vector2 bodyPos = this.Position;
-        
-        if (this.Awake && bodyPos != entityPos) {
-            this.Entity.Transform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0);
+    /// <param name="transform">The transform of the entity.</param>
+    private void OnEntityMoving(Transform transform) {
+        if (!this._isSyncing) {
+            this._isSyncing = true;
+            try {
+                // Sync Position.
+                Vector2 entityPos = new Vector2(transform.Translation.X, transform.Translation.Y);
+                Vector2 bodyPos = this.Position;
+
+                if (bodyPos != entityPos) {
+                    this.Transform = this.Transform with {
+                        Position = entityPos
+                    };
+                }
+
+                // Sync Rotation.
+                Quaternion entityRot = transform.Rotation;
+                Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, this.Rotation);
+
+                if (entityRot != bodyRot) {
+                    this.Transform = this.Transform with {
+                        Rotation = entityRot.ToEuler().Z
+                    };
+                }
+            } finally {
+                this._isSyncing = false;
+            }
         }
     }
     
-    /// <summary>
-    /// Updates the physics body's position based on the entity’s transform if inactive.
-    /// </summary>
-    private void UpdateBodyPosition() {
-        Vector2 entityPos = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y);
-        Vector2 bodyPos = this.Position;
-        
-        if (!this.Awake && bodyPos != entityPos) {
-            this.Transform = this.Transform with {
-                Position = entityPos
-            };
-        }
-    }
-    
-    /// <summary>
-    /// Updates the entity’s rotation with the latest value from the physics simulation, if active.
-    /// </summary>
-    private void UpdateEntityRotation() {
-        Quaternion entityRot = this.Entity.Transform.Rotation;
-        Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, this.Rotation);
-        
-        if (this.Awake && entityRot != bodyRot) {
-            this.Entity.Transform.Rotation = bodyRot;
-        }
-    }
-        
-    /// <summary>
-    /// Updates the physics body's orientation to match the entity’s transform if inactive.
-    /// </summary>
-    private void UpdateBodyRotation() {
-        Quaternion entityRot = this.Entity.Transform.Rotation;
-        Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, this.Rotation);
-
-        if (!this.Awake && entityRot != bodyRot) {
-            this.Transform = this.Transform with {
-                Rotation = SparkleMath.QuaternionToEuler(entityRot).Z
-            };
-        }
-    }
-
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
 
