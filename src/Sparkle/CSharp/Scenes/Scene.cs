@@ -21,12 +21,17 @@ public abstract class Scene : Disposable {
     /// <summary>
     /// Gets the type of the scene (2D or 3D).
     /// </summary>
-    public SceneType Type { get; private set; }
+    public SceneType SceneType { get; private set; }
     
     /// <summary>
     /// Gets the physics simulation associated with the scene.
     /// </summary>
     public Simulation Simulation { get; private set; }
+    
+    /// <summary>
+    /// Manages and draw batching operations for entity rendering components.
+    /// </summary>
+    public BatchRenderer BatchRenderer { get; private set; }
     
     /// <summary>
     /// Gets or sets the optional filter effect applied to the scene.
@@ -52,12 +57,13 @@ public abstract class Scene : Disposable {
     /// Initializes a new instance of the <see cref="Scene"/> class.
     /// </summary>
     /// <param name="name">The name of the scene.</param>
-    /// <param name="type">The type of the scene (2D or 3D).</param>
+    /// <param name="sceneType">The type of the scene (2D or 3D).</param>
     /// <param name="simulation">The optional physics simulation. If not provided, a default one is created.</param>
-    protected Scene(string name, SceneType type, Simulation? simulation = null) {
+    protected Scene(string name, SceneType sceneType, Simulation? simulation = null) {
         this.Name = name;
-        this.Type = type;
-        this.Simulation = simulation ?? (type == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
+        this.SceneType = sceneType;
+        this.Simulation = simulation ?? (sceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
+        this.BatchRenderer = new BatchRenderer();
         this.Entities = new Dictionary<uint, Entity>();
     }
 
@@ -106,10 +112,11 @@ public abstract class Scene : Disposable {
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         this.SkyBox?.Draw(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw entities.
         foreach (Entity entity in this.Entities.Values) {
             entity.Draw(context, framebuffer);
         }
+        
+        this.BatchRenderer.Draw(context, framebuffer);
     }
 
     /// <summary>
@@ -191,6 +198,7 @@ public abstract class Scene : Disposable {
             return false;
         }
 
+        entity.Scene = this;
         entity.Id = ++this._entityIds;
         entity.Init();
         

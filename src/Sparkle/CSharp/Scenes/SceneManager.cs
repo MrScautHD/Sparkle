@@ -97,7 +97,7 @@ public static class SceneManager {
         context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
         
-        switch (ActiveScene?.Type) {
+        switch (ActiveScene?.SceneType) {
             case SceneType.Scene2D:
                 ActiveCam2D?.Begin();
                 ActiveScene.Draw(context, _filterRenderTexture.Framebuffer);

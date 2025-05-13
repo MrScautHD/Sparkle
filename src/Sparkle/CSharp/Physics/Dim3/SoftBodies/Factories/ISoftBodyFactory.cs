@@ -1,5 +1,6 @@
 using System.Numerics;
 using Jitter2;
+using Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 using Veldrid;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;

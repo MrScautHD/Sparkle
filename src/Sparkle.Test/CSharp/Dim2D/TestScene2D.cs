@@ -58,8 +58,8 @@ public class TestScene2D : Scene {
         }
     }
 
-    protected override void Update(double delta) {
-        base.Update(delta);
+    protected override void FixedUpdate(double delta) {
+        base.FixedUpdate(delta);
         Entity player = this.GetEntity(2)!;
         RigidBody2D body = player.GetComponent<RigidBody2D>()!;
         Camera2D cam2D = SceneManager.ActiveCam2D!;
@@ -73,19 +73,19 @@ public class TestScene2D : Scene {
         }
         
         if (Input.IsKeyDown(KeyboardKey.W)) {
-            body.ApplyForceToCenter(new Vector2(0, -50 * 100), true);
+            body.ApplyForceToCenter(new Vector2(0, -50 * 150), true);
         }
         
         if (Input.IsKeyDown(KeyboardKey.S)) {
-            body.ApplyForceToCenter(new Vector2(0, 50 * 100), true);
+            body.ApplyForceToCenter(new Vector2(0, 50 * 150), true);
         }
         
         if (Input.IsKeyDown(KeyboardKey.A)) {
-            body.ApplyForceToCenter(new Vector2(-50 * 100, 0), true);
+            body.ApplyForceToCenter(new Vector2(-50 * 150, 0), true);
         }
         
         if (Input.IsKeyDown(KeyboardKey.D)) {
-            body.ApplyForceToCenter(new Vector2(50 * 100, 0), true);
+            body.ApplyForceToCenter(new Vector2(50 * 150, 0), true);
         }
         
         cam2D.Target = new Vector2(body.Position.X, body.Position.Y);
@@ -94,9 +94,8 @@ public class TestScene2D : Scene {
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         
-        context.PrimitiveBatch.SetView(SceneManager.ActiveCam2D!.GetView());
-        context.PrimitiveBatch.SetOutput(framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: SceneManager.ActiveCam2D!.GetView());
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -200, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
-        context.PrimitiveBatch.ResetSettings();
+        context.PrimitiveBatch.End();
     }
 }

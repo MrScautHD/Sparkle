@@ -156,12 +156,12 @@ public class TestScene3D : Scene {
         context.ImmediateRenderer.DrawGird(context.CommandList, framebuffer.OutputDescription, new Transform(), 50, 1, Color.Gray);
         
         // Draw physics 3D debug drawer.
-        context.Physics3DDebugDrawer.SetColor(Color.Green);
+        context.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
         this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        context.Physics3DDebugDrawer.ResetSettings();
+        context.Physics3DDebugDrawer.End();
     }
 }

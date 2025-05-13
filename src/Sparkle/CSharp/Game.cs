@@ -266,17 +266,8 @@ public class Game : Disposable {
             this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             this.CommandList.ClearDepthStencil(1.0F);
-            
-            // TODO: Find a way to get rid of this Begin/End methods here.
-            this.GlobalSpriteBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
-            this.GlobalPrimitiveBatch.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
-            this.GlobalPhysics3DDebugDrawer.Begin(this.CommandList, this.MsaaRenderTexture.Framebuffer.OutputDescription);
-            
+
             this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
-            
-            this.GlobalPhysics3DDebugDrawer.End();
-            this.GlobalPrimitiveBatch.End();
-            this.GlobalSpriteBatch.End();
             
             // Apply MSAA.
             if (this.MsaaRenderTexture.SampleCount != TextureSampleCount.Count1) {

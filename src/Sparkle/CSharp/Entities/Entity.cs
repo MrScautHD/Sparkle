@@ -10,6 +10,11 @@ namespace Sparkle.CSharp.Entities;
 public class Entity : Disposable {
     
     /// <summary>
+    /// The scene that the entity belongs to.
+    /// </summary>
+    public Scene Scene { get; internal set; }
+    
+    /// <summary>
     /// The unique identifier for this entity.
     /// </summary>
     public uint Id { get; internal set; }
@@ -263,7 +268,7 @@ public class Entity : Disposable {
                 }
             }
 
-            SceneManager.ActiveScene?.Entities.Remove(this.Id);
+            this.Scene.Entities.Remove(this.Id);
         }
     }
 }

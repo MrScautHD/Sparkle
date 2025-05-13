@@ -5,7 +5,7 @@ using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
 using Veldrid;
 
-namespace Sparkle.CSharp.Physics.Dim3.SoftBodies;
+namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 
 public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     

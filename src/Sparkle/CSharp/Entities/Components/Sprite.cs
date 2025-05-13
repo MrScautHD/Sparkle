@@ -2,16 +2,13 @@ using System.Numerics;
 using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Scenes;
-using Veldrid;
 using Vortice.Mathematics;
 using Color = Bliss.CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class Sprite : InterpolatedComponent {
-
+public class Sprite : BatchComponent {
+    
     /// <summary>
     /// The texture used to render the sprite.
     /// </summary>
@@ -46,30 +43,19 @@ public class Sprite : InterpolatedComponent {
         this.Color = color ?? Color.White;
         this.Flip = flip;
     }
-    
+
     /// <summary>
-    /// Draws the sprite using the active 2D camera and the specified graphics context and framebuffer.
-    /// Applies transformations like scale, rotation, and flip.
+    /// Draws the sprite using the provided sprite batch.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer to draw the sprite onto.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        base.Draw(context, framebuffer);
-        Camera2D? cam2D = SceneManager.ActiveCam2D;
-        
-        if (cam2D == null) {
-            return;
-        }
-        
+    /// <param name="spriteBatch">The sprite batch used to render the sprite.</param>
+    protected internal override void DrawSprite(SpriteBatch spriteBatch) {
+        base.DrawSprite(spriteBatch);
         Rectangle source = new Rectangle(0, 0, (int) this.Texture.Width, (int) this.Texture.Height);
         Rectangle dest = new Rectangle((int) this.LerpedGlobalPosition.X, (int) this.LerpedGlobalPosition.Y, (int) this.Size.X, (int) this.Size.Y);
         Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
         Vector2 scale = new Vector2(this.LerpedScale.X, this.LerpedScale.Y);
         float rotation = float.RadiansToDegrees(this.LerpedRotation.ToEuler().Z);
         
-        context.SpriteBatch.SetOutput(framebuffer.OutputDescription);
-        context.SpriteBatch.SetView(cam2D.GetView());
-        context.SpriteBatch.DrawTexture(this.Texture, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), 0.5F, source, scale, origin, rotation, this.Color, this.Flip);
-        context.SpriteBatch.ResetSettings();
+        spriteBatch.DrawTexture(this.Texture, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), 0.5F, source, scale, origin, rotation, this.Color, this.Flip);
     }
 }

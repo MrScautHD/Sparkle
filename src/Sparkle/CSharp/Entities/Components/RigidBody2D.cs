@@ -1,5 +1,4 @@
 using System.Numerics;
-using Bliss.CSharp.Logging;
 using Box2D;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim2.Def;
