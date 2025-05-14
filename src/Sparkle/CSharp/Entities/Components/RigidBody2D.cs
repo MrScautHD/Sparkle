@@ -29,13 +29,13 @@ public class RigidBody2D : Component {
         typeof(RigidBody3D),
         typeof(SoftBody3D)
     ];
-
+    
     /// <summary>
     /// Gets the current 2D simulation instance used by the scene.
     /// Throws an <see cref="InvalidOperationException"/> if the simulation is not of type <see cref="Simulation2D"/>.
     /// </summary>
     public Simulation2D Simulation => SceneManager.Simulation as Simulation2D ?? throw new InvalidOperationException("The current simulation must be of type Simulation2D.");
-
+    
     /// <summary>
     /// Gets the physics world from the current 2D simulation.
     /// </summary>

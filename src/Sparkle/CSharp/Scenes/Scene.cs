@@ -4,6 +4,7 @@ using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
+using Sparkle.CSharp.Graphics.Rendering.Sprites;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim3;
@@ -29,9 +30,9 @@ public abstract class Scene : Disposable {
     public Simulation Simulation { get; private set; }
     
     /// <summary>
-    /// Manages and draw batching operations for entity rendering components.
+    /// Manages and draw sprites for the entity sprite component.
     /// </summary>
-    public BatchRenderer BatchRenderer { get; private set; }
+    public SpriteRenderer SpriteRenderer { get; private set; }
     
     /// <summary>
     /// Gets or sets the optional filter effect applied to the scene.
@@ -63,7 +64,7 @@ public abstract class Scene : Disposable {
         this.Name = name;
         this.SceneType = sceneType;
         this.Simulation = simulation ?? (sceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
-        this.BatchRenderer = new BatchRenderer();
+        this.SpriteRenderer = new SpriteRenderer();
         this.Entities = new Dictionary<uint, Entity>();
     }
 
@@ -116,7 +117,7 @@ public abstract class Scene : Disposable {
             entity.Draw(context, framebuffer);
         }
         
-        this.BatchRenderer.Draw(context, framebuffer);
+        this.SpriteRenderer.Draw(context, framebuffer);
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ public class TestScene2D : Scene {
         
         // CAMERA
         Rectangle size = new Rectangle(0, 0, GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight());
-        Camera2D camera2D = new Camera2D(Vector2.Zero, Vector2.Zero, size, CameraFollowMode.FollowTargetSmooth, zoom: 5);
+        Camera2D camera2D = new Camera2D(Vector2.Zero, Vector2.Zero, size, CameraFollowMode.FollowTargetSmooth, zoom: 7);
         this.AddEntity(camera2D);
         
         // PLAYER
@@ -93,9 +93,14 @@ public class TestScene2D : Scene {
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
+        Camera2D? cam2D = SceneManager.ActiveCam2D;
         
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: SceneManager.ActiveCam2D!.GetView());
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -200, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
+        if (cam2D == null) {
+            return;
+        }
+        
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
+        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -192, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
         context.PrimitiveBatch.End();
     }
 }
