@@ -23,38 +23,44 @@ public class LogFileWriter {
         this._directory = directory;
         this.FilePath = this.CreateLogFile();
     }
-    
+
     /// <summary>
-    /// Writes a formatted log message to the log file based on the log type.
+    /// Writes a log message to the log file with the specified log type, message, color, and source information.
     /// </summary>
-    /// <param name="type">The severity level of the log message.</param>
+    /// <param name="type">The type of the log (e.g., Debug, Info, Warn, Error, Fatal).</param>
     /// <param name="msg">The log message to write.</param>
-    /// <param name="skipFrames">Unused parameter for potential stack tracing.</param>
-    /// <param name="color">The console color associated with the log message.</param>
-    /// <returns>Returns true if the message was successfully written; otherwise, false.</returns>
-    public bool WriteFileMsg(LogType type, string msg, int skipFrames, ConsoleColor color) {
+    /// <param name="color">The console color associated with the message.</param>
+    /// <param name="sourceFilePath">The file path of the source code that emitted the message.</param>
+    /// <param name="memberName">The name of the method or member that emitted the message.</param>
+    /// <param name="sourceLineNumber">The line number in the source where the message originated.</param>
+    /// <returns>Returns <c>true</c> if the log message was successfully written, otherwise <c>false</c>.</returns>
+    public bool WriteFileMsg(LogType type, string msg, ConsoleColor color, string sourceFilePath, string memberName, int sourceLineNumber) {
+        string fileName = Path.GetFileNameWithoutExtension(sourceFilePath);
+        string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        string text = $"[{timestamp} | {fileName}::{memberName}({sourceLineNumber})] {msg}";
+        
         switch (type) {
             case LogType.Debug:
-                FileAccessor.WriteLine(this.FilePath, $"[DEBUG]: {msg}");
+                FileAccessor.WriteLine(this.FilePath, text);
                 return false;
             
             case LogType.Info:
-                FileAccessor.WriteLine(this.FilePath, $"[INFO]: {msg}");
+                FileAccessor.WriteLine(this.FilePath, text);
                 return false;
             
             case LogType.Warn:
-                FileAccessor.WriteLine(this.FilePath, $"[WARN]: {msg}");
+                FileAccessor.WriteLine(this.FilePath, text);
                 return false;
             
             case LogType.Error:
-                FileAccessor.WriteLine(this.FilePath, $"[ERROR]: {msg}");
+                FileAccessor.WriteLine(this.FilePath, text);
                 return false;
             
             case LogType.Fatal:
-                FileAccessor.WriteLine(this.FilePath, $"[FATAL]: {msg}");
+                FileAccessor.WriteLine(this.FilePath, text);
                 return false;
         }
-
+        
         return false;
     }
 
@@ -63,12 +69,19 @@ public class LogFileWriter {
     /// </summary>
     /// <returns>The full file path of the newly created log file.</returns>
     private string CreateLogFile() {
-        string path = Path.Combine(this._directory, $"log - {DateTime.Now:yyyy-MM-dd--HH-mm-ss}.txt");
+        string path;
+        int fileCounter = 1;
+        
+        do {
+            path = Path.Combine(this._directory, $"log - {DateTime.Now:yyyy-MM-dd}-{fileCounter}.txt");
+            fileCounter++;
+        } while (File.Exists(path));
+
         
         if (!Directory.Exists(this._directory)) {
             Directory.CreateDirectory(this._directory);
         }
-
+        
         File.Create(path).Close();
         return path;
     }

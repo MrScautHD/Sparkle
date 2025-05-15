@@ -3,7 +3,6 @@ using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
 
 namespace Sparkle.CSharp.Entities;
 
