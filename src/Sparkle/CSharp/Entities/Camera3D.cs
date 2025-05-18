@@ -130,7 +130,7 @@ public class Camera3D : Entity {
     /// The aspect ratio of the camera.
     /// </summary>
     public float AspectRatio => this._cam3D.AspectRatio;
-
+    
     /// <summary>
     /// Updates the state of the <see cref="Camera3D"/> object each frame.
     /// </summary>
@@ -143,7 +143,7 @@ public class Camera3D : Entity {
             this._cam3D.Update(Time.Delta);
         }
     }
-
+    
     /// <summary>
     /// Resizes the camera to match the dimensions of the given rectangle.
     /// </summary>
@@ -152,7 +152,7 @@ public class Camera3D : Entity {
         base.Resize(rectangle);
         this._cam3D.Resize((uint) rectangle.Width, (uint) rectangle.Height);
     }
-
+    
     /// <summary>
     /// Begins the camera rendering process.
     /// </summary>

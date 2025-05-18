@@ -152,6 +152,14 @@ public class Camera2D : Entity {
     }
 
     /// <summary>
+    /// Calculates and returns the visible area of the camera based on its current position and viewport size.
+    /// </summary>
+    /// <returns>A <see cref="RectangleF"/> representing the visible area in world coordinates.</returns>
+    public RectangleF GetVisibleArea() {
+        return this._cam2D.GetVisibleArea();
+    }
+
+    /// <summary>
     /// Converts a screen position to world coordinates.
     /// </summary>
     /// <param name="position">The screen position.</param>

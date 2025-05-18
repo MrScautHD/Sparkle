@@ -64,20 +64,49 @@ public class SpriteRenderer {
         
         // Draw sprites.
         foreach (SpriteData sprite in this._sprites) {
-            context.SpriteBatch.SetEffect(sprite.Effect);
-            context.SpriteBatch.SetBlendState(sprite.BlendState);
-            context.SpriteBatch.SetDepthStencilState(sprite.DepthStencilState);
-            context.SpriteBatch.SetRasterizerState(sprite.RasterizerState);
-            context.SpriteBatch.SetView(cam2D.GetView());
-            context.SpriteBatch.SetSampler(sprite.Sampler);
+            if (this.IsSpriteVisible(cam2D, sprite)) {
+                context.SpriteBatch.SetEffect(sprite.Effect);
+                context.SpriteBatch.SetBlendState(sprite.BlendState);
+                context.SpriteBatch.SetDepthStencilState(sprite.DepthStencilState);
+                context.SpriteBatch.SetRasterizerState(sprite.RasterizerState);
+                context.SpriteBatch.SetView(cam2D.GetView());
+                context.SpriteBatch.SetSampler(sprite.Sampler);
             
-            context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.Rotation, sprite.Color, sprite.Flip);
-            context.SpriteBatch.ResetSettings();
+                context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.Rotation, sprite.Color, sprite.Flip);
+                context.SpriteBatch.ResetSettings();
+            }
         }
         
         context.SpriteBatch.End();
         
         // Clear sprites.
         this._sprites.Clear();
+    }
+
+    /// <summary>
+    /// Determines whether the specified sprite is visible within the camera's view.
+    /// </summary>
+    /// <param name="camera">The camera used to define the visible area.</param>
+    /// <param name="sprite">The sprite data containing position, rotation, scale, and other properties.</param>
+    /// <returns>True if the sprite is visible in the camera's view; otherwise, false.</returns>
+    private bool IsSpriteVisible(Camera2D camera, SpriteData sprite) {
+        Vector2 spriteScale = new Vector2(sprite.SourceRect.Width, sprite.SourceRect.Height) * sprite.Scale;
+        Vector2 spriteOrigin = sprite.Origin * sprite.Scale;
+        
+        Matrix3x2 transform = Matrix3x2.CreateRotation(float.DegreesToRadians(sprite.Rotation), sprite.Position);
+        
+        // Calculate the 4 corners.
+        Vector2 corner1 = Vector2.Transform(new Vector2(sprite.Position.X, sprite.Position.Y) - spriteOrigin, transform);
+        Vector2 corner2 = Vector2.Transform(new Vector2(sprite.Position.X + spriteScale.X, sprite.Position.Y) - spriteOrigin, transform);
+        Vector2 corner3 = Vector2.Transform(new Vector2(sprite.Position.X, sprite.Position.Y + spriteScale.Y) - spriteOrigin, transform);
+        Vector2 corner4 = Vector2.Transform(new Vector2(sprite.Position.X + spriteScale.X, sprite.Position.Y + spriteScale.Y) - spriteOrigin, transform);
+        
+        // Get cameras visible area.
+        RectangleF visibleArea = camera.GetVisibleArea();
+        
+        return visibleArea.Contains(corner1) ||
+               visibleArea.Contains(corner2) ||
+               visibleArea.Contains(corner3) ||
+               visibleArea.Contains(corner4);
     }
 }
