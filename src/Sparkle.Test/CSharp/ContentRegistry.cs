@@ -13,7 +13,7 @@ using Sparkle.CSharp.Registries;
 namespace Sparkle.Test.CSharp;
 
 public class ContentRegistry : Registry {
-
+    
     public static Font Fontoe { get; private set; }
     public static Model PlayerModel { get; private set; }
     public static Texture2D Sprite { get; private set; }
@@ -26,6 +26,7 @@ public class ContentRegistry : Registry {
     
     protected override void Load(ContentManager content) {
         base.Load(content);
+        
         Fontoe = content.Load(new FontContent("content/fontoe.ttf"));
         PlayerModel = content.Load(new ModelContent("content/model.glb"));
         Sprite = content.Load(new TextureContent("content/sprite.png"));

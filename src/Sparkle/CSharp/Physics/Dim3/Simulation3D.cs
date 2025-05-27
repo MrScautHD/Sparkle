@@ -45,8 +45,7 @@ public class Simulation3D : Simulation {
     protected internal override void Step(double fixedStep) {
         this.World.Step((float) fixedStep, this._settings.MultiThreaded);
 
-        for (int i = 0; i < this.World.RigidBodies.Active; i++) {
-            RigidBody body = this.World.RigidBodies[i];
+        foreach (RigidBody body in this.World.RigidBodies.Active) {
             this.BodyMoved?.Invoke(body);
         }
     }

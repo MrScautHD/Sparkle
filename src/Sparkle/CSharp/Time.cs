@@ -17,7 +17,7 @@ public static class Time {
     /// <summary>
     /// Gets the fixed time step interval defined in the current game settings.
     /// </summary>
-    public static double FixedStep => Game.Instance?.Settings.FixedTimeStep ?? throw new Exception("Something went wrong with the Time!");
+    public static double FixedStep => Game.Instance?.Settings.FixedTimeStep ?? throw new Exception("Something went wrong!");
 
     /// <summary>
     /// Gets the total elapsed time since the start of the application.

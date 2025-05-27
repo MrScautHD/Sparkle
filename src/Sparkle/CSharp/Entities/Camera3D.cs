@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Scenes;
 
 namespace Sparkle.CSharp.Entities;
@@ -139,7 +140,7 @@ public class Camera3D : Entity {
         base.Update(delta);
 
         // To make sure just the active camera moves from the input.
-        if (SceneManager.ActiveCam3D == this) {
+        if (SceneManager.ActiveCam3D == this && GuiManager.ActiveGui == null) {
             this._cam3D.Update(Time.Delta);
         }
     }

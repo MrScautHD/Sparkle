@@ -14,7 +14,8 @@ public class FontProcessor : IContentProcessor {
     /// <param name="type">The content type containing the font path.</param>
     /// <returns>A new <see cref="Font"/> instance loaded from the specified path.</returns>
     public object Load<T>(GraphicsDevice graphicsDevice, IContentType<T> type) {
-        return new Font(type.Path);
+        FontContent contentType = (FontContent) type;
+        return new Font(contentType.Path, contentType.Settings);
     }
 
     /// <summary>

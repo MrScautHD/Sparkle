@@ -15,6 +15,7 @@ using MiniAudioEx;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
+using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
@@ -228,6 +229,9 @@ public class Game : Disposable {
         Logger.Info("Initialize overlay manager...");
         OverlayManager.Init();
         
+        Logger.Info("Initialize GUI manager...");
+        GuiManager.Init();
+        
         Logger.Info("Initialize registry manager...");
         RegistryManager.Init();
         
@@ -320,6 +324,7 @@ public class Game : Disposable {
     protected virtual void Update(double delta) {
         SceneManager.OnUpdate(delta);
         OverlayManager.OnUpdate(delta);
+        GuiManager.OnUpdate(delta);
     }
     
     /// <summary>
@@ -329,6 +334,7 @@ public class Game : Disposable {
     protected virtual void AfterUpdate(double delta) {
         SceneManager.OnAfterUpdate(delta);
         OverlayManager.OnAfterUpdate(delta);
+        GuiManager.OnAfterUpdate(delta);
     }
     
     /// <summary>
@@ -338,6 +344,7 @@ public class Game : Disposable {
     protected virtual void FixedUpdate(double fixedStep) {
         SceneManager.OnFixedUpdate(fixedStep);
         OverlayManager.OnFixedUpdate(fixedStep);
+        GuiManager.OnFixedUpdate(fixedStep);
     }
     
     /// <summary>
@@ -346,6 +353,7 @@ public class Game : Disposable {
     protected virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         SceneManager.OnDraw(context, framebuffer);
         OverlayManager.OnDraw(context, framebuffer);
+        GuiManager.OnDraw(context, framebuffer);
     }
 
     /// <summary>
@@ -356,6 +364,7 @@ public class Game : Disposable {
         this.MsaaRenderTexture.Resize((uint) rectangle.Width, (uint) rectangle.Height);
         SceneManager.OnResize(rectangle);
         OverlayManager.OnResize(rectangle);
+        GuiManager.OnResize(rectangle);
     }
 
     /// <summary>
@@ -382,6 +391,7 @@ public class Game : Disposable {
         if (disposing) {
             SceneManager.Destroy();
             OverlayManager.Destroy();
+            GuiManager.Destroy();
             RegistryManager.Destroy();
             
             this.Content.Dispose();

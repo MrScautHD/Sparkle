@@ -12,6 +12,7 @@ using Jitter2.LinearMath;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
@@ -27,7 +28,7 @@ public class TestScene3D : Scene {
         base.Init();
         
         // RELATIVE MOUSE MODE.
-        Input.EnableRelativeMouseMode();
+        //Input.EnableRelativeMouseMode();
         
         // SKYBOX
         //this.SkyBox = ContentRegistry.SkyBox;
@@ -103,6 +104,14 @@ public class TestScene3D : Scene {
 
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
             this.SetFilterEffect(null);
+        }
+
+        if (Input.IsKeyPressed(KeyboardKey.N)) {
+            GuiManager.SetGui(new TestGui("Test"));
+        }
+
+        if (Input.IsKeyPressed(KeyboardKey.M)) {
+            GuiManager.SetGui(null);
         }
     }
 

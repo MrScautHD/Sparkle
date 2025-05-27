@@ -1,4 +1,5 @@
 using Bliss.CSharp.Fonts;
+using FontStashSharp;
 
 namespace Sparkle.CSharp.Content.Types;
 
@@ -10,10 +11,17 @@ public class FontContent : IContentType<Font> {
     public string Path { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FontContent"/> class.
+    /// The settings used to configure the font system when loading this font.
     /// </summary>
-    /// <param name="path">The file path of the font.</param>
-    public FontContent(string path) {
+    public FontSystemSettings? Settings;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FontContent"/> class with the specified path and optional settings.
+    /// </summary>
+    /// <param name="path">The file path of the font to load.</param>
+    /// <param name="settings">Optional font system settings; if not provided, default settings are used.</param>
+    public FontContent(string path, FontSystemSettings? settings = null) {
         this.Path = path;
+        this.Settings = settings ?? new FontSystemSettings();
     }
 }

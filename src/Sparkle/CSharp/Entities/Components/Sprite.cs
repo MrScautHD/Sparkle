@@ -105,8 +105,7 @@ public class Sprite : InterpolatedComponent {
         base.Draw(context, framebuffer);
         
         Rectangle source = this.SourceRect ?? new Rectangle(0, 0, (int) this.Texture.Width, (int) this.Texture.Height);
-        Rectangle dest = new Rectangle((int) this.LerpedGlobalPosition.X, (int) this.LerpedGlobalPosition.Y, (int) this.Size.X, (int) this.Size.Y);
-        Vector2 origin = new Vector2(dest.Width / 2.0F, dest.Height / 2.0F);
+        Vector2 origin = new Vector2(this.Size.X / 2.0F, this.Size.Y / 2.0F);
         Vector2 scale = new Vector2(this.LerpedScale.X, this.LerpedScale.Y);
         float rotation = float.RadiansToDegrees(this.LerpedRotation.ToEuler().Z);
         

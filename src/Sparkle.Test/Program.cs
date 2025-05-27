@@ -12,5 +12,5 @@ GameSettings settings = new GameSettings() {
 };
 
 using TestGame testGame = new TestGame(settings);
-testGame.Run(new TestScene2D("Test - [2D]"));
-//testGame.Run(new TestScene3D("Test - [3D]"));
+//testGame.Run(new TestScene2D("Test - [2D]"));
+testGame.Run(new TestScene3D("Test - [3D]"));
