@@ -17,14 +17,17 @@ public class TestGui : Gui {
     protected override void Init() {
         base.Init();
         
-        this.AddElement("Test-Button", new ButtonElement(Anchor.TopLeft, new Vector2(0, 0), new Vector2(200, 200), rotation: 0, clickFunc: () => {
+        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.Button, hoverColor: Color.LightGray);
+        LabelData testButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
+        
+        this.AddElement("Test-Button", new TextureButtonElement(textureButtonData, testButtonLabelData, Anchor.Center, Vector2.Zero, rotation: 0, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
-
-        LabelData labelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
         
-        this.AddElement("Test-Label", new LabelElement(labelData, Anchor.Center, Vector2.Zero, clickFunc: () => {
+        LabelData testLabelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
+        
+        this.AddElement("Test-Label", new LabelElement(testLabelData, Anchor.BottomLeft, Vector2.Zero, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));

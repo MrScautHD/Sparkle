@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp.Colors;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrid;
@@ -10,7 +11,7 @@ public class LabelElement : GuiElement {
     /// <summary>
     /// The data used to render the label.
     /// </summary>
-    public LabelData Data;
+    public LabelData Data { get; private set; }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="LabelElement"/> class.
@@ -21,7 +22,7 @@ public class LabelElement : GuiElement {
     /// <param name="origin">Optional origin point used for rotation and scaling (default is null).</param>
     /// <param name="rotation">The rotation of the label in radians (default is 0).</param>
     /// <param name="clickFunc">Optional function to be called when the label is clicked (default is null).</param>
-    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
         this.Data = data;
     }
     
@@ -43,10 +44,12 @@ public class LabelElement : GuiElement {
         if (this.Data.Text == string.Empty) {
             return;
         }
+
+        Color color = this.IsHovered ? this.Data.HoverColor : this.Data.Color;
         
         // Draw text.
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * GuiManager.ScaleFactor, this.Data.LayerDepth, this.Origin, this.Rotation, this.Data.Color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
+        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * GuiManager.ScaleFactor, this.Data.LayerDepth, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }
 }

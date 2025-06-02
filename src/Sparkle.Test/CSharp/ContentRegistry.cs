@@ -17,6 +17,7 @@ public class ContentRegistry : Registry {
     public static Font Fontoe { get; private set; }
     public static Model PlayerModel { get; private set; }
     public static Texture2D Sprite { get; private set; }
+    public static Texture2D Button { get; private set; }
     
     public static SkyBox SkyBox { get; private set; }
     
@@ -30,6 +31,8 @@ public class ContentRegistry : Registry {
         Fontoe = content.Load(new FontContent("content/fontoe.ttf"));
         PlayerModel = content.Load(new ModelContent("content/model.glb"));
         Sprite = content.Load(new TextureContent("content/sprite.png"));
+        Button = content.Load(new TextureContent("content/button.png"));
+        
         SkyBox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png")));
         
         _textureLayout = new SimpleTextureLayout(Game.Instance?.GraphicsDevice!, "fTexture");

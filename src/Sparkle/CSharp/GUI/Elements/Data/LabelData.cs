@@ -35,7 +35,7 @@ public class LabelData {
     /// <summary>
     /// The scaling factor applied to the rendered text.
     /// </summary>
-    public Vector2? Scale;
+    public Vector2 Scale;
     
     /// <summary>
     /// The depth layer at which the text is rendered, controlling draw order.
@@ -46,6 +46,11 @@ public class LabelData {
     /// The color of the rendered text.
     /// </summary>
     public Color Color;
+
+    /// <summary>
+    /// The color of the text when the label is hovered over.
+    /// </summary>
+    public Color HoverColor;
     
     /// <summary>
     /// The style of the text, such as bold or italic.
@@ -61,7 +66,7 @@ public class LabelData {
     /// The intensity or size of the font effect.
     /// </summary>
     public int EffectAmount;
-    
+
     /// <summary>
     /// Constructs a new instance of <see cref="LabelData"/> with full customization for rendering text.
     /// </summary>
@@ -73,10 +78,11 @@ public class LabelData {
     /// <param name="scale">Optional scale applied to the text. Defaults to <c>Vector2.One</c>.</param>
     /// <param name="layerDepth">The depth layer for rendering. Default is 0.5.</param>
     /// <param name="color">Optional color of the text. Defaults to white.</param>
+    /// <param name="hoverColor">Optional color of the text. Defaults the same as the color parameter.</param>
     /// <param name="style">The style of the text. Default is <c>TextStyle.None</c>.</param>
     /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
     /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Vector2? scale = null, float layerDepth = 0.5F, Color? color = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0) {
+    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Vector2? scale = null, float layerDepth = 0.5F, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
@@ -85,6 +91,7 @@ public class LabelData {
         this.Scale = scale ?? Vector2.One;
         this.LayerDepth = layerDepth;
         this.Color = color ?? Color.White;
+        this.HoverColor = hoverColor ?? this.Color;
         this.Style = style;
         this.Effect = effect;
         this.EffectAmount = effectAmount;

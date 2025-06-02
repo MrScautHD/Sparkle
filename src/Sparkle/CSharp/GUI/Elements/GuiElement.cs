@@ -104,7 +104,7 @@ public abstract class GuiElement {
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         
-        if (rectangle.Contains(Input.GetMousePosition(), this.Origin, this.Rotation)) {
+        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * GuiManager.ScaleFactor, this.Rotation)) {
             this.IsHovered = true;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {
