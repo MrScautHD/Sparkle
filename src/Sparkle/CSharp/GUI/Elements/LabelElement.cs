@@ -49,7 +49,7 @@ public class LabelElement : GuiElement {
         
         // Draw text.
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * GuiManager.ScaleFactor, this.Data.LayerDepth, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
+        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * GuiManager.ScaleFactor, 0.5F, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }
 }

@@ -18,12 +18,17 @@ public class TestGui : Gui {
         base.Init();
         
         TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.Button, hoverColor: Color.LightGray);
-        LabelData testButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
+        LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
-        this.AddElement("Test-Button", new TextureButtonElement(textureButtonData, testButtonLabelData, Anchor.Center, Vector2.Zero, rotation: 0, clickFunc: () => {
+        this.AddElement("Test-Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, Vector2.Zero, rotation: 0, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
+
+        RectangleButtonData rectangleButtonData = new RectangleButtonData(color: Color.Blue);
+        LabelData rectangleButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
+        
+        this.AddElement("Test-Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, Anchor.TopCenter, Vector2.Zero, new Vector2(200, 30)));
         
         LabelData testLabelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
         

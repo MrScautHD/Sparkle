@@ -12,7 +12,7 @@ public class TextureButtonElement : GuiElement {
     /// The associated data for a texture-based button in the GUI.
     /// </summary>
     public TextureButtonData ButtonData { get; private set; }
-
+    
     /// <summary>
     /// The data and properties necessary for rendering and handling text on a GUI element.
     /// </summary>
@@ -45,7 +45,7 @@ public class TextureButtonElement : GuiElement {
         
         // Draw texture.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
-        context.SpriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, this.ButtonData.LayerDepth, this.ButtonData.SourceRect, this.ButtonData.Scale * GuiManager.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.ButtonData.Flip);
+        context.SpriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, this.ButtonData.SourceRect, this.ButtonData.Scale * GuiManager.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.ButtonData.Flip);
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
@@ -54,7 +54,7 @@ public class TextureButtonElement : GuiElement {
             Vector2 textPos = this.Position;
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Scale * GuiManager.ScaleFactor, this.LabelData.LayerDepth, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Scale * GuiManager.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
         }
         
         context.SpriteBatch.End();

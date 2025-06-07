@@ -13,11 +13,6 @@ public struct PhysicsSettings2D {
     /// The number of substeps used for physics simulations in a single timestep.
     /// </summary>
     public int SubStepCount;
-
-    /// <summary>
-    /// The events will be processed in parallel.
-    /// </summary>
-    public bool ParallelEvents;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="PhysicsSettings2D"/> struct with default values.
@@ -25,6 +20,5 @@ public struct PhysicsSettings2D {
     public PhysicsSettings2D() {
         this.WorldDef = new WorldDef();
         this.SubStepCount = 4;
-        this.ParallelEvents = false;
     }
 }

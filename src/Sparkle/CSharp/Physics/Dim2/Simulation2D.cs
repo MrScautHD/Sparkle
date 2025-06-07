@@ -58,7 +58,7 @@ public class Simulation2D : Simulation {
     /// </summary>
     /// <param name="fixedStep">The time step duration in seconds to advance the simulation.</param>
     protected internal override void Step(double fixedStep) {
-        this.World.Step((float) fixedStep, this._settings.SubStepCount, this._settings.ParallelEvents);
+        this.World.Step((float) fixedStep, this._settings.SubStepCount);
         
         foreach (BodyMoveEvent moveEvent in this.World.BodyEvents.MoveEvents) {
             this.BodyMoved?.Invoke(moveEvent);

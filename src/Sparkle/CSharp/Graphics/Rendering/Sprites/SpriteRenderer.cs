@@ -71,7 +71,7 @@ public class SpriteRenderer {
                 context.SpriteBatch.SetRasterizerState(sprite.RasterizerState);
                 context.SpriteBatch.SetView(cam2D.GetView());
                 context.SpriteBatch.SetSampler(sprite.Sampler);
-            
+                
                 context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.Rotation, sprite.Color, sprite.Flip);
                 context.SpriteBatch.ResetSettings();
             }
