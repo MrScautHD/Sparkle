@@ -124,9 +124,13 @@ public abstract class GuiElement {
             this.IsHovered = false;
             this.IsClicked = false;
 
-            if (Input.IsMouseButtonPressed(MouseButton.Left) || Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter)) {
+            if (Input.IsMouseButtonPressed(MouseButton.Left)) {
                 this.IsSelected = false;
             }
+        }
+
+        if (Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter)) {
+            this.IsSelected = false;
         }
     }
     

@@ -53,7 +53,7 @@ public class TextureTextBoxElement : GuiElement {
             if (Input.IsTextInputActive()) {
                 
                 // Write text.
-                if (Input.GetTypedText(out string text)) { // TODO: Add a system that allows to do a longer text then the actual texture is....
+                if (Input.GetTypedText(out string text)) { // TODO: Add a system that allows to do a longer text then the actual texture is.... And idk but maybe fix also the text of buttons that they use font size instead of text.Y.
                     if (this.LabelData.Text.Length <= this.MaxTextLength - 1) {
                         this.LabelData.Text += text;
                     }
