@@ -20,15 +20,27 @@ public class TestGui : Gui {
         TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.Button, hoverColor: Color.LightGray);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
-        this.AddElement("Test-Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, Vector2.Zero, rotation: 0, clickFunc: () => {
+        this.AddElement("Test-Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), rotation: 0, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
 
-        RectangleButtonData rectangleButtonData = new RectangleButtonData(color: Color.Blue);
+        RectangleButtonData rectangleButtonData = new RectangleButtonData(Color.Gray, Color.LightGray, 4, Color.DarkGray, Color.Gray);
         LabelData rectangleButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
-        this.AddElement("Test-Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, Anchor.TopCenter, Vector2.Zero, new Vector2(200, 30)));
+        this.AddElement("Test-Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, Anchor.Center, Vector2.Zero, new Vector2(200, 30), rotation: 0, clickFunc: () => {
+            Logger.Error("CLICKED!");
+            return true;
+        }));
+        
+        TextureTextBoxData textBoxData = new TextureTextBoxData(ContentRegistry.TextBox, hoverColor: Color.LightGray);
+        LabelData textBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
+        LabelData hintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
+        
+        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.BottomCenter, Vector2.Zero, 10, rotation: 0, clickFunc: () => {
+            Logger.Error("BOX1!");
+            return true;
+        }));
         
         LabelData testLabelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
         

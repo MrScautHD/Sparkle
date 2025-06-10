@@ -18,6 +18,7 @@ public class ContentRegistry : Registry {
     public static Model PlayerModel { get; private set; }
     public static Texture2D Sprite { get; private set; }
     public static Texture2D Button { get; private set; }
+    public static Texture2D TextBox { get; private set; }
     
     public static SkyBox SkyBox { get; private set; }
     
@@ -32,6 +33,7 @@ public class ContentRegistry : Registry {
         PlayerModel = content.Load(new ModelContent("content/model.glb"));
         Sprite = content.Load(new TextureContent("content/sprite.png"));
         Button = content.Load(new TextureContent("content/button.png"));
+        TextBox = content.Load(new TextureContent("content/text-box.png"));
         
         SkyBox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png")));
         

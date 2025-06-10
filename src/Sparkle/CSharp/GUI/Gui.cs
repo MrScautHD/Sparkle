@@ -9,9 +9,16 @@ namespace Sparkle.CSharp.GUI;
 public abstract class Gui : Disposable {
     
     /// <summary>
-    /// The name of the GUI instance.
+    /// The name of the GUI.
     /// </summary>
     public readonly string Name;
+    
+    /// <summary>
+    /// The dimensions of the GUI.
+    /// </summary>
+    public readonly (int Width, int Height) Size;
+    
+    public float ScaleFactor => GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height);
     
     /// <summary>
     /// Internal dictionary storing GUI elements by name.
@@ -22,8 +29,10 @@ public abstract class Gui : Disposable {
     /// Initializes a new instance of the <see cref="Gui"/> class.
     /// </summary>
     /// <param name="name">The name of the GUI.</param>
-    public Gui(string name) {
+    /// <param name="size">The width and height of the GUI.</param>
+    public Gui(string name, (int, int)? size = null) {
         this.Name = name;
+        this.Size = size ?? (1280, 720);
         this._elements = new Dictionary<string, GuiElement>();
     }
     

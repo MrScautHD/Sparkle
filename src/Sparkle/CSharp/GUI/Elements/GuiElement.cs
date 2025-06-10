@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -60,6 +61,11 @@ public abstract class GuiElement {
     public bool IsClicked { get; private set; }
     
     /// <summary>
+    /// Indicates whether this element is currently selected.
+    /// </summary>
+    public bool IsSelected { get; private set; }
+    
+    /// <summary>
     /// The on-screen position of the element after anchor and offset are applied.
     /// </summary>
     public Vector2 Position { get; private set; }
@@ -104,19 +110,23 @@ public abstract class GuiElement {
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         
-        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * GuiManager.ScaleFactor, this.Rotation)) {
+        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Gui.ScaleFactor, this.Rotation)) {
             this.IsHovered = true;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {
-                this.IsClicked = this._clickFunc?.Invoke() ?? false;
-            }
-            else {
-                this.IsClicked = true;
+                if (this._clickFunc?.Invoke() ?? true) {
+                    this.IsClicked = true;
+                    this.IsSelected = true;
+                }
             }
         }
         else {
             this.IsHovered = false;
             this.IsClicked = false;
+
+            if (Input.IsMouseButtonPressed(MouseButton.Left) || Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter)) {
+                this.IsSelected = false;
+            }
         }
     }
     
@@ -195,9 +205,8 @@ public abstract class GuiElement {
                 pos.Y = height - this.ScaledSize.Y;
                 break;
         }
-        
-        pos.X += this.Offset.X + this.Origin.X;
-        pos.Y += this.Offset.Y + this.Origin.Y;
+
+        pos += (this.Offset * this.Gui.ScaleFactor) + this.Origin;
         
         return pos;
     }
@@ -207,6 +216,6 @@ public abstract class GuiElement {
     /// </summary>
     /// <returns>The scaled size of the GUI element as a <see cref="Vector2"/>.</returns>
     protected virtual Vector2 CalculateSize() {
-        return this.Size * GuiManager.ScaleFactor;
+        return this.Size * this.Gui.ScaleFactor;
     }
 }

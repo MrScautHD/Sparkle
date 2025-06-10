@@ -28,9 +28,9 @@
     
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.3.25" />
+        <PackageReference Include="Bliss" Version="1.3.28" />
         <PackageReference Include="HughPH.Box2D" Version="2025.6.4.1142" />
-        <PackageReference Include="Jitter2" Version="2.6.6" />
+        <PackageReference Include="Jitter2" Version="2.6.7" />
         <PackageReference Include="LibNoise" Version="0.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>

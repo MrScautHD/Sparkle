@@ -15,12 +15,6 @@ public static class GuiManager {
     /// A scaling factor applied to the GUI.
     /// </summary>
     public static float Scale;
-
-    /// <summary>
-    /// Retrieves the current scale factor for the GUI.
-    /// </summary>
-    /// <returns>The computed scale factor.</returns>
-    public static float ScaleFactor => Scale * ((float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight()); // TODO: Find a other way... idk lol
     
     /// <summary>
     /// Initializes the GUI manager.
