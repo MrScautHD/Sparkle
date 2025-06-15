@@ -21,15 +21,21 @@ public class TextureTextBoxElement : GuiElement {
     
     public int MaxTextLength { get; private set; }
     
+    public TextAlignment TextAlignment;
+    
+    public Vector2 TextOffset;
+    
     private bool _textInputActive;
     private bool _isCaretVisible;
     private double _caretTimer;
     
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
         this.MaxTextLength = maxTextLength;
+        this.TextAlignment = textAlignment;
+        this.TextOffset = textOffset ?? Vector2.Zero;
         this.Size = size ?? new Vector2(textBoxData.Texture.Width, textBoxData.Texture.Height);
     }
     
@@ -53,9 +59,13 @@ public class TextureTextBoxElement : GuiElement {
             if (Input.IsTextInputActive()) {
                 
                 // Write text.
-                if (Input.GetTypedText(out string text)) { // TODO: Add a system that allows to do a longer text then the actual texture is.... And idk but maybe fix also the text of buttons that they use font size instead of text.Y.
-                    if (this.LabelData.Text.Length <= this.MaxTextLength - 1) {
+                if (Input.GetTypedText(out string text)) {
+                    if (this.LabelData.Text.Length + text.Length <= this.MaxTextLength) {
                         this.LabelData.Text += text;
+                        
+                        // Show caret.
+                        this._isCaretVisible = true;
+                        this._caretTimer = 0;
                     }
                 }
                 
@@ -63,12 +73,22 @@ public class TextureTextBoxElement : GuiElement {
                 if (Input.IsKeyPressed(KeyboardKey.BackSpace, true)) {
                     if (this.LabelData.Text.Length > 0) {
                         this.LabelData.Text = this.LabelData.Text.Remove(this.LabelData.Text.Length - 1, 1);
+                        
+                        // Show caret.
+                        this._isCaretVisible = true;
+                        this._caretTimer = 0;
                     }
                 }
             }
         }
         
-        // Caret timer. // TODO: Make it more like normal ones.
+        // Show caret when clicking.
+        if (this.IsClicked) {
+            this._isCaretVisible = true;
+            this._caretTimer = 0;
+        }
+        
+        // Caret timer.
         if (this._textInputActive) {
             this._caretTimer += delta;
             
@@ -108,23 +128,32 @@ public class TextureTextBoxElement : GuiElement {
             context.PrimitiveBatch.End();
         }
     }
-
+    
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
+        Vector2 textPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
         Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
-        Vector2 textOrigin = new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin);
-        Vector2 textPos = this.Position;
+        Vector2 textOrigin = this.TextAlignment switch {
+            TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+            _ => Vector2.Zero
+        };
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
         spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
     }
     
     private void DrawCaret(PrimitiveBatch primitiveBatch, LabelData labelData) {
+        Vector2 caretPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
         Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
-        Vector2 caretOrigin = new Vector2(-textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin);
-        Vector2 caretPos = this.Position;
+        Vector2 caretOrigin = this.TextAlignment switch {
+            TextAlignment.Left => new Vector2(this.Size.X / 2.0F - textSize.X, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Right => new Vector2(-(this.Size.X / 2.0F) + 2.0F, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Center => new Vector2(-textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+            _ => Vector2.Zero
+        };
         
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Gui.ScaleFactor, labelData.Size * this.Gui.ScaleFactor);
-        
         primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
     }
 }

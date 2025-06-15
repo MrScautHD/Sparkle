@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
+using FontStashSharp.RichText;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
@@ -18,13 +19,13 @@ public class TestGui : Gui {
         base.Init();
         
         TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.Button, hoverColor: Color.LightGray);
-        LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
+        LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
         this.AddElement("Test-Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), rotation: 0, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
-
+        
         RectangleButtonData rectangleButtonData = new RectangleButtonData(Color.Gray, Color.LightGray, 4, Color.DarkGray, Color.Gray);
         LabelData rectangleButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
@@ -37,7 +38,7 @@ public class TestGui : Gui {
         LabelData textBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData hintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 10, rotation: 0, clickFunc: () => {
+        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 60, TextAlignment.Left, new Vector2(12, 0), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
