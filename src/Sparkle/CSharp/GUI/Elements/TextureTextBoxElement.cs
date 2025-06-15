@@ -13,6 +13,9 @@ namespace Sparkle.CSharp.GUI.Elements;
 
 public class TextureTextBoxElement : GuiElement {
     
+    // TODO: Make a text renderer that can be bigger then the GUI element.
+    // TODO: Add marking renderer (Copy/Paste...)
+    
     public TextureTextBoxData TextBoxData { get; private set; }
     
     public LabelData LabelData { get; private set; }
@@ -26,6 +29,7 @@ public class TextureTextBoxElement : GuiElement {
     public Vector2 TextOffset;
     
     private bool _textInputActive;
+    private int _caretIndex;
     private bool _isCaretVisible;
     private double _caretTimer;
     
@@ -61,7 +65,30 @@ public class TextureTextBoxElement : GuiElement {
                 // Write text.
                 if (Input.GetTypedText(out string text)) {
                     if (this.LabelData.Text.Length + text.Length <= this.MaxTextLength) {
-                        this.LabelData.Text += text;
+                        this.LabelData.Text = this.LabelData.Text.Insert(this._caretIndex, text);
+                        this._caretIndex += text.Length;
+                        
+                        // Show caret.
+                        this._isCaretVisible = true;
+                        this._caretTimer = 0;
+                    }
+                }
+                
+                // Move caret left.
+                if (Input.IsKeyPressed(KeyboardKey.Left, true)) {
+                    if (this._caretIndex > 0) {
+                        this._caretIndex--;
+                        
+                        // Show caret.
+                        this._isCaretVisible = true;
+                        this._caretTimer = 0;
+                    }
+                }
+                
+                // Move caret right.
+                if (Input.IsKeyPressed(KeyboardKey.Right, true)) {
+                    if (this._caretIndex < this.LabelData.Text.Length) {
+                        this._caretIndex++;
                         
                         // Show caret.
                         this._isCaretVisible = true;
@@ -71,8 +98,9 @@ public class TextureTextBoxElement : GuiElement {
                 
                 // Remove text with "BackSpace".
                 if (Input.IsKeyPressed(KeyboardKey.BackSpace, true)) {
-                    if (this.LabelData.Text.Length > 0) {
-                        this.LabelData.Text = this.LabelData.Text.Remove(this.LabelData.Text.Length - 1, 1);
+                    if (this._caretIndex > 0) {
+                        this.LabelData.Text = this.LabelData.Text.Remove(this._caretIndex - 1, 1);
+                        this._caretIndex--;
                         
                         // Show caret.
                         this._isCaretVisible = true;
@@ -82,12 +110,50 @@ public class TextureTextBoxElement : GuiElement {
             }
         }
         
-        // Show caret when clicking.
+        // Handle caret positioning based on mouse clicks.
         if (this.IsClicked) {
+            Vector2 clickPosition = Input.GetMousePosition();
+            Vector2 textStartPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
+            
+            // Default caret index to the start of the text.
+            this._caretIndex = 0;
+            
+            // Iterate through each character in the text to determine where the caret should be placed.
+            if (this.LabelData.Text != string.Empty) {
+                float cumulativeWidth = 0f;
+                
+                for (int i = 0; i < this.LabelData.Text.Length; i++) {
+                    string character = this.LabelData.Text.Substring(i, 1);
+                    float charWidth = this.LabelData.Font.MeasureText(character, this.LabelData.Size, this.LabelData.Scale * this.Gui.ScaleFactor, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount).X;
+                    
+                    float charStartPos = textStartPos.X + cumulativeWidth;
+                    float charMidPos = charStartPos + (charWidth / 2);
+                    
+                    // Set the caret index if the mouse is within character bounds.
+                    if (clickPosition.X < charStartPos + charWidth) {
+                        this._caretIndex = (clickPosition.X <= charMidPos) ? i : i + 1;
+                        
+                        // Show caret.
+                        this._isCaretVisible = true;
+                        this._caretTimer = 0;
+                        
+                        return;
+                    }
+                    
+                    cumulativeWidth += charWidth;
+                }
+                
+                // If the mouse is beyond the last character, set the caret to end.
+                if (clickPosition.X >= textStartPos.X + cumulativeWidth) {
+                    this._caretIndex = this.LabelData.Text.Length;
+                }
+            }
+            
+            // Show caret.
             this._isCaretVisible = true;
             this._caretTimer = 0;
         }
-        
+
         // Caret timer.
         if (this._textInputActive) {
             this._caretTimer += delta;
@@ -145,7 +211,7 @@ public class TextureTextBoxElement : GuiElement {
     
     private void DrawCaret(PrimitiveBatch primitiveBatch, LabelData labelData) {
         Vector2 caretPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
-        Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 textSize = labelData.Font.MeasureText(labelData.Text.Substring(0, this._caretIndex), labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - textSize.X, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             TextAlignment.Right => new Vector2(-(this.Size.X / 2.0F) + 2.0F, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
