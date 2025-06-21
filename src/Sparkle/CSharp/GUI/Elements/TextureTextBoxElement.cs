@@ -15,7 +15,6 @@ public class TextureTextBoxElement : GuiElement {
     
     // TODO: Add marking renderer (Copy/Paste...)
     // TODO: Think about a Caret color.
-    // TODO: Fix TextAlignment (Center and Right) Left works fine.
     
     public TextureTextBoxData TextBoxData { get; private set; }
     
@@ -139,8 +138,8 @@ public class TextureTextBoxElement : GuiElement {
             Vector2 textStartPos = this.TextAlignment switch {
                 TextAlignment.Left => new Vector2(this.TextEdgeOffset.Left * this.Gui.ScaleFactor, 0),
                 TextAlignment.Center => new Vector2((this.ScaledSize.X - visibleTextSize.X) / 2.0F, 0),
-                //TextAlignment.Right => expr,
-                _ => throw new ArgumentOutOfRangeException()
+                TextAlignment.Right => new Vector2(this.ScaledSize.X - visibleTextSize.X - (this.TextEdgeOffset.Right * this.Gui.ScaleFactor), 0),
+                _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
             };
             
             // By default, start the caret index at the visible text's start.
@@ -220,6 +219,7 @@ public class TextureTextBoxElement : GuiElement {
         
         context.SpriteBatch.End();
         
+        // Draw caret.
         if (this._isCaretVisible) {
             context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
             this.DrawCaret(context.PrimitiveBatch, this.LabelData);
@@ -233,9 +233,9 @@ public class TextureTextBoxElement : GuiElement {
         Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F), // -textSize.X
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X + 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            _ => throw new NullReferenceException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
@@ -255,18 +255,22 @@ public class TextureTextBoxElement : GuiElement {
             caretOffsetX += charSize.X;
         }
         
-        string visibleText = this.GetVisibleText(labelData);
-        Vector2 textSize = labelData.Font.MeasureText(visibleText, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        // Calculate visible text size, used for text alignment.
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
-            TextAlignment.Right => new Vector2(-(this.Size.X / 2.0F) + 2.0F, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            TextAlignment.Center => new Vector2((textSize.X / 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
-            _ => throw new NullReferenceException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
+            TextAlignment.Center => new Vector2((visibleTextSize.X / 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
+            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Gui.ScaleFactor, labelData.Size * this.Gui.ScaleFactor);
         primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
+    }
+    
+    private void DrawHighlight(PrimitiveBatch primitiveBatch, LabelData labelData) {
+        
     }
     
     private string GetVisibleText(LabelData labelData) {
@@ -389,8 +393,26 @@ public class TextureTextBoxElement : GuiElement {
                 break;
             }
             
-            // TODO: DONE IT.
+            // Flip back, instant (like after deleting).
             case TextAlignment.Right:
+                if (visibleCharCount == 0.0F && labelData.Text.Length > 0.0F) {
+                    float totalWidth = 0.0F;
+                    int reverseCount = 0;
+
+                    // Berechne Zeichen von rechts, bis sie sichtbar sind.
+                    for (int i = labelData.Text.Length - 1; i >= 0; i--) {
+                        string character = labelData.Text.Substring(i, 1);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            
+                        if (totalWidth + charSize.X > visibleWidth) {
+                            break;
+                        }
+            
+                        totalWidth += charSize.X;
+                        reverseCount++;
+                    }
+                    this._textScrollOffset = Math.Max(0, labelData.Text.Length - reverseCount);
+                }
                 break;
         }
         
