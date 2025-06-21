@@ -16,7 +16,6 @@ public class TextureTextBoxElement : GuiElement {
     // TODO: Add marking renderer (Copy/Paste...)
     // TODO: Think about a Caret color.
     // TODO: Fix TextAlignment.
-    // TODO: Fix Caret Pos clicking. (Origin, Rotation and TextScrollOffset system)
     
     public TextureTextBoxData TextBoxData { get; private set; }
     
@@ -42,7 +41,7 @@ public class TextureTextBoxElement : GuiElement {
         this.HintLabelData = hintLabelData;
         this.MaxTextLength = maxTextLength;
         this.TextAlignment = textAlignment;
-        this.TextEdgeOffset = textEdgeOffset ?? (0, 0);
+        this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
         this.Size = size ?? new Vector2(textBoxData.Texture.Width, textBoxData.Texture.Height);
     }
     
@@ -76,7 +75,7 @@ public class TextureTextBoxElement : GuiElement {
                         
                         // Show caret.
                         this._isCaretVisible = true;
-                        this._caretTimer = 0;
+                        this._caretTimer = 0.0F;
                     }
                 }
                 
@@ -90,7 +89,7 @@ public class TextureTextBoxElement : GuiElement {
                         
                         // Show caret.
                         this._isCaretVisible = true;
-                        this._caretTimer = 0;
+                        this._caretTimer = 0.0F;
                     }
                 }
                 
@@ -104,7 +103,7 @@ public class TextureTextBoxElement : GuiElement {
                         
                         // Show caret.
                         this._isCaretVisible = true;
-                        this._caretTimer = 0;
+                        this._caretTimer = 0.0F;
                     }
                 }
                 
@@ -119,7 +118,7 @@ public class TextureTextBoxElement : GuiElement {
                         
                         // Show caret.
                         this._isCaretVisible = true;
-                        this._caretTimer = 0;
+                        this._caretTimer = 0.0F;
                     }
                 }
             }
@@ -128,59 +127,69 @@ public class TextureTextBoxElement : GuiElement {
         // Handle caret positioning based on mouse clicks.
         if (this.IsClicked) {
             Vector2 clickPosition = Input.GetMousePosition();
-            Vector2 textStartPos = new Vector2(this.Position.X + (this.TextEdgeOffset.Left * this.Gui.ScaleFactor), this.Position.Y);
             
-            // Default caret index to the start of the text.
-            this._caretIndex = 0;
+            // Apply the same transformation as in the Contains method to map the click position into the textbox's local, rotated coordinate space.
+            Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
+            Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Gui.ScaleFactor;
             
-            // Iterate through each character in the text to determine where the caret should be placed.
+            // Check if the click falls within the text area.
+            Vector2 textStartPos = new Vector2(this.TextEdgeOffset.Left * this.Gui.ScaleFactor, 0);
+            
+            // By default, start the caret index at the visible text's start.
+            this._caretIndex = this._textScrollOffset;
+            
             if (this.LabelData.Text != string.Empty) {
-                float cumulativeWidth = 0f;
+                float cumulativeWidth = 0.0F;
                 
-                for (int i = 0; i < this.LabelData.Text.Length; i++) {
+                for (int i = this._textScrollOffset; i < this.LabelData.Text.Length; i++) {
+                    
+                    // Measure the width of the current character.
                     string character = this.LabelData.Text.Substring(i, 1);
                     float charWidth = this.LabelData.Font.MeasureText(character, this.LabelData.Size, this.LabelData.Scale * this.Gui.ScaleFactor, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount).X;
                     
                     float charStartPos = textStartPos.X + cumulativeWidth;
-                    float charMidPos = charStartPos + (charWidth / 2);
+                    float charMidPos = charStartPos + (charWidth / 2.0F);
                     
-                    // Set the caret index if the mouse is within character bounds.
-                    if (clickPosition.X < charStartPos + charWidth) {
-                        this._caretIndex = (clickPosition.X <= charMidPos) ? i : i + 1;
+                    // Check if the click falls within the bounds of this character.
+                    if (localClickPosition.X < charStartPos + charWidth) {
+                        this._caretIndex = (localClickPosition.X <= charMidPos) ? i : i + 1;
                         
-                        // Show caret.
+                        // Activate the caret and reset the timer.
                         this._isCaretVisible = true;
                         this._caretTimer = 0;
                         
+                        // Update the scrolling offset if necessary.
+                        this.UpdateTextScroll(this.LabelData);
                         return;
                     }
                     
                     cumulativeWidth += charWidth;
                 }
                 
-                // If the mouse is beyond the last character, set the caret to end.
-                if (clickPosition.X >= textStartPos.X + cumulativeWidth) {
+                // If the click is beyond the last visible character, move the caret to the end.
+                if (localClickPosition.X >= textStartPos.X + cumulativeWidth) {
                     this._caretIndex = this.LabelData.Text.Length;
+                    this.UpdateTextScroll(this.LabelData);
                 }
             }
             
-            // Show caret.
+            // Make the caret visible.
             this._isCaretVisible = true;
-            this._caretTimer = 0;
+            this._caretTimer = 0.0F;
         }
-
+        
         // Caret timer.
         if (this._textInputActive) {
             this._caretTimer += delta;
             
             if (this._caretTimer >= 0.5) {
                 this._isCaretVisible = !this._isCaretVisible;
-                this._caretTimer = 0;
+                this._caretTimer = 0.0F;
             }
         }
         else {
             this._isCaretVisible = false;
-            this._caretTimer = 0;
+            this._caretTimer = 0.0F;
         }
     }
     
@@ -316,7 +325,7 @@ public class TextureTextBoxElement : GuiElement {
         }
         
         // Flip back if nothing visible (like after deleting).
-        if (visibleCharCount == 0.0F && labelData.Text.Length > 0.0F) {
+        if (visibleCharCount == 0.0F && labelData.Text.Length > 0.0F) { // TODO: Maybe cou can just blend this out. for TextAlingment.
             float testWidth = 0.0F;
             int reverseCount = 0;
             
@@ -333,6 +342,11 @@ public class TextureTextBoxElement : GuiElement {
             }
             
             this._textScrollOffset = Math.Max(0, labelData.Text.Length - reverseCount);
+        }
+        
+        // Adjust scroll when caret is at the fully visible edge (left or right).
+        if (this._caretIndex == this._textScrollOffset && visibleCharCount > 0.0F) {
+            this._textScrollOffset = Math.Max(0, this._caretIndex - 1);
         }
         
         // Clamp to valid range.
