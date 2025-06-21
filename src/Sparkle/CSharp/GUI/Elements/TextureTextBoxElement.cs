@@ -132,8 +132,16 @@ public class TextureTextBoxElement : GuiElement {
             Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
             Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Gui.ScaleFactor;
             
-            // Check if the click falls within the text area.
-            Vector2 textStartPos = new Vector2(this.TextEdgeOffset.Left * this.Gui.ScaleFactor, 0);
+            // Calculate visible text size, used for text alignment.
+            Vector2 visibleTextSize = this.LabelData.Font.MeasureText(this.GetVisibleText(this.LabelData), this.LabelData.Size, this.LabelData.Scale * this.Gui.ScaleFactor, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+            
+            // Determine the starting position of the text in the textbox based on the text alignment.
+            Vector2 textStartPos = this.TextAlignment switch {
+                TextAlignment.Left => new Vector2(this.TextEdgeOffset.Left * this.Gui.ScaleFactor, 0),
+                TextAlignment.Center => new Vector2((this.ScaledSize.X - visibleTextSize.X) / 2.0F, 0),
+                //TextAlignment.Right => expr,
+                _ => throw new ArgumentOutOfRangeException()
+            };
             
             // By default, start the caret index at the visible text's start.
             this._caretIndex = this._textScrollOffset;
@@ -247,10 +255,13 @@ public class TextureTextBoxElement : GuiElement {
             caretOffsetX += charSize.X;
         }
         
+        string visibleText = this.GetVisibleText(labelData);
+        Vector2 textSize = labelData.Font.MeasureText(visibleText, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Right => new Vector2(-(this.Size.X / 2.0F) + 2.0F, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            TextAlignment.Center => new Vector2(-caretOffsetX, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Center => new Vector2((textSize.X / 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             _ => throw new NullReferenceException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
