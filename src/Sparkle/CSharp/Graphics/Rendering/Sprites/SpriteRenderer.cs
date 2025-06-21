@@ -41,8 +41,9 @@ public class SpriteRenderer {
     /// <param name="blendState">The blend state to be used for rendering, or null for the default state.</param>
     /// <param name="depthStencilState">The depth-stencil state to be used for rendering, or null for the default state.</param>
     /// <param name="rasterizerState">The rasterizer state to be used for rendering, or null for the default state.</param>
-    public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState) {
-        this._sprites.Add(new SpriteData(texture, sampler, position, layerDepth, sourceRect, scale, origin, rotation, color, flip, effect, blendState, depthStencilState, rasterizerState));
+    /// <param name="scissorRect">The rectangle used to define the scissor test area for rendering, or null for none.</param>
+    public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
+        this._sprites.Add(new SpriteData(texture, sampler, position, layerDepth, sourceRect, scale, origin, rotation, color, flip, effect, blendState, depthStencilState, rasterizerState, scissorRect));
     }
 
     /// <summary>
@@ -52,28 +53,34 @@ public class SpriteRenderer {
     /// <param name="framebuffer">The framebuffer where the sprites will be drawn.</param>
     protected internal void Draw(GraphicsContext context, Framebuffer framebuffer) {
         Camera2D? cam2D = SceneManager.ActiveCam2D;
-        
+
         if (cam2D == null) {
             return;
         }
-        
+
         // Sort sprites.
         this._sprites.Sort((sprite1, sprite2) => sprite1.LayerDepth.CompareTo(sprite2.LayerDepth));
-        
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        
+
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
+
         // Draw sprites.
         foreach (SpriteData sprite in this._sprites) {
             if (this.IsSpriteVisible(cam2D, sprite)) {
-                context.SpriteBatch.SetEffect(sprite.Effect);
-                context.SpriteBatch.SetBlendState(sprite.BlendState);
-                context.SpriteBatch.SetDepthStencilState(sprite.DepthStencilState);
-                context.SpriteBatch.SetRasterizerState(sprite.RasterizerState);
-                context.SpriteBatch.SetView(cam2D.GetView());
-                context.SpriteBatch.SetSampler(sprite.Sampler);
+                if (sprite.Effect != null) context.SpriteBatch.PushEffect(sprite.Effect);
+                if (sprite.BlendState != null) context.SpriteBatch.PushBlendState(sprite.BlendState.Value);
+                if (sprite.DepthStencilState != null) context.SpriteBatch.PushDepthStencilState(sprite.DepthStencilState.Value);
+                if (sprite.RasterizerState != null) context.SpriteBatch.PushRasterizerState(sprite.RasterizerState.Value);
+                if (sprite.Sampler != null) context.SpriteBatch.PushSampler(sprite.Sampler);
+                if (sprite.ScissorRect != null) context.SpriteBatch.PushScissorRect(sprite.ScissorRect);
                 
                 context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.Rotation, sprite.Color, sprite.Flip);
-                context.SpriteBatch.ResetSettings();
+                
+                if (sprite.Effect != null) context.SpriteBatch.PopEffect();
+                if (sprite.BlendState != null) context.SpriteBatch.PopBlendState();
+                if (sprite.DepthStencilState != null) context.SpriteBatch.PopDepthStencilState();
+                if (sprite.RasterizerState != null) context.SpriteBatch.PopRasterizerState();
+                if (sprite.Sampler != null) context.SpriteBatch.PopSampler();
+                if (sprite.ScissorRect != null) context.SpriteBatch.PopScissorRect();
             }
         }
         

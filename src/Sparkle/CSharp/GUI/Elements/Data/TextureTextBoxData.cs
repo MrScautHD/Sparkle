@@ -11,7 +11,7 @@ public class TextureTextBoxData {
     /// <summary>
     /// The texture used for the button.
     /// </summary>
-    public Texture2D Texture;
+    public Texture2D Texture; // TODO: maybe think about samplers...
     
     /// <summary>
     /// The rectangular region of the texture to use when drawing.

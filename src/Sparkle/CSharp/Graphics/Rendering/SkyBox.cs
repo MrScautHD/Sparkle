@@ -80,7 +80,7 @@ public class SkyBox : Disposable {
     public SkyBox(GraphicsDevice graphicsDevice, Cubemap cubemap, Sampler? sampler = null, Color? color = null) {
         this.GraphicsDevice = graphicsDevice;
         this.Cubemap = cubemap;
-        this.Sampler = sampler ?? GraphicsHelper.GetSampler(graphicsDevice, SamplerType.Aniso4X);
+        this.Sampler = sampler ?? GraphicsHelper.GetSampler(graphicsDevice, SamplerType.Aniso4XClamp);
         this.Color = color ?? Color.White;
         this._effect = GlobalGraphicsAssets.SkyboxEffect;
         

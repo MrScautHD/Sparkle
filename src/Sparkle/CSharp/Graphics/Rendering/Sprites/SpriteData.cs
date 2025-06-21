@@ -29,6 +29,11 @@ public struct SpriteData {
     /// Optional rasterizer state override used for this sprite.
     /// </summary>
     public RasterizerStateDescription? RasterizerState;
+
+    /// <summary>
+    /// Optional scissor rectangle to define a restricted rendering area for this sprite.
+    /// </summary>
+    public Rectangle? ScissorRect;
     
     /// <summary>
     /// The texture to render for this sprite.
@@ -79,7 +84,7 @@ public struct SpriteData {
     /// The sprite flip mode.
     /// </summary>
     public SpriteFlip Flip;
-    
+
     /// <summary>
     /// Initializes a new <see cref="SpriteData"/> instance with the specified rendering configuration.
     /// </summary>
@@ -97,7 +102,8 @@ public struct SpriteData {
     /// <param name="blendState">Optional custom blend state.</param>
     /// <param name="depthStencilState">Optional depth-stencil state.</param>
     /// <param name="rasterizerState">Optional rasterizer state.</param>
-    public SpriteData(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState) {
+    /// <param name="scissorRect">Optional scissor rectangle to define a restricted rendering area.</param>
+    public SpriteData(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.Position = position;
@@ -112,5 +118,6 @@ public struct SpriteData {
         this.BlendState = blendState;
         this.DepthStencilState = depthStencilState;
         this.RasterizerState = rasterizerState;
+        this.ScissorRect = scissorRect;
     }
 }

@@ -31,6 +31,11 @@ public class Sprite : InterpolatedComponent {
     /// Optional rasterizer state override used when drawing the sprite.
     /// </summary>
     public RasterizerStateDescription? RasterizerState;
+
+    /// <summary>
+    /// Optional scissor rectangle to define a clipping region during rendering.
+    /// </summary>
+    public Rectangle? ScissorRect;
     
     /// <summary>
     /// The texture used to render the sprite.
@@ -82,7 +87,7 @@ public class Sprite : InterpolatedComponent {
     /// <param name="blendState">Optional blend state override.</param>
     /// <param name="depthStencilState">Optional depth-stencil state override.</param>
     /// <param name="rasterizerState">Optional rasterizer state override.</param>
-    public Sprite(Texture2D texture, Vector2 offsetPos, Sampler? sampler = null, Rectangle? sourceRect = null, Vector2? size = null, float layerDepth = 0.5F, Color? color = null, SpriteFlip flip = SpriteFlip.None, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null) : base(new Vector3(offsetPos, 0)) {
+    public Sprite(Texture2D texture, Vector2 offsetPos, Sampler? sampler = null, Rectangle? sourceRect = null, Vector2? size = null, float layerDepth = 0.5F, Color? color = null, SpriteFlip flip = SpriteFlip.None, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Rectangle? scissorRect = null) : base(new Vector3(offsetPos, 0)) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect;
@@ -94,6 +99,7 @@ public class Sprite : InterpolatedComponent {
         this.BlendState = blendState;
         this.DepthStencilState = depthStencilState;
         this.RasterizerState = rasterizerState;
+        this.ScissorRect = scissorRect;
     }
     
     /// <summary>
@@ -110,6 +116,6 @@ public class Sprite : InterpolatedComponent {
         float rotation = float.RadiansToDegrees(this.LerpedRotation.ToEuler().Z);
         
         // Draw sprite.
-        this.Entity.Scene.SpriteRenderer.DrawSprite(this.Texture, this.Sampler, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), this.LayerDepth, source, scale, origin, rotation, this.Color, this.Flip, this.Effect, this.BlendState, this.DepthStencilState, this.RasterizerState);
+        this.Entity.Scene.SpriteRenderer.DrawSprite(this.Texture, this.Sampler, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), this.LayerDepth, source, scale, origin, rotation, this.Color, this.Flip, this.Effect, this.BlendState, this.DepthStencilState, this.RasterizerState, this.ScissorRect);
     }
 }
