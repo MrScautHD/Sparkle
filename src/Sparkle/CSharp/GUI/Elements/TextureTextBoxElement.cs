@@ -15,7 +15,7 @@ public class TextureTextBoxElement : GuiElement {
     
     // TODO: Add marking renderer (Copy/Paste...)
     // TODO: Think about a Caret color.
-    // TODO: Fix TextAlignment.
+    // TODO: Fix TextAlignment (Center and Right) Left works fine.
     
     public TextureTextBoxData TextBoxData { get; private set; }
     
@@ -225,8 +225,8 @@ public class TextureTextBoxElement : GuiElement {
         Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2((this.TextEdgeOffset.Left + this.TextEdgeOffset.Right) / 2.0F, 0.0F),
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F), // -textSize.X
+            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
             _ => throw new NullReferenceException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
@@ -250,7 +250,7 @@ public class TextureTextBoxElement : GuiElement {
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Right => new Vector2(-(this.Size.X / 2.0F) + 2.0F, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            TextAlignment.Center => new Vector2(-caretOffsetX, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2((this.TextEdgeOffset.Left + this.TextEdgeOffset.Right) / 2.0F, 0.0F),
+            TextAlignment.Center => new Vector2(-caretOffsetX, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
             _ => throw new NullReferenceException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
@@ -324,24 +324,63 @@ public class TextureTextBoxElement : GuiElement {
             }
         }
         
-        // Flip back if nothing visible (like after deleting).
-        if (visibleCharCount == 0.0F && labelData.Text.Length > 0.0F) { // TODO: Maybe cou can just blend this out. for TextAlingment.
-            float testWidth = 0.0F;
-            int reverseCount = 0;
+        // Adjust scroll behavior based on text alignment.
+        switch (this.TextAlignment) {
             
-            for (int i = labelData.Text.Length - 1; i >= 0; i--) {
-                string character = labelData.Text.Substring(i, 1);
-                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            // Flip back if nothing visible (like after deleting).
+            case TextAlignment.Left: {
+                if (visibleCharCount == 0.0F && labelData.Text.Length > 0.0F) {
+                    float totalWidth = 0.0F;
+                    int reverseCount = 0;
+            
+                    for (int i = labelData.Text.Length - 1; i >= 0; i--) {
+                        string character = labelData.Text.Substring(i, 1);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
                 
-                if (testWidth + charSize.X > visibleWidth) {
-                    break;
+                        if (totalWidth + charSize.X > visibleWidth) {
+                            break;
+                        }
+                
+                        totalWidth += charSize.X;
+                        reverseCount++;
+                    }
+            
+                    this._textScrollOffset = Math.Max(0, labelData.Text.Length - reverseCount);
                 }
-                
-                testWidth += charSize.X;
-                reverseCount++;
+                break;
             }
             
-            this._textScrollOffset = Math.Max(0, labelData.Text.Length - reverseCount);
+            // Flip back, instant (like after deleting).
+            case TextAlignment.Center: {
+                float totalWidth = 0.0F;
+                
+                for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
+                    string character = labelData.Text.Substring(i, 1);
+                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    
+                    if (totalWidth + charSize.X > visibleWidth) {
+                        break;
+                    }
+                    
+                    totalWidth += charSize.X;
+                }
+                
+                // Check if there is enough space to reduce the scroll offset.
+                if (totalWidth < visibleWidth && this._textScrollOffset > 0) {
+                    string previousCharacter = labelData.Text.Substring(this._textScrollOffset - 1, 1);
+                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+    
+                    // Reduce the offset only if the previous character can fully fit.
+                    if (previousCharSize.X <= visibleWidth - totalWidth) {
+                        this._textScrollOffset--;
+                    }
+                }
+                break;
+            }
+            
+            // TODO: DONE IT.
+            case TextAlignment.Right:
+                break;
         }
         
         // Adjust scroll when caret is at the fully visible edge (left or right).

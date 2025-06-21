@@ -38,7 +38,7 @@ public class TestGui : Gui {
         LabelData textBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData hintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 60, TextAlignment.Left, (12, 12), rotation: 0, clickFunc: () => {
+        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 160, TextAlignment.Center, (12, 12), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
