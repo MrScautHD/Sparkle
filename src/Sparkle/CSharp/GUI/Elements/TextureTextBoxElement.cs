@@ -5,7 +5,6 @@ using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
@@ -14,9 +13,6 @@ using Veldrid;
 namespace Sparkle.CSharp.GUI.Elements;
 
 public class TextureTextBoxElement : GuiElement {
-    
-    // TODO: Add marking renderer (Copy/Paste...)
-    // TODO: Think about a Caret / Highlight color.
     
     public TextureTextBoxData TextBoxData { get; private set; }
     
@@ -29,6 +25,8 @@ public class TextureTextBoxElement : GuiElement {
     public TextAlignment TextAlignment;
     
     public (float Left, float Right) TextEdgeOffset;
+
+    public Color HighlightColor;
     
     private bool _textInputActive;
     private int _textScrollOffset;
@@ -38,7 +36,7 @@ public class TextureTextBoxElement : GuiElement {
     private double _caretTimer;
     private bool _isDoubleClickProcessing;
     
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Color? highlightColor = null, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
@@ -46,6 +44,7 @@ public class TextureTextBoxElement : GuiElement {
         this.TextAlignment = textAlignment;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
         this.Size = size ?? new Vector2(textBoxData.Texture.Width, textBoxData.Texture.Height);
+        this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
     }
     
     protected internal override void Update(double delta) {
@@ -284,8 +283,6 @@ public class TextureTextBoxElement : GuiElement {
                     }
                 }
                 
-                // TODO: FIX Bug where on both sides get marked by clicking.
-                
                 // Highlight the text from the starting caret position to the current mouse position while holding the left click.
                 if (Input.IsMouseButtonDown(MouseButton.Left) && !this._isDoubleClickProcessing) {
                     int mouseIndex = this.GetCaretIndexFromPosition(Input.GetMousePosition());
@@ -467,7 +464,7 @@ public class TextureTextBoxElement : GuiElement {
         
         // Draw the highlight rectangle.
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth, labelData.Size * this.Gui.ScaleFactor);
-        primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, new Color(0, 128, 228, 128)); // TODO: Replace this color.
+        primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, this.HighlightColor);
     }
     
     private void UpdateTextScroll(LabelData labelData) {
