@@ -402,7 +402,7 @@ public class TextureTextBoxElement : GuiElement {
             this._caretTimer = 0.0F;
         }
     }
-
+    
     /// <summary>
     /// Draws the GUI element on the specified framebuffer using the provided graphics context.
     /// </summary>
@@ -413,7 +413,10 @@ public class TextureTextBoxElement : GuiElement {
         
         // Draw texture.
         Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        
+        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PushSampler(this.TextBoxData.Sampler);
         context.SpriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, this.TextBoxData.SourceRect, this.TextBoxData.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.TextBoxData.Flip);
+        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PopSampler();
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
@@ -439,7 +442,7 @@ public class TextureTextBoxElement : GuiElement {
         
         context.PrimitiveBatch.End();
     }
-
+    
     /// <summary>
     /// Draws the text for the given label data onto the specified sprite batch.
     /// </summary>
@@ -457,9 +460,12 @@ public class TextureTextBoxElement : GuiElement {
         };
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
+        
+        if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
         spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
-
+    
     /// <summary>
     /// Draws the caret for the textbox based on the current caret index, scroll offset, and alignment.
     /// </summary>
@@ -492,7 +498,7 @@ public class TextureTextBoxElement : GuiElement {
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Gui.ScaleFactor, labelData.Size * this.Gui.ScaleFactor);
         primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
     }
-
+    
     /// <summary>
     /// Draws the highlight for text selection within the textbox.
     /// </summary>
@@ -548,7 +554,7 @@ public class TextureTextBoxElement : GuiElement {
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth, labelData.Size * this.Gui.ScaleFactor);
         primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, this.TextBoxData.HighlightColor);
     }
-
+    
     /// <summary>
     /// Updates the text scroll offset based on the current caret position and visible text area.
     /// </summary>
@@ -683,7 +689,7 @@ public class TextureTextBoxElement : GuiElement {
         // Clamp to valid range.
         this._textScrollOffset = Math.Clamp(this._textScrollOffset, 0, labelData.Text.Length);
     }
-
+    
     /// <summary>
     /// Determines the caret index within the text based on the position of a mouse or pointer click.
     /// </summary>
@@ -737,7 +743,7 @@ public class TextureTextBoxElement : GuiElement {
         
         return caretIndex;
     }
-
+    
     /// <summary>
     /// Determines the portion of text visible in the textbox based on the current text scroll offset and the textbox dimensions.
     /// </summary>

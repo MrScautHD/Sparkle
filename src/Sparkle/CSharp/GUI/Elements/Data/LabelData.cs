@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Fonts;
 using FontStashSharp;
+using Veldrid;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -61,6 +62,11 @@ public class LabelData {
     /// The intensity or size of the font effect.
     /// </summary>
     public int EffectAmount;
+    
+    /// <summary>
+    /// The texture sampler used for rendering operations in the label.
+    /// </summary>
+    public Sampler? Sampler;
 
     /// <summary>
     /// Constructs a new instance of <see cref="LabelData"/> with full customization for rendering text.
@@ -76,7 +82,8 @@ public class LabelData {
     /// <param name="style">The style of the text. Default is <c>TextStyle.None</c>.</param>
     /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
     /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Vector2? scale = null, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0) {
+    /// <param name="sampler">The texture sampler used for rendering operations in the label.</param>
+    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Vector2? scale = null, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
@@ -88,5 +95,6 @@ public class LabelData {
         this.Style = style;
         this.Effect = effect;
         this.EffectAmount = effectAmount;
+        this.Sampler = sampler;
     }
 }

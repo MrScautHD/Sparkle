@@ -48,7 +48,7 @@ public class LabelElement : GuiElement {
         Color color = this.IsHovered ? this.Data.HoverColor : this.Data.Color;
         
         // Draw text.
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Sampler);
         context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }

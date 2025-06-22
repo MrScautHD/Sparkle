@@ -83,7 +83,7 @@ public class RectangleButtonElement : GuiElement {
             };
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
-            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler);
             context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
             context.SpriteBatch.End();
         }

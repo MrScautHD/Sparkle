@@ -57,9 +57,12 @@ public class TextureButtonElement : GuiElement {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw texture.
+        // Draw button texture.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
+        
+        if (this.ButtonData.Sampler != null) context.SpriteBatch.PushSampler(this.ButtonData.Sampler);
         context.SpriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, this.ButtonData.SourceRect, this.ButtonData.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.ButtonData.Flip);
+        if (this.ButtonData.Sampler != null) context.SpriteBatch.PopSampler();
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
@@ -73,7 +76,10 @@ public class TextureButtonElement : GuiElement {
             };
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
+            
+            if (this.LabelData.Sampler != null) context.SpriteBatch.PushSampler(this.LabelData.Sampler);
             context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+            if (this.LabelData.Sampler != null) context.SpriteBatch.PopSampler();
         }
         
         context.SpriteBatch.End();
