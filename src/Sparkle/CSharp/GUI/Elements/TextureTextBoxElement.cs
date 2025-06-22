@@ -14,29 +14,87 @@ namespace Sparkle.CSharp.GUI.Elements;
 
 public class TextureTextBoxElement : GuiElement {
     
+    /// <summary>
+    /// Holds the configuration for the texture-based textbox element.
+    /// </summary>
     public TextureTextBoxData TextBoxData { get; private set; }
     
+    /// <summary>
+    /// Holds the configuration for the label text displayed within the textbox.
+    /// </summary>
     public LabelData LabelData { get; private set; }
     
+    /// <summary>
+    /// Holds the configuration for the hint label text, shown when the textbox is empty.
+    /// </summary>
     public LabelData HintLabelData { get; private set; }
     
+    /// <summary>
+    /// The maximum number of characters allowed within the textbox.
+    /// </summary>
     public int MaxTextLength { get; private set; }
     
+    /// <summary>
+    /// Specifies the alignment of text within the textbox (e.g., Left, Center, Right).
+    /// </summary>
     public TextAlignment TextAlignment;
     
+    /// <summary>
+    /// The horizontal offsets to be applied to the text edges within the textbox.
+    /// </summary>
     public (float Left, float Right) TextEdgeOffset;
 
-    public Color HighlightColor;
-    
+    /// <summary>
+    /// Indicates whether the text input system is currently active for the textbox element.
+    /// </summary>
     private bool _textInputActive;
+
+    /// <summary>
+    /// The horizontal offset of the text within the textbox.
+    /// </summary>
     private int _textScrollOffset;
+
+    /// <summary>
+    /// The start and end indices of a range of highlighted text within the textbox.
+    /// </summary>
     private (int Start, int End) _highlightRange;
+
+    /// <summary>
+    /// The current position (index) of the caret within the text input field.
+    /// </summary>
     private int _caretIndex;
+    
+    /// <summary>
+    /// Indicates whether the caret is currently visible.
+    /// </summary>
     private bool _isCaretVisible;
+    
+    /// <summary>
+    /// Tracks the elapsed time for caret visibility (Used to manage the blinking behavior of the caret).
+    /// </summary>
     private double _caretTimer;
+
+    /// <summary>
+    /// Indicates whether the component is currently processing a double-click action.
+    /// </summary>
     private bool _isDoubleClickProcessing;
     
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Color? highlightColor = null, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextureTextBoxElement"/> class.
+    /// </summary>
+    /// <param name="textBoxData">Configuration for the texture and visual appearance of the textbox.</param>
+    /// <param name="labelData">Configuration for the primary text label.</param>
+    /// <param name="hintLabelData">Configuration for the hint text label.</param>
+    /// <param name="anchor">Defines the anchor point for positioning the element.</param>
+    /// <param name="offset">Position offset relative to the anchor.</param>
+    /// <param name="maxTextLength">Maximum number of allowed characters in the textbox.</param>
+    /// <param name="textAlignment">Text alignment within the textbox. Default is Left.</param>
+    /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
+    /// <param name="size">Optional size of the textbox. Defaults to the texture dimensions.</param>
+    /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
+    /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
+    /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
+    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
@@ -44,9 +102,12 @@ public class TextureTextBoxElement : GuiElement {
         this.TextAlignment = textAlignment;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
         this.Size = size ?? new Vector2(textBoxData.Texture.Width, textBoxData.Texture.Height);
-        this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
     }
     
+    /// <summary>
+    /// Updates the state of the <see cref="TextureTextBoxElement"/>.
+    /// </summary>
+    /// <param name="delta">Elapsed time in seconds since the last update.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
         
@@ -214,7 +275,7 @@ public class TextureTextBoxElement : GuiElement {
                 bool cancelCaretPositioning = false;
                 
                 if (Input.IsKeyDown(KeyboardKey.ShiftLeft) && Input.IsMouseButtonPressed(MouseButton.Left)) {
-                    int mouseIndex = this.GetCaretIndexFromPosition(Input.GetMousePosition());
+                    int mouseIndex = this.GetCaretIndexFromPosition(this.LabelData, Input.GetMousePosition());
                     
                     // Update the highlight range dynamically.
                     this._highlightRange = (this._caretIndex, mouseIndex);
@@ -229,8 +290,8 @@ public class TextureTextBoxElement : GuiElement {
                 
                 // Handle caret positioning based on mouse clicks.
                 if (this.IsClicked && !Input.IsMouseButtonDoubleClicked(MouseButton.Left) && !cancelCaretPositioning) {
-                    this._caretIndex = this.GetCaretIndexFromPosition(Input.GetMousePosition());
-            
+                    this._caretIndex = this.GetCaretIndexFromPosition(this.LabelData, Input.GetMousePosition());
+                    
                     // Adjust scroll offset.
                     this.UpdateTextScroll(this.LabelData);
                     
@@ -243,7 +304,7 @@ public class TextureTextBoxElement : GuiElement {
                 if (Input.IsMouseButtonDoubleClicked(MouseButton.Left)) {
                     this._isDoubleClickProcessing = true;
                     
-                    int caretIndexFromMousePos = this.GetCaretIndexFromPosition(Input.GetMousePosition());
+                    int caretIndexFromMousePos = this.GetCaretIndexFromPosition(this.LabelData, Input.GetMousePosition());
                     int startIndex = caretIndexFromMousePos;
                     int endIndex = caretIndexFromMousePos;
                     
@@ -285,7 +346,7 @@ public class TextureTextBoxElement : GuiElement {
                 
                 // Highlight the text from the starting caret position to the current mouse position while holding the left click.
                 if (Input.IsMouseButtonDown(MouseButton.Left) && !this._isDoubleClickProcessing) {
-                    int mouseIndex = this.GetCaretIndexFromPosition(Input.GetMousePosition());
+                    int mouseIndex = this.GetCaretIndexFromPosition(this.LabelData, Input.GetMousePosition());
                     
                     // Update the highlight range dynamically as the mouse moves.
                     this._highlightRange = (this._caretIndex, mouseIndex);
@@ -341,7 +402,12 @@ public class TextureTextBoxElement : GuiElement {
             this._caretTimer = 0.0F;
         }
     }
-    
+
+    /// <summary>
+    /// Draws the GUI element on the specified framebuffer using the provided graphics context.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering.</param>
+    /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
@@ -373,7 +439,12 @@ public class TextureTextBoxElement : GuiElement {
         
         context.PrimitiveBatch.End();
     }
-    
+
+    /// <summary>
+    /// Draws the text for the given label data onto the specified sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used for rendering the text.</param>
+    /// <param name="labelData">The label data containing text properties such as font, color, size, and effects.</param>
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
@@ -388,7 +459,12 @@ public class TextureTextBoxElement : GuiElement {
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
         spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
     }
-    
+
+    /// <summary>
+    /// Draws the caret for the textbox based on the current caret index, scroll offset, and alignment.
+    /// </summary>
+    /// <param name="primitiveBatch">The primitive rendering batch used to draw the caret.</param>
+    /// <param name="labelData">The label data containing font information, text, and visual configurations.</param>
     private void DrawCaret(PrimitiveBatch primitiveBatch, LabelData labelData) {
         Vector2 caretPos = this.Position;
         
@@ -416,10 +492,16 @@ public class TextureTextBoxElement : GuiElement {
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Gui.ScaleFactor, labelData.Size * this.Gui.ScaleFactor);
         primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
     }
-    
+
+    /// <summary>
+    /// Draws the highlight for text selection within the textbox.
+    /// </summary>
+    /// <param name="primitiveBatch">The batch used for rendering primitive shapes.</param>
+    /// <param name="labelData">Data defining the attributes and configuration of the text label.</param>
     private void DrawHighlight(PrimitiveBatch primitiveBatch, LabelData labelData) {
-        if (this._highlightRange.Start == this._highlightRange.End)
+        if (this._highlightRange.Start == this._highlightRange.End) {
             return;
+        }
         
         // Visible text.
         string text = this.GetVisibleText(labelData);
@@ -464,9 +546,13 @@ public class TextureTextBoxElement : GuiElement {
         
         // Draw the highlight rectangle.
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth, labelData.Size * this.Gui.ScaleFactor);
-        primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, this.HighlightColor);
+        primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Gui.ScaleFactor, this.Rotation, 0.5F, this.TextBoxData.HighlightColor);
     }
-    
+
+    /// <summary>
+    /// Updates the text scroll offset based on the current caret position and visible text area.
+    /// </summary>
+    /// <param name="labelData">The label data containing the text, font, and layout details used for scrolling calculations.</param>
     private void UpdateTextScroll(LabelData labelData) {
         float visibleWidth = this.Size.X - (this.TextEdgeOffset.Left + this.TextEdgeOffset.Right);
         float width = 0.0F;
@@ -597,13 +683,20 @@ public class TextureTextBoxElement : GuiElement {
         // Clamp to valid range.
         this._textScrollOffset = Math.Clamp(this._textScrollOffset, 0, labelData.Text.Length);
     }
-    
-    private int GetCaretIndexFromPosition(Vector2 clickPosition) {
+
+    /// <summary>
+    /// Determines the caret index within the text based on the position of a mouse or pointer click.
+    /// </summary>
+    /// <param name="labelData">Configuration data for the text label, including font and visual settings.</param>
+    /// <param name="clickPosition">The position of the mouse or pointer click in screen space coordinates.</param>
+    /// <returns>The index of the caret position in the text, corresponding to the closest character to the click position.</returns>
+    private int GetCaretIndexFromPosition(LabelData labelData, Vector2 clickPosition) {
         Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
-        Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Gui.ScaleFactor;
-        
+        Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) +
+                                     this.Origin * this.Gui.ScaleFactor;
+
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = this.LabelData.Font.MeasureText(this.GetVisibleText(this.LabelData), this.LabelData.Size, this.LabelData.Scale * this.Gui.ScaleFactor, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         // Determine the starting position of the text in the textbox based on the text alignment.
         Vector2 textStartPos = this.TextAlignment switch {
@@ -616,12 +709,12 @@ public class TextureTextBoxElement : GuiElement {
         // By default, start the caret index at the visible text's start.
         int caretIndex = this._textScrollOffset;
         
-        if (this.LabelData.Text != string.Empty) {
+        if (labelData.Text != string.Empty) {
             float cumulativeWidth = 0.0F;
             
-            for (int i = this._textScrollOffset; i < this.LabelData.Text.Length; i++) {
-                string character = this.LabelData.Text.Substring(i, 1);
-                float charWidth = this.LabelData.Font.MeasureText(character, this.LabelData.Size, this.LabelData.Scale * this.Gui.ScaleFactor, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing).X;
+            for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
+                string character = labelData.Text.Substring(i, 1);
+                float charWidth = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing).X;
                 
                 float charStartPos = textStartPos.X + cumulativeWidth;
                 float charMidPos = charStartPos + (charWidth / 2.0F);
@@ -637,14 +730,19 @@ public class TextureTextBoxElement : GuiElement {
             
             // If the click is beyond the last visible character, move the caret to the end.
             if (localClickPosition.X >= textStartPos.X + cumulativeWidth) {
-                caretIndex = this.LabelData.Text.Length;
-                this.UpdateTextScroll(this.LabelData);
+                caretIndex = labelData.Text.Length;
+                this.UpdateTextScroll(labelData);
             }
         }
         
         return caretIndex;
     }
-    
+
+    /// <summary>
+    /// Determines the portion of text visible in the textbox based on the current text scroll offset and the textbox dimensions.
+    /// </summary>
+    /// <param name="labelData">Data for the label.</param>
+    /// <returns>The substring of the text that fits within the visible bounds of the textbox.</returns>
     private string GetVisibleText(LabelData labelData) {
         string visibleText = string.Empty;
         float totalWidth = 0.0F;

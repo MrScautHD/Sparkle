@@ -37,6 +37,11 @@ public class TextureTextBoxData {
     /// The flipping mode to apply when rendering the texture.
     /// </summary>
     public SpriteFlip Flip;
+
+    /// <summary>
+    /// The color to apply when the button is highlighted. Defaults to the base color.
+    /// </summary>
+    public Color HighlightColor;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureButtonData"/> class.
@@ -47,12 +52,14 @@ public class TextureTextBoxData {
     /// <param name="color">The base color (tint) applied to the texture. Defaults to white.</param>
     /// <param name="hoverColor">The color applied when the button is hovered. Defaults to the base color.</param>
     /// <param name="flip">The flipping mode applied to the texture (e.g., horizontal/vertical).</param>
-    public TextureTextBoxData(Texture2D texture, Rectangle? sourceRect = null, Vector2? scale = null, Color? color = null, Color? hoverColor = null, SpriteFlip flip = SpriteFlip.None) {
+    /// <param name="highlightColor">The highlight color. Defaults to a light blue shade.</param>
+    public TextureTextBoxData(Texture2D texture, Rectangle? sourceRect = null, Vector2? scale = null, Color? color = null, Color? hoverColor = null, SpriteFlip flip = SpriteFlip.None, Color? highlightColor = null) {
         this.Texture = texture;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
         this.Scale = scale ?? Vector2.One;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
         this.Flip = flip;
+        this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
     }
 }
