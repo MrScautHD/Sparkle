@@ -14,7 +14,7 @@ public class LabelData {
     public Font Font;
     
     /// <summary>
-    /// The text content to be displayed.
+    /// The text to be displayed.
     /// </summary>
     public string Text;
     

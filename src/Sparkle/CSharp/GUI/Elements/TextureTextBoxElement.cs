@@ -359,11 +359,17 @@ public class TextureTextBoxElement : GuiElement {
                 
                 // Paste text (CTRL + V).
                 if (Input.IsKeyDown(KeyboardKey.ControlLeft) && Input.IsKeyPressed(KeyboardKey.V)) {
-                    string clipboardText = Input.GetClipboardText();
+                    string clipboardText = Input.GetClipboardText().Replace("\n", "").Replace("\r", "");
                     
                     if (clipboardText != string.Empty) {
                         int start = Math.Min(this._highlightRange.Start, this._highlightRange.End);
                         int end = Math.Max(this._highlightRange.Start, this._highlightRange.End);
+                        int maxAllowedLength = this.MaxTextLength - this.LabelData.Text.Length + (end - start);
+                        
+                        // Trim the clipboard text if it exceeds the allowed maximum length.
+                        if (clipboardText.Length > maxAllowedLength) {
+                            clipboardText = clipboardText[..maxAllowedLength];
+                        }
                         
                         if (start != end) {
                             
@@ -386,6 +392,11 @@ public class TextureTextBoxElement : GuiElement {
                     }
                 }
             }
+        }
+        else {
+            
+            // Reset highlight.
+            this._highlightRange = (0, 0);
         }
         
         // Caret timer.
