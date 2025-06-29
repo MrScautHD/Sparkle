@@ -33,7 +33,7 @@ public class RectangleTextBoxData {
     /// The color for the highlight.
     /// </summary>
     public Color HighlightColor;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="RectangleButtonData"/> class.
     /// </summary>
