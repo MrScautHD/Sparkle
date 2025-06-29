@@ -41,7 +41,7 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="textOffset">The offset of the text relative to its position.</param>
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
-    /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
+    /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param> // TODO: Do a text offset like in a text box or maybe just take a look at first.
     public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, size, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;

@@ -91,7 +91,7 @@ public class TestScene3D : Scene {
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
-        ground.AddComponent(new RigidBody3D(new BoxShape(50, 1, 50), true, true));
+        ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, true));
         this.AddEntity(ground);
     }
 
@@ -162,7 +162,7 @@ public class TestScene3D : Scene {
         base.Draw(context, framebuffer);
         
         // Draw gird.
-        context.ImmediateRenderer.DrawGird(context.CommandList, framebuffer.OutputDescription, new Transform(), 50, 1, Color.Gray);
+        context.ImmediateRenderer.DrawGrid(context.CommandList, framebuffer.OutputDescription, new Transform(), 96, 1, 16, Color.Gray);
         
         // Draw physics 3D debug drawer.
         context.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer.OutputDescription, color: Color.Green);

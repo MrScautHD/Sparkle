@@ -20,7 +20,7 @@ public class RectangleButtonData {
     public float OutlineThickness;
     
     /// <summary>
-    /// The color of the outline when the button is not hovered.
+    /// The color of the outline.
     /// </summary>
     public Color OutlineColor;
     

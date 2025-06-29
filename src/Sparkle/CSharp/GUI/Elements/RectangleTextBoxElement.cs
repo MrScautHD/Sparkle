@@ -12,12 +12,12 @@ using Veldrid;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
-public class TextureTextBoxElement : GuiElement {
+public class RectangleTextBoxElement : GuiElement {
     
     /// <summary>
-    /// Holds the configuration for the texture-based textbox element.
+    /// Holds the configuration for the rectangle-based textbox element.
     /// </summary>
-    public TextureTextBoxData TextBoxData { get; private set; }
+    public RectangleTextBoxData TextBoxData { get; private set; }
     
     /// <summary>
     /// Holds the configuration for the label text displayed within the textbox.
@@ -80,32 +80,31 @@ public class TextureTextBoxElement : GuiElement {
     private bool _isDoubleClickProcessing;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextureTextBoxElement"/> class.
+    /// Initializes a new instance of the <see cref="RectangleButtonElement"/> class.
     /// </summary>
-    /// <param name="textBoxData">Configuration for the texture and visual appearance of the textbox.</param>
+    /// <param name="textBoxData">Configuration for the rectangle and visual appearance of the textbox.</param>
     /// <param name="labelData">Configuration for the primary text label.</param>
     /// <param name="hintLabelData">Configuration for the hint text label.</param>
     /// <param name="anchor">Defines the anchor point for positioning the element.</param>
     /// <param name="offset">Position offset relative to the anchor.</param>
+    /// <param name="size">Size of the textbox.</param>
     /// <param name="maxTextLength">Maximum number of allowed characters in the textbox.</param>
     /// <param name="textAlignment">Text alignment within the textbox. Default is Left.</param>
     /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
-    /// <param name="size">Optional size of the textbox. Defaults to the texture dimensions.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, size, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
         this.MaxTextLength = maxTextLength;
         this.TextAlignment = textAlignment;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
-        this.Size = size ?? new Vector2(textBoxData.Texture.Width, textBoxData.Texture.Height);
     }
     
     /// <summary>
-    /// Updates the state of the <see cref="TextureTextBoxElement"/>.
+    /// Updates the state of the <see cref="RectangleButtonElement"/>.
     /// </summary>
     /// <param name="delta">Elapsed time in seconds since the last update.</param>
     protected internal override void Update(double delta) {
@@ -425,16 +424,25 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="context">The graphics context used for rendering.</param>
     /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw texture.
+        // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
         
-        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PushSampler(this.TextBoxData.Sampler);
-        context.SpriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, this.TextBoxData.SourceRect, this.TextBoxData.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.TextBoxData.Flip);
-        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PopSampler();
+        // Draw an empty rectangle.
+        if (this.TextBoxData.OutlineThickness > 0.0F) {
+            Color outlineColor = this.IsHovered ? this.TextBoxData.OutlineHoverColor : this.TextBoxData.OutlineColor;
+            float outlineThickness = this.TextBoxData.OutlineThickness * this.Gui.ScaleFactor;
+            
+            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
+        }
+        
+        context.PrimitiveBatch.End();
         
         // Draw text.
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        
         if (this.LabelData.Text != string.Empty) {
             this.DrawText(context.SpriteBatch, this.LabelData);
         }

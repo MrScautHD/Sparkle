@@ -34,11 +34,20 @@ public class TestGui : Gui {
             return true;
         }));
         
-        TextureTextBoxData textBoxData = new TextureTextBoxData(ContentRegistry.TextBox, hoverColor: Color.LightGray);
-        LabelData textBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
-        LabelData hintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
+        TextureTextBoxData textureTextBoxData = new TextureTextBoxData(ContentRegistry.TextBox, hoverColor: Color.LightGray);
+        LabelData textureTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
+        LabelData textureHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Text-Box-Button", new TextureTextBoxElement(textBoxData, textBoxLabelData, hintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Left, (12, 12), rotation: 0, clickFunc: () => {
+        this.AddElement("Texture-Text-Box-Button", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Left, (12, 12), rotation: 0, clickFunc: () => {
+            Logger.Error("BOX1!");
+            return true;
+        }));
+        
+        RectangleTextBoxData rectangleTextBoxData = new RectangleTextBoxData(Color.Gray, Color.LightGray, 4, Color.DarkGray, Color.Gray);
+        LabelData rectangleTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
+        LabelData rectangleHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.LightGray, hoverColor: Color.Gray);
+        
+        this.AddElement("Rectangle-Text-Box-Button", new RectangleTextBoxElement(rectangleTextBoxData, rectangleTextBoxLabelData, rectangleHintTextBoxLabelData, Anchor.Center, new Vector2(0, -110), new Vector2(200, 35), 40, TextAlignment.Left, (12, 12), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
