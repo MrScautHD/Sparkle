@@ -525,10 +525,10 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._currentCommandList.SetPipeline(this._effect.GetPipeline(this._pipelineDescription).Pipeline);
         
         // Set projection view buffer.
-        this._currentCommandList.SetGraphicsResourceSet(0, this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
+        this._currentCommandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("ProjectionViewBuffer"), this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
         
         // Apply effect.
-        this._effect.Apply();
+        this._effect.Apply(this._currentCommandList);
         
         // Draw.
         this._currentCommandList.Draw(this._currentBatchCount);

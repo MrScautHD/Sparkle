@@ -151,13 +151,13 @@ public class SkyBox : Disposable {
         commandList.SetPipeline(this._effect.GetPipeline(this._pipelineDescription).Pipeline);
         
         // Set projection view buffer.
-        commandList.SetGraphicsResourceSet(0, this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
+        commandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("ProjectionViewBuffer"), this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
         
         // Set resourceSet of the cubemap.
-        commandList.SetGraphicsResourceSet(1, this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap").Layout));
+        commandList.SetGraphicsResourceSet(this._effect.GetTextureLayoutSlot("fCubemap"), this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap").Layout));
         
         // Apply effect.
-        this._effect.Apply();
+        this._effect.Apply(commandList);
         
         // Draw.
         commandList.DrawIndexed(36);

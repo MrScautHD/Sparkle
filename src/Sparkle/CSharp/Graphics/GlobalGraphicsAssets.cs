@@ -3,6 +3,7 @@ using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Windowing;
+using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
 
@@ -19,16 +20,6 @@ public static class GlobalGraphicsAssets {
     /// The window used for rendering.
     /// </summary>
     public static IWindow Window { get; private set; }
-
-    /// <summary>
-    /// A list of all registered buffer layouts.
-    /// </summary>
-    public static List<SimpleBufferLayout> BufferLayouts { get; private set; }
-    
-    /// <summary>
-    /// A list of all registered texture layouts.
-    /// </summary>
-    public static List<SimpleTextureLayout> TextureLayouts { get; private set; }
     
     /// <summary>
     /// The shader effect used for rendering the skybox.
@@ -39,6 +30,16 @@ public static class GlobalGraphicsAssets {
     /// The shader effect used for rendering physics debug visuals.
     /// </summary>
     public static Effect PhysicsDebugEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used to apply a grayscale filter.
+    /// </summary>
+    public static Effect GrayScaleEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used to apply a bloom filter.
+    /// </summary>
+    public static BloomEffect BloomEffect { get; private set; }
 
     /// <summary>
     /// Initializes global graphics resources.
@@ -48,60 +49,33 @@ public static class GlobalGraphicsAssets {
     internal static void Init(GraphicsDevice graphicsDevice, IWindow window) {
         GraphicsDevice = graphicsDevice;
         Window = window;
-        BufferLayouts = new List<SimpleBufferLayout>();
-        TextureLayouts = new List<SimpleTextureLayout>();
         
         // Skybox effect.
         SkyboxEffect = new Effect(graphicsDevice, CubemapVertex3D.VertexLayout, "content/shaders/skybox.vert", "content/shaders/skybox.frag");
-        SkyboxEffect.AddBufferLayout(CreateBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
-        SkyboxEffect.AddTextureLayout(CreateTextureLayout("fCubemap"));
+        SkyboxEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
+        SkyboxEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fCubemap"));
         
         // Physics debug effect.
         PhysicsDebugEffect = new Effect(graphicsDevice, PhysicsDebugVertex3D.VertexLayout, "content/shaders/physics_debug_drawer.vert", "content/shaders/physics_debug_drawer.frag");
-        PhysicsDebugEffect.AddBufferLayout(CreateBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
+        PhysicsDebugEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
+        
+        // Gray scale filter effect.
+        GrayScaleEffect = new Effect(graphicsDevice, SpriteVertex2D.VertexLayout, "content/shaders/full_screen_render_pass.vert", "content/shaders/filters/gray_scale.frag");
+        GrayScaleEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Bloom filter effect.
+        BloomEffect = new BloomEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        BloomEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        BloomEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
     }
     
-    /// <summary>
-    /// Creates and registers a new buffer layout used by shader effects.
-    /// </summary>
-    /// <param name="name">The name of the buffer used in the shader.</param>
-    /// <param name="bufferType">The type of buffer (e.g., uniform, storage).</param>
-    /// <param name="stages">The shader stages where the buffer will be active.</param>
-    /// <returns>The created buffer layout.</returns>
-    public static SimpleBufferLayout CreateBufferLayout(string name, SimpleBufferType bufferType, ShaderStages stages) {
-        SimpleBufferLayout bufferLayout = new SimpleBufferLayout(GraphicsDevice, name, bufferType, stages);
-        BufferLayouts.Add(bufferLayout);
-        return bufferLayout;
-    }
-    
-    /// <summary>
-    /// Creates and registers a new texture layout for use with shader effects.
-    /// </summary>
-    /// <param name="name">The name of the texture resource in the shader.</param>
-    /// <returns>The created texture layout.</returns>
-    public static SimpleTextureLayout CreateTextureLayout(string name) {
-        SimpleTextureLayout textureLayout = new SimpleTextureLayout(GraphicsDevice, name);
-        TextureLayouts.Add(textureLayout);
-        return textureLayout;
-    }
-
     /// <summary>
     /// Releases and disposes of all global graphics assets.
     /// </summary>
     internal static void Destroy() {
         SkyboxEffect.Dispose();
         PhysicsDebugEffect.Dispose();
-        
-        foreach (SimpleBufferLayout bufferLayout in BufferLayouts) {
-            bufferLayout.Dispose();
-        }
-        
-        BufferLayouts.Clear();
-        
-        foreach (SimpleTextureLayout textureLayout in TextureLayouts) {
-            textureLayout.Dispose();
-        }
-        
-        TextureLayouts.Clear();
+        GrayScaleEffect.Dispose();
+        BloomEffect.Dispose();
     }
 }

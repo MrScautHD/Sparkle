@@ -1,5 +1,4 @@
 using Bliss.CSharp;
-using Bliss.CSharp.Effects;
 using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Logging;
@@ -42,7 +41,6 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Font), new FontProcessor());
         this.AddProcessors(typeof(Texture2D), new TextureProcessor());
         this.AddProcessors(typeof(Cubemap), new CubemapProcessor());
-        this.AddProcessors(typeof(Effect), new EffectProcessor());
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(AudioClip), new AudioClipProcessor());
     }

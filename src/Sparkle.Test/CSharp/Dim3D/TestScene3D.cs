@@ -99,7 +99,7 @@ public class TestScene3D : Scene {
         base.Update(delta);
 
         if (Input.IsKeyDown(KeyboardKey.Number1)) {
-            this.SetFilterEffect(ContentRegistry.GrayScaleEffect);
+            this.SetFilterEffect(GlobalGraphicsAssets.BloomEffect);
         }
 
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
