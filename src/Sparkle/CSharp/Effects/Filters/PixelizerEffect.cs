@@ -8,7 +8,7 @@ using Veldrid;
 
 namespace Sparkle.CSharp.Effects.Filters;
 
-public class BloomEffect : Effect {
+public class PixelizerEffect : Effect {
     
     /// <summary>
     /// Path to the vertex shader.
@@ -18,7 +18,7 @@ public class BloomEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/shaders/filters/bloom.frag";
+    public static readonly string FragPath = "content/shaders/filters/pixelizer.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.
@@ -36,18 +36,16 @@ public class BloomEffect : Effect {
     private SimpleBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="BloomEffect"/> class.
+    /// Initializes a new instance of the <see cref="PixelizerEffect"/> class.
     /// </summary>
-    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
-    /// <param name="vertexLayout">The vertex layout for full-screen rendering.</param>
-    /// <param name="samples">The number of blur samples to use in the bloom effect.</param>
-    /// <param name="quality">The quality factor of the bloom blur.</param>
-    /// <param name="constants">Optional shader specialization constants.</param>
-    public BloomEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float samples = 5.0F, float quality = 2.5F, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    /// <param name="graphicsDevice">The graphics device for buffer and resource allocation.</param>
+    /// <param name="vertexLayout">Vertex layout used by the full-screen pass.</param>
+    /// <param name="pixelSize">The pixel size to simulate (defaults to 8x8 if null).</param>
+    /// <param name="constants">Optional specialization constants for shader compilation.</param>
+    public PixelizerEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, Vector2? pixelSize = null, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
-            Samples = samples,
-            Quality = quality
+            PixelSize = pixelSize ?? new Vector2(8, 8)
         };
         
         // Create the params buffer.
@@ -59,29 +57,18 @@ public class BloomEffect : Effect {
     }
     
     /// <summary>
-    /// Gets or sets the number of blur samples used in the bloom effect (Higher values result in smoother, more spread-out bloom).
+    /// Gets or sets the size of the individual pixels for the pixelizer effect.
     /// </summary>
-    public float Samples {
-        get => this._parameters.Samples;
+    public Vector2 PixelSize {
+        get => this._parameters.PixelSize;
         set {
-            this._parameters.Samples = value;
+            this._parameters.PixelSize = value;
             this._isDirty = true;
         }
     }
     
     /// <summary>
-    /// Gets or sets the quality factor of the bloom blur (Affects the blur strength or sharpness of the effect).
-    /// </summary>
-    public float Quality {
-        get => this._parameters.Quality;
-        set {
-            this._parameters.Quality = value;
-            this._isDirty = true;
-        }
-    }
-    
-    /// <summary>
-    /// Applies the bloom effect using the current parameter values.
+    /// Applies the pixelizer effect using the current parameter values.
     /// </summary>
     /// <param name="commandList">The command list used to issue GPU commands.</param>
     /// <param name="material">An optional material to apply with the effect.</param>
@@ -106,18 +93,17 @@ public class BloomEffect : Effect {
     }
     
     /// <summary>
-    /// Struct holding configurable bloom parameters.
+    /// Struct holding configurable pixelizer parameters.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct Parameters {
         public Vector2 Resolution;
-        public float Samples;
-        public float Quality;
+        public Vector2 PixelSize;
     }
     
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
-
+        
         if (disposing) {
             this._parameterBuffer.Dispose();
             GlobalGraphicsAssets.Window.Resized -= this.Resize;

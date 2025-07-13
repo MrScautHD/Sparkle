@@ -53,6 +53,26 @@ public static class GlobalGraphicsAssets {
     public static BlurEffect BlurEffect { get; private set; }
     
     /// <summary>
+    /// The shader effect used to apply a sobel filter.
+    /// </summary>
+    public static SobelEffect SobelEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used to apply a predator filter.
+    /// </summary>
+    public static PredatorEffect PredatorEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used to apply a posterization filter.
+    /// </summary>
+    public static PosterizationEffect PosterizationEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used to apply a pixelizer filter.
+    /// </summary>
+    public static PixelizerEffect PixelizerEffect { get; private set; }
+    
+    /// <summary>
     /// Initializes global graphics resources.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create rendering resources.</param>
@@ -88,6 +108,26 @@ public static class GlobalGraphicsAssets {
         BlurEffect = new BlurEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
         BlurEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
         BlurEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Sobel filter effect.
+        SobelEffect = new SobelEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        SobelEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        SobelEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Predator filter effect.
+        PredatorEffect = new PredatorEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        PredatorEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        PredatorEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Posterization filter effect.
+        PosterizationEffect = new PosterizationEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        PosterizationEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        PosterizationEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Pixelizer filter effect.
+        PixelizerEffect = new PixelizerEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        PixelizerEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        PixelizerEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
     }
     
     /// <summary>

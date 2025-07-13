@@ -35,6 +35,14 @@ public class BlurEffect : Effect {
     /// </summary>
     private SimpleBuffer<Parameters> _parameterBuffer;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BlurEffect"/> class.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
+    /// <param name="vertexLayout">The layout of the vertices used in the full-screen pass.</param>
+    /// <param name="intensity">The strength of the blur effect.</param>
+    /// <param name="radius">The blur radius determining the spread of the blur.</param>
+    /// <param name="constants">Optional specialization constants to pass to the shader.</param>
     public BlurEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float intensity = 3.0F, int radius = 5, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
@@ -50,6 +58,9 @@ public class BlurEffect : Effect {
         GlobalGraphicsAssets.Window.Resized += this.Resize;
     }
     
+    /// <summary>
+    /// Gets or sets the intensity of the blur effect (Higher values result in stronger blurring).
+    /// </summary>
     public float Intensity {
         get => this._parameters.Intensity;
         set {
@@ -58,6 +69,9 @@ public class BlurEffect : Effect {
         }
     }
     
+    /// <summary>
+    /// Gets or sets the blur radius (Controls how far neighboring pixels are sampled).
+    /// </summary>
     public int Radius {
         get => this._parameters.Radius;
         set {

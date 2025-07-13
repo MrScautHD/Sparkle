@@ -100,10 +100,34 @@ public class TestScene3D : Scene {
         base.Update(delta);
         
         if (Input.IsKeyDown(KeyboardKey.Number1)) {
-            this.FilterEffect = GlobalGraphicsAssets.BlurEffect;
+            this.FilterEffect = GlobalGraphicsAssets.GrayScaleEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
+            this.FilterEffect = GlobalGraphicsAssets.BloomEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Number3)) {
+            this.FilterEffect = GlobalGraphicsAssets.BlurEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Number4)) {
+            this.FilterEffect = GlobalGraphicsAssets.PixelizerEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Number5)) {
+            this.FilterEffect = GlobalGraphicsAssets.PosterizationEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Number6)) {
+            this.FilterEffect = GlobalGraphicsAssets.PredatorEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Number7)) {
+            this.FilterEffect = GlobalGraphicsAssets.SobelEffect;
+        }
+        
+        if (Input.IsKeyDown(KeyboardKey.Q)) {
             this.FilterEffect = null;
         }
         
