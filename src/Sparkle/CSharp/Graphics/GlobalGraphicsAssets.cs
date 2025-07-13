@@ -48,6 +48,11 @@ public static class GlobalGraphicsAssets {
     public static BloomEffect BloomEffect { get; private set; }
     
     /// <summary>
+    /// The shader effect used to apply a blur filter.
+    /// </summary>
+    public static BlurEffect BlurEffect { get; private set; }
+    
+    /// <summary>
     /// Initializes global graphics resources.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create rendering resources.</param>
@@ -78,6 +83,11 @@ public static class GlobalGraphicsAssets {
         BloomEffect = new BloomEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
         BloomEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
         BloomEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
+        // Blur filter effect.
+        BlurEffect = new BlurEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        BlurEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        BlurEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
     }
     
     /// <summary>
@@ -89,5 +99,6 @@ public static class GlobalGraphicsAssets {
         FxaaEffect.Dispose();
         GrayScaleEffect.Dispose();
         BloomEffect.Dispose();
+        BlurEffect.Dispose();
     }
 }

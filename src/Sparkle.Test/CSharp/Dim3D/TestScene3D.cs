@@ -100,7 +100,7 @@ public class TestScene3D : Scene {
         base.Update(delta);
         
         if (Input.IsKeyDown(KeyboardKey.Number1)) {
-            this.FilterEffect = GlobalGraphicsAssets.GrayScaleEffect;
+            this.FilterEffect = GlobalGraphicsAssets.BlurEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
