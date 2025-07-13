@@ -6,9 +6,9 @@ using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
 
-namespace Sparkle.CSharp.Effects.Filters;
+namespace Sparkle.CSharp.Effects.Posts;
 
-public class BloomEffect : Effect {
+public class FxaaEffect : Effect {
     
     /// <summary>
     /// Path to the vertex shader.
@@ -18,7 +18,7 @@ public class BloomEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/shaders/filters/bloom.frag";
+    public static readonly string FragPath = "content/shaders/filters/fxaa.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.
@@ -36,18 +36,20 @@ public class BloomEffect : Effect {
     private SimpleBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="BloomEffect"/> class with optional customization.
+    /// Initializes a new instance of the <see cref="FxaaEffect"/> class with optional FXAA tuning values.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
-    /// <param name="vertexLayout">The vertex layout for full-screen rendering.</param>
-    /// <param name="samples">The number of blur samples to use in the bloom effect.</param>
-    /// <param name="quality">The quality factor of the bloom blur.</param>
+    /// <param name="vertexLayout">The layout of vertices for the full-screen pass.</param>
+    /// <param name="reduceMin">Minimum amount of local contrast reduction.</param>
+    /// <param name="reduceMul">Multiplier for local contrast reduction.</param>
+    /// <param name="spanMax">Maximum blur span.</param>
     /// <param name="constants">Optional shader specialization constants.</param>
-    public BloomEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float samples = 5.0F, float quality = 2.5F, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    public FxaaEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
-            Samples = samples,
-            Quality = quality
+            ReduceMin = reduceMin,
+            ReduceMul = reduceMul,
+            SpanMax = spanMax
         };
         
         // Create the params buffer.
@@ -59,29 +61,40 @@ public class BloomEffect : Effect {
     }
     
     /// <summary>
-    /// Gets or sets the number of blur samples used in the bloom effect (Higher values result in smoother, more spread-out bloom).
+    /// Controls the minimum contrast threshold below which edges are ignored during processing.
     /// </summary>
-    public float Samples {
-        get => this._parameters.Samples;
+    public float ReduceMin {
+        get => this._parameters.ReduceMin;
         set {
-            this._parameters.Samples = value;
+            this._parameters.ReduceMin = value;
             this._isDirty = true;
         }
     }
     
     /// <summary>
-    /// Gets or sets the quality factor of the bloom blur (Affects the blur strength or sharpness of the effect).
+    /// Determines the multiplier for reducing contrast, influencing how strongly contrast is diminished.
     /// </summary>
-    public float Quality {
-        get => this._parameters.Quality;
+    public float ReduceMul {
+        get => this._parameters.ReduceMul;
         set {
-            this._parameters.Quality = value;
+            this._parameters.ReduceMul = value;
             this._isDirty = true;
         }
     }
     
     /// <summary>
-    /// Applies the bloom effect using the current parameter values.
+    /// Specifies the maximum extent of the blur effect, with higher values extending the anti-aliasing span across more pixels.
+    /// </summary>
+    public float SpanMax {
+        get => this._parameters.SpanMax;
+        set {
+            this._parameters.SpanMax = value;
+            this._isDirty = true;
+        }
+    }
+    
+    /// <summary>
+    /// Applies the FXAA effect using the current parameter values.
     /// </summary>
     /// <param name="commandList">The command list used to issue GPU commands.</param>
     /// <param name="material">An optional material to apply with the effect.</param>
@@ -106,13 +119,14 @@ public class BloomEffect : Effect {
     }
     
     /// <summary>
-    /// Struct holding configurable bloom parameters.
+    /// Struct holding configurable FXAA parameters.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct Parameters {
         public Vector2 Resolution;
-        public float Samples;
-        public float Quality;
+        public float ReduceMin;
+        public float ReduceMul;
+        public float SpanMax;
     }
     
     protected override void Dispose(bool disposing) {

@@ -15,7 +15,7 @@ public class TestGame : Game {
 
     protected override void Init() {
         base.Init();
-
+        
         TestOverlay overlay = new TestOverlay("TEST", true);
         OverlayManager.AddOverlay(overlay);
     }

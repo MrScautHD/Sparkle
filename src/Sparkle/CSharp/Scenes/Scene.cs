@@ -35,10 +35,10 @@ public abstract class Scene : Disposable {
     public SpriteRenderer SpriteRenderer { get; private set; }
     
     /// <summary>
-    /// Gets or sets the optional filter effect applied to the scene.
+    /// The filter effect used in the scene.
     /// </summary>
-    public Effect? FilterEffect { get; private set; }
-
+    public Effect? FilterEffect;
+    
     /// <summary>
     /// The skybox used in the scene.
     /// </summary>
@@ -267,14 +267,6 @@ public abstract class Scene : Disposable {
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Sets the filter effect to be applied to the scene during rendering.
-    /// </summary>
-    /// <param name="effect">The filter effect to apply. Pass null to remove the current filter effect.</param>
-    public void SetFilterEffect(Effect? effect) {
-        this.FilterEffect = effect;
     }
 
     protected override void Dispose(bool disposing) {

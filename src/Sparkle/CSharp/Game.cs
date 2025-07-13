@@ -63,9 +63,9 @@ public class Game : Disposable {
     public FullScreenRenderPass FullScreenRenderPass { get; private set; }
 
     /// <summary>
-    /// The MSAA RenderTexture used for handling Anti-Aliasing (MSAA).
+    /// The render target.
     /// </summary>
-    public RenderTexture2D MsaaRenderTexture { get; private set; }
+    public RenderTexture2D RenderTarget { get; private set; }
 
     /// <summary>
     /// The default (global) sprite batch used for rendering 2D sprites.
@@ -106,7 +106,7 @@ public class Game : Disposable {
     /// The log file writer used for logging messages to a file.
     /// </summary>
     private LogFileWriter _logFileWriter;
-
+    
     /// <summary>
     /// The logger for jitter.
     /// </summary>
@@ -205,8 +205,8 @@ public class Game : Disposable {
         Logger.Info("Initialize full screen render pass...");
         this.FullScreenRenderPass = new FullScreenRenderPass(graphicsDevice);
         
-        Logger.Info("Initialize MSAA render texture...");
-        this.MsaaRenderTexture = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
+        Logger.Info("Initialize render target texture...");
+        this.RenderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
         
         Logger.Info("Initialize global sprite batch...");
         this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow);
@@ -267,23 +267,23 @@ public class Game : Disposable {
             
             // Draw.
             this.CommandList.Begin();
-            this.CommandList.SetFramebuffer(this.MsaaRenderTexture.Framebuffer);
+            this.CommandList.SetFramebuffer(this.RenderTarget.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             this.CommandList.ClearDepthStencil(1.0F);
 
-            this.Draw(this.GraphicsContext, this.MsaaRenderTexture.Framebuffer);
+            this.Draw(this.GraphicsContext, this.RenderTarget.Framebuffer);
             
             // Apply MSAA.
-            if (this.MsaaRenderTexture.SampleCount != TextureSampleCount.Count1) {
-                this.CommandList.ResolveTexture(this.MsaaRenderTexture.ColorTexture, this.MsaaRenderTexture.DestinationTexture);
+            if (this.RenderTarget.SampleCount != TextureSampleCount.Count1) {
+                this.CommandList.ResolveTexture(this.RenderTarget.ColorTexture, this.RenderTarget.DestinationTexture);
             }
             
-            // Draw MSAA texture.
+            // Draw render target texture.
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             this.CommandList.ClearDepthStencil(1.0F);
             
-            this.FullScreenRenderPass.Draw(this.CommandList, this.MsaaRenderTexture, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+            this.FullScreenRenderPass.Draw(this.CommandList, this.RenderTarget, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
             this.CommandList.End();
             graphicsDevice.WaitForIdle();
@@ -355,18 +355,18 @@ public class Game : Disposable {
         OverlayManager.OnDraw(context, framebuffer);
         GuiManager.OnDraw(context, framebuffer);
     }
-
+    
     /// <summary>
     /// Handles window resizing events.
     /// </summary>
     protected virtual void OnResize(Rectangle rectangle) {
         this.GraphicsDevice.MainSwapchain.Resize((uint) rectangle.Width, (uint) rectangle.Height);
-        this.MsaaRenderTexture.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        this.RenderTarget.Resize((uint) rectangle.Width, (uint) rectangle.Height);
         SceneManager.OnResize(rectangle);
         OverlayManager.OnResize(rectangle);
         GuiManager.OnResize(rectangle);
     }
-
+    
     /// <summary>
     /// Handles the logic to be executed when the application shuts down.
     /// This method can be overridden by derived classes to include custom shutdown behavior.
@@ -379,14 +379,31 @@ public class Game : Disposable {
     public int GetTargetFps() {
         return (int) (1.0F / this._fixedFrameRate);
     }
-
+    
     /// <summary>
     /// Sets the target frames per second.
     /// </summary>
     public void SetTargetFps(int fps) {
         this._fixedFrameRate = 1.0F / fps;
     }
-
+    
+    /// <summary>
+    /// Retrieves the texture sample count currently used by the game's MSAA render target texture.
+    /// </summary>
+    /// <returns>The sample count of the MSAA render target texture.</returns>
+    public TextureSampleCount? GetSampleCount() {
+        return this.RenderTarget.SampleCount;
+    }
+    
+    /// <summary>
+    /// Sets the sample count for multi-sample anti-aliasing (MSAA).
+    /// </summary>
+    /// <param name="sampleCount">The texture sample count to apply, defining the level of anti-aliasing.</param>
+    public void SetSampleCount(TextureSampleCount sampleCount) {
+        this.RenderTarget.SampleCount = sampleCount;
+        SceneManager.FilterTarget.SampleCount = sampleCount;
+    }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             SceneManager.Destroy();
@@ -396,7 +413,7 @@ public class Game : Disposable {
             
             this.Content.Dispose();
             
-            this.MsaaRenderTexture.Dispose();
+            this.RenderTarget.Dispose();
             this.FullScreenRenderPass.Dispose();
             
             this.GlobalImmediateRenderer.Dispose();

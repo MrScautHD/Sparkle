@@ -4,6 +4,7 @@ using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Effects.Filters;
+using Sparkle.CSharp.Effects.Posts;
 using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
 
@@ -25,11 +26,16 @@ public static class GlobalGraphicsAssets {
     /// The shader effect used for rendering the skybox.
     /// </summary>
     public static Effect SkyboxEffect { get; private set; }
-
+    
     /// <summary>
     /// The shader effect used for rendering physics debug visuals.
     /// </summary>
     public static Effect PhysicsDebugEffect { get; private set; }
+    
+    /// <summary>
+    /// The FXAA (Fast Approximate Anti-Aliasing) effect used for post-processing rendering.
+    /// </summary>
+    public static FxaaEffect FxaaEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a grayscale filter.
@@ -40,7 +46,7 @@ public static class GlobalGraphicsAssets {
     /// The shader effect used to apply a bloom filter.
     /// </summary>
     public static BloomEffect BloomEffect { get; private set; }
-
+    
     /// <summary>
     /// Initializes global graphics resources.
     /// </summary>
@@ -59,6 +65,11 @@ public static class GlobalGraphicsAssets {
         PhysicsDebugEffect = new Effect(graphicsDevice, PhysicsDebugVertex3D.VertexLayout, "content/shaders/physics_debug_drawer.vert", "content/shaders/physics_debug_drawer.frag");
         PhysicsDebugEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex));
         
+        // FXAA post-processing effect.
+        FxaaEffect = new FxaaEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
+        FxaaEffect.AddBufferLayout(new SimpleBufferLayout(graphicsDevice, "ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment));
+        FxaaEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
+        
         // Gray scale filter effect.
         GrayScaleEffect = new Effect(graphicsDevice, SpriteVertex2D.VertexLayout, "content/shaders/full_screen_render_pass.vert", "content/shaders/filters/gray_scale.frag");
         GrayScaleEffect.AddTextureLayout(new SimpleTextureLayout(graphicsDevice, "fTexture"));
@@ -75,6 +86,7 @@ public static class GlobalGraphicsAssets {
     internal static void Destroy() {
         SkyboxEffect.Dispose();
         PhysicsDebugEffect.Dispose();
+        FxaaEffect.Dispose();
         GrayScaleEffect.Dispose();
         BloomEffect.Dispose();
     }

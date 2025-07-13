@@ -9,6 +9,7 @@ using Jitter2.Collision.Shapes;
 using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
+using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
@@ -97,13 +98,36 @@ public class TestScene3D : Scene {
 
     protected override void Update(double delta) {
         base.Update(delta);
-
+        
         if (Input.IsKeyDown(KeyboardKey.Number1)) {
-            this.SetFilterEffect(GlobalGraphicsAssets.BloomEffect);
+            this.FilterEffect = GlobalGraphicsAssets.GrayScaleEffect;
         }
-
+        
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
-            this.SetFilterEffect(null);
+            this.FilterEffect = null;
+        }
+        
+        // Apply MSAA.
+        if (Input.IsKeyPressed(KeyboardKey.Number8)) {
+            SceneManager.PostEffect = null;
+            Game.Instance?.SetSampleCount(TextureSampleCount.Count8);
+        }
+        
+        // Apply FXAA.
+        if (Input.IsKeyPressed(KeyboardKey.Number9)) {
+            Game.Instance?.SetSampleCount(TextureSampleCount.Count1);
+            SceneManager.PostEffect = GlobalGraphicsAssets.FxaaEffect;
+            
+            // Set parameters.
+            GlobalGraphicsAssets.FxaaEffect.ReduceMin = 1.0F / 256.0F;
+            GlobalGraphicsAssets.FxaaEffect.ReduceMul = 1.0F / 4.0F;
+            GlobalGraphicsAssets.FxaaEffect.SpanMax = 12.0F;
+        }
+        
+        // Apply NONE.
+        if (Input.IsKeyPressed(KeyboardKey.Number0)) {
+            Game.Instance?.SetSampleCount(TextureSampleCount.Count1);
+            SceneManager.PostEffect = null;
         }
 
         if (Input.IsKeyPressed(KeyboardKey.N)) {
