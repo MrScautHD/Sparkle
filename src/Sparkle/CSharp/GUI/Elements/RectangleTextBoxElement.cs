@@ -499,7 +499,7 @@ public class RectangleTextBoxElement : GuiElement {
         Vector2 caretPos = this.Position;
         
         // Calculate horizontal offset from visible text start to caret.
-        float caretOffsetX = 0f;
+        float caretOffsetX = 0.0F;
         int caretVisibleIndex = Math.Max(0, this._caretIndex - this._textScrollOffset);
         
         for (int i = 0; i < caretVisibleIndex && (this._textScrollOffset + i) < labelData.Text.Length; i++) {
@@ -688,7 +688,7 @@ public class RectangleTextBoxElement : GuiElement {
                     float totalWidth = 0.0F;
                     int reverseCount = 0;
 
-                    // Berechne Zeichen von rechts, bis sie sichtbar sind.
+                    // Calculate chars from right until they are saw able.
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
                         Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);

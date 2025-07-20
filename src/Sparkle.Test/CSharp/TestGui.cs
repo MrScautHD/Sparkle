@@ -18,9 +18,18 @@ public class TestGui : Gui {
         base.Init();
         
         // Label.
-        LabelData testLabelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
+        LabelData labelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, scale: new Vector2(1, 1));
         
-        this.AddElement("Test-Label", new LabelElement(testLabelData, Anchor.BottomLeft, Vector2.Zero, clickFunc: () => {
+        this.AddElement("Test-Label", new LabelElement(labelData, Anchor.BottomLeft, Vector2.Zero, clickFunc: () => {
+            Logger.Error("CLICKED!");
+            return true;
+        }));
+        
+        // Toggle.
+        ToggleData toggleData = new ToggleData(ContentRegistry.ToggleBackground, ContentRegistry.ToggleCheckmark, backgroundHoverColor: Color.LightGray, checkmarkHoverColor: Color.LightGray);
+        LabelData toggleLabelData = new LabelData(ContentRegistry.Fontoe, "Toggle ME!", 18);
+        
+        this.AddElement("Test-Toggle", new ToggleElement(toggleData, toggleLabelData, Anchor.Center, new Vector2(0, 120), 5, clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));

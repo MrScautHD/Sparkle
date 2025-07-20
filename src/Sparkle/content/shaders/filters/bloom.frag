@@ -20,7 +20,7 @@ layout (location = 0) out vec4 fFragColor;
 
 void main() {
     vec4 texelColor = texture(sampler2D(fTexture, fTextureSampler), fTexCoords);
-    vec2 sizeFactor = vec2(1) / parameters.resolution * parameters.quality;
+    vec2 sizeFactor = vec2(1.0F) / parameters.resolution * parameters.quality;
     
     vec4 sum = vec4(0.0F);
     int range = int((parameters.samples - 1.0F) / 2.0F);

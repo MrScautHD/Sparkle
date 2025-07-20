@@ -7,7 +7,7 @@ public static class MarchingCubesTables {
 	/// <summary>
 	/// Represents the eight corners of a cube in 3D space.
 	/// </summary>
-	public static readonly Vector3[] Corners = new Vector3[8] {
+	public static readonly Vector3[] Corners = [
 		new Vector3(0, 0, 0),
 		new Vector3(1, 0, 0),
 		new Vector3(1, 1, 0),
@@ -16,7 +16,7 @@ public static class MarchingCubesTables {
 		new Vector3(1, 0, 1),
 		new Vector3(1, 1, 1),
 		new Vector3(0, 1, 1)
-	};
+	];
 
 	/// <summary>
 	/// Represents the edges of a cube in 3D space.

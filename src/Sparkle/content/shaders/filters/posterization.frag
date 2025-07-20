@@ -20,7 +20,7 @@ layout(location = 0) out vec4 fFragColor;
 void main() {
     vec4 texelColor = texture(sampler2D(fTexture, fTextureSampler), fTexCoords);
 
-    float levels = max(1.0, parameters.numOfColors);
+    float levels = max(1.0F, parameters.numOfColors);
     texelColor.rgb = floor(texelColor.rgb * levels) / levels;
 
     fFragColor = texelColor * fColor;

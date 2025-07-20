@@ -22,12 +22,13 @@ public class TextureButtonElement : GuiElement {
     /// The alignment of text within a GUI element.
     /// </summary>
     public TextAlignment TextAlignment;
-
+    
     /// <summary>
     /// The offset of the text relative to its position.
     /// </summary>
     public Vector2 TextOffset;
-
+    
+    // TODO: REPAIR TEXT OFFSET IN EVERY ELEMENT! (THE ORIGIN IS NOT WORKING WITH IT!)
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureButtonElement"/> class.
     /// </summary>
@@ -46,7 +47,7 @@ public class TextureButtonElement : GuiElement {
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
         this.TextOffset = textOffset ?? Vector2.Zero;
-        this.Size = size ?? new Vector2(buttonData.Texture.Width, buttonData.Texture.Height);
+        this.Size = size ?? new Vector2(buttonData.SourceRect.Width, buttonData.SourceRect.Height);
     }
     
     /// <summary>

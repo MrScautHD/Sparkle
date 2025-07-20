@@ -17,6 +17,8 @@ public class ContentRegistry : Registry {
     public static Texture2D Sprite { get; private set; }
     public static Texture2D Button { get; private set; }
     public static Texture2D TextBox { get; private set; }
+    public static Texture2D ToggleBackground { get; private set; }
+    public static Texture2D ToggleCheckmark { get; private set; }
     
     public static SkyBox SkyBox { get; private set; }
     
@@ -28,6 +30,8 @@ public class ContentRegistry : Registry {
         Sprite = content.Load(new TextureContent("content/sprite.png"));
         Button = content.Load(new TextureContent("content/button.png"));
         TextBox = content.Load(new TextureContent("content/text-box.png"));
+        ToggleBackground = content.Load(new TextureContent("content/toggle_background.png"));
+        ToggleCheckmark = content.Load(new TextureContent("content/toggle_checkmark.png"));
         
         SkyBox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png")));
     }
