@@ -99,7 +99,7 @@ public class TestScene3D : Scene {
         
         // TREE
         Entity tree = new Entity(new Transform() { Translation = new Vector3(0, 0, 20) });
-        tree.AddComponent(new ModelRenderer(ContentRegistry.TreeModel, Vector3.Zero, drawBoundingBox: true));
+        tree.AddComponent(new ModelRenderer(ContentRegistry.TreeModel, Vector3.Zero));
         this.AddEntity(tree);
     }
     
@@ -163,10 +163,12 @@ public class TestScene3D : Scene {
 
         if (Input.IsKeyPressed(KeyboardKey.N)) {
             GuiManager.SetGui(new TestGui("Test"));
+            Input.DisableRelativeMouseMode();
         }
 
         if (Input.IsKeyPressed(KeyboardKey.M)) {
             GuiManager.SetGui(null);
+            Input.EnableRelativeMouseMode();
         }
     }
 

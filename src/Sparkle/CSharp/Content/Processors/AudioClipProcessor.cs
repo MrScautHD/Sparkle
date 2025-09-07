@@ -1,4 +1,3 @@
-using Bliss.CSharp.Textures;
 using MiniAudioEx;
 using Sparkle.CSharp.Content.Types;
 using Veldrid;
@@ -24,6 +23,6 @@ public class AudioClipProcessor : IContentProcessor {
     /// </summary>
     /// <param name="item">The content item to be unloaded and disposed.</param>
     public void Unload(object item) {
-        ((Texture2D) item).Dispose();
+        ((AudioClip) item).Dispose();
     }
 }
