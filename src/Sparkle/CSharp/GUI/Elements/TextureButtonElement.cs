@@ -28,7 +28,6 @@ public class TextureButtonElement : GuiElement {
     /// </summary>
     public Vector2 TextOffset;
     
-    // TODO: REPAIR TEXT OFFSET IN EVERY ELEMENT! (THE ORIGIN IS NOT WORKING WITH IT!)
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureButtonElement"/> class.
     /// </summary>

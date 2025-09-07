@@ -149,9 +149,9 @@ public class SoftBodySphere : SimpleSoftBody {
             }
         }
         
-        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
+        Material material = new Material(GlobalResource.DefaultModelEffect);
         
-        material.AddMaterialMap(MaterialMapType.Albedo.GetName(), new MaterialMap {
+        material.AddMaterialMap(MaterialMapType.Albedo, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });

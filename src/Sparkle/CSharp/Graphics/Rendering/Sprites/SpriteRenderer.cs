@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
@@ -53,16 +53,16 @@ public class SpriteRenderer {
     /// <param name="framebuffer">The framebuffer where the sprites will be drawn.</param>
     protected internal void Draw(GraphicsContext context, Framebuffer framebuffer) {
         Camera2D? cam2D = SceneManager.ActiveCam2D;
-
+        
         if (cam2D == null) {
             return;
         }
-
+        
         // Sort sprites.
         this._sprites.Sort((sprite1, sprite2) => sprite1.LayerDepth.CompareTo(sprite2.LayerDepth));
-
+        
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
-
+        
         // Draw sprites.
         foreach (SpriteData sprite in this._sprites) {
             if (this.IsSpriteVisible(cam2D, sprite)) {

@@ -1,5 +1,6 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Effects;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
@@ -28,6 +29,11 @@ public abstract class Scene : Disposable {
     /// Gets the physics simulation associated with the scene.
     /// </summary>
     public Simulation Simulation { get; private set; }
+
+    /// <summary>
+    /// Gets the forward renderer responsible for rendering 3D content in the scene.
+    /// </summary>
+    public ForwardRenderer ForwardRenderer { get; private set; }
     
     /// <summary>
     /// Manages and draw sprites for the entity sprite component.
@@ -64,14 +70,16 @@ public abstract class Scene : Disposable {
         this.Name = name;
         this.SceneType = sceneType;
         this.Simulation = simulation ?? (sceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
-        this.SpriteRenderer = new SpriteRenderer();
         this.Entities = new Dictionary<uint, Entity>();
     }
 
     /// <summary>
     /// Initializes the scene. Can be overridden in derived classes.
     /// </summary>
-    protected internal virtual void Init() { }
+    protected internal virtual void Init() {
+        this.ForwardRenderer = new ForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.SpriteRenderer = new SpriteRenderer();
+    }
     
     /// <summary>
     /// Updates all entities in the scene.
@@ -117,6 +125,7 @@ public abstract class Scene : Disposable {
             entity.Draw(context, framebuffer);
         }
         
+        this.ForwardRenderer.Draw(context.CommandList, framebuffer.OutputDescription);
         this.SpriteRenderer.Draw(context, framebuffer);
     }
 
@@ -152,7 +161,7 @@ public abstract class Scene : Disposable {
     public bool HasEntity(uint id) {
         return this.Entities.ContainsKey(id);
     }
-
+    
     /// <summary>
     /// Gets an entity by its ID.
     /// </summary>
@@ -282,9 +291,10 @@ public abstract class Scene : Disposable {
                     this.Entities.Remove(entity.Id);
                 }
             }
-
+            
             this._entityIds = 0;
             this.Simulation.Dispose();
+            this.ForwardRenderer.Dispose();
         }
     }
 }

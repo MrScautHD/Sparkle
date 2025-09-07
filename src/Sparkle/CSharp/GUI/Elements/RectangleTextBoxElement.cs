@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;

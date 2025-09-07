@@ -1,7 +1,6 @@
-using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
-using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Sparkle.CSharp.Graphics.Rendering;
 using Veldrid;
 
@@ -22,7 +21,7 @@ public class GraphicsContext {
     /// <summary>
     /// The full-screen render pass used for post-processing.
     /// </summary>
-    public FullScreenRenderPass FullScreenRenderPass { get; private set; }
+    public FullScreenRenderer FullScreenRenderPass { get; private set; }
     
     /// <summary>
     /// The sprite batch used for efficient 2D sprite rendering.
@@ -54,7 +53,7 @@ public class GraphicsContext {
     /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
     /// <param name="immediateRenderer">The immediate renderer for performing low-level custom rendering.</param>
     /// <param name="physics3DDebugDrawer">The 3D physics debug drawer used for rendering debug visualization of physics objects.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderPass fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, Physics3DDebugDrawer physics3DDebugDrawer) {
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, Physics3DDebugDrawer physics3DDebugDrawer) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.FullScreenRenderPass = fullScreenRenderPass;

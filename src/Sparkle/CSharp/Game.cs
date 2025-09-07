@@ -1,9 +1,8 @@
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Graphics.Rendering.Batches.Primitives;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
-using Bliss.CSharp.Graphics.Rendering.Passes;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Contexts;
@@ -60,7 +59,7 @@ public class Game : Disposable {
     /// <summary>
     /// Represents the fullscreen render pass used during the rendering process.
     /// </summary>
-    public FullScreenRenderPass FullScreenRenderPass { get; private set; }
+    public FullScreenRenderer FullScreenRenderPass { get; private set; }
 
     /// <summary>
     /// The render target.
@@ -174,7 +173,7 @@ public class Game : Disposable {
         this.GraphicsDevice = graphicsDevice;
         
         Logger.Info("Loading window icon...");
-        this.MainWindow.SetIcon(this.Settings.IconPath != string.Empty ? new Image(this.Settings.IconPath) : new Image("content/images/icon.png"));
+        this.MainWindow.SetIcon(this.Settings.IconPath != string.Empty ? new Image(this.Settings.IconPath) : new Image("content/sparkle/images/icon.png"));
         
         Logger.Info("Initialize input...");
         if (this.MainWindow is Sdl3Window) {
@@ -203,7 +202,7 @@ public class Game : Disposable {
         GlobalGraphicsAssets.Init(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize full screen render pass...");
-        this.FullScreenRenderPass = new FullScreenRenderPass(graphicsDevice);
+        this.FullScreenRenderPass = new FullScreenRenderer(graphicsDevice);
         
         Logger.Info("Initialize render target texture...");
         this.RenderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);

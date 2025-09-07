@@ -456,6 +456,8 @@ public class RigidBody3D : Component {
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            this.Simulation.BodyMoved -= this.OnBodyMoving;
+            this.Entity.Transform.OnUpdate -= this.OnEntityMoving;
             this.World.Remove(this.Body);
         }
     }

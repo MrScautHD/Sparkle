@@ -1,6 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
@@ -16,19 +18,14 @@ public class MeshRenderer : InterpolatedComponent {
     public Mesh Mesh { get; private set; }
     
     /// <summary>
-    /// The sampler used for texture sampling. Can be null.
+    /// A reference to the material used for rendering the mesh.
     /// </summary>
-    public Sampler? Sampler;
+    public ref Material Material => ref this._renderable.Material;
     
     /// <summary>
-    /// Defines the depth and stencil testing behavior during rendering.
+    /// A reference to the bone matrices for skeletal animation, if applicable.
     /// </summary>
-    public DepthStencilStateDescription DepthStencilState;
-    
-    /// <summary>
-    /// Defines rasterization settings such as fill mode and culling.
-    /// </summary>
-    public RasterizerStateDescription RasterizerState;
+    public ref Matrix4x4[]? BoneMatrics => ref this._renderable.BoneMatrices;
     
     /// <summary>
     /// Whether to draw the bounding box around the mesh.
@@ -36,40 +33,44 @@ public class MeshRenderer : InterpolatedComponent {
     public bool DrawBoundingBox;
     
     /// <summary>
-    /// The color used for rendering the mesh.
-    /// </summary>
-    public Color MeshColor;
-    
-    /// <summary>
     /// The color used for rendering the bounding box.
     /// </summary>
     public Color BoxColor;
-
+    
     /// <summary>
     /// The mesh's axis-aligned bounding box.
     /// </summary>
     private BoundingBox _box;
     
     /// <summary>
+    /// An internal renderable object used by the MeshRenderer to manage rendering operations.
+    /// </summary>
+    private Renderable _renderable;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
     /// </summary>
-    /// <param name="mesh">The mesh to render.</param>
-    /// <param name="offsetPosition">The position offset relative to the parent entity.</param>
-    /// <param name="sampler">Optional texture sampler for the mesh.</param>
-    /// <param name="depthStencilState">Optional depth/stencil settings. Defaults to depth-only testing.</param>
-    /// <param name="rasterizerState">Optional rasterizer configuration. Defaults to solid fill with back-face culling.</param>
-    /// <param name="drawBoundingBox">If true, the mesh’s bounding box will be rendered.</param>
-    /// <param name="meshColor">Optional tint color for the mesh. Defaults to white.</param>
-    /// <param name="boxColor">Optional color for the bounding box. Defaults to white.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Sampler? sampler = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, bool drawBoundingBox = false, Color? meshColor = null, Color? boxColor = null) : base(offsetPosition) {
+    /// <param name="mesh">The <see cref="Mesh"/> to render.</param>
+    /// <param name="offsetPosition">The initial position offset applied to the transform.</param>
+    /// <param name="copyMeshMaterial">If true, creates a cloned copy of the mesh’s material; otherwise, uses the original mesh material reference.</param>
+    /// <param name="drawBoundingBox">If true, enables bounding box visualization for the mesh.</param>
+    /// <param name="boxColor">Optional color to render the bounding box. Defaults to <see cref="Color.White"/> if not provided.</param>
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool drawBoundingBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, drawBoundingBox, boxColor) { }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
+    /// </summary>
+    /// <param name="mesh">The <see cref="Mesh"/> to render.</param>
+    /// <param name="offsetPosition">The initial position offset applied to the transform.</param>
+    /// <param name="material">The <see cref="Material"/> used for rendering the mesh.</param>
+    /// <param name="drawBoundingBox">If true, enables bounding box visualization for the mesh.</param>
+    /// <param name="boxColor">Optional color to render the bounding box. Defaults to <see cref="Color.White"/> if not provided.</param>
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool drawBoundingBox = false, Color? boxColor = null) : base(offsetPosition) {
         this.Mesh = mesh;
-        this.Sampler = sampler;
-        this.DepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
-        this.RasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
         this.DrawBoundingBox = drawBoundingBox;
-        this.MeshColor = meshColor ?? Color.White;
         this.BoxColor = boxColor ?? Color.White;
         this._box = mesh.BoundingBox;
+        this._renderable = new Renderable(this.Mesh, new Transform(), material);
     }
     
     /// <summary>
@@ -112,7 +113,8 @@ public class MeshRenderer : InterpolatedComponent {
             };
             
             // Draw the mesh.
-            this.Mesh.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, this.DepthStencilState, this.RasterizerState, this.MeshColor);
+            this._renderable.Transform = transform;
+            this.Entity.Scene.ForwardRenderer.DrawRenderable(this._renderable);
 
             // Draw the bounding box.
             if (this.DrawBoundingBox) {

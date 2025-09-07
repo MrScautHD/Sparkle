@@ -562,6 +562,8 @@ public class RigidBody2D : Component {
         base.Dispose(disposing);
 
         if (disposing) {
+            this.Simulation.BodyMoved -= this.BodyMoving;
+            this.Entity.Transform.OnUpdate -= this.OnEntityMoving;
             this._body.Destroy();
         }
     }

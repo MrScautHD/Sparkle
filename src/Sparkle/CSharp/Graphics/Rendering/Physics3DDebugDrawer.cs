@@ -92,6 +92,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     private OutputDescription _requestedOutput;
     
     /// <summary>
+    /// The main <see cref="BlendStateDescription"/>.
+    /// </summary>
+    private BlendStateDescription _mainBlendState;
+    
+    /// <summary>
     /// The current <see cref="BlendStateDescription"/>.
     /// </summary>
     private BlendStateDescription _currentBlendState;
@@ -100,6 +105,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// The requested <see cref="BlendStateDescription"/>.
     /// </summary>
     private BlendStateDescription _requestedBlendState;
+    
+    /// <summary>
+    /// The main <see cref="DepthStencilStateDescription"/>.
+    /// </summary>
+    private DepthStencilStateDescription _mainDepthStencilState;
     
     /// <summary>
     /// The current <see cref="DepthStencilStateDescription"/>.
@@ -112,6 +122,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     private DepthStencilStateDescription _requestedDepthStencilState;
     
     /// <summary>
+    /// The main <see cref="RasterizerStateDescription"/>.
+    /// </summary>
+    private RasterizerStateDescription _mainRasterizerState;
+    
+    /// <summary>
     /// The current <see cref="RasterizerStateDescription"/>.
     /// </summary>
     private RasterizerStateDescription _currentRasterizerState;
@@ -120,7 +135,12 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// The requested <see cref="RasterizerStateDescription"/>.
     /// </summary>
     private RasterizerStateDescription _requestedRasterizerState;
-
+    
+    /// <summary>
+    /// The current <see cref="Color"/>.
+    /// </summary>
+    private Color _mainColor;
+    
     /// <summary>
     /// The current <see cref="Color"/>.
     /// </summary>
@@ -182,12 +202,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
 
         this._begun = true;
         this._currentCommandList = commandList;
-        this._mainOutput = output;
-        this._currentOutput = this._requestedOutput = output;
-        this._currentBlendState = this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
-        this._currentDepthStencilState = this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
-        this._currentRasterizerState = this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
-        this._currentColor = this._requestedColor = color ?? Color.White;
+        this._mainOutput = this._currentOutput = this._requestedOutput = output;
+        this._mainBlendState = this._currentBlendState = this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_DISABLED;
+        this._mainDepthStencilState = this._currentDepthStencilState = this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this._mainRasterizerState = this._currentRasterizerState = this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
+        this._mainColor = this._currentColor = this._requestedColor = color ?? Color.White;
         
         this.DrawCallCount = 0;
     }
@@ -214,21 +233,33 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
-
+        
         return this._currentOutput;
     }
     
     /// <summary>
-    /// Sets the output description for rendering.
+    /// Pushes a new output description to override the current rendering target.
     /// </summary>
-    /// <param name="output">The new output description. If null, the main output is used.</param>
+    /// <param name="output">The new <see cref="OutputDescription"/> to apply.</param>
     /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void SetOutput(OutputDescription? output) {
+    public void PushOutput(OutputDescription output) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedOutput = output ?? this._mainOutput;
+        this._requestedOutput = output;
+    }
+    
+    /// <summary>
+    /// Restores the output description back to the one set at <see cref="Begin"/>.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PopOutput() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+
+        this._requestedOutput = this._mainOutput;
     }
     
     /// <summary>
@@ -245,16 +276,28 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Sets the blend state description for rendering.
+    /// Pushes a new blend state to override the current state.
     /// </summary>
-    /// <param name="blendState">The new blend state description. If null, a default is used.</param>
+    /// <param name="blendState">The new <see cref="BlendStateDescription"/> to apply.</param>
     /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void SetBlendState(BlendStateDescription? blendState) {
+    public void PushBlendState(BlendStateDescription blendState) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_ALPHA_BLEND;
+        this._requestedBlendState = blendState;
+    }
+    
+    /// <summary>
+    /// Restores the blend state back to the one set at <see cref="Begin"/>.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PopBlendState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedBlendState = this._mainBlendState;
     }
     
     /// <summary>
@@ -271,16 +314,28 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Sets the depth-stencil state description for rendering.
+    /// Pushes a new depth-stencil state to override the current state.
     /// </summary>
-    /// <param name="depthStencilState">The new depth-stencil state description. If null, a default is used.</param>
-    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
-    public void SetDepthStencilState(DepthStencilStateDescription? depthStencilState) {
+    /// <param name="depthStencilState">The new <see cref="DepthStencilStateDescription"/> to apply.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PushDepthStencilState(DepthStencilStateDescription depthStencilState) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
+        this._requestedDepthStencilState = depthStencilState;
+    }
+    
+    /// <summary>
+    /// Restores the depth-stencil state back to the one set at <see cref="Begin"/>.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PopDepthStencilState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedDepthStencilState = this._mainDepthStencilState;
     }
     
     /// <summary>
@@ -297,18 +352,30 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Sets the rasterizer state description for rendering.
+    /// Pushes a new rasterizer state to override the current state.
     /// </summary>
-    /// <param name="rasterizerState">The new rasterizer state description. If null, a default is used.</param>
-    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
-    public void SetRasterizerState(RasterizerStateDescription? rasterizerState) {
+    /// <param name="rasterizerState">The new <see cref="RasterizerStateDescription"/> to apply.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PushRasterizerState(RasterizerStateDescription rasterizerState) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
+        this._requestedRasterizerState = rasterizerState;
     }
-
+    
+    /// <summary>
+    /// Restores the rasterizer state back to the one set at <see cref="Begin"/>.
+    /// </summary>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PopRasterizerState() {
+        if (!this._begun) {
+            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
+        }
+        
+        this._requestedRasterizerState = this._mainRasterizerState;
+    }
+    
     /// <summary>
     /// Gets the current color used for rendering debug shapes.
     /// </summary>
@@ -321,36 +388,32 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
 
         return this._currentColor;
     }
-
+    
     /// <summary>
-    /// Sets the color to use for rendering debug shapes.
+    /// Pushes a new color to override the current debug shape color.
     /// </summary>
-    /// <param name="color">The new color to use for rendering. If null, a default is used.</param>
-    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
-    public void SetColor(Color? color) {
+    /// <param name="color">The new <see cref="Color"/> to apply.</param>
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PushColor(Color color) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
 
-        this._requestedColor = color ?? Color.White;
+        this._requestedColor = color;
     }
-
+    
     /// <summary>
-    /// Resets the rendering settings of the current session to their default values.
+    /// Restores the debug shape color back to the one set at <see cref="Begin"/>.
     /// </summary>
-    /// <exception cref="Exception">Thrown if the rendering session has not begun.</exception>
-    public void ResetSettings() {
+    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
+    public void PopColor() {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
-        
-        this.SetOutput(null);
-        this.SetBlendState(null);
-        this.SetDepthStencilState(null);
-        this.SetRasterizerState(null);
-        this.SetColor(null);
-    }
 
+        this._requestedColor = this._mainColor;
+    }
+    
     /// <summary>
     /// Draws a line segment using the specified start and end points in 3D space.
     /// </summary>

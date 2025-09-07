@@ -1,6 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Effects;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -71,7 +71,7 @@ public class Sprite : InterpolatedComponent {
     /// The flip mode of the sprite (e.g., horizontal, vertical, or none).
     /// </summary>
     public SpriteFlip Flip;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Sprite"/> class with configurable rendering and transform options.
     /// </summary>
@@ -87,6 +87,7 @@ public class Sprite : InterpolatedComponent {
     /// <param name="blendState">Optional blend state override.</param>
     /// <param name="depthStencilState">Optional depth-stencil state override.</param>
     /// <param name="rasterizerState">Optional rasterizer state override.</param>
+    /// <param name="scissorRect">The rectangle used to define the scissor test area.</param>
     public Sprite(Texture2D texture, Vector2 offsetPos, Sampler? sampler = null, Rectangle? sourceRect = null, Vector2? size = null, float layerDepth = 0.5F, Color? color = null, SpriteFlip flip = SpriteFlip.None, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Rectangle? scissorRect = null) : base(new Vector3(offsetPos, 0)) {
         this.Texture = texture;
         this.Sampler = sampler;

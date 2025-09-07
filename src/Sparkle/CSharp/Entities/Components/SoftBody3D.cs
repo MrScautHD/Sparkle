@@ -1,5 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Jitter2;
 using Jitter2.Dynamics;
@@ -7,7 +9,6 @@ using Jitter2.Dynamics.Constraints;
 using Jitter2.SoftBodies;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Physics.Dim3;
-using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 using Sparkle.CSharp.Scenes;
@@ -72,9 +73,19 @@ public class SoftBody3D : Component {
     public Mesh Mesh => this.SoftBody.Mesh;
     
     /// <summary>
-    /// Optional rendering configuration for the soft body.
+    /// A reference to the material used for rendering the mesh.
     /// </summary>
-    public SoftBodyRenderInfo? RenderInfo;
+    public ref Material Material => ref this._renderable.Material;
+    
+    /// <summary>
+    /// A reference to the bone matrices for skeletal animation, if applicable.
+    /// </summary>
+    public ref Matrix4x4[]? BoneMatrics => ref this._renderable.BoneMatrices;
+
+    /// <summary>
+    /// Indicates whether the mesh associated with the soft body should be drawn.
+    /// </summary>
+    public bool DrawMesh;
     
     /// <summary>
     /// The positional offset from the entity's origin. Always returns zero for this component.
@@ -85,6 +96,11 @@ public class SoftBody3D : Component {
     /// The factory responsible for creating a soft body instance.
     /// </summary>
     private ISoftBodyFactory _factory;
+
+    /// <summary>
+    /// The underlying renderable object associated with the soft body.
+    /// </summary>
+    private Renderable _renderable;
     
     /// <summary>
     /// Indicates whether the synchronization process is currently active (When sync entity with body).
@@ -95,10 +111,10 @@ public class SoftBody3D : Component {
     /// Initializes a new instance of the <see cref="SoftBody3D"/> component.
     /// </summary>
     /// <param name="factory">The factory used to create the soft body instance.</param>
-    /// <param name="renderInfo">Optional rendering configuration.</param>
-    public SoftBody3D(ISoftBodyFactory factory, SoftBodyRenderInfo? renderInfo = null) : base(Vector3.Zero) {
+    /// <param name="drawMesh"> Whether the soft body’s mesh should be rendered. Defaults to <c>true</c>.</param>
+    public SoftBody3D(ISoftBodyFactory factory, bool drawMesh = true) : base(Vector3.Zero) {
         this._factory = factory;
-        this.RenderInfo = renderInfo;
+        this.DrawMesh = drawMesh;
     }
     
     /// <summary>
@@ -107,6 +123,7 @@ public class SoftBody3D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateSoftBody();
+        this._renderable = new Renderable(this.Mesh, new Transform());
         this.Simulation.BodyMoved += this.OnBodyMoving;
         this.Entity.Transform.OnUpdate += this.OnEntityMoving;
     }
@@ -119,7 +136,7 @@ public class SoftBody3D : Component {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         
-        if (this.RenderInfo != null) {
+        if (this.DrawMesh) {
             Camera3D? cam3D = SceneManager.ActiveCam3D;
         
             if (cam3D == null) {
@@ -131,7 +148,7 @@ public class SoftBody3D : Component {
             
             // Draw the mesh.
             if (this.Vertices.Any(v => cam3D.GetFrustum().ContainsPoint(this.GetLerpedVertexPos(this.Vertices.IndexOf(v))))) {
-                this.Mesh.Draw(context.CommandList, new Transform(), framebuffer.OutputDescription, this.RenderInfo.Sampler, this.RenderInfo.DepthStencilState, this.RenderInfo.RasterizerState, this.RenderInfo.Color);
+                this.Entity.Scene.ForwardRenderer.DrawRenderable(this._renderable);
             }
         }
     }
@@ -222,8 +239,10 @@ public class SoftBody3D : Component {
     
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
-
+        
         if (disposing) {
+            this.Simulation.BodyMoved -= this.OnBodyMoving;
+            this.Entity.Transform.OnUpdate -= this.OnEntityMoving;
             this.SoftBody.Destroy();
         }
     }

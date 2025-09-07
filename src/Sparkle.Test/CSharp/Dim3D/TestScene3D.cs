@@ -14,7 +14,6 @@ using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
-using Sparkle.CSharp.Physics.Dim3.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
@@ -29,10 +28,10 @@ public class TestScene3D : Scene {
         base.Init();
         
         // RELATIVE MOUSE MODE.
-        //Input.EnableRelativeMouseMode();
+        Input.EnableRelativeMouseMode();
         
         // SKYBOX
-        //this.SkyBox = ContentRegistry.SkyBox;
+        this.SkyBox = ContentRegistry.SkyBox;
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
@@ -42,8 +41,9 @@ public class TestScene3D : Scene {
         // PLAYER
         Entity player = new Entity(new Transform() { Translation = new Vector3(2, 25, 0)} );
         RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)));
+        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY);
         player.AddComponent(playerBody);
-        player.AddComponent(new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY));
+        player.AddComponent(playerModelRenderer);
         this.AddEntity(player);
         
         // PLAYER LOCK ROTATION (Cannot fall over).
@@ -52,17 +52,19 @@ public class TestScene3D : Scene {
 
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(3, 19, 0) });
-        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)), new SoftBodyRenderInfo());
+        SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)));
         softCube.AddComponent(softBodyCube);
         this.AddEntity(softCube);
         
-        softBodyCube.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
+        softBodyCube.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
         
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
-        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10)), new SoftBodyRenderInfo() { RasterizerState = RasterizerStateDescription.CULL_NONE });
+        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10)));
         cloth.AddComponent(softBodyCloth);
         this.AddEntity(cloth);
+        
+        softBodyCloth.Material.RasterizerState = RasterizerStateDescription.CULL_NONE;
         
         RigidBody fb0 = softBodyCloth.Vertices.OrderByDescending(item => +item.Position.X + item.Position.Z).First();
         var c0 = softBodyCloth.World.CreateConstraint<BallSocket>(fb0, softBodyCloth.World.NullBody);
@@ -80,22 +82,27 @@ public class TestScene3D : Scene {
         var c3 = softBodyCloth.World.CreateConstraint<BallSocket>(fb3, softBodyCloth.World.NullBody);
         c3.Initialize(fb3.Position);
         
-        softBodyCloth.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
+        softBodyCloth.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
         
         // SOFT SPHERE
         Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 1, 0) });
-        SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 1, 1), subdivisions: 3), new SoftBodyRenderInfo());
+        SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 1, 1), subdivisions: 3));
         sphere.AddComponent(softBodySphere);
         this.AddEntity(sphere);
 
-        softBodySphere.Mesh.Material.SetMapTexture(MaterialMapType.Albedo.GetName(), ContentRegistry.Sprite);
+        softBodySphere.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
         ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, true));
         this.AddEntity(ground);
+        
+        // TREE
+        Entity tree = new Entity(new Transform() { Translation = new Vector3(0, 0, 20) });
+        tree.AddComponent(new ModelRenderer(ContentRegistry.TreeModel, Vector3.Zero, drawBoundingBox: true));
+        this.AddEntity(tree);
     }
-
+    
     protected override void Update(double delta) {
         base.Update(delta);
         

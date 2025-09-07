@@ -162,9 +162,9 @@ public class MarchingCubes {
     /// stored within the MarchingCubes instance.
     /// </summary>
     public Mesh GenMesh(GraphicsDevice graphicsDevice) {
-        Material material = new Material(graphicsDevice, GlobalResource.DefaultModelEffect);
+        Material material = new Material(GlobalResource.DefaultModelEffect);
     
-        material.AddMaterialMap(MaterialMapType.Albedo.GetName(), new MaterialMap {
+        material.AddMaterialMap(MaterialMapType.Albedo, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });

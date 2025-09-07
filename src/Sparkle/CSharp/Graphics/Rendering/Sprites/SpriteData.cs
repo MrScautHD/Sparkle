@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
-using Bliss.CSharp.Graphics.Rendering.Batches.Sprites;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Veldrid;

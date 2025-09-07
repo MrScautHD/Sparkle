@@ -1,6 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
@@ -14,31 +16,11 @@ public class ModelRenderer : InterpolatedComponent {
     /// The model to be rendered.
     /// </summary>
     public Model Model { get; private set; }
-    
-    /// <summary>
-    /// The sampler used for texturing the model, can be null.
-    /// </summary>
-    public Sampler? Sampler;
-
-    /// <summary>
-    /// Defines the depth and stencil testing behavior during rendering.
-    /// </summary>
-    public DepthStencilStateDescription DepthStencilState;
-    
-    /// <summary>
-    /// Defines rasterization settings such as fill mode and culling.
-    /// </summary>
-    public RasterizerStateDescription RasterizerState;
 
     /// <summary>
     /// Indicates whether the bounding box around the model should be rendered.
     /// </summary>
     public bool DrawBoundingBox;
-    
-    /// <summary>
-    /// The color applied to the model. Defaults to white if not provided.
-    /// </summary>
-    public Color ModelColor;
 
     /// <summary>
     /// The color used for rendering the bounding box of the model.
@@ -51,25 +33,20 @@ public class ModelRenderer : InterpolatedComponent {
     private BoundingBox _box;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ModelRenderer"/> class.
+    /// A collection that maps each mesh in the model to its corresponding renderable representation.
     /// </summary>
-    /// <param name="model">The 3D model to render.</param>
-    /// <param name="offsetPosition">The position offset relative to the parent entity.</param>
-    /// <param name="sampler">Optional texture sampler to apply to the model.</param>
-    /// <param name="depthStencilState">Optional depth/stencil configuration. Defaults to depth-only testing.</param>
-    /// <param name="rasterizerState">Optional rasterization configuration. Defaults to solid fill with back-face culling.</param>
-    /// <param name="drawBoundingBox">If true, renders the bounding box around the model.</param>
-    /// <param name="modelColor">Optional color to tint the model. Defaults to white.</param>
-    /// <param name="boxColor">Optional color for the bounding box. Defaults to white.</param>
-    public ModelRenderer(Model model, Vector3 offsetPosition, Sampler? sampler = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, bool drawBoundingBox = false, Color? modelColor = null, Color? boxColor = null) : base(offsetPosition) {
+    private Dictionary<Mesh, Renderable> _renderables;
+    
+    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool drawBoundingBox = false, Color? boxColor = null) : base(offsetPosition) {
         this.Model = model;
-        this.Sampler = sampler;
-        this.DepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
-        this.RasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
         this.DrawBoundingBox = drawBoundingBox;
-        this.ModelColor = modelColor ?? Color.White;
         this.BoxColor = boxColor ?? Color.White;
         this._box = model.BoundingBox;
+        this._renderables = new Dictionary<Mesh, Renderable>();
+        
+        foreach (Mesh mesh in this.Model.Meshes) {
+            this._renderables.Add(mesh, new Renderable(mesh, new Transform(), copyModelMaterials));
+        }
     }
 
     /// <summary>
@@ -112,12 +89,33 @@ public class ModelRenderer : InterpolatedComponent {
             };
             
             // Draw the model.
-            this.Model.Draw(context.CommandList, transform, framebuffer.OutputDescription, this.Sampler, this.DepthStencilState, this.RasterizerState, this.ModelColor);
+            foreach (Renderable renderable in this._renderables.Values) {
+                renderable.Transform = transform;
+                this.Entity.Scene.ForwardRenderer.DrawRenderable(renderable);
+            }
 
             // Draw the bounding box.
             if (this.DrawBoundingBox) {
                 context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, new Transform(), this._box, this.BoxColor);
             }
         }
+    }
+
+    /// <summary>
+    /// Retrieves the material associated with the specified mesh.
+    /// </summary>
+    /// <param name="mesh">The mesh for which the material is to be retrieved.</param>
+    /// <returns>A reference to the material associated with the specified mesh.</returns>
+    public ref Material GetMaterial(Mesh mesh) {
+        return ref this._renderables[mesh].Material;
+    }
+
+    /// <summary>
+    /// Retrieves the bone matrices for a specified mesh.
+    /// </summary>
+    /// <param name="mesh">The mesh for which the bone matrices are to be retrieved.</param>
+    /// <returns>A reference to an array of bone matrices associated with the specified mesh, or null if no matrices exist.</returns>
+    public ref Matrix4x4[]? GetBoneMatrices(Mesh mesh) {
+        return ref this._renderables[mesh].BoneMatrices;
     }
 }

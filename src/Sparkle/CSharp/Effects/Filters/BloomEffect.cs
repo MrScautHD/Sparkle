@@ -13,12 +13,12 @@ public class BloomEffect : Effect {
     /// <summary>
     /// Path to the vertex shader.
     /// </summary>
-    public static readonly string VertPath = "content/shaders/full_screen_render_pass.vert";
+    public static readonly string VertPath = "content/bliss/shaders/full_screen_render_pass.vert";
     
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/shaders/filters/bloom.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/filters/bloom.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.
