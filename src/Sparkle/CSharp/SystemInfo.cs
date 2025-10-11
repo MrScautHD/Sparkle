@@ -136,7 +136,7 @@ public static class SystemInfo {
             return GetMemoryInfoMacOs();
         }
         
-        return default;
+        return (0, 0);
     }
     
     /// <summary>
