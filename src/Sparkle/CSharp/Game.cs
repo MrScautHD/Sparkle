@@ -152,7 +152,7 @@ public class Game : Disposable {
         
         Logger.Info($"Hello World! Sparkle [{Version}] start...");
         Logger.Info($"\t> CPU: {SystemInfo.Cpu}");
-        Logger.Info($"\t> MEMORY: {SystemInfo.MemorySize} GB");
+        Logger.Info($"\t> MEMORY: Total: {SystemInfo.MemoryInfo.Total} MB, Available: {SystemInfo.MemoryInfo.Available} MB");
         Logger.Info($"\t> THREADS: {SystemInfo.Threads}");
         Logger.Info($"\t> OS: {SystemInfo.Os}");
         
