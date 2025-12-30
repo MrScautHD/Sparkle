@@ -101,6 +101,14 @@ public class TestScene3D : Scene {
         Entity tree = new Entity(new Transform() { Translation = new Vector3(0, 0, 20) });
         tree.AddComponent(new ModelRenderer(ContentRegistry.TreeModel, Vector3.Zero));
         this.AddEntity(tree);
+        
+        // CAR
+        Entity car = new Entity(new Transform() { Translation = new Vector3(8, 5, 0)} );
+        RigidBody3D carBody = new RigidBody3D(new TransformedShape(new BoxShape(4, 2, 8), new Vector3(0, 0.5F, 0)));
+        ModelRenderer carModelRenderer = new ModelRenderer(ContentRegistry.CyberCarModel, -Vector3.UnitY);
+        car.AddComponent(carBody);
+        car.AddComponent(carModelRenderer);
+        this.AddEntity(car);
     }
     
     protected override void Update(double delta) {
@@ -228,6 +236,7 @@ public class TestScene3D : Scene {
         this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
+        this.GetEntity(8)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
         context.Physics3DDebugDrawer.End();
     }
 }

@@ -10,7 +10,7 @@ using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
-using MiniAudioEx;
+using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
@@ -62,11 +62,6 @@ public class Game : Disposable {
     public FullScreenRenderer FullScreenRenderPass { get; private set; }
 
     /// <summary>
-    /// The render target.
-    /// </summary>
-    public RenderTexture2D RenderTarget { get; private set; }
-
-    /// <summary>
     /// The default (global) sprite batch used for rendering 2D sprites.
     /// </summary>
     public SpriteBatch GlobalSpriteBatch { get; private set; }
@@ -100,6 +95,16 @@ public class Game : Disposable {
     /// Flag to indicate if the game should close.
     /// </summary>
     public bool ShouldClose;
+    
+    /// <summary>
+    /// The render target.
+    /// </summary>
+    private RenderTexture2D _renderTarget;
+    
+    /// <summary>
+    /// The render result.
+    /// </summary>
+    private Texture2D _renderResult;
     
     /// <summary>
     /// The log file writer used for logging messages to a file.
@@ -205,7 +210,8 @@ public class Game : Disposable {
         this.FullScreenRenderPass = new FullScreenRenderer(graphicsDevice);
         
         Logger.Info("Initialize render target texture...");
-        this.RenderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), this.Settings.SampleCount);
+        this._renderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), sampleCount: this.Settings.SampleCount);
+        this._renderResult = new Texture2D(graphicsDevice, new Image(this.MainWindow.GetWidth(), this.MainWindow.GetHeight()), false);
         
         Logger.Info("Initialize global sprite batch...");
         this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow);
@@ -266,23 +272,26 @@ public class Game : Disposable {
             
             // Draw.
             this.CommandList.Begin();
-            this.CommandList.SetFramebuffer(this.RenderTarget.Framebuffer);
+            this.CommandList.SetFramebuffer(this._renderTarget.Framebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             this.CommandList.ClearDepthStencil(1.0F);
-
-            this.Draw(this.GraphicsContext, this.RenderTarget.Framebuffer);
+            
+            this.Draw(this.GraphicsContext, this._renderTarget.Framebuffer);
             
             // Apply MSAA.
-            if (this.RenderTarget.SampleCount != TextureSampleCount.Count1) {
-                this.CommandList.ResolveTexture(this.RenderTarget.ColorTexture, this.RenderTarget.DestinationTexture);
+            if (this._renderTarget.SampleCount != TextureSampleCount.Count1) {
+                this.CommandList.ResolveTexture(this._renderTarget.ColorTexture, this._renderResult.DeviceTexture);
+            }
+            else {
+                this.CommandList.CopyTexture(this._renderTarget.ColorTexture, this._renderResult.DeviceTexture);
             }
             
             // Draw render target texture.
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-            this.CommandList.ClearDepthStencil(1.0F);
+            this.CommandList.ClearDepthStencil(1.0F); // TODO: CHECK ON ALL backends if its ok to remove
             
-            this.FullScreenRenderPass.Draw(this.CommandList, this.RenderTarget, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+            this.FullScreenRenderPass.Draw(this.CommandList, this._renderResult, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
             this.CommandList.End();
             graphicsDevice.WaitForIdle();
@@ -359,10 +368,22 @@ public class Game : Disposable {
     /// Handles window resizing events.
     /// </summary>
     protected virtual void OnResize(Rectangle rectangle) {
+        
+        // Resize main swapchain.
         this.GraphicsDevice.MainSwapchain.Resize((uint) rectangle.Width, (uint) rectangle.Height);
-        this.RenderTarget.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        
+        // Resize render target.
+        this._renderTarget.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        this._renderResult.Dispose();
+        this._renderResult = new Texture2D(this.GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
+        
+        // Resize scene manager.
         SceneManager.OnResize(rectangle);
+
+        // Resize overlay manager.
         OverlayManager.OnResize(rectangle);
+        
+        // Resize gui manager.
         GuiManager.OnResize(rectangle);
     }
     
@@ -391,7 +412,7 @@ public class Game : Disposable {
     /// </summary>
     /// <returns>The sample count of the MSAA render target texture.</returns>
     public TextureSampleCount? GetSampleCount() {
-        return this.RenderTarget.SampleCount;
+        return this._renderTarget.SampleCount;
     }
     
     /// <summary>
@@ -399,7 +420,7 @@ public class Game : Disposable {
     /// </summary>
     /// <param name="sampleCount">The texture sample count to apply, defining the level of anti-aliasing.</param>
     public void SetSampleCount(TextureSampleCount sampleCount) {
-        this.RenderTarget.SampleCount = sampleCount;
+        this._renderTarget.SampleCount = sampleCount;
         SceneManager.FilterTarget.SampleCount = sampleCount;
     }
     
@@ -412,7 +433,8 @@ public class Game : Disposable {
             
             this.Content.Dispose();
             
-            this.RenderTarget.Dispose();
+            this._renderTarget.Dispose();
+            this._renderResult.Dispose();
             this.FullScreenRenderPass.Dispose();
             
             this.GlobalImmediateRenderer.Dispose();

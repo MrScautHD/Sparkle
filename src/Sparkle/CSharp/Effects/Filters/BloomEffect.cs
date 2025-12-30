@@ -5,6 +5,7 @@ using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Filters;
 
@@ -33,7 +34,7 @@ public class BloomEffect : Effect {
     /// <summary>
     /// Uniform buffer used to pass parameters to the shader.
     /// </summary>
-    private SimpleBuffer<Parameters> _parameterBuffer;
+    private SimpleUniformBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="BloomEffect"/> class.
@@ -42,8 +43,8 @@ public class BloomEffect : Effect {
     /// <param name="vertexLayout">The vertex layout for full-screen rendering.</param>
     /// <param name="samples">The number of blur samples to use in the bloom effect.</param>
     /// <param name="quality">The quality factor of the bloom blur.</param>
-    /// <param name="constants">Optional shader specialization constants.</param>
-    public BloomEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float samples = 5.0F, float quality = 2.5F, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
+    public BloomEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float samples = 5.0F, float quality = 2.5F) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             Samples = samples,
@@ -51,7 +52,7 @@ public class BloomEffect : Effect {
         };
         
         // Create the params buffer.
-        this._parameterBuffer = new SimpleBuffer<Parameters>(graphicsDevice, 1, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
         
         // Add resize event.
@@ -90,7 +91,7 @@ public class BloomEffect : Effect {
         
         if (this._isDirty) {
             this._parameterBuffer.SetValue(0, this._parameters);
-            this._parameterBuffer.UpdateBuffer(commandList);
+            this._parameterBuffer.UpdateBufferDeferred(commandList);
             this._isDirty = false;
         }
         

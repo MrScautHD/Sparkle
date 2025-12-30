@@ -5,6 +5,7 @@ using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Posts;
 
@@ -33,7 +34,7 @@ public class FxaaEffect : Effect {
     /// <summary>
     /// Uniform buffer used to pass parameters to the shader.
     /// </summary>
-    private SimpleBuffer<Parameters> _parameterBuffer;
+    private SimpleUniformBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="FxaaEffect"/> class with optional FXAA tuning values.
@@ -43,8 +44,8 @@ public class FxaaEffect : Effect {
     /// <param name="reduceMin">Minimum amount of local contrast reduction.</param>
     /// <param name="reduceMul">Multiplier for local contrast reduction.</param>
     /// <param name="spanMax">Maximum blur span.</param>
-    /// <param name="constants">Optional shader specialization constants.</param>
-    public FxaaEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
+    public FxaaEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             ReduceMin = reduceMin,
@@ -53,7 +54,7 @@ public class FxaaEffect : Effect {
         };
         
         // Create the params buffer.
-        this._parameterBuffer = new SimpleBuffer<Parameters>(graphicsDevice, 1, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
         
         // Add resize event.
@@ -103,7 +104,7 @@ public class FxaaEffect : Effect {
         
         if (this._isDirty) {
             this._parameterBuffer.SetValue(0, this._parameters);
-            this._parameterBuffer.UpdateBuffer(commandList);
+            this._parameterBuffer.UpdateBufferDeferred(commandList);
             this._isDirty = false;
         }
         

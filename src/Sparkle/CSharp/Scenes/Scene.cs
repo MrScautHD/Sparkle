@@ -33,7 +33,7 @@ public abstract class Scene : Disposable {
     /// <summary>
     /// Gets the forward renderer responsible for rendering 3D content in the scene.
     /// </summary>
-    public ForwardRenderer ForwardRenderer { get; private set; }
+    public IRenderer Renderer { get; private set; }
     
     /// <summary>
     /// Manages and draw sprites for the entity sprite component.
@@ -66,18 +66,19 @@ public abstract class Scene : Disposable {
     /// <param name="name">The name of the scene.</param>
     /// <param name="sceneType">The type of the scene (2D or 3D).</param>
     /// <param name="simulation">The optional physics simulation. If not provided, a default one is created.</param>
-    protected Scene(string name, SceneType sceneType, Simulation? simulation = null) {
+    protected Scene(string name, SceneType sceneType, IRenderer? renderer = null, Simulation? simulation = null) {
         this.Name = name;
         this.SceneType = sceneType;
+        //this.Renderer = renderer ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice); // TODO: Find a way to init it in the init method also for Simulation (IT also get disposed its important)!
         this.Simulation = simulation ?? (sceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
         this.Entities = new Dictionary<uint, Entity>();
     }
-
+    
     /// <summary>
     /// Initializes the scene. Can be overridden in derived classes.
     /// </summary>
     protected internal virtual void Init() {
-        this.ForwardRenderer = new ForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.Renderer = new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
         this.SpriteRenderer = new SpriteRenderer();
     }
     
@@ -125,7 +126,7 @@ public abstract class Scene : Disposable {
             entity.Draw(context, framebuffer);
         }
         
-        this.ForwardRenderer.Draw(context.CommandList, framebuffer.OutputDescription);
+        this.Renderer.Draw(context.CommandList, framebuffer.OutputDescription);
         this.SpriteRenderer.Draw(context, framebuffer);
     }
 
@@ -294,7 +295,7 @@ public abstract class Scene : Disposable {
             
             this._entityIds = 0;
             this.Simulation.Dispose();
-            this.ForwardRenderer.Dispose();
+            this.Renderer.Dispose();
         }
     }
 }

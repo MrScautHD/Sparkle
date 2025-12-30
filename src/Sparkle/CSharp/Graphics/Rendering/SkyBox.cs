@@ -63,7 +63,7 @@ public class SkyBox : Disposable {
     /// <summary>
     /// The buffer containing the projection and view matrices.
     /// </summary>
-    private SimpleBuffer<Matrix4x4> _projViewBuffer;
+    private SimpleUniformBuffer<Matrix4x4> _projViewBuffer;
 
     /// <summary>
     /// The description of the rendering pipeline used for the skybox.
@@ -96,11 +96,11 @@ public class SkyBox : Disposable {
         graphicsDevice.UpdateBuffer(this._indexBuffer, 0, this._indices);
         
         // Create projection view buffer.
-        this._projViewBuffer = new SimpleBuffer<Matrix4x4>(graphicsDevice, 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        this._projViewBuffer = new SimpleUniformBuffer<Matrix4x4>(graphicsDevice, 2, ShaderStages.Vertex);
         
         // Create pipeline.
         this._pipelineDescription = new SimplePipelineDescription() {
-            BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND,
+            BlendState = BlendStateDescription.SINGLE_DISABLED,
             DepthStencilState = DepthStencilStateDescription.DISABLED,
             RasterizerState = new RasterizerStateDescription() {
                 CullMode = FaceCullMode.None,
@@ -131,7 +131,7 @@ public class SkyBox : Disposable {
         // Update projection/view buffer.
         this._projViewBuffer.SetValue(0, cam3D.GetProjection());
         this._projViewBuffer.SetValue(1, cam3D.GetView());
-        this._projViewBuffer.UpdateBuffer(commandList);
+        this._projViewBuffer.UpdateBufferDeferred(commandList);
         
         // Update pipeline description.
         this._pipelineDescription.Outputs = output;
@@ -154,7 +154,7 @@ public class SkyBox : Disposable {
         commandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("ProjectionViewBuffer"), this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
         
         // Set resourceSet of the cubemap.
-        commandList.SetGraphicsResourceSet(this._effect.GetTextureLayoutSlot("fCubemap"), this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap").Layout));
+        commandList.SetGraphicsResourceSet(this._effect.GetTextureLayoutSlot("fCubemap"), this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap")));
         
         // Apply effect.
         this._effect.Apply(commandList);

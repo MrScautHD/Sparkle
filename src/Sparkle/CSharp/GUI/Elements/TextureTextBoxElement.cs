@@ -73,7 +73,7 @@ public class TextureTextBoxElement : GuiElement {
     /// Tracks the elapsed time for caret visibility (Used to manage the blinking behavior of the caret).
     /// </summary>
     private double _caretTimer;
-
+    
     /// <summary>
     /// Indicates whether the component is currently processing a double-click action.
     /// </summary>

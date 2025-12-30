@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -41,7 +41,7 @@ public class ModelRenderer : InterpolatedComponent {
         this.Model = model;
         this.DrawBoundingBox = drawBoundingBox;
         this.BoxColor = boxColor ?? Color.White;
-        this._box = model.BoundingBox;
+        this._box = model.GenBoundingBox();
         this._renderables = new Dictionary<Mesh, Renderable>();
         
         foreach (Mesh mesh in this.Model.Meshes) {
@@ -90,8 +90,8 @@ public class ModelRenderer : InterpolatedComponent {
             
             // Draw the model.
             foreach (Renderable renderable in this._renderables.Values) {
-                renderable.Transform = transform;
-                this.Entity.Scene.ForwardRenderer.DrawRenderable(renderable);
+                renderable.Transforms[0] = transform;
+                this.Entity.Scene.Renderer.DrawRenderable(renderable);
             }
 
             // Draw the bounding box.
@@ -115,7 +115,7 @@ public class ModelRenderer : InterpolatedComponent {
     /// </summary>
     /// <param name="mesh">The mesh for which the bone matrices are to be retrieved.</param>
     /// <returns>A reference to an array of bone matrices associated with the specified mesh, or null if no matrices exist.</returns>
-    public ref Matrix4x4[]? GetBoneMatrices(Mesh mesh) {
-        return ref this._renderables[mesh].BoneMatrices;
+    public Matrix4x4[]? GetBoneMatrices(Mesh mesh) {
+        return this._renderables[mesh].BoneMatrices;
     }
 }

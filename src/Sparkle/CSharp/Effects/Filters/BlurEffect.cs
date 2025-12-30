@@ -5,6 +5,7 @@ using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Filters;
 
@@ -33,7 +34,7 @@ public class BlurEffect : Effect {
     /// <summary>
     /// Uniform buffer used to pass parameters to the shader.
     /// </summary>
-    private SimpleBuffer<Parameters> _parameterBuffer;
+    private SimpleUniformBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="BlurEffect"/> class.
@@ -42,8 +43,8 @@ public class BlurEffect : Effect {
     /// <param name="vertexLayout">The layout of the vertices used in the full-screen pass.</param>
     /// <param name="intensity">The strength of the blur effect.</param>
     /// <param name="radius">The blur radius determining the spread of the blur.</param>
-    /// <param name="constants">Optional specialization constants to pass to the shader.</param>
-    public BlurEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, float intensity = 3.0F, int radius = 5, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
+    public BlurEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float intensity = 3.0F, int radius = 5) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             Intensity = intensity,
@@ -51,7 +52,7 @@ public class BlurEffect : Effect {
         };
         
         // Create the params buffer.
-        this._parameterBuffer = new SimpleBuffer<Parameters>(graphicsDevice, 1, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
         
         // Add resize event.
@@ -90,7 +91,7 @@ public class BlurEffect : Effect {
         
         if (this._isDirty) {
             this._parameterBuffer.SetValue(0, this._parameters);
-            this._parameterBuffer.UpdateBuffer(commandList);
+            this._parameterBuffer.UpdateBufferDeferred(commandList);
             this._isDirty = false;
         }
         

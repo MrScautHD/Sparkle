@@ -29,7 +29,7 @@ public class Simulation3D : Simulation {
     public Simulation3D(PhysicsSettings3D settings) {
         this._settings = settings;
 
-        this.World = new World(settings.Capacity) {
+        this.World = new World() {
             Gravity = settings.Gravity
         };
         

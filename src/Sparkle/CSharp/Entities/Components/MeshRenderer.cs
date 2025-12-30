@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -25,7 +25,7 @@ public class MeshRenderer : InterpolatedComponent {
     /// <summary>
     /// A reference to the bone matrices for skeletal animation, if applicable.
     /// </summary>
-    public ref Matrix4x4[]? BoneMatrics => ref this._renderable.BoneMatrices;
+    public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
     
     /// <summary>
     /// Whether to draw the bounding box around the mesh.
@@ -69,7 +69,7 @@ public class MeshRenderer : InterpolatedComponent {
         this.Mesh = mesh;
         this.DrawBoundingBox = drawBoundingBox;
         this.BoxColor = boxColor ?? Color.White;
-        this._box = mesh.BoundingBox;
+        this._box = mesh.GenBoundingBox();
         this._renderable = new Renderable(this.Mesh, new Transform(), material);
     }
     
@@ -113,9 +113,9 @@ public class MeshRenderer : InterpolatedComponent {
             };
             
             // Draw the mesh.
-            this._renderable.Transform = transform;
-            this.Entity.Scene.ForwardRenderer.DrawRenderable(this._renderable);
-
+            this._renderable.Transforms[0] = transform;
+            this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
+            
             // Draw the bounding box.
             if (this.DrawBoundingBox) {
                 context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, new Transform(), this._box, this.BoxColor);

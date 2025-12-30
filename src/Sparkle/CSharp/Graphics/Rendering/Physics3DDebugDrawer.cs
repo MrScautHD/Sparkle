@@ -59,7 +59,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <summary>
     /// The buffer storing the projection and view matrices.
     /// </summary>
-    private SimpleBuffer<Matrix4x4> _projViewBuffer;
+    private SimpleUniformBuffer<Matrix4x4> _projViewBuffer;
     
     /// <summary>
     /// Description of the graphics pipeline used for debug rendering.
@@ -174,7 +174,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._vertexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(this.Capacity * (uint) Marshal.SizeOf<PhysicsDebugVertex3D>(), BufferUsage.VertexBuffer | BufferUsage.Dynamic));
         
         // Create projection view buffer.
-        this._projViewBuffer = new SimpleBuffer<Matrix4x4>(graphicsDevice, 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        this._projViewBuffer = new SimpleUniformBuffer<Matrix4x4>(graphicsDevice, 2, ShaderStages.Vertex);
         
         // Create pipeline description.
         this._pipelineDescription = new SimplePipelineDescription() {
@@ -576,7 +576,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         // Update projection view buffer.
         this._projViewBuffer.SetValue(0, cam3D.GetProjection());
         this._projViewBuffer.SetValue(1, cam3D.GetView());
-        this._projViewBuffer.UpdateBuffer(this._currentCommandList);
+        this._projViewBuffer.UpdateBufferDeferred(this._currentCommandList);
         
         // Update vertex buffer.
         this._currentCommandList.UpdateBuffer(this._vertexBuffer, 0, new ReadOnlySpan<PhysicsDebugVertex3D>(this._vertices, 0, (int) this._currentBatchCount));

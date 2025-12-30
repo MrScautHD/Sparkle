@@ -4,7 +4,7 @@ using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Textures.Cubemaps;
-using MiniAudioEx;
+using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
 using Veldrid;

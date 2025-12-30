@@ -1,5 +1,6 @@
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
@@ -13,6 +14,11 @@ namespace Sparkle.CSharp.Scenes;
 public static class SceneManager {
     
     /// <summary>
+    /// The graphics device used for rendering.
+    /// </summary>
+    public static GraphicsDevice GraphicsDevice { get; private set; }
+    
+    /// <summary>
     /// Gets the currently active scene.
     /// </summary>
     public static Scene? ActiveScene { get; private set; }
@@ -21,11 +27,21 @@ public static class SceneManager {
     /// The render target used for filter effects.
     /// </summary>
     public static RenderTexture2D FilterTarget { get; private set; }
+
+    /// <summary>
+    /// The final texture result obtained after applying filter effects to a scene.
+    /// </summary>
+    public static Texture2D FilterResult { get; private set; }
     
     /// <summary>
     /// The render target used for post-processing effects.
     /// </summary>
     public static RenderTexture2D PostProcessingTarget { get; private set; }
+
+    /// <summary>
+    /// The final texture result obtained after applying post-processing effects to a scene.
+    /// </summary>
+    public static Texture2D PostProcessingResult { get; private set; }
     
     /// <summary>
     /// The post-processing effect applied to the rendered scene.
@@ -55,9 +71,16 @@ public static class SceneManager {
     /// <param name="defaultScene">The default scene to load, if any.</param>
     /// <param name="sampleCount">The sample count for anti-aliasing.</param>
     internal static void Init(GraphicsDevice graphicsDevice, IWindow window, Scene? defaultScene = null, TextureSampleCount sampleCount = TextureSampleCount.Count1) {
+        GraphicsDevice = graphicsDevice;
         ActiveScene = defaultScene;
-        FilterTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight(), sampleCount);
+        
+        // Create a filter render target.
+        FilterTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight(), sampleCount: sampleCount);
+        FilterResult = new Texture2D(graphicsDevice, new Image(window.GetWidth(), window.GetHeight()), false);
+        
+        // Create a post-processing render target.
         PostProcessingTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight());
+        PostProcessingResult = new Texture2D(graphicsDevice, new Image(window.GetWidth(), window.GetHeight()), false);
     }
     
     /// <summary>
@@ -119,24 +142,28 @@ public static class SceneManager {
         
         // Apply MSAA. 
         if (FilterTarget.SampleCount != TextureSampleCount.Count1) {
-            context.CommandList.ResolveTexture(FilterTarget.ColorTexture, FilterTarget.DestinationTexture);
+            context.CommandList.ResolveTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
+        }
+        else {
+            context.CommandList.CopyTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
         }
         
         if (PostEffect != null) {
             
             // Draw the filter effect into the post-processing framebuffer.
             context.CommandList.SetFramebuffer(PostProcessingTarget.Framebuffer);
-            context.FullScreenRenderPass.Draw(context.CommandList, FilterTarget, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            context.FullScreenRenderPass.Draw(context.CommandList, FilterResult, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
             
             // Draw the post-processing effect into the final framebuffer.
             context.CommandList.SetFramebuffer(framebuffer);
-            context.FullScreenRenderPass.Draw(context.CommandList, PostProcessingTarget, framebuffer.OutputDescription, PostEffect);
+            context.CommandList.CopyTexture(PostProcessingTarget.ColorTexture, PostProcessingResult.DeviceTexture);
+            context.FullScreenRenderPass.Draw(context.CommandList, PostProcessingResult, framebuffer.OutputDescription, PostEffect);
         }
         else {
             
             // Draw the filter effect into the final framebuffer.
             context.CommandList.SetFramebuffer(framebuffer);
-            context.FullScreenRenderPass.Draw(context.CommandList, FilterTarget, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            context.FullScreenRenderPass.Draw(context.CommandList, FilterResult, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
         }
     }
 
@@ -146,8 +173,16 @@ public static class SceneManager {
     /// <param name="rectangle">The new window size.</param>
     internal static void OnResize(Rectangle rectangle) {
         ActiveScene?.Resize(rectangle);
+        
+        // Resize filter target.
         FilterTarget.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        FilterResult.Dispose();
+        FilterResult = new Texture2D(GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
+        
+        // Resize post-processing target.
         PostProcessingTarget.Resize((uint) rectangle.Width, (uint) rectangle.Height);
+        PostProcessingResult.Dispose();
+        PostProcessingResult = new Texture2D(GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
     }
 
     /// <summary>
@@ -168,6 +203,8 @@ public static class SceneManager {
     internal static void Destroy() {
         ActiveScene?.Dispose();
         FilterTarget.Dispose();
+        FilterResult.Dispose();
         PostProcessingTarget.Dispose();
+        PostProcessingResult.Dispose();
     }
 }

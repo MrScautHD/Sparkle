@@ -5,6 +5,7 @@ using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Filters;
 
@@ -33,21 +34,21 @@ public class SobelEffect : Effect {
     /// <summary>
     /// Uniform buffer used to pass parameters to the shader.
     /// </summary>
-    private SimpleBuffer<Parameters> _parameterBuffer;
+    private SimpleUniformBuffer<Parameters> _parameterBuffer;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="SobelEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
     /// <param name="vertexLayout">The vertex layout description for the full-screen quad.</param>
-    /// <param name="constants">Optional specialization constants for shader compilation.</param>
-    public SobelEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, SpecializationConstant[]? constants = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, constants) {
+    /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
+    public SobelEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight())
         };
         
         // Create the params buffer.
-        this._parameterBuffer = new SimpleBuffer<Parameters>(graphicsDevice, 1, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
         
         // Add resize event.
@@ -64,7 +65,7 @@ public class SobelEffect : Effect {
         
         if (this._isDirty) {
             this._parameterBuffer.SetValue(0, this._parameters);
-            this._parameterBuffer.UpdateBuffer(commandList);
+            this._parameterBuffer.UpdateBufferDeferred(commandList);
             this._isDirty = false;
         }
         

@@ -1,12 +1,12 @@
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
-using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Effects.Posts;
 using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
+using Veldrid.SPIRV;
 
 namespace Sparkle.CSharp.Graphics;
 
@@ -82,52 +82,52 @@ public static class GlobalGraphicsAssets {
         Window = window;
         
         // Skybox effect.
-        SkyboxEffect = new Effect(graphicsDevice, CubemapVertex3D.VertexLayout, "content/sparkle/shaders/skybox.vert", "content/sparkle/shaders/skybox.frag");
-        SkyboxEffect.AddBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex);
-        SkyboxEffect.AddTextureLayout("fCubemap");
+        SkyboxEffect = new Effect(graphicsDevice, CubemapVertex3D.VertexLayout, "content/sparkle/shaders/skybox.vert", "content/sparkle/shaders/skybox.frag", new CrossCompileOptions());
+        SkyboxEffect.AddBufferLayout("ProjectionViewBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        SkyboxEffect.AddTextureLayout("fCubemap", 1);
         
         // Physics debug effect.
-        PhysicsDebugEffect = new Effect(graphicsDevice, PhysicsDebugVertex3D.VertexLayout, "content/sparkle/shaders/physics_debug_drawer.vert", "content/sparkle/shaders/physics_debug_drawer.frag");
-        PhysicsDebugEffect.AddBufferLayout("ProjectionViewBuffer", SimpleBufferType.Uniform, ShaderStages.Vertex);
+        PhysicsDebugEffect = new Effect(graphicsDevice, PhysicsDebugVertex3D.VertexLayout, "content/sparkle/shaders/physics_debug_drawer.vert", "content/sparkle/shaders/physics_debug_drawer.frag", new CrossCompileOptions());
+        PhysicsDebugEffect.AddBufferLayout("ProjectionViewBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
         // FXAA post-processing effect.
-        FxaaEffect = new FxaaEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        FxaaEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        FxaaEffect.AddTextureLayout("fTexture");
+        FxaaEffect = new FxaaEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        FxaaEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        FxaaEffect.AddTextureLayout("fTexture", 1);
         
         // Gray scale filter effect.
-        GrayScaleEffect = new Effect(graphicsDevice, SpriteVertex2D.VertexLayout, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/filters/gray_scale.frag");
-        GrayScaleEffect.AddTextureLayout("fTexture");
+        GrayScaleEffect = new Effect(graphicsDevice, SpriteVertex2D.VertexLayout, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/filters/gray_scale.frag", new CrossCompileOptions());
+        GrayScaleEffect.AddTextureLayout("fTexture", 1);
         
         // Bloom filter effect.
-        BloomEffect = new BloomEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        BloomEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        BloomEffect.AddTextureLayout("fTexture");
+        BloomEffect = new BloomEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        BloomEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        BloomEffect.AddTextureLayout("fTexture", 1);
         
         // Blur filter effect.
-        BlurEffect = new BlurEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        BlurEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        BlurEffect.AddTextureLayout("fTexture");
+        BlurEffect = new BlurEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        BlurEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        BlurEffect.AddTextureLayout("fTexture", 1);
         
         // Sobel filter effect.
-        SobelEffect = new SobelEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        SobelEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SobelEffect.AddTextureLayout("fTexture");
+        SobelEffect = new SobelEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        SobelEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SobelEffect.AddTextureLayout("fTexture", 1);
         
         // Predator filter effect.
-        PredatorEffect = new PredatorEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        PredatorEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PredatorEffect.AddTextureLayout("fTexture");
+        PredatorEffect = new PredatorEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        PredatorEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PredatorEffect.AddTextureLayout("fTexture", 1);
         
         // Posterization filter effect.
-        PosterizationEffect = new PosterizationEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        PosterizationEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PosterizationEffect.AddTextureLayout("fTexture");
+        PosterizationEffect = new PosterizationEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        PosterizationEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PosterizationEffect.AddTextureLayout("fTexture", 1);
         
         // Pixelizer filter effect.
-        PixelizerEffect = new PixelizerEffect(graphicsDevice, SpriteVertex2D.VertexLayout);
-        PixelizerEffect.AddBufferLayout("ParameterBuffer", SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PixelizerEffect.AddTextureLayout("fTexture");
+        PixelizerEffect = new PixelizerEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());
+        PixelizerEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PixelizerEffect.AddTextureLayout("fTexture", 1);
     }
     
     /// <summary>

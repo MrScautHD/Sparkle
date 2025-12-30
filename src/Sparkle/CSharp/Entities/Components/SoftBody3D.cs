@@ -1,6 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Rendering.Renderers.Forward.Renderables;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Jitter2;
@@ -80,7 +80,7 @@ public class SoftBody3D : Component {
     /// <summary>
     /// A reference to the bone matrices for skeletal animation, if applicable.
     /// </summary>
-    public ref Matrix4x4[]? BoneMatrics => ref this._renderable.BoneMatrices;
+    public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
 
     /// <summary>
     /// Indicates whether the mesh associated with the soft body should be drawn.
@@ -148,7 +148,7 @@ public class SoftBody3D : Component {
             
             // Draw the mesh.
             if (this.Vertices.Any(v => cam3D.GetFrustum().ContainsPoint(this.GetLerpedVertexPos(this.Vertices.IndexOf(v))))) {
-                this.Entity.Scene.ForwardRenderer.DrawRenderable(this._renderable);
+                this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
             }
         }
     }
