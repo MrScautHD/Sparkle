@@ -289,7 +289,6 @@ public class Game : Disposable {
             // Draw render target texture.
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-            this.CommandList.ClearDepthStencil(1.0F); // TODO: CHECK ON ALL backends if its ok to remove
             
             this.FullScreenRenderPass.Draw(this.CommandList, this._renderResult, graphicsDevice.SwapchainFramebuffer.OutputDescription);
             
