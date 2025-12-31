@@ -61,16 +61,27 @@ public abstract class Scene : Disposable {
     private uint _entityIds;
     
     /// <summary>
+    /// Factory function used to create the renderer instance for this scene.
+    /// </summary>
+    private Func<GraphicsDevice, IRenderer>? _rendererFactory;
+    
+    /// <summary>
+    /// Factory function used to create the physics simulation instance for this scene.
+    /// </summary>
+    private Func<Simulation>? _simulationFactory;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="Scene"/> class.
     /// </summary>
     /// <param name="name">The name of the scene.</param>
     /// <param name="sceneType">The type of the scene (2D or 3D).</param>
-    /// <param name="simulation">The optional physics simulation. If not provided, a default one is created.</param>
-    protected Scene(string name, SceneType sceneType, IRenderer? renderer = null, Simulation? simulation = null) {
+    /// <param name="rendererFactory">Optional factory used to create a custom renderer for the scene.</param>
+    /// <param name="simulationFactory">Optional factory used to create a custom physics simulation.</param>
+    protected Scene(string name, SceneType sceneType, Func<GraphicsDevice, IRenderer>? rendererFactory = null, Func<Simulation>? simulationFactory = null) {
         this.Name = name;
         this.SceneType = sceneType;
-        //this.Renderer = renderer ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice); // TODO: Find a way to init it in the init method also for Simulation (IT also get disposed its important)!
-        this.Simulation = simulation ?? (sceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
+        this._rendererFactory = rendererFactory;
+        this._simulationFactory = simulationFactory;
         this.Entities = new Dictionary<uint, Entity>();
     }
     
@@ -78,7 +89,8 @@ public abstract class Scene : Disposable {
     /// Initializes the scene. Can be overridden in derived classes.
     /// </summary>
     protected internal virtual void Init() {
-        this.Renderer = new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.Renderer = this._rendererFactory?.Invoke(GlobalGraphicsAssets.GraphicsDevice) ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.Simulation = this._simulationFactory?.Invoke() ?? (this.SceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
         this.SpriteRenderer = new SpriteRenderer();
     }
     
