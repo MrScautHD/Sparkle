@@ -77,11 +77,6 @@ public class Game : Disposable {
     public ImmediateRenderer GlobalImmediateRenderer { get; private set; }
 
     /// <summary>
-    /// The default (global) 3D physics debugging drawer that visualizes physics simulations in the game engine.
-    /// </summary>
-    public Physics3DDebugDrawer GlobalPhysics3DDebugDrawer { get; private set; }
-
-    /// <summary>
     /// An instance encapsulating core graphics rendering components associated with the game.
     /// </summary>
     public GraphicsContext GraphicsContext { get; private set; }
@@ -221,12 +216,9 @@ public class Game : Disposable {
         
         Logger.Info("Initialize global immediate renderer...");
         this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
-
-        Logger.Info("Initialize global physics 3D drawer...");
-        this.GlobalPhysics3DDebugDrawer = new Physics3DDebugDrawer(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer, this.GlobalPhysics3DDebugDrawer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);

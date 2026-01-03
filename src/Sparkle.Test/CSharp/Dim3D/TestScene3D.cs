@@ -1,6 +1,8 @@
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
@@ -13,6 +15,7 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
@@ -39,9 +42,12 @@ public class TestScene3D : Scene {
         this.AddEntity(camera3D);
         
         // PLAYER
-        Entity player = new Entity(new Transform() { Translation = new Vector3(2, 25, 0)} );
-        RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)));
-        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY);
+        Entity player = new Entity(new Transform() { Translation = new Vector3(12, 2, 0)});
+        RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0))) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Red
+        };
+        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
         player.AddComponent(playerBody);
         player.AddComponent(playerModelRenderer);
         this.AddEntity(player);
@@ -60,7 +66,10 @@ public class TestScene3D : Scene {
         
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
-        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10)));
+        SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10))) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Green
+        };
         cloth.AddComponent(softBodyCloth);
         this.AddEntity(cloth);
         
@@ -69,15 +78,15 @@ public class TestScene3D : Scene {
         RigidBody fb0 = softBodyCloth.Vertices.OrderByDescending(item => +item.Position.X + item.Position.Z).First();
         var c0 = softBodyCloth.World.CreateConstraint<BallSocket>(fb0, softBodyCloth.World.NullBody);
         c0.Initialize(fb0.Position);
-
+        
         RigidBody fb1 = softBodyCloth.Vertices.OrderByDescending(item => +item.Position.X - item.Position.Z).First();
         var c1 = softBodyCloth.World.CreateConstraint<BallSocket>(fb1, softBodyCloth.World.NullBody);
         c1.Initialize(fb1.Position);
-
+        
         RigidBody fb2 = softBodyCloth.Vertices.OrderByDescending(item => -item.Position.X + item.Position.Z).First();
         var c2 = softBodyCloth.World.CreateConstraint<BallSocket>(fb2, softBodyCloth.World.NullBody);
         c2.Initialize(fb2.Position);
-
+        
         RigidBody fb3 = softBodyCloth.Vertices.OrderByDescending(item => -item.Position.X - item.Position.Z).First();
         var c3 = softBodyCloth.World.CreateConstraint<BallSocket>(fb3, softBodyCloth.World.NullBody);
         c3.Initialize(fb3.Position);
@@ -94,7 +103,10 @@ public class TestScene3D : Scene {
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
-        ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, true));
+        ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, MotionType.Static) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Green
+        });
         this.AddEntity(ground);
         
         // TREE
@@ -104,11 +116,29 @@ public class TestScene3D : Scene {
         
         // CAR
         Entity car = new Entity(new Transform() { Translation = new Vector3(8, 5, 0)} );
-        RigidBody3D carBody = new RigidBody3D(new TransformedShape(new BoxShape(4, 2, 8), new Vector3(0, 0.5F, 0)));
+        RigidBody3D carBody = new RigidBody3D(new TransformedShape(new BoxShape(4, 2, 8), new Vector3(0, 0.5F, 0))) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Green
+        };
         ModelRenderer carModelRenderer = new ModelRenderer(ContentRegistry.CyberCarModel, -Vector3.UnitY);
         car.AddComponent(carBody);
         car.AddComponent(carModelRenderer);
         this.AddEntity(car);
+        
+        // INSTANCING PLAYER
+        for (int x = 0; x < 3; x++) {
+            for (int z = 0; z < 3; z++) {
+                Entity instancedPlayer = new Entity(new Transform() { Translation = new Vector3(0 + (x * 2), 25, 0 + (z * 2)) });
+                RigidBody3D instancedPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0))) {
+                    DrawDebug = true,
+                    DebugDrawColor = Color.Green
+                };
+                InstancedRenderProxy instancedMultiRenderer = new InstancedRenderProxy(ContentRegistry.PlayerMultiInstanceRenderer, -Vector3.UnitY, true);
+                instancedPlayer.AddComponent(instancedPlayerBody);
+                instancedPlayer.AddComponent(instancedMultiRenderer);
+                this.AddEntity(instancedPlayer);
+            }
+        }
     }
     
     protected override void Update(double delta) {
@@ -224,19 +254,11 @@ public class TestScene3D : Scene {
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        base.Draw(context, framebuffer);
         
         // Draw gird.
         context.ImmediateRenderer.DrawGrid(context.CommandList, framebuffer.OutputDescription, new Transform(), 96, 1, 16, Color.Gray);
         
-        // Draw physics 3D debug drawer.
-        context.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer.OutputDescription, color: Color.Green);
-        this.GetEntity(2)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        this.GetEntity(3)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        this.GetEntity(4)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        this.GetEntity(5)!.GetComponent<SoftBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        this.GetEntity(6)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        this.GetEntity(8)!.GetComponent<RigidBody3D>()!.DebugDraw(context.Physics3DDebugDrawer);
-        context.Physics3DDebugDrawer.End();
+        // Draw the base method.
+        base.Draw(context, framebuffer);
     }
 }

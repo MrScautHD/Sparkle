@@ -14,7 +14,8 @@ layout (location = 1) out vec4 fColor;
 void main() {
     fTexCoords = vPosition;
     fColor = vColor;
-
-    vec4 v4Pos = vec4(vPosition, 1.0F);
-    gl_Position = uProjection * mat4(mat3(uView)) * v4Pos;
+    
+    vec4 v4Pos = vec4(vPosition, 1.0);
+    vec4 clipPos = uProjection * mat4(mat3(uView)) * v4Pos;
+    gl_Position = vec4(clipPos.xy, clipPos.w, clipPos.w);
 }

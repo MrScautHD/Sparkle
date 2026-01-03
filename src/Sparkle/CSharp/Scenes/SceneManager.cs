@@ -152,18 +152,18 @@ public static class SceneManager {
             
             // Draw the filter effect into the post-processing framebuffer.
             context.CommandList.SetFramebuffer(PostProcessingTarget.Framebuffer);
-            context.FullScreenRenderPass.Draw(context.CommandList, FilterResult, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            context.FullScreenRenderer.Draw(context.CommandList, FilterResult, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
             
             // Draw the post-processing effect into the final framebuffer.
             context.CommandList.SetFramebuffer(framebuffer);
             context.CommandList.CopyTexture(PostProcessingTarget.ColorTexture, PostProcessingResult.DeviceTexture);
-            context.FullScreenRenderPass.Draw(context.CommandList, PostProcessingResult, framebuffer.OutputDescription, PostEffect);
+            context.FullScreenRenderer.Draw(context.CommandList, PostProcessingResult, framebuffer.OutputDescription, PostEffect);
         }
         else {
             
             // Draw the filter effect into the final framebuffer.
             context.CommandList.SetFramebuffer(framebuffer);
-            context.FullScreenRenderPass.Draw(context.CommandList, FilterResult, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            context.FullScreenRenderer.Draw(context.CommandList, FilterResult, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
         }
     }
 

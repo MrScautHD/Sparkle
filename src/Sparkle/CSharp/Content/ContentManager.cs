@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
@@ -81,10 +82,10 @@ public class ContentManager : Disposable {
     /// <param name="type">The type of content.</param>
     /// <param name="processor">The found content processor, or null if not found.</param>
     /// <returns>True if a processor was found, otherwise false.</returns>
-    public bool TryGetProcessor(Type type, out IContentProcessor? processor) {
+    public bool TryGetProcessor(Type type, [NotNullWhen(true)] out IContentProcessor? processor) {
         return this._processors.TryGetValue(type, out processor);
     }
-
+    
     /// <summary>
     /// Adds a new content processor for a specific content type.
     /// </summary>
@@ -105,7 +106,7 @@ public class ContentManager : Disposable {
     public bool TryAddProcessors(Type type, IContentProcessor processor) {
         return this._processors.TryAdd(type, processor);
     }
-
+    
     /// <summary>
     /// Adds an unmanaged item to the content manager.
     /// </summary>

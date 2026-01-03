@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Transformations;
 using Jitter2;
 using Jitter2.Collision;
@@ -95,6 +96,16 @@ public class RigidBody3D : Component {
     public new Vector3 OffsetPosition => Vector3.Zero;
     
     /// <summary>
+    /// Whether debug information, such as visual representations of physics-related elements, should be displayed for the rigid body.
+    /// </summary>
+    public bool DrawDebug;
+
+    /// <summary>
+    /// The color used for debugging visualization of the 3D rigid body's properties and behavior.
+    /// </summary>
+    public Color DebugDrawColor;
+    
+    /// <summary>
     /// Stores the initial list of shapes used to construct the rigid body.
     /// </summary>
     private ReadOnlyList<RigidBodyShape> _shapes;
@@ -105,9 +116,9 @@ public class RigidBody3D : Component {
     private bool _setMassInertia;
     
     /// <summary>
-    /// Indicates whether the rigid body should be static and not affected by forces.
+    /// The motion type of the rigid body, determining whether it is static, dynamic, or kinematic.
     /// </summary>
-    private bool _nonMoving;
+    private MotionType _motionType;
     
     /// <summary>
     /// The friction value to assign to the rigid body during initialization.
@@ -129,25 +140,29 @@ public class RigidBody3D : Component {
     /// </summary>
     /// <param name="shape">The collision shape to attach to the rigid body.</param>
     /// <param name="setMassInertia">Determines whether to automatically calculate mass and inertia from the shape.</param>
-    /// <param name="nonMoving">Specifies whether the body should be static and immovable.</param>
+    /// <param name="motionType">Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</param>
     /// <param name="friction">The friction coefficient of the rigid body.</param>
     /// <param name="restitution">The restitution (bounciness) of the rigid body.</param>
-    public RigidBody3D(RigidBodyShape shape, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : this([shape], setMassInertia, nonMoving, friction, restitution) { }
+    /// <param name="drawDebug">Indicates whether debug visualization for the rigid body should be enabled.</param>
+    public RigidBody3D(RigidBodyShape shape, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : this([shape], setMassInertia, motionType, friction, restitution, drawDebug) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody3D"/> class with a collection of collision shapes.
     /// </summary>
     /// <param name="shapes">The list of collision shapes to attach to the rigid body.</param>
     /// <param name="setMassInertia">Determines whether to automatically calculate mass and inertia from the shapes.</param>
-    /// <param name="nonMoving">Specifies whether the body should be static and immovable.</param>
+    /// <param name="motionType">Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</param>
     /// <param name="friction">The friction coefficient of the rigid body.</param>
     /// <param name="restitution">The restitution (bounciness) of the rigid body.</param>
-    public RigidBody3D(List<RigidBodyShape> shapes, bool setMassInertia = true, bool nonMoving = false, float friction = 0.2F, float restitution = 0) : base(Vector3.Zero) {
+    /// <param name="drawDebug">Indicates whether debug visualization for the rigid body should be enabled.</param>
+    public RigidBody3D(List<RigidBodyShape> shapes, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : base(Vector3.Zero) {
         this._shapes = new ReadOnlyList<RigidBodyShape>(shapes);
         this._setMassInertia = setMassInertia;
-        this._nonMoving = nonMoving;
+        this._motionType = motionType;
         this._friction = friction;
         this._restitution = restitution;
+        this.DrawDebug = drawDebug;
+        this.DebugDrawColor = Color.White;
     }
     
     /// <summary>
@@ -167,8 +182,17 @@ public class RigidBody3D : Component {
     }
     
     /// <summary>
+    /// Gets or sets the motion type of the rigid body, determining its dynamic behavior within the physics simulation (e.g., static, dynamic, or kinematic).
+    /// </summary>
+    public MotionType MotionType {
+        get => this.Body.MotionType;
+        set => this.Body.MotionType = value;
+    }
+    
+    /// <summary>
     /// Specifies if the rigid body is static (immovable).
     /// </summary>
+    [Obsolete($"Use the {nameof(MotionType)} property instead.")]
     public bool IsStatic {
         get => this.Body.IsStatic;
         set => this.Body.IsStatic = value;
@@ -388,7 +412,7 @@ public class RigidBody3D : Component {
     private void CreateBody() {
         this.Body = this.World.CreateRigidBody();
         this.AddShape(this._shapes, this._setMassInertia);
-        this.IsStatic = this._nonMoving;
+        this.MotionType = this._motionType;
         this.Friction = this._friction;
         this.Restitution = this._restitution;
         this.Position = this.Entity.Transform.Translation;

@@ -21,7 +21,7 @@ public class GraphicsContext {
     /// <summary>
     /// The full-screen render pass used for post-processing.
     /// </summary>
-    public FullScreenRenderer FullScreenRenderPass { get; private set; }
+    public FullScreenRenderer FullScreenRenderer { get; private set; }
     
     /// <summary>
     /// The sprite batch used for efficient 2D sprite rendering.
@@ -39,27 +39,20 @@ public class GraphicsContext {
     public ImmediateRenderer ImmediateRenderer { get; private set; }
 
     /// <summary>
-    /// The 3D physics debug drawer used for rendering debug visualization of physics objects.
-    /// </summary>
-    public Physics3DDebugDrawer Physics3DDebugDrawer { get; private set; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device to use.</param>
     /// <param name="commandList">The command list for issuing rendering commands.</param>
-    /// <param name="fullScreenRenderPass">The render pass used for full-screen rendering operations.</param>
+    /// <param name="fullScreenRenderer">The render pass used for full-screen rendering operations.</param>
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
     /// <param name="immediateRenderer">The immediate renderer for performing low-level custom rendering.</param>
-    /// <param name="physics3DDebugDrawer">The 3D physics debug drawer used for rendering debug visualization of physics objects.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderPass, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer, Physics3DDebugDrawer physics3DDebugDrawer) {
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
-        this.FullScreenRenderPass = fullScreenRenderPass;
+        this.FullScreenRenderer = fullScreenRenderer;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
         this.ImmediateRenderer = immediateRenderer;
-        this.Physics3DDebugDrawer = physics3DDebugDrawer;
     }
 }

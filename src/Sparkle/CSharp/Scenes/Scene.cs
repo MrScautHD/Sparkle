@@ -3,6 +3,7 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Graphics.Rendering.Sprites;
@@ -29,11 +30,16 @@ public abstract class Scene : Disposable {
     /// Gets the physics simulation associated with the scene.
     /// </summary>
     public Simulation Simulation { get; private set; }
-
+    
     /// <summary>
     /// Gets the forward renderer responsible for rendering 3D content in the scene.
     /// </summary>
     public IRenderer Renderer { get; private set; }
+
+    /// <summary>
+    /// Provides tools for visual debugging of 3D physics simulations.
+    /// </summary>
+    public Physics3DDebugDrawer Physics3DDebugDrawer { get; private set; }
     
     /// <summary>
     /// Manages and draw sprites for the entity sprite component.
@@ -61,6 +67,11 @@ public abstract class Scene : Disposable {
     private uint _entityIds;
     
     /// <summary>
+    /// A collection of renderers responsible for handling multi-instance rendering within the scene.
+    /// </summary>
+    private List<MultiInstanceRenderer> _multiInstanceRenderers;
+    
+    /// <summary>
     /// Factory function used to create the renderer instance for this scene.
     /// </summary>
     private Func<GraphicsDevice, IRenderer>? _rendererFactory;
@@ -83,6 +94,7 @@ public abstract class Scene : Disposable {
         this._rendererFactory = rendererFactory;
         this._simulationFactory = simulationFactory;
         this.Entities = new Dictionary<uint, Entity>();
+        this._multiInstanceRenderers = new List<MultiInstanceRenderer>();
     }
     
     /// <summary>
@@ -90,8 +102,9 @@ public abstract class Scene : Disposable {
     /// </summary>
     protected internal virtual void Init() {
         this.Renderer = this._rendererFactory?.Invoke(GlobalGraphicsAssets.GraphicsDevice) ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
-        this.Simulation = this._simulationFactory?.Invoke() ?? (this.SceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
+        this.Physics3DDebugDrawer = new Physics3DDebugDrawer(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
         this.SpriteRenderer = new SpriteRenderer();
+        this.Simulation = this._simulationFactory?.Invoke() ?? (this.SceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
     }
     
     /// <summary>
@@ -132,16 +145,49 @@ public abstract class Scene : Disposable {
     /// <param name="context">The graphics context.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        
+        // Draw skybox.
         this.SkyBox?.Draw(context.CommandList, framebuffer.OutputDescription);
         
+        // Draw physics debug drawer.
+        this.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer.OutputDescription);
+        
+        foreach (Entity entity in this.Entities.Values) {
+            if (entity.TryGetComponent(out RigidBody3D? rigidBody)) {
+                if (rigidBody.DrawDebug) {
+                    this.Physics3DDebugDrawer.PushColor(rigidBody.DebugDrawColor);
+                    rigidBody.DebugDraw(this.Physics3DDebugDrawer);
+                    this.Physics3DDebugDrawer.PopColor();
+                }
+            }
+            else if (entity.TryGetComponent(out SoftBody3D? softBody)) {
+                if (softBody.DrawDebug) {
+                    this.Physics3DDebugDrawer.PushColor(softBody.DebugDrawColor);
+                    softBody.DebugDraw(this.Physics3DDebugDrawer);
+                    this.Physics3DDebugDrawer.PopColor();
+                }
+            }
+        }
+        
+        this.Physics3DDebugDrawer.End();
+        
+        // Draw entities (Renderables linked to the renderer).
         foreach (Entity entity in this.Entities.Values) {
             entity.Draw(context, framebuffer);
         }
         
+        // Draw multi instance renderers (Renderables linked to the renderer).
+        foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
+            multiInstanceRenderer.Draw(context, framebuffer);
+        }
+        
+        // Draw 3D renderer.
         this.Renderer.Draw(context.CommandList, framebuffer.OutputDescription);
+        
+        // Draw sprite renderer.
         this.SpriteRenderer.Draw(context, framebuffer);
     }
-
+    
     /// <summary>
     /// Handles window resizing events and updates entities accordingly.
     /// </summary>
@@ -216,11 +262,11 @@ public abstract class Scene : Disposable {
         if (this.Entities.ContainsKey(entity.Id)) {
             return false;
         }
-
+        
         if (entity.Id != 0) {
             return false;
         }
-
+        
         entity.Scene = this;
         entity.Id = ++this._entityIds;
         entity.Init();
@@ -228,7 +274,7 @@ public abstract class Scene : Disposable {
         this.Entities.Add(entity.Id, entity);
         return true;
     }
-
+    
     /// <summary>
     /// Removes an entity from the scene.
     /// </summary>
@@ -239,7 +285,7 @@ public abstract class Scene : Disposable {
             throw new Exception($"Failed to Remove/Dispose the entity: [{entity.Id}] from the scene: [{this.Name}]");
         }
     }
-
+    
     /// <summary>
     /// Attempts to remove an entity from the scene.
     /// </summary>
@@ -256,7 +302,7 @@ public abstract class Scene : Disposable {
         if (this.Entities.ContainsKey(entity.Id)) {
             this.Entities.Remove(entity.Id);
         }
-
+        
         return true;
     }
 
@@ -290,7 +336,26 @@ public abstract class Scene : Disposable {
 
         return true;
     }
-
+    
+    /// <summary>
+    /// Adds a multi-instance renderer to the scene.
+    /// </summary>
+    /// <param name="renderer">The multi-instance renderer to be added to the scene.</param>
+    internal void AddMultiInstanceRenderer(MultiInstanceRenderer renderer) {
+        
+        // Check if its already added and if yes just ignore it.
+        foreach (Entity entity in this.Entities.Values) {
+            if (entity.TryGetComponent(out InstancedRenderProxy? renderProxy)) {
+                if (this._multiInstanceRenderers.Contains(renderProxy.MultiInstanceRenderer)) {
+                    return;
+                }
+            }
+        }
+        
+        // Add multi-instance renderer.
+        this._multiInstanceRenderers.Add(renderer);
+    }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             var enumerator = this.Entities.GetEnumerator();
@@ -308,6 +373,7 @@ public abstract class Scene : Disposable {
             this._entityIds = 0;
             this.Simulation.Dispose();
             this.Renderer.Dispose();
+            this.Physics3DDebugDrawer.Dispose();
         }
     }
 }

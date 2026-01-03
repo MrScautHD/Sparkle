@@ -101,7 +101,11 @@ public class SkyBox : Disposable {
         // Create pipeline.
         this._pipelineDescription = new SimplePipelineDescription() {
             BlendState = BlendStateDescription.SINGLE_DISABLED,
-            DepthStencilState = DepthStencilStateDescription.DISABLED,
+            DepthStencilState = new DepthStencilStateDescription() {
+                DepthTestEnabled = true,
+                DepthWriteEnabled = false,
+                DepthComparison = ComparisonKind.LessEqual
+            },
             RasterizerState = new RasterizerStateDescription() {
                 CullMode = FaceCullMode.None,
                 FillMode = PolygonFillMode.Solid,
@@ -121,16 +125,20 @@ public class SkyBox : Disposable {
     /// </summary>
     /// <param name="commandList">The command list used for issuing draw commands.</param>
     /// <param name="output">The output description of the current rendering target.</param>
-    public void Draw(CommandList commandList, OutputDescription output) {
+    internal void Draw(CommandList commandList, OutputDescription output) {
         Cam3D? cam3D = Cam3D.ActiveCamera;
-
+        
         if (cam3D == null) {
             return;
         }
         
         // Update projection/view buffer.
         this._projViewBuffer.SetValue(0, cam3D.GetProjection());
-        this._projViewBuffer.SetValue(1, cam3D.GetView());
+        this._projViewBuffer.SetValue(1, cam3D.GetView() with {
+            M41 = 0.0F,
+            M42 = 0.0F,
+            M43 = 0.0F
+        });
         this._projViewBuffer.UpdateBufferDeferred(commandList);
         
         // Update pipeline description.

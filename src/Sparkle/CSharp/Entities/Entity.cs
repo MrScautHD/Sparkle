@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities.Components;
@@ -134,14 +135,14 @@ public class Entity : Disposable {
         
         return result;
     }
-
+    
     /// <summary>
     /// Attempts to retrieve a specific component attached to this entity.
     /// </summary>
     /// <typeparam name="T">The type of component to retrieve.</typeparam>
     /// <param name="component">The retrieved component if found.</param>
     /// <returns>True if the component was found, otherwise false.</returns>
-    public bool TryGetComponent<T>(out T? component) where T : Component {
+    public bool TryGetComponent<T>([NotNullWhen(true)] out T? component) where T : Component {
         if (!this.Components.TryGetValue(typeof(T), out Component? result)) {
             component = null;
             return false;
@@ -161,7 +162,7 @@ public class Entity : Disposable {
             throw new Exception($"The component type: [{nameof(component)}] is already present in the entity: [{this.Id}] or the component has already set to an entity.");
         }
     }
-
+    
     /// <summary>
     /// Attempts to add a component to this entity.
     /// </summary>

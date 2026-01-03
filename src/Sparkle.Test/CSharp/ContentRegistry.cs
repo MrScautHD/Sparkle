@@ -1,3 +1,4 @@
+using Bliss.CSharp;
 using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering;
@@ -26,6 +27,8 @@ public class ContentRegistry : Registry {
     public static Model PlayerModel { get; private set; }
     public static Model TreeModel { get; private set; }
     public static Model CyberCarModel { get; private set; }
+    
+    public static MultiInstanceRenderer PlayerMultiInstanceRenderer { get; private set; }
     
     public static SkyBox SkyBox { get; private set; }
     
@@ -66,13 +69,19 @@ public class ContentRegistry : Registry {
         CyberCarModel.Meshes[12].Material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
         CyberCarModel.Meshes[12].Material.RenderMode = RenderMode.Translucent;
         
+        // MultiInstanceRenderer's:
+        PlayerMultiInstanceRenderer = new MultiInstanceRenderer(PlayerModel, true);
+        foreach (Mesh mesh in PlayerMultiInstanceRenderer.Meshes) {
+            PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(mesh).Effect = GlobalResource.ModelInstancingEffect;
+        }
+        
         // Skybox's:
         SkyBox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png")));
     }
     
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
-
+        
         if (disposing) {
             SkyBox.Dispose();
         }

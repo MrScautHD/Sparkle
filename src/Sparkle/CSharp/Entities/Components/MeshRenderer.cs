@@ -28,19 +28,24 @@ public class MeshRenderer : InterpolatedComponent {
     public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
     
     /// <summary>
-    /// Whether to draw the bounding box around the mesh.
+    /// Whether the bounding box should be rendered for the associated mesh.
     /// </summary>
-    public bool DrawBoundingBox;
+    public bool DrawBox;
     
     /// <summary>
-    /// The color used for rendering the bounding box.
+    /// The color used for rendering the bounding box of the mesh.
     /// </summary>
     public Color BoxColor;
     
     /// <summary>
-    /// The mesh's axis-aligned bounding box.
+    /// The original bounding box of the mesh before being transformed.
     /// </summary>
-    private BoundingBox _box;
+    private BoundingBox _baseBox;
+    
+    /// <summary>
+    /// The bounding box of the mesh used for visibility checks.
+    /// </summary>
+    private BoundingBox _frustumBox;
     
     /// <summary>
     /// An internal renderable object used by the MeshRenderer to manage rendering operations.
@@ -50,46 +55,27 @@ public class MeshRenderer : InterpolatedComponent {
     /// <summary>
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
     /// </summary>
-    /// <param name="mesh">The <see cref="Mesh"/> to render.</param>
-    /// <param name="offsetPosition">The initial position offset applied to the transform.</param>
-    /// <param name="copyMeshMaterial">If true, creates a cloned copy of the mesh’s material; otherwise, uses the original mesh material reference.</param>
-    /// <param name="drawBoundingBox">If true, enables bounding box visualization for the mesh.</param>
-    /// <param name="boxColor">Optional color to render the bounding box. Defaults to <see cref="Color.White"/> if not provided.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool drawBoundingBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, drawBoundingBox, boxColor) { }
+    /// <param name="mesh">The mesh to be rendered.</param>
+    /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
+    /// <param name="copyMeshMaterial">Whether to clone the mesh material for independent modification.</param>
+    /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
+    /// <param name="boxColor">The color used to render the bounding box.</param>
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool drawBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, drawBox, boxColor) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
     /// </summary>
-    /// <param name="mesh">The <see cref="Mesh"/> to render.</param>
-    /// <param name="offsetPosition">The initial position offset applied to the transform.</param>
-    /// <param name="material">The <see cref="Material"/> used for rendering the mesh.</param>
-    /// <param name="drawBoundingBox">If true, enables bounding box visualization for the mesh.</param>
-    /// <param name="boxColor">Optional color to render the bounding box. Defaults to <see cref="Color.White"/> if not provided.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool drawBoundingBox = false, Color? boxColor = null) : base(offsetPosition) {
+    /// <param name="mesh">The mesh to be rendered.</param>
+    /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
+    /// <param name="material">The material used to render the mesh.</param>
+    /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
+    /// <param name="boxColor">The color used to render the bounding box.</param>
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
         this.Mesh = mesh;
-        this.DrawBoundingBox = drawBoundingBox;
+        this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
-        this._box = mesh.GenBoundingBox();
+        this._baseBox = this._frustumBox = mesh.GenBoundingBox();
         this._renderable = new Renderable(this.Mesh, new Transform(), material);
-    }
-    
-    /// <summary>
-    /// Updates the bounding box to reflect the current interpolated position.
-    /// </summary>
-    /// <param name="delta">Time elapsed since the last update call.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
-        
-        // Calculate bounding box.
-        Vector3 dimension = this._box.Max - this._box.Min;
-        Vector3 lerpedPos = this.LerpedGlobalPosition;
-        this._box.Min.X = lerpedPos.X - dimension.X / 2.0F;
-        this._box.Min.Y = lerpedPos.Y;
-        this._box.Min.Z = lerpedPos.Z - dimension.Z / 2.0F;
-        
-        this._box.Max.X = lerpedPos.X + dimension.X / 2.0F;
-        this._box.Max.Y = lerpedPos.Y + dimension.Y;
-        this._box.Max.Z = lerpedPos.Z + dimension.Z / 2.0F;
     }
     
     /// <summary>
@@ -105,21 +91,62 @@ public class MeshRenderer : InterpolatedComponent {
             return;
         }
         
-        if (cam3D.GetFrustum().ContainsOrientedBox(this._box, this.LerpedGlobalPosition, this.LerpedRotation)) {
-            Transform transform = new Transform() {
+        // Updates frustum box.
+        this.UpdateFrustumBox();
+        
+        if (cam3D.GetFrustum().ContainsOrientedBox(this._frustumBox, this.LerpedGlobalPosition, this.LerpedRotation)) {
+            Transform meshTransform = new Transform() {
                 Translation = this.LerpedGlobalPosition,
                 Rotation = this.LerpedRotation,
                 Scale = this.LerpedScale
             };
             
             // Draw the mesh.
-            this._renderable.Transforms[0] = transform;
+            this._renderable.Transforms[0] = meshTransform;
             this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
             
             // Draw the bounding box.
-            if (this.DrawBoundingBox) {
-                context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, new Transform(), this._box, this.BoxColor);
+            if (this.DrawBox) {
+                Transform boxTransform = new Transform() {
+                    Translation = this.LerpedGlobalPosition,
+                    Rotation = this.LerpedRotation,
+                    Scale = this.LerpedScale
+                };
+                
+                // Draw box.
+                context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, boxTransform, this._baseBox, this.BoxColor);
             }
         }
+    }
+    
+    /// <summary>
+    /// Updates the frustum-aligned bounding box.
+    /// </summary>
+    private void UpdateFrustumBox() {
+        
+        // Calculate original dimensions and center offset in local space.
+        Vector3 originalCenter = (this._baseBox.Min + this._baseBox.Max) / 2.0F;
+        Vector3 originalDimension = this._baseBox.Max - this._baseBox.Min;
+        
+        // Scale everything.
+        Vector3 dimension = originalDimension * this.LerpedScale;
+        Vector3 centerOffset = originalCenter * this.LerpedScale;
+        
+        // Normalize X and Z dimensions to the maximum width.
+        float maxSide = Math.Max(dimension.X, dimension.Z);
+        dimension.X = maxSide;
+        dimension.Z = maxSide;
+        
+        // Calculate bounding box position using the lerped global position and the center offset.
+        Vector3 lerpedPos = this.LerpedGlobalPosition;
+        Vector3 finalCenter = lerpedPos + centerOffset;
+        
+        this._frustumBox.Min.X = finalCenter.X - dimension.X / 2.0F;
+        this._frustumBox.Min.Y = lerpedPos.Y + (this._baseBox.Min.Y * this.LerpedScale.Y);
+        this._frustumBox.Min.Z = finalCenter.Z - dimension.Z / 2.0F;
+        
+        this._frustumBox.Max.X = finalCenter.X + dimension.X / 2.0F;
+        this._frustumBox.Max.Y = lerpedPos.Y + (this._baseBox.Max.Y * this.LerpedScale.Y);
+        this._frustumBox.Max.Z = finalCenter.Z + dimension.Z / 2.0F;
     }
 }

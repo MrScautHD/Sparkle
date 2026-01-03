@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
@@ -81,11 +82,21 @@ public class SoftBody3D : Component {
     /// A reference to the bone matrices for skeletal animation, if applicable.
     /// </summary>
     public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
-
+    
     /// <summary>
     /// Indicates whether the mesh associated with the soft body should be drawn.
     /// </summary>
     public bool DrawMesh;
+    
+    /// <summary>
+    /// Determines whether debug information, such as visual representations of physics-related elements, should be displayed for the soft body.
+    /// </summary>
+    public bool DrawDebug;
+    
+    /// <summary>
+    /// The color used for debugging visualization of the 3D soft body's properties and behavior.
+    /// </summary>
+    public Color DebugDrawColor;
     
     /// <summary>
     /// The positional offset from the entity's origin. Always returns zero for this component.
@@ -111,10 +122,13 @@ public class SoftBody3D : Component {
     /// Initializes a new instance of the <see cref="SoftBody3D"/> component.
     /// </summary>
     /// <param name="factory">The factory used to create the soft body instance.</param>
-    /// <param name="drawMesh"> Whether the soft body’s mesh should be rendered. Defaults to <c>true</c>.</param>
-    public SoftBody3D(ISoftBodyFactory factory, bool drawMesh = true) : base(Vector3.Zero) {
+    /// <param name="drawMesh">Whether the soft body’s mesh should be rendered. Defaults to <c>true</c>.</param>
+    /// <param name="drawDebug">Indicates whether debug visualization for the soft body should be enabled.</param>
+    public SoftBody3D(ISoftBodyFactory factory, bool drawMesh = true, bool drawDebug = false) : base(Vector3.Zero) {
         this._factory = factory;
         this.DrawMesh = drawMesh;
+        this.DrawDebug = drawDebug;
+        this.DebugDrawColor = Color.White;
     }
     
     /// <summary>

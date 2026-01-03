@@ -199,7 +199,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         if (this._begun) {
             throw new Exception("The Physics3DDebugDrawer has already begun!");
         }
-
+        
         this._begun = true;
         this._currentCommandList = commandList;
         this._mainOutput = this._currentOutput = this._requestedOutput = output;
@@ -568,7 +568,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         }
         
         Cam3D? cam3D = Cam3D.ActiveCamera;
-
+        
         if (cam3D == null) {
             return;
         }
