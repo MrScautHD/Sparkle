@@ -54,12 +54,12 @@ public class MarchingCubes {
     /// <param name="height">The height of the region in units.</param>
     public void SetHeights(Vector3 position, int width, int height) {
         this._heights = new float[width + 1, height + 1, width + 1];
-
+        
         for (int x = 0; x < width + 1; x++) {
             for (int y = 0; y < height + 1; y++) {
                 for (int z = 0; z < width + 1; z++) {
                     Vector3 worldPos = new Vector3(position.X + x, position.Y + y, position.Z + z);
-
+                    
                     if (this._use3DNoise) {
                         this._heights[x, y, z] = this._perlin.GetValue(worldPos.X / this._width * this._scale, worldPos.Y / this._height * this._scale, worldPos.Z / this._width * this._scale);
                     }

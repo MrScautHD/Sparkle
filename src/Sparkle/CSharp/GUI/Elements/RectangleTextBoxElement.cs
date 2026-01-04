@@ -722,8 +722,7 @@ public class RectangleTextBoxElement : GuiElement {
     /// <returns>The index of the caret position in the text, corresponding to the closest character to the click position.</returns>
     private int GetCaretIndexFromPosition(LabelData labelData, Vector2 clickPosition) {
         Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
-        Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) +
-                                     this.Origin * this.Gui.ScaleFactor;
+        Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Gui.ScaleFactor;
 
         // Calculate visible text size, used for text alignment.
         Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);

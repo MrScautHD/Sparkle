@@ -47,7 +47,7 @@ public class Entity : Disposable {
     }
 
     /// <summary>
-    /// Called once when the entity is initialized.  
+    /// Called once when the entity is initialized.
     /// </summary>
     protected internal virtual void Init() {
         foreach (Component component in this.Components.Values) {

@@ -67,7 +67,7 @@ public class LabelData {
     /// The texture sampler used for rendering operations in the label.
     /// </summary>
     public Sampler? Sampler;
-
+    
     /// <summary>
     /// Constructs a new instance of <see cref="LabelData"/> with full customization for rendering text.
     /// </summary>

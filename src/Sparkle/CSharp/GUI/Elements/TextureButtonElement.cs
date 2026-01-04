@@ -46,7 +46,7 @@ public class TextureButtonElement : GuiElement {
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
         this.TextOffset = textOffset ?? Vector2.Zero;
-        this.Size = size ?? new Vector2(buttonData.SourceRect.Width, buttonData.SourceRect.Height);
+        this.Size = size ?? new Vector2(buttonData.SourceRect.Width * buttonData.Scale.X, buttonData.SourceRect.Height * buttonData.Scale.Y);
     }
     
     /// <summary>

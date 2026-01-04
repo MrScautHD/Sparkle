@@ -18,6 +18,9 @@ public abstract class Gui : Disposable {
     /// </summary>
     public readonly (int Width, int Height) Size;
     
+    /// <summary>
+    /// The scaling factor applied to the GUI.
+    /// </summary>
     public float ScaleFactor => GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height);
     
     /// <summary>

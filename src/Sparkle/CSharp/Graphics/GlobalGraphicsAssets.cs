@@ -97,7 +97,7 @@ public static class GlobalGraphicsAssets {
         
         // Gray scale filter effect.
         GrayScaleEffect = new Effect(graphicsDevice, SpriteVertex2D.VertexLayout, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/filters/gray_scale.frag", new CrossCompileOptions());
-        GrayScaleEffect.AddTextureLayout("fTexture", 1);
+        GrayScaleEffect.AddTextureLayout("fTexture", 0);
         
         // Bloom filter effect.
         BloomEffect = new BloomEffect(graphicsDevice, SpriteVertex2D.VertexLayout, new CrossCompileOptions());

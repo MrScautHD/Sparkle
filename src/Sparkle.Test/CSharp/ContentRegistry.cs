@@ -2,10 +2,12 @@ using Bliss.CSharp;
 using Bliss.CSharp.Fonts;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Registries;
 using Veldrid;
@@ -24,6 +26,10 @@ public class ContentRegistry : Registry {
     public static Texture2D FullSliderBar { get; private set; }
     public static Texture2D Slider { get; private set; }
     public static Texture2D CyberCarTexture { get; private set; }
+    
+    public static AnimatedImage AnimatedImage;
+    public static Texture2D Gif;
+    
     public static Model PlayerModel { get; private set; }
     public static Model TreeModel { get; private set; }
     public static Model CyberCarModel { get; private set; }
@@ -48,6 +54,10 @@ public class ContentRegistry : Registry {
         FullSliderBar = content.Load(new TextureContent("content/full_slider_bar.png"));
         Slider = content.Load(new TextureContent("content/slider.png"));
         CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"));
+        
+        // Gifs:
+        AnimatedImage = new AnimatedImage("content/test.gif");
+        Gif = new Texture2D(content.GraphicsDevice, AnimatedImage.SpriteSheet);
         
         // Models:
         PlayerModel = content.Load(new ModelContent("content/model.glb"));

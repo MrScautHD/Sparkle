@@ -3,9 +3,11 @@ using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
+using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Jitter2.Collision.Shapes;
 using Jitter2.Dynamics;
@@ -257,6 +259,27 @@ public class TestScene3D : Scene {
         
         // Draw gird.
         context.ImmediateRenderer.DrawGrid(context.CommandList, framebuffer.OutputDescription, new Transform(), 96, 1, 16, Color.Gray);
+        
+        // Draw GIF billboard.
+        Texture2D gif = ContentRegistry.Gif;
+        AnimatedImage image = ContentRegistry.AnimatedImage;
+        
+        int frameCount = image.GetFrameCount();
+        int frame = (int) (Time.Total * 30) % frameCount;
+        image.GetFrameInfo(frame, out int width, out int height, out float duration); // Duration not used would be to complex for here.
+        
+        // Calculate the position in the grid.
+        int columns = image.Columns;
+        int rows = image.Rows;
+        
+        int column = frame % columns;
+        int row = (frame / columns) % rows;
+        
+        Rectangle sourceRect = new Rectangle(column * width, row * height, width, height);
+        
+        context.ImmediateRenderer.SetTexture(gif, sourceRect: sourceRect);
+        context.ImmediateRenderer.DrawBillboard(context.CommandList, framebuffer.OutputDescription, new Vector3(18, 2, 0), new Vector2(1, 1));
+        context.ImmediateRenderer.SetTexture(null);
         
         // Draw the base method.
         base.Draw(context, framebuffer);

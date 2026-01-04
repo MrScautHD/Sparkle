@@ -112,7 +112,7 @@ public class ToggleElement : GuiElement {
         if (this.LabelData.Text != string.Empty) {
             Vector2 textPos = this.Position;
             Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, this.LabelData.Scale, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
-            Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.BackgroundSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F;
+            Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.BackgroundSourceRect.Width * this.ToggleData.BackgroundScale.X + this.BoxTextSpacing, 0.0F) / 2.0F;
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
             
@@ -132,7 +132,7 @@ public class ToggleElement : GuiElement {
     /// <param name="boxTextSpacing">The spacing between the toggle box and the label text.</param>
     /// <returns>A vector representing the calculated default size of the toggle element.</returns>
     private Vector2 CalculateDefaultSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
-        Vector2 toggleSize = new Vector2(toggleData.BackgroundSourceRect.Width, toggleData.BackgroundSourceRect.Height);
+        Vector2 toggleSize = new Vector2(toggleData.BackgroundSourceRect.Width * toggleData.BackgroundScale.X, toggleData.BackgroundSourceRect.Height * toggleData.BackgroundScale.Y);
         Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));

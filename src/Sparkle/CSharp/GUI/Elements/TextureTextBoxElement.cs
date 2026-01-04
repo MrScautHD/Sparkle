@@ -101,7 +101,7 @@ public class TextureTextBoxElement : GuiElement {
         this.MaxTextLength = maxTextLength;
         this.TextAlignment = textAlignment;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
-        this.Size = size ?? new Vector2(textBoxData.SourceRect.Width, textBoxData.SourceRect.Height);
+        this.Size = size ?? new Vector2(textBoxData.SourceRect.Width * textBoxData.Scale.X, textBoxData.SourceRect.Height * textBoxData.Scale.Y);
     }
     
     /// <summary>
