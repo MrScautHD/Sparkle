@@ -50,7 +50,7 @@ public class ModelRenderer : InterpolatedComponent {
     /// <param name="copyModelMaterials">Whether to clone the model's materials so they can be modified independently.</param>
     /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
+    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) { // TODO: ADD LOCAL TRANSFORM
         this.Model = model;
         this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;

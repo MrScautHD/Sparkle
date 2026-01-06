@@ -19,10 +19,11 @@ public class LabelElement : GuiElement {
     /// <param name="data">The label data containing text and rendering settings.</param>
     /// <param name="anchor">The anchor point that determines the label’s alignment.</param>
     /// <param name="offset">The offset from the anchor point.</param>
+    /// <param name="scale">Optional scaling factor for the element. Defaults to (1, 1).</param>
     /// <param name="origin">Optional origin point used for rotation and scaling (default is null).</param>
     /// <param name="rotation">The rotation of the label in radians (default is 0).</param>
     /// <param name="clickFunc">Optional function to be called when the label is clicked (default is null).</param>
-    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
     }
     
@@ -31,7 +32,7 @@ public class LabelElement : GuiElement {
     /// </summary>
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
     protected internal override void Update(double delta) {
-        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, this.Data.Scale, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
+        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, this.Scale, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
         base.Update(delta);
     }
     
@@ -49,7 +50,7 @@ public class LabelElement : GuiElement {
         
         // Draw text.
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Sampler);
-        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
+        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }
 }

@@ -1,4 +1,3 @@
-using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Fonts;
 using FontStashSharp;
@@ -32,11 +31,6 @@ public class LabelData {
     /// The spacing between lines of text.
     /// </summary>
     public float LineSpacing;
-    
-    /// <summary>
-    /// The scaling factor applied to the rendered text.
-    /// </summary>
-    public Vector2 Scale;
     
     /// <summary>
     /// The color of the rendered text.
@@ -76,20 +70,18 @@ public class LabelData {
     /// <param name="size">The font size of the text.</param>
     /// <param name="characterSpacing">Spacing between characters. Default is 0.</param>
     /// <param name="lineSpacing">Spacing between lines. Default is 0.</param>
-    /// <param name="scale">Optional scale applied to the text. Defaults to <c>Vector2.One</c>.</param>
     /// <param name="color">Optional color of the text. Defaults to white.</param>
     /// <param name="hoverColor">Optional color of the text. Defaults the same as the color parameter.</param>
     /// <param name="style">The style of the text. Default is <c>TextStyle.None</c>.</param>
     /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
     /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
     /// <param name="sampler">The texture sampler used for rendering operations in the label.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Vector2? scale = null, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
+    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
         this.CharacterSpacing = characterSpacing;
         this.LineSpacing = lineSpacing;
-        this.Scale = scale ?? Vector2.One;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
         this.Style = style;

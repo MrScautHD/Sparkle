@@ -26,6 +26,7 @@ public class ContentRegistry : Registry {
     public static Texture2D FullSliderBar { get; private set; }
     public static Texture2D Slider { get; private set; }
     public static Texture2D CyberCarTexture { get; private set; }
+    public static Texture2D UiBannerTexture { get; private set; }
     
     public static AnimatedImage AnimatedImage;
     public static Texture2D Gif;
@@ -54,6 +55,7 @@ public class ContentRegistry : Registry {
         FullSliderBar = content.Load(new TextureContent("content/full_slider_bar.png"));
         Slider = content.Load(new TextureContent("content/slider.png"));
         CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"));
+        UiBannerTexture = content.Load(new TextureContent("content/ui_banner.png"));
         
         // Gifs:
         AnimatedImage = new AnimatedImage("content/test.gif");

@@ -91,10 +91,11 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="textAlignment">Text alignment within the textbox. Default is Left.</param>
     /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
     /// <param name="size">Optional size of the textbox. Defaults to the texture dimensions.</param>
+    /// <param name="scale">Optional scale factor for the element.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
@@ -467,7 +468,7 @@ public class TextureTextBoxElement : GuiElement {
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
-        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
@@ -478,7 +479,7 @@ public class TextureTextBoxElement : GuiElement {
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
     
@@ -496,12 +497,12 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = 0; i < caretVisibleIndex && (this._textScrollOffset + i) < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(this._textScrollOffset + i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
             caretOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -539,7 +540,7 @@ public class TextureTextBoxElement : GuiElement {
         // Calculate the width of the highlighted text.
         for (int i = startIndex; i < endIndex && i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
     
             if (i >= this._textScrollOffset) {
                 highlightWidth += charSize.X;
@@ -551,13 +552,13 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = this._textScrollOffset; i < visibleStartIndex; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
             
             highlightOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         Vector2 highlightOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -583,7 +584,7 @@ public class TextureTextBoxElement : GuiElement {
         // Get visible text based on the current scroll.
         for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
             
             if (width + charSize.X > visibleWidth) {
                 break;
@@ -603,7 +604,7 @@ public class TextureTextBoxElement : GuiElement {
             // Pixel-precise check for caret going beyond the visible width.
             for (int i = this._textScrollOffset; i <= this._caretIndex && i < labelData.Text.Length; i++) {
                 string character = labelData.Text.Substring(i, 1);
-                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
                 
                 caretX += charSize.X;
             }
@@ -612,7 +613,7 @@ public class TextureTextBoxElement : GuiElement {
             if (caretX > visibleWidth) {
                 while (caretX > visibleWidth && this._textScrollOffset < this._caretIndex) {
                     string firstChar = labelData.Text.Substring(this._textScrollOffset, 1);
-                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
                     
                     caretX -= firstSize.X;
                     this._textScrollOffset++;
@@ -631,7 +632,7 @@ public class TextureTextBoxElement : GuiElement {
             
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
                 
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -652,7 +653,7 @@ public class TextureTextBoxElement : GuiElement {
                 
                 for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
                     string character = labelData.Text.Substring(i, 1);
-                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
                     
                     if (totalWidth + charSize.X > visibleWidth) {
                         break;
@@ -664,7 +665,7 @@ public class TextureTextBoxElement : GuiElement {
                 // Check if there is enough space to reduce the scroll offset.
                 if (totalWidth < visibleWidth && this._textScrollOffset > 0) {
                     string previousCharacter = labelData.Text.Substring(this._textScrollOffset - 1, 1);
-                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
     
                     // Reduce the offset only if the previous character can fully fit.
                     if (previousCharSize.X <= visibleWidth - totalWidth) {
@@ -683,7 +684,7 @@ public class TextureTextBoxElement : GuiElement {
                     // Calculate chars from right until they are saw able.
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
             
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -718,7 +719,7 @@ public class TextureTextBoxElement : GuiElement {
                                      this.Origin * this.Gui.ScaleFactor;
 
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         // Determine the starting position of the text in the textbox based on the text alignment.
         Vector2 textStartPos = this.TextAlignment switch {
@@ -736,7 +737,7 @@ public class TextureTextBoxElement : GuiElement {
             
             for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
                 string character = labelData.Text.Substring(i, 1);
-                float charWidth = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing).X;
+                float charWidth = labelData.Font.MeasureText(character, labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing).X;
                 
                 float charStartPos = textStartPos.X + cumulativeWidth;
                 float charMidPos = charStartPos + (charWidth / 2.0F);
@@ -772,7 +773,7 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = startIndex; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, labelData.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
             
             // Only add if it fits.
             if (totalWidth + charSize.X > this.Size.X - (this.TextEdgeOffset.Left + this.TextEdgeOffset.Right)) {

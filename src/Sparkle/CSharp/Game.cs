@@ -172,10 +172,10 @@ public class Game : Disposable {
         this.MainWindow.Resized += () => this.OnResize(new Rectangle(this.MainWindow.GetX(), this.MainWindow.GetY(), this.MainWindow.GetWidth(), this.MainWindow.GetHeight()));
         this.GraphicsDevice = graphicsDevice;
         
-        Logger.Info("\t> Window Info: ");
+        Logger.Info("\t> Window Info:");
         Logger.Info($"\t \t> Window type: {WindowType.Sdl3}");
         Logger.Info($"\t \t> Window Size: {this.MainWindow.GetWidth()} x {this.MainWindow.GetHeight()}");
-        Logger.Info("\t> Device Info: ");
+        Logger.Info("\t> Device Info:");
         Logger.Info($"\t \t> Vendor: {this.GraphicsDevice.VendorName}");
         Logger.Info($"\t \t> Renderer: {this.GraphicsDevice.DeviceName}");
         Logger.Info($"\t \t> Backend type: {this.GraphicsDevice.BackendType}, Version: {this.GraphicsDevice.ApiVersion}");

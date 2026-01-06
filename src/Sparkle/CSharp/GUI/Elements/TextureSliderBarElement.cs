@@ -23,7 +23,7 @@ public class TextureSliderBarElement : GuiElement {
     
     public bool WholeNumbers;
     
-    public TextureSliderBarElement(TextureSliderBarData data, Anchor anchor, Vector2 offset, float minValue, float maxValue, bool interactable = true, float value = 0.0F, bool wholeNumbers = false, Vector2? size = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, origin, rotation, clickFunc) {
+    public TextureSliderBarElement(TextureSliderBarData data, Anchor anchor, Vector2 offset, float minValue, float maxValue, bool interactable = true, float value = 0.0F, bool wholeNumbers = false, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.EmptyBarSourceRect.Width, data.EmptyBarSourceRect.Height);
         this.MinValue = minValue;

@@ -37,12 +37,13 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="anchor">The anchor point for positioning the element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
     /// <param name="size">The size of the button.</param>
+    /// <param name="scale">The scale applied to the button.</param>
     /// <param name="textAlignment">The alignment of text within a GUI element.</param>
     /// <param name="textOffset">The offset of the text relative to its position.</param>
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
     /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
-    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, size, origin, rotation, clickFunc) {
+    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
@@ -74,7 +75,7 @@ public class RectangleButtonElement : GuiElement {
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
             Vector2 textPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
-            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, this.LabelData.Scale, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, this.Scale, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
             Vector2 textOrigin = this.TextAlignment switch {
                 TextAlignment.Left => new Vector2(this.Size.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
                 TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
@@ -84,7 +85,7 @@ public class RectangleButtonElement : GuiElement {
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
             context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler);
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
             context.SpriteBatch.End();
         }
     }
