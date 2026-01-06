@@ -60,22 +60,22 @@ public class RectangleButtonElement : GuiElement {
         
         // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
+        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
         
         // Draw an empty rectangle.
         if (this.ButtonData.OutlineThickness > 0.0F) {
             Color outlineColor = this.IsHovered ? this.ButtonData.OutlineHoverColor : this.ButtonData.OutlineColor;
             float outlineThickness = this.ButtonData.OutlineThickness * this.Gui.ScaleFactor;
             
-            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
+            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
         
         context.PrimitiveBatch.End();
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
-            Vector2 textPos = this.Position + (this.TextOffset * this.Gui.ScaleFactor);
-            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, this.Scale, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+            Vector2 textPos = this.Position + (this.TextOffset * this.Scale * this.Gui.ScaleFactor);
+            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
             Vector2 textOrigin = this.TextAlignment switch {
                 TextAlignment.Left => new Vector2(this.Size.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
                 TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),

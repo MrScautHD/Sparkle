@@ -117,7 +117,7 @@ public abstract class GuiElement {
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         
-        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Gui.ScaleFactor, this.Rotation)) {
+        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
             this.IsHovered = true;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {
@@ -220,7 +220,7 @@ public abstract class GuiElement {
                 break;
         }
 
-        pos += (this.Offset * this.Gui.ScaleFactor) + this.Origin;
+        pos += (this.Offset * this.Scale * this.Gui.ScaleFactor) + this.Origin;
         
         return pos;
     }
@@ -230,6 +230,6 @@ public abstract class GuiElement {
     /// </summary>
     /// <returns>The scaled size of the GUI element as a <see cref="Vector2"/>.</returns>
     protected virtual Vector2 CalculateSize() {
-        return this.Size * this.Gui.ScaleFactor;
+        return this.Size * this.Scale * this.Gui.ScaleFactor;
     }
 }

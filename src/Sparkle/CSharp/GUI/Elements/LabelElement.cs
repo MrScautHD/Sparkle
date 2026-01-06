@@ -32,7 +32,7 @@ public class LabelElement : GuiElement {
     /// </summary>
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
     protected internal override void Update(double delta) {
-        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, this.Scale, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
+        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, Vector2.One, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
         base.Update(delta);
     }
     

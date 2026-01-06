@@ -13,7 +13,6 @@ using Bliss.CSharp.Windowing;
 using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;

@@ -96,7 +96,7 @@ public class ToggleElement : GuiElement {
         context.SpriteBatch.DrawTexture(this.ToggleData.BackgroundTexture, this.Position, 0.5F, this.ToggleData.BackgroundSourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, backgroundColor, this.ToggleData.BackgroundFlip);
         if (this.ToggleData.BackgroundSampler != null) context.SpriteBatch.PopSampler();
         
-        // Draw checkmark texture. // TODO: Draw the checkmark always in the middle of the background texture.
+        // Draw checkmark texture.
         if (this.ToggleState) {
             Color checkmarkColor = this.IsHovered ? this.ToggleData.CheckmarkHoverColor : this.ToggleData.CheckmarkColor;
             
@@ -112,8 +112,8 @@ public class ToggleElement : GuiElement {
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
             Vector2 textPos = this.Position;
-            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, this.Scale, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
-            Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.BackgroundSourceRect.Width * this.Scale.X + this.BoxTextSpacing, 0.0F) / 2.0F;
+            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+            Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.BackgroundSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F;
             
             Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
             
@@ -133,8 +133,8 @@ public class ToggleElement : GuiElement {
     /// <param name="boxTextSpacing">The spacing between the toggle box and the label text.</param>
     /// <returns>A vector representing the calculated default size of the toggle element.</returns>
     private Vector2 CalculateDefaultSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
-        Vector2 toggleSize = new Vector2(toggleData.BackgroundSourceRect.Width * this.Scale.X, toggleData.BackgroundSourceRect.Height * this.Scale.Y);
-        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, this.Scale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 toggleSize = new Vector2(toggleData.BackgroundSourceRect.Width, toggleData.BackgroundSourceRect.Height);
+        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));
     }
