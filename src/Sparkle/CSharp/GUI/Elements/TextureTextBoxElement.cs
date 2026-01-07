@@ -462,7 +462,7 @@ public class TextureTextBoxElement : GuiElement {
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw caret.
-        if (this._isCaretVisible) {
+        if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
             this.DrawCaret(context.PrimitiveBatch, this.LabelData);
         }
         
@@ -615,6 +615,8 @@ public class TextureTextBoxElement : GuiElement {
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
+        textOrigin -= this.TextOffset;
+        
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
@@ -649,6 +651,8 @@ public class TextureTextBoxElement : GuiElement {
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
+        
+        caretOrigin -= this.TextOffset;
         
         // Draw caret rectangle.
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.Scale.Y * this.Gui.ScaleFactor);
@@ -705,6 +709,8 @@ public class TextureTextBoxElement : GuiElement {
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
+        
+        highlightOrigin -= this.TextOffset;
         
         // Draw the highlight rectangle.
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth, labelData.Size * this.Scale.X * this.Gui.ScaleFactor);
@@ -855,6 +861,7 @@ public class TextureTextBoxElement : GuiElement {
     private int GetCaretIndexFromPosition(LabelData labelData, Vector2 clickPosition) {
         Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
         Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Scale * this.Gui.ScaleFactor;
+        localClickPosition -= this.TextOffset * this.Scale * this.Gui.ScaleFactor;
         
         // Calculate visible text size, used for text alignment.
         Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);

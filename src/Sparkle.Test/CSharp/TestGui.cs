@@ -39,7 +39,7 @@ public class TestGui : Gui {
         TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.Vertical);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
-        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), size: new Vector2(120, 30), textOffset: new Vector2(0, 2), clickFunc: () => {
+        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), size: new Vector2(120, 30), textOffset: new Vector2(0, 1), clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -58,7 +58,7 @@ public class TestGui : Gui {
         LabelData textureTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData textureHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Right, new Vector2(15, 20), (12, 12), new Vector2(260, 30), rotation: 0, clickFunc: () => {
+        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Center, new Vector2(0, 1), (12, 12), new Vector2(260, 30), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
@@ -68,7 +68,7 @@ public class TestGui : Gui {
         LabelData rectangleTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData rectangleHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.LightGray, hoverColor: Color.Gray);
         
-        this.AddElement("Rectangle-Text-Box", new RectangleTextBoxElement(rectangleTextBoxData, rectangleTextBoxLabelData, rectangleHintTextBoxLabelData, Anchor.Center, new Vector2(0, -110), new Vector2(200, 35), 40, new Vector2(1, 1), TextAlignment.Left, (12, 12), rotation: 0, clickFunc: () => {
+        this.AddElement("Rectangle-Text-Box", new RectangleTextBoxElement(rectangleTextBoxData, rectangleTextBoxLabelData, rectangleHintTextBoxLabelData, Anchor.Center, new Vector2(0, -110), new Vector2(200, 35), 40, new Vector2(1, 1), TextAlignment.Left, new Vector2(0, 0), (12, 12), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));

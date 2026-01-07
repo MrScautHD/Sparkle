@@ -40,6 +40,11 @@ public class RectangleTextBoxElement : GuiElement {
     public TextAlignment TextAlignment;
     
     /// <summary>
+    /// The offset of the text relative to its position.
+    /// </summary>
+    public Vector2 TextOffset;
+    
+    /// <summary>
     /// The horizontal offsets to be applied to the text edges within the textbox.
     /// </summary>
     public (float Left, float Right) TextEdgeOffset;
@@ -92,15 +97,17 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="scale">Optional parameter that defines the scaling factor for the element. Default is null.</param>
     /// <param name="textAlignment">Text alignment within the textbox. Default is Left.</param>
     /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
+    /// <param name="textOffset">The offset of the text relative to its position.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Left, Vector2? textOffset = null, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
         this.MaxTextLength = maxTextLength;
         this.TextAlignment = textAlignment;
+        this.TextOffset = textOffset ?? Vector2.Zero;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
     }
     
@@ -458,7 +465,7 @@ public class RectangleTextBoxElement : GuiElement {
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw caret.
-        if (this._isCaretVisible) {
+        if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
             this.DrawCaret(context.PrimitiveBatch, this.LabelData);
         }
         
@@ -483,6 +490,8 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X + 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
+        
+        textOrigin -= this.TextOffset;
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
         
@@ -518,6 +527,8 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
+        
+        caretOrigin -= this.TextOffset;
         
         // Draw caret rectangle.
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.Scale.Y * this.Gui.ScaleFactor);
@@ -574,6 +585,8 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
             _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
+        
+        highlightOrigin -= this.TextOffset;
         
         // Draw the highlight rectangle.
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth, labelData.Size * this.Scale.Y * this.Gui.ScaleFactor);
@@ -724,6 +737,7 @@ public class RectangleTextBoxElement : GuiElement {
     private int GetCaretIndexFromPosition(LabelData labelData, Vector2 clickPosition) {
         Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
         Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Scale * this.Gui.ScaleFactor;
+        localClickPosition -= this.TextOffset * this.Scale * this.Gui.ScaleFactor;
         
         // Calculate visible text size, used for text alignment.
         Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
