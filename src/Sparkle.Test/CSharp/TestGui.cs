@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -25,7 +26,7 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Toggle.
+        // Toggle. // TODO: Reziable texture
         ToggleData toggleData = new ToggleData(ContentRegistry.ToggleBackground, ContentRegistry.ToggleCheckmark, backgroundHoverColor: Color.LightGray, checkmarkHoverColor: Color.LightGray);
         LabelData toggleLabelData = new LabelData(ContentRegistry.Fontoe, "Toggle ME!", 18);
         
@@ -34,11 +35,11 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Texture button.
-        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.None, borderInsets: new BorderInsets(12));
+        // Texture button. // TODO: Reziable texture flip
+        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.Vertical);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
-        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), textOffset: new Vector2(0, 2), clickFunc: () => {
+        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), size: new Vector2(120, 30), textOffset: new Vector2(0, 2), clickFunc: () => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -52,12 +53,12 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Texture text box.
-        TextureTextBoxData textureTextBoxData = new TextureTextBoxData(ContentRegistry.TextBox, hoverColor: Color.LightGray);
+        // Texture text box.  // TODO: Reziable texture (update flip) + add text offset.
+        TextureTextBoxData textureTextBoxData = new TextureTextBoxData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12));
         LabelData textureTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData textureHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Left, (12, 12), clickFunc: () => {
+        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Right, new Vector2(15, 20), (12, 12), new Vector2(260, 30), rotation: 0, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));

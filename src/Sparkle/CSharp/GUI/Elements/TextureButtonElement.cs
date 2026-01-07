@@ -218,8 +218,8 @@ public class TextureButtonElement : GuiElement {
         Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             TextAlignment.Center => new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             _ => Vector2.Zero
         };
         

@@ -24,6 +24,16 @@ public class TextureTextBoxData {
     public Rectangle SourceRect;
     
     /// <summary>
+    /// The mode used to resize the texture.
+    /// </summary>
+    public ResizeMode ResizeMode;
+    
+    /// <summary>
+    /// The border insets used for nine-slice resizing.
+    /// </summary>
+    public BorderInsets BorderInsets;
+    
+    /// <summary>
     /// The primary color.
     /// </summary>
     public Color Color;
@@ -49,14 +59,18 @@ public class TextureTextBoxData {
     /// <param name="texture">The texture used for the text box.</param>
     /// <param name="sampler">The sampler used to control how the texture is sampled.</param>
     /// <param name="sourceRect">The section of the texture to be displayed.</param>
+    /// <param name="resizeMode">The mode used to resize the texture.</param>
+    /// <param name="borderInsets">The border insets used for nine-slice resizing.</param>
     /// <param name="color">The primary color.</param>
     /// <param name="hoverColor">The color get's applied when the mouse is hover over.</param>
     /// <param name="flip">The flip mode for the texture (none, horizontal, vertical, both).</param>
     /// <param name="highlightColor">The color for the highlight.</param>
-    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, Color? color = null, Color? hoverColor = null, SpriteFlip flip = SpriteFlip.None, Color? highlightColor = null) {
+    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, SpriteFlip flip = SpriteFlip.None, Color? highlightColor = null) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
+        this.ResizeMode = resizeMode;
+        this.BorderInsets = borderInsets ?? BorderInsets.Zero;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
         this.Flip = flip;

@@ -40,6 +40,11 @@ public class TextureTextBoxElement : GuiElement {
     public TextAlignment TextAlignment;
     
     /// <summary>
+    /// The offset of the text relative to its position.
+    /// </summary>
+    public Vector2 TextOffset;
+    
+    /// <summary>
     /// The horizontal offsets to be applied to the text edges within the textbox.
     /// </summary>
     public (float Left, float Right) TextEdgeOffset;
@@ -89,18 +94,20 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="offset">Position offset relative to the anchor.</param>
     /// <param name="maxTextLength">Maximum number of allowed characters in the textbox.</param>
     /// <param name="textAlignment">Text alignment within the textbox. Default is Left.</param>
+    /// <param name="textOffset">The offset of the text relative to its position.</param>
     /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
     /// <param name="size">Optional size of the textbox. Defaults to the texture dimensions.</param>
     /// <param name="scale">Optional scale factor for the element.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public TextureTextBoxElement(TextureTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, int maxTextLength, TextAlignment textAlignment = TextAlignment.Left, Vector2? textOffset = null, (float Left, float Right)? textEdgeOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
         this.MaxTextLength = maxTextLength;
         this.TextAlignment = textAlignment;
+        this.TextOffset = textOffset ?? Vector2.Zero;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
         this.Size = size ?? new Vector2(textBoxData.SourceRect.Width, textBoxData.SourceRect.Height);
     }
@@ -429,11 +436,16 @@ public class TextureTextBoxElement : GuiElement {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw texture.
-        Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
-        
-        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PushSampler(this.TextBoxData.Sampler);
-        context.SpriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, this.TextBoxData.SourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.TextBoxData.Flip);
-        if (this.TextBoxData.Sampler != null) context.SpriteBatch.PopSampler();
+        switch (this.TextBoxData.ResizeMode) {
+            case ResizeMode.None:
+                this.DrawNormal(context.SpriteBatch);
+                break;
+            
+            case ResizeMode.NineSlice:
+            case ResizeMode.TileCenter:
+                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.ResizeMode == ResizeMode.TileCenter);
+                break;
+        }
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
@@ -458,6 +470,133 @@ public class TextureTextBoxElement : GuiElement {
         this.DrawHighlight(context.PrimitiveBatch, this.LabelData);
         
         context.PrimitiveBatch.End();
+    }
+    
+    /// <summary>
+    /// Draws the texture of the button in a normal, unmodified state.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to render the button texture.</param>
+    private void DrawNormal(SpriteBatch spriteBatch) {
+        Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        
+        if (this.TextBoxData.Sampler != null) spriteBatch.PushSampler(this.TextBoxData.Sampler);
+        spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, this.TextBoxData.SourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, buttonColor, this.TextBoxData.Flip);
+        if (this.TextBoxData.Sampler != null) spriteBatch.PopSampler();
+    }
+    
+    /// <summary>
+    /// Renders a nine-slice sprite with optional tiling for the center region.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to draw, The nine-slice sprite.</param>
+    /// <param name="tileCenter">Indicates whether the center region should be tiled instead of stretched.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, bool tileCenter) {
+        Color color = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        
+        Rectangle sourceRect = this.TextBoxData.SourceRect;
+        BorderInsets borderInsets = this.TextBoxData.BorderInsets;
+        Vector2 baseScale = this.Scale * this.Gui.ScaleFactor;
+        
+        // Calculate sizes and clamp to a minimum to prevent overlap.
+        float minW = borderInsets.Left + borderInsets.Right;
+        float minH = borderInsets.Top + borderInsets.Bottom;
+        
+        Vector2 visualSize = new Vector2(MathF.Max(this.Size.X, minW), MathF.Max(this.Size.Y, minH));
+        Vector2 finalSize = visualSize * baseScale;
+        
+        // Centering logic for buttons smaller than their borders.
+        float diffX = (this.Size.X < minW) ? (minW - this.Size.X) * baseScale.X : 0.0F;
+        float diffY = (this.Size.Y < minH) ? (minH - this.Size.Y) * baseScale.Y : 0.0F;
+        Vector2 pivot = (this.Origin * baseScale) + new Vector2(diffX, diffY) * 0.5F;
+        
+        // Calculate scaled edge dimensions.
+        float leftW = borderInsets.Left * baseScale.X;
+        float rightW = borderInsets.Right * baseScale.X;
+        float topH = borderInsets.Top * baseScale.Y;
+        float bottomH = borderInsets.Bottom * baseScale.Y;
+        float innerW = finalSize.X - leftW - rightW;
+        float innerH = finalSize.Y - topH - bottomH;
+        
+        // Define source rectangles for all 9 segments.
+        int right  = sourceRect.X + sourceRect.Width;
+        int bottom = sourceRect.Y + sourceRect.Height;
+        
+        Rectangle sourceTopLeft = new Rectangle(sourceRect.X, sourceRect.Y, borderInsets.Left, borderInsets.Top);
+        Rectangle sourceTopRight = new Rectangle(right - borderInsets.Right, sourceRect.Y, borderInsets.Right, borderInsets.Top);
+        Rectangle sourceBottomLeft = new Rectangle(sourceRect.X, bottom - borderInsets.Bottom, borderInsets.Left, borderInsets.Bottom);
+        Rectangle sourceBottomRight = new Rectangle(right - borderInsets.Right, bottom - borderInsets.Bottom, borderInsets.Right, borderInsets.Bottom);
+        
+        Rectangle srcTopFull = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
+        Rectangle srcBottomFull = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
+        Rectangle srcLeft = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        Rectangle srcRight = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        Rectangle srcCenter = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        
+        // Corners: Always drawn at the original size (scaled by baseScale).
+        spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, sourceTopLeft, baseScale, pivot / baseScale, this.Rotation, color);
+        spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, sourceTopRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / baseScale, this.Rotation, color);
+        spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, sourceBottomLeft, baseScale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
+        spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, sourceBottomRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
+        
+        // Edges: Either stretched or tiled based on configuration.
+        if (innerH > 0.0F) {
+            if (tileCenter) {
+                float tileH = srcLeft.Height * baseScale.Y;
+                for (float y = 0.0F; y < innerH; y += tileH) {
+                    float drawH = MathF.Min(tileH, innerH - y);
+                    Rectangle cL = new Rectangle(srcLeft.X, srcLeft.Y, srcLeft.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
+                    Rectangle cR = new Rectangle(srcRight.X, srcRight.Y, srcRight.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
+                    spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cL, baseScale, (pivot - new Vector2(0.0F, topH + y)) / baseScale, this.Rotation, color);
+                    spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cR, baseScale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / baseScale, this.Rotation, color);
+                }
+            } else {
+                Vector2 sV = new Vector2(baseScale.X, innerH / srcLeft.Height);
+                spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, srcLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, this.Rotation, color);
+                spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, srcRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, this.Rotation, color);
+            }
+        }
+        
+        if (innerW > 0.0F) {
+            if (tileCenter) {
+                float tileW = srcTopFull.Width * baseScale.X;
+                for (float x = 0.0F; x < innerW; x += tileW) {
+                    float drawW = MathF.Min(tileW, innerW - x);
+                    Rectangle cT = new Rectangle(srcTopFull.X, srcTopFull.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcTopFull.Height);
+                    Rectangle cB = new Rectangle(srcBottomFull.X, srcBottomFull.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcBottomFull.Height);
+                    spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cT, baseScale, (pivot - new Vector2(leftW + x, 0.0F)) / baseScale, this.Rotation, color);
+                    spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cB, baseScale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
+                }
+            } else {
+                int clipW = Math.Min(srcTopFull.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+                Rectangle cT = new Rectangle(srcTopFull.X, srcTopFull.Y, clipW, srcTopFull.Height);
+                Rectangle cB = new Rectangle(srcBottomFull.X, srcBottomFull.Y, clipW, srcBottomFull.Height);
+                Vector2 sH = (innerW > srcTopFull.Width * baseScale.X) ? new Vector2(innerW / srcTopFull.Width, baseScale.Y) : baseScale;
+                spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, this.Rotation, color);
+                spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, this.Rotation, color);
+            }
+        }
+        
+        // Center: Fills the remaining interior space.
+        if (innerW <= 0.0F || innerH <= 0.0F) {
+            return;
+        }
+        
+        if (tileCenter) {
+            float tileW = srcCenter.Width * baseScale.X;
+            float tileH = srcCenter.Height * baseScale.Y;
+            for (float y = 0.0F; y < innerH; y += tileH) {
+                float drawH = MathF.Min(tileH, innerH - y);
+                for (float x = 0.0F; x < innerW; x += tileW) {
+                    float drawW = MathF.Min(tileW, innerW - x);
+                    Rectangle cC = new Rectangle(srcCenter.X, srcCenter.Y, (int) MathF.Ceiling(drawW / baseScale.X), (int) MathF.Ceiling(drawH / baseScale.Y));
+                    spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cC, baseScale, (pivot - new Vector2(leftW + x, topH + y)) / baseScale, this.Rotation, color);
+                }
+            }
+        } else {
+            int clipW = Math.Min(srcCenter.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+            Rectangle cC = new Rectangle(srcCenter.X, srcCenter.Y, clipW, srcCenter.Height);
+            Vector2 sC = (innerW > srcCenter.Width * baseScale.X) ? new Vector2(innerW / srcCenter.Width, innerH / srcCenter.Height) : new Vector2(baseScale.X, innerH / srcCenter.Height);
+            spriteBatch.DrawTexture(this.TextBoxData.Texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, this.Rotation, color);
+        }
     }
     
     /// <summary>
@@ -716,7 +855,7 @@ public class TextureTextBoxElement : GuiElement {
     private int GetCaretIndexFromPosition(LabelData labelData, Vector2 clickPosition) {
         Matrix4x4 rotationZ = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
         Vector2 localClickPosition = Vector2.Transform(clickPosition - this.Position, rotationZ) + this.Origin * this.Scale * this.Gui.ScaleFactor;
-
+        
         // Calculate visible text size, used for text alignment.
         Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
