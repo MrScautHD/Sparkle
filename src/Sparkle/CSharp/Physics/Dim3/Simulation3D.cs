@@ -6,7 +6,7 @@ using Jitter2.SoftBodies;
 namespace Sparkle.CSharp.Physics.Dim3;
 
 public class Simulation3D : Simulation {
-
+    
     /// <summary>
     /// The physics world that manages all physical objects and interactions.
     /// </summary>
@@ -28,7 +28,7 @@ public class Simulation3D : Simulation {
     /// <param name="settings">The physics settings for the 3D simulation.</param>
     public Simulation3D(PhysicsSettings3D settings) {
         this._settings = settings;
-
+        
         this.World = new World() {
             Gravity = settings.Gravity
         };
@@ -44,7 +44,7 @@ public class Simulation3D : Simulation {
     /// <param name="fixedStep">The fixed time interval for the simulation step.</param>
     protected internal override void Step(double fixedStep) {
         this.World.Step((float) fixedStep, this._settings.MultiThreaded);
-
+        
         foreach (RigidBody body in this.World.RigidBodies.Active) {
             this.BodyMoved?.Invoke(body);
         }

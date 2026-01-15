@@ -26,7 +26,7 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Toggle. // TODO: Reziable texture
+        // Toggle. // TODO: Reziable texture and do texture in middle
         ToggleData toggleData = new ToggleData(ContentRegistry.ToggleBackground, ContentRegistry.ToggleCheckmark, backgroundHoverColor: Color.LightGray, checkmarkHoverColor: Color.LightGray);
         LabelData toggleLabelData = new LabelData(ContentRegistry.Fontoe, "Toggle ME!", 18);
         
@@ -35,8 +35,8 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Texture button. // TODO: Reziable texture flip
-        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.Vertical);
+        // Texture button.
+        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.None);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
         this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), size: new Vector2(120, 30), textOffset: new Vector2(0, 1), clickFunc: () => {
@@ -53,8 +53,8 @@ public class TestGui : Gui {
             return true;
         }));
         
-        // Texture text box.  // TODO: Reziable texture (update flip) + add text offset.
-        TextureTextBoxData textureTextBoxData = new TextureTextBoxData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12));
+        // Texture text box.
+        TextureTextBoxData textureTextBoxData = new TextureTextBoxData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.Both);
         LabelData textureTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData textureHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         

@@ -97,6 +97,7 @@ public class TextureButtonElement : GuiElement {
     /// <param name="tileCenter">Indicates whether the center region should be tiled instead of stretched.</param>
     private void DrawNineSlice(SpriteBatch spriteBatch, bool tileCenter) {
         Color color = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
+        SpriteFlip flip = this.ButtonData.Flip;
         
         Rectangle sourceRect = this.ButtonData.SourceRect;
         BorderInsets borderInsets = this.ButtonData.BorderInsets;
@@ -114,7 +115,7 @@ public class TextureButtonElement : GuiElement {
         float diffY = (this.Size.Y < minH) ? (minH - this.Size.Y) * baseScale.Y : 0.0F;
         Vector2 pivot = (this.Origin * baseScale) + new Vector2(diffX, diffY) * 0.5F;
         
-        // Calculate scaled edge dimensions.
+        // Calculate edge dimensions.
         float leftW = borderInsets.Left * baseScale.X;
         float rightW = borderInsets.Right * baseScale.X;
         float topH = borderInsets.Top * baseScale.Y;
@@ -123,7 +124,7 @@ public class TextureButtonElement : GuiElement {
         float innerH = finalSize.Y - topH - bottomH;
         
         // Define source rectangles for all 9 segments.
-        int right  = sourceRect.X + sourceRect.Width;
+        int right = sourceRect.X + sourceRect.Width;
         int bottom = sourceRect.Y + sourceRect.Height;
         
         Rectangle sourceTopLeft = new Rectangle(sourceRect.X, sourceRect.Y, borderInsets.Left, borderInsets.Top);
@@ -131,77 +132,95 @@ public class TextureButtonElement : GuiElement {
         Rectangle sourceBottomLeft = new Rectangle(sourceRect.X, bottom - borderInsets.Bottom, borderInsets.Left, borderInsets.Bottom);
         Rectangle sourceBottomRight = new Rectangle(right - borderInsets.Right, bottom - borderInsets.Bottom, borderInsets.Right, borderInsets.Bottom);
         
-        Rectangle srcTopFull = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
-        Rectangle srcBottomFull = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
-        Rectangle srcLeft = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle srcRight = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle srcCenter = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        Rectangle srcT = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
+        Rectangle srcB = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
+        Rectangle srcL = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        Rectangle srcR = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+        Rectangle srcC = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
         
-        // Corners: Always drawn at the original size (scaled by baseScale).
-        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceTopLeft, baseScale, pivot / baseScale, this.Rotation, color);
-        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceTopRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / baseScale, this.Rotation, color);
-        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceBottomLeft, baseScale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
-        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceBottomRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
+        // Adjust for Horizontal Flip.
+        if (flip.HasFlag(SpriteFlip.Horizontal)) {
+            (sourceTopLeft, sourceTopRight) = (sourceTopRight, sourceTopLeft);
+            (sourceBottomLeft, sourceBottomRight) = (sourceBottomRight, sourceBottomLeft);
+            (srcL, srcR) = (srcR, srcL);
+            (leftW, rightW) = (rightW, leftW);
+        }
         
-        // Edges: Either stretched or tiled based on configuration.
+        // Adjust for Vertical Flip.
+        if (flip.HasFlag(SpriteFlip.Vertical)) {
+            (sourceTopLeft, sourceBottomLeft) = (sourceBottomLeft, sourceTopLeft);
+            (sourceTopRight, sourceBottomRight) = (sourceBottomRight, sourceTopRight);
+            (srcT, srcB) = (srcB, srcT);
+            (topH, bottomH) = (bottomH, topH);
+        }
+        
+        // Corners.
+        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceTopLeft, baseScale, pivot / baseScale, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceTopRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / baseScale, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceBottomLeft, baseScale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, sourceBottomRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
+        
+        // Edges.
         if (innerH > 0.0F) {
             if (tileCenter) {
-                float tileH = srcLeft.Height * baseScale.Y;
+                float tileH = srcL.Height * baseScale.Y;
                 for (float y = 0.0F; y < innerH; y += tileH) {
                     float drawH = MathF.Min(tileH, innerH - y);
-                    Rectangle cL = new Rectangle(srcLeft.X, srcLeft.Y, srcLeft.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    Rectangle cR = new Rectangle(srcRight.X, srcRight.Y, srcRight.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cL, baseScale, (pivot - new Vector2(0.0F, topH + y)) / baseScale, this.Rotation, color);
-                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cR, baseScale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / baseScale, this.Rotation, color);
+                    Rectangle cL = new Rectangle(srcL.X, srcL.Y, srcL.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
+                    Rectangle cR = new Rectangle(srcR.X, srcR.Y, srcR.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
+                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cL, baseScale, (pivot - new Vector2(0.0F, topH + y)) / baseScale, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cR, baseScale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / baseScale, this.Rotation, color, flip);
                 }
-            } else {
-                Vector2 sV = new Vector2(baseScale.X, innerH / srcLeft.Height);
-                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, srcLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, this.Rotation, color);
-                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, srcRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, this.Rotation, color);
+            }
+            else {
+                Vector2 sV = new Vector2(baseScale.X, innerH / srcL.Height);
+                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, srcL, sV, (pivot - new Vector2(0.0F, topH)) / sV, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, srcR, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, this.Rotation, color, flip);
             }
         }
         
         if (innerW > 0.0F) {
             if (tileCenter) {
-                float tileW = srcTopFull.Width * baseScale.X;
+                float tileW = srcT.Width * baseScale.X;
                 for (float x = 0.0F; x < innerW; x += tileW) {
                     float drawW = MathF.Min(tileW, innerW - x);
-                    Rectangle cT = new Rectangle(srcTopFull.X, srcTopFull.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcTopFull.Height);
-                    Rectangle cB = new Rectangle(srcBottomFull.X, srcBottomFull.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcBottomFull.Height);
-                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cT, baseScale, (pivot - new Vector2(leftW + x, 0.0F)) / baseScale, this.Rotation, color);
-                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cB, baseScale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / baseScale, this.Rotation, color);
+                    Rectangle cT = new Rectangle(srcT.X, srcT.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcT.Height);
+                    Rectangle cB = new Rectangle(srcB.X, srcB.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), srcB.Height);
+                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cT, baseScale, (pivot - new Vector2(leftW + x, 0.0F)) / baseScale, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cB, baseScale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
                 }
-            } else {
-                int clipW = Math.Min(srcTopFull.Width, (int) MathF.Ceiling(innerW / baseScale.X));
-                Rectangle cT = new Rectangle(srcTopFull.X, srcTopFull.Y, clipW, srcTopFull.Height);
-                Rectangle cB = new Rectangle(srcBottomFull.X, srcBottomFull.Y, clipW, srcBottomFull.Height);
-                Vector2 sH = (innerW > srcTopFull.Width * baseScale.X) ? new Vector2(innerW / srcTopFull.Width, baseScale.Y) : baseScale;
-                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, this.Rotation, color);
-                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, this.Rotation, color);
+            }
+            else {
+                int clipW = Math.Min(srcT.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+                Rectangle cT = new Rectangle(srcT.X, srcT.Y, clipW, srcT.Height);
+                Rectangle cB = new Rectangle(srcB.X, srcB.Y, clipW, srcB.Height);
+                Vector2 sH = (innerW > srcT.Width * baseScale.X) ? new Vector2(innerW / srcT.Width, baseScale.Y) : baseScale;
+                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, this.Rotation, color, flip);
             }
         }
         
-        // Center: Fills the remaining interior space.
-        if (innerW <= 0.0F || innerH <= 0.0F) {
-            return;
-        }
-        
-        if (tileCenter) {
-            float tileW = srcCenter.Width * baseScale.X;
-            float tileH = srcCenter.Height * baseScale.Y;
-            for (float y = 0.0F; y < innerH; y += tileH) {
-                float drawH = MathF.Min(tileH, innerH - y);
-                for (float x = 0.0F; x < innerW; x += tileW) {
-                    float drawW = MathF.Min(tileW, innerW - x);
-                    Rectangle cC = new Rectangle(srcCenter.X, srcCenter.Y, (int) MathF.Ceiling(drawW / baseScale.X), (int) MathF.Ceiling(drawH / baseScale.Y));
-                    spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cC, baseScale, (pivot - new Vector2(leftW + x, topH + y)) / baseScale, this.Rotation, color);
+        // Center.
+        if (innerW > 0.0F && innerH > 0.0F) {
+            if (tileCenter) {
+                float tileW = srcC.Width * baseScale.X;
+                float tileH = srcC.Height * baseScale.Y;
+                
+                for (float y = 0.0F; y < innerH; y += tileH) {
+                    float drawH = MathF.Min(tileH, innerH - y);
+                    for (float x = 0.0F; x < innerW; x += tileW) {
+                        float drawW = MathF.Min(tileW, innerW - x);
+                        Rectangle cC = new Rectangle(srcC.X, srcC.Y, (int) MathF.Ceiling(drawW / baseScale.X), (int) MathF.Ceiling(drawH / baseScale.Y));
+                        spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cC, baseScale, (pivot - new Vector2(leftW + x, topH + y)) / baseScale, this.Rotation, color, flip);
+                    }
                 }
             }
-        } else {
-            int clipW = Math.Min(srcCenter.Width, (int) MathF.Ceiling(innerW / baseScale.X));
-            Rectangle cC = new Rectangle(srcCenter.X, srcCenter.Y, clipW, srcCenter.Height);
-            Vector2 sC = (innerW > srcCenter.Width * baseScale.X) ? new Vector2(innerW / srcCenter.Width, innerH / srcCenter.Height) : new Vector2(baseScale.X, innerH / srcCenter.Height);
-            spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, this.Rotation, color);
+            else {
+                int clipW = Math.Min(srcC.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+                Rectangle cC = new Rectangle(srcC.X, srcC.Y, clipW, srcC.Height);
+                Vector2 sC = (innerW > srcC.Width * baseScale.X) ? new Vector2(innerW / srcC.Width, innerH / srcC.Height) : new Vector2(baseScale.X, innerH / srcC.Height);
+                spriteBatch.DrawTexture(this.ButtonData.Texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, this.Rotation, color, flip);
+            }
         }
     }
     
