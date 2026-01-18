@@ -59,6 +59,11 @@ public class ToggleData {
     public Color CheckmarkHoverColor;
     
     /// <summary>
+    /// The color applied when the toggle is in an inactive or disabled state.
+    /// </summary>
+    public Color DisabledColor;
+    
+    /// <summary>
     /// The flip transformation applied to the checkbox texture.
     /// </summary>
     public SpriteFlip CheckboxFlip;
@@ -67,11 +72,6 @@ public class ToggleData {
     /// The flip transformation applied to the checkmark texture.
     /// </summary>
     public SpriteFlip CheckmarkFlip;
-    
-    /// <summary>
-    /// The color applied when the toggle is in an inactive or disabled state.
-    /// </summary>
-    public Color OffStateColor;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleData"/> class with optional customization.
@@ -86,10 +86,10 @@ public class ToggleData {
     /// <param name="checkmarkColor">Optional base color for the checkmark. Defaults to white.</param>
     /// <param name="checkboxHoverColor">Optional hover color for the Checkbox. Defaults to <paramref name="checkboxColor"/>.</param>
     /// <param name="checkmarkHoverColor">Optional hover color for the checkmark. Defaults to <paramref name="checkmarkColor"/>.</param>
+    /// <param name="disabledColor">Optional color for the toggle when disabled. Defaults to gray.</param>
     /// <param name="checkboxFlip">Optional flip setting for the Checkbox texture. Defaults to none.</param>
     /// <param name="checkmarkFlip">Optional flip setting for the checkmark texture. Defaults to none.</param>
-    /// <param name="offStateColor">Optional color for the toggle when disabled. Defaults to gray.</param>
-    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None, Color? offStateColor = null) {
+    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, Color? disabledColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None) {
         this.CheckboxTexture = checkboxTexture;
         this.CheckmarkTexture = checkmarkTexture;
         this.CheckboxSampler = checkboxSampler;
@@ -100,8 +100,8 @@ public class ToggleData {
         this.CheckmarkColor = checkmarkColor ?? Color.White;
         this.CheckboxHoverColor = checkboxHoverColor ?? this.CheckboxColor;
         this.CheckmarkHoverColor = checkmarkHoverColor ?? this.CheckmarkColor;
+        this.DisabledColor = disabledColor ?? Color.Gray;
         this.CheckboxFlip = checkboxFlip;
         this.CheckmarkFlip = checkmarkFlip;
-        this.OffStateColor = offStateColor ?? Color.Gray;
     }
 }

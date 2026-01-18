@@ -44,14 +44,19 @@ public class TextureTextBoxData {
     public Color HoverColor;
     
     /// <summary>
-    /// The flip mode for the texture (none, horizontal, vertical, both).
-    /// </summary>
-    public SpriteFlip Flip;
-    
-    /// <summary>
     /// The color for the highlight.
     /// </summary>
     public Color HighlightColor;
+    
+    /// <summary>
+    /// The color applied when the toggle is in an inactive or disabled state.
+    /// </summary>
+    public Color DisabledColor;
+    
+    /// <summary>
+    /// The flip mode for the texture (none, horizontal, vertical, both).
+    /// </summary>
+    public SpriteFlip Flip;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureTextBoxData"/> class.
@@ -63,9 +68,10 @@ public class TextureTextBoxData {
     /// <param name="borderInsets">The border insets used for nine-slice resizing.</param>
     /// <param name="color">The primary color.</param>
     /// <param name="hoverColor">The color get's applied when the mouse is hover over.</param>
-    /// <param name="flip">The flip mode for the texture (none, horizontal, vertical, both).</param>
     /// <param name="highlightColor">The color for the highlight.</param>
-    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, SpriteFlip flip = SpriteFlip.None, Color? highlightColor = null) {
+    /// <param name="disabledColor">The color displayed when the text box is disabled.</param>
+    /// <param name="flip">The flip mode for the texture (none, horizontal, vertical, both).</param>
+    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? highlightColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
@@ -73,7 +79,8 @@ public class TextureTextBoxData {
         this.BorderInsets = borderInsets ?? BorderInsets.Zero;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
-        this.Flip = flip;
         this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
+        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.Flip = flip;
     }
 }

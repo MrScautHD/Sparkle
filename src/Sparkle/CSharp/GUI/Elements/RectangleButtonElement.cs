@@ -60,13 +60,22 @@ public class RectangleButtonElement : GuiElement {
         
         // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
+        
+        if (!this.Interactable) {
+            buttonColor = this.ButtonData.DisabledColor;
+        }
+        
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
         
         // Draw an empty rectangle.
         if (this.ButtonData.OutlineThickness > 0.0F) {
             Color outlineColor = this.IsHovered ? this.ButtonData.OutlineHoverColor : this.ButtonData.OutlineColor;
-            float outlineThickness = this.ButtonData.OutlineThickness * this.Gui.ScaleFactor;
             
+            if (!this.Interactable) {
+                outlineColor = this.ButtonData.DisabledOutlineColor;
+            }
+            
+            float outlineThickness = this.ButtonData.OutlineThickness * this.Gui.ScaleFactor;
             context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
         

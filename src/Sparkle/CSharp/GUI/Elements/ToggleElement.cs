@@ -27,11 +27,6 @@ public class ToggleElement : GuiElement {
     public float BoxTextSpacing { get; private set; }
     
     /// <summary>
-    /// Indicates whether the toggle is interactable.
-    /// </summary>
-    public bool Interactable;
-    
-    /// <summary>
     /// Indicates whether the toggle is currently in the 'off' or 'on' state.
     /// </summary>
     public bool ToggleState;
@@ -49,17 +44,15 @@ public class ToggleElement : GuiElement {
     /// <param name="anchor">Anchor position of the element.</param>
     /// <param name="offset">Offset from the anchor.</param>
     /// <param name="boxTextSpacing">Spacing between the toggle box and the label text.</param>
-    /// <param name="interactable">Indicates whether the toggle is interactable.</param>
     /// <param name="toggleState">Initial toggle state.</param>
     /// <param name="scale">The scale applied to the toggle element.</param>
     /// <param name="origin">Optional custom origin.</param>
     /// <param name="rotation">Optional rotation angle.</param>
     /// <param name="clickFunc">Optional function determining click behavior.</param>
-    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, bool interactable = true, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.ToggleData = toggleData;
         this.LabelData = labelData;
         this.BoxTextSpacing = boxTextSpacing;
-        this.Interactable = interactable;
         this.ToggleState = toggleState;
     }
     
@@ -91,7 +84,7 @@ public class ToggleElement : GuiElement {
         Color checkboxColor = this.IsHovered ? this.ToggleData.CheckboxHoverColor : this.ToggleData.CheckboxColor;
         
         if (!this.Interactable) {
-            checkboxColor = this.ToggleData.OffStateColor;
+            checkboxColor = this.ToggleData.DisabledColor;
         }
         
         this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip);
@@ -101,7 +94,7 @@ public class ToggleElement : GuiElement {
             Color checkmarkColor = this.IsHovered ? this.ToggleData.CheckmarkHoverColor : this.ToggleData.CheckmarkColor;
             
             if (!this.Interactable) {
-                checkmarkColor = this.ToggleData.OffStateColor;
+                checkmarkColor = this.ToggleData.DisabledColor;
             }
             
             this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip);

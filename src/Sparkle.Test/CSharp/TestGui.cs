@@ -45,7 +45,7 @@ public class TestGui : Gui {
         }));
         
         // Rectangle button.
-        RectangleButtonData rectangleButtonData = new RectangleButtonData(Color.Gray, Color.LightGray, 4, Color.DarkGray, Color.Gray);
+        RectangleButtonData rectangleButtonData = new RectangleButtonData(Color.Gray, Color.LightGray, null, 4, Color.DarkGray, Color.Gray);
         LabelData rectangleButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
         this.AddElement("Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, Anchor.Center, Vector2.Zero, new Vector2(200, 30), clickFunc: () => {
@@ -64,7 +64,7 @@ public class TestGui : Gui {
         }));
         
         // Rectangle text box.
-        RectangleTextBoxData rectangleTextBoxData = new RectangleTextBoxData(Color.Gray, Color.LightGray, 4, Color.DarkGray, Color.Gray);
+        RectangleTextBoxData rectangleTextBoxData = new RectangleTextBoxData(Color.Gray, Color.LightGray, null, 4, Color.DarkGray, Color.Gray);
         LabelData rectangleTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData rectangleHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.LightGray, hoverColor: Color.Gray);
         
@@ -74,16 +74,15 @@ public class TestGui : Gui {
         }));
         
         // Texture slider bar.
-        //TextureSliderBarData textureSliderBarData = new TextureSliderBarData(ContentRegistry.EmptySliderBar, ContentRegistry.FullSliderBar, ContentRegistry.Slider);
-        //
-        //this.AddElement("Texture-Slider-Bar", new TextureSliderBarElement(textureSliderBarData, Anchor.Center, new Vector2(0, 170), rotation: 0, clickFunc: () => {
-        //    Logger.Error("BOX1!");
-        //    return true;
-        //}));
+        TextureSlideBarData textureSlideBarData = new TextureSlideBarData(ContentRegistry.SliderBar, ContentRegistry.Slider, barResizeMode: ResizeMode.NineSlice, barBorderInsets: new BorderInsets(3));
+        
+        this.AddElement("Texture-Slider-Bar", new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 170), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), rotation: 0, clickFunc: () => {
+            Logger.Error("BOX1!");
+            return true;
+        }));
     }
     
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        
         GuiManager.Scale = 1;
         
         // Draw background.
