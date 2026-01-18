@@ -435,14 +435,23 @@ public class RectangleTextBoxElement : GuiElement {
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw a filled rectangle.
-        Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
+        Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        
+        if (!this.Interactable) {
+            boxColor = this.TextBoxData.DisabledColor;
+        }
+        
+        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, boxColor);
         
         // Draw an empty rectangle.
         if (this.TextBoxData.OutlineThickness > 0.0F) {
             Color outlineColor = this.IsHovered ? this.TextBoxData.OutlineHoverColor : this.TextBoxData.OutlineColor;
-            float outlineThickness = this.TextBoxData.OutlineThickness * this.Gui.ScaleFactor;
             
+            if (!this.Interactable) {
+                outlineColor = this.TextBoxData.DisabledOutlineColor;
+            }
+            
+            float outlineThickness = this.TextBoxData.OutlineThickness * this.Gui.ScaleFactor;
             context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
         
@@ -494,6 +503,10 @@ public class RectangleTextBoxElement : GuiElement {
         textOrigin -= this.TextOffset;
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
+        
+        if (!this.Interactable) {
+            textColor = labelData.DisabledColor;
+        }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
         spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);

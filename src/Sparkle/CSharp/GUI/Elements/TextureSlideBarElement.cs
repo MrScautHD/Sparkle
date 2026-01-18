@@ -1,6 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -9,48 +11,106 @@ using Veldrid;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
-public class TextureButtonElement : GuiElement {
+public class TextureSlideBarElement : GuiElement {
     
     /// <summary>
-    /// The associated data for a texture-based button in the GUI.
+    /// The data used to render the slide bar.
     /// </summary>
-    public TextureButtonData ButtonData { get; private set; }
+    public TextureSlideBarData Data { get; private set; }
     
     /// <summary>
-    /// The data and properties necessary for rendering and handling text on a GUI element.
+    /// The minimum allowable value for the slider bar, defining the lower limit of the slider's range.
     /// </summary>
-    public LabelData LabelData { get; private set; }
+    public float MinValue;
     
     /// <summary>
-    /// The alignment of text within a GUI element.
+    /// The maximum allowable value for the slider bar, defining the upper limit of the slider's range.
     /// </summary>
-    public TextAlignment TextAlignment;
+    public float MaxValue;
     
     /// <summary>
-    /// The offset of the text relative to its position.
+    /// The current value of the slider bar, clamped between the minimum and maximum values.
     /// </summary>
-    public Vector2 TextOffset;
+    public float Value {
+        get;
+        set {
+            float clampedValue = Math.Clamp(value, this.MinValue, this.MaxValue);
+            field = this.WholeNumbers ? MathF.Round(clampedValue) : clampedValue;
+        }
+    }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextureButtonElement"/> class.
+    /// The slider value should be rounded to the nearest whole number.
     /// </summary>
-    /// <param name="buttonData">The texture and visual configuration for the button.</param>
-    /// <param name="labelData">The label configuration to be drawn over the button.</param>
-    /// <param name="anchor">The anchor point determining the element's relative position.</param>
-    /// <param name="offset">The offset from the anchor point.</param>
-    /// <param name="textAlignment">The alignment of text within a GUI element.</param>
-    /// <param name="scale">The scale applied to the button.</param>
-    /// <param name="textOffset">The offset of the text relative to its position.</param>
-    /// <param name="size">Optional override for the size. If not provided, defaults to the texture size.</param>
-    /// <param name="origin">Optional origin point for transformations like rotation and scaling.</param>
-    /// <param name="rotation">Optional rotation angle in radians.</param>
-    /// <param name="clickFunc">Optional function to execute when the button is clicked. Should return true if handled.</param>
-    public TextureButtonElement(TextureButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
-        this.ButtonData = buttonData;
-        this.LabelData = labelData;
-        this.TextAlignment = textAlignment;
-        this.TextOffset = textOffset ?? Vector2.Zero;
-        this.Size = size ?? new Vector2(buttonData.SourceRect.Width, buttonData.SourceRect.Height);
+    public bool WholeNumbers;
+    
+    /// <summary>
+    /// The user is currently dragging the slider bar.
+    /// </summary>
+    private bool _isDragging;
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextureSlideBarElement"/> class.
+    /// </summary>
+    /// <param name="data">Defines the texture and styling data for the slider bar.</param>
+    /// <param name="anchor">Specifies the alignment of the slider bar to its parent container.</param>
+    /// <param name="offset">Defines the positional offset of the slider bar in relation to its anchor.</param>
+    /// <param name="minValue">The minimum value the slider bar represents.</param>
+    /// <param name="maxValue">The maximum value the slider bar represents.</param>
+    /// <param name="value">The initial value of the slider bar, which can be changed by user interaction.</param>
+    /// <param name="wholeNumbers">Indicates whether the slider should operate in whole number (integer) intervals or support floating-point values.</param>
+    /// <param name="size">Specifies the size of the slider bar. Defaults to the size defined by the texture data if not provided.</param>
+    /// <param name="scale">Specifies the scale factor for the slider bar's dimensions.</param>
+    /// <param name="origin">Defines the origin point for transformations applied to the slider bar.</param>
+    /// <param name="rotation">The rotation angle (in degrees) to apply to the slider bar.</param>
+    /// <param name="clickFunc">A function that is invoked when the slider bar is clicked, returning a boolean to indicate success or state change.</param>
+    public TextureSlideBarElement(TextureSlideBarData data, Anchor anchor, Vector2 offset, float minValue, float maxValue, float value = 0.0F, bool wholeNumbers = false, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        this.Data = data;
+        this.Size = size ?? new Vector2(data.BarSourceRect.Width, data.BarSourceRect.Height);
+        this.MinValue = minValue;
+        this.MaxValue = maxValue;
+        this.Value = value;
+        this.WholeNumbers = wholeNumbers;
+    }
+    
+    /// <summary>
+    /// Updates the state of the texture slider bar element, including checking for interaction,
+    /// handling dragging behavior, and updating the current value based on user input.
+    /// </summary>
+    /// <param name="delta">The time elapsed since the last update, in seconds.</param>
+    protected internal override void Update(double delta) {
+        base.Update(delta);
+        
+        if (this.Interactable) {
+            if (this.IsClicked) {
+                this._isDragging = true;
+            }
+            
+            if (this._isDragging) {
+                if (Input.IsMouseButtonDown(MouseButton.Left)) {
+                    
+                    // Transform mouse position to local space (considering rotation and scale).
+                    Matrix4x4 rotation = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
+                    Vector2 localClickPos = Vector2.Transform(Input.GetMousePosition() - this.Position, rotation) + this.Origin * this.Scale * this.Gui.ScaleFactor;
+                    
+                    // Calculate the usable width (Bar Width - Slider Width) to keep the slider inside the bar.
+                    float sliderWidth = this.Data.SliderSourceRect.Width;
+                    float usableWidth = this.Size.X - sliderWidth;
+                    
+                    // Calculate percentage based on local X position, offset by half the slider width.
+                    float percent = Math.Clamp((localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) - (sliderWidth / 2.0F)) / usableWidth, 0.0F, 1.0F);
+                    
+                    // Update the value based on the percentage.
+                    this.Value = this.MinValue + (this.MaxValue - this.MinValue) * percent;
+                }
+                else {
+                    this._isDragging = false;
+                }
+            }
+        }
+        else {
+            this._isDragging = false;
+        }
     }
     
     /// <summary>
@@ -60,57 +120,57 @@ public class TextureButtonElement : GuiElement {
     /// <param name="framebuffer">The framebuffer where the element will be drawn.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        
-        // Draw button texture.
-        Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
+
+        // Draw bar.
+        Color barColor = this.IsHovered ? this.Data.BarHoverColor : this.Data.BarColor;
         
         if (!this.Interactable) {
-            buttonColor = this.ButtonData.DisabledColor;
+            barColor = this.Data.DisabledColor;
         }
         
-        switch (this.ButtonData.ResizeMode) {
+        switch (this.Data.BarResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, buttonColor, this.ButtonData.Flip);
+                this.DrawNormal(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, barColor, this.Data.BarFlip);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, this.ButtonData.BorderInsets, this.ButtonData.ResizeMode == ResizeMode.TileCenter, buttonColor, this.ButtonData.Flip);
+                this.DrawNineSlice(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarBorderInsets, this.Data.BarResizeMode == ResizeMode.TileCenter, barColor, this.Data.BarFlip);
                 break;
         }
         
-        // Draw text.
-        this.DrawText(context.SpriteBatch);
+        // Draw slider.
+        this.DrawSlider(context.SpriteBatch);
         
         context.SpriteBatch.End();
     }
 
     /// <summary>
-    /// Draws the texture of the button in its normal state without any size or layout modifications.
+    /// Renders the slider bar texture onto the screen using the specified parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch instance used to render the texture.</param>
-    /// <param name="texture">The texture to be drawn on the button.</param>
-    /// <param name="sampler">The optional sampler to configure texture sampling behavior. Can be null.</param>
-    /// <param name="sourceRect">The source rectangle within the texture to be drawn.</param>
-    /// <param name="color">The color tint to be applied to the texture during rendering.</param>
-    /// <param name="flip">The sprite flipping mode to apply during rendering.</param>
+    /// <param name="spriteBatch">The sprite batch used for batch rendering of textures.</param>
+    /// <param name="texture">The texture of the slider bar to be drawn.</param>
+    /// <param name="sampler">The sampler state to apply when rendering the texture. Can be null.</param>
+    /// <param name="sourceRect">The source rectangle defining the area of the texture to render.</param>
+    /// <param name="color">The color to tint the rendered texture.</param>
+    /// <param name="flip">The flip mode to apply when rendering the texture.</param>
     private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
-    
+
     /// <summary>
-    /// Draws a nine-slice sprite to the screen using the specified texture, source rectangle, and other parameters.
+    /// Renders a nine-slice texture onto the specified target using the provided parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the sprite.</param>
-    /// <param name="texture">The texture containing the nine-slice source image.</param>
-    /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
-    /// <param name="sourceRect">The rectangle defining the portion of the texture to use for the nine-slice rendering.</param>
-    /// <param name="borderInsets">The insets defining the border areas of the nine-slice sprite.</param>
-    /// <param name="tileCenter">A boolean indicating whether the central area of the nine-slice sprite should be tiled.</param>
-    /// <param name="color">The color mask applied to the rendered sprite.</param>
-    /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
+    /// <param name="spriteBatch">The sprite batch used for managing texture drawing operations.</param>
+    /// <param name="texture">The texture to be drawn as a nine-slice element.</param>
+    /// <param name="sampler">The optional sampler used for texture filtering and addressing.</param>
+    /// <param name="sourceRect">The source rectangle defining the region of the texture to be used.</param>
+    /// <param name="borderInsets">The border insets specifying the nine-slice division points.</param>
+    /// <param name="tileCenter">Determines if the center area of the nine-slice should be tiled or stretched.</param>
+    /// <param name="color">The color to apply as a tint to the texture.</param>
+    /// <param name="flip">The directional flip to apply to the texture.</param>
     private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip) {
         Vector2 baseScale = this.Scale * this.Gui.ScaleFactor;
         
@@ -240,29 +300,34 @@ public class TextureButtonElement : GuiElement {
         // Pop sampler.
         if (sampler != null) spriteBatch.PopSampler();
     }
-    
+
     /// <summary>
-    /// Renders the button's text using the provided sprite batch.
+    /// Draws the slider for the texture slider bar element at its calculated position within the parent bar.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to draw the text.</param>
-    private void DrawText(SpriteBatch spriteBatch) {
-        if (this.LabelData.Text == string.Empty) {
-            return;
+    /// <param name="spriteBatch">The sprite batch used for rendering the slider texture.</param>
+    private void DrawSlider(SpriteBatch spriteBatch) {
+        Color sliderColor = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
+        
+        if (!this.Interactable) {
+            sliderColor = this.Data.DisabledColor;
         }
         
-        Vector2 textPos = this.Position + (this.TextOffset * this.Scale * this.Gui.ScaleFactor);
-        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
-        Vector2 textOrigin = this.TextAlignment switch {
-            TextAlignment.Left => new Vector2(this.Size.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            TextAlignment.Center => new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
-            _ => Vector2.Zero
-        };
+        // Clamp just for safety, the Value should also be clamped already.
+        float value = Math.Clamp(this.Value, this.MinValue, this.MaxValue);
+        float percent = (value - this.MinValue) / (this.MaxValue - this.MinValue);
         
-        Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
+        // Calculate the slider position within the usable width.
+        float sliderWidth = this.Data.SliderSourceRect.Width;
+        float sliderHeight = this.Data.SliderSourceRect.Height;
+        float usableWidth = this.Size.X - sliderWidth;
+        float xPos = (sliderWidth / 2.0F) + (percent * usableWidth);
         
-        if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
-        if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
+        // Calculate the slider origin to align it correctly with the bar.
+        Vector2 sliderOrigin = new Vector2(this.Data.SliderTexture.Width / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
+        
+        // Draw.
+        if (this.Data.SliderSampler != null) spriteBatch.PushSampler(this.Data.SliderSampler);
+        spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, sliderOrigin, this.Rotation, sliderColor, this.Data.SliderFlip);
+        if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
     }
 }

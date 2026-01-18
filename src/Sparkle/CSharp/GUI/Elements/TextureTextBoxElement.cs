@@ -436,17 +436,21 @@ public class TextureTextBoxElement : GuiElement {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw texture.
-        Color buttonColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        // Draw box.
+        Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
+        
+        if (!this.Interactable) {
+            boxColor = this.TextBoxData.DisabledColor;
+        }
         
         switch (this.TextBoxData.ResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, buttonColor, this.TextBoxData.Flip);
+                this.DrawNormal(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, boxColor, this.TextBoxData.Flip);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, buttonColor, this.TextBoxData.Flip);
+                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, boxColor, this.TextBoxData.Flip);
                 break;
         }
         
@@ -650,6 +654,10 @@ public class TextureTextBoxElement : GuiElement {
         textOrigin -= this.TextOffset;
         
         Color textColor = this.IsHovered ? labelData.HoverColor : labelData.Color;
+        
+        if (!this.Interactable) {
+            textColor = labelData.DisabledColor;
+        }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
         spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);

@@ -15,6 +15,11 @@ public class RectangleTextBoxData {
     public Color HoverColor;
     
     /// <summary>
+    /// The color applied when the toggle is in an inactive or disabled state.
+    /// </summary>
+    public Color DisabledColor;
+    
+    /// <summary>
     /// The thickness of the text box's outline. Set to 0 to disable outlining.
     /// </summary>
     public float OutlineThickness;
@@ -35,20 +40,29 @@ public class RectangleTextBoxData {
     public Color HighlightColor;
     
     /// <summary>
+    /// The color applied when the toggle is in an inactive or disabled state.
+    /// </summary>
+    public Color DisabledOutlineColor;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleButtonData"/> class.
     /// </summary>
     /// <param name="color">The base fill color of the text box. Defaults to white.</param>
     /// <param name="hoverColor">The fill color when the text box is hovered. Defaults to the base color.</param>
-    /// <param name="outlineThickness">The thickness of the text box outline. Defaults to 0 (no outline).</param>
-    /// <param name="outlineColor">The color of the outline. Defaults to white.</param>
-    /// <param name="outlineHoverColor">The outline color when hovered. Defaults to the regular outline color.</param>
-    /// <param name="highlightColor">The color for the highlight.</param>
-    public RectangleTextBoxData(Color? color = null, Color? hoverColor = null, float outlineThickness = 0.0F, Color? outlineColor = null, Color? outlineHoverColor = null, Color? highlightColor = null) {
+    /// <param name="disabledColor">The fill color when the text box is disabled. Defaults to gray.</param>
+    /// <param name="outlineThickness">The thickness of the outline of the text box. Defaults to 0 (no outline).</param>
+    /// <param name="outlineColor">The color of the text box outline. Defaults to white.</param>
+    /// <param name="outlineHoverColor">The color of the outline when the text box is hovered. Defaults to the regular outline color.</param>
+    /// <param name="highlightColor">The color used for the text box highlight. Defaults to a semi-transparent blue.</param>
+    /// <param name="disabledOutlineColor">The color of the outline when the text box is disabled. Defaults to dark gray.</param>
+    public RectangleTextBoxData(Color? color = null, Color? hoverColor = null, Color? disabledColor = null, float outlineThickness = 0.0F, Color? outlineColor = null, Color? outlineHoverColor = null, Color? highlightColor = null, Color? disabledOutlineColor = null) {
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
+        this.DisabledColor = disabledColor ?? Color.Gray;
         this.OutlineThickness = outlineThickness;
         this.OutlineColor = outlineColor ?? Color.White;
         this.OutlineHoverColor = outlineHoverColor ?? this.OutlineColor;
         this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
+        this.DisabledOutlineColor = disabledOutlineColor ?? Color.DarkGray;
     }
 }

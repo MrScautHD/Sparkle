@@ -26,6 +26,11 @@ public abstract class GuiElement {
     public bool Enabled;
     
     /// <summary>
+    /// Indicates whether the GUI element can respond to user interactions, such as clicks or hover events.
+    /// </summary>
+    public bool Interactable;
+    
+    /// <summary>
     /// The anchor point used for positioning this element relative to the screen.
     /// </summary>
     public Anchor AnchorPoint;
@@ -98,6 +103,7 @@ public abstract class GuiElement {
     /// <param name="clickFunc">Optional function that determines what happens on click. Should return true if handled.</param>
     public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) {
         this.Enabled = true;
+        this.Interactable = true;
         this.AnchorPoint = anchor;
         this.Offset = offset;
         this.Size = size;
@@ -120,7 +126,7 @@ public abstract class GuiElement {
         if (rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
             this.IsHovered = true;
             
-            if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Enabled) {
+            if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Interactable) {
                 if (this._clickFunc?.Invoke() ?? true) {
                     this.IsClicked = true;
                     this.IsSelected = true;
@@ -139,7 +145,7 @@ public abstract class GuiElement {
             }
         }
         
-        if (Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter)) {
+        if (Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter) || !this.Interactable) {
             this.IsSelected = false;
         }
     }

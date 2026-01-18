@@ -43,6 +43,11 @@ public class LabelData {
     public Color HoverColor;
     
     /// <summary>
+    /// The color applied when the toggle is in an inactive or disabled state.
+    /// </summary>
+    public Color DisabledColor;
+    
+    /// <summary>
     /// The style of the text, such as bold or italic.
     /// </summary>
     public TextStyle Style;
@@ -72,11 +77,12 @@ public class LabelData {
     /// <param name="lineSpacing">Spacing between lines. Default is 0.</param>
     /// <param name="color">Optional color of the text. Defaults to white.</param>
     /// <param name="hoverColor">Optional color of the text. Defaults the same as the color parameter.</param>
+    /// <param name="disabledColor">The color of the text when the label is in a disabled state. Defaults to gray if not specified.</param>
     /// <param name="style">The style of the text. Default is <c>TextStyle.None</c>.</param>
     /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
     /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
     /// <param name="sampler">The texture sampler used for rendering operations in the label.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
+    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
@@ -84,6 +90,7 @@ public class LabelData {
         this.LineSpacing = lineSpacing;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
+        this.DisabledColor = disabledColor ?? Color.Gray;
         this.Style = style;
         this.Effect = effect;
         this.EffectAmount = effectAmount;
