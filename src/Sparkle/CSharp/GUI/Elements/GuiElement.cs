@@ -219,12 +219,12 @@ public abstract class GuiElement {
                 pos.Y = height - this.ScaledSize.Y;
                 break;
         }
-
+        
         pos += (this.Offset * this.Scale * this.Gui.ScaleFactor) + this.Origin;
         
         return pos;
     }
-
+    
     /// <summary>
     /// Calculates the scaled size of the GUI element based on the base size and the current scale factor.
     /// </summary>

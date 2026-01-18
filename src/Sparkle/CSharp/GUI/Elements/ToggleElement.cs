@@ -1,5 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
+using Bliss.CSharp.Textures;
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrid;
@@ -37,7 +40,7 @@ public class ToggleElement : GuiElement {
     /// Event invoked when the toggle state changes.
     /// </summary>
     public event Action<bool>? Toggled;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleElement"/> class.
     /// </summary>
@@ -48,16 +51,14 @@ public class ToggleElement : GuiElement {
     /// <param name="boxTextSpacing">Spacing between the toggle box and the label text.</param>
     /// <param name="interactable">Indicates whether the toggle is interactable.</param>
     /// <param name="toggleState">Initial toggle state.</param>
-    /// <param name="size">Optional custom size.</param>
     /// <param name="scale">The scale applied to the toggle element.</param>
     /// <param name="origin">Optional custom origin.</param>
     /// <param name="rotation">Optional rotation angle.</param>
     /// <param name="clickFunc">Optional function determining click behavior.</param>
-    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, bool interactable = true, bool toggleState = false, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, bool interactable = true, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.ToggleData = toggleData;
         this.LabelData = labelData;
         this.BoxTextSpacing = boxTextSpacing;
-        this.Size = size ?? this.CalculateDefaultSize(toggleData, labelData, boxTextSpacing);
         this.Interactable = interactable;
         this.ToggleState = toggleState;
     }
@@ -67,8 +68,9 @@ public class ToggleElement : GuiElement {
     /// </summary>
     /// <param name="delta">The elapsed time since the last frame.</param>
     protected internal override void Update(double delta) {
+        this.Size = this.CalculateSize(this.ToggleData, this.LabelData, this.BoxTextSpacing);
         base.Update(delta);
-
+        
         if (this.Interactable) {
             if (this.IsClicked) {
                 this.ToggleState = !this.ToggleState;
@@ -85,16 +87,14 @@ public class ToggleElement : GuiElement {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw background texture.
-        Color backgroundColor = this.IsHovered ? this.ToggleData.BackgroundHoverColor : this.ToggleData.BackgroundColor;
+        // Draw checkbox texture.
+        Color checkboxColor = this.IsHovered ? this.ToggleData.CheckboxHoverColor : this.ToggleData.CheckboxColor;
         
         if (!this.Interactable) {
-            backgroundColor = this.ToggleData.OffStateColor;
+            checkboxColor = this.ToggleData.OffStateColor;
         }
         
-        if (this.ToggleData.BackgroundSampler != null) context.SpriteBatch.PushSampler(this.ToggleData.BackgroundSampler);
-        context.SpriteBatch.DrawTexture(this.ToggleData.BackgroundTexture, this.Position, 0.5F, this.ToggleData.BackgroundSourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, backgroundColor, this.ToggleData.BackgroundFlip);
-        if (this.ToggleData.BackgroundSampler != null) context.SpriteBatch.PopSampler();
+        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip);
         
         // Draw checkmark texture.
         if (this.ToggleState) {
@@ -104,38 +104,77 @@ public class ToggleElement : GuiElement {
                 checkmarkColor = this.ToggleData.OffStateColor;
             }
             
-            if (this.ToggleData.CheckmarkSampler != null) context.SpriteBatch.PushSampler(this.ToggleData.CheckmarkSampler);
-            context.SpriteBatch.DrawTexture(this.ToggleData.CheckmarkTexture, this.Position, 0.5F, this.ToggleData.CheckmarkSourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, checkmarkColor, this.ToggleData.CheckmarkFlip);
-            if (this.ToggleData.CheckmarkSampler != null) context.SpriteBatch.PopSampler();
+            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip);
         }
         
         // Draw text.
-        if (this.LabelData.Text != string.Empty) {
-            Vector2 textPos = this.Position;
-            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
-            Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.BackgroundSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F;
-            
-            Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
-            
-            if (this.LabelData.Sampler != null) context.SpriteBatch.PushSampler(this.LabelData.Sampler);
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
-            if (this.LabelData.Sampler != null) context.SpriteBatch.PopSampler();
-        }
+        this.DrawText(context.SpriteBatch);
         
         context.SpriteBatch.End();
     }
     
     /// <summary>
-    /// Calculates the default size of the toggle element.
+    /// Draws the checkbox portion of the toggle element on the screen.
     /// </summary>
-    /// <param name="toggleData">The data containing properties of the toggle background and checkmark.</param>
-    /// <param name="labelData">The data containing properties of the label associated with the toggle element.</param>
-    /// <param name="boxTextSpacing">The spacing between the toggle box and the label text.</param>
-    /// <returns>A vector representing the calculated default size of the toggle element.</returns>
-    private Vector2 CalculateDefaultSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
-        Vector2 toggleSize = new Vector2(toggleData.BackgroundSourceRect.Width, toggleData.BackgroundSourceRect.Height);
-        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+    /// <param name="spriteBatch">The sprite batch used for rendering textures.</param>
+    /// <param name="texture">The texture of the checkbox to be drawn.</param>
+    /// <param name="sampler">The optional sampler to apply for texture sampling.</param>
+    /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
+    /// <param name="color">The color modulator applied to the checkbox.</param>
+    /// <param name="flip">The flip mode applied to the texture.</param>
+    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
+        if (sampler != null) spriteBatch.PushSampler(sampler);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
+        if (sampler != null) spriteBatch.PopSampler();
+    }
+    
+    /// <summary>
+    /// Draws the checkmark texture for the toggle element.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used for rendering textures.</param>
+    /// <param name="texture">The texture of the checkmark to be drawn.</param>
+    /// <param name="sampler">An optional sampler to control texture sampling behavior.</param>
+    /// <param name="sourceRect">The source rectangle defining the portion of the texture to draw.</param>
+    /// <param name="color">The color to apply to the checkmark texture.</param>
+    /// <param name="flip">Specifies the flipping behavior for the checkmark texture.</param>
+    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
+        Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
+        if (sampler != null) spriteBatch.PushSampler(sampler);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, flip);
+        if (sampler != null) spriteBatch.PopSampler();
+    }
+    
+    /// <summary>
+    /// Renders the text associated with the current GUI element.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used for rendering text.</param>
+    private void DrawText(SpriteBatch spriteBatch) {
+        if (this.LabelData.Text == string.Empty) {
+            return;
+        }
+        
+        Vector2 textPos = this.Position;
+        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+        Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.CheckboxSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F;
+        
+        Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
+        
+        if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
+    }
+    
+    /// <summary>
+    /// Calculates the size for the toggle element.
+    /// </summary>
+    /// <param name="toggleData">The rendering data associated with the toggle box.</param>
+    /// <param name="labelData">The rendering data for the label text.</param>
+    /// <param name="boxTextSpacing">The spacing between the toggle box and the label text.</param>
+    /// <returns>The calculated size of the element as a <see cref="Vector2"/>.</returns>
+    private Vector2 CalculateSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
+        Vector2 toggleSize = new Vector2(toggleData.CheckboxSourceRect.Width, toggleData.CheckboxSourceRect.Height);
+        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));
     }
 }

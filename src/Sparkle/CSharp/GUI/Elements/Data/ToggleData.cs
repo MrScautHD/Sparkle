@@ -9,9 +9,9 @@ namespace Sparkle.CSharp.GUI.Elements.Data;
 public class ToggleData {
     
     /// <summary>
-    /// The texture used for the background of the toggle box.
+    /// The texture used for the checkbox of the toggle box.
     /// </summary>
-    public Texture2D BackgroundTexture;
+    public Texture2D CheckboxTexture;
     
     /// <summary>
     /// The texture used for the checkmark when the toggle is active.
@@ -19,9 +19,9 @@ public class ToggleData {
     public Texture2D CheckmarkTexture;
     
     /// <summary>
-    /// The sampler used when rendering the background texture.
+    /// The sampler used when rendering the checkbox texture.
     /// </summary>
-    public Sampler? BackgroundSampler;
+    public Sampler? CheckboxSampler;
     
     /// <summary>
     /// The sampler used when rendering the checkmark texture.
@@ -29,9 +29,9 @@ public class ToggleData {
     public Sampler? CheckmarkSampler;
     
     /// <summary>
-    /// The source rectangle of the background texture.
+    /// The source rectangle of the checkbox texture.
     /// </summary>
-    public Rectangle BackgroundSourceRect;
+    public Rectangle CheckboxSourceRect;
     
     /// <summary>
     /// The source rectangle of the checkmark texture.
@@ -39,9 +39,9 @@ public class ToggleData {
     public Rectangle CheckmarkSourceRect;
     
     /// <summary>
-    /// The base color applied to the background when not hovered.
+    /// The base color applied to the checkbox when not hovered.
     /// </summary>
-    public Color BackgroundColor;
+    public Color CheckboxColor;
     
     /// <summary>
     /// The base color applied to the checkmark when not hovered.
@@ -49,9 +49,9 @@ public class ToggleData {
     public Color CheckmarkColor;
     
     /// <summary>
-    /// The color applied to the background when the toggle is hovered.
+    /// The color applied to the checkbox when the toggle is hovered.
     /// </summary>
-    public Color BackgroundHoverColor;
+    public Color CheckboxHoverColor;
     
     /// <summary>
     /// The color applied to the checkmark when the toggle is hovered.
@@ -59,9 +59,9 @@ public class ToggleData {
     public Color CheckmarkHoverColor;
     
     /// <summary>
-    /// The flip transformation applied to the background texture.
+    /// The flip transformation applied to the checkbox texture.
     /// </summary>
-    public SpriteFlip BackgroundFlip;
+    public SpriteFlip CheckboxFlip;
     
     /// <summary>
     /// The flip transformation applied to the checkmark texture.
@@ -76,31 +76,31 @@ public class ToggleData {
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleData"/> class with optional customization.
     /// </summary>
-    /// <param name="backgroundTexture">The texture for the toggle background.</param>
+    /// <param name="checkboxTexture">The texture for the toggle Checkbox.</param>
     /// <param name="checkmarkTexture">The texture for the toggle checkmark.</param>
-    /// <param name="backgroundSampler">Optional sampler for the background texture.</param>
+    /// <param name="checkboxSampler">Optional sampler for the Checkbox texture.</param>
     /// <param name="checkmarkSampler">Optional sampler for the checkmark texture.</param>
-    /// <param name="backgroundSourceRect">Optional source rectangle for the background texture. Defaults to full texture.</param>
+    /// <param name="checkboxSourceRect">Optional source rectangle for the Checkbox texture. Defaults to full texture.</param>
     /// <param name="checkmarkSourceRect">Optional source rectangle for the checkmark texture. Defaults to full texture.</param>
-    /// <param name="backgroundColor">Optional base color for the background. Defaults to white.</param>
+    /// <param name="checkboxColor">Optional base color for the Checkbox. Defaults to white.</param>
     /// <param name="checkmarkColor">Optional base color for the checkmark. Defaults to white.</param>
-    /// <param name="backgroundHoverColor">Optional hover color for the background. Defaults to <paramref name="backgroundColor"/>.</param>
+    /// <param name="checkboxHoverColor">Optional hover color for the Checkbox. Defaults to <paramref name="checkboxColor"/>.</param>
     /// <param name="checkmarkHoverColor">Optional hover color for the checkmark. Defaults to <paramref name="checkmarkColor"/>.</param>
-    /// <param name="backgroundFlip">Optional flip setting for the background texture. Defaults to none.</param>
+    /// <param name="checkboxFlip">Optional flip setting for the Checkbox texture. Defaults to none.</param>
     /// <param name="checkmarkFlip">Optional flip setting for the checkmark texture. Defaults to none.</param>
     /// <param name="offStateColor">Optional color for the toggle when disabled. Defaults to gray.</param>
-    public ToggleData(Texture2D backgroundTexture, Texture2D checkmarkTexture, Sampler? backgroundSampler = null, Sampler? checkmarkSampler = null, Rectangle? backgroundSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? backgroundColor = null, Color? checkmarkColor = null, Color? backgroundHoverColor = null, Color? checkmarkHoverColor = null, SpriteFlip backgroundFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None, Color? offStateColor = null) {
-        this.BackgroundTexture = backgroundTexture;
+    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None, Color? offStateColor = null) {
+        this.CheckboxTexture = checkboxTexture;
         this.CheckmarkTexture = checkmarkTexture;
-        this.BackgroundSampler = backgroundSampler;
+        this.CheckboxSampler = checkboxSampler;
         this.CheckmarkSampler = checkmarkSampler;
-        this.BackgroundSourceRect = backgroundSourceRect ?? new Rectangle(0, 0, (int) backgroundTexture.Width, (int) backgroundTexture.Height);
+        this.CheckboxSourceRect = checkboxSourceRect ?? new Rectangle(0, 0, (int) checkboxTexture.Width, (int) checkboxTexture.Height);
         this.CheckmarkSourceRect = checkmarkSourceRect ?? new Rectangle(0, 0, (int) checkmarkTexture.Width, (int) checkmarkTexture.Height);
-        this.BackgroundColor = backgroundColor ?? Color.White;
+        this.CheckboxColor = checkboxColor ?? Color.White;
         this.CheckmarkColor = checkmarkColor ?? Color.White;
-        this.BackgroundHoverColor = backgroundHoverColor ?? this.BackgroundColor;
+        this.CheckboxHoverColor = checkboxHoverColor ?? this.CheckboxColor;
         this.CheckmarkHoverColor = checkmarkHoverColor ?? this.CheckmarkColor;
-        this.BackgroundFlip = backgroundFlip;
+        this.CheckboxFlip = checkboxFlip;
         this.CheckmarkFlip = checkmarkFlip;
         this.OffStateColor = offStateColor ?? Color.Gray;
     }
