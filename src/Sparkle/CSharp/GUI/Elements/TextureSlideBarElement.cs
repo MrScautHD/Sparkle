@@ -98,7 +98,7 @@ public class TextureSlideBarElement : GuiElement {
                     float usableWidth = this.Size.X - sliderWidth;
                     
                     // Calculate percentage based on local X position, offset by half the slider width.
-                    float percent = Math.Clamp((localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) - (sliderWidth / 2.0F)) / usableWidth, 0.0F, 1.0F);
+                    float percent = Math.Clamp((localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) - sliderWidth / 2.0F) / usableWidth, 0.0F, 1.0F);
                     
                     // Update the value based on the percentage.
                     this.Value = this.MinValue + (this.MaxValue - this.MinValue) * percent;
@@ -120,23 +120,34 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="framebuffer">The framebuffer where the element will be drawn.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-
+        
         // Draw bar.
         Color barColor = this.IsHovered ? this.Data.BarHoverColor : this.Data.BarColor;
         
         if (!this.Interactable) {
-            barColor = this.Data.DisabledColor;
+            barColor = this.Data.DisabledBarColor;
         }
         
-        switch (this.Data.BarResizeMode) {
-            case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, barColor, this.Data.BarFlip);
-                break;
+        this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, barColor, this.Data.BarFlip);
+        
+        // Draw the progress bar.
+        //float percent = Math.Clamp((this.Value - this.MinValue) / (this.MaxValue - this.MinValue), 0.0F, 1.0F);
+        float value = Math.Clamp(this.Value, this.MinValue, this.MaxValue);
+        float percent = (value - this.MinValue) / (this.MaxValue - this.MinValue);
+        
+        if (percent > 0) {
             
-            case ResizeMode.NineSlice:
-            case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarBorderInsets, this.Data.BarResizeMode == ResizeMode.TileCenter, barColor, this.Data.BarFlip);
-                break;
+            // We calculate the scissor area based on the current progress width
+            // Note: Scissor usually works in screen coordinates.
+            Rectangle fillRect = new Rectangle(
+                this.Data.BarSourceRect.X,
+                this.Data.BarSourceRect.Y,
+                (int) (this.Data.BarSourceRect.Width * percent),
+                this.Data.BarSourceRect.Height
+            );
+            
+            // TODO: Scissor mode do not work because rotation is not supported.
+            this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, fillRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, Color.Red, this.Data.BarFlip);
         }
         
         // Draw slider.
@@ -144,7 +155,20 @@ public class TextureSlideBarElement : GuiElement {
         
         context.SpriteBatch.End();
     }
-
+    
+    private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Rectangle? clipRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip) {
+        switch (resizeMode) {
+            case ResizeMode.None:
+                this.DrawNormal(spriteBatch, texture, sampler, clipRect ?? sourceRect, color, flip);
+                break;
+            
+            case ResizeMode.NineSlice:
+            case ResizeMode.TileCenter:
+                this.DrawNineSlice(spriteBatch, texture, sampler, sourceRect, borderInsets, resizeMode == ResizeMode.TileCenter, color, flip);
+                break;
+        }
+    }
+    
     /// <summary>
     /// Renders the slider bar texture onto the screen using the specified parameters.
     /// </summary>
@@ -159,7 +183,7 @@ public class TextureSlideBarElement : GuiElement {
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
-
+    
     /// <summary>
     /// Renders a nine-slice texture onto the specified target using the provided parameters.
     /// </summary>
@@ -306,10 +330,10 @@ public class TextureSlideBarElement : GuiElement {
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used for rendering the slider texture.</param>
     private void DrawSlider(SpriteBatch spriteBatch) {
-        Color sliderColor = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
+        Color color = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
         
         if (!this.Interactable) {
-            sliderColor = this.Data.DisabledColor;
+            color = this.Data.DisabledSliderColor;
         }
         
         // Clamp just for safety, the Value should also be clamped already.
@@ -323,11 +347,11 @@ public class TextureSlideBarElement : GuiElement {
         float xPos = (sliderWidth / 2.0F) + (percent * usableWidth);
         
         // Calculate the slider origin to align it correctly with the bar.
-        Vector2 sliderOrigin = new Vector2(this.Data.SliderTexture.Width / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
+        Vector2 origin = new Vector2(this.Data.SliderTexture.Width / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
         
         // Draw.
         if (this.Data.SliderSampler != null) spriteBatch.PushSampler(this.Data.SliderSampler);
-        spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, sliderOrigin, this.Rotation, sliderColor, this.Data.SliderFlip);
+        spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, this.Data.SliderFlip);
         if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
     }
 }

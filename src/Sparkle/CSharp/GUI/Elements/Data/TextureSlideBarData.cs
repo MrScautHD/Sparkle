@@ -71,7 +71,12 @@ public class TextureSlideBarData {
     /// <summary>
     /// The color applied to the entire slide bar when disabled.
     /// </summary>
-    public Color DisabledColor;
+    public Color DisabledBarColor;
+    
+    /// <summary>
+    /// The color used to render the slider when it is in a disabled state.
+    /// </summary>
+    public Color DisabledSliderColor;
     
     /// <summary>
     /// The flip mode applied to the bar texture.
@@ -98,10 +103,12 @@ public class TextureSlideBarData {
     /// <param name="sliderColor">The base color applied to the slider texture.</param>
     /// <param name="emptyBarHoverColor">The color applied to the bar texture when hovered.</param>
     /// <param name="sliderHoverColor">The color applied to the slider texture when hovered.</param>
-    /// <param name="disabledColor">The color applied when the slide bar is disabled.</param>
+    /// <param name="disabledBarColor">The color applied when the slide bar is disabled.</param>
+    /// <param name="disabledSliderColor">The color applied when the slider is disabled.</param>
     /// <param name="barFlip">The flip mode applied to the bar texture.</param>
     /// <param name="sliderFlip">The flip mode applied to the slider texture.</param>
-    public TextureSlideBarData(Texture2D barTexture,
+    public TextureSlideBarData(
+        Texture2D barTexture,
         Texture2D sliderTexture,
         Sampler? barSampler = null,
         Sampler? sliderSampler = null,
@@ -113,7 +120,8 @@ public class TextureSlideBarData {
         Color? sliderColor = null,
         Color? emptyBarHoverColor = null,
         Color? sliderHoverColor = null,
-        Color? disabledColor = null,
+        Color? disabledBarColor = null,
+        Color? disabledSliderColor = null,
         SpriteFlip barFlip = SpriteFlip.None,
         SpriteFlip sliderFlip = SpriteFlip.None) {
         this.BarTexture = barTexture;
@@ -128,7 +136,8 @@ public class TextureSlideBarData {
         this.SliderColor = sliderColor ?? Color.White;
         this.BarHoverColor = emptyBarHoverColor ?? this.BarColor;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledBarColor = disabledBarColor ?? Color.Gray;
+        this.DisabledSliderColor = disabledSliderColor ?? Color.DarkGray;
         this.BarFlip = barFlip;
         this.SliderFlip = sliderFlip;
     }

@@ -226,7 +226,7 @@ public abstract class GuiElement {
                 break;
         }
         
-        pos += (this.Offset * this.Scale * this.Gui.ScaleFactor) + this.Origin;
+        pos += (this.Offset * this.Gui.ScaleFactor) + this.Origin;
         
         return pos;
     }
