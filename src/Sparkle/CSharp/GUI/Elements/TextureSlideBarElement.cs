@@ -93,12 +93,18 @@ public class TextureSlideBarElement : GuiElement {
                     Matrix4x4 rotation = Matrix4x4.CreateRotationZ(float.DegreesToRadians(-this.Rotation));
                     Vector2 localClickPos = Vector2.Transform(Input.GetMousePosition() - this.Position, rotation) + this.Origin * this.Scale * this.Gui.ScaleFactor;
                     
-                    // Calculate the usable width (Bar Width - Slider Width) to keep the slider inside the bar.
-                    float sliderWidth = this.Data.SliderSourceRect.Width;
-                    float usableWidth = this.Size.X - sliderWidth;
+                    float percent;
                     
-                    // Calculate percentage based on local X position, offset by half the slider width.
-                    float percent = Math.Clamp((localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) - sliderWidth / 2.0F) / usableWidth, 0.0F, 1.0F);
+                    // Check if the slider is there because then the graping need to be synced with his size.
+                    if (this.Data.SliderTexture != null) {
+                        float sliderWidth = this.Data.SliderSourceRect.Width;
+                        float usableWidth = this.Size.X - sliderWidth;
+                        
+                        percent = Math.Clamp((localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) - sliderWidth / 2.0F) / usableWidth, 0.0F, 1.0F);
+                    }
+                    else {
+                        percent = Math.Clamp(localClickPos.X / (this.Scale.X * this.Gui.ScaleFactor) / this.Size.X, 0.0F, 1.0F);
+                    }
                     
                     // Update the value based on the percentage.
                     this.Value = this.MinValue + (this.MaxValue - this.MinValue) * percent;
@@ -119,9 +125,10 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="context">The graphics context used for rendering operations.</param>
     /// <param name="framebuffer">The framebuffer where the element will be drawn.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw bar.
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        
         Color barColor = this.IsHovered ? this.Data.BarHoverColor : this.Data.BarColor;
         
         if (!this.Interactable) {
@@ -130,36 +137,85 @@ public class TextureSlideBarElement : GuiElement {
         
         this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, barColor, this.Data.BarFlip);
         
+        context.SpriteBatch.End();
+        
         // Draw the progress bar.
-        //float percent = Math.Clamp((this.Value - this.MinValue) / (this.MaxValue - this.MinValue), 0.0F, 1.0F);
         float value = Math.Clamp(this.Value, this.MinValue, this.MaxValue);
         float percent = (value - this.MinValue) / (this.MaxValue - this.MinValue);
         
-        if (percent > 0) {
+        if (this.Data.FilledBarTexture != null && percent > 0) {
+            float fillWidth;
             
-            // We calculate the scissor area based on the current progress width
-            // Note: Scissor usually works in screen coordinates.
-            Rectangle fillRect = new Rectangle(
-                this.Data.BarSourceRect.X,
-                this.Data.BarSourceRect.Y,
-                (int) (this.Data.BarSourceRect.Width * percent),
-                this.Data.BarSourceRect.Height
-            );
+            // Check if the slider is there because then the progress bar needs to be synced with his size.
+            if (this.Data.SliderTexture != null) {
+                float sliderWidth = this.Data.SliderSourceRect.Width;
+                float usableWidth = this.Size.X - sliderWidth;
+                fillWidth = (sliderWidth / 2.0F) + (percent * usableWidth);
+            }
+            else {
+                fillWidth = this.Size.X * percent;
+            }
             
-            // TODO: Scissor mode do not work because rotation is not supported.
-            this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, fillRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, Color.Red, this.Data.BarFlip);
+            DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
+                StencilTestEnabled = true,
+                StencilWriteMask = 0xFF,
+                StencilReference = 1,
+                StencilFront = new StencilBehaviorDescription {
+                    Comparison = ComparisonKind.Always,
+                    Pass = StencilOperation.Replace
+                },
+                StencilBack = new StencilBehaviorDescription {
+                    Comparison = ComparisonKind.Always,
+                    Pass = StencilOperation.Replace
+                }
+            };
+            
+            context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+            RectangleF progressArea = new RectangleF(this.Position.X, this.Position.Y, fillWidth * this.Scale.X * this.Gui.ScaleFactor, this.ScaledSize.Y);
+            
+            context.PrimitiveBatch.PushDepthStencilState(stencilWrite);
+            context.PrimitiveBatch.DrawFilledRectangle(progressArea, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+            context.PrimitiveBatch.PopDepthStencilState();
+            
+            context.PrimitiveBatch.End();
+            
+            DepthStencilStateDescription stencilTest = new DepthStencilStateDescription {
+                StencilTestEnabled = true,
+                StencilReadMask = 0xFF,
+                StencilReference = 1,
+                StencilFront = new StencilBehaviorDescription { Comparison = ComparisonKind.Equal, Pass = StencilOperation.Keep },
+                StencilBack = new StencilBehaviorDescription { Comparison = ComparisonKind.Equal, Pass = StencilOperation.Keep }
+            };
+            
+            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+            context.SpriteBatch.PushDepthStencilState(stencilTest);
+            
+            Color filledBarColor = this.IsHovered ? this.Data.FilledBarHoverColor : this.Data.FilledBarColor;
+            
+            if (!this.Interactable) {
+                filledBarColor = this.Data.DisabledFilledBarColor;
+            }
+            
+            this.DrawBar(context.SpriteBatch, this.Data.FilledBarTexture, this.Data.FilledBarSampler, this.Data.FilledBarSourceRect, this.Data.FilledBarResizeMode, this.Data.FilledBarBorderInsets, filledBarColor, this.Data.FilledBarFlip);
+            
+            context.SpriteBatch.PopDepthStencilState();
+            context.SpriteBatch.End();
         }
         
         // Draw slider.
-        this.DrawSlider(context.SpriteBatch);
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+
+        if (this.Data.SliderTexture != null) {
+            this.DrawSlider(context.SpriteBatch);
+        }
         
         context.SpriteBatch.End();
     }
     
-    private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Rectangle? clipRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip) {
+    private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip) {
         switch (resizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, texture, sampler, clipRect ?? sourceRect, color, flip);
+                this.DrawNormal(spriteBatch, texture, sampler, sourceRect, color, flip);
                 break;
             
             case ResizeMode.NineSlice:

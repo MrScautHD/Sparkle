@@ -23,6 +23,7 @@ public class ContentRegistry : Registry {
     public static Texture2D ToggleBackground { get; private set; }
     public static Texture2D ToggleCheckmark { get; private set; }
     public static Texture2D SlideBar { get; private set; }
+    public static Texture2D FilledSlideBar { get; private set; }
     public static Texture2D Slider { get; private set; }
     public static Texture2D CyberCarTexture { get; private set; }
     public static Texture2D UiBannerTexture { get; private set; }
@@ -51,6 +52,7 @@ public class ContentRegistry : Registry {
         ToggleBackground = content.Load(new TextureContent("content/toggle_background.png"));
         ToggleCheckmark = content.Load(new TextureContent("content/toggle_checkmark.png"));
         SlideBar = content.Load(new TextureContent("content/bar.png"));
+        FilledSlideBar = content.Load(new TextureContent("content/filled_bar.png"));
         Slider = content.Load(new TextureContent("content/slider.png"));
         CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"));
         UiBannerTexture = content.Load(new TextureContent("content/ui_banner.png"));

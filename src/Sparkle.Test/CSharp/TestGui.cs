@@ -74,9 +74,15 @@ public class TestGui : Gui {
         }));
         
         // Texture slider bar.
-        TextureSlideBarData textureSlideBarData = new TextureSlideBarData(ContentRegistry.SlideBar, ContentRegistry.Slider, barResizeMode: ResizeMode.NineSlice, barBorderInsets: new BorderInsets(3));
+        TextureSlideBarData textureSlideBarData = new TextureSlideBarData(ContentRegistry.SlideBar,
+            ContentRegistry.FilledSlideBar,
+            ContentRegistry.Slider,
+            barResizeMode: ResizeMode.NineSlice,
+            filledBarResizeMode: ResizeMode.NineSlice,
+            barBorderInsets: new BorderInsets(3),
+            filledBarBorderInsets: new BorderInsets(3));
         
-        this.AddElement("Texture-Slider-Bar", new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 170), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(2, 2), rotation: 0, clickFunc: () => {
+        this.AddElement("Texture-Slider-Bar", new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 170), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(2, 2), clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
