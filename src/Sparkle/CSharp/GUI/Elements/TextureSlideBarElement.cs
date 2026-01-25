@@ -204,14 +204,23 @@ public class TextureSlideBarElement : GuiElement {
         
         // Draw slider.
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-
-        if (this.Data.SliderTexture != null) {
-            this.DrawSlider(context.SpriteBatch);
-        }
+        
+        this.DrawSlider(context.SpriteBatch);
         
         context.SpriteBatch.End();
     }
-    
+
+    /// <summary>
+    /// Renders a bar element on the screen using the specified texture, resizing properties, and visual appearance settings.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to submit drawing commands for rendering.</param>
+    /// <param name="texture">The texture to be used for rendering the bar.</param>
+    /// <param name="sampler">The sampler that determines how the texture is sampled. Can be null for default sampling.</param>
+    /// <param name="sourceRect">The portion of the texture to draw. This defines the texture's source bounds.</param>
+    /// <param name="resizeMode">Specifies how the bar texture should be resized or scaled across its dimensions.</param>
+    /// <param name="borderInsets">Defines the insets for the texture's edges, used for resizing or nine-slice operations.</param>
+    /// <param name="color">The color tint to apply to the bar texture during rendering.</param>
+    /// <param name="flip">Specifies how the texture should be flipped (horizontally, vertically, or both) during rendering.</param>
     private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip) {
         switch (resizeMode) {
             case ResizeMode.None:
@@ -386,6 +395,10 @@ public class TextureSlideBarElement : GuiElement {
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used for rendering the slider texture.</param>
     private void DrawSlider(SpriteBatch spriteBatch) {
+        if (this.Data.SliderTexture == null) {
+            return;
+        }
+
         Color color = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
         
         if (!this.Interactable) {

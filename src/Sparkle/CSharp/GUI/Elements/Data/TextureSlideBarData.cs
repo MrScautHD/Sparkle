@@ -12,11 +12,14 @@ public class TextureSlideBarData {
     /// The texture used to render the slide bar background.
     /// </summary>
     public Texture2D BarTexture;
-
+    
+    /// <summary>
+    /// The optional texture used to render the filled portion of the slide bar.
+    /// </summary>
     public Texture2D? FilledBarTexture;
     
     /// <summary>
-    /// The texture used to render the slider handle.
+    /// The optional texture used to render the slider handle.
     /// </summary>
     public Texture2D? SliderTexture;
     
@@ -25,6 +28,9 @@ public class TextureSlideBarData {
     /// </summary>
     public Sampler? BarSampler;
     
+    /// <summary>
+    /// The sampler used for sampling the filled bar texture.
+    /// </summary>
     public Sampler? FilledBarSampler;
     
     /// <summary>
@@ -33,14 +39,17 @@ public class TextureSlideBarData {
     public Sampler? SliderSampler;
     
     /// <summary>
-    /// The source rectangle defining the bar texture region.
+    /// The source rectangle defining the visible region of the bar texture.
     /// </summary>
     public Rectangle BarSourceRect;
     
+    /// <summary>
+    /// The source rectangle defining the visible region of the filled bar texture.
+    /// </summary>
     public Rectangle FilledBarSourceRect;
     
     /// <summary>
-    /// The source rectangle defining the slider texture region.
+    /// The source rectangle defining the visible region of the slider texture.
     /// </summary>
     public Rectangle SliderSourceRect;
     
@@ -49,13 +58,19 @@ public class TextureSlideBarData {
     /// </summary>
     public ResizeMode BarResizeMode;
     
+    /// <summary>
+    /// The resize mode applied to the filled bar texture.
+    /// </summary>
     public ResizeMode FilledBarResizeMode;
     
     /// <summary>
-    /// The border insets used for nine-slice bar resizing.
+    /// The border insets used for nine-slice resizing of the bar texture.
     /// </summary>
     public BorderInsets BarBorderInsets;
     
+    /// <summary>
+    /// The border insets used for nine-slice resizing of the filled bar texture.
+    /// </summary>
     public BorderInsets FilledBarBorderInsets;
     
     /// <summary>
@@ -63,6 +78,9 @@ public class TextureSlideBarData {
     /// </summary>
     public Color BarColor;
     
+    /// <summary>
+    /// The base color applied to the filled bar texture.
+    /// </summary>
     public Color FilledBarColor;
 
     /// <summary>
@@ -75,6 +93,9 @@ public class TextureSlideBarData {
     /// </summary>
     public Color BarHoverColor;
     
+    /// <summary>
+    /// The color applied to the filled bar texture when hovered.
+    /// </summary>
     public Color FilledBarHoverColor;
     
     /// <summary>
@@ -87,6 +108,9 @@ public class TextureSlideBarData {
     /// </summary>
     public Color DisabledBarColor;
     
+    /// <summary>
+    /// The color applied to the filled bar texture when the slide bar is disabled.
+    /// </summary>
     public Color DisabledFilledBarColor;
     
     /// <summary>
@@ -99,6 +123,9 @@ public class TextureSlideBarData {
     /// </summary>
     public SpriteFlip BarFlip;
     
+    /// <summary>
+    /// The flip mode applied to the filled bar texture.
+    /// </summary>
     public SpriteFlip FilledBarFlip;
     
     /// <summary>
@@ -110,20 +137,29 @@ public class TextureSlideBarData {
     /// Initializes a new instance of the <see cref="TextureSlideBarData"/> class.
     /// </summary>
     /// <param name="barTexture">The texture used to render the slide bar background.</param>
-    /// <param name="sliderTexture">The texture used to render the slider handle.</param>
+    /// <param name="filledBarTexture">The optional texture used to render the filled portion of the slide bar.</param>
+    /// <param name="sliderTexture">The optional texture used to render the slider handle.</param>
     /// <param name="barSampler">The sampler used for sampling the bar texture.</param>
+    /// <param name="filledBarSampler">The sampler used for sampling the filled bar texture.</param>
     /// <param name="sliderSampler">The sampler used for sampling the slider texture.</param>
-    /// <param name="barSourceRect">The source rectangle for the bar texture.</param>
-    /// <param name="sliderSourceRect">The source rectangle for the slider texture.</param>
+    /// <param name="barSourceRect">The source rectangle defining the visible region of the bar texture.</param>
+    /// <param name="filledBarSourceRect">The source rectangle defining the visible region of the filled bar texture.</param>
+    /// <param name="sliderSourceRect">The source rectangle defining the visible region of the slider texture.</param>
     /// <param name="barResizeMode">The resize mode applied to the bar texture.</param>
-    /// <param name="barBorderInsets">The border insets used for nine-slice resizing.</param>
+    /// <param name="filledBarResizeMode">The resize mode applied to the filled bar texture.</param>
+    /// <param name="barBorderInsets">The border insets used for nine-slice resizing of the bar texture.</param>
+    /// <param name="filledBarBorderInsets">The border insets used for nine-slice resizing of the filled bar texture.</param>
     /// <param name="barColor">The base color applied to the bar texture.</param>
+    /// <param name="filledBarColor">The base color applied to the filled bar texture.</param>
     /// <param name="sliderColor">The base color applied to the slider texture.</param>
     /// <param name="barHoverColor">The color applied to the bar texture when hovered.</param>
+    /// <param name="filledBarHoverColor">The color applied to the filled bar texture when hovered.</param>
     /// <param name="sliderHoverColor">The color applied to the slider texture when hovered.</param>
-    /// <param name="disabledBarColor">The color applied when the slide bar is disabled.</param>
-    /// <param name="disabledSliderColor">The color applied when the slider is disabled.</param>
+    /// <param name="disabledBarColor">The color applied to the bar texture when disabled.</param>
+    /// <param name="disabledFilledBarColor">The color applied to the filled bar texture when disabled.</param>
+    /// <param name="disabledSliderColor">The color applied to the slider texture when disabled.</param>
     /// <param name="barFlip">The flip mode applied to the bar texture.</param>
+    /// <param name="filledBarFlip">The flip mode applied to the filled bar texture.</param>
     /// <param name="sliderFlip">The flip mode applied to the slider texture.</param>
     public TextureSlideBarData(
         Texture2D barTexture,
@@ -158,8 +194,8 @@ public class TextureSlideBarData {
         this.FilledBarSampler = filledBarSampler;
         this.SliderSampler = sliderSampler;
         this.BarSourceRect = barSourceRect ?? new Rectangle(0, 0, (int) barTexture.Width, (int) barTexture.Height);
-        this.FilledBarSourceRect = filledBarSourceRect ?? new Rectangle(0, 0, (int) filledBarTexture.Width, (int) filledBarTexture.Height);
-        this.SliderSourceRect = sliderSourceRect ?? new Rectangle(0, 0, (int) sliderTexture.Width, (int) sliderTexture.Height);
+        this.FilledBarSourceRect = filledBarSourceRect ?? (filledBarTexture != null ? new Rectangle(0, 0, (int) filledBarTexture.Width, (int) filledBarTexture.Height) : new Rectangle());
+        this.SliderSourceRect = sliderSourceRect ?? (sliderTexture != null ? new Rectangle(0, 0, (int) sliderTexture.Width, (int) sliderTexture.Height) : new Rectangle());
         this.BarResizeMode = barResizeMode;
         this.FilledBarResizeMode = filledBarResizeMode;
         this.BarBorderInsets = barBorderInsets ?? BorderInsets.Zero;
@@ -171,8 +207,8 @@ public class TextureSlideBarData {
         this.FilledBarHoverColor = filledBarHoverColor ?? this.FilledBarColor;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
         this.DisabledBarColor = disabledBarColor ?? Color.Gray;
-        this.DisabledFilledBarColor = disabledFilledBarColor ?? Color.DarkGray;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.DarkGray;
+        this.DisabledFilledBarColor = disabledFilledBarColor ?? Color.Gray;
+        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
         this.BarFlip = barFlip;
         this.FilledBarFlip = filledBarFlip;
         this.SliderFlip = sliderFlip;
