@@ -2,6 +2,7 @@
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -51,6 +52,11 @@ public class TextureDropDownElement : GuiElement {
     /// The offset applied to the dropdown arrow indicator.
     /// </summary>
     public Vector2 ArrowOffset;
+    
+    /// <summary>
+    /// Triggered when the selected option in the dropdown menu changes.
+    /// </summary>
+    public event Action<LabelData>? OptionChanged;
     
     /// <summary>
     /// The dropdown menu is currently open.
@@ -125,6 +131,7 @@ public class TextureDropDownElement : GuiElement {
 
                     if (itemRect.Contains(mousePos, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
                         this.SelectedOption = this.Options[i];
+                        this.OptionChanged?.Invoke(this.SelectedOption);
                         this._isMenuOpen = false;
                         break;
                     }
@@ -132,7 +139,7 @@ public class TextureDropDownElement : GuiElement {
             }
         }
         
-        if (!this.IsSelected) {
+        if (!this.IsSelected || this.Options.Count <= 0) {
             this._isMenuOpen = false;
         }
     }
