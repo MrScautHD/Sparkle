@@ -87,15 +87,22 @@ public class TestGui : Gui {
             Logger.Error("BOX1!");
             return true;
         }));
+
+        RectangleSlideBarData rectangleSlideBarData = new RectangleSlideBarData() {
+            SliderSize = new Vector2(16, 16),
+            BarOutlineThickness = 4,
+            FilledBarOutlineThickness = 4,
+            SliderOutlineThickness = 4
+        };
         
-        this.AddElement("Texture-Slider-Bar2", new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 200), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(2, 2), clickFunc: () => {
+        this.AddElement("Rectangle-Slider-Bar", new RectangleSlideBarElement(rectangleSlideBarData, Anchor.Center, new Vector2(0, 200), new Vector2(280, 16), 0, 10, clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));
     }
     
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        //GuiManager.Scale = 1;
+        //GuiManager.Scale = 1.5F;
         
         // Draw background.
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);

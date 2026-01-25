@@ -45,7 +45,7 @@ public class TextureSlideBarElement : GuiElement {
     public bool WholeNumbers;
     
     /// <summary>
-    /// The user is currently dragging the slider bar.
+    /// The user is currently dragging the slider.
     /// </summary>
     private bool _isDragging;
     
