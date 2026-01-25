@@ -183,8 +183,14 @@ public class TextureSlideBarElement : GuiElement {
                 StencilTestEnabled = true,
                 StencilReadMask = 0xFF,
                 StencilReference = 1,
-                StencilFront = new StencilBehaviorDescription { Comparison = ComparisonKind.Equal, Pass = StencilOperation.Keep },
-                StencilBack = new StencilBehaviorDescription { Comparison = ComparisonKind.Equal, Pass = StencilOperation.Keep }
+                StencilFront = new StencilBehaviorDescription {
+                    Comparison = ComparisonKind.Equal,
+                    Pass = StencilOperation.Keep
+                },
+                StencilBack = new StencilBehaviorDescription {
+                    Comparison = ComparisonKind.Equal,
+                    Pass = StencilOperation.Keep
+                }
             };
             
             context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);

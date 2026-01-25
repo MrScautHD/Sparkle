@@ -259,10 +259,14 @@ public class TextureButtonElement : GuiElement {
             _ => Vector2.Zero
         };
         
-        Color textColor = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
+        Color color = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
+        
+        if (!this.Interactable) {
+            color = this.LabelData.DisabledColor;
+        }
         
         if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
         if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
     }
 }

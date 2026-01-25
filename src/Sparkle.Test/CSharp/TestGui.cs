@@ -87,7 +87,8 @@ public class TestGui : Gui {
             Logger.Error("BOX1!");
             return true;
         }));
-
+        
+        // Rectangle slider bar.
         RectangleSlideBarData rectangleSlideBarData = new RectangleSlideBarData() {
             SliderSize = new Vector2(16, 16),
             BarOutlineThickness = 4,
@@ -96,6 +97,40 @@ public class TestGui : Gui {
         };
         
         this.AddElement("Rectangle-Slider-Bar", new RectangleSlideBarElement(rectangleSlideBarData, Anchor.Center, new Vector2(0, 200), new Vector2(280, 16), 0, 10, clickFunc: () => {
+            Logger.Error("BOX1!");
+            return true;
+        }));
+        
+        // Texture drop down.
+        TextureDropDownData textureDropDownData = new TextureDropDownData(
+            ContentRegistry.UiBannerTexture,
+            ContentRegistry.UiBannerEdgeLessTexture,
+            ContentRegistry.UiArrowTexture,
+            fieldResizeMode: ResizeMode.NineSlice,
+            menuResizeMode: ResizeMode.NineSlice,
+            fieldBorderInsets: new BorderInsets(12),
+            menuBorderInsets: new BorderInsets(5)
+            //fieldHoverColor: Color.Gray,
+            //menuHoverColor: Color.Gray,
+            //arrowHoverColor: Color.Gray
+            );
+        
+        List<LabelData> options = [
+            new LabelData(ContentRegistry.Fontoe, "Option 1", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 2", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 3", 18)
+        ];
+        
+        this.AddElement("Texture-Drop-Down", new TextureDropDownElement(
+            textureDropDownData,
+            options,
+            Anchor.Center,
+            new Vector2(0, 230),
+            size: new Vector2(140, 30),
+            scale: new Vector2(1, 1),
+            fieldTextOffset: new Vector2(10, 1),
+            menuTextOffset: new Vector2(10, 1),
+            clickFunc: () => {
             Logger.Error("BOX1!");
             return true;
         }));

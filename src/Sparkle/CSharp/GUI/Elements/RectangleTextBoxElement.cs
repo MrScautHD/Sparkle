@@ -497,7 +497,7 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X + 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            _ => throw new ArgumentOutOfRangeException($"FieldTextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         textOrigin -= this.TextOffset;
@@ -538,7 +538,7 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Center => new Vector2((visibleTextSize.X / 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - caretOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            _ => throw new ArgumentOutOfRangeException($"FieldTextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         caretOrigin -= this.TextOffset;
@@ -596,7 +596,7 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
             TextAlignment.Center => new Vector2((visibleTextSize.X / 2.0F) - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
             TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (visibleTextSize.X + 2.0F) - highlightOffsetX, labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin) + new Vector2(this.TextEdgeOffset.Right, 0.0F),
-            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            _ => throw new ArgumentOutOfRangeException($"FieldTextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         highlightOrigin -= this.TextOffset;
@@ -760,7 +760,7 @@ public class RectangleTextBoxElement : GuiElement {
             TextAlignment.Left => new Vector2(this.TextEdgeOffset.Left * this.Scale.X * this.Gui.ScaleFactor, 0),
             TextAlignment.Center => new Vector2((this.ScaledSize.X - visibleTextSize.X) / 2.0F, 0),
             TextAlignment.Right => new Vector2(this.ScaledSize.X - visibleTextSize.X - (this.TextEdgeOffset.Right * this.Scale.X * this.Gui.ScaleFactor), 0),
-            _ => throw new ArgumentOutOfRangeException($"TextAlignment '{this.TextAlignment}' is invalid or undefined.")
+            _ => throw new ArgumentOutOfRangeException($"FieldTextAlignment '{this.TextAlignment}' is invalid or undefined.")
         };
         
         // By default, start the caret index at the visible text's start.

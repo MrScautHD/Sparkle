@@ -36,7 +36,7 @@ public class LabelData {
     /// The color of the rendered text.
     /// </summary>
     public Color Color;
-
+    
     /// <summary>
     /// The color of the text when the label is hovered over.
     /// </summary>
