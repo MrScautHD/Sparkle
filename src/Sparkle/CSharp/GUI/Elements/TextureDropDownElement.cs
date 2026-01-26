@@ -1,13 +1,12 @@
 ﻿using System.Numerics;
-using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrid;
+using Color = Bliss.CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -64,6 +63,11 @@ public class TextureDropDownElement : GuiElement {
     private bool _isMenuOpen;
     
     /// <summary>
+    /// The current rotational state of the dropdown arrow, used for visual animation when opening or closing the menu.
+    /// </summary>
+    private float _arrowRotation;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureDropDownElement"/> class.
     /// </summary>
     /// <param name="dropDownData">The visual and texture data used to render the dropdown field and menu.</param>
@@ -114,6 +118,18 @@ public class TextureDropDownElement : GuiElement {
     protected internal override void Update(double delta) {
         base.Update(delta);
         
+        // Arrow animation.
+        float targetRotation = this._isMenuOpen ? MathF.PI : 0.0F;
+        float animationSpeed = 15.0F;
+        
+        if (MathF.Abs(this._arrowRotation - targetRotation) > 0.001F) {
+            this._arrowRotation = float.Lerp(this._arrowRotation, targetRotation, (float) (animationSpeed * delta));
+        }
+        else {
+            this._arrowRotation = targetRotation;
+        }
+        
+        // Open/Close menu.
         if (this.IsClicked) {
             Vector2 mousePos = Input.GetMousePosition();
             
@@ -126,10 +142,12 @@ public class TextureDropDownElement : GuiElement {
             }
             else if (this._isMenuOpen) {
                 for (int i = 0; i < this.Options.Count; i++) {
-                    Vector2 itemPos = this.Position + new Vector2(0, fieldSize.Y * (i + 1));
+                    Vector2 itemPos = this.Position;
+                    Vector2 itemOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor - new Vector2(0, fieldSize.Y * (i + 1));
+                    
                     RectangleF itemRect = new (itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y);
-
-                    if (itemRect.Contains(mousePos, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
+                    
+                    if (itemRect.Contains(mousePos, itemOrigin, this.Rotation)) {
                         this.SelectedOption = this.Options[i];
                         this.OptionChanged?.Invoke(this.SelectedOption);
                         this._isMenuOpen = false;
@@ -194,13 +212,12 @@ public class TextureDropDownElement : GuiElement {
         // Draw highlight.
         if (this._isMenuOpen) {
             Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
-        
+    
             for (int i = 0; i < this.Options.Count; i++) {
-                Vector2 itemPos = this.Position + new Vector2(0, fieldSize.Y * (i + 1));
-                RectangleF itemRect = new (itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y);
-            
-                // Check if the mouse is hovering this specific item.
-                if (itemRect.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
+                Vector2 itemPos = this.Position;
+                Vector2 itemOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor - new Vector2(0, fieldSize.Y * (i + 1));
+                
+                if (new RectangleF(itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y).Contains(Input.GetMousePosition(), itemOrigin, this.Rotation)) {
                     DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
                         StencilTestEnabled = true,
                         StencilWriteMask = 0xFF,
@@ -218,7 +235,7 @@ public class TextureDropDownElement : GuiElement {
                     // Write to the stencil buffer to mark the hovered item's area.
                     context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
                     context.PrimitiveBatch.PushDepthStencilState(stencilWrite);
-                    context.PrimitiveBatch.DrawFilledRectangle(itemRect, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+                    context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y), itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
                     context.PrimitiveBatch.PopDepthStencilState();
                     context.PrimitiveBatch.End();
                     break;
@@ -528,7 +545,12 @@ public class TextureDropDownElement : GuiElement {
         float offsetX = this.Size.X - this.DropDownData.ArrowSourceRect.Width - this.ArrowOffset.X;
         float offsetY = (this.Size.Y - this.DropDownData.ArrowSourceRect.Height) / 2.0F + this.ArrowOffset.Y;
         
-        Vector2 arrowOrigin = this.Origin - new Vector2(offsetX, offsetY);
+        Vector2 arrowSize = new Vector2(this.DropDownData.ArrowSourceRect.Width, this.DropDownData.ArrowSourceRect.Height);
+        Vector2 arrowCenter = arrowSize / 2.0F;
+        
+        Vector2 localToArrowCenter = (new Vector2(offsetX, offsetY) + arrowCenter - this.Origin) * this.Scale * this.Gui.ScaleFactor;
+        Vector2 rotatedLocalToArrowCenter = Vector2.Transform(localToArrowCenter, Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation)));
+        Vector2 arrowWorldCenter = this.Position + rotatedLocalToArrowCenter;
         
         Color color = this.IsHovered ? this.DropDownData.ArrowHoverColor : this.DropDownData.ArrowColor;
         
@@ -537,7 +559,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         if (this.DropDownData.ArrowSampler != null) spriteBatch.PushSampler(this.DropDownData.ArrowSampler);
-        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, this.Position, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowOrigin, this.Rotation, color, this.DropDownData.ArrowFlip);
+        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
         if (this.DropDownData.ArrowSampler != null) spriteBatch.PopSampler();
     }
     
@@ -553,12 +575,13 @@ public class TextureDropDownElement : GuiElement {
             return;
         }
         
-        Vector2 textPos = this.Position + (textOffset * this.Scale * this.Gui.ScaleFactor);
+        Vector2 textPos = this.Position;
         Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        
         Vector2 textOrigin = textAlignment switch {
-            TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
+            TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
+            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
+            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - (this.Origin - textOffset)),
             _ => Vector2.Zero
         };
         
