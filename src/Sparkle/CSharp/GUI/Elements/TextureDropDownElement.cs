@@ -1,6 +1,8 @@
 ﻿using System.Numerics;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -21,6 +23,11 @@ public class TextureDropDownElement : GuiElement {
     /// The list of selectable options displayed in the dropdown menu.
     /// </summary>
     public List<LabelData> Options { get; private set; }
+    
+    /// <summary>
+    /// The maximum number of dropdown menu options visible at once.
+    /// </summary>
+    public int MaxVisibleOptions { get; private set; }
     
     /// <summary>
     /// The currently selected option from the dropdown menu.
@@ -46,6 +53,11 @@ public class TextureDropDownElement : GuiElement {
     /// The offset applied to the text displayed in the dropdown menu items.
     /// </summary>
     public Vector2 MenuTextOffset;
+
+    /// <summary>
+    /// The offset applied to the slider element used within the dropdown component.
+    /// </summary>
+    public Vector2 SliderOffset;
     
     /// <summary>
     /// The offset applied to the dropdown arrow indicator.
@@ -53,14 +65,24 @@ public class TextureDropDownElement : GuiElement {
     public Vector2 ArrowOffset;
     
     /// <summary>
-    /// Triggered when the selected option in the dropdown menu changes.
+    /// The insets applied to the scroll mask for controlling the visible region of the dropdown menu's scrollable content.
     /// </summary>
-    public event Action<LabelData>? OptionChanged;
+    public (float Top, float Bottom) ScrollMaskInsets;
     
     /// <summary>
     /// The dropdown menu is currently open.
     /// </summary>
-    private bool _isMenuOpen;
+    public bool IsMenuOpen { get; private set; }
+    
+    /// <summary>
+    /// Triggered when the selected option in the dropdown menu changes.
+    /// </summary>
+    public event Action<LabelData>? OptionChanged;
+
+    /// <summary>
+    /// Event triggered when the dropdown menu is toggled open or closed.
+    /// </summary>
+    public event Action<bool>? MenuToggled;
     
     /// <summary>
     /// The current rotational state of the dropdown arrow, used for visual animation when opening or closing the menu.
@@ -68,17 +90,30 @@ public class TextureDropDownElement : GuiElement {
     private float _arrowRotation;
     
     /// <summary>
+    /// The current scroll offset for the dropdown menu.
+    /// </summary>
+    private float _scrollPercent;
+    
+    /// <summary>
+    /// Indicates if the scroller is currently being dragged.
+    /// </summary>
+    private bool _isDraggingSlider;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureDropDownElement"/> class.
     /// </summary>
     /// <param name="dropDownData">The visual and texture data used to render the dropdown field and menu.</param>
     /// <param name="options">The list of label data entries representing selectable options.</param>
+    /// <param name="maxVisibleOptions">The maximum number of options visible in the dropdown menu at a time.</param>
     /// <param name="anchor">The anchor point used to position the dropdown element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
-    /// <param name="fieldFieldTextAlignment">The text alignment used for the selected value displayed in the field.</param>
+    /// <param name="fieldTextAlignment">The text alignment used for the selected value displayed in the field.</param>
     /// <param name="menuTextAlignment">The text alignment used for options displayed in the dropdown menu.</param>
     /// <param name="fieldTextOffset">The offset applied to the field text.</param>
     /// <param name="menuTextOffset">The offset applied to the menu option text.</param>
+    /// <param name="sliderOffset">An optional offset applied to the position of the slider within the dropdown menu.</param>
     /// <param name="arrowOffset">The offset applied to the dropdown arrow indicator.</param>
+    /// <param name="scrollMaskInsets">Defines top and bottom padding for the scroll text clipping mask.</param>
     /// <param name="size">The size of the dropdown element.</param>
     /// <param name="scale">Optional scale applied to the dropdown element.</param>
     /// <param name="origin">Optional origin point used for rotation and alignment.</param>
@@ -87,26 +122,32 @@ public class TextureDropDownElement : GuiElement {
     public TextureDropDownElement(
         TextureDropDownData dropDownData,
         List<LabelData> options,
+        int maxVisibleOptions,
         Anchor anchor,
         Vector2 offset,
-        TextAlignment fieldFieldTextAlignment = TextAlignment.Left,
+        TextAlignment fieldTextAlignment = TextAlignment.Left,
         TextAlignment menuTextAlignment = TextAlignment.Left,
         Vector2? fieldTextOffset = null,
         Vector2? menuTextOffset = null,
+        Vector2? sliderOffset = null,
         Vector2? arrowOffset = null,
+        (float Top, float Bottom)? scrollMaskInsets = null,
         Vector2? size = null,
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.DropDownData = dropDownData;
         this.Options = options;
+        this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
         this.SelectedOption = this.Options.FirstOrDefault();
-        this.FieldTextAlignment = fieldFieldTextAlignment;
+        this.FieldTextAlignment = fieldTextAlignment;
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
         this.MenuTextOffset = menuTextOffset ?? Vector2.Zero;
+        this.SliderOffset = sliderOffset ?? Vector2.Zero;
         this.ArrowOffset = arrowOffset ?? new Vector2(10.0F, 0.0F);
+        this.ScrollMaskInsets = scrollMaskInsets ?? (0.0F, 0.0F);
         this.Size = size ?? new Vector2(dropDownData.FieldSourceRect.Width, dropDownData.FieldSourceRect.Height);
     }
     
@@ -119,7 +160,7 @@ public class TextureDropDownElement : GuiElement {
         base.Update(delta);
         
         // Arrow animation.
-        float targetRotation = this._isMenuOpen ? MathF.PI : 0.0F;
+        float targetRotation = this.IsMenuOpen ? MathF.PI : 0.0F;
         float animationSpeed = 15.0F;
         
         if (MathF.Abs(this._arrowRotation - targetRotation) > 0.001F) {
@@ -129,36 +170,135 @@ public class TextureDropDownElement : GuiElement {
             this._arrowRotation = targetRotation;
         }
         
-        // Open/Close menu.
+        // Reset scrolling if the menu closed.
+        if (!this.IsMenuOpen) {
+            this._scrollPercent = 0;
+            this._isDraggingSlider = false;
+        }
+        
+        // Handle scrolling and dragging.
+        if (this.IsMenuOpen && this.Options.Count > this.MaxVisibleOptions) {
+            Vector2 mousePos = Input.GetMousePosition();
+            Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+            Vector2 fieldSize = this.Size * scale;
+            
+            // Define scrollbar track rectangle.
+            float scrollBarWidth = this.DropDownData.ScrollBarWidth * scale.X;
+            float scrollBarHeight = fieldSize.Y * this.MaxVisibleOptions;
+            
+            // The scrollbar is on the right side of the menu.
+            RectangleF scrollTrackRect = new RectangleF(this.Position.X + fieldSize.X - scrollBarWidth, this.Position.Y + fieldSize.Y, scrollBarWidth, scrollBarHeight);
+            
+            // Define the full menu rectangle (to check for hover).
+            RectangleF menuRect = new RectangleF(this.Position.X, this.Position.Y + fieldSize.Y, fieldSize.X, scrollBarHeight);
+            Vector2 transformOrigin = this.Origin * scale;
+            
+            // Handle mouse wheel.
+            if (!this._isDraggingSlider && menuRect.Contains(mousePos, transformOrigin, this.Rotation)) {
+                if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
+                    float scrollSensitivity = 0.1F; // TODO: MAKE AN OPTION FOR IT. (and make it smooth)
+                    
+                    this._scrollPercent = Math.Clamp(this._scrollPercent - wheelDelta.Y * scrollSensitivity, 0.0F, 1.0F);
+                }
+            }
+            
+            // Handle Dragging / Clicking on Scrollbar.
+            if (Input.IsMouseButtonDown(MouseButton.Left)) {
+                
+                // Start dragging if the mouse is over the track.
+                if (scrollTrackRect.Contains(mousePos, transformOrigin, this.Rotation)) {
+                    this._isDraggingSlider = true;
+                }
+                
+                if (this._isDraggingSlider) {
+                    
+                    // Calculate relative Y position within the track using an inverse transform.
+                    Matrix3x2 transform = Matrix3x2.CreateTranslation(-this.Position) * Matrix3x2.CreateRotation(-float.DegreesToRadians(this.Rotation)) * Matrix3x2.CreateTranslation(transformOrigin);
+                    Vector2 localMouse = Vector2.Transform(mousePos, transform);
+                    
+                    float sliderHeight = this.DropDownData.SliderSourceRect.Height * scale.Y;
+                    float trackTop = fieldSize.Y;
+                    
+                    // Calculate percentage based on mouse Y relative to the track's vertical range.
+                    float usableTrackHeight = scrollBarHeight - sliderHeight;
+                    float relativeY = localMouse.Y - trackTop - (sliderHeight / 2.0F);
+                    
+                    this._scrollPercent = Math.Clamp(relativeY / usableTrackHeight, 0.0F, 1.0F);
+                }
+            }
+            else {
+                this._isDraggingSlider = false;
+            }
+        }
+        
+        // Open/Close menu and clicking options.
         if (this.IsClicked) {
             Vector2 mousePos = Input.GetMousePosition();
-            
-            // Calculate main field bounds.
             Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
-            RectangleF fieldRect = new (this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y);
+            RectangleF fieldRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y);
+            Vector2 fieldOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor;
             
-            if (fieldRect.Contains(mousePos, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
-                this._isMenuOpen = !this._isMenuOpen;
+            if (fieldRect.Contains(mousePos, fieldOrigin, this.Rotation)) {
+                this.IsMenuOpen = !this.IsMenuOpen;
+                this.MenuToggled?.Invoke(this.IsMenuOpen);
             }
-            else if (this._isMenuOpen) {
-                for (int i = 0; i < this.Options.Count; i++) {
-                    Vector2 itemPos = this.Position;
-                    Vector2 itemOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor - new Vector2(0, fieldSize.Y * (i + 1));
+            else if (this.IsMenuOpen) {
+                
+                // Define the visible mask area for the menu.
+                float maskHeight = fieldSize.Y * this.MaxVisibleOptions;
+                RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, maskHeight);
+                Vector2 maskOrigin = fieldOrigin - new Vector2(0.0F, fieldSize.Y);
+                
+                // Check if the click is inside the visible part of the menu.
+                if (maskRect.Contains(mousePos, maskOrigin, this.Rotation)) {
+                    int visibleOptions = this.Options.Count;
+                    float currentScrollIndex = 0.0F;
                     
-                    RectangleF itemRect = new (itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y);
-                    
-                    if (itemRect.Contains(mousePos, itemOrigin, this.Rotation)) {
-                        this.SelectedOption = this.Options[i];
-                        this.OptionChanged?.Invoke(this.SelectedOption);
-                        this._isMenuOpen = false;
-                        break;
+                    if (this.Options.Count > this.MaxVisibleOptions) {
+                        currentScrollIndex = this._scrollPercent * (this.Options.Count - this.MaxVisibleOptions);
+                        visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions + 1);
                     }
+                    
+                    int startIndex = (int) Math.Floor(currentScrollIndex);
+                    float scrollOffset = currentScrollIndex - startIndex;
+                    
+                    for (int i = 0; i < visibleOptions; i++) {
+                        int optionIndex = startIndex + i;
+                        
+                        if (optionIndex >= this.Options.Count) {
+                            break;
+                        }
+                        
+                        Vector2 itemSize = new Vector2(fieldSize.X, fieldSize.Y);
+                        
+                        if (this.Options.Count > this.MaxVisibleOptions) {
+                            itemSize.X -= this.DropDownData.ScrollBarWidth * this.Scale.X * this.Gui.ScaleFactor;
+                        }
+                        
+                        RectangleF itemRect = new RectangleF(this.Position.X, this.Position.Y, itemSize.X, itemSize.Y);
+                        Vector2 itemOrigin = fieldOrigin - new Vector2(0.0F, itemSize.Y * (i - scrollOffset + 1.0F));
+                        
+                        if (itemRect.Contains(mousePos, itemOrigin, this.Rotation)) {
+                            this.SelectedOption = this.Options[optionIndex];
+                            this.IsMenuOpen = false;
+                            this.OptionChanged?.Invoke(this.SelectedOption);
+                            this.MenuToggled?.Invoke(this.IsMenuOpen);
+                            break;
+                        }
+                    }
+                }
+                else {
+                    
+                    // Clicked outside the field and outside the visible menu, then close the menu.
+                    this.IsMenuOpen = false;
+                    this.MenuToggled?.Invoke(this.IsMenuOpen);
                 }
             }
         }
         
         if (!this.IsSelected || this.Options.Count <= 0) {
-            this._isMenuOpen = false;
+            this.IsMenuOpen = false;
+            this.MenuToggled?.Invoke(this.IsMenuOpen);
         }
     }
     
@@ -188,17 +328,6 @@ public class TextureDropDownElement : GuiElement {
                 break;
         }
         
-        // Draw menu texture.
-        if (this._isMenuOpen) {
-            Color menuColor = this.IsHovered ? this.DropDownData.MenuHoverColor : this.DropDownData.MenuColor;
-        
-            if (!this.Interactable) {
-                menuColor = this.DropDownData.DisabledMenuColor;
-            }
-            
-            this.DrawMenu(context.SpriteBatch, menuColor);
-        }
-        
         // Draw arrow texture.
         this.DrawArrow(context.SpriteBatch);
         
@@ -207,64 +336,263 @@ public class TextureDropDownElement : GuiElement {
             this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset);
         }
         
+        if (this.IsMenuOpen) {
+            
+            // Draw menu texture.
+            Color menuColor = this.IsHovered ? this.DropDownData.MenuHoverColor : this.DropDownData.MenuColor;
+            
+            if (!this.Interactable) {
+                menuColor = this.DropDownData.DisabledMenuColor;
+            }
+            
+            this.DrawMenu(context.SpriteBatch, menuColor);
+            
+            // Draw the scroll bar.
+            this.DrawScrollBar(context.SpriteBatch);
+            
+            // Draw the slider.
+            this.DrawSlider(context.SpriteBatch);
+        }
+        
         context.SpriteBatch.End();
         
-        // Draw highlight.
-        if (this._isMenuOpen) {
-            Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+        if (this.IsMenuOpen) {
+            
+            // Draw highlight.
+            this.DrawHighlight(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+            
+            // Draw options text.
+            this.DrawOptionsText(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+        }
+    }
     
-            for (int i = 0; i < this.Options.Count; i++) {
-                Vector2 itemPos = this.Position;
-                Vector2 itemOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor - new Vector2(0, fieldSize.Y * (i + 1));
-                
-                if (new RectangleF(itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y).Contains(Input.GetMousePosition(), itemOrigin, this.Rotation)) {
-                    DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
-                        StencilTestEnabled = true,
-                        StencilWriteMask = 0xFF,
-                        StencilReference = 1,
-                        StencilFront = new StencilBehaviorDescription {
-                            Comparison = ComparisonKind.Always,
-                            Pass = StencilOperation.Replace
-                        },
-                        StencilBack = new StencilBehaviorDescription {
-                            Comparison = ComparisonKind.Always,
-                            Pass = StencilOperation.Replace
-                        }
-                    };
-                    
-                    // Write to the stencil buffer to mark the hovered item's area.
-                    context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-                    context.PrimitiveBatch.PushDepthStencilState(stencilWrite);
-                    context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(itemPos.X, itemPos.Y, fieldSize.X, fieldSize.Y), itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-                    context.PrimitiveBatch.PopDepthStencilState();
-                    context.PrimitiveBatch.End();
-                    break;
+    /// <summary>
+    /// Renders the text of the dropdown menu options onto the screen, managing visible options and applying a clipping mask for scrolling.
+    /// </summary>
+    /// <param name="commandList">The command list used for issuing rendering commands.</param>
+    /// <param name="framebuffer">The framebuffer used as the rendering target.</param>
+    /// <param name="spriteBatch">The sprite batch renderer used for drawing the option text.</param>
+    /// <param name="primitiveBatch">The primitive batch renderer used for drawing the stencil mask for scrolling.</param>
+    private void DrawOptionsText(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+        int visibleOptions = this.Options.Count;
+        float currentScrollIndex = 0;
+        
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            currentScrollIndex = this._scrollPercent * (this.Options.Count - this.MaxVisibleOptions);
+            visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions + 1);
+        }
+        
+        // Determine the starting index and the fractional offset for scrolling.
+        int startIndex = (int) Math.Floor(currentScrollIndex);
+        float scrollOffset = currentScrollIndex - startIndex;
+        
+        Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        
+        float maskWidth = fieldSize.X;
+        
+        // Reduce mask width if the scroll bar is present.
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            maskWidth -= this.DropDownData.ScrollBarWidth * scale.X;
+        }
+        
+        float maskHeight = fieldSize.Y * this.MaxVisibleOptions - (this.ScrollMaskInsets.Top + this.ScrollMaskInsets.Bottom) * scale.Y;
+        
+        // Define the clipping mask area (the visible part of the dropdown list).
+        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, maskWidth, maskHeight);
+        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y) - new Vector2(0.0F, this.ScrollMaskInsets.Top * scale.Y);
+        
+        DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
+            StencilTestEnabled = true,
+            StencilWriteMask = 0xFF,
+            StencilReference = 2,
+            StencilFront = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            },
+            StencilBack = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            }
+        };
+        
+        // Write to the stencil buffer to mark the scroll mask area.
+        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+        primitiveBatch.PushDepthStencilState(stencilWrite);
+        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        primitiveBatch.PopDepthStencilState();
+        primitiveBatch.End();
+        
+        DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
+            StencilTestEnabled = true,
+            StencilReadMask = 0xFF,
+            StencilReference = 2,
+            StencilFront = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            },
+            StencilBack = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            }
+        };
+        
+        // Draw each option label, clipped by the stencil mask.
+        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
+        spriteBatch.PushDepthStencilState(stencilTest);
+        
+        for (int i = 0; i < visibleOptions; i++) {
+            int optionIndex = startIndex + i;
+            
+            if (optionIndex >= this.Options.Count) {
+                break;
+            }
+            
+            Vector2 itemOffset = this.MenuTextOffset + new Vector2(0.0F, this.Size.Y * (i - scrollOffset + 1.0F));
+            
+            if (this.Options.Count > this.MaxVisibleOptions) {
+                switch (this.MenuTextAlignment) {
+                    case TextAlignment.Center:
+                        itemOffset.X -= this.DropDownData.ScrollBarWidth / 2.0F;
+                        break;
+                    case TextAlignment.Right:
+                        itemOffset.X -= this.DropDownData.ScrollBarWidth;
+                        break;
                 }
             }
             
-            DepthStencilStateDescription stencilTest = new DepthStencilStateDescription {
-                StencilTestEnabled = true,
-                StencilReadMask = 0xFF,
-                StencilReference = 1,
-                StencilFront = new StencilBehaviorDescription {
-                    Comparison = ComparisonKind.Equal,
-                    Pass = StencilOperation.Keep
-                },
-                StencilBack = new StencilBehaviorDescription {
-                    Comparison = ComparisonKind.Equal,
-                    Pass = StencilOperation.Keep
-                }
-            };
-            
-            // Draw the highlight color only where the stencil buffer was marked.
-            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-            context.SpriteBatch.PushDepthStencilState(stencilTest);
-            this.DrawMenu(context.SpriteBatch, this.DropDownData.HighlightColor);
-            context.SpriteBatch.PopDepthStencilState();
-            context.SpriteBatch.End();
+            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset);
         }
+        
+        spriteBatch.PopDepthStencilState();
+        spriteBatch.End();
     }
-
+    
+    /// <summary>
+    /// Renders a visual highlight for the dropdown menu, including the visible options and hover effects.
+    /// </summary>
+    /// <param name="commandList">The command list used for drawing commands.</param>
+    /// <param name="framebuffer">The framebuffer where the highlight will be rendered.</param>
+    /// <param name="spriteBatch">The sprite batch for rendering textured elements.</param>
+    /// <param name="primitiveBatch">The primitive batch for rendering geometric shapes.</param>
+    private void DrawHighlight(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+        Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        
+        int visibleOptions = this.Options.Count;
+        float currentScrollIndex = 0;
+        
+        // Calculate visible options and adjust field size if the scrollbar is active.
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            fieldSize.X -= this.DropDownData.ScrollBarWidth * scale.X;
+            currentScrollIndex = this._scrollPercent * (this.Options.Count - this.MaxVisibleOptions);
+            visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions + 1);
+        }
+        
+        // Determine the starting index and offset for scrolling.
+        int startIndex = (int) Math.Floor(currentScrollIndex);
+        float scrollOffset = currentScrollIndex - startIndex;
+        
+        float maskHeight = fieldSize.Y * this.MaxVisibleOptions;
+        
+        // Define the mask rectangle for the visible portion of the dropdown list.
+        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, maskHeight);
+        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y);
+        
+        // Check if the mouse is even within the visible menu area first.
+        if (!maskRect.Contains(Input.GetMousePosition(), maskOrigin, this.Rotation)) {
+            return;
+        }
+        
+        DepthStencilStateDescription stencilMask = new DepthStencilStateDescription {
+            StencilTestEnabled = true,
+            StencilWriteMask = 1,
+            StencilReference = 1,
+            StencilFront = new StencilBehaviorDescription {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            },
+            StencilBack = new StencilBehaviorDescription {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            }
+        };
+        
+        // Draw the mask rectangle into the stencil buffer.
+        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+        primitiveBatch.PushDepthStencilState(stencilMask);
+        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        primitiveBatch.PopDepthStencilState();
+        primitiveBatch.End();
+        
+        bool itemHovered = false;
+        
+        // Iterate through visible options to find which one is hovered by the mouse.
+        for (int i = 0; i < visibleOptions; i++) {
+            int optionIndex = startIndex + i;
+            
+            if (optionIndex >= this.Options.Count) {
+                break;
+            }
+            
+            RectangleF itemRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y);
+            Vector2 itemOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y * (i - scrollOffset + 1.0F));
+            
+            // If the mouse is over this specific item.
+            if (itemRect.Contains(Input.GetMousePosition(), itemOrigin, this.Rotation)) {
+                itemHovered = true;
+                
+                DepthStencilStateDescription stencilItem = new DepthStencilStateDescription() {
+                    StencilTestEnabled = true,
+                    StencilReadMask = 1,
+                    StencilWriteMask = 2,
+                    StencilReference = 3,
+                    StencilFront = new StencilBehaviorDescription() {
+                        Comparison = ComparisonKind.Equal,
+                        Pass = StencilOperation.Replace
+                    },
+                    StencilBack = new StencilBehaviorDescription() {
+                        Comparison = ComparisonKind.Equal,
+                        Pass = StencilOperation.Replace
+                    }
+                };
+                
+                // Draw the item's rectangle into the stencil buffer (setting bit 2).
+                primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+                primitiveBatch.PushDepthStencilState(stencilItem);
+                primitiveBatch.DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+                primitiveBatch.PopDepthStencilState();
+                primitiveBatch.End();
+                break;
+            }
+        }
+        
+        if (!itemHovered) {
+            return;
+        }
+        
+        DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
+            StencilTestEnabled = true,
+            StencilReadMask = 2,
+            StencilReference = 2,
+            StencilFront = new StencilBehaviorDescription {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            },
+            StencilBack = new StencilBehaviorDescription {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            }
+        };
+        
+        // Draw the actual highlight.
+        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
+        spriteBatch.PushDepthStencilState(stencilTest);
+        this.DrawMenu(spriteBatch, this.DropDownData.HighlightColor);
+        spriteBatch.PopDepthStencilState();
+        spriteBatch.End();
+    }
+    
     /// <summary>
     /// Calculates the position of the texture drop-down element based on its anchor point, offset, scale, and other transformation factors.
     /// If the drop-down menu is closed, the position is determined using the base implementation.
@@ -273,7 +601,7 @@ public class TextureDropDownElement : GuiElement {
     /// A <see cref="Vector2"/> representing the calculated position of the element on the screen.
     /// </returns>
     protected override Vector2 CalculatePos() {
-        if (!this._isMenuOpen) {
+        if (!this.IsMenuOpen) {
             return base.CalculatePos();
         }
         
@@ -339,7 +667,7 @@ public class TextureDropDownElement : GuiElement {
     protected override Vector2 CalculateSize() {
         Vector2 baseSize = base.CalculateSize();
         
-        if (this._isMenuOpen) {
+        if (this.IsMenuOpen) {
             return new Vector2(baseSize.X, baseSize.Y * (this.Options.Count + 1));
         }
         
@@ -511,8 +839,21 @@ public class TextureDropDownElement : GuiElement {
         Vector2 originalSize = this.Size;
         Vector2 originalOrigin = this.Origin;
         
-        // Calculate menu size and offset origin so it draws below the field.
-        this.Size = new Vector2(this.Size.X, this.Size.Y * this.Options.Count);
+        int visibleOptions = this.Options.Count;
+        
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            visibleOptions = this.MaxVisibleOptions;
+        }
+        
+        // Calculate menu size.
+        this.Size = new Vector2(this.Size.X, this.Size.Y * visibleOptions);
+        
+        // Changing the size of the menu when the scrollbar appears.
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            this.Size.X -= this.DropDownData.ScrollBarWidth;
+        }
+        
+        // Calculate the origin so it draws below the field.
         this.Origin = originalOrigin - new Vector2(0.0F, originalSize.Y);
         
         switch (this.DropDownData.MenuResizeMode) {
@@ -529,12 +870,72 @@ public class TextureDropDownElement : GuiElement {
         // Restore original values.
         this.Size = originalSize;
         this.Origin = originalOrigin;
-        
-        // Draw each option label.
-        for (int i = 0; i < this.Options.Count; i++) {
-            Vector2 itemOffset = this.MenuTextOffset + new Vector2(0, originalSize.Y * (i + 1));
-            this.DrawText(spriteBatch, this.Options[i], this.MenuTextAlignment, itemOffset);
+    }
+    
+    /// <summary>
+    /// Draws the scrollbar for the dropdown menu based on the current number of options and visual properties.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to render the scrollbar.</param>
+    private void DrawScrollBar(SpriteBatch spriteBatch) {
+        if (this.Options.Count <= this.MaxVisibleOptions) {
+            return;
         }
+        
+        Vector2 originalSize = this.Size;
+        Vector2 originalOrigin = this.Origin;
+        
+        // Calculate the scrollbar size and offset origin.
+        this.Size = new Vector2(this.DropDownData.ScrollBarWidth, originalSize.Y * this.MaxVisibleOptions);
+        this.Origin = originalOrigin - new Vector2(originalSize.X - this.DropDownData.ScrollBarWidth, originalSize.Y);
+        
+        Color color = this.IsHovered ? this.DropDownData.SliderBarHoverColor : this.DropDownData.SliderBarColor;
+        
+        if (!this.Interactable) {
+            color = this.DropDownData.DisabledSliderBarColor;
+        }
+        
+        switch (this.DropDownData.FieldResizeMode) {
+            case ResizeMode.None:
+                this.DrawNormal(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip);
+                break;
+            
+            case ResizeMode.NineSlice:
+            case ResizeMode.TileCenter:
+                this.DrawNineSlice(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip);
+                break;
+        }
+        
+        // Restore original values.
+        this.Size = originalSize;
+        this.Origin = originalOrigin;
+    }
+    
+    /// <summary>
+    /// Draws the slider within the dropdown menu based on the current scroll position and visual configuration.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to render the slider component.</param>
+    private void DrawSlider(SpriteBatch spriteBatch) {
+        if (this.Options.Count <= this.MaxVisibleOptions) {
+            return;
+        }
+        
+        float scrollBarHeight = this.Size.Y * (this.MaxVisibleOptions);
+        float sliderHeight = this.DropDownData.SliderSourceRect.Height;
+        float scrollRange = scrollBarHeight - sliderHeight;
+        
+        float xOffset = this.Size.X - this.DropDownData.ScrollBarWidth + (this.DropDownData.ScrollBarWidth - this.DropDownData.SliderSourceRect.Width) / 2.0F;
+        float yOffset = this.Size.Y + scrollRange * this._scrollPercent;
+        Vector2 origin = this.Origin - new Vector2(xOffset, yOffset) - this.SliderOffset;
+        
+        Color color = this.IsHovered ? this.DropDownData.SliderHoverColor : this.DropDownData.SliderColor;
+        
+        if (!this.Interactable) {
+            color = this.DropDownData.DisabledSliderColor;
+        }
+        
+        if (this.DropDownData.SliderSampler != null) spriteBatch.PushSampler(this.DropDownData.SliderSampler);
+        spriteBatch.DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, this.DropDownData.SliderFlip);
+        if (this.DropDownData.SliderSampler != null) spriteBatch.PopSampler();
     }
     
     /// <summary>
@@ -542,6 +943,10 @@ public class TextureDropDownElement : GuiElement {
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to render the arrow texture.</param>
     private void DrawArrow(SpriteBatch spriteBatch) {
+        if (this.DropDownData.ArrowTexture == null) {
+            return;
+        }
+        
         float offsetX = this.Size.X - this.DropDownData.ArrowSourceRect.Width - this.ArrowOffset.X;
         float offsetY = (this.Size.Y - this.DropDownData.ArrowSourceRect.Height) / 2.0F + this.ArrowOffset.Y;
         

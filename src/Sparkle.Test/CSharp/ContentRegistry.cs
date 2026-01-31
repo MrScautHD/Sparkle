@@ -28,6 +28,7 @@ public class ContentRegistry : Registry {
     public static Texture2D CyberCarTexture { get; private set; }
     public static Texture2D UiBannerTexture { get; private set; }
     public static Texture2D UiBannerEdgeLessTexture { get; private set; }
+    public static Texture2D UiSliderTexture { get; private set; }
     public static Texture2D UiArrowTexture { get; private set; }
     
     public static AnimatedImage AnimatedImage;
@@ -59,6 +60,7 @@ public class ContentRegistry : Registry {
         CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"));
         UiBannerTexture = content.Load(new TextureContent("content/ui_banner.png"));
         UiBannerEdgeLessTexture = content.Load(new TextureContent("content/ui_banner_edgeless.png"));
+        UiSliderTexture = content.Load(new TextureContent("content/slider_high_res.png"));
         UiArrowTexture = content.Load(new TextureContent("content/ui_arrow.png"));
         
         // Gifs:

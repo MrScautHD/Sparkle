@@ -43,7 +43,7 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
     /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
-    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;

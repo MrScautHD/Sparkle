@@ -89,7 +89,7 @@ public abstract class GuiElement {
     /// A function invoked to handle click behavior for the GUI element.
     /// Should return a boolean indicating if the element was successfully clicked.
     /// </summary>
-    private Func<bool>? _clickFunc;
+    private Func<GuiElement, bool>? _clickFunc;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="GuiElement"/> class.
@@ -101,7 +101,7 @@ public abstract class GuiElement {
     /// <param name="origin">Optional origin point for rotation/scaling. Defaults to (0, 0).</param>
     /// <param name="rotation">Optional rotation in radians. Defaults to 0.</param>
     /// <param name="clickFunc">Optional function that determines what happens on click. Should return true if handled.</param>
-    public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) {
+    public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) {
         this.Enabled = true;
         this.Interactable = true;
         this.AnchorPoint = anchor;
@@ -127,7 +127,7 @@ public abstract class GuiElement {
             this.IsHovered = true;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Interactable) {
-                if (this._clickFunc?.Invoke() ?? true) {
+                if (this._clickFunc?.Invoke(this) ?? true) {
                     this.IsClicked = true;
                     this.IsSelected = true;
                 }

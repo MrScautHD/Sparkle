@@ -23,7 +23,7 @@ public class LabelElement : GuiElement {
     /// <param name="origin">Optional origin point used for rotation and scaling (default is null).</param>
     /// <param name="rotation">The rotation of the label in radians (default is 0).</param>
     /// <param name="clickFunc">Optional function to be called when the label is clicked (default is null).</param>
-    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
     }
     

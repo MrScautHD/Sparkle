@@ -45,7 +45,7 @@ public class TextureButtonElement : GuiElement {
     /// <param name="origin">Optional origin point for transformations like rotation and scaling.</param>
     /// <param name="rotation">Optional rotation angle in radians.</param>
     /// <param name="clickFunc">Optional function to execute when the button is clicked. Should return true if handled.</param>
-    public TextureButtonElement(TextureButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public TextureButtonElement(TextureButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
