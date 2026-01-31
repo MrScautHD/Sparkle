@@ -21,7 +21,7 @@ public abstract class Gui : Disposable {
     /// <summary>
     /// The scaling factor applied to the GUI.
     /// </summary>
-    public float ScaleFactor => GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height);  // TODO: MAKE a system with int but fix the scale...
+    public int ScaleFactor => (int) MathF.Round(GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height));  // TODO: MAKE a system with int but fix the scale...
     
     /// <summary>
     /// Internal dictionary storing GUI elements by name.

@@ -114,8 +114,8 @@ public class TestGui : Gui {
             sliderBarResizeMode: ResizeMode.NineSlice,
             fieldBorderInsets: new BorderInsets(12),
             menuBorderInsets: new BorderInsets(5),
-            sliderBarBorderInsets: new BorderInsets(5),
-            fieldHoverColor: Color.Gray
+            sliderBarBorderInsets: new BorderInsets(5)
+            //fieldHoverColor: Color.Gray
             //menuHoverColor: Color.Gray,
             //arrowHoverColor: Color.Gray
          );

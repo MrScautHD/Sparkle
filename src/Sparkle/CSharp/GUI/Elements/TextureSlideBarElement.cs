@@ -156,7 +156,7 @@ public class TextureSlideBarElement : GuiElement {
                 fillWidth = this.Size.X * percent;
             }
             
-            DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
+            DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription() {
                 StencilTestEnabled = true,
                 StencilWriteMask = 0xFF,
                 StencilReference = 1,
@@ -179,7 +179,7 @@ public class TextureSlideBarElement : GuiElement {
             
             context.PrimitiveBatch.End();
             
-            DepthStencilStateDescription stencilTest = new DepthStencilStateDescription {
+            DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
                 StencilTestEnabled = true,
                 StencilReadMask = 0xFF,
                 StencilReference = 1,
