@@ -668,7 +668,8 @@ public class TextureDropDownElement : GuiElement {
         Vector2 baseSize = base.CalculateSize();
         
         if (this.IsMenuOpen) {
-            return new Vector2(baseSize.X, baseSize.Y * (this.Options.Count + 1));
+            int visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions);
+            return new Vector2(baseSize.X, baseSize.Y * (visibleOptions + 1));
         }
         
         return baseSize;
