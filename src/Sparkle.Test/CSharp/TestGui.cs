@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
@@ -36,10 +37,10 @@ public class TestGui : Gui {
         }));
         
         // Texture button.
-        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.NineSlice, borderInsets: new BorderInsets(12), flip: SpriteFlip.None);
+        TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.None, borderInsets: new BorderInsets(12), flip: SpriteFlip.None);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
-        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), size: new Vector2(120, 30), textOffset: new Vector2(0, 1), clickFunc: (element) => {
+        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), textOffset: new Vector2(0, 1), clickFunc: (element) => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -123,16 +124,22 @@ public class TestGui : Gui {
         List<LabelData> options = [
             new LabelData(ContentRegistry.Fontoe, "Option 1", 18),
             new LabelData(ContentRegistry.Fontoe, "Option 2", 18),
-            new LabelData(ContentRegistry.Fontoe, "Option 3", 18)
+            new LabelData(ContentRegistry.Fontoe, "Option 3", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 4", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 5", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 6", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 7", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 8", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 9", 18)
         ];
         
         TextureDropDownElement dropDownElement = new TextureDropDownElement(
             textureDropDownData,
             options,
-            2,
+            4,
             Anchor.CenterLeft,
             new Vector2(40, 0),
-            size: new Vector2(140, 30),
+            size: new Vector2(140.5F, 30),
             rotation: 0,
             scale: new Vector2(2, 2),
             fieldTextOffset: new Vector2(10, 1),

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
@@ -238,7 +239,7 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="id">The entity ID.</param>
     /// <param name="entity">The retrieved entity, if found.</param>
-    public bool TryGetEntity(uint id, out Entity? entity) {
+    public bool TryGetEntity(uint id, [NotNullWhen(true)] out Entity? entity) {
         return this.Entities.TryGetValue(id, out entity);
     }
 

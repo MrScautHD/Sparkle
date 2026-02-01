@@ -18,8 +18,14 @@ public class TextureDropDownData {
     /// </summary>
     public Texture2D MenuTexture;
     
+    /// <summary>
+    /// The texture used to render the scrollbar track inside the dropdown menu.
+    /// </summary>
     public Texture2D SliderBarTexture;
     
+    /// <summary>
+    /// The texture used to render the scrollbar handle inside the dropdown menu.
+    /// </summary>
     public Texture2D SliderTexture;
     
     /// <summary>
@@ -36,9 +42,15 @@ public class TextureDropDownData {
     /// The sampler used for sampling the dropdown menu texture.
     /// </summary>
     public Sampler? MenuSampler;
-
+    
+    /// <summary>
+    /// The sampler used for sampling the scrollbar track texture.
+    /// </summary>
     public Sampler? SliderBarSampler;
-
+    
+    /// <summary>
+    /// The sampler used for sampling the scrollbar handle texture.
+    /// </summary>
     public Sampler? SliderSampler;
     
     /// <summary>
@@ -55,9 +67,15 @@ public class TextureDropDownData {
     /// The source rectangle defining the region of the menu texture to draw.
     /// </summary>
     public Rectangle MenuSourceRect;
-
+    
+    /// <summary>
+    /// The source rectangle defining the region of the scrollbar track texture to draw.
+    /// </summary>
     public Rectangle SliderBarSourceRect;
-
+    
+    /// <summary>
+    /// The source rectangle defining the region of the scrollbar handle texture to draw.
+    /// </summary>
     public Rectangle SliderSourceRect;
     
     /// <summary>
@@ -75,6 +93,9 @@ public class TextureDropDownData {
     /// </summary>
     public ResizeMode MenuResizeMode;
     
+    /// <summary>
+    /// The resize mode applied to the scrollbar track texture.
+    /// </summary>
     public ResizeMode SliderBarResizeMode;
     
     /// <summary>
@@ -87,6 +108,9 @@ public class TextureDropDownData {
     /// </summary>
     public BorderInsets MenuBorderInsets;
     
+    /// <summary>
+    /// The border insets used for nine-slice resizing of the scrollbar track texture.
+    /// </summary>
     public BorderInsets SliderBarBorderInsets;
     
     /// <summary>
@@ -99,8 +123,14 @@ public class TextureDropDownData {
     /// </summary>
     public Color MenuColor;
     
+    /// <summary>
+    /// The base color applied to the scrollbar track.
+    /// </summary>
     public Color SliderBarColor;
     
+    /// <summary>
+    /// The base color applied to the scrollbar handle.
+    /// </summary>
     public Color SliderColor;
     
     /// <summary>
@@ -117,9 +147,15 @@ public class TextureDropDownData {
     /// The color applied to the dropdown menu when hovered.
     /// </summary>
     public Color MenuHoverColor;
-
+    
+    /// <summary>
+    /// The color applied to the scrollbar track when hovered.
+    /// </summary>
     public Color SliderBarHoverColor;
-
+    
+    /// <summary>
+    /// The color applied to the scrollbar handle when hovered.
+    /// </summary>
     public Color SliderHoverColor;
     
     /// <summary>
@@ -141,9 +177,15 @@ public class TextureDropDownData {
     /// The color applied to the dropdown menu when disabled.
     /// </summary>
     public Color DisabledMenuColor;
-
+    
+    /// <summary>
+    /// The color applied to the scrollbar track when the dropdown is disabled.
+    /// </summary>
     public Color DisabledSliderBarColor;
-
+    
+    /// <summary>
+    /// The color applied to the scrollbar handle when the dropdown is disabled.
+    /// </summary>
     public Color DisabledSliderColor;
     
     /// <summary>
@@ -161,8 +203,14 @@ public class TextureDropDownData {
     /// </summary>
     public SpriteFlip MenuFlip;
     
+    /// <summary>
+    /// The flip mode applied to the scrollbar track texture.
+    /// </summary>
     public SpriteFlip SliderBarFlip;
-
+    
+    /// <summary>
+    /// The flip mode applied to the scrollbar handle texture.
+    /// </summary>
     public SpriteFlip SliderFlip;
     
     /// <summary>
@@ -170,6 +218,9 @@ public class TextureDropDownData {
     /// </summary>
     public SpriteFlip ArrowFlip;
     
+    /// <summary>
+    /// The width of the scrollbar rendered inside the dropdown menu.
+    /// </summary>
     public int ScrollBarWidth;
     
     /// <summary>
@@ -293,7 +344,7 @@ public class TextureDropDownData {
         this.SliderBarHoverColor = sliderBarHoverColor ?? this.SliderBarColor;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
         this.ArrowHoverColor = arrowHoverColor ?? this.ArrowColor;
-        this.HighlightColor = highlightColor ?? new Color(128, 128, 128, 100);
+        this.HighlightColor = highlightColor ?? Color.LightGray;
         this.DisabledFieldColor = disabledFieldColor ?? Color.Gray;
         this.DisabledMenuColor = disabledMenuColor ?? Color.Gray;
         this.DisabledSliderBarColor = disabledSliderBarColor ?? Color.Gray;

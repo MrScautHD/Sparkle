@@ -36,6 +36,7 @@ public class TextureSlideBarElement : GuiElement {
         set {
             float clampedValue = Math.Clamp(value, this.MinValue, this.MaxValue);
             field = this.WholeNumbers ? MathF.Round(clampedValue) : clampedValue;
+            this.ValueUpdated?.Invoke(field);
         }
     }
     
@@ -43,6 +44,12 @@ public class TextureSlideBarElement : GuiElement {
     /// The slider value should be rounded to the nearest whole number.
     /// </summary>
     public bool WholeNumbers;
+
+    /// <summary>
+    /// An event that triggers when the slider value is updated.
+    /// The new value of the slider is passed as a parameter to the attached event handlers.
+    /// </summary>
+    public event Action<float>? ValueUpdated;
     
     /// <summary>
     /// The user is currently dragging the slider.

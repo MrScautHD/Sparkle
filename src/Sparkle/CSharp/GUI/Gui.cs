@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -21,7 +22,7 @@ public abstract class Gui : Disposable {
     /// <summary>
     /// The scaling factor applied to the GUI.
     /// </summary>
-    public int ScaleFactor => (int) MathF.Round(GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height));  // TODO: MAKE a system with int but fix the scale...
+    public float ScaleFactor => GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height);
     
     /// <summary>
     /// Internal dictionary storing GUI elements by name.
@@ -139,7 +140,7 @@ public abstract class Gui : Disposable {
     /// <param name="name">The name of the GUI element to retrieve.</param>
     /// <param name="element">When this method returns, contains the GUI element associated with the specified name, if found; otherwise, null.</param>
     /// <returns>True if the element with the specified name is found; otherwise, false.</returns>
-    public bool TryGetElement(string name, out GuiElement? element) {
+    public bool TryGetElement(string name, [NotNullWhen(true)] out GuiElement? element) {
         return this._elements.TryGetValue(name, out element);
     }
     

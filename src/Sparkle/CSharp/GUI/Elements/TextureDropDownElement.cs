@@ -149,7 +149,7 @@ public class TextureDropDownElement : GuiElement {
         Vector2? sliderOffset = null,
         Vector2? arrowOffset = null,
         (float Top, float Bottom)? scrollMaskInsets = null,
-        float scrollSensitivity = 0.3F,
+        float scrollSensitivity = 0.1F,
         float scrollLerpSpeed = 10.0F,
         Vector2? size = null,
         Vector2? scale = null,

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Sparkle.CSharp.Content;
 
 namespace Sparkle.CSharp.Registries;
@@ -75,7 +76,7 @@ public static class RegistryManager {
     /// <typeparam name="T">The type of the registry to retrieve.</typeparam>
     /// <param name="registry">The output parameter that will contain the registry instance if found; otherwise, null.</param>
     /// <returns>Returns true if the registry is successfully located; otherwise, false.</returns>
-    public static bool TryGetRegistry<T>(out T? registry) where T : Registry {
+    public static bool TryGetRegistry<T>([NotNullWhen(true)] out T? registry) where T : Registry {
         if (!Registries.TryGetValue(typeof(T), out Registry? result)) {
             registry = null;
             return false;
