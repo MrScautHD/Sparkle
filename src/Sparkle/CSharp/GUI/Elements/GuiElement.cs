@@ -181,9 +181,10 @@ public abstract class GuiElement {
     /// <returns>A <see cref="Vector2"/> representing the calculated position of the element on the screen.</returns>
     protected virtual Vector2 CalculatePos() {
         Vector2 pos = Vector2.Zero;
+        int scaleFactor = this.Gui.ScaleFactor;
         
-        float width = GlobalGraphicsAssets.Window.GetWidth();
-        float height = GlobalGraphicsAssets.Window.GetHeight();
+        float width = MathF.Floor((float) GlobalGraphicsAssets.Window.GetWidth() / scaleFactor) * scaleFactor;
+        float height = MathF.Floor((float) GlobalGraphicsAssets.Window.GetHeight() / scaleFactor) * scaleFactor;
         
         switch (this.AnchorPoint) {
             case Anchor.TopLeft:
@@ -226,9 +227,12 @@ public abstract class GuiElement {
                 break;
         }
         
-        pos += (this.Offset * this.Gui.ScaleFactor) + this.Origin;
+        Vector2 finalPos = pos + (this.Offset * scaleFactor) + this.Origin;
         
-        return pos;
+        return new Vector2(
+            MathF.Floor(finalPos.X / scaleFactor) * scaleFactor,
+            MathF.Floor(finalPos.Y / scaleFactor) * scaleFactor
+        );
     }
     
     /// <summary>
