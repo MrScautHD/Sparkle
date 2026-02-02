@@ -1,0 +1,2010 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Entities.Camera2D
+  commentId: T:Sparkle.CSharp.Entities.Camera2D
+  id: Camera2D
+  parent: Sparkle.CSharp.Entities
+  children:
+  - Sparkle.CSharp.Entities.Camera2D.#ctor(System.Numerics.Vector2,System.Numerics.Vector2,Bliss.CSharp.Transformations.Rectangle,Bliss.CSharp.Camera.Dim2.CameraFollowMode,System.Nullable{System.Numerics.Vector2},System.Single,System.Single)
+  - Sparkle.CSharp.Entities.Camera2D.Begin
+  - Sparkle.CSharp.Entities.Camera2D.End
+  - Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+  - Sparkle.CSharp.Entities.Camera2D.GetCamera2D
+  - Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Camera2D.GetView
+  - Sparkle.CSharp.Entities.Camera2D.GetVisibleArea
+  - Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+  - Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+  - Sparkle.CSharp.Entities.Camera2D.Mode
+  - Sparkle.CSharp.Entities.Camera2D.Offset
+  - Sparkle.CSharp.Entities.Camera2D.Position
+  - Sparkle.CSharp.Entities.Camera2D.Resize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.Entities.Camera2D.Rotation
+  - Sparkle.CSharp.Entities.Camera2D.Size
+  - Sparkle.CSharp.Entities.Camera2D.Target
+  - Sparkle.CSharp.Entities.Camera2D.Transform
+  - Sparkle.CSharp.Entities.Camera2D.Update(System.Double)
+  - Sparkle.CSharp.Entities.Camera2D.Zoom
+  langs:
+  - csharp
+  - vb
+  name: Camera2D
+  nameWithType: Camera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Camera2D
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 6
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  syntax:
+    content: 'public class Camera2D : Entity, IDisposable'
+    content.vb: Public Class Camera2D Inherits Entity Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  - Sparkle.CSharp.Entities.Entity
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Sparkle.CSharp.Entities.Entity.Scene
+  - Sparkle.CSharp.Entities.Entity.Id
+  - Sparkle.CSharp.Entities.Entity.Tag
+  - Sparkle.CSharp.Entities.Entity.Init
+  - Sparkle.CSharp.Entities.Entity.AfterUpdate(System.Double)
+  - Sparkle.CSharp.Entities.Entity.FixedUpdate(System.Double)
+  - Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.Entities.Entity.GetComponents
+  - Sparkle.CSharp.Entities.Entity.HasComponent``1
+  - Sparkle.CSharp.Entities.Entity.GetComponent``1
+  - Sparkle.CSharp.Entities.Entity.TryGetComponent``1({T}@)
+  - Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+  - Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+  - Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  - Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  - Sparkle.CSharp.Entities.Entity.RemoveComponent``1
+  - Sparkle.CSharp.Entities.Entity.TryRemoveComponent``1
+  - Sparkle.CSharp.Entities.Entity.Dispose(System.Boolean)
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Entities.Camera2D.#ctor(System.Numerics.Vector2,System.Numerics.Vector2,Bliss.CSharp.Transformations.Rectangle,Bliss.CSharp.Camera.Dim2.CameraFollowMode,System.Nullable{System.Numerics.Vector2},System.Single,System.Single)
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.#ctor(System.Numerics.Vector2,System.Numerics.Vector2,Bliss.CSharp.Transformations.Rectangle,Bliss.CSharp.Camera.Dim2.CameraFollowMode,System.Nullable{System.Numerics.Vector2},System.Single,System.Single)
+  id: '#ctor(System.Numerics.Vector2,System.Numerics.Vector2,Bliss.CSharp.Transformations.Rectangle,Bliss.CSharp.Camera.Dim2.CameraFollowMode,System.Nullable{System.Numerics.Vector2},System.Single,System.Single)'
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Camera2D(Vector2, Vector2, Rectangle, CameraFollowMode, Vector2?, float, float)
+  nameWithType: Camera2D.Camera2D(Vector2, Vector2, Rectangle, CameraFollowMode, Vector2?, float, float)
+  fullName: Sparkle.CSharp.Entities.Camera2D.Camera2D(System.Numerics.Vector2, System.Numerics.Vector2, Bliss.CSharp.Transformations.Rectangle, Bliss.CSharp.Camera.Dim2.CameraFollowMode, System.Numerics.Vector2?, float, float)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Entities.Camera2D" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public Camera2D(Vector2 position, Vector2 target, Rectangle size, CameraFollowMode mode, Vector2? offset = null, float rotation = 0, float zoom = 1)
+    parameters:
+    - id: position
+      type: System.Numerics.Vector2
+      description: The initial position of the camera.
+    - id: target
+      type: System.Numerics.Vector2
+      description: The target position the camera follows.
+    - id: size
+      type: Bliss.CSharp.Transformations.Rectangle
+      description: The size of the camera viewport.
+    - id: mode
+      type: Bliss.CSharp.Camera.Dim2.CameraFollowMode
+      description: The follow mode of the camera.
+    - id: offset
+      type: System.Nullable{System.Numerics.Vector2}
+      description: Optional offset applied to the camera.
+    - id: rotation
+      type: System.Single
+      description: Initial rotation of the camera in degrees.
+    - id: zoom
+      type: System.Single
+      description: Initial zoom level of the camera.
+    content.vb: Public Sub New(position As Vector2, target As Vector2, size As Rectangle, mode As CameraFollowMode, offset As Vector2? = Nothing, rotation As Single = 0, zoom As Single = 1)
+  overload: Sparkle.CSharp.Entities.Camera2D.#ctor*
+  nameWithType.vb: Camera2D.New(Vector2, Vector2, Rectangle, CameraFollowMode, Vector2?, Single, Single)
+  fullName.vb: Sparkle.CSharp.Entities.Camera2D.New(System.Numerics.Vector2, System.Numerics.Vector2, Bliss.CSharp.Transformations.Rectangle, Bliss.CSharp.Camera.Dim2.CameraFollowMode, System.Numerics.Vector2?, Single, Single)
+  name.vb: New(Vector2, Vector2, Rectangle, CameraFollowMode, Vector2?, Single, Single)
+- uid: Sparkle.CSharp.Entities.Camera2D.Transform
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Transform
+  id: Transform
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Transform
+  nameWithType: Camera2D.Transform
+  fullName: Sparkle.CSharp.Entities.Camera2D.Transform
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Transform
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 30
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets the transform representation of the camera.
+  example: []
+  syntax:
+    content: public Transform Transform { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Transformations.Transform
+    content.vb: Public ReadOnly Property Transform As Transform
+  overload: Sparkle.CSharp.Entities.Camera2D.Transform*
+- uid: Sparkle.CSharp.Entities.Camera2D.Position
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Position
+  id: Position
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Position
+  nameWithType: Camera2D.Position
+  fullName: Sparkle.CSharp.Entities.Camera2D.Position
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Position
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 39
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the position of the camera.
+  example: []
+  syntax:
+    content: public Vector2 Position { get; set; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property Position As Vector2
+  overload: Sparkle.CSharp.Entities.Camera2D.Position*
+- uid: Sparkle.CSharp.Entities.Camera2D.Target
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Target
+  id: Target
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Target
+  nameWithType: Camera2D.Target
+  fullName: Sparkle.CSharp.Entities.Camera2D.Target
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Target
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 47
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the target position the camera follows.
+  example: []
+  syntax:
+    content: public Vector2 Target { get; set; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property Target As Vector2
+  overload: Sparkle.CSharp.Entities.Camera2D.Target*
+- uid: Sparkle.CSharp.Entities.Camera2D.Size
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Size
+  id: Size
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Size
+  nameWithType: Camera2D.Size
+  fullName: Sparkle.CSharp.Entities.Camera2D.Size
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Size
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 55
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets the size of the camera viewport.
+  example: []
+  syntax:
+    content: public Rectangle Size { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public ReadOnly Property Size As Rectangle
+  overload: Sparkle.CSharp.Entities.Camera2D.Size*
+- uid: Sparkle.CSharp.Entities.Camera2D.Mode
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Mode
+  id: Mode
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Mode
+  nameWithType: Camera2D.Mode
+  fullName: Sparkle.CSharp.Entities.Camera2D.Mode
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Mode
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 60
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the camera follow mode.
+  example: []
+  syntax:
+    content: public CameraFollowMode Mode { get; set; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Camera.Dim2.CameraFollowMode
+    content.vb: Public Property Mode As CameraFollowMode
+  overload: Sparkle.CSharp.Entities.Camera2D.Mode*
+- uid: Sparkle.CSharp.Entities.Camera2D.Offset
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Offset
+  id: Offset
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Offset
+  nameWithType: Camera2D.Offset
+  fullName: Sparkle.CSharp.Entities.Camera2D.Offset
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Offset
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 68
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the offset applied to the camera position.
+  example: []
+  syntax:
+    content: public Vector2 Offset { get; set; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property Offset As Vector2
+  overload: Sparkle.CSharp.Entities.Camera2D.Offset*
+- uid: Sparkle.CSharp.Entities.Camera2D.Rotation
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Rotation
+  id: Rotation
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Rotation
+  nameWithType: Camera2D.Rotation
+  fullName: Sparkle.CSharp.Entities.Camera2D.Rotation
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Rotation
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 76
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the camera rotation in degrees.
+  example: []
+  syntax:
+    content: public float Rotation { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Rotation As Single
+  overload: Sparkle.CSharp.Entities.Camera2D.Rotation*
+- uid: Sparkle.CSharp.Entities.Camera2D.Zoom
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.Zoom
+  id: Zoom
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Zoom
+  nameWithType: Camera2D.Zoom
+  fullName: Sparkle.CSharp.Entities.Camera2D.Zoom
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Zoom
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 84
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the zoom level of the camera.
+  example: []
+  syntax:
+    content: public float Zoom { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Zoom As Single
+  overload: Sparkle.CSharp.Entities.Camera2D.Zoom*
+- uid: Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+  id: MinFollowSpeed
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: MinFollowSpeed
+  nameWithType: Camera2D.MinFollowSpeed
+  fullName: Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MinFollowSpeed
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 92
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the minimum follow speed of the camera.
+  example: []
+  syntax:
+    content: public float MinFollowSpeed { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property MinFollowSpeed As Single
+  overload: Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed*
+- uid: Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+  id: MinFollowEffectLength
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: MinFollowEffectLength
+  nameWithType: Camera2D.MinFollowEffectLength
+  fullName: Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MinFollowEffectLength
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 100
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the minimum follow effect length.
+  example: []
+  syntax:
+    content: public float MinFollowEffectLength { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property MinFollowEffectLength As Single
+  overload: Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength*
+- uid: Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+  commentId: P:Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+  id: FractionFollowSpeed
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: FractionFollowSpeed
+  nameWithType: Camera2D.FractionFollowSpeed
+  fullName: Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FractionFollowSpeed
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 108
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets or sets the fraction follow speed for smoothing camera movement.
+  example: []
+  syntax:
+    content: public float FractionFollowSpeed { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property FractionFollowSpeed As Single
+  overload: Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed*
+- uid: Sparkle.CSharp.Entities.Camera2D.Update(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.Update(System.Double)
+  id: Update(System.Double)
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: Camera2D.Update(double)
+  fullName: Sparkle.CSharp.Entities.Camera2D.Update(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Update
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 117
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Updates the state of the <xref href="Sparkle.CSharp.Entities.Camera2D" data-throw-if-not-resolved="false"></xref> object on each frame.
+  example: []
+  syntax:
+    content: protected override void Update(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time elapsed since the last frame, in seconds.
+    content.vb: Protected Overrides Sub Update(delta As Double)
+  overridden: Sparkle.CSharp.Entities.Entity.Update(System.Double)
+  overload: Sparkle.CSharp.Entities.Camera2D.Update*
+  nameWithType.vb: Camera2D.Update(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Camera2D.Update(Double)
+  name.vb: Update(Double)
+- uid: Sparkle.CSharp.Entities.Camera2D.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.Resize(Bliss.CSharp.Transformations.Rectangle)
+  id: Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Resize(Rectangle)
+  nameWithType: Camera2D.Resize(Rectangle)
+  fullName: Sparkle.CSharp.Entities.Camera2D.Resize(Bliss.CSharp.Transformations.Rectangle)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Resize
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 126
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Resizes the camera to match the dimensions of the given rectangle.
+  example: []
+  syntax:
+    content: protected override void Resize(Rectangle rectangle)
+    parameters:
+    - id: rectangle
+      type: Bliss.CSharp.Transformations.Rectangle
+      description: The rectangle defining the new dimensions for the camera's viewport.
+    content.vb: Protected Overrides Sub Resize(rectangle As Rectangle)
+  overridden: Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+  overload: Sparkle.CSharp.Entities.Camera2D.Resize*
+- uid: Sparkle.CSharp.Entities.Camera2D.Begin
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.Begin
+  id: Begin
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: Begin()
+  nameWithType: Camera2D.Begin()
+  fullName: Sparkle.CSharp.Entities.Camera2D.Begin()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Begin
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 134
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Begins rendering with this camera.
+  example: []
+  syntax:
+    content: public void Begin()
+    content.vb: Public Sub Begin()
+  overload: Sparkle.CSharp.Entities.Camera2D.Begin*
+- uid: Sparkle.CSharp.Entities.Camera2D.End
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.End
+  id: End
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: End()
+  nameWithType: Camera2D.End()
+  fullName: Sparkle.CSharp.Entities.Camera2D.End()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: End
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 141
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Ends rendering with this camera.
+  example: []
+  syntax:
+    content: public void End()
+    content.vb: Public Sub [End]()
+  overload: Sparkle.CSharp.Entities.Camera2D.End*
+- uid: Sparkle.CSharp.Entities.Camera2D.GetView
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.GetView
+  id: GetView
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: GetView()
+  nameWithType: Camera2D.GetView()
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetView()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetView
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 149
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets the view matrix of the camera.
+  example: []
+  syntax:
+    content: public Matrix4x4 GetView()
+    return:
+      type: System.Numerics.Matrix4x4
+      description: The view matrix.
+    content.vb: Public Function GetView() As Matrix4x4
+  overload: Sparkle.CSharp.Entities.Camera2D.GetView*
+- uid: Sparkle.CSharp.Entities.Camera2D.GetVisibleArea
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.GetVisibleArea
+  id: GetVisibleArea
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: GetVisibleArea()
+  nameWithType: Camera2D.GetVisibleArea()
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetVisibleArea()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetVisibleArea
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 157
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Calculates and returns the visible area of the camera based on its current position and viewport size.
+  example: []
+  syntax:
+    content: public RectangleF GetVisibleArea()
+    return:
+      type: Bliss.CSharp.Transformations.RectangleF
+      description: A <xref href="Bliss.CSharp.Transformations.RectangleF" data-throw-if-not-resolved="false"></xref> representing the visible area in world coordinates.
+    content.vb: Public Function GetVisibleArea() As RectangleF
+  overload: Sparkle.CSharp.Entities.Camera2D.GetVisibleArea*
+- uid: Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld(System.Numerics.Vector2)
+  id: GetScreenToWorld(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: GetScreenToWorld(Vector2)
+  nameWithType: Camera2D.GetScreenToWorld(Vector2)
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetScreenToWorld
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 166
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Converts a screen position to world coordinates.
+  example: []
+  syntax:
+    content: public Vector2 GetScreenToWorld(Vector2 position)
+    parameters:
+    - id: position
+      type: System.Numerics.Vector2
+      description: The screen position.
+    return:
+      type: System.Numerics.Vector2
+      description: The corresponding world position.
+    content.vb: Public Function GetScreenToWorld(position As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld*
+- uid: Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen(System.Numerics.Vector2)
+  id: GetWorldToScreen(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: GetWorldToScreen(Vector2)
+  nameWithType: Camera2D.GetWorldToScreen(Vector2)
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetWorldToScreen
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 175
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Converts a world position to screen coordinates.
+  example: []
+  syntax:
+    content: public Vector2 GetWorldToScreen(Vector2 position)
+    parameters:
+    - id: position
+      type: System.Numerics.Vector2
+      description: The world position.
+    return:
+      type: System.Numerics.Vector2
+      description: The corresponding screen position.
+    content.vb: Public Function GetWorldToScreen(position As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen*
+- uid: Sparkle.CSharp.Entities.Camera2D.GetCamera2D
+  commentId: M:Sparkle.CSharp.Entities.Camera2D.GetCamera2D
+  id: GetCamera2D
+  parent: Sparkle.CSharp.Entities.Camera2D
+  langs:
+  - csharp
+  - vb
+  name: GetCamera2D()
+  nameWithType: Camera2D.GetCamera2D()
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetCamera2D()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Camera2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCamera2D
+    path: ../src/Sparkle/CSharp/Entities/Camera2D.cs
+    startLine: 183
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities
+  summary: Gets the underlying <xref href="Bliss.CSharp.Camera.Dim2.Cam2D" data-throw-if-not-resolved="false"></xref> instance used for camera logic.
+  example: []
+  syntax:
+    content: public Cam2D GetCamera2D()
+    return:
+      type: Bliss.CSharp.Camera.Dim2.Cam2D
+      description: The internal <xref href="Bliss.CSharp.Camera.Dim2.Cam2D" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Function GetCamera2D() As Cam2D
+  overload: Sparkle.CSharp.Entities.Camera2D.GetCamera2D*
+references:
+- uid: Sparkle.CSharp.Entities
+  commentId: N:Sparkle.CSharp.Entities
+  href: Sparkle.html
+  name: Sparkle.CSharp.Entities
+  nameWithType: Sparkle.CSharp.Entities
+  fullName: Sparkle.CSharp.Entities
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: Sparkle.CSharp.Entities.Entity
+  commentId: T:Sparkle.CSharp.Entities.Entity
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Sparkle.CSharp.Entities.Entity
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Sparkle.CSharp.Entities.Entity.Scene
+  commentId: P:Sparkle.CSharp.Entities.Entity.Scene
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Scene
+  name: Scene
+  nameWithType: Entity.Scene
+  fullName: Sparkle.CSharp.Entities.Entity.Scene
+- uid: Sparkle.CSharp.Entities.Entity.Id
+  commentId: P:Sparkle.CSharp.Entities.Entity.Id
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Id
+  name: Id
+  nameWithType: Entity.Id
+  fullName: Sparkle.CSharp.Entities.Entity.Id
+- uid: Sparkle.CSharp.Entities.Entity.Tag
+  commentId: F:Sparkle.CSharp.Entities.Entity.Tag
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Tag
+  name: Tag
+  nameWithType: Entity.Tag
+  fullName: Sparkle.CSharp.Entities.Entity.Tag
+- uid: Sparkle.CSharp.Entities.Entity.Init
+  commentId: M:Sparkle.CSharp.Entities.Entity.Init
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Init
+  name: Init()
+  nameWithType: Entity.Init()
+  fullName: Sparkle.CSharp.Entities.Entity.Init()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.Init
+    name: Init
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Init
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.Init
+    name: Init
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Init
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Entity.AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AfterUpdate_System_Double_
+  name: AfterUpdate(double)
+  nameWithType: Entity.AfterUpdate(double)
+  fullName: Sparkle.CSharp.Entities.Entity.AfterUpdate(double)
+  nameWithType.vb: Entity.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Entity.FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_FixedUpdate_System_Double_
+  name: FixedUpdate(double)
+  nameWithType: Entity.FixedUpdate(double)
+  fullName: Sparkle.CSharp.Entities.Entity.FixedUpdate(double)
+  nameWithType.vb: Entity.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: Entity.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.GetComponents
+  commentId: M:Sparkle.CSharp.Entities.Entity.GetComponents
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponents
+  name: GetComponents()
+  nameWithType: Entity.GetComponents()
+  fullName: Sparkle.CSharp.Entities.Entity.GetComponents()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.GetComponents
+    name: GetComponents
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponents
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.GetComponents
+    name: GetComponents
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponents
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.HasComponent``1
+  commentId: M:Sparkle.CSharp.Entities.Entity.HasComponent``1
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_HasComponent__1
+  name: HasComponent<T>()
+  nameWithType: Entity.HasComponent<T>()
+  fullName: Sparkle.CSharp.Entities.Entity.HasComponent<T>()
+  nameWithType.vb: Entity.HasComponent(Of T)()
+  fullName.vb: Sparkle.CSharp.Entities.Entity.HasComponent(Of T)()
+  name.vb: HasComponent(Of T)()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.HasComponent``1
+    name: HasComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_HasComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.HasComponent``1
+    name: HasComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_HasComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.GetComponent``1
+  commentId: M:Sparkle.CSharp.Entities.Entity.GetComponent``1
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponent__1
+  name: GetComponent<T>()
+  nameWithType: Entity.GetComponent<T>()
+  fullName: Sparkle.CSharp.Entities.Entity.GetComponent<T>()
+  nameWithType.vb: Entity.GetComponent(Of T)()
+  fullName.vb: Sparkle.CSharp.Entities.Entity.GetComponent(Of T)()
+  name.vb: GetComponent(Of T)()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.GetComponent``1
+    name: GetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.GetComponent``1
+    name: GetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1({T}@)
+  commentId: M:Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+  parent: Sparkle.CSharp.Entities.Entity
+  definition: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  name: TryGetComponent<T>(out T)
+  nameWithType: Entity.TryGetComponent<T>(out T)
+  fullName: Sparkle.CSharp.Entities.Entity.TryGetComponent<T>(out T)
+  nameWithType.vb: Entity.TryGetComponent(Of T)(T)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.TryGetComponent(Of T)(T)
+  name.vb: TryGetComponent(Of T)(T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+  commentId: M:Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AddComponent_Sparkle_CSharp_Entities_Components_Component_
+  name: AddComponent(Component)
+  nameWithType: Entity.AddComponent(Component)
+  fullName: Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: AddComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AddComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.AddComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: AddComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AddComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+  commentId: M:Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryAddComponent_Sparkle_CSharp_Entities_Components_Component_
+  name: TryAddComponent(Component)
+  nameWithType: Entity.TryAddComponent(Component)
+  fullName: Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: TryAddComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryAddComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.TryAddComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: TryAddComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryAddComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  commentId: M:Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  name: RemoveComponent(Component)
+  nameWithType: Entity.RemoveComponent(Component)
+  fullName: Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: RemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.RemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: RemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  commentId: M:Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  name: TryRemoveComponent(Component)
+  nameWithType: Entity.TryRemoveComponent(Component)
+  fullName: Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: TryRemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Sparkle.CSharp.Entities.Components.Component)
+    name: TryRemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent_Sparkle_CSharp_Entities_Components_Component_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    href: Sparkle.CSharp.Entities.Components.Component.html
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.RemoveComponent``1
+  commentId: M:Sparkle.CSharp.Entities.Entity.RemoveComponent``1
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent__1
+  name: RemoveComponent<T>()
+  nameWithType: Entity.RemoveComponent<T>()
+  fullName: Sparkle.CSharp.Entities.Entity.RemoveComponent<T>()
+  nameWithType.vb: Entity.RemoveComponent(Of T)()
+  fullName.vb: Sparkle.CSharp.Entities.Entity.RemoveComponent(Of T)()
+  name.vb: RemoveComponent(Of T)()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.RemoveComponent``1
+    name: RemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.RemoveComponent``1
+    name: RemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent``1
+  commentId: M:Sparkle.CSharp.Entities.Entity.TryRemoveComponent``1
+  parent: Sparkle.CSharp.Entities.Entity
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent__1
+  name: TryRemoveComponent<T>()
+  nameWithType: Entity.TryRemoveComponent<T>()
+  fullName: Sparkle.CSharp.Entities.Entity.TryRemoveComponent<T>()
+  nameWithType.vb: Entity.TryRemoveComponent(Of T)()
+  fullName.vb: Sparkle.CSharp.Entities.Entity.TryRemoveComponent(Of T)()
+  name.vb: TryRemoveComponent(Of T)()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent``1
+    name: TryRemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.TryRemoveComponent``1
+    name: TryRemoveComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Entity.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Entity.Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Dispose_System_Boolean_
+  name: Dispose(bool)
+  nameWithType: Entity.Dispose(bool)
+  fullName: Sparkle.CSharp.Entities.Entity.Dispose(bool)
+  nameWithType.vb: Entity.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+  commentId: M:Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  name: TryGetComponent<T>(out T)
+  nameWithType: Entity.TryGetComponent<T>(out T)
+  fullName: Sparkle.CSharp.Entities.Entity.TryGetComponent<T>(out T)
+  nameWithType.vb: Entity.TryGetComponent(Of T)(T)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.TryGetComponent(Of T)(T)
+  name.vb: TryGetComponent(Of T)(T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: out
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.TryGetComponent``1(``0@)
+    name: TryGetComponent
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Camera2D
+  commentId: T:Sparkle.CSharp.Entities.Camera2D
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Camera2D.html
+  name: Camera2D
+  nameWithType: Camera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D
+- uid: Sparkle.CSharp.Entities.Camera2D.#ctor*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.#ctor
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D__ctor_System_Numerics_Vector2_System_Numerics_Vector2_Bliss_CSharp_Transformations_Rectangle_Bliss_CSharp_Camera_Dim2_CameraFollowMode_System_Nullable_System_Numerics_Vector2__System_Single_System_Single_
+  name: Camera2D
+  nameWithType: Camera2D.Camera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D.Camera2D
+  nameWithType.vb: Camera2D.New
+  fullName.vb: Sparkle.CSharp.Entities.Camera2D.New
+  name.vb: New
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Camera.Dim2.CameraFollowMode
+  commentId: T:Bliss.CSharp.Camera.Dim2.CameraFollowMode
+  parent: Bliss.CSharp.Camera.Dim2
+  isExternal: true
+  name: CameraFollowMode
+  nameWithType: CameraFollowMode
+  fullName: Bliss.CSharp.Camera.Dim2.CameraFollowMode
+- uid: System.Nullable{System.Numerics.Vector2}
+  commentId: T:System.Nullable{System.Numerics.Vector2}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2?
+  nameWithType: Vector2?
+  fullName: System.Numerics.Vector2?
+  spec.csharp:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+  spec.vb:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Bliss.CSharp.Camera.Dim2
+  commentId: N:Bliss.CSharp.Camera.Dim2
+  isExternal: true
+  name: Bliss.CSharp.Camera.Dim2
+  nameWithType: Bliss.CSharp.Camera.Dim2
+  fullName: Bliss.CSharp.Camera.Dim2
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Camera
+    name: Camera
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Camera.Dim2
+    name: Dim2
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Camera
+    name: Camera
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Camera.Dim2
+    name: Dim2
+    isExternal: true
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Camera2D.Transform*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Transform
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Transform
+  name: Transform
+  nameWithType: Camera2D.Transform
+  fullName: Sparkle.CSharp.Entities.Camera2D.Transform
+- uid: Bliss.CSharp.Transformations.Transform
+  commentId: T:Bliss.CSharp.Transformations.Transform
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Transform
+  nameWithType: Transform
+  fullName: Bliss.CSharp.Transformations.Transform
+- uid: Sparkle.CSharp.Entities.Camera2D.Position*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Position
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Position
+  name: Position
+  nameWithType: Camera2D.Position
+  fullName: Sparkle.CSharp.Entities.Camera2D.Position
+- uid: Sparkle.CSharp.Entities.Camera2D.Target*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Target
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Target
+  name: Target
+  nameWithType: Camera2D.Target
+  fullName: Sparkle.CSharp.Entities.Camera2D.Target
+- uid: Sparkle.CSharp.Entities.Camera2D.Size*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Size
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Size
+  name: Size
+  nameWithType: Camera2D.Size
+  fullName: Sparkle.CSharp.Entities.Camera2D.Size
+- uid: Sparkle.CSharp.Entities.Camera2D.Mode*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Mode
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Mode
+  name: Mode
+  nameWithType: Camera2D.Mode
+  fullName: Sparkle.CSharp.Entities.Camera2D.Mode
+- uid: Sparkle.CSharp.Entities.Camera2D.Offset*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Offset
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Offset
+  name: Offset
+  nameWithType: Camera2D.Offset
+  fullName: Sparkle.CSharp.Entities.Camera2D.Offset
+- uid: Sparkle.CSharp.Entities.Camera2D.Rotation*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Rotation
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Rotation
+  name: Rotation
+  nameWithType: Camera2D.Rotation
+  fullName: Sparkle.CSharp.Entities.Camera2D.Rotation
+- uid: Sparkle.CSharp.Entities.Camera2D.Zoom*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Zoom
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Zoom
+  name: Zoom
+  nameWithType: Camera2D.Zoom
+  fullName: Sparkle.CSharp.Entities.Camera2D.Zoom
+- uid: Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_MinFollowSpeed
+  name: MinFollowSpeed
+  nameWithType: Camera2D.MinFollowSpeed
+  fullName: Sparkle.CSharp.Entities.Camera2D.MinFollowSpeed
+- uid: Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_MinFollowEffectLength
+  name: MinFollowEffectLength
+  nameWithType: Camera2D.MinFollowEffectLength
+  fullName: Sparkle.CSharp.Entities.Camera2D.MinFollowEffectLength
+- uid: Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_FractionFollowSpeed
+  name: FractionFollowSpeed
+  nameWithType: Camera2D.FractionFollowSpeed
+  fullName: Sparkle.CSharp.Entities.Camera2D.FractionFollowSpeed
+- uid: Sparkle.CSharp.Entities.Entity.Update(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Entity.Update(System.Double)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Update_System_Double_
+  name: Update(double)
+  nameWithType: Entity.Update(double)
+  fullName: Sparkle.CSharp.Entities.Entity.Update(double)
+  nameWithType.vb: Entity.Update(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Entity.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Camera2D.Update*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Update
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Update_System_Double_
+  name: Update
+  nameWithType: Camera2D.Update
+  fullName: Sparkle.CSharp.Entities.Camera2D.Update
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.Entities.Entity
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize(Rectangle)
+  nameWithType: Entity.Resize(Rectangle)
+  fullName: Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Entity.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Entities.Camera2D.Resize*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Resize
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize
+  nameWithType: Camera2D.Resize
+  fullName: Sparkle.CSharp.Entities.Camera2D.Resize
+- uid: Sparkle.CSharp.Entities.Camera2D.Begin*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.Begin
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_Begin
+  name: Begin
+  nameWithType: Camera2D.Begin
+  fullName: Sparkle.CSharp.Entities.Camera2D.Begin
+- uid: Sparkle.CSharp.Entities.Camera2D.End*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.End
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_End
+  name: End
+  nameWithType: Camera2D.End
+  fullName: Sparkle.CSharp.Entities.Camera2D.End
+- uid: Sparkle.CSharp.Entities.Camera2D.GetView*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.GetView
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_GetView
+  name: GetView
+  nameWithType: Camera2D.GetView
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetView
+- uid: System.Numerics.Matrix4x4
+  commentId: T:System.Numerics.Matrix4x4
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4
+  name: Matrix4x4
+  nameWithType: Matrix4x4
+  fullName: System.Numerics.Matrix4x4
+- uid: Bliss.CSharp.Transformations.RectangleF
+  commentId: T:Bliss.CSharp.Transformations.RectangleF
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: RectangleF
+  nameWithType: RectangleF
+  fullName: Bliss.CSharp.Transformations.RectangleF
+- uid: Sparkle.CSharp.Entities.Camera2D.GetVisibleArea*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.GetVisibleArea
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_GetVisibleArea
+  name: GetVisibleArea
+  nameWithType: Camera2D.GetVisibleArea
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetVisibleArea
+- uid: Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_GetScreenToWorld_System_Numerics_Vector2_
+  name: GetScreenToWorld
+  nameWithType: Camera2D.GetScreenToWorld
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetScreenToWorld
+- uid: Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_GetWorldToScreen_System_Numerics_Vector2_
+  name: GetWorldToScreen
+  nameWithType: Camera2D.GetWorldToScreen
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetWorldToScreen
+- uid: Bliss.CSharp.Camera.Dim2.Cam2D
+  commentId: T:Bliss.CSharp.Camera.Dim2.Cam2D
+  parent: Bliss.CSharp.Camera.Dim2
+  isExternal: true
+  name: Cam2D
+  nameWithType: Cam2D
+  fullName: Bliss.CSharp.Camera.Dim2.Cam2D
+- uid: Sparkle.CSharp.Entities.Camera2D.GetCamera2D*
+  commentId: Overload:Sparkle.CSharp.Entities.Camera2D.GetCamera2D
+  href: Sparkle.CSharp.Entities.Camera2D.html#Sparkle_CSharp_Entities_Camera2D_GetCamera2D
+  name: GetCamera2D
+  nameWithType: Camera2D.GetCamera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D.GetCamera2D

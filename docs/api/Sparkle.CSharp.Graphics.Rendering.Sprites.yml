@@ -1,0 +1,77 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+  commentId: N:Sparkle.CSharp.Graphics.Rendering.Sprites
+  id: Sparkle.CSharp.Graphics.Rendering.Sprites
+  children:
+  - Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData
+  - Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Graphics.Rendering.Sprites
+  nameWithType: Sparkle.CSharp.Graphics.Rendering.Sprites
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData.html
+  name: SpriteData
+  nameWithType: SpriteData
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html
+  name: SpriteRenderer
+  nameWithType: SpriteRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+  commentId: N:Sparkle.CSharp.Graphics.Rendering.Sprites
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics.Rendering.Sprites
+  nameWithType: Sparkle.CSharp.Graphics.Rendering.Sprites
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+    name: Sprites
+    href: Sparkle.CSharp.Graphics.Rendering.Sprites.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+    name: Sprites
+    href: Sparkle.CSharp.Graphics.Rendering.Sprites.html

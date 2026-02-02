@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  commentId: N:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  id: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  children:
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  nameWithType: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory.html
+  name: ISoftBodyFactory
+  nameWithType: ISoftBodyFactory
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory.html
+  name: SoftBodyClothFactory
+  nameWithType: SoftBodyClothFactory
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory.html
+  name: SoftBodyCubeFactory
+  nameWithType: SoftBodyCubeFactory
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory.html
+  name: SoftBodySphereFactory
+  nameWithType: SoftBodySphereFactory
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  commentId: N:Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  nameWithType: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+    name: Factories
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+    name: Factories
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.html

@@ -1,0 +1,592 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Registries.Registry
+  commentId: T:Sparkle.CSharp.Registries.Registry
+  id: Registry
+  parent: Sparkle.CSharp.Registries
+  children:
+  - Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  - Sparkle.CSharp.Registries.Registry.Init
+  - Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  langs:
+  - csharp
+  - vb
+  name: Registry
+  nameWithType: Registry
+  fullName: Sparkle.CSharp.Registries.Registry
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/Registry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Registry
+    path: ../src/Sparkle/CSharp/Registries/Registry.cs
+    startLine: 5
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  syntax:
+    content: 'public abstract class Registry : Disposable, IDisposable'
+    content.vb: Public MustInherit Class Registry Inherits Disposable Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  derivedClasses:
+  - Sparkle.Test.CSharp.ContentRegistry
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  commentId: M:Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  id: Load(Sparkle.CSharp.Content.ContentManager)
+  parent: Sparkle.CSharp.Registries.Registry
+  langs:
+  - csharp
+  - vb
+  name: Load(ContentManager)
+  nameWithType: Registry.Load(ContentManager)
+  fullName: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/Registry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Load
+    path: ../src/Sparkle/CSharp/Registries/Registry.cs
+    startLine: 11
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Loads content using the specified <xref href="Sparkle.CSharp.Content.ContentManager" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: protected virtual void Load(ContentManager content)
+    parameters:
+    - id: content
+      type: Sparkle.CSharp.Content.ContentManager
+      description: The content manager used to load assets.
+    content.vb: Protected Overridable Sub Load(content As ContentManager)
+  overload: Sparkle.CSharp.Registries.Registry.Load*
+- uid: Sparkle.CSharp.Registries.Registry.Init
+  commentId: M:Sparkle.CSharp.Registries.Registry.Init
+  id: Init
+  parent: Sparkle.CSharp.Registries.Registry
+  langs:
+  - csharp
+  - vb
+  name: Init()
+  nameWithType: Registry.Init()
+  fullName: Sparkle.CSharp.Registries.Registry.Init()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/Registry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Init
+    path: ../src/Sparkle/CSharp/Registries/Registry.cs
+    startLine: 16
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Initializes the registry after content has been loaded.
+  example: []
+  syntax:
+    content: protected virtual void Init()
+    content.vb: Protected Overridable Sub Init()
+  overload: Sparkle.CSharp.Registries.Registry.Init*
+- uid: Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Registries.Registry
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: Registry.Dispose(bool)
+  fullName: Sparkle.CSharp.Registries.Registry.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/Registry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle/CSharp/Registries/Registry.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  overload: Sparkle.CSharp.Registries.Registry.Dispose*
+  nameWithType.vb: Registry.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Registries.Registry.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.CSharp.Registries
+  commentId: N:Sparkle.CSharp.Registries
+  href: Sparkle.html
+  name: Sparkle.CSharp.Registries
+  nameWithType: Sparkle.CSharp.Registries
+  fullName: Sparkle.CSharp.Registries
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Content.ContentManager
+  commentId: T:Sparkle.CSharp.Content.ContentManager
+  parent: Sparkle.CSharp.Content
+  href: Sparkle.CSharp.Content.ContentManager.html
+  name: ContentManager
+  nameWithType: ContentManager
+  fullName: Sparkle.CSharp.Content.ContentManager
+- uid: Sparkle.CSharp.Registries.Registry.Load*
+  commentId: Overload:Sparkle.CSharp.Registries.Registry.Load
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Load_Sparkle_CSharp_Content_ContentManager_
+  name: Load
+  nameWithType: Registry.Load
+  fullName: Sparkle.CSharp.Registries.Registry.Load
+- uid: Sparkle.CSharp.Content
+  commentId: N:Sparkle.CSharp.Content
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content
+  nameWithType: Sparkle.CSharp.Content
+  fullName: Sparkle.CSharp.Content
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+- uid: Sparkle.CSharp.Registries.Registry.Init*
+  commentId: Overload:Sparkle.CSharp.Registries.Registry.Init
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Init
+  name: Init
+  nameWithType: Registry.Init
+  fullName: Sparkle.CSharp.Registries.Registry.Init
+- uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  commentId: M:Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: Dispose(bool)
+  nameWithType: Disposable.Dispose(bool)
+  fullName: Bliss.CSharp.Disposable.Dispose(bool)
+  nameWithType.vb: Disposable.Dispose(Boolean)
+  fullName.vb: Bliss.CSharp.Disposable.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.Registries.Registry.Dispose*
+  commentId: Overload:Sparkle.CSharp.Registries.Registry.Dispose
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: Registry.Dispose
+  fullName: Sparkle.CSharp.Registries.Registry.Dispose
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

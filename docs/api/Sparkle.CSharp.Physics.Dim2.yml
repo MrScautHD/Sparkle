@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2
+  commentId: N:Sparkle.CSharp.Physics.Dim2
+  id: Sparkle.CSharp.Physics.Dim2
+  children:
+  - Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  - Sparkle.CSharp.Physics.Dim2.Simulation2D
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim2
+  nameWithType: Sparkle.CSharp.Physics.Dim2
+  fullName: Sparkle.CSharp.Physics.Dim2
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  parent: Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.html
+  name: PhysicsSettings2D
+  nameWithType: PhysicsSettings2D
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+- uid: Sparkle.CSharp.Physics.Dim2.Simulation2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Simulation2D
+  parent: Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.CSharp.Physics.Dim2.Simulation2D.html
+  name: Simulation2D
+  nameWithType: Simulation2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Simulation2D
+- uid: Sparkle.CSharp.Physics.Dim2
+  commentId: N:Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2
+  nameWithType: Sparkle.CSharp.Physics.Dim2
+  fullName: Sparkle.CSharp.Physics.Dim2
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html

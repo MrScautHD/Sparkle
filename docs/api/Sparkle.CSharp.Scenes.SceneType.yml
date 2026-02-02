@@ -1,0 +1,124 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Scenes.SceneType
+  commentId: T:Sparkle.CSharp.Scenes.SceneType
+  id: SceneType
+  parent: Sparkle.CSharp.Scenes
+  children:
+  - Sparkle.CSharp.Scenes.SceneType.Scene2D
+  - Sparkle.CSharp.Scenes.SceneType.Scene3D
+  langs:
+  - csharp
+  - vb
+  name: SceneType
+  nameWithType: SceneType
+  fullName: Sparkle.CSharp.Scenes.SceneType
+  type: Enum
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneType.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SceneType
+    path: ../src/Sparkle/CSharp/Scenes/SceneType.cs
+    startLine: 2
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  syntax:
+    content: public enum SceneType
+    content.vb: Public Enum SceneType
+- uid: Sparkle.CSharp.Scenes.SceneType.Scene2D
+  commentId: F:Sparkle.CSharp.Scenes.SceneType.Scene2D
+  id: Scene2D
+  parent: Sparkle.CSharp.Scenes.SceneType
+  langs:
+  - csharp
+  - vb
+  name: Scene2D
+  nameWithType: SceneType.Scene2D
+  fullName: Sparkle.CSharp.Scenes.SceneType.Scene2D
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneType.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Scene2D
+    path: ../src/Sparkle/CSharp/Scenes/SceneType.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: A 2D scene, typically used for 2D rendering.
+  example: []
+  syntax:
+    content: Scene2D = 0
+    return:
+      type: Sparkle.CSharp.Scenes.SceneType
+- uid: Sparkle.CSharp.Scenes.SceneType.Scene3D
+  commentId: F:Sparkle.CSharp.Scenes.SceneType.Scene3D
+  id: Scene3D
+  parent: Sparkle.CSharp.Scenes.SceneType
+  langs:
+  - csharp
+  - vb
+  name: Scene3D
+  nameWithType: SceneType.Scene3D
+  fullName: Sparkle.CSharp.Scenes.SceneType.Scene3D
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneType.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Scene3D
+    path: ../src/Sparkle/CSharp/Scenes/SceneType.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: A 3D scene, typically used for 3D rendering.
+  example: []
+  syntax:
+    content: Scene3D = 1
+    return:
+      type: Sparkle.CSharp.Scenes.SceneType
+references:
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+- uid: Sparkle.CSharp.Scenes.SceneType
+  commentId: T:Sparkle.CSharp.Scenes.SceneType
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.SceneType.html
+  name: SceneType
+  nameWithType: SceneType
+  fullName: Sparkle.CSharp.Scenes.SceneType

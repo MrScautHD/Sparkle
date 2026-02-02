@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.Rendering
+  commentId: N:Sparkle.CSharp.Graphics.Rendering
+  id: Sparkle.CSharp.Graphics.Rendering
+  children:
+  - Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  - Sparkle.CSharp.Graphics.Rendering.SkyBox
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Graphics.Rendering
+  nameWithType: Sparkle.CSharp.Graphics.Rendering
+  fullName: Sparkle.CSharp.Graphics.Rendering
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer.html
+  name: MultiInstanceRenderer
+  nameWithType: MultiInstanceRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html
+  name: Physics3DDebugDrawer
+  nameWithType: Physics3DDebugDrawer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+- uid: Sparkle.CSharp.Graphics.Rendering.SkyBox
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.SkyBox
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.SkyBox.html
+  name: SkyBox
+  nameWithType: SkyBox
+  fullName: Sparkle.CSharp.Graphics.Rendering.SkyBox
+- uid: Sparkle.CSharp.Graphics.Rendering
+  commentId: N:Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics.Rendering
+  nameWithType: Sparkle.CSharp.Graphics.Rendering
+  fullName: Sparkle.CSharp.Graphics.Rendering
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html

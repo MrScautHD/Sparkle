@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  commentId: N:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  id: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  children:
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  nameWithType: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html
+  name: SimpleSoftBody
+  nameWithType: SimpleSoftBody
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth.html
+  name: SoftBodyCloth
+  nameWithType: SoftBodyCloth
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube.html
+  name: SoftBodyCube
+  nameWithType: SoftBodyCube
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html
+  name: SoftBodySphere
+  nameWithType: SoftBodySphere
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  commentId: N:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  nameWithType: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+    name: Types
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+    name: Types
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.html

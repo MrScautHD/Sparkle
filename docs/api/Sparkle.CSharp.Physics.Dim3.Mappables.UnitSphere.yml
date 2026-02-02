@@ -1,0 +1,545 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  commentId: T:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  id: UnitSphere
+  parent: Sparkle.CSharp.Physics.Dim3.Mappables
+  children:
+  - Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter(Jitter2.LinearMath.JVector@)
+  - Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  langs:
+  - csharp
+  - vb
+  name: UnitSphere
+  nameWithType: UnitSphere
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UnitSphere
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+    startLine: 5
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.Mappables
+  syntax:
+    content: 'public class UnitSphere : ISupportMappable'
+    content.vb: Public Class UnitSphere Implements ISupportMappable
+  inheritance:
+  - System.Object
+  implements:
+  - Jitter2.Collision.ISupportMappable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  id: SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  langs:
+  - csharp
+  - vb
+  name: SupportMap(in JVector, out JVector)
+  nameWithType: UnitSphere.SupportMap(in JVector, out JVector)
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap(in Jitter2.LinearMath.JVector, out Jitter2.LinearMath.JVector)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SupportMap
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.Mappables
+  summary: Provides the support mapping for the unit sphere in a specified direction.
+  example: []
+  syntax:
+    content: public void SupportMap(in JVector direction, out JVector result)
+    parameters:
+    - id: direction
+      type: Jitter2.LinearMath.JVector
+      description: The direction vector used for the support mapping calculation.
+    - id: result
+      type: Jitter2.LinearMath.JVector
+      description: The output parameter that will store the support point on the unit sphere.
+    content.vb: Public Sub SupportMap(direction As JVector, result As JVector)
+  overload: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap*
+  implements:
+  - Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  nameWithType.vb: UnitSphere.SupportMap(JVector, JVector)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: SupportMap(JVector, JVector)
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter(Jitter2.LinearMath.JVector@)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter(Jitter2.LinearMath.JVector@)
+  id: GetCenter(Jitter2.LinearMath.JVector@)
+  parent: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  langs:
+  - csharp
+  - vb
+  name: GetCenter(out JVector)
+  nameWithType: UnitSphere.GetCenter(out JVector)
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter(out Jitter2.LinearMath.JVector)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCenter
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Mappables/UnitSphere.cs
+    startLine: 20
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.Mappables
+  summary: Gets the center point of the unit sphere.
+  example: []
+  syntax:
+    content: public void GetCenter(out JVector point)
+    parameters:
+    - id: point
+      type: Jitter2.LinearMath.JVector
+      description: The output parameter that will store the center point of the unit sphere.
+    content.vb: Public Sub GetCenter(point As JVector)
+  overload: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter*
+  implements:
+  - Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector@)
+  nameWithType.vb: UnitSphere.GetCenter(JVector)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter(Jitter2.LinearMath.JVector)
+  name.vb: GetCenter(JVector)
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables
+  commentId: N:Sparkle.CSharp.Physics.Dim3.Mappables
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3.Mappables
+  nameWithType: Sparkle.CSharp.Physics.Dim3.Mappables
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.Mappables
+    name: Mappables
+    href: Sparkle.CSharp.Physics.Dim3.Mappables.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.Mappables
+    name: Mappables
+    href: Sparkle.CSharp.Physics.Dim3.Mappables.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Jitter2.Collision.ISupportMappable
+  commentId: T:Jitter2.Collision.ISupportMappable
+  parent: Jitter2.Collision
+  isExternal: true
+  name: ISupportMappable
+  nameWithType: ISupportMappable
+  fullName: Jitter2.Collision.ISupportMappable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Jitter2.Collision
+  commentId: N:Jitter2.Collision
+  isExternal: true
+  name: Jitter2.Collision
+  nameWithType: Jitter2.Collision
+  fullName: Jitter2.Collision
+  spec.csharp:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.Collision
+    name: Collision
+    isExternal: true
+  spec.vb:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.Collision
+    name: Collision
+    isExternal: true
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap
+  href: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.html#Sparkle_CSharp_Physics_Dim3_Mappables_UnitSphere_SupportMap_Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__
+  name: SupportMap
+  nameWithType: UnitSphere.SupportMap
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.SupportMap
+- uid: Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Jitter2.Collision.ISupportMappable
+  isExternal: true
+  name: SupportMap(in JVector, out JVector)
+  nameWithType: ISupportMappable.SupportMap(in JVector, out JVector)
+  fullName: Jitter2.Collision.ISupportMappable.SupportMap(in Jitter2.LinearMath.JVector, out Jitter2.LinearMath.JVector)
+  nameWithType.vb: ISupportMappable.SupportMap(JVector, JVector)
+  fullName.vb: Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: SupportMap(JVector, JVector)
+  spec.csharp:
+  - uid: Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: SupportMap
+    isExternal: true
+  - name: (
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.Collision.ISupportMappable.SupportMap(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: SupportMap
+    isExternal: true
+  - name: (
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+- uid: Jitter2.LinearMath.JVector
+  commentId: T:Jitter2.LinearMath.JVector
+  parent: Jitter2.LinearMath
+  isExternal: true
+  name: JVector
+  nameWithType: JVector
+  fullName: Jitter2.LinearMath.JVector
+- uid: Jitter2.LinearMath
+  commentId: N:Jitter2.LinearMath
+  isExternal: true
+  name: Jitter2.LinearMath
+  nameWithType: Jitter2.LinearMath
+  fullName: Jitter2.LinearMath
+  spec.csharp:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.LinearMath
+    name: LinearMath
+    isExternal: true
+  spec.vb:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.LinearMath
+    name: LinearMath
+    isExternal: true
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter
+  href: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.html#Sparkle_CSharp_Physics_Dim3_Mappables_UnitSphere_GetCenter_Jitter2_LinearMath_JVector__
+  name: GetCenter
+  nameWithType: UnitSphere.GetCenter
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.GetCenter
+- uid: Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector@)
+  commentId: M:Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector@)
+  parent: Jitter2.Collision.ISupportMappable
+  isExternal: true
+  name: GetCenter(out JVector)
+  nameWithType: ISupportMappable.GetCenter(out JVector)
+  fullName: Jitter2.Collision.ISupportMappable.GetCenter(out Jitter2.LinearMath.JVector)
+  nameWithType.vb: ISupportMappable.GetCenter(JVector)
+  fullName.vb: Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector)
+  name.vb: GetCenter(JVector)
+  spec.csharp:
+  - uid: Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector@)
+    name: GetCenter
+    isExternal: true
+  - name: (
+  - name: out
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.Collision.ISupportMappable.GetCenter(Jitter2.LinearMath.JVector@)
+    name: GetCenter
+    isExternal: true
+  - name: (
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )

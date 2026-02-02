@@ -1,0 +1,3801 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D
+  commentId: T:Sparkle.CSharp.Entities.Components.RigidBody2D
+  id: RigidBody2D
+  parent: Sparkle.CSharp.Entities.Components
+  children:
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D})
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse(System.Single,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter(System.Numerics.Vector2,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter(System.Numerics.Vector2,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque(System.Single,System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain(Box2D.ChainDef)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Capsule)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Circle)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Polygon)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Segment)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose(System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents(System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents(System.Boolean)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector(System.Numerics.Vector2)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Init
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform(Box2D.Transform,System.Single)
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.World
+  - Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+  langs:
+  - csharp
+  - vb
+  name: RigidBody2D
+  nameWithType: RigidBody2D
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RigidBody2D
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  syntax:
+    content: 'public class RigidBody2D : Component, IDisposable'
+    content.vb: Public Class RigidBody2D Inherits Component Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  - Sparkle.CSharp.Entities.Components.Component
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Sparkle.CSharp.Entities.Components.Component.GraphicsDevice
+  - Sparkle.CSharp.Entities.Components.Component.Entity
+  - Sparkle.CSharp.Entities.Components.Component.GlobalPosition
+  - Sparkle.CSharp.Entities.Components.Component.Update(System.Double)
+  - Sparkle.CSharp.Entities.Components.Component.AfterUpdate(System.Double)
+  - Sparkle.CSharp.Entities.Components.Component.FixedUpdate(System.Double)
+  - Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1({T})
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+  id: DefaultComparer
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: DefaultComparer
+  nameWithType: RigidBody2D.DefaultComparer
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DefaultComparer
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the default comparer used for sorting bodies.
+  example: []
+  syntax:
+    content: public static IComparer<Body> DefaultComparer { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IComparer{Box2D.Body}
+    content.vb: Public Shared ReadOnly Property DefaultComparer As IComparer(Of Body)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+  id: DefaultEqualityComparer
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: DefaultEqualityComparer
+  nameWithType: RigidBody2D.DefaultEqualityComparer
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DefaultEqualityComparer
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 22
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the default equality comparer for body instances.
+  example: []
+  syntax:
+    content: public static IEqualityComparer<Body> DefaultEqualityComparer { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEqualityComparer{Box2D.Body}
+    content.vb: Public Shared ReadOnly Property DefaultEqualityComparer As IEqualityComparer(Of Body)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+  id: InCompatibleTypes
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: InCompatibleTypes
+  nameWithType: RigidBody2D.InCompatibleTypes
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: InCompatibleTypes
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 27
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets a list of component types that are incompatible with this component.
+  example: []
+  syntax:
+    content: public override IReadOnlyList<Type> InCompatibleTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Type}
+    content.vb: Public Overrides ReadOnly Property InCompatibleTypes As IReadOnlyList(Of Type)
+  overridden: Sparkle.CSharp.Entities.Components.Component.InCompatibleTypes
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+  id: Simulation
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Simulation
+  nameWithType: RigidBody2D.Simulation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Simulation
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 36
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: >-
+    Gets the current 2D simulation instance used by the scene.
+
+    Throws an <xref href="System.InvalidOperationException" data-throw-if-not-resolved="false"></xref> if the simulation is not of type <xref href="Sparkle.CSharp.Physics.Dim2.Simulation2D" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Simulation2D Simulation { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Physics.Dim2.Simulation2D
+    content.vb: Public ReadOnly Property Simulation As Simulation2D
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.World
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.World
+  id: World
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: World
+  nameWithType: RigidBody2D.World
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.World
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: World
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 41
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the physics world from the current 2D simulation.
+  example: []
+  syntax:
+    content: public World World { get; }
+    parameters: []
+    return:
+      type: Box2D.World
+    content.vb: Public ReadOnly Property World As World
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.World*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+  id: OffsetPosition
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: OffsetPosition
+  nameWithType: RigidBody2D.OffsetPosition
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: OffsetPosition
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 46
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: The positional offset of this component, always zero for RigidBody2D.
+  example: []
+  syntax:
+    content: public Vector3 OffsetPosition { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector3
+    content.vb: Public ReadOnly Property OffsetPosition As Vector3
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+  id: Body
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: RigidBody2D.Body
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Body
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 51
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the internal physics body.
+  example: []
+  syntax:
+    content: public Body Body { get; }
+    parameters: []
+    return:
+      type: Box2D.Body
+    content.vb: Public ReadOnly Property Body As Body
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Body*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+  id: IsValid
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: IsValid
+  nameWithType: RigidBody2D.IsValid
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsValid
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 56
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets a value indicating whether the internal body is valid.
+  example: []
+  syntax:
+    content: public bool IsValid { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsValid As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+  id: Position
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Position
+  nameWithType: RigidBody2D.Position
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Position
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 61
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the current world position of the body.
+  example: []
+  syntax:
+    content: public Vector2 Position { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public ReadOnly Property Position As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Position*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+  id: Rotation
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Rotation
+  nameWithType: RigidBody2D.Rotation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Rotation
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 66
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the rotation of the body.
+  example: []
+  syntax:
+    content: public Rotation Rotation { get; }
+    parameters: []
+    return:
+      type: Box2D.Rotation
+    content.vb: Public ReadOnly Property Rotation As Rotation
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+  id: Mass
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Mass
+  nameWithType: RigidBody2D.Mass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Mass
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 71
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the mass of the body.
+  example: []
+  syntax:
+    content: public float Mass { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public ReadOnly Property Mass As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Mass*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+  id: RotationalInertia
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: RotationalInertia
+  nameWithType: RigidBody2D.RotationalInertia
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RotationalInertia
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 76
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the rotational inertia of the body.
+  example: []
+  syntax:
+    content: public float RotationalInertia { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public ReadOnly Property RotationalInertia As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+  id: LocalCenterOfMass
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: LocalCenterOfMass
+  nameWithType: RigidBody2D.LocalCenterOfMass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LocalCenterOfMass
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 81
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the local center of mass of the body.
+  example: []
+  syntax:
+    content: public Vector2 LocalCenterOfMass { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public ReadOnly Property LocalCenterOfMass As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+  id: WorldCenterOfMass
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: WorldCenterOfMass
+  nameWithType: RigidBody2D.WorldCenterOfMass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: WorldCenterOfMass
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 86
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the local center of mass of the body.
+  example: []
+  syntax:
+    content: public Vector2 WorldCenterOfMass { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public ReadOnly Property WorldCenterOfMass As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+  id: AABB
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: AABB
+  nameWithType: RigidBody2D.AABB
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AABB
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 91
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the axis-aligned bounding box (AABB) of the body.
+  example: []
+  syntax:
+    content: public AABB AABB { get; }
+    parameters: []
+    return:
+      type: Box2D.AABB
+    content.vb: Public ReadOnly Property AABB As AABB
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.AABB*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+  id: Shapes
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Shapes
+  nameWithType: RigidBody2D.Shapes
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Shapes
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 96
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the shapes attached to the body.
+  example: []
+  syntax:
+    content: public ReadOnlySpan<Shape> Shapes { get; }
+    parameters: []
+    return:
+      type: System.ReadOnlySpan{Box2D.Shape}
+    content.vb: Public ReadOnly Property Shapes As ReadOnlySpan(Of Shape)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+  id: Joints
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Joints
+  nameWithType: RigidBody2D.Joints
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Joints
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 101
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the joints attached to the body.
+  example: []
+  syntax:
+    content: public ReadOnlySpan<Joint> Joints { get; }
+    parameters: []
+    return:
+      type: System.ReadOnlySpan{Box2D.Joint}
+    content.vb: Public ReadOnly Property Joints As ReadOnlySpan(Of Joint)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Joints*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+  id: Contacts
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Contacts
+  nameWithType: RigidBody2D.Contacts
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Contacts
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 106
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets the contact data for the body.
+  example: []
+  syntax:
+    content: public ReadOnlySpan<ContactData> Contacts { get; }
+    parameters: []
+    return:
+      type: System.ReadOnlySpan{Box2D.ContactData}
+    content.vb: Public ReadOnly Property Contacts As ReadOnlySpan(Of ContactData)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  id: '#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)'
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: RigidBody2D(BodyDefinition, IShape2D)
+  nameWithType: RigidBody2D.RigidBody2D(BodyDefinition, IShape2D)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.RigidBody2D(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition, Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 133
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Entities.Components.RigidBody2D" data-throw-if-not-resolved="false"></xref> class with a single collision shape.
+  example: []
+  syntax:
+    content: public RigidBody2D(BodyDefinition bodyDef, IShape2D shape)
+    parameters:
+    - id: bodyDef
+      type: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+      description: The body definition containing physical properties.
+    - id: shape
+      type: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+      description: The collision shape to attach to the body.
+    content.vb: Public Sub New(bodyDef As BodyDefinition, shape As IShape2D)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor*
+  nameWithType.vb: RigidBody2D.New(BodyDefinition, IShape2D)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.New(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition, Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  name.vb: New(BodyDefinition, IShape2D)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D})
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D})
+  id: '#ctor(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition,System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D})'
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: RigidBody2D(BodyDefinition, List<IShape2D>)
+  nameWithType: RigidBody2D.RigidBody2D(BodyDefinition, List<IShape2D>)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.RigidBody2D(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition, System.Collections.Generic.List<Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 140
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Entities.Components.RigidBody2D" data-throw-if-not-resolved="false"></xref> class with multiple collision shapes.
+  example: []
+  syntax:
+    content: public RigidBody2D(BodyDefinition bodyDef, List<IShape2D> shapes)
+    parameters:
+    - id: bodyDef
+      type: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+      description: The body definition containing physical properties.
+    - id: shapes
+      type: System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D}
+      description: The list of collision shapes to attach to the body.
+    content.vb: Public Sub New(bodyDef As BodyDefinition, shapes As List(Of IShape2D))
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor*
+  nameWithType.vb: RigidBody2D.New(BodyDefinition, List(Of IShape2D))
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.New(Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition, System.Collections.Generic.List(Of Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D))
+  name.vb: New(BodyDefinition, List(Of IShape2D))
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+  id: Type
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: RigidBody2D.Type
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Type
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 148
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the type of the rigid body, determining its physical behavior (e.g., static, dynamic, or kinematic).
+  example: []
+  syntax:
+    content: public BodyType Type { get; set; }
+    parameters: []
+    return:
+      type: Box2D.BodyType
+    content.vb: Public Property Type As BodyType
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Type*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+  id: Name
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: RigidBody2D.Name
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Name
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 156
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the name of the body.
+  example: []
+  syntax:
+    content: public string? Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Name*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+  id: UserData
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: UserData
+  nameWithType: RigidBody2D.UserData
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UserData
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 164
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets user-defined data associated with the rigid body.
+  example: []
+  syntax:
+    content: public object? UserData { get; set; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: Public Property UserData As Object
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.UserData*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+  id: Transform
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Transform
+  nameWithType: RigidBody2D.Transform
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Transform
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 172
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the transformation of the body, including its position and rotation in the world space.
+  example: []
+  syntax:
+    content: public Transform Transform { get; set; }
+    parameters: []
+    return:
+      type: Box2D.Transform
+    content.vb: Public Property Transform As Transform
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Transform*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+  id: LinearVelocity
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: LinearVelocity
+  nameWithType: RigidBody2D.LinearVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LinearVelocity
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 180
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the linear velocity of the rigid body in 2D space.
+  example: []
+  syntax:
+    content: public Vector2 LinearVelocity { get; set; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property LinearVelocity As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+  id: AngularVelocity
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: AngularVelocity
+  nameWithType: RigidBody2D.AngularVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AngularVelocity
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 188
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the angular velocity of the body in radians per second.
+  example: []
+  syntax:
+    content: public float AngularVelocity { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property AngularVelocity As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+  id: MassData
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: MassData
+  nameWithType: RigidBody2D.MassData
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MassData
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 196
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the mass data of the rigid body, including mass, center of mass, and rotational inertia.
+  example: []
+  syntax:
+    content: public MassData MassData { get; set; }
+    parameters: []
+    return:
+      type: Box2D.MassData
+    content.vb: Public Property MassData As MassData
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.MassData*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+  id: LinearDamping
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: LinearDamping
+  nameWithType: RigidBody2D.LinearDamping
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LinearDamping
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 204
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the linear damping of the body, which reduces its linear velocity over time.
+  example: []
+  syntax:
+    content: public float LinearDamping { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property LinearDamping As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+  id: AngularDamping
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: AngularDamping
+  nameWithType: RigidBody2D.AngularDamping
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AngularDamping
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 212
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the angular damping of the rigid body, which reduces the angular velocity over time to simulate rotational drag.
+  example: []
+  syntax:
+    content: public float AngularDamping { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property AngularDamping As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+  id: GravityScale
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GravityScale
+  nameWithType: RigidBody2D.GravityScale
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GravityScale
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 220
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the factor by which the global gravity is scaled for this body.
+  example: []
+  syntax:
+    content: public float GravityScale { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property GravityScale As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+  id: Awake
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Awake
+  nameWithType: RigidBody2D.Awake
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Awake
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 228
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets a value indicating whether the rigid body is awake.
+  example: []
+  syntax:
+    content: public bool Awake { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Awake As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Awake*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+  id: SleepEnabled
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: SleepEnabled
+  nameWithType: RigidBody2D.SleepEnabled
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SleepEnabled
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 236
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets a value indicating whether the body can enter a sleep state when idle.
+  example: []
+  syntax:
+    content: public bool SleepEnabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SleepEnabled As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+  id: SleepThreshold
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: SleepThreshold
+  nameWithType: RigidBody2D.SleepThreshold
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SleepThreshold
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 244
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets the threshold value that determines the conditions under which the body can enter sleep mode.
+  example: []
+  syntax:
+    content: public float SleepThreshold { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property SleepThreshold As Single
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+  id: Enabled
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Enabled
+  nameWithType: RigidBody2D.Enabled
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Enabled
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 252
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets a value indicating whether the body is enabled.
+  example: []
+  syntax:
+    content: public bool Enabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Enabled As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+  id: FixedRotation
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: FixedRotation
+  nameWithType: RigidBody2D.FixedRotation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedRotation
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 260
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets a value indicating whether the body is prevented from rotating.
+  example: []
+  syntax:
+    content: public bool FixedRotation { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property FixedRotation As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+  commentId: P:Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+  id: Bullet
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Bullet
+  nameWithType: RigidBody2D.Bullet
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Bullet
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 268
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Gets or sets a value indicating whether the body should use continuous collision detection.
+  example: []
+  syntax:
+    content: public bool Bullet { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Bullet As Boolean
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Init
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.Init
+  id: Init
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Init()
+  nameWithType: RigidBody2D.Init()
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Init()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Init
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 276
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Initializes the <xref href="Sparkle.CSharp.Entities.Components.RigidBody2D" data-throw-if-not-resolved="false"></xref> component.
+  example: []
+  syntax:
+    content: protected override void Init()
+    content.vb: Protected Overrides Sub Init()
+  overridden: Sparkle.CSharp.Entities.Components.Component.Init
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Init*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint(System.Numerics.Vector2)
+  id: GetLocalPoint(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetLocalPoint(Vector2)
+  nameWithType: RigidBody2D.GetLocalPoint(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetLocalPoint
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 288
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Converts a point in world coordinates to a point in the local space of the body.
+  example: []
+  syntax:
+    content: public Vector2 GetLocalPoint(Vector2 worldPoint)
+    parameters:
+    - id: worldPoint
+      type: System.Numerics.Vector2
+      description: The point in world coordinates to be transformed to local coordinates.
+    return:
+      type: System.Numerics.Vector2
+      description: The transformed point in the local coordinates of the body.
+    content.vb: Public Function GetLocalPoint(worldPoint As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint(System.Numerics.Vector2)
+  id: GetWorldPoint(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetWorldPoint(Vector2)
+  nameWithType: RigidBody2D.GetWorldPoint(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetWorldPoint
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 297
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Transforms the specified local point to world coordinates relative to the rigid body.
+  example: []
+  syntax:
+    content: public Vector2 GetWorldPoint(Vector2 localPoint)
+    parameters:
+    - id: localPoint
+      type: System.Numerics.Vector2
+      description: The point in local coordinates to be transformed into world coordinates.
+    return:
+      type: System.Numerics.Vector2
+      description: A <xref href="System.Numerics.Vector2" data-throw-if-not-resolved="false"></xref> representing the transformed point in world coordinates.
+    content.vb: Public Function GetWorldPoint(localPoint As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector(System.Numerics.Vector2)
+  id: GetLocalVector(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetLocalVector(Vector2)
+  nameWithType: RigidBody2D.GetLocalVector(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetLocalVector
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 306
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Converts a vector from world coordinates to local coordinates relative to this body.
+  example: []
+  syntax:
+    content: public Vector2 GetLocalVector(Vector2 worldVector)
+    parameters:
+    - id: worldVector
+      type: System.Numerics.Vector2
+      description: The vector in world coordinates to be converted to local coordinates.
+    return:
+      type: System.Numerics.Vector2
+      description: The converted vector in local coordinates.
+    content.vb: Public Function GetLocalVector(worldVector As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector(System.Numerics.Vector2)
+  id: GetWorldVector(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetWorldVector(Vector2)
+  nameWithType: RigidBody2D.GetWorldVector(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetWorldVector
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 315
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Converts a given vector from local space to world space.
+  example: []
+  syntax:
+    content: public Vector2 GetWorldVector(Vector2 localVector)
+    parameters:
+    - id: localVector
+      type: System.Numerics.Vector2
+      description: The vector defined in the local coordinate system.
+    return:
+      type: System.Numerics.Vector2
+      description: The vector transformed into world space coordinates.
+    content.vb: Public Function GetWorldVector(localVector As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform(Box2D.Transform,System.Single)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform(Box2D.Transform,System.Single)
+  id: SetTargetTransform(Box2D.Transform,System.Single)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: SetTargetTransform(Transform, float)
+  nameWithType: RigidBody2D.SetTargetTransform(Transform, float)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform(Box2D.Transform, float)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SetTargetTransform
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 324
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Sets the target transform for the rigid body to interpolate towards over a specified time step.
+  example: []
+  syntax:
+    content: public void SetTargetTransform(Transform target, float timeStep)
+    parameters:
+    - id: target
+      type: Box2D.Transform
+      description: The desired target transform for the rigid body.
+    - id: timeStep
+      type: System.Single
+      description: The time step over which the rigid body interpolates towards the target transform.
+    content.vb: Public Sub SetTargetTransform(target As Transform, timeStep As Single)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform*
+  nameWithType.vb: RigidBody2D.SetTargetTransform(Transform, Single)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform(Box2D.Transform, Single)
+  name.vb: SetTargetTransform(Transform, Single)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity(System.Numerics.Vector2)
+  id: GetLocalPointVelocity(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetLocalPointVelocity(Vector2)
+  nameWithType: RigidBody2D.GetLocalPointVelocity(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetLocalPointVelocity
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 333
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Calculates the velocity at a given local point on the rigid body.
+  example: []
+  syntax:
+    content: public Vector2 GetLocalPointVelocity(Vector2 localPoint)
+    parameters:
+    - id: localPoint
+      type: System.Numerics.Vector2
+      description: The point in local coordinates for which to calculate the velocity.
+    return:
+      type: System.Numerics.Vector2
+      description: The velocity at the specified local point as a <xref href="System.Numerics.Vector2" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Function GetLocalPointVelocity(localPoint As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity(System.Numerics.Vector2)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity(System.Numerics.Vector2)
+  id: GetWorldPointVelocity(System.Numerics.Vector2)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: GetWorldPointVelocity(Vector2)
+  nameWithType: RigidBody2D.GetWorldPointVelocity(Vector2)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity(System.Numerics.Vector2)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetWorldPointVelocity
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 342
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Calculates the velocity of the rigid body at a specific world point.
+  example: []
+  syntax:
+    content: public Vector2 GetWorldPointVelocity(Vector2 worldPoint)
+    parameters:
+    - id: worldPoint
+      type: System.Numerics.Vector2
+      description: The point in world coordinates where velocity is to be calculated.
+    return:
+      type: System.Numerics.Vector2
+      description: The velocity of the rigid body at the specified world point.
+    content.vb: Public Function GetWorldPointVelocity(worldPoint As Vector2) As Vector2
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  id: ApplyForce(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyForce(Vector2, Vector2, bool)
+  nameWithType: RigidBody2D.ApplyForce(Vector2, Vector2, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce(System.Numerics.Vector2, System.Numerics.Vector2, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyForce
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 352
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies a force to the rigid body at a specified point.
+  example: []
+  syntax:
+    content: public void ApplyForce(Vector2 force, Vector2 point, bool wake)
+    parameters:
+    - id: force
+      type: System.Numerics.Vector2
+      description: The force vector to apply.
+    - id: point
+      type: System.Numerics.Vector2
+      description: The world position where the force is applied.
+    - id: wake
+      type: System.Boolean
+      description: Indicates whether to wake up the body, if it is sleeping.
+    content.vb: Public Sub ApplyForce(force As Vector2, point As Vector2, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce*
+  nameWithType.vb: RigidBody2D.ApplyForce(Vector2, Vector2, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
+  name.vb: ApplyForce(Vector2, Vector2, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter(System.Numerics.Vector2,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter(System.Numerics.Vector2,System.Boolean)
+  id: ApplyForceToCenter(System.Numerics.Vector2,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyForceToCenter(Vector2, bool)
+  nameWithType: RigidBody2D.ApplyForceToCenter(Vector2, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter(System.Numerics.Vector2, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyForceToCenter
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 361
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies a force to the center of the rigid body, influencing its velocity.
+  example: []
+  syntax:
+    content: public void ApplyForceToCenter(Vector2 force, bool wake)
+    parameters:
+    - id: force
+      type: System.Numerics.Vector2
+      description: The two-dimensional vector defining the magnitude and direction of the force to apply.
+    - id: wake
+      type: System.Boolean
+      description: A boolean indicating whether to wake up the body if it is currently sleeping.
+    content.vb: Public Sub ApplyForceToCenter(force As Vector2, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter*
+  nameWithType.vb: RigidBody2D.ApplyForceToCenter(Vector2, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter(System.Numerics.Vector2, Boolean)
+  name.vb: ApplyForceToCenter(Vector2, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque(System.Single,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque(System.Single,System.Boolean)
+  id: ApplyTorque(System.Single,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyTorque(float, bool)
+  nameWithType: RigidBody2D.ApplyTorque(float, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque(float, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyTorque
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 370
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies a torque to the rigid body, affecting its angular velocity.
+  example: []
+  syntax:
+    content: public void ApplyTorque(float torque, bool wake)
+    parameters:
+    - id: torque
+      type: System.Single
+      description: The torque to apply, measured in Newton-meters.
+    - id: wake
+      type: System.Boolean
+      description: Determines whether to wake the body if it is currently sleeping.
+    content.vb: Public Sub ApplyTorque(torque As Single, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque*
+  nameWithType.vb: RigidBody2D.ApplyTorque(Single, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque(Single, Boolean)
+  name.vb: ApplyTorque(Single, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  id: ApplyLinearImpulse(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyLinearImpulse(Vector2, Vector2, bool)
+  nameWithType: RigidBody2D.ApplyLinearImpulse(Vector2, Vector2, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse(System.Numerics.Vector2, System.Numerics.Vector2, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyLinearImpulse
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 380
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies a linear impulse to the body at a specific point in world coordinates.
+  example: []
+  syntax:
+    content: public void ApplyLinearImpulse(Vector2 impulse, Vector2 point, bool wake)
+    parameters:
+    - id: impulse
+      type: System.Numerics.Vector2
+      description: The impulse vector to apply to the body.
+    - id: point
+      type: System.Numerics.Vector2
+      description: The world position where the impulse is applied.
+    - id: wake
+      type: System.Boolean
+      description: A value indicating whether to wake the body if it is currently sleeping.
+    content.vb: Public Sub ApplyLinearImpulse(impulse As Vector2, point As Vector2, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse*
+  nameWithType.vb: RigidBody2D.ApplyLinearImpulse(Vector2, Vector2, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
+  name.vb: ApplyLinearImpulse(Vector2, Vector2, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter(System.Numerics.Vector2,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter(System.Numerics.Vector2,System.Boolean)
+  id: ApplyLinearImpulseToCenter(System.Numerics.Vector2,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyLinearImpulseToCenter(Vector2, bool)
+  nameWithType: RigidBody2D.ApplyLinearImpulseToCenter(Vector2, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter(System.Numerics.Vector2, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyLinearImpulseToCenter
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 389
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies a linear impulse to the center of mass of the rigid body.
+  example: []
+  syntax:
+    content: public void ApplyLinearImpulseToCenter(Vector2 impulse, bool wake)
+    parameters:
+    - id: impulse
+      type: System.Numerics.Vector2
+      description: The vector representing the magnitude and direction of the impulse to apply.
+    - id: wake
+      type: System.Boolean
+      description: A boolean indicating whether to wake the body if it is currently sleeping.
+    content.vb: Public Sub ApplyLinearImpulseToCenter(impulse As Vector2, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter*
+  nameWithType.vb: RigidBody2D.ApplyLinearImpulseToCenter(Vector2, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter(System.Numerics.Vector2, Boolean)
+  name.vb: ApplyLinearImpulseToCenter(Vector2, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse(System.Single,System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse(System.Single,System.Boolean)
+  id: ApplyAngularImpulse(System.Single,System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: ApplyAngularImpulse(float, bool)
+  nameWithType: RigidBody2D.ApplyAngularImpulse(float, bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse(float, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ApplyAngularImpulse
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 398
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Applies an angular impulse to the rigid body, affecting its angular velocity.
+  example: []
+  syntax:
+    content: public void ApplyAngularImpulse(float impulse, bool wake)
+    parameters:
+    - id: impulse
+      type: System.Single
+      description: The magnitude of the angular impulse to apply.
+    - id: wake
+      type: System.Boolean
+      description: A boolean indicating whether the body should be woken up if it is sleeping.
+    content.vb: Public Sub ApplyAngularImpulse(impulse As Single, wake As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse*
+  nameWithType.vb: RigidBody2D.ApplyAngularImpulse(Single, Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse(Single, Boolean)
+  name.vb: ApplyAngularImpulse(Single, Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents(System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents(System.Boolean)
+  id: EnableContactEvents(System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: EnableContactEvents(bool)
+  nameWithType: RigidBody2D.EnableContactEvents(bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: EnableContactEvents
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 406
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Enables or disables contact events for the rigid body.
+  example: []
+  syntax:
+    content: public void EnableContactEvents(bool flags)
+    parameters:
+    - id: flags
+      type: System.Boolean
+      description: A boolean value indicating whether contact events should be enabled or disabled.
+    content.vb: Public Sub EnableContactEvents(flags As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents*
+  nameWithType.vb: RigidBody2D.EnableContactEvents(Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents(Boolean)
+  name.vb: EnableContactEvents(Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents(System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents(System.Boolean)
+  id: EnableHitEvents(System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: EnableHitEvents(bool)
+  nameWithType: RigidBody2D.EnableHitEvents(bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: EnableHitEvents
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 414
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Enables or disables hit event handling for the rigid body.
+  example: []
+  syntax:
+    content: public void EnableHitEvents(bool flags)
+    parameters:
+    - id: flags
+      type: System.Boolean
+      description: A boolean value indicating whether hit events should be enabled (true) or disabled (false).
+    content.vb: Public Sub EnableHitEvents(flags As Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents*
+  nameWithType.vb: RigidBody2D.EnableHitEvents(Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents(Boolean)
+  name.vb: EnableHitEvents(Boolean)
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Circle)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Circle)
+  id: CreateShape(Box2D.ShapeDef,Box2D.Circle)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: CreateShape(ShapeDef, Circle)
+  nameWithType: RigidBody2D.CreateShape(ShapeDef, Circle)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef, Box2D.Circle)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateShape
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 424
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Creates a new shape and attaches it to the body using the specified shape definition and geometry.
+  example: []
+  syntax:
+    content: public Shape CreateShape(ShapeDef def, Circle circle)
+    parameters:
+    - id: def
+      type: Box2D.ShapeDef
+      description: The shape definition containing physical and configuration data for the shape.
+    - id: circle
+      type: Box2D.Circle
+      description: The circle geometry representing the shape.
+    return:
+      type: Box2D.Shape
+      description: The created shape instance.
+    content.vb: Public Function CreateShape(def As ShapeDef, circle As Circle) As Shape
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Segment)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Segment)
+  id: CreateShape(Box2D.ShapeDef,Box2D.Segment)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: CreateShape(ShapeDef, Segment)
+  nameWithType: RigidBody2D.CreateShape(ShapeDef, Segment)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef, Box2D.Segment)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateShape
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 434
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Creates a new shape for the rigid body using the specified shape definition and segment.
+  example: []
+  syntax:
+    content: public Shape CreateShape(ShapeDef def, Segment segment)
+    parameters:
+    - id: def
+      type: Box2D.ShapeDef
+      description: The shape definition that specifies the properties of the shape.
+    - id: segment
+      type: Box2D.Segment
+      description: The segment used to define specific geometry of the shape.
+    return:
+      type: Box2D.Shape
+      description: The created shape instance.
+    content.vb: Public Function CreateShape(def As ShapeDef, segment As Segment) As Shape
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Capsule)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Capsule)
+  id: CreateShape(Box2D.ShapeDef,Box2D.Capsule)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: CreateShape(ShapeDef, Capsule)
+  nameWithType: RigidBody2D.CreateShape(ShapeDef, Capsule)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef, Box2D.Capsule)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateShape
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 444
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Creates a new shape and attaches it to the body based on the provided definition and capsule geometry.
+  example: []
+  syntax:
+    content: public Shape CreateShape(ShapeDef def, Capsule capsule)
+    parameters:
+    - id: def
+      type: Box2D.ShapeDef
+      description: The shape definition containing attributes such as density, friction, and filter information.
+    - id: capsule
+      type: Box2D.Capsule
+      description: The capsule geometry describing the shape's dimensions and orientation.
+    return:
+      type: Box2D.Shape
+      description: A <xref href="Box2D.Shape" data-throw-if-not-resolved="false"></xref> instance representing the newly created shape.
+    content.vb: Public Function CreateShape(def As ShapeDef, capsule As Capsule) As Shape
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Polygon)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef,Box2D.Polygon)
+  id: CreateShape(Box2D.ShapeDef,Box2D.Polygon)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: CreateShape(ShapeDef, Polygon)
+  nameWithType: RigidBody2D.CreateShape(ShapeDef, Polygon)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape(Box2D.ShapeDef, Box2D.Polygon)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateShape
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 454
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Creates a new shape and attaches it to the rigid body using the provided shape definition and polygon data.
+  example: []
+  syntax:
+    content: public Shape CreateShape(ShapeDef def, Polygon polygon)
+    parameters:
+    - id: def
+      type: Box2D.ShapeDef
+      description: The shape definition containing properties for the new shape.
+    - id: polygon
+      type: Box2D.Polygon
+      description: The polygon data defining the geometry of the shape.
+    return:
+      type: Box2D.Shape
+    content.vb: Public Function CreateShape(def As ShapeDef, polygon As Polygon) As Shape
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain(Box2D.ChainDef)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain(Box2D.ChainDef)
+  id: CreateChain(Box2D.ChainDef)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: CreateChain(ChainDef)
+  nameWithType: RigidBody2D.CreateChain(ChainDef)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain(Box2D.ChainDef)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateChain
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 463
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Creates a new chain shape based on the specified chain definition.
+  example: []
+  syntax:
+    content: public ChainShape CreateChain(ChainDef def)
+    parameters:
+    - id: def
+      type: Box2D.ChainDef
+      description: The chain definition containing the configuration details for the chain shape.
+    return:
+      type: Box2D.ChainShape
+      description: A <xref href="Box2D.ChainShape" data-throw-if-not-resolved="false"></xref> instance representing the created chain shape.
+    content.vb: Public Function CreateChain(def As ChainDef) As ChainShape
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain*
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.RigidBody2D
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: RigidBody2D.Dispose(bool)
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle/CSharp/Entities/Components/RigidBody2D.cs
+    startLine: 560
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Entities.Components
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Sparkle.CSharp.Entities.Components.Component.Dispose(System.Boolean)
+  overload: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose*
+  nameWithType.vb: RigidBody2D.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.CSharp.Entities.Components
+  commentId: N:Sparkle.CSharp.Entities.Components
+  href: Sparkle.html
+  name: Sparkle.CSharp.Entities.Components
+  nameWithType: Sparkle.CSharp.Entities.Components
+  fullName: Sparkle.CSharp.Entities.Components
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities.Components
+    name: Components
+    href: Sparkle.CSharp.Entities.Components.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities.Components
+    name: Components
+    href: Sparkle.CSharp.Entities.Components.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: Sparkle.CSharp.Entities.Components.Component
+  commentId: T:Sparkle.CSharp.Entities.Components.Component
+  parent: Sparkle.CSharp.Entities.Components
+  href: Sparkle.CSharp.Entities.Components.Component.html
+  name: Component
+  nameWithType: Component
+  fullName: Sparkle.CSharp.Entities.Components.Component
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Sparkle.CSharp.Entities.Components.Component.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Entities.Components.Component.GraphicsDevice
+  parent: Sparkle.CSharp.Entities.Components.Component
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: Component.GraphicsDevice
+  fullName: Sparkle.CSharp.Entities.Components.Component.GraphicsDevice
+- uid: Sparkle.CSharp.Entities.Components.Component.Entity
+  commentId: P:Sparkle.CSharp.Entities.Components.Component.Entity
+  parent: Sparkle.CSharp.Entities.Components.Component
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Entity
+  name: Entity
+  nameWithType: Component.Entity
+  fullName: Sparkle.CSharp.Entities.Components.Component.Entity
+- uid: Sparkle.CSharp.Entities.Components.Component.GlobalPosition
+  commentId: P:Sparkle.CSharp.Entities.Components.Component.GlobalPosition
+  parent: Sparkle.CSharp.Entities.Components.Component
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_GlobalPosition
+  name: GlobalPosition
+  nameWithType: Component.GlobalPosition
+  fullName: Sparkle.CSharp.Entities.Components.Component.GlobalPosition
+- uid: Sparkle.CSharp.Entities.Components.Component.Update(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.Update(System.Double)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Update_System_Double_
+  name: Update(double)
+  nameWithType: Component.Update(double)
+  fullName: Sparkle.CSharp.Entities.Components.Component.Update(double)
+  nameWithType.vb: Component.Update(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_AfterUpdate_System_Double_
+  name: AfterUpdate(double)
+  nameWithType: Component.AfterUpdate(double)
+  fullName: Sparkle.CSharp.Entities.Components.Component.AfterUpdate(double)
+  nameWithType.vb: Component.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_FixedUpdate_System_Double_
+  name: FixedUpdate(double)
+  nameWithType: Component.FixedUpdate(double)
+  fullName: Sparkle.CSharp.Entities.Components.Component.FixedUpdate(double)
+  nameWithType.vb: Component.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: Component.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize(Rectangle)
+  nameWithType: Component.Resize(Rectangle)
+  fullName: Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1({T})
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  definition: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  name: ConflictsWith<T>(T)
+  nameWithType: Component.ConflictsWith<T>(T)
+  fullName: Sparkle.CSharp.Entities.Components.Component.ConflictsWith<T>(T)
+  nameWithType.vb: Component.ConflictsWith(Of T)(T)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.ConflictsWith(Of T)(T)
+  name.vb: ConflictsWith(Of T)(T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+    name: ConflictsWith
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+    name: ConflictsWith
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  name: ConflictsWith<T>(T)
+  nameWithType: Component.ConflictsWith<T>(T)
+  fullName: Sparkle.CSharp.Entities.Components.Component.ConflictsWith<T>(T)
+  nameWithType.vb: Component.ConflictsWith(Of T)(T)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.ConflictsWith(Of T)(T)
+  name.vb: ConflictsWith(Of T)(T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+    name: ConflictsWith
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.ConflictsWith``1(``0)
+    name: ConflictsWith
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_DefaultComparer
+  name: DefaultComparer
+  nameWithType: RigidBody2D.DefaultComparer
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultComparer
+- uid: System.Collections.Generic.IComparer{Box2D.Body}
+  commentId: T:System.Collections.Generic.IComparer{Box2D.Body}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IComparer`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  name: IComparer<Body>
+  nameWithType: IComparer<Body>
+  fullName: System.Collections.Generic.IComparer<Box2D.Body>
+  nameWithType.vb: IComparer(Of Body)
+  fullName.vb: System.Collections.Generic.IComparer(Of Box2D.Body)
+  name.vb: IComparer(Of Body)
+  spec.csharp:
+  - uid: System.Collections.Generic.IComparer`1
+    name: IComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  - name: <
+  - uid: Box2D.Body
+    name: Body
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IComparer`1
+    name: IComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Box2D.Body
+    name: Body
+    isExternal: true
+  - name: )
+- uid: System.Collections.Generic.IComparer`1
+  commentId: T:System.Collections.Generic.IComparer`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  name: IComparer<T>
+  nameWithType: IComparer<T>
+  fullName: System.Collections.Generic.IComparer<T>
+  nameWithType.vb: IComparer(Of T)
+  fullName.vb: System.Collections.Generic.IComparer(Of T)
+  name.vb: IComparer(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IComparer`1
+    name: IComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IComparer`1
+    name: IComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icomparer-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_DefaultEqualityComparer
+  name: DefaultEqualityComparer
+  nameWithType: RigidBody2D.DefaultEqualityComparer
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.DefaultEqualityComparer
+- uid: System.Collections.Generic.IEqualityComparer{Box2D.Body}
+  commentId: T:System.Collections.Generic.IEqualityComparer{Box2D.Body}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEqualityComparer`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  name: IEqualityComparer<Body>
+  nameWithType: IEqualityComparer<Body>
+  fullName: System.Collections.Generic.IEqualityComparer<Box2D.Body>
+  nameWithType.vb: IEqualityComparer(Of Body)
+  fullName.vb: System.Collections.Generic.IEqualityComparer(Of Box2D.Body)
+  name.vb: IEqualityComparer(Of Body)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEqualityComparer`1
+    name: IEqualityComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  - name: <
+  - uid: Box2D.Body
+    name: Body
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEqualityComparer`1
+    name: IEqualityComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Box2D.Body
+    name: Body
+    isExternal: true
+  - name: )
+- uid: System.Collections.Generic.IEqualityComparer`1
+  commentId: T:System.Collections.Generic.IEqualityComparer`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  name: IEqualityComparer<T>
+  nameWithType: IEqualityComparer<T>
+  fullName: System.Collections.Generic.IEqualityComparer<T>
+  nameWithType.vb: IEqualityComparer(Of T)
+  fullName.vb: System.Collections.Generic.IEqualityComparer(Of T)
+  name.vb: IEqualityComparer(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEqualityComparer`1
+    name: IEqualityComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEqualityComparer`1
+    name: IEqualityComparer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.Component.InCompatibleTypes
+  commentId: P:Sparkle.CSharp.Entities.Components.Component.InCompatibleTypes
+  parent: Sparkle.CSharp.Entities.Components.Component
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_InCompatibleTypes
+  name: InCompatibleTypes
+  nameWithType: Component.InCompatibleTypes
+  fullName: Sparkle.CSharp.Entities.Components.Component.InCompatibleTypes
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_InCompatibleTypes
+  name: InCompatibleTypes
+  nameWithType: RigidBody2D.InCompatibleTypes
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.InCompatibleTypes
+- uid: System.Collections.Generic.IReadOnlyList{System.Type}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Type>
+  nameWithType: IReadOnlyList<Type>
+  fullName: System.Collections.Generic.IReadOnlyList<System.Type>
+  nameWithType.vb: IReadOnlyList(Of Type)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of System.Type)
+  name.vb: IReadOnlyList(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: Sparkle.CSharp.Physics.Dim2.Simulation2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Simulation2D
+  parent: Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.CSharp.Physics.Dim2.Simulation2D.html
+  name: Simulation2D
+  nameWithType: Simulation2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Simulation2D
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Simulation
+  name: Simulation
+  nameWithType: RigidBody2D.Simulation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Simulation
+- uid: Sparkle.CSharp.Physics.Dim2
+  commentId: N:Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2
+  nameWithType: Sparkle.CSharp.Physics.Dim2
+  fullName: Sparkle.CSharp.Physics.Dim2
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.World*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.World
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_World
+  name: World
+  nameWithType: RigidBody2D.World
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.World
+- uid: Box2D.World
+  commentId: T:Box2D.World
+  parent: Box2D
+  isExternal: true
+  name: World
+  nameWithType: World
+  fullName: Box2D.World
+- uid: Box2D
+  commentId: N:Box2D
+  isExternal: true
+  name: Box2D
+  nameWithType: Box2D
+  fullName: Box2D
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_OffsetPosition
+  name: OffsetPosition
+  nameWithType: RigidBody2D.OffsetPosition
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.OffsetPosition
+- uid: System.Numerics.Vector3
+  commentId: T:System.Numerics.Vector3
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  name: Vector3
+  nameWithType: Vector3
+  fullName: System.Numerics.Vector3
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Body*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Body
+  name: Body
+  nameWithType: RigidBody2D.Body
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Body
+- uid: Box2D.Body
+  commentId: T:Box2D.Body
+  parent: Box2D
+  isExternal: true
+  name: Body
+  nameWithType: Body
+  fullName: Box2D.Body
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_IsValid
+  name: IsValid
+  nameWithType: RigidBody2D.IsValid
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.IsValid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Position*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Position
+  name: Position
+  nameWithType: RigidBody2D.Position
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Position
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Rotation
+  name: Rotation
+  nameWithType: RigidBody2D.Rotation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Rotation
+- uid: Box2D.Rotation
+  commentId: T:Box2D.Rotation
+  parent: Box2D
+  isExternal: true
+  name: Rotation
+  nameWithType: Rotation
+  fullName: Box2D.Rotation
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Mass*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Mass
+  name: Mass
+  nameWithType: RigidBody2D.Mass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Mass
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_RotationalInertia
+  name: RotationalInertia
+  nameWithType: RigidBody2D.RotationalInertia
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.RotationalInertia
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_LocalCenterOfMass
+  name: LocalCenterOfMass
+  nameWithType: RigidBody2D.LocalCenterOfMass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LocalCenterOfMass
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_WorldCenterOfMass
+  name: WorldCenterOfMass
+  nameWithType: RigidBody2D.WorldCenterOfMass
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.WorldCenterOfMass
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AABB*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_AABB
+  name: AABB
+  nameWithType: RigidBody2D.AABB
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AABB
+- uid: Box2D.AABB
+  commentId: T:Box2D.AABB
+  parent: Box2D
+  isExternal: true
+  name: AABB
+  nameWithType: AABB
+  fullName: Box2D.AABB
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Shapes
+  name: Shapes
+  nameWithType: RigidBody2D.Shapes
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Shapes
+- uid: System.ReadOnlySpan{Box2D.Shape}
+  commentId: T:System.ReadOnlySpan{Box2D.Shape}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<Shape>
+  nameWithType: ReadOnlySpan<Shape>
+  fullName: System.ReadOnlySpan<Box2D.Shape>
+  nameWithType.vb: ReadOnlySpan(Of Shape)
+  fullName.vb: System.ReadOnlySpan(Of Box2D.Shape)
+  name.vb: ReadOnlySpan(Of Shape)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: Box2D.Shape
+    name: Shape
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Box2D.Shape
+    name: Shape
+    isExternal: true
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Joints*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Joints
+  name: Joints
+  nameWithType: RigidBody2D.Joints
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Joints
+- uid: System.ReadOnlySpan{Box2D.Joint}
+  commentId: T:System.ReadOnlySpan{Box2D.Joint}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<Joint>
+  nameWithType: ReadOnlySpan<Joint>
+  fullName: System.ReadOnlySpan<Box2D.Joint>
+  nameWithType.vb: ReadOnlySpan(Of Joint)
+  fullName.vb: System.ReadOnlySpan(Of Box2D.Joint)
+  name.vb: ReadOnlySpan(Of Joint)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: Box2D.Joint
+    name: Joint
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Box2D.Joint
+    name: Joint
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Contacts
+  name: Contacts
+  nameWithType: RigidBody2D.Contacts
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Contacts
+- uid: System.ReadOnlySpan{Box2D.ContactData}
+  commentId: T:System.ReadOnlySpan{Box2D.ContactData}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<ContactData>
+  nameWithType: ReadOnlySpan<ContactData>
+  fullName: System.ReadOnlySpan<Box2D.ContactData>
+  nameWithType.vb: ReadOnlySpan(Of ContactData)
+  fullName.vb: System.ReadOnlySpan(Of Box2D.ContactData)
+  name.vb: ReadOnlySpan(Of ContactData)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: Box2D.ContactData
+    name: ContactData
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Box2D.ContactData
+    name: ContactData
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D
+  commentId: T:Sparkle.CSharp.Entities.Components.RigidBody2D
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html
+  name: RigidBody2D
+  nameWithType: RigidBody2D
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.#ctor
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D__ctor_Sparkle_CSharp_Physics_Dim2_Def_BodyDefinition_Sparkle_CSharp_Physics_Dim2_Shapes_IShape2D_
+  name: RigidBody2D
+  nameWithType: RigidBody2D.RigidBody2D
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.RigidBody2D
+  nameWithType.vb: RigidBody2D.New
+  fullName.vb: Sparkle.CSharp.Entities.Components.RigidBody2D.New
+  name.vb: New
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  parent: Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.html
+  name: BodyDefinition
+  nameWithType: BodyDefinition
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  parent: Sparkle.CSharp.Physics.Dim2.Shapes
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html
+  name: IShape2D
+  nameWithType: IShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Def
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Def
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Def
+  fullName: Sparkle.CSharp.Physics.Dim2.Def
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Shapes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Shapes
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Shapes
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html
+- uid: System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D}
+  commentId: T:System.Collections.Generic.List{Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IShape2D>
+  nameWithType: List<IShape2D>
+  fullName: System.Collections.Generic.List<Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D>
+  nameWithType.vb: List(Of IShape2D)
+  fullName.vb: System.Collections.Generic.List(Of Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D)
+  name.vb: List(Of IShape2D)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+    name: IShape2D
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+    name: IShape2D
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Type*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Type
+  name: Type
+  nameWithType: RigidBody2D.Type
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Type
+- uid: Box2D.BodyType
+  commentId: T:Box2D.BodyType
+  parent: Box2D
+  isExternal: true
+  name: BodyType
+  nameWithType: BodyType
+  fullName: Box2D.BodyType
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Name*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Name
+  name: Name
+  nameWithType: RigidBody2D.Name
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.UserData*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_UserData
+  name: UserData
+  nameWithType: RigidBody2D.UserData
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.UserData
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Transform*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Transform
+  name: Transform
+  nameWithType: RigidBody2D.Transform
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Transform
+- uid: Box2D.Transform
+  commentId: T:Box2D.Transform
+  parent: Box2D
+  isExternal: true
+  name: Transform
+  nameWithType: Transform
+  fullName: Box2D.Transform
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_LinearVelocity
+  name: LinearVelocity
+  nameWithType: RigidBody2D.LinearVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearVelocity
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_AngularVelocity
+  name: AngularVelocity
+  nameWithType: RigidBody2D.AngularVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularVelocity
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.MassData*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_MassData
+  name: MassData
+  nameWithType: RigidBody2D.MassData
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.MassData
+- uid: Box2D.MassData
+  commentId: T:Box2D.MassData
+  parent: Box2D
+  isExternal: true
+  name: MassData
+  nameWithType: MassData
+  fullName: Box2D.MassData
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_LinearDamping
+  name: LinearDamping
+  nameWithType: RigidBody2D.LinearDamping
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.LinearDamping
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_AngularDamping
+  name: AngularDamping
+  nameWithType: RigidBody2D.AngularDamping
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.AngularDamping
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GravityScale
+  name: GravityScale
+  nameWithType: RigidBody2D.GravityScale
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GravityScale
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Awake*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Awake
+  name: Awake
+  nameWithType: RigidBody2D.Awake
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Awake
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_SleepEnabled
+  name: SleepEnabled
+  nameWithType: RigidBody2D.SleepEnabled
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepEnabled
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_SleepThreshold
+  name: SleepThreshold
+  nameWithType: RigidBody2D.SleepThreshold
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SleepThreshold
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Enabled
+  name: Enabled
+  nameWithType: RigidBody2D.Enabled
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Enabled
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_FixedRotation
+  name: FixedRotation
+  nameWithType: RigidBody2D.FixedRotation
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.FixedRotation
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Bullet
+  name: Bullet
+  nameWithType: RigidBody2D.Bullet
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Bullet
+- uid: Sparkle.CSharp.Entities.Components.Component.Init
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.Init
+  parent: Sparkle.CSharp.Entities.Components.Component
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Init
+  name: Init()
+  nameWithType: Component.Init()
+  fullName: Sparkle.CSharp.Entities.Components.Component.Init()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Init
+    name: Init
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Init
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Init
+    name: Init
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Init
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Init*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Init
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Init
+  name: Init
+  nameWithType: RigidBody2D.Init
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Init
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetLocalPoint_System_Numerics_Vector2_
+  name: GetLocalPoint
+  nameWithType: RigidBody2D.GetLocalPoint
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPoint
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetWorldPoint_System_Numerics_Vector2_
+  name: GetWorldPoint
+  nameWithType: RigidBody2D.GetWorldPoint
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPoint
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetLocalVector_System_Numerics_Vector2_
+  name: GetLocalVector
+  nameWithType: RigidBody2D.GetLocalVector
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalVector
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetWorldVector_System_Numerics_Vector2_
+  name: GetWorldVector
+  nameWithType: RigidBody2D.GetWorldVector
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldVector
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_SetTargetTransform_Box2D_Transform_System_Single_
+  name: SetTargetTransform
+  nameWithType: RigidBody2D.SetTargetTransform
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.SetTargetTransform
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetLocalPointVelocity_System_Numerics_Vector2_
+  name: GetLocalPointVelocity
+  nameWithType: RigidBody2D.GetLocalPointVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetLocalPointVelocity
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_GetWorldPointVelocity_System_Numerics_Vector2_
+  name: GetWorldPointVelocity
+  nameWithType: RigidBody2D.GetWorldPointVelocity
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.GetWorldPointVelocity
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyForce_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  name: ApplyForce
+  nameWithType: RigidBody2D.ApplyForce
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForce
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyForceToCenter_System_Numerics_Vector2_System_Boolean_
+  name: ApplyForceToCenter
+  nameWithType: RigidBody2D.ApplyForceToCenter
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyForceToCenter
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyTorque_System_Single_System_Boolean_
+  name: ApplyTorque
+  nameWithType: RigidBody2D.ApplyTorque
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyTorque
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyLinearImpulse_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  name: ApplyLinearImpulse
+  nameWithType: RigidBody2D.ApplyLinearImpulse
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulse
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyLinearImpulseToCenter_System_Numerics_Vector2_System_Boolean_
+  name: ApplyLinearImpulseToCenter
+  nameWithType: RigidBody2D.ApplyLinearImpulseToCenter
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyLinearImpulseToCenter
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_ApplyAngularImpulse_System_Single_System_Boolean_
+  name: ApplyAngularImpulse
+  nameWithType: RigidBody2D.ApplyAngularImpulse
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.ApplyAngularImpulse
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_EnableContactEvents_System_Boolean_
+  name: EnableContactEvents
+  nameWithType: RigidBody2D.EnableContactEvents
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableContactEvents
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_EnableHitEvents_System_Boolean_
+  name: EnableHitEvents
+  nameWithType: RigidBody2D.EnableHitEvents
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.EnableHitEvents
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_CreateShape_Box2D_ShapeDef_Box2D_Circle_
+  name: CreateShape
+  nameWithType: RigidBody2D.CreateShape
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateShape
+- uid: Box2D.ShapeDef
+  commentId: T:Box2D.ShapeDef
+  parent: Box2D
+  isExternal: true
+  name: ShapeDef
+  nameWithType: ShapeDef
+  fullName: Box2D.ShapeDef
+- uid: Box2D.Circle
+  commentId: T:Box2D.Circle
+  parent: Box2D
+  isExternal: true
+  name: Circle
+  nameWithType: Circle
+  fullName: Box2D.Circle
+- uid: Box2D.Shape
+  commentId: T:Box2D.Shape
+  parent: Box2D
+  isExternal: true
+  name: Shape
+  nameWithType: Shape
+  fullName: Box2D.Shape
+- uid: Box2D.Segment
+  commentId: T:Box2D.Segment
+  parent: Box2D
+  isExternal: true
+  name: Segment
+  nameWithType: Segment
+  fullName: Box2D.Segment
+- uid: Box2D.Capsule
+  commentId: T:Box2D.Capsule
+  parent: Box2D
+  isExternal: true
+  name: Capsule
+  nameWithType: Capsule
+  fullName: Box2D.Capsule
+- uid: Box2D.Polygon
+  commentId: T:Box2D.Polygon
+  parent: Box2D
+  isExternal: true
+  name: Polygon
+  nameWithType: Polygon
+  fullName: Box2D.Polygon
+- uid: Box2D.ChainShape
+  commentId: T:Box2D.ChainShape
+  parent: Box2D
+  isExternal: true
+  name: ChainShape
+  nameWithType: ChainShape
+  fullName: Box2D.ChainShape
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_CreateChain_Box2D_ChainDef_
+  name: CreateChain
+  nameWithType: RigidBody2D.CreateChain
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.CreateChain
+- uid: Box2D.ChainDef
+  commentId: T:Box2D.ChainDef
+  parent: Box2D
+  isExternal: true
+  name: ChainDef
+  nameWithType: ChainDef
+  fullName: Box2D.ChainDef
+- uid: Sparkle.CSharp.Entities.Components.Component.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Entities.Components.Component.Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Entities.Components.Component
+  isExternal: true
+  href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Dispose_System_Boolean_
+  name: Dispose(bool)
+  nameWithType: Component.Dispose(bool)
+  fullName: Sparkle.CSharp.Entities.Components.Component.Dispose(bool)
+  nameWithType.vb: Component.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Entities.Components.Component.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Entities.Components.Component.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose*
+  commentId: Overload:Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html#Sparkle_CSharp_Entities_Components_RigidBody2D_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: RigidBody2D.Dispose
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D.Dispose

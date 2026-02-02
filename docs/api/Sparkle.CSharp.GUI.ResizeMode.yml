@@ -1,0 +1,153 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.ResizeMode
+  commentId: T:Sparkle.CSharp.GUI.ResizeMode
+  id: ResizeMode
+  parent: Sparkle.CSharp.GUI
+  children:
+  - Sparkle.CSharp.GUI.ResizeMode.NineSlice
+  - Sparkle.CSharp.GUI.ResizeMode.None
+  - Sparkle.CSharp.GUI.ResizeMode.TileCenter
+  langs:
+  - csharp
+  - vb
+  name: ResizeMode
+  nameWithType: ResizeMode
+  fullName: Sparkle.CSharp.GUI.ResizeMode
+  type: Enum
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/ResizeMode.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ResizeMode
+    path: ../src/Sparkle/CSharp/GUI/ResizeMode.cs
+    startLine: 2
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  syntax:
+    content: public enum ResizeMode
+    content.vb: Public Enum ResizeMode
+- uid: Sparkle.CSharp.GUI.ResizeMode.None
+  commentId: F:Sparkle.CSharp.GUI.ResizeMode.None
+  id: None
+  parent: Sparkle.CSharp.GUI.ResizeMode
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: ResizeMode.None
+  fullName: Sparkle.CSharp.GUI.ResizeMode.None
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/ResizeMode.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: None
+    path: ../src/Sparkle/CSharp/GUI/ResizeMode.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Renders the texture at its original size without any scaling.
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+- uid: Sparkle.CSharp.GUI.ResizeMode.NineSlice
+  commentId: F:Sparkle.CSharp.GUI.ResizeMode.NineSlice
+  id: NineSlice
+  parent: Sparkle.CSharp.GUI.ResizeMode
+  langs:
+  - csharp
+  - vb
+  name: NineSlice
+  nameWithType: ResizeMode.NineSlice
+  fullName: Sparkle.CSharp.GUI.ResizeMode.NineSlice
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/ResizeMode.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: NineSlice
+    path: ../src/Sparkle/CSharp/GUI/ResizeMode.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Uses nine-slice scaling where corners stay fixed and the center is stretched.
+  example: []
+  syntax:
+    content: NineSlice = 1
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+- uid: Sparkle.CSharp.GUI.ResizeMode.TileCenter
+  commentId: F:Sparkle.CSharp.GUI.ResizeMode.TileCenter
+  id: TileCenter
+  parent: Sparkle.CSharp.GUI.ResizeMode
+  langs:
+  - csharp
+  - vb
+  name: TileCenter
+  nameWithType: ResizeMode.TileCenter
+  fullName: Sparkle.CSharp.GUI.ResizeMode.TileCenter
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/ResizeMode.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TileCenter
+    path: ../src/Sparkle/CSharp/GUI/ResizeMode.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Uses nine-slice scaling where corners stay fixed and the center is tiled.
+  example: []
+  syntax:
+    content: TileCenter = 2
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+references:
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.ResizeMode
+  commentId: T:Sparkle.CSharp.GUI.ResizeMode
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.ResizeMode.html
+  name: ResizeMode
+  nameWithType: ResizeMode
+  fullName: Sparkle.CSharp.GUI.ResizeMode

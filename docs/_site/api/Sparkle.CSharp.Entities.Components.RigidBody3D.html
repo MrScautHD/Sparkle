@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class RigidBody3D | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class RigidBody3D | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_Entities_Components_RigidBody3D.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.Entities.Components.RigidBody3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D">
+
+
+
+  <h1 id="Sparkle_CSharp_Entities_Components_RigidBody3D" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D" class="text-break">
+Class RigidBody3D  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.Entities.html">Entities</a>.<a class="xref" href="Sparkle.CSharp.Entities.Components.html">Components</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RigidBody3D : Component, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Disposable</span></div>
+      <div><a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html">Component</a></div>
+      <div><span class="xref">RigidBody3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_GraphicsDevice">Component.GraphicsDevice</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Entity">Component.Entity</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_GlobalPosition">Component.GlobalPosition</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Update_System_Double_">Component.Update(double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_AfterUpdate_System_Double_">Component.AfterUpdate(double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_FixedUpdate_System_Double_">Component.FixedUpdate(double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_">Component.Draw(GraphicsContext, Framebuffer)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_Resize_Bliss_CSharp_Transformations_Rectangle_">Component.Resize(Rectangle)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Components.Component.html#Sparkle_CSharp_Entities_Components_Component_ConflictsWith__1___0_">Component.ConflictsWith&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <span class="xref">Disposable.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.ThrowIfDisposed()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.HasDisposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D__ctor_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D__ctor_Jitter2_Collision_Shapes_RigidBodyShape_System_Boolean_Jitter2_Dynamics_MotionType_System_Single_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.#ctor(Jitter2.Collision.Shapes.RigidBodyShape,System.Boolean,Jitter2.Dynamics.MotionType,System.Single,System.Single,System.Boolean)">
+  RigidBody3D(RigidBodyShape, bool, MotionType, float, float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Entities.Components.RigidBody3D.html">RigidBody3D</a> class with a single collision shape.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RigidBody3D(RigidBodyShape shape, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2, float restitution = 0, bool drawDebug = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shape</code> <span class="xref">RigidBodyShape</span></dt>
+    <dd><p>The collision shape to attach to the rigid body.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to automatically calculate mass and inertia from the shape.</p>
+</dd>
+    <dt><code>motionType</code> <span class="xref">MotionType</span></dt>
+    <dd><p>Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</p>
+</dd>
+    <dt><code>friction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The friction coefficient of the rigid body.</p>
+</dd>
+    <dt><code>restitution</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The restitution (bounciness) of the rigid body.</p>
+</dd>
+    <dt><code>drawDebug</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether debug visualization for the rigid body should be enabled.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D__ctor_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D__ctor_System_Collections_Generic_List_Jitter2_Collision_Shapes_RigidBodyShape__System_Boolean_Jitter2_Dynamics_MotionType_System_Single_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.#ctor(System.Collections.Generic.List{Jitter2.Collision.Shapes.RigidBodyShape},System.Boolean,Jitter2.Dynamics.MotionType,System.Single,System.Single,System.Boolean)">
+  RigidBody3D(List&lt;RigidBodyShape&gt;, bool, MotionType, float, float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Entities.Components.RigidBody3D.html">RigidBody3D</a> class with a collection of collision shapes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RigidBody3D(List&lt;RigidBodyShape&gt; shapes, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2, float restitution = 0, bool drawDebug = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shapes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<span class="xref">RigidBodyShape</span>&gt;</dt>
+    <dd><p>The list of collision shapes to attach to the rigid body.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to automatically calculate mass and inertia from the shapes.</p>
+</dd>
+    <dt><code>motionType</code> <span class="xref">MotionType</span></dt>
+    <dd><p>Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</p>
+</dd>
+    <dt><code>friction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The friction coefficient of the rigid body.</p>
+</dd>
+    <dt><code>restitution</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The restitution (bounciness) of the rigid body.</p>
+</dd>
+    <dt><code>drawDebug</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether debug visualization for the rigid body should be enabled.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_DebugDrawColor" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DebugDrawColor">
+  DebugDrawColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The color used for debugging visualization of the 3D rigid body's properties and behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color DebugDrawColor</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Color</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_DrawDebug" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DrawDebug">
+  DrawDebug
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Whether debug information, such as visual representations of physics-related elements, should be displayed for the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool DrawDebug</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AffectedByGravity_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AffectedByGravity*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AffectedByGravity" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AffectedByGravity">
+  AffectedByGravity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the rigid body is affected by gravity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AffectedByGravity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AngularVelocity_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AngularVelocity*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AngularVelocity" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AngularVelocity">
+  AngularVelocity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the angular velocity of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 AngularVelocity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Body_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Body*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Body" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Body">
+  Body
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the underlying main rigid body instance used in the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RigidBody Body { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RigidBody</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_BodyId_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.BodyId*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_BodyId" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.BodyId">
+  BodyId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the unique ID of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ulong BodyId { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Connections_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Connections*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Connections" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Connections">
+  Connections
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all bodies connected to this one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyList&lt;RigidBody&gt; Connections { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReadOnlyList</span>&lt;<span class="xref">RigidBody</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Constraints_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Constraints*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Constraints" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Constraints">
+  Constraints
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all constraints applied to this rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyHashSet&lt;Constraint&gt; Constraints { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReadOnlyHashSet</span>&lt;<span class="xref">Constraint</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Damping_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Damping*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Damping" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Damping">
+  Damping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Damping factor for angular and linear motion.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (float angular, float linear) Damping { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.angular">angular</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.linear">linear</a>)</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Data_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Data*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Data" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Data">
+  Data
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a reference to the physical data of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ref RigidBodyData Data { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">RigidBodyData</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_DeactivationThreshold_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DeactivationThreshold*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_DeactivationThreshold" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DeactivationThreshold">
+  DeactivationThreshold
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the angular and linear deactivation thresholds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public (float angular, float linear) DeactivationThreshold { set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.angular">angular</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.linear">linear</a>)</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_DeactivationTime_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DeactivationTime*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_DeactivationTime" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DeactivationTime">
+  DeactivationTime
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Time before the body is considered inactive when not moving.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan DeactivationTime { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_EnableSpeculativeContacts_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.EnableSpeculativeContacts*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_EnableSpeculativeContacts" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.EnableSpeculativeContacts">
+  EnableSpeculativeContacts
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Enables or disables speculative contact solving for better collision detection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableSpeculativeContacts { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Force_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Force*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Force" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Force">
+  Force
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the applied force on the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Force { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Friction_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Friction*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Friction" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Friction">
+  Friction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Friction coefficient of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Friction { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Handle_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Handle*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Handle" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Handle">
+  Handle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the handle to the rigid body data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public JHandle&lt;RigidBodyData&gt; Handle { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">JHandle</span>&lt;<span class="xref">RigidBodyData</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_InCompatibleTypes_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.InCompatibleTypes*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_InCompatibleTypes" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.InCompatibleTypes">
+  InCompatibleTypes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a list of component types that are incompatible with this component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IReadOnlyList&lt;Type&gt; InCompatibleTypes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_InverseInertia_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.InverseInertia*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_InverseInertia" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.InverseInertia">
+  InverseInertia
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the inverse inertia tensor of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 InverseInertia { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_IsActive_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.IsActive*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_IsActive" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.IsActive">
+  IsActive
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns whether the rigid body is currently active in the simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsActive { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_IsStatic_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.IsStatic*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_IsStatic" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.IsStatic">
+  IsStatic
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Specifies if the rigid body is static (immovable).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use the MotionType property instead.&quot;)]
+public bool IsStatic { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Island_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Island*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Island" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Island">
+  Island
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the island this rigid body is part of (for sleeping management).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Island Island { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Island</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Mass_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Mass*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Mass" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Mass">
+  Mass
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the mass of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Mass { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_MotionType_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.MotionType*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_MotionType" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.MotionType">
+  MotionType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the motion type of the rigid body, determining its dynamic behavior within the physics simulation (e.g., static, dynamic, or kinematic).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MotionType MotionType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">MotionType</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_OffsetPosition_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.OffsetPosition*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_OffsetPosition" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.OffsetPosition">
+  OffsetPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The positional offset of this component, always zero for RigidBody3D.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 OffsetPosition { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Orientation_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Orientation*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Orientation" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Orientation">
+  Orientation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the orientation of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Quaternion Orientation { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.quaternion">Quaternion</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Position_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Position*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Position" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the position of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Position { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Restitution_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Restitution*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Restitution" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Restitution">
+  Restitution
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L220"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restitution (bounciness) of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Restitution { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Shapes_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Shapes*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Shapes" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Shapes">
+  Shapes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the shapes associated with the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyList&lt;RigidBodyShape&gt; Shapes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReadOnlyList</span>&lt;<span class="xref">RigidBodyShape</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Simulation_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Simulation*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Simulation" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Simulation">
+  Simulation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current 3D simulation instance used by the scene.
+Throws an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> if the simulation is not of type <a class="xref" href="Sparkle.CSharp.Physics.Dim3.Simulation3D.html">Simulation3D</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Simulation3D Simulation { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Physics.Dim3.Simulation3D.html">Simulation3D</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Tag_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Tag*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Tag" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Tag">
+  Tag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>A custom user tag associated with the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? Tag { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Torque_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Torque*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Torque" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Torque">
+  Torque
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the applied torque on the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Torque { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Velocity_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Velocity*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Velocity" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Velocity">
+  Velocity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the linear velocity of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Velocity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_World_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.World*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_World" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.World">
+  World
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the physics world from the current 3D simulation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public World World { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">World</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddForce_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddForce*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddForce_System_Numerics_Vector3_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddForce(System.Numerics.Vector3)">
+  AddForce(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L388"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Applies a force to the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddForce(Vector3 force)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>force</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The force vector to apply to the rigid body.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddForce_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddForce*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddForce_System_Numerics_Vector3_System_Numerics_Vector3_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddForce(System.Numerics.Vector3,System.Numerics.Vector3)">
+  AddForce(Vector3, Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Applies a force at a specific position on the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddForce(Vector3 force, Vector3 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>force</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The force vector to apply to the rigid body.</p>
+</dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The position at which the force is applied, relative to the rigid body's center of mass.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddShape_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddShape*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddShape_Jitter2_Collision_Shapes_RigidBodyShape_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddShape(Jitter2.Collision.Shapes.RigidBodyShape,System.Boolean)">
+  AddShape(RigidBodyShape, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L319"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a new collision shape to the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddShape(RigidBodyShape shape, bool setMassInertia = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shape</code> <span class="xref">RigidBodyShape</span></dt>
+    <dd><p>The specific collision shape to be added.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the mass and inertia should be recalculated after adding the shape.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddShape_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddShape*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_AddShape_System_Collections_Generic_IEnumerable_Jitter2_Collision_Shapes_RigidBodyShape__System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.AddShape(System.Collections.Generic.IEnumerable{Jitter2.Collision.Shapes.RigidBodyShape},System.Boolean)">
+  AddShape(IEnumerable&lt;RigidBodyShape&gt;, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L328"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a collision shape to the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddShape(IEnumerable&lt;RigidBodyShape&gt; shapes, bool setMassInertia = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shapes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">RigidBodyShape</span>&gt;</dt>
+    <dd><p>The collection of shapes to add.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to automatically calculate mass and inertia after adding the shape.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_ClearShapes_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.ClearShapes*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_ClearShapes_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.ClearShapes(System.Boolean)">
+  ClearShapes(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L354"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Clears all collision shapes attached to the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;ClearShapes is deprecated, please use RemoveShape instead.&quot;)]
+public void ClearShapes(bool setMassInertia = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to recalculate mass and inertia after clearing the shapes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_DebugDraw_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DebugDraw*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_DebugDraw_Jitter2_IDebugDrawer_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.DebugDraw(Jitter2.IDebugDrawer)">
+  DebugDraw(IDebugDrawer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders debug information for the rigid body using the specified debug drawer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DebugDraw(IDebugDrawer drawer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>drawer</code> <span class="xref">IDebugDrawer</span></dt>
+    <dd><p>The debug drawer instance used to render the debug information.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Dispose_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Dispose*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Dispose_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L481"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of the object and releases associated resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if called from user code; false if called from a finalizer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_Init_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Init*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_Init" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.Init">
+  Init()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes the rigid body and registers it into the physics world.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Init()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_RemoveShape_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.RemoveShape*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_RemoveShape_Jitter2_Collision_Shapes_RigidBodyShape_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.RemoveShape(Jitter2.Collision.Shapes.RigidBodyShape,System.Boolean)">
+  RemoveShape(RigidBodyShape, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L337"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes a collision shape from the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveShape(RigidBodyShape shape, bool setMassInertia = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shape</code> <span class="xref">RigidBodyShape</span></dt>
+    <dd><p>The collision shape to be removed from the rigid body.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to recalculate mass and inertia after removing the shape.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_RemoveShape_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.RemoveShape*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_RemoveShape_System_Collections_Generic_IEnumerable_Jitter2_Collision_Shapes_RigidBodyShape__System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.RemoveShape(System.Collections.Generic.IEnumerable{Jitter2.Collision.Shapes.RigidBodyShape},System.Boolean)">
+  RemoveShape(IEnumerable&lt;RigidBodyShape&gt;, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the specified collision shape from the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveShape(IEnumerable&lt;RigidBodyShape&gt; shapes, bool setMassInertia = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>shapes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">RigidBodyShape</span>&gt;</dt>
+    <dd><p>The collection of shapes to remove.</p>
+</dd>
+    <dt><code>setMassInertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether to automatically recalculate mass and inertia after removing the shape.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetActivationState_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetActivationState*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetActivationState_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetActivationState(System.Boolean)">
+  SetActivationState(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the activation state of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetActivationState(bool active)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>active</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the rigid body should be activated or deactivated.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia">
+  SetMassInertia()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L362"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the mass and inertia of the rigid body based on its current shapes and associated properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetMassInertia()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia_System_Numerics_Matrix4x4_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia(System.Numerics.Matrix4x4,System.Single,System.Boolean)">
+  SetMassInertia(Matrix4x4, float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L380"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the mass and inertia of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetMassInertia(Matrix4x4 inertia, float mass, bool setAsInverse = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inertia</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd><p>The inertia matrix to assign to the rigid body.</p>
+</dd>
+    <dt><code>mass</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The mass of the rigid body.</p>
+</dd>
+    <dt><code>setAsInverse</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Determines whether the provided inertia matrix should be treated as an inverse matrix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Components_RigidBody3D_SetMassInertia_System_Single_" data-uid="Sparkle.CSharp.Entities.Components.RigidBody3D.SetMassInertia(System.Single)">
+  SetMassInertia(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L370"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the mass and automatically recalculates the inertia of the rigid body.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetMassInertia(float mass)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mass</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The new mass value to be applied to the rigid body.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Components/RigidBody3D.cs/#L17" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

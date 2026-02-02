@@ -1,0 +1,478 @@
+### YamlMime:TableOfContent
+items:
+- uid: Sparkle.CSharp
+  name: Sparkle.CSharp
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Game
+    name: Game
+    type: Class
+  - uid: Sparkle.CSharp.GameSettings
+    name: GameSettings
+    type: Struct
+  - uid: Sparkle.CSharp.SystemInfo
+    name: SystemInfo
+    type: Class
+  - uid: Sparkle.CSharp.Time
+    name: Time
+    type: Class
+- uid: Sparkle.CSharp.Content
+  name: Sparkle.CSharp.Content
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Content.ContentManager
+    name: ContentManager
+    type: Class
+- uid: Sparkle.CSharp.Content.Processors
+  name: Sparkle.CSharp.Content.Processors
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Content.Processors.AudioClipProcessor
+    name: AudioClipProcessor
+    type: Class
+  - uid: Sparkle.CSharp.Content.Processors.CubemapProcessor
+    name: CubemapProcessor
+    type: Class
+  - uid: Sparkle.CSharp.Content.Processors.FontProcessor
+    name: FontProcessor
+    type: Class
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor
+    name: IContentProcessor
+    type: Interface
+  - uid: Sparkle.CSharp.Content.Processors.ModelProcessor
+    name: ModelProcessor
+    type: Class
+  - uid: Sparkle.CSharp.Content.Processors.TextureProcessor
+    name: TextureProcessor
+    type: Class
+- uid: Sparkle.CSharp.Content.Types
+  name: Sparkle.CSharp.Content.Types
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Content.Types.AudioClipContent
+    name: AudioClipContent
+    type: Class
+  - uid: Sparkle.CSharp.Content.Types.CubemapContent
+    name: CubemapContent
+    type: Class
+  - uid: Sparkle.CSharp.Content.Types.FontContent
+    name: FontContent
+    type: Class
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType<T>
+    type: Interface
+  - uid: Sparkle.CSharp.Content.Types.ModelContent
+    name: ModelContent
+    type: Class
+  - uid: Sparkle.CSharp.Content.Types.TextureContent
+    name: TextureContent
+    type: Class
+- uid: Sparkle.CSharp.Effects.Filters
+  name: Sparkle.CSharp.Effects.Filters
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Effects.Filters.BloomEffect
+    name: BloomEffect
+    type: Class
+  - uid: Sparkle.CSharp.Effects.Filters.BlurEffect
+    name: BlurEffect
+    type: Class
+  - uid: Sparkle.CSharp.Effects.Filters.PixelizerEffect
+    name: PixelizerEffect
+    type: Class
+  - uid: Sparkle.CSharp.Effects.Filters.PosterizationEffect
+    name: PosterizationEffect
+    type: Class
+  - uid: Sparkle.CSharp.Effects.Filters.PredatorEffect
+    name: PredatorEffect
+    type: Class
+  - uid: Sparkle.CSharp.Effects.Filters.SobelEffect
+    name: SobelEffect
+    type: Class
+- uid: Sparkle.CSharp.Effects.Posts
+  name: Sparkle.CSharp.Effects.Posts
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Effects.Posts.FxaaEffect
+    name: FxaaEffect
+    type: Class
+- uid: Sparkle.CSharp.Entities
+  name: Sparkle.CSharp.Entities
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Entities.Camera2D
+    name: Camera2D
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Camera3D
+    name: Camera3D
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    type: Class
+- uid: Sparkle.CSharp.Entities.Components
+  name: Sparkle.CSharp.Entities.Components
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Entities.Components.Component
+    name: Component
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.InstancedRenderProxy
+    name: InstancedRenderProxy
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.InterpolatedComponent
+    name: InterpolatedComponent
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.MeshRenderer
+    name: MeshRenderer
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.ModelRenderer
+    name: ModelRenderer
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.RigidBody2D
+    name: RigidBody2D
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.RigidBody3D
+    name: RigidBody3D
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.SoftBody3D
+    name: SoftBody3D
+    type: Class
+  - uid: Sparkle.CSharp.Entities.Components.Sprite
+    name: Sprite
+    type: Class
+- uid: Sparkle.CSharp.GUI
+  name: Sparkle.CSharp.GUI
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.GUI.Anchor
+    name: Anchor
+    type: Enum
+  - uid: Sparkle.CSharp.GUI.BorderInsets
+    name: BorderInsets
+    type: Struct
+  - uid: Sparkle.CSharp.GUI.Gui
+    name: Gui
+    type: Class
+  - uid: Sparkle.CSharp.GUI.GuiManager
+    name: GuiManager
+    type: Class
+  - uid: Sparkle.CSharp.GUI.ResizeMode
+    name: ResizeMode
+    type: Enum
+  - uid: Sparkle.CSharp.GUI.TextAlignment
+    name: TextAlignment
+    type: Enum
+- uid: Sparkle.CSharp.GUI.Elements
+  name: Sparkle.CSharp.GUI.Elements
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement
+    name: GuiElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.LabelElement
+    name: LabelElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.RectangleButtonElement
+    name: RectangleButtonElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+    name: RectangleSlideBarElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement
+    name: RectangleTextBoxElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.TextureButtonElement
+    name: TextureButtonElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.TextureDropDownElement
+    name: TextureDropDownElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.TextureSlideBarElement
+    name: TextureSlideBarElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.TextureTextBoxElement
+    name: TextureTextBoxElement
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.ToggleElement
+    name: ToggleElement
+    type: Class
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  name: Sparkle.CSharp.GUI.Elements.Data
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.GUI.Elements.Data.LabelData
+    name: LabelData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData
+    name: RectangleButtonData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+    name: RectangleSlideBarData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData
+    name: RectangleTextBoxData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+    name: TextureButtonData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+    name: TextureDropDownData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData
+    name: TextureSlideBarData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData
+    name: TextureTextBoxData
+    type: Class
+  - uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+    name: ToggleData
+    type: Class
+- uid: Sparkle.CSharp.Graphics
+  name: Sparkle.CSharp.Graphics
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Graphics.GlobalGraphicsAssets
+    name: GlobalGraphicsAssets
+    type: Class
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    type: Class
+- uid: Sparkle.CSharp.Graphics.Rendering
+  name: Sparkle.CSharp.Graphics.Rendering
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+    name: MultiInstanceRenderer
+    type: Class
+  - uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+    name: Physics3DDebugDrawer
+    type: Class
+  - uid: Sparkle.CSharp.Graphics.Rendering.SkyBox
+    name: SkyBox
+    type: Class
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+  name: Sparkle.CSharp.Graphics.Rendering.Sprites
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData
+    name: SpriteData
+    type: Struct
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+    name: SpriteRenderer
+    type: Class
+- uid: Sparkle.CSharp.Graphics.VertexTypes
+  name: Sparkle.CSharp.Graphics.VertexTypes
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D
+    name: PhysicsDebugVertex3D
+    type: Struct
+- uid: Sparkle.CSharp.IO
+  name: Sparkle.CSharp.IO
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.IO.CryptoProvider
+    name: CryptoProvider
+    type: Class
+  - uid: Sparkle.CSharp.IO.FileAccessor
+    name: FileAccessor
+    type: Class
+- uid: Sparkle.CSharp.IO.Configs.Json
+  name: Sparkle.CSharp.IO.Configs.Json
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+    name: JsonConfig
+    type: Class
+  - uid: Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder
+    name: JsonConfigBuilder
+    type: Class
+- uid: Sparkle.CSharp.Logging
+  name: Sparkle.CSharp.Logging
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Logging.LogFileWriter
+    name: LogFileWriter
+    type: Class
+  - uid: Sparkle.CSharp.Logging.LogJitter
+    name: LogJitter
+    type: Class
+- uid: Sparkle.CSharp.Overlays
+  name: Sparkle.CSharp.Overlays
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Overlays.Overlay
+    name: Overlay
+    type: Class
+  - uid: Sparkle.CSharp.Overlays.OverlayManager
+    name: OverlayManager
+    type: Class
+- uid: Sparkle.CSharp.Physics
+  name: Sparkle.CSharp.Physics
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Simulation
+    name: Simulation
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim2
+  name: Sparkle.CSharp.Physics.Dim2
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+    name: PhysicsSettings2D
+    type: Struct
+  - uid: Sparkle.CSharp.Physics.Dim2.Simulation2D
+    name: Simulation2D
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim2.Def
+  name: Sparkle.CSharp.Physics.Dim2.Def
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+    name: BodyDefinition
+    type: Struct
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes
+  name: Sparkle.CSharp.Physics.Dim2.Shapes
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D
+    name: CapsuleShape2D
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D
+    name: ChainShape2D
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D
+    name: CircleShape2D
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+    name: IShape2D
+    type: Interface
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D
+    name: PolygonShape2D
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D
+    name: SegmentShape2D
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim3
+  name: Sparkle.CSharp.Physics.Dim3
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+    name: PhysicsSettings3D
+    type: Struct
+  - uid: Sparkle.CSharp.Physics.Dim3.Simulation3D
+    name: Simulation3D
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim3.Extensions
+  name: Sparkle.CSharp.Physics.Dim3.Extensions
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions
+    name: Matrix4X4Extensions
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables
+  name: Sparkle.CSharp.Physics.Dim3.Mappables
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+    name: UnitSphere
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory
+    name: ISoftBodyFactory
+    type: Interface
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory
+    name: SoftBodyClothFactory
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory
+    name: SoftBodyCubeFactory
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory
+    name: SoftBodySphereFactory
+    type: Class
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+    name: SimpleSoftBody
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth
+    name: SoftBodyCloth
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube
+    name: SoftBodyCube
+    type: Class
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+    name: SoftBodySphere
+    type: Class
+- uid: Sparkle.CSharp.Registries
+  name: Sparkle.CSharp.Registries
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Registries.Registry
+    name: Registry
+    type: Class
+  - uid: Sparkle.CSharp.Registries.RegistryManager
+    name: RegistryManager
+    type: Class
+- uid: Sparkle.CSharp.Scenes
+  name: Sparkle.CSharp.Scenes
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Scenes.Scene
+    name: Scene
+    type: Class
+  - uid: Sparkle.CSharp.Scenes.SceneManager
+    name: SceneManager
+    type: Class
+  - uid: Sparkle.CSharp.Scenes.SceneType
+    name: SceneType
+    type: Enum
+- uid: Sparkle.CSharp.Terrain
+  name: Sparkle.CSharp.Terrain
+  type: Namespace
+  items:
+  - uid: Sparkle.CSharp.Terrain.MarchingCubes
+    name: MarchingCubes
+    type: Class
+  - uid: Sparkle.CSharp.Terrain.MarchingCubesChunk
+    name: MarchingCubesChunk
+    type: Class
+  - uid: Sparkle.CSharp.Terrain.MarchingCubesTables
+    name: MarchingCubesTables
+    type: Class
+- uid: Sparkle.Test.CSharp
+  name: Sparkle.Test.CSharp
+  type: Namespace
+  items:
+  - uid: Sparkle.Test.CSharp.ContentRegistry
+    name: ContentRegistry
+    type: Class
+  - uid: Sparkle.Test.CSharp.TestGame
+    name: TestGame
+    type: Class
+  - uid: Sparkle.Test.CSharp.TestGui
+    name: TestGui
+    type: Class
+  - uid: Sparkle.Test.CSharp.TestOverlay
+    name: TestOverlay
+    type: Class
+- uid: Sparkle.Test.CSharp.Dim2D
+  name: Sparkle.Test.CSharp.Dim2D
+  type: Namespace
+  items:
+  - uid: Sparkle.Test.CSharp.Dim2D.TestScene2D
+    name: TestScene2D
+    type: Class
+- uid: Sparkle.Test.CSharp.Dim3D
+  name: Sparkle.Test.CSharp.Dim3D
+  type: Namespace
+  items:
+  - uid: Sparkle.Test.CSharp.Dim3D.TestScene3D
+    name: TestScene3D
+    type: Class
+memberLayout: SamePage

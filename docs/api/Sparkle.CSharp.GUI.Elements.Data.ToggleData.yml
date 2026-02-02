@@ -1,0 +1,1056 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  id: ToggleData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  children:
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxColor
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxFlip
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSampler
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxTexture
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkColor
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkFlip
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSampler
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkTexture
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData.DisabledColor
+  langs:
+  - csharp
+  - vb
+  name: ToggleData
+  nameWithType: ToggleData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ToggleData
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 8
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  syntax:
+    content: public class ToggleData
+    content.vb: Public Class ToggleData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxTexture
+  id: CheckboxTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxTexture
+  nameWithType: ToggleData.CheckboxTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 13
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used for the checkbox of the toggle box.
+  example: []
+  syntax:
+    content: public Texture2D CheckboxTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public CheckboxTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkTexture
+  id: CheckmarkTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkTexture
+  nameWithType: ToggleData.CheckmarkTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used for the checkmark when the toggle is active.
+  example: []
+  syntax:
+    content: public Texture2D CheckmarkTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public CheckmarkTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSampler
+  id: CheckboxSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxSampler
+  nameWithType: ToggleData.CheckboxSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used when rendering the checkbox texture.
+  example: []
+  syntax:
+    content: public Sampler? CheckboxSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public CheckboxSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSampler
+  id: CheckmarkSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkSampler
+  nameWithType: ToggleData.CheckmarkSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used when rendering the checkmark texture.
+  example: []
+  syntax:
+    content: public Sampler? CheckmarkSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public CheckmarkSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSourceRect
+  id: CheckboxSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxSourceRect
+  nameWithType: ToggleData.CheckboxSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle of the checkbox texture.
+  example: []
+  syntax:
+    content: public Rectangle CheckboxSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public CheckboxSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSourceRect
+  id: CheckmarkSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkSourceRect
+  nameWithType: ToggleData.CheckmarkSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 38
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle of the checkmark texture.
+  example: []
+  syntax:
+    content: public Rectangle CheckmarkSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public CheckmarkSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxColor
+  id: CheckboxColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxColor
+  nameWithType: ToggleData.CheckboxColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 43
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the checkbox when not hovered.
+  example: []
+  syntax:
+    content: public Color CheckboxColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public CheckboxColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkColor
+  id: CheckmarkColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkColor
+  nameWithType: ToggleData.CheckmarkColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 48
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the checkmark when not hovered.
+  example: []
+  syntax:
+    content: public Color CheckmarkColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public CheckmarkColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxHoverColor
+  id: CheckboxHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxHoverColor
+  nameWithType: ToggleData.CheckboxHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 53
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the checkbox when the toggle is hovered.
+  example: []
+  syntax:
+    content: public Color CheckboxHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public CheckboxHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkHoverColor
+  id: CheckmarkHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkHoverColor
+  nameWithType: ToggleData.CheckmarkHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 58
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the checkmark when the toggle is hovered.
+  example: []
+  syntax:
+    content: public Color CheckmarkHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public CheckmarkHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.DisabledColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.DisabledColor
+  id: DisabledColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: DisabledColor
+  nameWithType: ToggleData.DisabledColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.DisabledColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 63
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied when the toggle is in an inactive or disabled state.
+  example: []
+  syntax:
+    content: public Color DisabledColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxFlip
+  id: CheckboxFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckboxFlip
+  nameWithType: ToggleData.CheckboxFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckboxFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckboxFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 68
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip transformation applied to the checkbox texture.
+  example: []
+  syntax:
+    content: public SpriteFlip CheckboxFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public CheckboxFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkFlip
+  id: CheckmarkFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: CheckmarkFlip
+  nameWithType: ToggleData.CheckmarkFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.CheckmarkFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CheckmarkFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 73
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip transformation applied to the checkmark texture.
+  example: []
+  syntax:
+    content: public SpriteFlip CheckmarkFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public CheckmarkFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  commentId: M:Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  id: '#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)'
+  parent: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: ToggleData(Texture2D, Texture2D, Sampler?, Sampler?, Rectangle?, Rectangle?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip)
+  nameWithType: ToggleData.ToggleData(Texture2D, Texture2D, Sampler?, Sampler?, Rectangle?, Rectangle?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip)
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.ToggleData(Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler?, Veldrid.Sampler?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/ToggleData.cs
+    startLine: 91
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GUI.Elements.Data.ToggleData" data-throw-if-not-resolved="false"></xref> class with optional customization.
+  example: []
+  syntax:
+    content: public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, Color? disabledColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None)
+    parameters:
+    - id: checkboxTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture for the toggle Checkbox.
+    - id: checkmarkTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture for the toggle checkmark.
+    - id: checkboxSampler
+      type: Veldrid.Sampler
+      description: Optional sampler for the Checkbox texture.
+    - id: checkmarkSampler
+      type: Veldrid.Sampler
+      description: Optional sampler for the checkmark texture.
+    - id: checkboxSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the Checkbox texture. Defaults to full texture.
+    - id: checkmarkSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the checkmark texture. Defaults to full texture.
+    - id: checkboxColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional base color for the Checkbox. Defaults to white.
+    - id: checkmarkColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional base color for the checkmark. Defaults to white.
+    - id: checkboxHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional hover color for the Checkbox. Defaults to <code class="paramref">checkboxColor</code>.
+    - id: checkmarkHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional hover color for the checkmark. Defaults to <code class="paramref">checkmarkColor</code>.
+    - id: disabledColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional color for the toggle when disabled. Defaults to gray.
+    - id: checkboxFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Optional flip setting for the Checkbox texture. Defaults to none.
+    - id: checkmarkFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Optional flip setting for the checkmark texture. Defaults to none.
+    content.vb: Public Sub New(checkboxTexture As Texture2D, checkmarkTexture As Texture2D, checkboxSampler As Sampler = Nothing, checkmarkSampler As Sampler = Nothing, checkboxSourceRect As Rectangle? = Nothing, checkmarkSourceRect As Rectangle? = Nothing, checkboxColor As Color? = Nothing, checkmarkColor As Color? = Nothing, checkboxHoverColor As Color? = Nothing, checkmarkHoverColor As Color? = Nothing, disabledColor As Color? = Nothing, checkboxFlip As SpriteFlip = SpriteFlip.None, checkmarkFlip As SpriteFlip = SpriteFlip.None)
+  overload: Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor*
+  nameWithType.vb: ToggleData.New(Texture2D, Texture2D, Sampler, Sampler, Rectangle?, Rectangle?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.ToggleData.New(Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler, Veldrid.Sampler, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  name.vb: New(Texture2D, Texture2D, Sampler, Sampler, Rectangle?, Rectangle?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip)
+references:
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Veldrid.Sampler
+  commentId: T:Veldrid.Sampler
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Sampler.cs
+  name: Sampler
+  nameWithType: Sampler
+  fullName: Veldrid.Sampler
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Bliss.CSharp.Colors.Color
+  commentId: T:Bliss.CSharp.Colors.Color
+  parent: Bliss.CSharp.Colors
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Bliss.CSharp.Colors.Color
+- uid: Bliss.CSharp.Colors
+  commentId: N:Bliss.CSharp.Colors
+  isExternal: true
+  name: Bliss.CSharp.Colors
+  nameWithType: Bliss.CSharp.Colors
+  fullName: Bliss.CSharp.Colors
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteFlip
+  nameWithType: SpriteFlip
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.ToggleData.html
+  name: ToggleData
+  nameWithType: ToggleData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.Data.ToggleData.#ctor
+  href: Sparkle.CSharp.GUI.Elements.Data.ToggleData.html#Sparkle_CSharp_GUI_Elements_Data_ToggleData__ctor_Bliss_CSharp_Textures_Texture2D_Bliss_CSharp_Textures_Texture2D_Veldrid_Sampler_Veldrid_Sampler_System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_
+  name: ToggleData
+  nameWithType: ToggleData.ToggleData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData.ToggleData
+  nameWithType.vb: ToggleData.New
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.ToggleData.New
+  name.vb: New
+- uid: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  commentId: T:System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  parent: System
+  definition: System.Nullable`1
+  name: Rectangle?
+  nameWithType: Rectangle?
+  fullName: Bliss.CSharp.Transformations.Rectangle?
+  spec.csharp:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable{Bliss.CSharp.Colors.Color}
+  commentId: T:System.Nullable{Bliss.CSharp.Colors.Color}
+  parent: System
+  definition: System.Nullable`1
+  name: Color?
+  nameWithType: Color?
+  fullName: Bliss.CSharp.Colors.Color?
+  spec.csharp:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

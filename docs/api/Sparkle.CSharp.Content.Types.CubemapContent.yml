@@ -1,0 +1,671 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Types.CubemapContent
+  commentId: T:Sparkle.CSharp.Content.Types.CubemapContent
+  id: CubemapContent
+  parent: Sparkle.CSharp.Content.Types
+  children:
+  - Sparkle.CSharp.Content.Types.CubemapContent.#ctor(System.String,Bliss.CSharp.Textures.Cubemaps.CubemapLayout,System.Boolean,System.Boolean)
+  - Sparkle.CSharp.Content.Types.CubemapContent.Layout
+  - Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+  - Sparkle.CSharp.Content.Types.CubemapContent.Path
+  - Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+  langs:
+  - csharp
+  - vb
+  name: CubemapContent
+  nameWithType: CubemapContent
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CubemapContent
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  syntax:
+    content: 'public class CubemapContent : IContentType<Cubemap>'
+    content.vb: Public Class CubemapContent Implements IContentType(Of Cubemap)
+  inheritance:
+  - System.Object
+  implements:
+  - Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Path
+  commentId: P:Sparkle.CSharp.Content.Types.CubemapContent.Path
+  id: Path
+  parent: Sparkle.CSharp.Content.Types.CubemapContent
+  langs:
+  - csharp
+  - vb
+  name: Path
+  nameWithType: CubemapContent.Path
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Path
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Path
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 9
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: The file path of the cubemap.
+  example: []
+  syntax:
+    content: public string Path { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Path As String
+  overload: Sparkle.CSharp.Content.Types.CubemapContent.Path*
+  implements:
+  - Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}.Path
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Layout
+  commentId: P:Sparkle.CSharp.Content.Types.CubemapContent.Layout
+  id: Layout
+  parent: Sparkle.CSharp.Content.Types.CubemapContent
+  langs:
+  - csharp
+  - vb
+  name: Layout
+  nameWithType: CubemapContent.Layout
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Layout
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Layout
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 14
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: The layout configuration of the cubemap.
+  example: []
+  syntax:
+    content: public CubemapLayout Layout { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Cubemaps.CubemapLayout
+    content.vb: Public ReadOnly Property Layout As CubemapLayout
+  overload: Sparkle.CSharp.Content.Types.CubemapContent.Layout*
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+  commentId: P:Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+  id: Mipmap
+  parent: Sparkle.CSharp.Content.Types.CubemapContent
+  langs:
+  - csharp
+  - vb
+  name: Mipmap
+  nameWithType: CubemapContent.Mipmap
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Mipmap
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 19
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Indicates whether to generate mipmaps for the cubemap.
+  example: []
+  syntax:
+    content: public bool Mipmap { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property Mipmap As Boolean
+  overload: Sparkle.CSharp.Content.Types.CubemapContent.Mipmap*
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+  commentId: P:Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+  id: UseSrgbFormat
+  parent: Sparkle.CSharp.Content.Types.CubemapContent
+  langs:
+  - csharp
+  - vb
+  name: UseSrgbFormat
+  nameWithType: CubemapContent.UseSrgbFormat
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UseSrgbFormat
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 24
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Indicates whether to use the sRGB color format for the cubemap.
+  example: []
+  syntax:
+    content: public bool UseSrgbFormat { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property UseSrgbFormat As Boolean
+  overload: Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat*
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.#ctor(System.String,Bliss.CSharp.Textures.Cubemaps.CubemapLayout,System.Boolean,System.Boolean)
+  commentId: M:Sparkle.CSharp.Content.Types.CubemapContent.#ctor(System.String,Bliss.CSharp.Textures.Cubemaps.CubemapLayout,System.Boolean,System.Boolean)
+  id: '#ctor(System.String,Bliss.CSharp.Textures.Cubemaps.CubemapLayout,System.Boolean,System.Boolean)'
+  parent: Sparkle.CSharp.Content.Types.CubemapContent
+  langs:
+  - csharp
+  - vb
+  name: CubemapContent(string, CubemapLayout, bool, bool)
+  nameWithType: CubemapContent.CubemapContent(string, CubemapLayout, bool, bool)
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.CubemapContent(string, Bliss.CSharp.Textures.Cubemaps.CubemapLayout, bool, bool)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Content/Types/CubemapContent.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Content.Types.CubemapContent" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public CubemapContent(string path, CubemapLayout layout = CubemapLayout.AutoDetect, bool mipmap = true, bool srgb = false)
+    parameters:
+    - id: path
+      type: System.String
+      description: The file path of the cubemap.
+    - id: layout
+      type: Bliss.CSharp.Textures.Cubemaps.CubemapLayout
+      description: The layout configuration of the cubemap (default is AutoDetect).
+    - id: mipmap
+      type: System.Boolean
+      description: Whether to generate mipmaps for the cubemap (default is true).
+    - id: srgb
+      type: System.Boolean
+      description: Whether to use the sRGB format for the cubemap (default is false).
+    content.vb: Public Sub New(path As String, layout As CubemapLayout = CubemapLayout.AutoDetect, mipmap As Boolean = True, srgb As Boolean = False)
+  overload: Sparkle.CSharp.Content.Types.CubemapContent.#ctor*
+  nameWithType.vb: CubemapContent.New(String, CubemapLayout, Boolean, Boolean)
+  fullName.vb: Sparkle.CSharp.Content.Types.CubemapContent.New(String, Bliss.CSharp.Textures.Cubemaps.CubemapLayout, Boolean, Boolean)
+  name.vb: New(String, CubemapLayout, Boolean, Boolean)
+references:
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}
+  parent: Sparkle.CSharp.Content.Types
+  definition: Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<Cubemap>
+  nameWithType: IContentType<Cubemap>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<Bliss.CSharp.Textures.Cubemaps.Cubemap>
+  nameWithType.vb: IContentType(Of Cubemap)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of Bliss.CSharp.Textures.Cubemaps.Cubemap)
+  name.vb: IContentType(Of Cubemap)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - uid: Bliss.CSharp.Textures.Cubemaps.Cubemap
+    name: Cubemap
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bliss.CSharp.Textures.Cubemaps.Cubemap
+    name: Cubemap
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Path*
+  commentId: Overload:Sparkle.CSharp.Content.Types.CubemapContent.Path
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html#Sparkle_CSharp_Content_Types_CubemapContent_Path
+  name: Path
+  nameWithType: CubemapContent.Path
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Path
+- uid: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}.Path
+  commentId: P:Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}.Path
+  parent: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Textures.Cubemaps.Cubemap}
+  definition: Sparkle.CSharp.Content.Types.IContentType`1.Path
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html#Sparkle_CSharp_Content_Types_IContentType_1_Path
+  name: Path
+  nameWithType: IContentType<Cubemap>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<Bliss.CSharp.Textures.Cubemaps.Cubemap>.Path
+  nameWithType.vb: IContentType(Of Cubemap).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of Bliss.CSharp.Textures.Cubemaps.Cubemap).Path
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.Content.Types.IContentType`1.Path
+  commentId: P:Sparkle.CSharp.Content.Types.IContentType`1.Path
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html#Sparkle_CSharp_Content_Types_IContentType_1_Path
+  name: Path
+  nameWithType: IContentType<T>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>.Path
+  nameWithType.vb: IContentType(Of T).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T).Path
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Layout*
+  commentId: Overload:Sparkle.CSharp.Content.Types.CubemapContent.Layout
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html#Sparkle_CSharp_Content_Types_CubemapContent_Layout
+  name: Layout
+  nameWithType: CubemapContent.Layout
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Layout
+- uid: Bliss.CSharp.Textures.Cubemaps.CubemapLayout
+  commentId: T:Bliss.CSharp.Textures.Cubemaps.CubemapLayout
+  parent: Bliss.CSharp.Textures.Cubemaps
+  isExternal: true
+  name: CubemapLayout
+  nameWithType: CubemapLayout
+  fullName: Bliss.CSharp.Textures.Cubemaps.CubemapLayout
+- uid: Bliss.CSharp.Textures.Cubemaps
+  commentId: N:Bliss.CSharp.Textures.Cubemaps
+  isExternal: true
+  name: Bliss.CSharp.Textures.Cubemaps
+  nameWithType: Bliss.CSharp.Textures.Cubemaps
+  fullName: Bliss.CSharp.Textures.Cubemaps
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures.Cubemaps
+    name: Cubemaps
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures.Cubemaps
+    name: Cubemaps
+    isExternal: true
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.Mipmap*
+  commentId: Overload:Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html#Sparkle_CSharp_Content_Types_CubemapContent_Mipmap
+  name: Mipmap
+  nameWithType: CubemapContent.Mipmap
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.Mipmap
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat*
+  commentId: Overload:Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html#Sparkle_CSharp_Content_Types_CubemapContent_UseSrgbFormat
+  name: UseSrgbFormat
+  nameWithType: CubemapContent.UseSrgbFormat
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.UseSrgbFormat
+- uid: Sparkle.CSharp.Content.Types.CubemapContent
+  commentId: T:Sparkle.CSharp.Content.Types.CubemapContent
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html
+  name: CubemapContent
+  nameWithType: CubemapContent
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent
+- uid: Sparkle.CSharp.Content.Types.CubemapContent.#ctor*
+  commentId: Overload:Sparkle.CSharp.Content.Types.CubemapContent.#ctor
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html#Sparkle_CSharp_Content_Types_CubemapContent__ctor_System_String_Bliss_CSharp_Textures_Cubemaps_CubemapLayout_System_Boolean_System_Boolean_
+  name: CubemapContent
+  nameWithType: CubemapContent.CubemapContent
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent.CubemapContent
+  nameWithType.vb: CubemapContent.New
+  fullName.vb: Sparkle.CSharp.Content.Types.CubemapContent.New
+  name.vb: New

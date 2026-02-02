@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  id: Sparkle.CSharp.Graphics
+  children:
+  - Sparkle.CSharp.Graphics.GlobalGraphicsAssets
+  - Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Graphics.GlobalGraphicsAssets
+  commentId: T:Sparkle.CSharp.Graphics.GlobalGraphicsAssets
+  href: Sparkle.CSharp.Graphics.GlobalGraphicsAssets.html
+  name: GlobalGraphicsAssets
+  nameWithType: GlobalGraphicsAssets
+  fullName: Sparkle.CSharp.Graphics.GlobalGraphicsAssets
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html

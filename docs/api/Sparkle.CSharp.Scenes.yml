@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  id: Sparkle.CSharp.Scenes
+  children:
+  - Sparkle.CSharp.Scenes.Scene
+  - Sparkle.CSharp.Scenes.SceneManager
+  - Sparkle.CSharp.Scenes.SceneType
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Scenes.Scene
+  commentId: T:Sparkle.CSharp.Scenes.Scene
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.Scene.html
+  name: Scene
+  nameWithType: Scene
+  fullName: Sparkle.CSharp.Scenes.Scene
+- uid: Sparkle.CSharp.Scenes.SceneManager
+  commentId: T:Sparkle.CSharp.Scenes.SceneManager
+  href: Sparkle.CSharp.Scenes.SceneManager.html
+  name: SceneManager
+  nameWithType: SceneManager
+  fullName: Sparkle.CSharp.Scenes.SceneManager
+- uid: Sparkle.CSharp.Scenes.SceneType
+  commentId: T:Sparkle.CSharp.Scenes.SceneType
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.SceneType.html
+  name: SceneType
+  nameWithType: SceneType
+  fullName: Sparkle.CSharp.Scenes.SceneType
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html

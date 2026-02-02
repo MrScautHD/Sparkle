@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Shapes
+  id: Sparkle.CSharp.Physics.Dim2.Shapes
+  children:
+  - Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D
+  - Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D
+  - Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D
+  - Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  - Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D
+  - Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim2.Shapes
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Shapes
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D.html
+  name: CapsuleShape2D
+  nameWithType: CapsuleShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D.html
+  name: ChainShape2D
+  nameWithType: ChainShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D.html
+  name: CircleShape2D
+  nameWithType: CircleShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  parent: Sparkle.CSharp.Physics.Dim2.Shapes
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html
+  name: IShape2D
+  nameWithType: IShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D.html
+  name: PolygonShape2D
+  nameWithType: PolygonShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D.html
+  name: SegmentShape2D
+  nameWithType: SegmentShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Shapes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Shapes
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Shapes
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html

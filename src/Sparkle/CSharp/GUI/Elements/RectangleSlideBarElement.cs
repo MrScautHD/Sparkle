@@ -49,12 +49,12 @@ public class RectangleSlideBarElement : GuiElement {
     /// The new value of the slider is passed as a parameter to the attached event handlers.
     /// </summary>
     public event Action<float>? ValueUpdated;
-
+    
     /// <summary>
     /// The user is currently dragging the slider.
     /// </summary>
     private bool _isDragging;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="RectangleSlideBarElement"/> class.
     /// </summary>

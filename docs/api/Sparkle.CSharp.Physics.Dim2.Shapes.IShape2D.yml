@@ -1,0 +1,127 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  id: IShape2D
+  parent: Sparkle.CSharp.Physics.Dim2.Shapes
+  children:
+  - Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape(Box2D.Body)
+  langs:
+  - csharp
+  - vb
+  name: IShape2D
+  nameWithType: IShape2D
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  type: Interface
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Shapes/IShape2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IShape2D
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Shapes/IShape2D.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Shapes
+  syntax:
+    content: public interface IShape2D
+    content.vb: Public Interface IShape2D
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape(Box2D.Body)
+  commentId: M:Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape(Box2D.Body)
+  id: CreateShape(Box2D.Body)
+  parent: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D
+  langs:
+  - csharp
+  - vb
+  name: CreateShape(Body)
+  nameWithType: IShape2D.CreateShape(Body)
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape(Box2D.Body)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Shapes/IShape2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateShape
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Shapes/IShape2D.cs
+    startLine: 10
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Shapes
+  summary: Creates and attaches a shape to the specified physics body.
+  example: []
+  syntax:
+    content: void CreateShape(Body body)
+    parameters:
+    - id: body
+      type: Box2D.Body
+      description: The physics body to which the shape will be attached.
+    content.vb: Sub CreateShape(body As Body)
+  overload: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape*
+references:
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Shapes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Shapes
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Shapes
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Shapes
+    name: Shapes
+    href: Sparkle.CSharp.Physics.Dim2.Shapes.html
+- uid: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape
+  href: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html#Sparkle_CSharp_Physics_Dim2_Shapes_IShape2D_CreateShape_Box2D_Body_
+  name: CreateShape
+  nameWithType: IShape2D.CreateShape
+  fullName: Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.CreateShape
+- uid: Box2D.Body
+  commentId: T:Box2D.Body
+  parent: Box2D
+  isExternal: true
+  name: Body
+  nameWithType: Body
+  fullName: Box2D.Body
+- uid: Box2D
+  commentId: N:Box2D
+  isExternal: true
+  name: Box2D
+  nameWithType: Box2D
+  fullName: Box2D

@@ -1,0 +1,1077 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  id: SoftBodySphere
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  children:
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor(Veldrid.GraphicsDevice,Jitter2.World,System.Numerics.Vector3,System.Numerics.Quaternion,System.Numerics.Vector3,System.Numerics.Vector3,System.Int32,System.Single,System.Single,System.Single,System.Single)
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh(Veldrid.GraphicsDevice)
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw(Jitter2.IDebugDrawer)
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh(Veldrid.CommandList)
+  langs:
+  - csharp
+  - vb
+  name: SoftBodySphere
+  nameWithType: SoftBodySphere
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SoftBodySphere
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  syntax:
+    content: 'public class SoftBodySphere : SimpleSoftBody, IDebugDrawable'
+    content.vb: Public Class SoftBodySphere Inherits SimpleSoftBody Implements IDebugDrawable
+  inheritance:
+  - System.Object
+  - Jitter2.SoftBodies.SoftBody
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  implements:
+  - Jitter2.IDebugDrawable
+  inheritedMembers:
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GraphicsDevice
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Mesh
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(System.Single)
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(System.Int32)
+  - Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy
+  - Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+  - Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+  - Jitter2.SoftBodies.SoftBody.Vertices
+  - Jitter2.SoftBodies.SoftBody.Springs
+  - Jitter2.SoftBodies.SoftBody.Shapes
+  - Jitter2.SoftBodies.SoftBody.World
+  - Jitter2.SoftBodies.SoftBody.IsActive
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+  commentId: P:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+  id: Center
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: Center
+  nameWithType: SoftBodySphere.Center
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Center
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 22
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  summary: The central rigid body of the soft body.
+  example: []
+  syntax:
+    content: public override sealed RigidBody Center { get; protected set; }
+    parameters: []
+    return:
+      type: Jitter2.Dynamics.RigidBody
+    content.vb: Public NotOverridable Overrides Property Center As RigidBody
+  overridden: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Center
+  overload: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center*
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor(Veldrid.GraphicsDevice,Jitter2.World,System.Numerics.Vector3,System.Numerics.Quaternion,System.Numerics.Vector3,System.Numerics.Vector3,System.Int32,System.Single,System.Single,System.Single,System.Single)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor(Veldrid.GraphicsDevice,Jitter2.World,System.Numerics.Vector3,System.Numerics.Quaternion,System.Numerics.Vector3,System.Numerics.Vector3,System.Int32,System.Single,System.Single,System.Single,System.Single)
+  id: '#ctor(Veldrid.GraphicsDevice,Jitter2.World,System.Numerics.Vector3,System.Numerics.Quaternion,System.Numerics.Vector3,System.Numerics.Vector3,System.Int32,System.Single,System.Single,System.Single,System.Single)'
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: SoftBodySphere(GraphicsDevice, World, Vector3, Quaternion, Vector3, Vector3, int, float, float, float, float)
+  nameWithType: SoftBodySphere.SoftBodySphere(GraphicsDevice, World, Vector3, Quaternion, Vector3, Vector3, int, float, float, float, float)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.SoftBodySphere(Veldrid.GraphicsDevice, Jitter2.World, System.Numerics.Vector3, System.Numerics.Quaternion, System.Numerics.Vector3, System.Numerics.Vector3, int, float, float, float, float)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 39
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  summary: >-
+    Initializes a new instance of the <xref href="Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere" data-throw-if-not-resolved="false"></xref> class, constructing a soft-body physics object
+
+    in the shape of a sphere using a triangulated hull based on a subdivided unit sphere.
+  example: []
+  syntax:
+    content: public SoftBodySphere(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, int subdivisions = 4, float vertexMass = 200, float centerMass = 1, float centerInertia = 0.05, float softness = 0.75)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device used for rendering.
+    - id: world
+      type: Jitter2.World
+      description: The physics simulation world to which the soft body belongs.
+    - id: position
+      type: System.Numerics.Vector3
+      description: The world position where the soft body should be placed.
+    - id: rotation
+      type: System.Numerics.Quaternion
+      description: The rotation to apply to the soft body sphere.
+    - id: size
+      type: System.Numerics.Vector3
+      description: The base size of the sphere before scaling and rotation.
+    - id: scale
+      type: System.Numerics.Vector3
+      description: The scaling factor to apply to the size of the sphere.
+    - id: subdivisions
+      type: System.Int32
+      description: The number of recursive subdivisions used to refine the unit sphere's mesh.
+    - id: vertexMass
+      type: System.Single
+      description: The mass of each vertex rigid body. Default is 120.0.
+    - id: centerMass
+      type: System.Single
+      description: The mass of the central rigid body connecting all vertices. Default is 1.0.
+    - id: centerInertia
+      type: System.Single
+      description: The inertia tensor scaling factor for the central body. Default is 0.05.
+    - id: softness
+      type: System.Single
+      description: The softness value used for spring constraints between the center and vertex bodies. Default is 0.5.
+    content.vb: Public Sub New(graphicsDevice As GraphicsDevice, world As World, position As Vector3, rotation As Quaternion, size As Vector3, scale As Vector3, subdivisions As Integer = 4, vertexMass As Single = 200, centerMass As Single = 1, centerInertia As Single = 0.05, softness As Single = 0.75)
+  overload: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor*
+  nameWithType.vb: SoftBodySphere.New(GraphicsDevice, World, Vector3, Quaternion, Vector3, Vector3, Integer, Single, Single, Single, Single)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.New(Veldrid.GraphicsDevice, Jitter2.World, System.Numerics.Vector3, System.Numerics.Quaternion, System.Numerics.Vector3, System.Numerics.Vector3, Integer, Single, Single, Single, Single)
+  name.vb: New(GraphicsDevice, World, Vector3, Quaternion, Vector3, Vector3, Integer, Single, Single, Single, Single)
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh(Veldrid.GraphicsDevice)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh(Veldrid.GraphicsDevice)
+  id: CreateMesh(Veldrid.GraphicsDevice)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: CreateMesh(GraphicsDevice)
+  nameWithType: SoftBodySphere.CreateMesh(GraphicsDevice)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh(Veldrid.GraphicsDevice)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CreateMesh
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 107
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  summary: Creates a mesh representing the current soft body structure based on its geometry and material properties.
+  example: []
+  syntax:
+    content: protected override Mesh CreateMesh(GraphicsDevice graphicsDevice)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device used to create the mesh and render its contents.
+    return:
+      type: Bliss.CSharp.Geometry.Mesh
+      description: A mesh constructed from the soft body geometry, configured with vertices, indices, and material.
+    content.vb: Protected Overrides Function CreateMesh(graphicsDevice As GraphicsDevice) As Mesh
+  overridden: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+  overload: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh*
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh(Veldrid.CommandList)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh(Veldrid.CommandList)
+  id: UpdateMesh(Veldrid.CommandList)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: UpdateMesh(CommandList)
+  nameWithType: SoftBodySphere.UpdateMesh(CommandList)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh(Veldrid.CommandList)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UpdateMesh
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 165
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  summary: Updates the mesh to reflect the current positions of the vertices in the soft body structure.
+  example: []
+  syntax:
+    content: protected override void UpdateMesh(CommandList commandList)
+    parameters:
+    - id: commandList
+      type: Veldrid.CommandList
+      description: The command list used to update the vertex buffer for rendering.
+    content.vb: Protected Overrides Sub UpdateMesh(commandList As CommandList)
+  overridden: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+  overload: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh*
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw(Jitter2.IDebugDrawer)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw(Jitter2.IDebugDrawer)
+  id: DebugDraw(Jitter2.IDebugDrawer)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  langs:
+  - csharp
+  - vb
+  name: DebugDraw(IDebugDrawer)
+  nameWithType: SoftBodySphere.DebugDraw(IDebugDrawer)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw(Jitter2.IDebugDrawer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DebugDraw
+    path: ../src/Sparkle/CSharp/Physics/Dim3/SoftBodies/Types/SoftBodySphere.cs
+    startLine: 197
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  summary: Renders debug visualizations for the soft body.
+  example: []
+  syntax:
+    content: public override void DebugDraw(IDebugDrawer drawer)
+    parameters:
+    - id: drawer
+      type: Jitter2.IDebugDrawer
+      description: The debug drawer used to render the visualizations.
+    content.vb: Public Overrides Sub DebugDraw(drawer As IDebugDrawer)
+  overridden: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+  overload: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw*
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  commentId: N:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  nameWithType: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+    name: Types
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies
+    name: SoftBodies
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+    name: Types
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Jitter2.SoftBodies.SoftBody
+  commentId: T:Jitter2.SoftBodies.SoftBody
+  parent: Jitter2.SoftBodies
+  isExternal: true
+  name: SoftBody
+  nameWithType: SoftBody
+  fullName: Jitter2.SoftBodies.SoftBody
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html
+  name: SimpleSoftBody
+  nameWithType: SimpleSoftBody
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+- uid: Jitter2.IDebugDrawable
+  commentId: T:Jitter2.IDebugDrawable
+  parent: Jitter2
+  isExternal: true
+  name: IDebugDrawable
+  nameWithType: IDebugDrawable
+  fullName: Jitter2.IDebugDrawable
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GraphicsDevice
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: SimpleSoftBody.GraphicsDevice
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GraphicsDevice
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Mesh
+  commentId: P:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Mesh
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_Mesh
+  name: Mesh
+  nameWithType: SimpleSoftBody.Mesh
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Mesh
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(System.Single)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(System.Single)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_WorldOnPostStep_System_Single_
+  name: WorldOnPostStep(float)
+  nameWithType: SimpleSoftBody.WorldOnPostStep(float)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(float)
+  nameWithType.vb: SimpleSoftBody.WorldOnPostStep(Single)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(Single)
+  name.vb: WorldOnPostStep(Single)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(System.Single)
+    name: WorldOnPostStep
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_WorldOnPostStep_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.WorldOnPostStep(System.Single)
+    name: WorldOnPostStep
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_WorldOnPostStep_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(System.Int32)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(System.Int32)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_GetLerpedVertexPos_System_Int32_
+  name: GetLerpedVertexPos(int)
+  nameWithType: SimpleSoftBody.GetLerpedVertexPos(int)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(int)
+  nameWithType.vb: SimpleSoftBody.GetLerpedVertexPos(Integer)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(Integer)
+  name.vb: GetLerpedVertexPos(Integer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(System.Int32)
+    name: GetLerpedVertexPos
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_GetLerpedVertexPos_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.GetLerpedVertexPos(System.Int32)
+    name: GetLerpedVertexPos
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_GetLerpedVertexPos_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_Destroy
+  name: Destroy()
+  nameWithType: SimpleSoftBody.Destroy()
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy
+    name: Destroy
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_Destroy
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Destroy
+    name: Destroy
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_Destroy
+  - name: (
+  - name: )
+- uid: Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+  commentId: M:Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: AddShape(SoftBodyShape)
+  nameWithType: SoftBody.AddShape(SoftBodyShape)
+  fullName: Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+  spec.csharp:
+  - uid: Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+    name: AddShape
+    isExternal: true
+  - name: (
+  - uid: Jitter2.SoftBodies.SoftBodyShape
+    name: SoftBodyShape
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.SoftBodies.SoftBody.AddShape(Jitter2.SoftBodies.SoftBodyShape)
+    name: AddShape
+    isExternal: true
+  - name: (
+  - uid: Jitter2.SoftBodies.SoftBodyShape
+    name: SoftBodyShape
+    isExternal: true
+  - name: )
+- uid: Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+  commentId: M:Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: AddSpring(Constraint)
+  nameWithType: SoftBody.AddSpring(Constraint)
+  fullName: Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+  spec.csharp:
+  - uid: Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+    name: AddSpring
+    isExternal: true
+  - name: (
+  - uid: Jitter2.Dynamics.Constraints.Constraint
+    name: Constraint
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.SoftBodies.SoftBody.AddSpring(Jitter2.Dynamics.Constraints.Constraint)
+    name: AddSpring
+    isExternal: true
+  - name: (
+  - uid: Jitter2.Dynamics.Constraints.Constraint
+    name: Constraint
+    isExternal: true
+  - name: )
+- uid: Jitter2.SoftBodies.SoftBody.Vertices
+  commentId: P:Jitter2.SoftBodies.SoftBody.Vertices
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: Vertices
+  nameWithType: SoftBody.Vertices
+  fullName: Jitter2.SoftBodies.SoftBody.Vertices
+- uid: Jitter2.SoftBodies.SoftBody.Springs
+  commentId: P:Jitter2.SoftBodies.SoftBody.Springs
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: Springs
+  nameWithType: SoftBody.Springs
+  fullName: Jitter2.SoftBodies.SoftBody.Springs
+- uid: Jitter2.SoftBodies.SoftBody.Shapes
+  commentId: P:Jitter2.SoftBodies.SoftBody.Shapes
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: Shapes
+  nameWithType: SoftBody.Shapes
+  fullName: Jitter2.SoftBodies.SoftBody.Shapes
+- uid: Jitter2.SoftBodies.SoftBody.World
+  commentId: P:Jitter2.SoftBodies.SoftBody.World
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: World
+  nameWithType: SoftBody.World
+  fullName: Jitter2.SoftBodies.SoftBody.World
+- uid: Jitter2.SoftBodies.SoftBody.IsActive
+  commentId: P:Jitter2.SoftBodies.SoftBody.IsActive
+  parent: Jitter2.SoftBodies.SoftBody
+  isExternal: true
+  name: IsActive
+  nameWithType: SoftBody.IsActive
+  fullName: Jitter2.SoftBodies.SoftBody.IsActive
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Jitter2.SoftBodies
+  commentId: N:Jitter2.SoftBodies
+  isExternal: true
+  name: Jitter2.SoftBodies
+  nameWithType: Jitter2.SoftBodies
+  fullName: Jitter2.SoftBodies
+  spec.csharp:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.SoftBodies
+    name: SoftBodies
+    isExternal: true
+  spec.vb:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.SoftBodies
+    name: SoftBodies
+    isExternal: true
+- uid: Jitter2
+  commentId: N:Jitter2
+  isExternal: true
+  name: Jitter2
+  nameWithType: Jitter2
+  fullName: Jitter2
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Center
+  commentId: P:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Center
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_Center
+  name: Center
+  nameWithType: SimpleSoftBody.Center
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.Center
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SoftBodySphere_Center
+  name: Center
+  nameWithType: SoftBodySphere.Center
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.Center
+- uid: Jitter2.Dynamics.RigidBody
+  commentId: T:Jitter2.Dynamics.RigidBody
+  parent: Jitter2.Dynamics
+  isExternal: true
+  name: RigidBody
+  nameWithType: RigidBody
+  fullName: Jitter2.Dynamics.RigidBody
+- uid: Jitter2.Dynamics
+  commentId: N:Jitter2.Dynamics
+  isExternal: true
+  name: Jitter2.Dynamics
+  nameWithType: Jitter2.Dynamics
+  fullName: Jitter2.Dynamics
+  spec.csharp:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.Dynamics
+    name: Dynamics
+    isExternal: true
+  spec.vb:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.Dynamics
+    name: Dynamics
+    isExternal: true
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  commentId: T:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html
+  name: SoftBodySphere
+  nameWithType: SoftBodySphere
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.#ctor
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SoftBodySphere__ctor_Veldrid_GraphicsDevice_Jitter2_World_System_Numerics_Vector3_System_Numerics_Quaternion_System_Numerics_Vector3_System_Numerics_Vector3_System_Int32_System_Single_System_Single_System_Single_System_Single_
+  name: SoftBodySphere
+  nameWithType: SoftBodySphere.SoftBodySphere
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.SoftBodySphere
+  nameWithType.vb: SoftBodySphere.New
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.New
+  name.vb: New
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Jitter2.World
+  commentId: T:Jitter2.World
+  parent: Jitter2
+  isExternal: true
+  name: World
+  nameWithType: World
+  fullName: Jitter2.World
+- uid: System.Numerics.Vector3
+  commentId: T:System.Numerics.Vector3
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  name: Vector3
+  nameWithType: Vector3
+  fullName: System.Numerics.Vector3
+- uid: System.Numerics.Quaternion
+  commentId: T:System.Numerics.Quaternion
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.quaternion
+  name: Quaternion
+  nameWithType: Quaternion
+  fullName: System.Numerics.Quaternion
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_CreateMesh_Veldrid_GraphicsDevice_
+  name: CreateMesh(GraphicsDevice)
+  nameWithType: SimpleSoftBody.CreateMesh(GraphicsDevice)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+    name: CreateMesh
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_CreateMesh_Veldrid_GraphicsDevice_
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.CreateMesh(Veldrid.GraphicsDevice)
+    name: CreateMesh
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_CreateMesh_Veldrid_GraphicsDevice_
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SoftBodySphere_CreateMesh_Veldrid_GraphicsDevice_
+  name: CreateMesh
+  nameWithType: SoftBodySphere.CreateMesh
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.CreateMesh
+- uid: Bliss.CSharp.Geometry.Mesh
+  commentId: T:Bliss.CSharp.Geometry.Mesh
+  parent: Bliss.CSharp.Geometry
+  isExternal: true
+  name: Mesh
+  nameWithType: Mesh
+  fullName: Bliss.CSharp.Geometry.Mesh
+- uid: Bliss.CSharp.Geometry
+  commentId: N:Bliss.CSharp.Geometry
+  isExternal: true
+  name: Bliss.CSharp.Geometry
+  nameWithType: Bliss.CSharp.Geometry
+  fullName: Bliss.CSharp.Geometry
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Geometry
+    name: Geometry
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Geometry
+    name: Geometry
+    isExternal: true
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_UpdateMesh_Veldrid_CommandList_
+  name: UpdateMesh(CommandList)
+  nameWithType: SimpleSoftBody.UpdateMesh(CommandList)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+    name: UpdateMesh
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_UpdateMesh_Veldrid_CommandList_
+  - name: (
+  - uid: Veldrid.CommandList
+    name: CommandList
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.UpdateMesh(Veldrid.CommandList)
+    name: UpdateMesh
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_UpdateMesh_Veldrid_CommandList_
+  - name: (
+  - uid: Veldrid.CommandList
+    name: CommandList
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SoftBodySphere_UpdateMesh_Veldrid_CommandList_
+  name: UpdateMesh
+  nameWithType: SoftBodySphere.UpdateMesh
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.UpdateMesh
+- uid: Veldrid.CommandList
+  commentId: T:Veldrid.CommandList
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  name: CommandList
+  nameWithType: CommandList
+  fullName: Veldrid.CommandList
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+  parent: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_DebugDraw_Jitter2_IDebugDrawer_
+  name: DebugDraw(IDebugDrawer)
+  nameWithType: SimpleSoftBody.DebugDraw(IDebugDrawer)
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+    name: DebugDraw
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_DebugDraw_Jitter2_IDebugDrawer_
+  - name: (
+  - uid: Jitter2.IDebugDrawer
+    name: IDebugDrawer
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.DebugDraw(Jitter2.IDebugDrawer)
+    name: DebugDraw
+    href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SimpleSoftBody_DebugDraw_Jitter2_IDebugDrawer_
+  - name: (
+  - uid: Jitter2.IDebugDrawer
+    name: IDebugDrawer
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw
+  href: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html#Sparkle_CSharp_Physics_Dim3_SoftBodies_Types_SoftBodySphere_DebugDraw_Jitter2_IDebugDrawer_
+  name: DebugDraw
+  nameWithType: SoftBodySphere.DebugDraw
+  fullName: Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.DebugDraw
+- uid: Jitter2.IDebugDrawer
+  commentId: T:Jitter2.IDebugDrawer
+  parent: Jitter2
+  isExternal: true
+  name: IDebugDrawer
+  nameWithType: IDebugDrawer
+  fullName: Jitter2.IDebugDrawer

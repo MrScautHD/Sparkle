@@ -1,0 +1,847 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Registries.RegistryManager
+  commentId: T:Sparkle.CSharp.Registries.RegistryManager
+  id: RegistryManager
+  parent: Sparkle.CSharp.Registries
+  children:
+  - Sparkle.CSharp.Registries.RegistryManager.AddRegistry(Sparkle.CSharp.Registries.Registry)
+  - Sparkle.CSharp.Registries.RegistryManager.GetRegistries
+  - Sparkle.CSharp.Registries.RegistryManager.GetRegistry``1
+  - Sparkle.CSharp.Registries.RegistryManager.HasRegistry``1
+  - Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  - Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry``1
+  - Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry(Sparkle.CSharp.Registries.Registry)
+  - Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry``1(``0@)
+  - Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  - Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry``1
+  langs:
+  - csharp
+  - vb
+  name: RegistryManager
+  nameWithType: RegistryManager
+  fullName: Sparkle.CSharp.Registries.RegistryManager
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RegistryManager
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 5
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  syntax:
+    content: public static class RegistryManager
+    content.vb: Public Module RegistryManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Registries.RegistryManager.GetRegistries
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.GetRegistries
+  id: GetRegistries
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: GetRegistries()
+  nameWithType: RegistryManager.GetRegistries()
+  fullName: Sparkle.CSharp.Registries.RegistryManager.GetRegistries()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetRegistries
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 46
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Retrieves an enumerable collection of all active registry instances managed by the registry manager.
+  example: []
+  syntax:
+    content: public static IEnumerable<Registry> GetRegistries()
+    return:
+      type: System.Collections.Generic.IEnumerable{Sparkle.CSharp.Registries.Registry}
+      description: An enumerable collection of <xref href="Sparkle.CSharp.Registries.Registry" data-throw-if-not-resolved="false"></xref> instances currently registered.
+    content.vb: Public Shared Function GetRegistries() As IEnumerable(Of Registry)
+  overload: Sparkle.CSharp.Registries.RegistryManager.GetRegistries*
+- uid: Sparkle.CSharp.Registries.RegistryManager.HasRegistry``1
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.HasRegistry``1
+  id: HasRegistry``1
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: HasRegistry<T>()
+  nameWithType: RegistryManager.HasRegistry<T>()
+  fullName: Sparkle.CSharp.Registries.RegistryManager.HasRegistry<T>()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: HasRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 55
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Determines whether a registry of the specified type exists in the registry manager.
+  example: []
+  syntax:
+    content: 'public static bool HasRegistry<T>() where T : Registry'
+    typeParameters:
+    - id: T
+      description: The type of the registry to check for.
+    return:
+      type: System.Boolean
+      description: True if a registry of the specified type exists; otherwise, false.
+    content.vb: Public Shared Function HasRegistry(Of T As Registry)() As Boolean
+  overload: Sparkle.CSharp.Registries.RegistryManager.HasRegistry*
+  nameWithType.vb: RegistryManager.HasRegistry(Of T)()
+  fullName.vb: Sparkle.CSharp.Registries.RegistryManager.HasRegistry(Of T)()
+  name.vb: HasRegistry(Of T)()
+- uid: Sparkle.CSharp.Registries.RegistryManager.GetRegistry``1
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.GetRegistry``1
+  id: GetRegistry``1
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: GetRegistry<T>()
+  nameWithType: RegistryManager.GetRegistry<T>()
+  fullName: Sparkle.CSharp.Registries.RegistryManager.GetRegistry<T>()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 64
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Retrieves a registry of the specified type from the registry manager.
+  example: []
+  syntax:
+    content: 'public static T? GetRegistry<T>() where T : Registry'
+    typeParameters:
+    - id: T
+      description: The type of the registry to retrieve.
+    return:
+      type: '{T}'
+      description: Returns an instance of the registry if found; otherwise, null.
+    content.vb: Public Shared Function GetRegistry(Of T As Registry)() As T
+  overload: Sparkle.CSharp.Registries.RegistryManager.GetRegistry*
+  nameWithType.vb: RegistryManager.GetRegistry(Of T)()
+  fullName.vb: Sparkle.CSharp.Registries.RegistryManager.GetRegistry(Of T)()
+  name.vb: GetRegistry(Of T)()
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry``1(``0@)
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry``1(``0@)
+  id: TryGetRegistry``1(``0@)
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: TryGetRegistry<T>(out T?)
+  nameWithType: RegistryManager.TryGetRegistry<T>(out T?)
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry<T>(out T?)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TryGetRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 78
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Attempts to retrieve a registry of the specified type from the registry manager.
+  example: []
+  syntax:
+    content: 'public static bool TryGetRegistry<T>(out T? registry) where T : Registry'
+    parameters:
+    - id: registry
+      type: '{T}'
+      description: The output parameter that will contain the registry instance if found; otherwise, null.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)
+        arguments:
+        - type: System.Boolean
+          value: true
+    typeParameters:
+    - id: T
+      description: The type of the registry to retrieve.
+    return:
+      type: System.Boolean
+      description: Returns true if the registry is successfully located; otherwise, false.
+    content.vb: Public Shared Function TryGetRegistry(Of T As Registry)(registry As T) As Boolean
+  overload: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry*
+  nameWithType.vb: RegistryManager.TryGetRegistry(Of T)(T)
+  fullName.vb: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry(Of T)(T)
+  name.vb: TryGetRegistry(Of T)(T)
+- uid: Sparkle.CSharp.Registries.RegistryManager.AddRegistry(Sparkle.CSharp.Registries.Registry)
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.AddRegistry(Sparkle.CSharp.Registries.Registry)
+  id: AddRegistry(Sparkle.CSharp.Registries.Registry)
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: AddRegistry(Registry)
+  nameWithType: RegistryManager.AddRegistry(Registry)
+  fullName: Sparkle.CSharp.Registries.RegistryManager.AddRegistry(Sparkle.CSharp.Registries.Registry)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AddRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 92
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Adds a registry to the registry manager.
+  example: []
+  syntax:
+    content: public static void AddRegistry(Registry registry)
+    parameters:
+    - id: registry
+      type: Sparkle.CSharp.Registries.Registry
+      description: The registry instance to add to the manager.
+    content.vb: Public Shared Sub AddRegistry(registry As Registry)
+  overload: Sparkle.CSharp.Registries.RegistryManager.AddRegistry*
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry(Sparkle.CSharp.Registries.Registry)
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry(Sparkle.CSharp.Registries.Registry)
+  id: TryAddRegistry(Sparkle.CSharp.Registries.Registry)
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: TryAddRegistry(Registry)
+  nameWithType: RegistryManager.TryAddRegistry(Registry)
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry(Sparkle.CSharp.Registries.Registry)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TryAddRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 103
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Attempts to add a new registry to the registry manager.
+  example: []
+  syntax:
+    content: public static bool TryAddRegistry(Registry registry)
+    parameters:
+    - id: registry
+      type: Sparkle.CSharp.Registries.Registry
+      description: The registry instance to add.
+    return:
+      type: System.Boolean
+      description: Returns true if the registry was successfully added; false if the registry type is already present.
+    content.vb: Public Shared Function TryAddRegistry(registry As Registry) As Boolean
+  overload: Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry*
+- uid: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  id: RemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveRegistry(Registry)
+  nameWithType: RegistryManager.RemoveRegistry(Registry)
+  fullName: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RemoveRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 116
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Removes a specified registry from the list of managed registries.
+  example: []
+  syntax:
+    content: public static void RemoveRegistry(Registry registry)
+    parameters:
+    - id: registry
+      type: Sparkle.CSharp.Registries.Registry
+      description: The registry to be removed.
+    content.vb: Public Shared Sub RemoveRegistry(registry As Registry)
+  overload: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry*
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  id: TryRemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: TryRemoveRegistry(Registry)
+  nameWithType: RegistryManager.TryRemoveRegistry(Registry)
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry(Sparkle.CSharp.Registries.Registry)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TryRemoveRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 127
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Attempts to remove a specified registry from the list of managed registries.
+  example: []
+  syntax:
+    content: public static bool TryRemoveRegistry(Registry registry)
+    parameters:
+    - id: registry
+      type: Sparkle.CSharp.Registries.Registry
+      description: The registry to be removed.
+    return:
+      type: System.Boolean
+      description: True if the registry is successfully removed; otherwise, false if the registry does not exist in the list.
+    content.vb: Public Shared Function TryRemoveRegistry(registry As Registry) As Boolean
+  overload: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry*
+- uid: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry``1
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry``1
+  id: RemoveRegistry``1
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveRegistry<T>()
+  nameWithType: RegistryManager.RemoveRegistry<T>()
+  fullName: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry<T>()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RemoveRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 146
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Removes a registry of the specified type from the registry manager.
+  example: []
+  syntax:
+    content: 'public static void RemoveRegistry<T>() where T : Registry'
+    typeParameters:
+    - id: T
+      description: The type of the registry to remove.
+    content.vb: Public Shared Sub RemoveRegistry(Of T As Registry)()
+  overload: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry*
+  nameWithType.vb: RegistryManager.RemoveRegistry(Of T)()
+  fullName.vb: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry(Of T)()
+  name.vb: RemoveRegistry(Of T)()
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry``1
+  commentId: M:Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry``1
+  id: TryRemoveRegistry``1
+  parent: Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: TryRemoveRegistry<T>()
+  nameWithType: RegistryManager.TryRemoveRegistry<T>()
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry<T>()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Registries/RegistryManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TryRemoveRegistry
+    path: ../src/Sparkle/CSharp/Registries/RegistryManager.cs
+    startLine: 157
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Registries
+  summary: Attempts to remove the specified registry type from the list of managed registries.
+  example: []
+  syntax:
+    content: 'public static bool TryRemoveRegistry<T>() where T : Registry'
+    typeParameters:
+    - id: T
+      description: The type of the registry to remove.
+    return:
+      type: System.Boolean
+      description: True if the registry was successfully removed; otherwise, false.
+    content.vb: Public Shared Function TryRemoveRegistry(Of T As Registry)() As Boolean
+  overload: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry*
+  nameWithType.vb: RegistryManager.TryRemoveRegistry(Of T)()
+  fullName.vb: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry(Of T)()
+  name.vb: TryRemoveRegistry(Of T)()
+references:
+- uid: Sparkle.CSharp.Registries
+  commentId: N:Sparkle.CSharp.Registries
+  href: Sparkle.html
+  name: Sparkle.CSharp.Registries
+  nameWithType: Sparkle.CSharp.Registries
+  fullName: Sparkle.CSharp.Registries
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Registries.Registry
+  commentId: T:Sparkle.CSharp.Registries.Registry
+  parent: Sparkle.CSharp.Registries
+  href: Sparkle.CSharp.Registries.Registry.html
+  name: Registry
+  nameWithType: Registry
+  fullName: Sparkle.CSharp.Registries.Registry
+- uid: Sparkle.CSharp.Registries.RegistryManager.GetRegistries*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.GetRegistries
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_GetRegistries
+  name: GetRegistries
+  nameWithType: RegistryManager.GetRegistries
+  fullName: Sparkle.CSharp.Registries.RegistryManager.GetRegistries
+- uid: System.Collections.Generic.IEnumerable{Sparkle.CSharp.Registries.Registry}
+  commentId: T:System.Collections.Generic.IEnumerable{Sparkle.CSharp.Registries.Registry}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Registry>
+  nameWithType: IEnumerable<Registry>
+  fullName: System.Collections.Generic.IEnumerable<Sparkle.CSharp.Registries.Registry>
+  nameWithType.vb: IEnumerable(Of Registry)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Sparkle.CSharp.Registries.Registry)
+  name.vb: IEnumerable(Of Registry)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Sparkle.CSharp.Registries.Registry
+    name: Registry
+    href: Sparkle.CSharp.Registries.Registry.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Sparkle.CSharp.Registries.Registry
+    name: Registry
+    href: Sparkle.CSharp.Registries.Registry.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Sparkle.CSharp.Registries.RegistryManager.HasRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.HasRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_HasRegistry__1
+  name: HasRegistry
+  nameWithType: RegistryManager.HasRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.HasRegistry
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Registries.RegistryManager.GetRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.GetRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_GetRegistry__1
+  name: GetRegistry
+  nameWithType: RegistryManager.GetRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.GetRegistry
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_TryGetRegistry__1___0__
+  name: TryGetRegistry
+  nameWithType: RegistryManager.TryGetRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryGetRegistry
+- uid: Sparkle.CSharp.Registries.RegistryManager.AddRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.AddRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_AddRegistry_Sparkle_CSharp_Registries_Registry_
+  name: AddRegistry
+  nameWithType: RegistryManager.AddRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.AddRegistry
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_TryAddRegistry_Sparkle_CSharp_Registries_Registry_
+  name: TryAddRegistry
+  nameWithType: RegistryManager.TryAddRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryAddRegistry
+- uid: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_RemoveRegistry_Sparkle_CSharp_Registries_Registry_
+  name: RemoveRegistry
+  nameWithType: RegistryManager.RemoveRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.RemoveRegistry
+- uid: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry*
+  commentId: Overload:Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry
+  href: Sparkle.CSharp.Registries.RegistryManager.html#Sparkle_CSharp_Registries_RegistryManager_TryRemoveRegistry_Sparkle_CSharp_Registries_Registry_
+  name: TryRemoveRegistry
+  nameWithType: RegistryManager.TryRemoveRegistry
+  fullName: Sparkle.CSharp.Registries.RegistryManager.TryRemoveRegistry

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables
+  commentId: N:Sparkle.CSharp.Physics.Dim3.Mappables
+  id: Sparkle.CSharp.Physics.Dim3.Mappables
+  children:
+  - Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim3.Mappables
+  nameWithType: Sparkle.CSharp.Physics.Dim3.Mappables
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  commentId: T:Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere
+  href: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.html
+  name: UnitSphere
+  nameWithType: UnitSphere
+  fullName: Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere

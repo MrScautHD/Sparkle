@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Camera3D | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Camera3D | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_Entities_Camera3D.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.Entities.Camera3D%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.Entities.Camera3D">
+
+
+
+  <h1 id="Sparkle_CSharp_Entities_Camera3D" data-uid="Sparkle.CSharp.Entities.Camera3D" class="text-break">
+Class Camera3D  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.Entities.html">Entities</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Camera3D : Entity, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Disposable</span></div>
+      <div><a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></div>
+      <div><span class="xref">Camera3D</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Scene">Entity.Scene</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Id">Entity.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Tag">Entity.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Init">Entity.Init()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AfterUpdate_System_Double_">Entity.AfterUpdate(double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_FixedUpdate_System_Double_">Entity.FixedUpdate(double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_">Entity.Draw(GraphicsContext, Framebuffer)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponents">Entity.GetComponents()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_HasComponent__1">Entity.HasComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_GetComponent__1">Entity.GetComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryGetComponent__1___0__">Entity.TryGetComponent&lt;T&gt;(out T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_AddComponent_Sparkle_CSharp_Entities_Components_Component_">Entity.AddComponent(Component)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryAddComponent_Sparkle_CSharp_Entities_Components_Component_">Entity.TryAddComponent(Component)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent_Sparkle_CSharp_Entities_Components_Component_">Entity.RemoveComponent(Component)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent_Sparkle_CSharp_Entities_Components_Component_">Entity.TryRemoveComponent(Component)</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_RemoveComponent__1">Entity.RemoveComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_TryRemoveComponent__1">Entity.TryRemoveComponent&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Sparkle.CSharp.Entities.Entity.html#Sparkle_CSharp_Entities_Entity_Dispose_System_Boolean_">Entity.Dispose(bool)</a>
+    </div>
+    <div>
+      <span class="xref">Disposable.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.ThrowIfDisposed()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.HasDisposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D__ctor_" data-uid="Sparkle.CSharp.Entities.Camera3D.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D__ctor_System_Numerics_Vector3_System_Numerics_Vector3_System_Single_System_Nullable_System_Numerics_Vector3__Bliss_CSharp_Camera_Dim3_ProjectionType_Bliss_CSharp_Camera_Dim3_CameraMode_System_Single_System_Single_System_Single_" data-uid="Sparkle.CSharp.Entities.Camera3D.#ctor(System.Numerics.Vector3,System.Numerics.Vector3,System.Single,System.Nullable{System.Numerics.Vector3},Bliss.CSharp.Camera.Dim3.ProjectionType,Bliss.CSharp.Camera.Dim3.CameraMode,System.Single,System.Single,System.Single)">
+  Camera3D(Vector3, Vector3, float, Vector3?, ProjectionType, CameraMode, float, float, float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Entities.Camera3D.html">Camera3D</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Camera3D(Vector3 position, Vector3 target, float aspectRatio, Vector3? up = null, ProjectionType projectionType = ProjectionType.Perspective, CameraMode mode = CameraMode.Free, float fov = 70, float nearPlane = 0.1, float farPlane = 1000)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The initial position of the camera.</p>
+</dd>
+    <dt><code>target</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The target point the camera is looking at.</p>
+</dd>
+    <dt><code>aspectRatio</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The aspect ratio (width / height) of the camera view.</p>
+</dd>
+    <dt><code>up</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a>?</dt>
+    <dd><p>The upward direction vector. Defaults to (0,1,0).</p>
+</dd>
+    <dt><code>projectionType</code> <span class="xref">ProjectionType</span></dt>
+    <dd><p>The projection type of the camera (Perspective or Orthographic).</p>
+</dd>
+    <dt><code>mode</code> <span class="xref">CameraMode</span></dt>
+    <dd><p>The movement mode of the camera.</p>
+</dd>
+    <dt><code>fov</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The field of view in degrees. Should be between 1 and 179.</p>
+</dd>
+    <dt><code>nearPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The near clipping plane. Must be positive and smaller than <code class="paramref">farPlane</code>.</p>
+</dd>
+    <dt><code>farPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The far clipping plane. Must be positive and greater than <code class="paramref">nearPlane</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_AspectRatio_" data-uid="Sparkle.CSharp.Entities.Camera3D.AspectRatio*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_AspectRatio" data-uid="Sparkle.CSharp.Entities.Camera3D.AspectRatio">
+  AspectRatio
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The aspect ratio of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float AspectRatio { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_FarPlane_" data-uid="Sparkle.CSharp.Entities.Camera3D.FarPlane*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_FarPlane" data-uid="Sparkle.CSharp.Entities.Camera3D.FarPlane">
+  FarPlane
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The far clipping plane distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FarPlane { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Fov_" data-uid="Sparkle.CSharp.Entities.Camera3D.Fov*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Fov" data-uid="Sparkle.CSharp.Entities.Camera3D.Fov">
+  Fov
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The field of view of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Fov { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Mode_" data-uid="Sparkle.CSharp.Entities.Camera3D.Mode*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Mode" data-uid="Sparkle.CSharp.Entities.Camera3D.Mode">
+  Mode
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The movement mode of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CameraMode Mode { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">CameraMode</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MouseSensitivity_" data-uid="Sparkle.CSharp.Entities.Camera3D.MouseSensitivity*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MouseSensitivity" data-uid="Sparkle.CSharp.Entities.Camera3D.MouseSensitivity">
+  MouseSensitivity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The mouse sensitivity for camera movement.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MouseSensitivity { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MovementSpeed_" data-uid="Sparkle.CSharp.Entities.Camera3D.MovementSpeed*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MovementSpeed" data-uid="Sparkle.CSharp.Entities.Camera3D.MovementSpeed">
+  MovementSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The movement speed of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MovementSpeed { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_NearPlane_" data-uid="Sparkle.CSharp.Entities.Camera3D.NearPlane*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_NearPlane" data-uid="Sparkle.CSharp.Entities.Camera3D.NearPlane">
+  NearPlane
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The near clipping plane distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearPlane { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_OrbitalSpeed_" data-uid="Sparkle.CSharp.Entities.Camera3D.OrbitalSpeed*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_OrbitalSpeed" data-uid="Sparkle.CSharp.Entities.Camera3D.OrbitalSpeed">
+  OrbitalSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The orbital speed of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float OrbitalSpeed { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Position_" data-uid="Sparkle.CSharp.Entities.Camera3D.Position*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Position" data-uid="Sparkle.CSharp.Entities.Camera3D.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The position of the camera in world space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Position { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_ProjectionType_" data-uid="Sparkle.CSharp.Entities.Camera3D.ProjectionType*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_ProjectionType" data-uid="Sparkle.CSharp.Entities.Camera3D.ProjectionType">
+  ProjectionType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The projection type of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProjectionType ProjectionType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ProjectionType</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Target_" data-uid="Sparkle.CSharp.Entities.Camera3D.Target*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Target" data-uid="Sparkle.CSharp.Entities.Camera3D.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The target position the camera is looking at.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Target { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Transform_" data-uid="Sparkle.CSharp.Entities.Camera3D.Transform*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Transform" data-uid="Sparkle.CSharp.Entities.Camera3D.Transform">
+  Transform
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the transformation of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform Transform { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Transform</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Up_" data-uid="Sparkle.CSharp.Entities.Camera3D.Up*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Up" data-uid="Sparkle.CSharp.Entities.Camera3D.Up">
+  Up
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The up direction vector of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Up { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Begin_" data-uid="Sparkle.CSharp.Entities.Camera3D.Begin*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Begin" data-uid="Sparkle.CSharp.Entities.Camera3D.Begin">
+  Begin()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begins the camera rendering process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Begin()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_End_" data-uid="Sparkle.CSharp.Entities.Camera3D.End*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_End" data-uid="Sparkle.CSharp.Entities.Camera3D.End">
+  End()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the camera rendering process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void End()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetCamera3D_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetCamera3D*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetCamera3D" data-uid="Sparkle.CSharp.Entities.Camera3D.GetCamera3D">
+  GetCamera3D()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the underlying <span class="xref">Bliss.CSharp.Camera.Dim3.Cam3D</span> instance used for camera logic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cam3D GetCamera3D()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Cam3D</span></dt>
+    <dd><p>The internal <span class="xref">Bliss.CSharp.Camera.Dim3.Cam3D</span> instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetForward_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetForward*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetForward" data-uid="Sparkle.CSharp.Entities.Camera3D.GetForward">
+  GetForward()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the forward direction vector of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetForward()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetFrustum_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetFrustum*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetFrustum" data-uid="Sparkle.CSharp.Entities.Camera3D.GetFrustum">
+  GetFrustum()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L290"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the camera's frustum, used for visibility and culling calculations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Frustum GetFrustum()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Frustum</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetPitch_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetPitch*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetPitch" data-uid="Sparkle.CSharp.Entities.Camera3D.GetPitch">
+  GetPitch()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the pitch (rotation around the right axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetPitch()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetProjection_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetProjection*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetProjection" data-uid="Sparkle.CSharp.Entities.Camera3D.GetProjection">
+  GetProjection()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the projection matrix of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 GetProjection()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetRight_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRight*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetRight" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRight">
+  GetRight()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the right direction vector of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetRight()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetRoll_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRoll*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetRoll" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRoll">
+  GetRoll()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the roll (rotation around the forward axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetRoll()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetRotation_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRotation*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetRotation" data-uid="Sparkle.CSharp.Entities.Camera3D.GetRotation">
+  GetRotation()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current rotation of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetRotation()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetScreenToWorld_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetScreenToWorld*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetScreenToWorld_System_Numerics_Vector2_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetScreenToWorld(System.Numerics.Vector2)">
+  GetScreenToWorld(Vector2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L299"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a screen-space position to world space coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetScreenToWorld(Vector2 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The screen-space position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The corresponding world-space position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetView_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetView*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetView" data-uid="Sparkle.CSharp.Entities.Camera3D.GetView">
+  GetView()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the view matrix of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Matrix4x4 GetView()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4">Matrix4x4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetWorldToScreen_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetWorldToScreen*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetWorldToScreen_System_Numerics_Vector3_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetWorldToScreen(System.Numerics.Vector3)">
+  GetWorldToScreen(Vector3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L308"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Converts a screen-space position to world space coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 GetWorldToScreen(Vector3 position)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector3">Vector3</a></dt>
+    <dd><p>The screen-space position.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The corresponding world-space position.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_GetYaw_" data-uid="Sparkle.CSharp.Entities.Camera3D.GetYaw*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_GetYaw" data-uid="Sparkle.CSharp.Entities.Camera3D.GetYaw">
+  GetYaw()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the yaw (rotation around the up axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetYaw()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MoveForward_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveForward*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MoveForward_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveForward(System.Single,System.Boolean)">
+  MoveForward(float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves the camera forward.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveForward(float distance, bool moveInWorldPlane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance to move forward.</p>
+</dd>
+    <dt><code>moveInWorldPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether to move in the world plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MoveRight_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveRight*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MoveRight_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveRight(System.Single,System.Boolean)">
+  MoveRight(float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves the camera to the right.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveRight(float distance, bool moveInWorldPlane)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance to move right.</p>
+</dd>
+    <dt><code>moveInWorldPlane</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether to move in the world plane.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MoveToTarget_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveToTarget*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MoveToTarget_System_Single_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveToTarget(System.Single)">
+  MoveToTarget(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves the camera closer to the target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveToTarget(float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance to move.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_MoveUp_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveUp*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_MoveUp_System_Single_" data-uid="Sparkle.CSharp.Entities.Camera3D.MoveUp(System.Single)">
+  MoveUp(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves the camera upwards.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MoveUp(float distance)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>distance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The distance to move up.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Resize_" data-uid="Sparkle.CSharp.Entities.Camera3D.Resize*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Resize_Bliss_CSharp_Transformations_Rectangle_" data-uid="Sparkle.CSharp.Entities.Camera3D.Resize(Bliss.CSharp.Transformations.Rectangle)">
+  Resize(Rectangle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Resizes the camera to match the dimensions of the given rectangle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Resize(Rectangle rectangle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rectangle</code> <span class="xref">Rectangle</span></dt>
+    <dd><p>The rectangle defining the new dimensions for the camera's viewport.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_SetPitch_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetPitch*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_SetPitch_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetPitch(System.Single,System.Boolean)">
+  SetPitch(float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the pitch (rotation around the right axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPitch(float angle, bool rotateAroundTarget)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>angle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The angle of rotation.</p>
+</dd>
+    <dt><code>rotateAroundTarget</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether to rotate around the target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_SetRoll_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetRoll*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_SetRoll_System_Single_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetRoll(System.Single)">
+  SetRoll(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the roll (rotation around the forward axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetRoll(float angle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>angle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The angle of rotation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_SetYaw_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetYaw*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_SetYaw_System_Single_System_Boolean_" data-uid="Sparkle.CSharp.Entities.Camera3D.SetYaw(System.Single,System.Boolean)">
+  SetYaw(float, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the yaw (rotation around the up axis) of the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetYaw(float angle, bool rotateAroundTarget)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>angle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>The angle of rotation.</p>
+</dd>
+    <dt><code>rotateAroundTarget</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Whether to rotate around the target.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Entities_Camera3D_Update_" data-uid="Sparkle.CSharp.Entities.Camera3D.Update*"></a>
+
+  <h3 id="Sparkle_CSharp_Entities_Camera3D_Update_System_Double_" data-uid="Sparkle.CSharp.Entities.Camera3D.Update(System.Double)">
+  Update(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the state of the <a class="xref" href="Sparkle.CSharp.Entities.Camera3D.html">Camera3D</a> object each frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Update(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The time elapsed since the last frame update, in seconds.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Entities/Camera3D.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

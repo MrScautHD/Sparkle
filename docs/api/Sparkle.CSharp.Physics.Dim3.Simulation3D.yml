@@ -1,0 +1,796 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  commentId: T:Sparkle.CSharp.Physics.Dim3.Simulation3D
+  id: Simulation3D
+  parent: Sparkle.CSharp.Physics.Dim3
+  children:
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D.BodyMoved
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose(System.Boolean)
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D.Step(System.Double)
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D.World
+  langs:
+  - csharp
+  - vb
+  name: Simulation3D
+  nameWithType: Simulation3D
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Simulation3D
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  syntax:
+    content: 'public class Simulation3D : Simulation, IDisposable'
+    content.vb: Public Class Simulation3D Inherits Simulation Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  - Sparkle.CSharp.Physics.Simulation
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.World
+  commentId: F:Sparkle.CSharp.Physics.Dim3.Simulation3D.World
+  id: World
+  parent: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: World
+  nameWithType: Simulation3D.World
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.World
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: World
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  summary: The physics world that manages all physical objects and interactions.
+  example: []
+  syntax:
+    content: public readonly World World
+    return:
+      type: Jitter2.World
+    content.vb: Public ReadOnly World As World
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.BodyMoved
+  commentId: E:Sparkle.CSharp.Physics.Dim3.Simulation3D.BodyMoved
+  id: BodyMoved
+  parent: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: BodyMoved
+  nameWithType: Simulation3D.BodyMoved
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.BodyMoved
+  type: Event
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BodyMoved
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  summary: Triggered when a body has moved during the physics simulation step.
+  example: []
+  syntax:
+    content: public event Action<RigidBody>? BodyMoved
+    return:
+      type: System.Action{Jitter2.Dynamics.RigidBody}
+    content.vb: Public Event BodyMoved As Action(Of RigidBody)
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)
+  id: '#ctor(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)'
+  parent: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: Simulation3D(PhysicsSettings3D)
+  nameWithType: Simulation3D.Simulation3D(PhysicsSettings3D)
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Simulation3D(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  summary: Constructor for creating a Simulation3D object.
+  example: []
+  syntax:
+    content: public Simulation3D(PhysicsSettings3D settings)
+    parameters:
+    - id: settings
+      type: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+      description: The physics settings for the 3D simulation.
+    content.vb: Public Sub New(settings As PhysicsSettings3D)
+  overload: Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor*
+  nameWithType.vb: Simulation3D.New(PhysicsSettings3D)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Simulation3D.New(Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D)
+  name.vb: New(PhysicsSettings3D)
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step(System.Double)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.Simulation3D.Step(System.Double)
+  id: Step(System.Double)
+  parent: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: Step(double)
+  nameWithType: Simulation3D.Step(double)
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Step
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 44
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  summary: Executes a simulation step for the 3D physics world.
+  example: []
+  syntax:
+    content: protected override void Step(double fixedStep)
+    parameters:
+    - id: fixedStep
+      type: System.Double
+      description: The fixed time interval for the simulation step.
+    content.vb: Protected Overrides Sub [Step](fixedStep As Double)
+  overridden: Sparkle.CSharp.Physics.Simulation.Step(System.Double)
+  overload: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step*
+  nameWithType.vb: Simulation3D.Step(Double)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step(Double)
+  name.vb: Step(Double)
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: Simulation3D.Dispose(bool)
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle/CSharp/Physics/Dim3/Simulation3D.cs
+    startLine: 52
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim3
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  overload: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose*
+  nameWithType.vb: Simulation3D.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.CSharp.Physics.Dim3
+  commentId: N:Sparkle.CSharp.Physics.Dim3
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3
+  nameWithType: Sparkle.CSharp.Physics.Dim3
+  fullName: Sparkle.CSharp.Physics.Dim3
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: Sparkle.CSharp.Physics.Simulation
+  commentId: T:Sparkle.CSharp.Physics.Simulation
+  parent: Sparkle.CSharp.Physics
+  href: Sparkle.CSharp.Physics.Simulation.html
+  name: Simulation
+  nameWithType: Simulation
+  fullName: Sparkle.CSharp.Physics.Simulation
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Physics
+  commentId: N:Sparkle.CSharp.Physics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics
+  nameWithType: Sparkle.CSharp.Physics
+  fullName: Sparkle.CSharp.Physics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+- uid: Jitter2.World
+  commentId: T:Jitter2.World
+  parent: Jitter2
+  isExternal: true
+  name: World
+  nameWithType: World
+  fullName: Jitter2.World
+- uid: Jitter2
+  commentId: N:Jitter2
+  isExternal: true
+  name: Jitter2
+  nameWithType: Jitter2
+  fullName: Jitter2
+- uid: System.Action{Jitter2.Dynamics.RigidBody}
+  commentId: T:System.Action{Jitter2.Dynamics.RigidBody}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<RigidBody>
+  nameWithType: Action<RigidBody>
+  fullName: System.Action<Jitter2.Dynamics.RigidBody>
+  nameWithType.vb: Action(Of RigidBody)
+  fullName.vb: System.Action(Of Jitter2.Dynamics.RigidBody)
+  name.vb: Action(Of RigidBody)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Jitter2.Dynamics.RigidBody
+    name: RigidBody
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Jitter2.Dynamics.RigidBody
+    name: RigidBody
+    isExternal: true
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.Simulation3D.#ctor
+  href: Sparkle.CSharp.Physics.Dim3.Simulation3D.html#Sparkle_CSharp_Physics_Dim3_Simulation3D__ctor_Sparkle_CSharp_Physics_Dim3_PhysicsSettings3D_
+  name: Simulation3D
+  nameWithType: Simulation3D.Simulation3D
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Simulation3D
+  nameWithType.vb: Simulation3D.New
+  fullName.vb: Sparkle.CSharp.Physics.Dim3.Simulation3D.New
+  name.vb: New
+- uid: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+  commentId: T:Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+  parent: Sparkle.CSharp.Physics.Dim3
+  href: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D.html
+  name: PhysicsSettings3D
+  nameWithType: PhysicsSettings3D
+  fullName: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+- uid: Sparkle.CSharp.Physics.Simulation.Step(System.Double)
+  commentId: M:Sparkle.CSharp.Physics.Simulation.Step(System.Double)
+  parent: Sparkle.CSharp.Physics.Simulation
+  isExternal: true
+  href: Sparkle.CSharp.Physics.Simulation.html#Sparkle_CSharp_Physics_Simulation_Step_System_Double_
+  name: Step(double)
+  nameWithType: Simulation.Step(double)
+  fullName: Sparkle.CSharp.Physics.Simulation.Step(double)
+  nameWithType.vb: Simulation.Step(Double)
+  fullName.vb: Sparkle.CSharp.Physics.Simulation.Step(Double)
+  name.vb: Step(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Physics.Simulation.Step(System.Double)
+    name: Step
+    href: Sparkle.CSharp.Physics.Simulation.html#Sparkle_CSharp_Physics_Simulation_Step_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Physics.Simulation.Step(System.Double)
+    name: Step
+    href: Sparkle.CSharp.Physics.Simulation.html#Sparkle_CSharp_Physics_Simulation_Step_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.Simulation3D.Step
+  href: Sparkle.CSharp.Physics.Dim3.Simulation3D.html#Sparkle_CSharp_Physics_Dim3_Simulation3D_Step_System_Double_
+  name: Step
+  nameWithType: Simulation3D.Step
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Step
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  commentId: M:Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: Dispose(bool)
+  nameWithType: Disposable.Dispose(bool)
+  fullName: Bliss.CSharp.Disposable.Dispose(bool)
+  nameWithType.vb: Disposable.Dispose(Boolean)
+  fullName.vb: Bliss.CSharp.Disposable.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose
+  href: Sparkle.CSharp.Physics.Dim3.Simulation3D.html#Sparkle_CSharp_Physics_Dim3_Simulation3D_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: Simulation3D.Dispose
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D.Dispose
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

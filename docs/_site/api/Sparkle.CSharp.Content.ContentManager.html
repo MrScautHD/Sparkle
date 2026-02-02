@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ContentManager | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ContentManager | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_Content_ContentManager.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.Content.ContentManager%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.Content.ContentManager">
+
+
+
+  <h1 id="Sparkle_CSharp_Content_ContentManager" data-uid="Sparkle.CSharp.Content.ContentManager" class="text-break">
+Class ContentManager  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.Content.html">Content</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ContentManager : Disposable, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Disposable</span></div>
+      <div><span class="xref">ContentManager</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <span class="xref">Disposable.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.ThrowIfDisposed()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.HasDisposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager__ctor_" data-uid="Sparkle.CSharp.Content.ContentManager.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager__ctor_Veldrid_GraphicsDevice_" data-uid="Sparkle.CSharp.Content.ContentManager.#ctor(Veldrid.GraphicsDevice)">
+  ContentManager(GraphicsDevice)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Content.ContentManager.html">ContentManager</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ContentManager(GraphicsDevice graphicsDevice)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graphicsDevice</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs">GraphicsDevice</a></dt>
+    <dd><p>The graphics device used for loading assets.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_GraphicsDevice_" data-uid="Sparkle.CSharp.Content.ContentManager.GraphicsDevice*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_GraphicsDevice" data-uid="Sparkle.CSharp.Content.ContentManager.GraphicsDevice">
+  GraphicsDevice
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The graphics device used for loading graphical assets.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GraphicsDevice GraphicsDevice { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs">GraphicsDevice</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_AddProcessors_" data-uid="Sparkle.CSharp.Content.ContentManager.AddProcessors*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_AddProcessors_System_Type_Sparkle_CSharp_Content_Processors_IContentProcessor_" data-uid="Sparkle.CSharp.Content.ContentManager.AddProcessors(System.Type,Sparkle.CSharp.Content.Processors.IContentProcessor)">
+  AddProcessors(Type, IContentProcessor)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds a new content processor for a specific content type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddProcessors(Type type, IContentProcessor processor)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of content the processor will handle.</p>
+</dd>
+    <dt><code>processor</code> <a class="xref" href="Sparkle.CSharp.Content.Processors.IContentProcessor.html">IContentProcessor</a></dt>
+    <dd><p>The content processor to associate with the specified type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_AddUnmanagedItem_" data-uid="Sparkle.CSharp.Content.ContentManager.AddUnmanagedItem*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_AddUnmanagedItem__1___0_" data-uid="Sparkle.CSharp.Content.ContentManager.AddUnmanagedItem``1(``0)">
+  AddUnmanagedItem&lt;T&gt;(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds an unmanaged item to the content manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddUnmanagedItem&lt;T&gt;(T item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <span class="xref">T</span></dt>
+    <dd><p>The item to add.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of content.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_Dispose_" data-uid="Sparkle.CSharp.Content.ContentManager.Dispose*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_Dispose_System_Boolean_" data-uid="Sparkle.CSharp.Content.ContentManager.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of the object and releases associated resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if called from user code; false if called from a finalizer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_GetProcessor_" data-uid="Sparkle.CSharp.Content.ContentManager.GetProcessor*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_GetProcessor_System_Type_" data-uid="Sparkle.CSharp.Content.ContentManager.GetProcessor(System.Type)">
+  GetProcessor(Type)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a content processor for the specified type, if one exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IContentProcessor? GetProcessor(Type type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of content for which the processor is requested.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Content.Processors.IContentProcessor.html">IContentProcessor</a></dt>
+    <dd><p>The content processor for the specified type, or null if no processor is registered.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_GetProcessors_" data-uid="Sparkle.CSharp.Content.ContentManager.GetProcessors*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_GetProcessors" data-uid="Sparkle.CSharp.Content.ContentManager.GetProcessors">
+  GetProcessors()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves all content processors currently registered in the content manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IContentProcessor&gt; GetProcessors()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sparkle.CSharp.Content.Processors.IContentProcessor.html">IContentProcessor</a>&gt;</dt>
+    <dd><p>An enumerable collection of the registered content processors.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_HasProcessor_" data-uid="Sparkle.CSharp.Content.ContentManager.HasProcessor*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_HasProcessor_System_Type_" data-uid="Sparkle.CSharp.Content.ContentManager.HasProcessor(System.Type)">
+  HasProcessor(Type)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a content processor exists for the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasProcessor(Type type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type to check for an associated content processor.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if a processor exists for the specified type; otherwise, false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_Load_" data-uid="Sparkle.CSharp.Content.ContentManager.Load*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_Load__1_Sparkle_CSharp_Content_Types_IContentType___0__" data-uid="Sparkle.CSharp.Content.ContentManager.Load``1(Sparkle.CSharp.Content.Types.IContentType{``0})">
+  Load&lt;T&gt;(IContentType&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Loads content using an appropriate processor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T Load&lt;T&gt;(IContentType&lt;T&gt; type)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="Sparkle.CSharp.Content.Types.IContentType-1.html">IContentType</a>&lt;T&gt;</dt>
+    <dd><p>The content type to load.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The loaded content.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of content to load.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_TryAddProcessors_" data-uid="Sparkle.CSharp.Content.ContentManager.TryAddProcessors*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_TryAddProcessors_System_Type_Sparkle_CSharp_Content_Processors_IContentProcessor_" data-uid="Sparkle.CSharp.Content.ContentManager.TryAddProcessors(System.Type,Sparkle.CSharp.Content.Processors.IContentProcessor)">
+  TryAddProcessors(Type, IContentProcessor)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to add a content processor for a specific type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryAddProcessors(Type type, IContentProcessor processor)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type the processor handles.</p>
+</dd>
+    <dt><code>processor</code> <a class="xref" href="Sparkle.CSharp.Content.Processors.IContentProcessor.html">IContentProcessor</a></dt>
+    <dd><p>The content processor instance.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if successfully added, otherwise false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_TryGetProcessor_" data-uid="Sparkle.CSharp.Content.ContentManager.TryGetProcessor*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_TryGetProcessor_System_Type_Sparkle_CSharp_Content_Processors_IContentProcessor__" data-uid="Sparkle.CSharp.Content.ContentManager.TryGetProcessor(System.Type,Sparkle.CSharp.Content.Processors.IContentProcessor@)">
+  TryGetProcessor(Type, out IContentProcessor?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to retrieve a content processor for a specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetProcessor(Type type, out IContentProcessor? processor)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>type</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of content.</p>
+</dd>
+    <dt><code>processor</code> <a class="xref" href="Sparkle.CSharp.Content.Processors.IContentProcessor.html">IContentProcessor</a></dt>
+    <dd><p>The found content processor, or null if not found.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if a processor was found, otherwise false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Content_ContentManager_Unload_" data-uid="Sparkle.CSharp.Content.ContentManager.Unload*"></a>
+
+  <h3 id="Sparkle_CSharp_Content_ContentManager_Unload__1___0_" data-uid="Sparkle.CSharp.Content.ContentManager.Unload``1(``0)">
+  Unload&lt;T&gt;(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Unloads a content item, freeing associated resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Unload&lt;T&gt;(T item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <span class="xref">T</span></dt>
+    <dd><p>The item to unload.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of content to unload.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Content/ContentManager.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

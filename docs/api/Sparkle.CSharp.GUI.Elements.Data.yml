@@ -1,0 +1,134 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  id: Sparkle.CSharp.GUI.Elements.Data
+  children:
+  - Sparkle.CSharp.GUI.Elements.Data.LabelData
+  - Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData
+  - Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+  - Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  - Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData
+  - Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData
+  - Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.GUI.Elements.Data.LabelData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.LabelData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.LabelData.html
+  name: LabelData
+  nameWithType: LabelData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.LabelData
+- uid: Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData.html
+  name: RectangleButtonData
+  nameWithType: RectangleButtonData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData
+- uid: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData.html
+  name: RectangleSlideBarData
+  nameWithType: RectangleSlideBarData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+- uid: Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData.html
+  name: RectangleTextBoxData
+  nameWithType: RectangleTextBoxData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.html
+  name: TextureButtonData
+  nameWithType: TextureButtonData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.html
+  name: TextureDropDownData
+  nameWithType: TextureDropDownData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData.html
+  name: TextureSlideBarData
+  nameWithType: TextureSlideBarData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData.html
+  name: TextureTextBoxData
+  nameWithType: TextureTextBoxData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData
+- uid: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.ToggleData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.ToggleData.html
+  name: ToggleData
+  nameWithType: ToggleData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.ToggleData
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html

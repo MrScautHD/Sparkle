@@ -1,0 +1,97 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Processors
+  commentId: N:Sparkle.CSharp.Content.Processors
+  id: Sparkle.CSharp.Content.Processors
+  children:
+  - Sparkle.CSharp.Content.Processors.AudioClipProcessor
+  - Sparkle.CSharp.Content.Processors.CubemapProcessor
+  - Sparkle.CSharp.Content.Processors.FontProcessor
+  - Sparkle.CSharp.Content.Processors.IContentProcessor
+  - Sparkle.CSharp.Content.Processors.ModelProcessor
+  - Sparkle.CSharp.Content.Processors.TextureProcessor
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Content.Processors
+  nameWithType: Sparkle.CSharp.Content.Processors
+  fullName: Sparkle.CSharp.Content.Processors
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Content.Processors.AudioClipProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.AudioClipProcessor
+  href: Sparkle.CSharp.Content.Processors.AudioClipProcessor.html
+  name: AudioClipProcessor
+  nameWithType: AudioClipProcessor
+  fullName: Sparkle.CSharp.Content.Processors.AudioClipProcessor
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.CubemapProcessor
+  href: Sparkle.CSharp.Content.Processors.CubemapProcessor.html
+  name: CubemapProcessor
+  nameWithType: CubemapProcessor
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor
+- uid: Sparkle.CSharp.Content.Processors.FontProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.FontProcessor
+  href: Sparkle.CSharp.Content.Processors.FontProcessor.html
+  name: FontProcessor
+  nameWithType: FontProcessor
+  fullName: Sparkle.CSharp.Content.Processors.FontProcessor
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.IContentProcessor
+  parent: Sparkle.CSharp.Content.Processors
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html
+  name: IContentProcessor
+  nameWithType: IContentProcessor
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor
+- uid: Sparkle.CSharp.Content.Processors.ModelProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.ModelProcessor
+  href: Sparkle.CSharp.Content.Processors.ModelProcessor.html
+  name: ModelProcessor
+  nameWithType: ModelProcessor
+  fullName: Sparkle.CSharp.Content.Processors.ModelProcessor
+- uid: Sparkle.CSharp.Content.Processors.TextureProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.TextureProcessor
+  href: Sparkle.CSharp.Content.Processors.TextureProcessor.html
+  name: TextureProcessor
+  nameWithType: TextureProcessor
+  fullName: Sparkle.CSharp.Content.Processors.TextureProcessor
+- uid: Sparkle.CSharp.Content.Processors
+  commentId: N:Sparkle.CSharp.Content.Processors
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Processors
+  nameWithType: Sparkle.CSharp.Content.Processors
+  fullName: Sparkle.CSharp.Content.Processors
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html

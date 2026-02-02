@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3.Extensions
+  commentId: N:Sparkle.CSharp.Physics.Dim3.Extensions
+  id: Sparkle.CSharp.Physics.Dim3.Extensions
+  children:
+  - Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim3.Extensions
+  nameWithType: Sparkle.CSharp.Physics.Dim3.Extensions
+  fullName: Sparkle.CSharp.Physics.Dim3.Extensions
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions
+  commentId: T:Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions
+  href: Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions.html
+  name: Matrix4X4Extensions
+  nameWithType: Matrix4X4Extensions
+  fullName: Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions

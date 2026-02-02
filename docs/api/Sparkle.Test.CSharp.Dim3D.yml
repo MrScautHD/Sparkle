@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.Test.CSharp.Dim3D
+  commentId: N:Sparkle.Test.CSharp.Dim3D
+  id: Sparkle.Test.CSharp.Dim3D
+  children:
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.Test.CSharp.Dim3D
+  nameWithType: Sparkle.Test.CSharp.Dim3D
+  fullName: Sparkle.Test.CSharp.Dim3D
+  type: Namespace
+  assemblies:
+  - Sparkle.Test
+references:
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  commentId: T:Sparkle.Test.CSharp.Dim3D.TestScene3D
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html
+  name: TestScene3D
+  nameWithType: TestScene3D
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D

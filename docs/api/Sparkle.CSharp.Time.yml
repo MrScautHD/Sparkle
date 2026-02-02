@@ -1,0 +1,461 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Time
+  commentId: T:Sparkle.CSharp.Time
+  id: Time
+  parent: Sparkle.CSharp
+  children:
+  - Sparkle.CSharp.Time.Delta
+  - Sparkle.CSharp.Time.FixedAccumulator
+  - Sparkle.CSharp.Time.FixedStep
+  - Sparkle.CSharp.Time.Total
+  langs:
+  - csharp
+  - vb
+  name: Time
+  nameWithType: Time
+  fullName: Sparkle.CSharp.Time
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Time.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Time
+    path: ../src/Sparkle/CSharp/Time.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  syntax:
+    content: public static class Time
+    content.vb: Public Module Time
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Time.Delta
+  commentId: P:Sparkle.CSharp.Time.Delta
+  id: Delta
+  parent: Sparkle.CSharp.Time
+  langs:
+  - csharp
+  - vb
+  name: Delta
+  nameWithType: Time.Delta
+  fullName: Sparkle.CSharp.Time.Delta
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Time.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Delta
+    path: ../src/Sparkle/CSharp/Time.cs
+    startLine: 9
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Gets the time elapsed between the current and the previous frame.
+  example: []
+  syntax:
+    content: public static double Delta { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared Property Delta As Double
+  overload: Sparkle.CSharp.Time.Delta*
+- uid: Sparkle.CSharp.Time.FixedAccumulator
+  commentId: P:Sparkle.CSharp.Time.FixedAccumulator
+  id: FixedAccumulator
+  parent: Sparkle.CSharp.Time
+  langs:
+  - csharp
+  - vb
+  name: FixedAccumulator
+  nameWithType: Time.FixedAccumulator
+  fullName: Sparkle.CSharp.Time.FixedAccumulator
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Time.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedAccumulator
+    path: ../src/Sparkle/CSharp/Time.cs
+    startLine: 14
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Represents an accumulator used to track fixed time steps for the physics or fixed update loop.
+  example: []
+  syntax:
+    content: public static double FixedAccumulator { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared Property FixedAccumulator As Double
+  overload: Sparkle.CSharp.Time.FixedAccumulator*
+- uid: Sparkle.CSharp.Time.FixedStep
+  commentId: P:Sparkle.CSharp.Time.FixedStep
+  id: FixedStep
+  parent: Sparkle.CSharp.Time
+  langs:
+  - csharp
+  - vb
+  name: FixedStep
+  nameWithType: Time.FixedStep
+  fullName: Sparkle.CSharp.Time.FixedStep
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Time.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedStep
+    path: ../src/Sparkle/CSharp/Time.cs
+    startLine: 19
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Gets the fixed time step interval defined in the current game settings.
+  example: []
+  syntax:
+    content: public static double FixedStep { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared ReadOnly Property FixedStep As Double
+  overload: Sparkle.CSharp.Time.FixedStep*
+- uid: Sparkle.CSharp.Time.Total
+  commentId: P:Sparkle.CSharp.Time.Total
+  id: Total
+  parent: Sparkle.CSharp.Time
+  langs:
+  - csharp
+  - vb
+  name: Total
+  nameWithType: Time.Total
+  fullName: Sparkle.CSharp.Time.Total
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Time.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Total
+    path: ../src/Sparkle/CSharp/Time.cs
+    startLine: 24
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Gets the total elapsed time since the start of the application.
+  example: []
+  syntax:
+    content: public static double Total { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared ReadOnly Property Total As Double
+  overload: Sparkle.CSharp.Time.Total*
+references:
+- uid: Sparkle.CSharp
+  commentId: N:Sparkle.CSharp
+  href: Sparkle.html
+  name: Sparkle.CSharp
+  nameWithType: Sparkle.CSharp
+  fullName: Sparkle.CSharp
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Time.Delta*
+  commentId: Overload:Sparkle.CSharp.Time.Delta
+  href: Sparkle.CSharp.Time.html#Sparkle_CSharp_Time_Delta
+  name: Delta
+  nameWithType: Time.Delta
+  fullName: Sparkle.CSharp.Time.Delta
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.Time.FixedAccumulator*
+  commentId: Overload:Sparkle.CSharp.Time.FixedAccumulator
+  href: Sparkle.CSharp.Time.html#Sparkle_CSharp_Time_FixedAccumulator
+  name: FixedAccumulator
+  nameWithType: Time.FixedAccumulator
+  fullName: Sparkle.CSharp.Time.FixedAccumulator
+- uid: Sparkle.CSharp.Time.FixedStep*
+  commentId: Overload:Sparkle.CSharp.Time.FixedStep
+  href: Sparkle.CSharp.Time.html#Sparkle_CSharp_Time_FixedStep
+  name: FixedStep
+  nameWithType: Time.FixedStep
+  fullName: Sparkle.CSharp.Time.FixedStep
+- uid: Sparkle.CSharp.Time.Total*
+  commentId: Overload:Sparkle.CSharp.Time.Total
+  href: Sparkle.CSharp.Time.html#Sparkle_CSharp_Time_Total
+  name: Total
+  nameWithType: Time.Total
+  fullName: Sparkle.CSharp.Time.Total

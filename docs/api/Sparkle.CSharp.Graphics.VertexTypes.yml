@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.VertexTypes
+  commentId: N:Sparkle.CSharp.Graphics.VertexTypes
+  id: Sparkle.CSharp.Graphics.VertexTypes
+  children:
+  - Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Graphics.VertexTypes
+  nameWithType: Sparkle.CSharp.Graphics.VertexTypes
+  fullName: Sparkle.CSharp.Graphics.VertexTypes
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D
+  commentId: T:Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D
+  href: Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D.html
+  name: PhysicsDebugVertex3D
+  nameWithType: PhysicsDebugVertex3D
+  fullName: Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D

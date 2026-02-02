@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Scene | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Scene | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_Scenes_Scene.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.Scenes.Scene%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.Scenes.Scene">
+
+
+
+  <h1 id="Sparkle_CSharp_Scenes_Scene" data-uid="Sparkle.CSharp.Scenes.Scene" class="text-break">
+Class Scene  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.Scenes.html">Scenes</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class Scene : Disposable, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Disposable</span></div>
+      <div><span class="xref">Scene</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Sparkle.Test.CSharp.Dim2D.TestScene2D.html">TestScene2D</a></div>
+      <div><a class="xref" href="Sparkle.Test.CSharp.Dim3D.TestScene3D.html">TestScene3D</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <span class="xref">Disposable.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.ThrowIfDisposed()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.HasDisposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene__ctor_" data-uid="Sparkle.CSharp.Scenes.Scene.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene__ctor_System_String_Sparkle_CSharp_Scenes_SceneType_System_Func_Veldrid_GraphicsDevice_Bliss_CSharp_Graphics_Rendering_Renderers_Forward_IRenderer__System_Func_Sparkle_CSharp_Physics_Simulation__" data-uid="Sparkle.CSharp.Scenes.Scene.#ctor(System.String,Sparkle.CSharp.Scenes.SceneType,System.Func{Veldrid.GraphicsDevice,Bliss.CSharp.Graphics.Rendering.Renderers.Forward.IRenderer},System.Func{Sparkle.CSharp.Physics.Simulation})">
+  Scene(string, SceneType, Func&lt;GraphicsDevice, IRenderer&gt;?, Func&lt;Simulation&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Scenes.Scene.html">Scene</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Scene(string name, SceneType sceneType, Func&lt;GraphicsDevice, IRenderer&gt;? rendererFactory = null, Func&lt;Simulation&gt;? simulationFactory = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the scene.</p>
+</dd>
+    <dt><code>sceneType</code> <a class="xref" href="Sparkle.CSharp.Scenes.SceneType.html">SceneType</a></dt>
+    <dd><p>The type of the scene (2D or 3D).</p>
+</dd>
+    <dt><code>rendererFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs">GraphicsDevice</a>, <span class="xref">IRenderer</span>&gt;</dt>
+    <dd><p>Optional factory used to create a custom renderer for the scene.</p>
+</dd>
+    <dt><code>simulationFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Sparkle.CSharp.Physics.Simulation.html">Simulation</a>&gt;</dt>
+    <dd><p>Optional factory used to create a custom physics simulation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_FilterEffect" data-uid="Sparkle.CSharp.Scenes.Scene.FilterEffect">
+  FilterEffect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The filter effect used in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Effect? FilterEffect</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Effect</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_SkyBox" data-uid="Sparkle.CSharp.Scenes.Scene.SkyBox">
+  SkyBox
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The skybox used in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SkyBox? SkyBox</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Graphics.Rendering.SkyBox.html">SkyBox</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Name_" data-uid="Sparkle.CSharp.Scenes.Scene.Name*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Name" data-uid="Sparkle.CSharp.Scenes.Scene.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the name of the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Physics3DDebugDrawer_" data-uid="Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Physics3DDebugDrawer" data-uid="Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer">
+  Physics3DDebugDrawer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Provides tools for visual debugging of 3D physics simulations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Physics3DDebugDrawer Physics3DDebugDrawer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html">Physics3DDebugDrawer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Renderer_" data-uid="Sparkle.CSharp.Scenes.Scene.Renderer*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Renderer" data-uid="Sparkle.CSharp.Scenes.Scene.Renderer">
+  Renderer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the forward renderer responsible for rendering 3D content in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer Renderer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IRenderer</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_SceneType_" data-uid="Sparkle.CSharp.Scenes.Scene.SceneType*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_SceneType" data-uid="Sparkle.CSharp.Scenes.Scene.SceneType">
+  SceneType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type of the scene (2D or 3D).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SceneType SceneType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Scenes.SceneType.html">SceneType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Simulation_" data-uid="Sparkle.CSharp.Scenes.Scene.Simulation*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Simulation" data-uid="Sparkle.CSharp.Scenes.Scene.Simulation">
+  Simulation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the physics simulation associated with the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Simulation Simulation { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Physics.Simulation.html">Simulation</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_SpriteRenderer_" data-uid="Sparkle.CSharp.Scenes.Scene.SpriteRenderer*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_SpriteRenderer" data-uid="Sparkle.CSharp.Scenes.Scene.SpriteRenderer">
+  SpriteRenderer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Manages and draw sprites for the entity sprite component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpriteRenderer SpriteRenderer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html">SpriteRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_AddEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.AddEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_AddEntity_Sparkle_CSharp_Entities_Entity_" data-uid="Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)">
+  AddEntity(Entity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds an entity to the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddEntity(Entity entity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entity</code> <a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd><p>The entity to add.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the entity is already present in the scene or belongs to another scene.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_AfterUpdate_" data-uid="Sparkle.CSharp.Scenes.Scene.AfterUpdate*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_AfterUpdate_System_Double_" data-uid="Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)">
+  AfterUpdate(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after the main update loop. Allows for post-update logic.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AfterUpdate(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The time elapsed since the last update.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Dispose_" data-uid="Sparkle.CSharp.Scenes.Scene.Dispose*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Dispose_System_Boolean_" data-uid="Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L360"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of the object and releases associated resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if called from user code; false if called from a finalizer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Draw_" data-uid="Sparkle.CSharp.Scenes.Scene.Draw*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_" data-uid="Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)">
+  Draw(GraphicsContext, Framebuffer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Draws all entities in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Draw(GraphicsContext context, Framebuffer framebuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="Sparkle.CSharp.Graphics.GraphicsContext.html">GraphicsContext</a></dt>
+    <dd><p>The graphics context.</p>
+</dd>
+    <dt><code>framebuffer</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs">Framebuffer</a></dt>
+    <dd><p>The framebuffer to render into.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_FixedUpdate_" data-uid="Sparkle.CSharp.Scenes.Scene.FixedUpdate*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_FixedUpdate_System_Double_" data-uid="Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)">
+  FixedUpdate(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs a fixed update for the current scene, updating the simulation and invoking the fixed update for all entities.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void FixedUpdate(double fixedStep)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fixedStep</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The fixed time interval to update the scene and entities.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_GetEntities_" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntities*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_GetEntities" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntities">
+  GetEntities()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves all entities in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Entity&gt; GetEntities()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_GetEntitiesWithTag_" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_GetEntitiesWithTag_System_String_" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)">
+  GetEntitiesWithTag(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L213"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves all entities with a specific tag.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Entity&gt; GetEntitiesWithTag(string tag)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>tag</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The tag to filter entities.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_GetEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_GetEntity_System_UInt32_" data-uid="Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)">
+  GetEntity(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L229"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets an entity by its ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Entity? GetEntity(uint id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The entity ID.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_HasEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.HasEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_HasEntity_System_UInt32_" data-uid="Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)">
+  HasEntity(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L221"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Checks if an entity exists in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasEntity(uint id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The entity ID.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Init_" data-uid="Sparkle.CSharp.Scenes.Scene.Init*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Init" data-uid="Sparkle.CSharp.Scenes.Scene.Init">
+  Init()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes the scene. Can be overridden in derived classes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Init()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_RemoveEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.RemoveEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_RemoveEntity_Sparkle_CSharp_Entities_Entity_" data-uid="Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)">
+  RemoveEntity(Entity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes an entity from the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveEntity(Entity entity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entity</code> <a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd><p>The entity to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the entity could not be removed.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_RemoveEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.RemoveEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_RemoveEntity_System_UInt32_" data-uid="Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)">
+  RemoveEntity(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes an entity from the scene by its ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveEntity(uint id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The ID of the entity to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the entity could not be removed.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Resize_" data-uid="Sparkle.CSharp.Scenes.Scene.Resize*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Resize_Bliss_CSharp_Transformations_Rectangle_" data-uid="Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)">
+  Resize(Rectangle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Handles window resizing events and updates entities accordingly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Resize(Rectangle rectangle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rectangle</code> <span class="xref">Rectangle</span></dt>
+    <dd><p>The new window dimensions.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_TryAddEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryAddEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_TryAddEntity_Sparkle_CSharp_Entities_Entity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)">
+  TryAddEntity(Entity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to add an entity to the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryAddEntity(Entity entity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entity</code> <a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd><p>The entity to add.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the entity was successfully added; otherwise, false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_TryGetEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryGetEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_TryGetEntity_System_UInt32_Sparkle_CSharp_Entities_Entity__" data-uid="Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)">
+  TryGetEntity(uint, out Entity?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to retrieve an entity by its ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetEntity(uint id, out Entity? entity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The entity ID.</p>
+</dd>
+    <dt><code>entity</code> <a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd><p>The retrieved entity, if found.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryRemoveEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_Sparkle_CSharp_Entities_Entity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)">
+  TryRemoveEntity(Entity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to remove an entity from the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRemoveEntity(Entity entity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>entity</code> <a class="xref" href="Sparkle.CSharp.Entities.Entity.html">Entity</a></dt>
+    <dd><p>The entity to remove.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the entity was successfully removed; otherwise, false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_" data-uid="Sparkle.CSharp.Scenes.Scene.TryRemoveEntity*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_System_UInt32_" data-uid="Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)">
+  TryRemoveEntity(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L326"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to remove an entity from the scene by its ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryRemoveEntity(uint id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The ID of the entity to remove.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the entity was successfully removed; otherwise, false.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Scenes_Scene_Update_" data-uid="Sparkle.CSharp.Scenes.Scene.Update*"></a>
+
+  <h3 id="Sparkle_CSharp_Scenes_Scene_Update_System_Double_" data-uid="Sparkle.CSharp.Scenes.Scene.Update(System.Double)">
+  Update(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates all entities in the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Update(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The time elapsed since the last update.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Scenes/Scene.cs/#L18" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

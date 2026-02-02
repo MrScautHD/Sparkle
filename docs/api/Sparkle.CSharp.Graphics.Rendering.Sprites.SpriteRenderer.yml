@@ -1,0 +1,923 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  id: SpriteRenderer
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites
+  children:
+  - Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor
+  - Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Numerics.Vector2,System.Single,Bliss.CSharp.Transformations.Rectangle,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,Bliss.CSharp.Colors.Color,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Effects.Effect,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Transformations.Rectangle})
+  langs:
+  - csharp
+  - vb
+  name: SpriteRenderer
+  nameWithType: SpriteRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SpriteRenderer
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering.Sprites
+  syntax:
+    content: public class SpriteRenderer
+    content.vb: Public Class SpriteRenderer
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor
+  id: '#ctor'
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  langs:
+  - csharp
+  - vb
+  name: SpriteRenderer()
+  nameWithType: SpriteRenderer.SpriteRenderer()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.SpriteRenderer()
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+    startLine: 22
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering.Sprites
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public SpriteRenderer()
+    content.vb: Public Sub New()
+  overload: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor*
+  nameWithType.vb: SpriteRenderer.New()
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.New()
+  name.vb: New()
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Numerics.Vector2,System.Single,Bliss.CSharp.Transformations.Rectangle,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,Bliss.CSharp.Colors.Color,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Effects.Effect,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Transformations.Rectangle})
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Numerics.Vector2,System.Single,Bliss.CSharp.Transformations.Rectangle,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,Bliss.CSharp.Colors.Color,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Effects.Effect,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Transformations.Rectangle})
+  id: DrawSprite(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Numerics.Vector2,System.Single,Bliss.CSharp.Transformations.Rectangle,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,Bliss.CSharp.Colors.Color,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Effects.Effect,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Transformations.Rectangle})
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  langs:
+  - csharp
+  - vb
+  name: DrawSprite(Texture2D, Sampler?, Vector2, float, Rectangle, Vector2, Vector2, float, Color, SpriteFlip, Effect?, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Rectangle?)
+  nameWithType: SpriteRenderer.DrawSprite(Texture2D, Sampler?, Vector2, float, Rectangle, Vector2, Vector2, float, Color, SpriteFlip, Effect?, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Rectangle?)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite(Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler?, System.Numerics.Vector2, float, Bliss.CSharp.Transformations.Rectangle, System.Numerics.Vector2, System.Numerics.Vector2, float, Bliss.CSharp.Colors.Color, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Effects.Effect?, Veldrid.BlendStateDescription?, Veldrid.DepthStencilStateDescription?, Veldrid.RasterizerStateDescription?, Bliss.CSharp.Transformations.Rectangle?)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DrawSprite
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+    startLine: 44
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering.Sprites
+  summary: Queues a sprite for rendering with specified properties.
+  example: []
+  syntax:
+    content: public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect)
+    parameters:
+    - id: texture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture of the sprite to be drawn.
+    - id: sampler
+      type: Veldrid.Sampler
+      description: The sampler specifying how the texture will be sampled.
+    - id: position
+      type: System.Numerics.Vector2
+      description: The position where the sprite will be rendered.
+    - id: layerDepth
+      type: System.Single
+      description: The depth value for layer sorting of the sprite.
+    - id: sourceRect
+      type: Bliss.CSharp.Transformations.Rectangle
+      description: The rectangle defining the portion of the texture to use.
+    - id: scale
+      type: System.Numerics.Vector2
+      description: The scaling factor applied to the sprite.
+    - id: origin
+      type: System.Numerics.Vector2
+      description: The origin point used for rotation and scaling transformations.
+    - id: rotation
+      type: System.Single
+      description: The rotation angle in radians applied to the sprite.
+    - id: color
+      type: Bliss.CSharp.Colors.Color
+      description: The color applied to blend with the sprite texture.
+    - id: flip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: The sprite flipping mode indicating horizontal or vertical flipping.
+    - id: effect
+      type: Bliss.CSharp.Effects.Effect
+      description: The effect to be applied to the sprite during rendering, if any.
+    - id: blendState
+      type: System.Nullable{Veldrid.BlendStateDescription}
+      description: The blend state to be used for rendering, or null for the default state.
+    - id: depthStencilState
+      type: System.Nullable{Veldrid.DepthStencilStateDescription}
+      description: The depth-stencil state to be used for rendering, or null for the default state.
+    - id: rasterizerState
+      type: System.Nullable{Veldrid.RasterizerStateDescription}
+      description: The rasterizer state to be used for rendering, or null for the default state.
+    - id: scissorRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: The rectangle used to define the scissor test area for rendering, or null for none.
+    content.vb: Public Sub DrawSprite(texture As Texture2D, sampler As Sampler, position As Vector2, layerDepth As Single, sourceRect As Rectangle, scale As Vector2, origin As Vector2, rotation As Single, color As Color, flip As SpriteFlip, effect As Effect, blendState As BlendStateDescription?, depthStencilState As DepthStencilStateDescription?, rasterizerState As RasterizerStateDescription?, scissorRect As Rectangle?)
+  overload: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite*
+  nameWithType.vb: SpriteRenderer.DrawSprite(Texture2D, Sampler, Vector2, Single, Rectangle, Vector2, Vector2, Single, Color, SpriteFlip, Effect, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Rectangle?)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite(Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler, System.Numerics.Vector2, Single, Bliss.CSharp.Transformations.Rectangle, System.Numerics.Vector2, System.Numerics.Vector2, Single, Bliss.CSharp.Colors.Color, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Effects.Effect, Veldrid.BlendStateDescription?, Veldrid.DepthStencilStateDescription?, Veldrid.RasterizerStateDescription?, Bliss.CSharp.Transformations.Rectangle?)
+  name.vb: DrawSprite(Texture2D, Sampler, Vector2, Single, Rectangle, Vector2, Vector2, Single, Color, SpriteFlip, Effect, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Rectangle?)
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  id: Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  langs:
+  - csharp
+  - vb
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: SpriteRenderer.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Draw
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Sprites/SpriteRenderer.cs
+    startLine: 53
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering.Sprites
+  summary: Draws all queued sprites onto the specified framebuffer using the provided graphics context.
+  example: []
+  syntax:
+    content: protected void Draw(GraphicsContext context, Framebuffer framebuffer)
+    parameters:
+    - id: context
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+      description: The graphics context used for rendering operations.
+    - id: framebuffer
+      type: Veldrid.Framebuffer
+      description: The framebuffer where the sprites will be drawn.
+    content.vb: Protected Sub Draw(context As GraphicsContext, framebuffer As Framebuffer)
+  overload: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw*
+references:
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+  commentId: N:Sparkle.CSharp.Graphics.Rendering.Sprites
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics.Rendering.Sprites
+  nameWithType: Sparkle.CSharp.Graphics.Rendering.Sprites
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+    name: Sprites
+    href: Sparkle.CSharp.Graphics.Rendering.Sprites.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering.Sprites
+    name: Sprites
+    href: Sparkle.CSharp.Graphics.Rendering.Sprites.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+  parent: Sparkle.CSharp.Graphics.Rendering.Sprites
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html
+  name: SpriteRenderer
+  nameWithType: SpriteRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.#ctor
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html#Sparkle_CSharp_Graphics_Rendering_Sprites_SpriteRenderer__ctor
+  name: SpriteRenderer
+  nameWithType: SpriteRenderer.SpriteRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.SpriteRenderer
+  nameWithType.vb: SpriteRenderer.New
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.New
+  name.vb: New
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html#Sparkle_CSharp_Graphics_Rendering_Sprites_SpriteRenderer_DrawSprite_Bliss_CSharp_Textures_Texture2D_Veldrid_Sampler_System_Numerics_Vector2_System_Single_Bliss_CSharp_Transformations_Rectangle_System_Numerics_Vector2_System_Numerics_Vector2_System_Single_Bliss_CSharp_Colors_Color_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Effects_Effect_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Transformations_Rectangle__
+  name: DrawSprite
+  nameWithType: SpriteRenderer.DrawSprite
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.DrawSprite
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Veldrid.Sampler
+  commentId: T:Veldrid.Sampler
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Sampler.cs
+  name: Sampler
+  nameWithType: Sampler
+  fullName: Veldrid.Sampler
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Colors.Color
+  commentId: T:Bliss.CSharp.Colors.Color
+  parent: Bliss.CSharp.Colors
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Bliss.CSharp.Colors.Color
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteFlip
+  nameWithType: SpriteFlip
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+- uid: Bliss.CSharp.Effects.Effect
+  commentId: T:Bliss.CSharp.Effects.Effect
+  parent: Bliss.CSharp.Effects
+  isExternal: true
+  name: Effect
+  nameWithType: Effect
+  fullName: Bliss.CSharp.Effects.Effect
+- uid: System.Nullable{Veldrid.BlendStateDescription}
+  commentId: T:System.Nullable{Veldrid.BlendStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  name: BlendStateDescription?
+  nameWithType: BlendStateDescription?
+  fullName: Veldrid.BlendStateDescription?
+  spec.csharp:
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Veldrid.DepthStencilStateDescription}
+  commentId: T:System.Nullable{Veldrid.DepthStencilStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  name: DepthStencilStateDescription?
+  nameWithType: DepthStencilStateDescription?
+  fullName: Veldrid.DepthStencilStateDescription?
+  spec.csharp:
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Veldrid.RasterizerStateDescription}
+  commentId: T:System.Nullable{Veldrid.RasterizerStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  name: RasterizerStateDescription?
+  nameWithType: RasterizerStateDescription?
+  fullName: Veldrid.RasterizerStateDescription?
+  spec.csharp:
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  commentId: T:System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  parent: System
+  definition: System.Nullable`1
+  name: Rectangle?
+  nameWithType: Rectangle?
+  fullName: Bliss.CSharp.Transformations.Rectangle?
+  spec.csharp:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Bliss.CSharp.Colors
+  commentId: N:Bliss.CSharp.Colors
+  isExternal: true
+  name: Bliss.CSharp.Colors
+  nameWithType: Bliss.CSharp.Colors
+  fullName: Bliss.CSharp.Colors
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: Bliss.CSharp.Effects
+  commentId: N:Bliss.CSharp.Effects
+  isExternal: true
+  name: Bliss.CSharp.Effects
+  nameWithType: Bliss.CSharp.Effects
+  fullName: Bliss.CSharp.Effects
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Effects
+    name: Effects
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Effects
+    name: Effects
+    isExternal: true
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw
+  href: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html#Sparkle_CSharp_Graphics_Rendering_Sprites_SpriteRenderer_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw
+  nameWithType: SpriteRenderer.Draw
+  fullName: Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.Draw
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Veldrid.Framebuffer
+  commentId: T:Veldrid.Framebuffer
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  name: Framebuffer
+  nameWithType: Framebuffer
+  fullName: Veldrid.Framebuffer
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html

@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Overlays
+  commentId: N:Sparkle.CSharp.Overlays
+  id: Sparkle.CSharp.Overlays
+  children:
+  - Sparkle.CSharp.Overlays.Overlay
+  - Sparkle.CSharp.Overlays.OverlayManager
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Overlays
+  nameWithType: Sparkle.CSharp.Overlays
+  fullName: Sparkle.CSharp.Overlays
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Overlays.Overlay
+  commentId: T:Sparkle.CSharp.Overlays.Overlay
+  parent: Sparkle.CSharp.Overlays
+  href: Sparkle.CSharp.Overlays.Overlay.html
+  name: Overlay
+  nameWithType: Overlay
+  fullName: Sparkle.CSharp.Overlays.Overlay
+- uid: Sparkle.CSharp.Overlays.OverlayManager
+  commentId: T:Sparkle.CSharp.Overlays.OverlayManager
+  href: Sparkle.CSharp.Overlays.OverlayManager.html
+  name: OverlayManager
+  nameWithType: OverlayManager
+  fullName: Sparkle.CSharp.Overlays.OverlayManager
+- uid: Sparkle.CSharp.Overlays
+  commentId: N:Sparkle.CSharp.Overlays
+  href: Sparkle.html
+  name: Sparkle.CSharp.Overlays
+  nameWithType: Sparkle.CSharp.Overlays
+  fullName: Sparkle.CSharp.Overlays
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Overlays
+    name: Overlays
+    href: Sparkle.CSharp.Overlays.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Overlays
+    name: Overlays
+    href: Sparkle.CSharp.Overlays.html

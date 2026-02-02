@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.IO
+  commentId: N:Sparkle.CSharp.IO
+  id: Sparkle.CSharp.IO
+  children:
+  - Sparkle.CSharp.IO.CryptoProvider
+  - Sparkle.CSharp.IO.FileAccessor
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.IO
+  nameWithType: Sparkle.CSharp.IO
+  fullName: Sparkle.CSharp.IO
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.IO.CryptoProvider
+  commentId: T:Sparkle.CSharp.IO.CryptoProvider
+  href: Sparkle.CSharp.IO.CryptoProvider.html
+  name: CryptoProvider
+  nameWithType: CryptoProvider
+  fullName: Sparkle.CSharp.IO.CryptoProvider
+- uid: Sparkle.CSharp.IO.FileAccessor
+  commentId: T:Sparkle.CSharp.IO.FileAccessor
+  href: Sparkle.CSharp.IO.FileAccessor.html
+  name: FileAccessor
+  nameWithType: FileAccessor
+  fullName: Sparkle.CSharp.IO.FileAccessor

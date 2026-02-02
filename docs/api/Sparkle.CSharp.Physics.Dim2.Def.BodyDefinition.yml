@@ -1,0 +1,878 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  id: BodyDefinition
+  parent: Sparkle.CSharp.Physics.Dim2.Def
+  children:
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AllowFastRotation
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularDamping
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularVelocity
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.EnableSleep
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.FixedRotation
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.GravityScale
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsAwake
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsBullet
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsEnabled
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearDamping
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearVelocity
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Name
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.SleepThreshold
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Type
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.UserData
+  langs:
+  - csharp
+  - vb
+  name: BodyDefinition
+  nameWithType: BodyDefinition
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  type: Struct
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BodyDefinition
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 5
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  syntax:
+    content: public struct BodyDefinition
+    content.vb: Public Structure BodyDefinition
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Type
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Type
+  id: Type
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: BodyDefinition.Type
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Type
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Type
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 10
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The type of the body (e.g., Static, Dynamic, or Kinematic).
+  example: []
+  syntax:
+    content: public BodyType Type
+    return:
+      type: Box2D.BodyType
+    content.vb: Public Type As BodyType
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearVelocity
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearVelocity
+  id: LinearVelocity
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: LinearVelocity
+  nameWithType: BodyDefinition.LinearVelocity
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearVelocity
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LinearVelocity
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 15
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The initial linear velocity of the body in world units per second.
+  example: []
+  syntax:
+    content: public Vector2 LinearVelocity
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public LinearVelocity As Vector2
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularVelocity
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularVelocity
+  id: AngularVelocity
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: AngularVelocity
+  nameWithType: BodyDefinition.AngularVelocity
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularVelocity
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AngularVelocity
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 20
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The initial angular velocity of the body in radians per second.
+  example: []
+  syntax:
+    content: public float AngularVelocity
+    return:
+      type: System.Single
+    content.vb: Public AngularVelocity As Single
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearDamping
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearDamping
+  id: LinearDamping
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: LinearDamping
+  nameWithType: BodyDefinition.LinearDamping
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.LinearDamping
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LinearDamping
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 25
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The linear damping factor, which reduces the linear velocity over time.
+  example: []
+  syntax:
+    content: public float LinearDamping
+    return:
+      type: System.Single
+    content.vb: Public LinearDamping As Single
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularDamping
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularDamping
+  id: AngularDamping
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: AngularDamping
+  nameWithType: BodyDefinition.AngularDamping
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AngularDamping
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AngularDamping
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 30
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The angular damping factor, which reduces the angular velocity over time.
+  example: []
+  syntax:
+    content: public float AngularDamping
+    return:
+      type: System.Single
+    content.vb: Public AngularDamping As Single
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.GravityScale
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.GravityScale
+  id: GravityScale
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: GravityScale
+  nameWithType: BodyDefinition.GravityScale
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.GravityScale
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GravityScale
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 35
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Scale factor for the gravity applied to this body.
+  example: []
+  syntax:
+    content: public float GravityScale
+    return:
+      type: System.Single
+    content.vb: Public GravityScale As Single
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.SleepThreshold
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.SleepThreshold
+  id: SleepThreshold
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: SleepThreshold
+  nameWithType: BodyDefinition.SleepThreshold
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.SleepThreshold
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SleepThreshold
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 40
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: The minimum speed under which the body can enter the sleep state.
+  example: []
+  syntax:
+    content: public float SleepThreshold
+    return:
+      type: System.Single
+    content.vb: Public SleepThreshold As Single
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Name
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Name
+  id: Name
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: BodyDefinition.Name
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.Name
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Name
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 45
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: An optional name identifier for the body.
+  example: []
+  syntax:
+    content: public string? Name
+    return:
+      type: System.String
+    content.vb: Public Name As String
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.UserData
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.UserData
+  id: UserData
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: UserData
+  nameWithType: BodyDefinition.UserData
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.UserData
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UserData
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 50
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Optional user-defined data associated with the body.
+  example: []
+  syntax:
+    content: public object? UserData
+    return:
+      type: System.Object
+    content.vb: Public UserData As Object
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.EnableSleep
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.EnableSleep
+  id: EnableSleep
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: EnableSleep
+  nameWithType: BodyDefinition.EnableSleep
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.EnableSleep
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: EnableSleep
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 55
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether the body is allowed to sleep to conserve resources.
+  example: []
+  syntax:
+    content: public bool EnableSleep
+    return:
+      type: System.Boolean
+    content.vb: Public EnableSleep As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsAwake
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsAwake
+  id: IsAwake
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsAwake
+  nameWithType: BodyDefinition.IsAwake
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsAwake
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsAwake
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 60
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether the body should start in the awake state.
+  example: []
+  syntax:
+    content: public bool IsAwake
+    return:
+      type: System.Boolean
+    content.vb: Public IsAwake As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.FixedRotation
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.FixedRotation
+  id: FixedRotation
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: FixedRotation
+  nameWithType: BodyDefinition.FixedRotation
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.FixedRotation
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedRotation
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 65
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether the body should have a fixed rotation, preventing it from rotating.
+  example: []
+  syntax:
+    content: public bool FixedRotation
+    return:
+      type: System.Boolean
+    content.vb: Public FixedRotation As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsBullet
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsBullet
+  id: IsBullet
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsBullet
+  nameWithType: BodyDefinition.IsBullet
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsBullet
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsBullet
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 70
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether the body is a bullet (i.e., uses continuous collision detection).
+  example: []
+  syntax:
+    content: public bool IsBullet
+    return:
+      type: System.Boolean
+    content.vb: Public IsBullet As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsEnabled
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsEnabled
+  id: IsEnabled
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: IsEnabled
+  nameWithType: BodyDefinition.IsEnabled
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.IsEnabled
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsEnabled
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 75
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether the body is enabled and participates in simulation and collisions.
+  example: []
+  syntax:
+    content: public bool IsEnabled
+    return:
+      type: System.Boolean
+    content.vb: Public IsEnabled As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AllowFastRotation
+  commentId: F:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AllowFastRotation
+  id: AllowFastRotation
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: AllowFastRotation
+  nameWithType: BodyDefinition.AllowFastRotation
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.AllowFastRotation
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AllowFastRotation
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 80
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Whether fast rotation is allowed, possibly sacrificing stability for performance.
+  example: []
+  syntax:
+    content: public bool AllowFastRotation
+    return:
+      type: System.Boolean
+    content.vb: Public AllowFastRotation As Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor
+  commentId: M:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor
+  id: '#ctor'
+  parent: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: BodyDefinition()
+  nameWithType: BodyDefinition.BodyDefinition()
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.BodyDefinition()
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Physics/Dim2/Def/BodyDefinition.cs
+    startLine: 85
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2.Def
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition" data-throw-if-not-resolved="false"></xref> struct.
+  example: []
+  syntax:
+    content: public BodyDefinition()
+    content.vb: Public Sub New()
+  overload: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor*
+  nameWithType.vb: BodyDefinition.New()
+  fullName.vb: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.New()
+  name.vb: New()
+references:
+- uid: Sparkle.CSharp.Physics.Dim2.Def
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Def
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Def
+  fullName: Sparkle.CSharp.Physics.Dim2.Def
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Box2D.BodyType
+  commentId: T:Box2D.BodyType
+  parent: Box2D
+  isExternal: true
+  name: BodyType
+  nameWithType: BodyType
+  fullName: Box2D.BodyType
+- uid: Box2D
+  commentId: N:Box2D
+  isExternal: true
+  name: Box2D
+  nameWithType: Box2D
+  fullName: Box2D
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  parent: Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.html
+  name: BodyDefinition
+  nameWithType: BodyDefinition
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.#ctor
+  href: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.html#Sparkle_CSharp_Physics_Dim2_Def_BodyDefinition__ctor
+  name: BodyDefinition
+  nameWithType: BodyDefinition.BodyDefinition
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.BodyDefinition
+  nameWithType.vb: BodyDefinition.New
+  fullName.vb: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.New
+  name.vb: New

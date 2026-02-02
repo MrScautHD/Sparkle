@@ -1,0 +1,1524 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement
+  commentId: T:Sparkle.CSharp.GUI.Elements.GuiElement
+  id: GuiElement
+  parent: Sparkle.CSharp.GUI.Elements
+  children:
+  - Sparkle.CSharp.GUI.Elements.GuiElement.#ctor(Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  - Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  - Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  - Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  - Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  - Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  langs:
+  - csharp
+  - vb
+  name: GuiElement
+  nameWithType: GuiElement
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GuiElement
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 11
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  syntax:
+    content: public abstract class GuiElement
+    content.vb: Public MustInherit Class GuiElement
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Sparkle.CSharp.GUI.Elements.LabelElement
+  - Sparkle.CSharp.GUI.Elements.RectangleButtonElement
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  - Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement
+  - Sparkle.CSharp.GUI.Elements.TextureButtonElement
+  - Sparkle.CSharp.GUI.Elements.TextureDropDownElement
+  - Sparkle.CSharp.GUI.Elements.TextureSlideBarElement
+  - Sparkle.CSharp.GUI.Elements.TextureTextBoxElement
+  - Sparkle.CSharp.GUI.Elements.ToggleElement
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  id: Gui
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Gui
+  nameWithType: GuiElement.Gui
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Gui
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 16
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The GUI instance to which this element belongs.
+  example: []
+  syntax:
+    content: public Gui Gui { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.GUI.Gui
+    content.vb: Public Property Gui As Gui
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Gui*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  id: Name
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: GuiElement.Name
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Name
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 21
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The unique name of this element within its GUI.
+  example: []
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Name*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  id: Enabled
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Enabled
+  nameWithType: GuiElement.Enabled
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Enabled
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 26
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Indicates whether this element is active and should be updated and drawn.
+  example: []
+  syntax:
+    content: public bool Enabled
+    return:
+      type: System.Boolean
+    content.vb: Public Enabled As Boolean
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  id: Interactable
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Interactable
+  nameWithType: GuiElement.Interactable
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Interactable
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 31
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Indicates whether the GUI element can respond to user interactions, such as clicks or hover events.
+  example: []
+  syntax:
+    content: public bool Interactable
+    return:
+      type: System.Boolean
+    content.vb: Public Interactable As Boolean
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  id: AnchorPoint
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: AnchorPoint
+  nameWithType: GuiElement.AnchorPoint
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AnchorPoint
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 36
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The anchor point used for positioning this element relative to the screen.
+  example: []
+  syntax:
+    content: public Anchor AnchorPoint
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+    content.vb: Public AnchorPoint As Anchor
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  id: Offset
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Offset
+  nameWithType: GuiElement.Offset
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Offset
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 41
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The offset from the anchor point used to position this element.
+  example: []
+  syntax:
+    content: public Vector2 Offset
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Offset As Vector2
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  id: Size
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Size
+  nameWithType: GuiElement.Size
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Size
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 46
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The base size of the element before scaling.
+  example: []
+  syntax:
+    content: public Vector2 Size
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Size As Vector2
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  id: Scale
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Scale
+  nameWithType: GuiElement.Scale
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Scale
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 51
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The scaling factor applied to the element, modifying its size along the X and Y axes.
+  example: []
+  syntax:
+    content: public Vector2 Scale
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Scale As Vector2
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  id: Origin
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Origin
+  nameWithType: GuiElement.Origin
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Origin
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 56
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The origin point (pivot) used for rotation and scaling.
+  example: []
+  syntax:
+    content: public Vector2 Origin
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Origin As Vector2
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  id: Rotation
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Rotation
+  nameWithType: GuiElement.Rotation
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Rotation
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 61
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The rotation applied to the element in radians.
+  example: []
+  syntax:
+    content: public float Rotation
+    return:
+      type: System.Single
+    content.vb: Public Rotation As Single
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  id: IsHovered
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: IsHovered
+  nameWithType: GuiElement.IsHovered
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsHovered
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 66
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Indicates whether the mouse is currently hovering over this element.
+  example: []
+  syntax:
+    content: public bool IsHovered { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsHovered As Boolean
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  id: IsClicked
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: IsClicked
+  nameWithType: GuiElement.IsClicked
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsClicked
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 71
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Indicates whether the element has been clicked during this update cycle.
+  example: []
+  syntax:
+    content: public bool IsClicked { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsClicked As Boolean
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  id: IsSelected
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: IsSelected
+  nameWithType: GuiElement.IsSelected
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsSelected
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 76
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Indicates whether this element is currently selected.
+  example: []
+  syntax:
+    content: public bool IsSelected { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSelected As Boolean
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  id: Position
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Position
+  nameWithType: GuiElement.Position
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Position
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 81
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The on-screen position of the element after anchor and offset are applied.
+  example: []
+  syntax:
+    content: public Vector2 Position { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property Position As Vector2
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Position*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  id: ScaledSize
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: ScaledSize
+  nameWithType: GuiElement.ScaledSize
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ScaledSize
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 86
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The size of the element after scaling is applied.
+  example: []
+  syntax:
+    content: public Vector2 ScaledSize { get; }
+    parameters: []
+    return:
+      type: System.Numerics.Vector2
+    content.vb: Public Property ScaledSize As Vector2
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.#ctor(Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.#ctor(Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  id: '#ctor(Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})'
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: GuiElement(Anchor, Vector2, Vector2, Vector2?, Vector2?, float, Func<GuiElement, bool>?)
+  nameWithType: GuiElement.GuiElement(Anchor, Vector2, Vector2, Vector2?, Vector2?, float, Func<GuiElement, bool>?)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.GuiElement(Sparkle.CSharp.GUI.Anchor, System.Numerics.Vector2, System.Numerics.Vector2, System.Numerics.Vector2?, System.Numerics.Vector2?, float, System.Func<Sparkle.CSharp.GUI.Elements.GuiElement, bool>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 104
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GUI.Elements.GuiElement" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null)
+    parameters:
+    - id: anchor
+      type: Sparkle.CSharp.GUI.Anchor
+      description: The anchor point for positioning the element.
+    - id: offset
+      type: System.Numerics.Vector2
+      description: The offset from the anchor position.
+    - id: size
+      type: System.Numerics.Vector2
+      description: The unscaled size of the element.
+    - id: scale
+      type: System.Nullable{System.Numerics.Vector2}
+      description: Optional scaling factor for the element. Defaults to (1, 1).
+    - id: origin
+      type: System.Nullable{System.Numerics.Vector2}
+      description: Optional origin point for rotation/scaling. Defaults to (0, 0).
+    - id: rotation
+      type: System.Single
+      description: Optional rotation in radians. Defaults to 0.
+    - id: clickFunc
+      type: System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+      description: Optional function that determines what happens on click. Should return true if handled.
+    content.vb: Public Sub New(anchor As Anchor, offset As Vector2, size As Vector2, scale As Vector2? = Nothing, origin As Vector2? = Nothing, rotation As Single = 0, clickFunc As Func(Of GuiElement, Boolean) = Nothing)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.#ctor*
+  nameWithType.vb: GuiElement.New(Anchor, Vector2, Vector2, Vector2?, Vector2?, Single, Func(Of GuiElement, Boolean))
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.New(Sparkle.CSharp.GUI.Anchor, System.Numerics.Vector2, System.Numerics.Vector2, System.Numerics.Vector2?, System.Numerics.Vector2?, Single, System.Func(Of Sparkle.CSharp.GUI.Elements.GuiElement, Boolean))
+  name.vb: New(Anchor, Vector2, Vector2, Vector2?, Vector2?, Single, Func(Of GuiElement, Boolean))
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  id: Update(System.Double,System.Boolean@)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Update(double, ref bool)
+  nameWithType: GuiElement.Update(double, ref bool)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Update(double, ref bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Update
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 121
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Updates the state of the GuiElement during each frame with the given time delta.
+  example: []
+  syntax:
+    content: protected virtual void Update(double delta, ref bool interactionHandled)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time elapsed between the current and the previous frame, in seconds.
+    - id: interactionHandled
+      type: System.Boolean
+      description: A reference to a boolean tracking whether interaction has already been handled by another element.
+    content.vb: Protected Overridable Sub Update(delta As Double, interactionHandled As Boolean)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Update*
+  nameWithType.vb: GuiElement.Update(Double, Boolean)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.Update(Double, Boolean)
+  name.vb: Update(Double, Boolean)
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  id: AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: AfterUpdate(double)
+  nameWithType: GuiElement.AfterUpdate(double)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AfterUpdate
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 159
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Invoked after the update process to perform additional operations specific to the element.
+  example: []
+  syntax:
+    content: protected virtual void AfterUpdate(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time elapsed since the last update, typically used for time-dependent operations.
+    content.vb: Protected Overridable Sub AfterUpdate(delta As Double)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate*
+  nameWithType.vb: GuiElement.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  id: FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: FixedUpdate(double)
+  nameWithType: GuiElement.FixedUpdate(double)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedUpdate
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 165
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Executes logic that requires a constant fixed time step for this element.
+  example: []
+  syntax:
+    content: protected virtual void FixedUpdate(double fixedStep)
+    parameters:
+    - id: fixedStep
+      type: System.Double
+      description: The fixed time step duration, typically used for physics or other time-dependent updates.
+    content.vb: Protected Overridable Sub FixedUpdate(fixedStep As Double)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate*
+  nameWithType.vb: GuiElement.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  id: Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: GuiElement.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Draw
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 172
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Renders the graphical representation of the GUI element to the specified framebuffer.
+  example: []
+  syntax:
+    content: protected abstract void Draw(GraphicsContext context, Framebuffer framebuffer)
+    parameters:
+    - id: context
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+      description: The graphics context used for rendering the element.
+    - id: framebuffer
+      type: Veldrid.Framebuffer
+      description: The framebuffer where the element will be drawn.
+    content.vb: Protected MustOverride Sub Draw(context As GraphicsContext, framebuffer As Framebuffer)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Draw*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  id: Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: Resize(Rectangle)
+  nameWithType: GuiElement.Resize(Rectangle)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Resize
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 178
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Optional method for responding to window or viewport resize events.
+  example: []
+  syntax:
+    content: protected virtual void Resize(Rectangle rectangle)
+    parameters:
+    - id: rectangle
+      type: Bliss.CSharp.Transformations.Rectangle
+      description: The new size and bounds of the rendering area.
+    content.vb: Protected Overridable Sub Resize(rectangle As Rectangle)
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.Resize*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  id: CalculatePos
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: CalculatePos()
+  nameWithType: GuiElement.CalculatePos()
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CalculatePos
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 184
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Calculates the position of the GUI element based on its anchor point, scaled size, offset, and origin.
+  example: []
+  syntax:
+    content: protected virtual Vector2 CalculatePos()
+    return:
+      type: System.Numerics.Vector2
+      description: A <xref href="System.Numerics.Vector2" data-throw-if-not-resolved="false"></xref> representing the calculated position of the element on the screen.
+    content.vb: Protected Overridable Function CalculatePos() As Vector2
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos*
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  id: CalculateSize
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  langs:
+  - csharp
+  - vb
+  name: CalculateSize()
+  nameWithType: GuiElement.CalculateSize()
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CalculateSize
+    path: ../src/Sparkle/CSharp/GUI/Elements/GuiElement.cs
+    startLine: 244
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Calculates the scaled size of the GUI element based on the base size and the current scale factor.
+  example: []
+  syntax:
+    content: protected virtual Vector2 CalculateSize()
+    return:
+      type: System.Numerics.Vector2
+      description: The scaled size of the GUI element as a <xref href="System.Numerics.Vector2" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Protected Overridable Function CalculateSize() As Vector2
+  overload: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize*
+references:
+- uid: Sparkle.CSharp.GUI.Elements
+  commentId: N:Sparkle.CSharp.GUI.Elements
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements
+  nameWithType: Sparkle.CSharp.GUI.Elements
+  fullName: Sparkle.CSharp.GUI.Elements
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Gui*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Gui
+  name: Gui
+  nameWithType: GuiElement.Gui
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+- uid: Sparkle.CSharp.GUI.Gui
+  commentId: T:Sparkle.CSharp.GUI.Gui
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.Gui.html
+  name: Gui
+  nameWithType: Gui
+  fullName: Sparkle.CSharp.GUI.Gui
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Name*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Name
+  name: Name
+  nameWithType: GuiElement.Name
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.GUI.Anchor
+  commentId: T:Sparkle.CSharp.GUI.Anchor
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.Anchor.html
+  name: Anchor
+  nameWithType: Anchor
+  fullName: Sparkle.CSharp.GUI.Anchor
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsHovered
+  name: IsHovered
+  nameWithType: GuiElement.IsHovered
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsClicked
+  name: IsClicked
+  nameWithType: GuiElement.IsClicked
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsSelected
+  name: IsSelected
+  nameWithType: GuiElement.IsSelected
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Position*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Position
+  name: Position
+  nameWithType: GuiElement.Position
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Position
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_ScaledSize
+  name: ScaledSize
+  nameWithType: GuiElement.ScaledSize
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement
+  commentId: T:Sparkle.CSharp.GUI.Elements.GuiElement
+  parent: Sparkle.CSharp.GUI.Elements
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  name: GuiElement
+  nameWithType: GuiElement
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.#ctor*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.#ctor
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement__ctor_Sparkle_CSharp_GUI_Anchor_System_Numerics_Vector2_System_Numerics_Vector2_System_Nullable_System_Numerics_Vector2__System_Nullable_System_Numerics_Vector2__System_Single_System_Func_Sparkle_CSharp_GUI_Elements_GuiElement_System_Boolean__
+  name: GuiElement
+  nameWithType: GuiElement.GuiElement
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.GuiElement
+  nameWithType.vb: GuiElement.New
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.New
+  name.vb: New
+- uid: System.Nullable{System.Numerics.Vector2}
+  commentId: T:System.Nullable{System.Numerics.Vector2}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2?
+  nameWithType: Vector2?
+  fullName: System.Numerics.Vector2?
+  spec.csharp:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+  spec.vb:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+- uid: System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+  commentId: T:System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<GuiElement, bool>
+  nameWithType: Func<GuiElement, bool>
+  fullName: System.Func<Sparkle.CSharp.GUI.Elements.GuiElement, bool>
+  nameWithType.vb: Func(Of GuiElement, Boolean)
+  fullName.vb: System.Func(Of Sparkle.CSharp.GUI.Elements.GuiElement, Boolean)
+  name.vb: Func(Of GuiElement, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement
+    name: GuiElement
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement
+    name: GuiElement
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Update*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Update
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Update_System_Double_System_Boolean__
+  name: Update
+  nameWithType: GuiElement.Update
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Update
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_System_Double_
+  name: AfterUpdate
+  nameWithType: GuiElement.AfterUpdate
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_System_Double_
+  name: FixedUpdate
+  nameWithType: GuiElement.FixedUpdate
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Draw*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Draw
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw
+  nameWithType: GuiElement.Draw
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Draw
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Veldrid.Framebuffer
+  commentId: T:Veldrid.Framebuffer
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  name: Framebuffer
+  nameWithType: Framebuffer
+  fullName: Veldrid.Framebuffer
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Resize*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.Resize
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize
+  nameWithType: GuiElement.Resize
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Resize
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos
+  name: CalculatePos
+  nameWithType: GuiElement.CalculatePos
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize
+  name: CalculateSize
+  nameWithType: GuiElement.CalculateSize
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize

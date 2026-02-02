@@ -1,0 +1,887 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Scenes.SceneManager
+  commentId: T:Sparkle.CSharp.Scenes.SceneManager
+  id: SceneManager
+  parent: Sparkle.CSharp.Scenes
+  children:
+  - Sparkle.CSharp.Scenes.SceneManager.ActiveCam2D
+  - Sparkle.CSharp.Scenes.SceneManager.ActiveCam3D
+  - Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+  - Sparkle.CSharp.Scenes.SceneManager.FilterResult
+  - Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+  - Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+  - Sparkle.CSharp.Scenes.SceneManager.PostEffect
+  - Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+  - Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+  - Sparkle.CSharp.Scenes.SceneManager.SetScene(Sparkle.CSharp.Scenes.Scene)
+  - Sparkle.CSharp.Scenes.SceneManager.Simulation
+  langs:
+  - csharp
+  - vb
+  name: SceneManager
+  nameWithType: SceneManager
+  fullName: Sparkle.CSharp.Scenes.SceneManager
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SceneManager
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 13
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  syntax:
+    content: public static class SceneManager
+    content.vb: Public Module SceneManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+  id: GraphicsDevice
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: GraphicsDevice
+  nameWithType: SceneManager.GraphicsDevice
+  fullName: Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsDevice
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The graphics device used for rendering.
+  example: []
+  syntax:
+    content: public static GraphicsDevice GraphicsDevice { get; }
+    parameters: []
+    return:
+      type: Veldrid.GraphicsDevice
+    content.vb: Public Shared Property GraphicsDevice As GraphicsDevice
+  overload: Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice*
+- uid: Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+  id: ActiveScene
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveScene
+  nameWithType: SceneManager.ActiveScene
+  fullName: Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ActiveScene
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: Gets the currently active scene.
+  example: []
+  syntax:
+    content: public static Scene? ActiveScene { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Scenes.Scene
+    content.vb: Public Shared Property ActiveScene As Scene
+  overload: Sparkle.CSharp.Scenes.SceneManager.ActiveScene*
+- uid: Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+  id: FilterTarget
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: FilterTarget
+  nameWithType: SceneManager.FilterTarget
+  fullName: Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FilterTarget
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The render target used for filter effects.
+  example: []
+  syntax:
+    content: public static RenderTexture2D FilterTarget { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.RenderTexture2D
+    content.vb: Public Shared Property FilterTarget As RenderTexture2D
+  overload: Sparkle.CSharp.Scenes.SceneManager.FilterTarget*
+- uid: Sparkle.CSharp.Scenes.SceneManager.FilterResult
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.FilterResult
+  id: FilterResult
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: FilterResult
+  nameWithType: SceneManager.FilterResult
+  fullName: Sparkle.CSharp.Scenes.SceneManager.FilterResult
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FilterResult
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The final texture result obtained after applying filter effects to a scene.
+  example: []
+  syntax:
+    content: public static Texture2D FilterResult { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property FilterResult As Texture2D
+  overload: Sparkle.CSharp.Scenes.SceneManager.FilterResult*
+- uid: Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+  id: PostProcessingTarget
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: PostProcessingTarget
+  nameWithType: SceneManager.PostProcessingTarget
+  fullName: Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PostProcessingTarget
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 38
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The render target used for post-processing effects.
+  example: []
+  syntax:
+    content: public static RenderTexture2D PostProcessingTarget { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.RenderTexture2D
+    content.vb: Public Shared Property PostProcessingTarget As RenderTexture2D
+  overload: Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget*
+- uid: Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+  id: PostProcessingResult
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: PostProcessingResult
+  nameWithType: SceneManager.PostProcessingResult
+  fullName: Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PostProcessingResult
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 43
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The final texture result obtained after applying post-processing effects to a scene.
+  example: []
+  syntax:
+    content: public static Texture2D PostProcessingResult { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property PostProcessingResult As Texture2D
+  overload: Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult*
+- uid: Sparkle.CSharp.Scenes.SceneManager.PostEffect
+  commentId: F:Sparkle.CSharp.Scenes.SceneManager.PostEffect
+  id: PostEffect
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: PostEffect
+  nameWithType: SceneManager.PostEffect
+  fullName: Sparkle.CSharp.Scenes.SceneManager.PostEffect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PostEffect
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 48
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The post-processing effect applied to the rendered scene.
+  example: []
+  syntax:
+    content: public static Effect? PostEffect
+    return:
+      type: Bliss.CSharp.Effects.Effect
+    content.vb: Public Shared PostEffect As Effect
+- uid: Sparkle.CSharp.Scenes.SceneManager.ActiveCam2D
+  commentId: F:Sparkle.CSharp.Scenes.SceneManager.ActiveCam2D
+  id: ActiveCam2D
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveCam2D
+  nameWithType: SceneManager.ActiveCam2D
+  fullName: Sparkle.CSharp.Scenes.SceneManager.ActiveCam2D
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ActiveCam2D
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 53
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The active 2D camera in the scene.
+  example: []
+  syntax:
+    content: public static Camera2D? ActiveCam2D
+    return:
+      type: Sparkle.CSharp.Entities.Camera2D
+    content.vb: Public Shared ActiveCam2D As Camera2D
+- uid: Sparkle.CSharp.Scenes.SceneManager.ActiveCam3D
+  commentId: F:Sparkle.CSharp.Scenes.SceneManager.ActiveCam3D
+  id: ActiveCam3D
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveCam3D
+  nameWithType: SceneManager.ActiveCam3D
+  fullName: Sparkle.CSharp.Scenes.SceneManager.ActiveCam3D
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ActiveCam3D
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 58
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: The active 3D camera in the scene.
+  example: []
+  syntax:
+    content: public static Camera3D? ActiveCam3D
+    return:
+      type: Sparkle.CSharp.Entities.Camera3D
+    content.vb: Public Shared ActiveCam3D As Camera3D
+- uid: Sparkle.CSharp.Scenes.SceneManager.Simulation
+  commentId: P:Sparkle.CSharp.Scenes.SceneManager.Simulation
+  id: Simulation
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: Simulation
+  nameWithType: SceneManager.Simulation
+  fullName: Sparkle.CSharp.Scenes.SceneManager.Simulation
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Simulation
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 63
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: Gets the simulation associated with the active scene.
+  example: []
+  syntax:
+    content: public static Simulation? Simulation { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Physics.Simulation
+    content.vb: Public Shared ReadOnly Property Simulation As Simulation
+  overload: Sparkle.CSharp.Scenes.SceneManager.Simulation*
+- uid: Sparkle.CSharp.Scenes.SceneManager.SetScene(Sparkle.CSharp.Scenes.Scene)
+  commentId: M:Sparkle.CSharp.Scenes.SceneManager.SetScene(Sparkle.CSharp.Scenes.Scene)
+  id: SetScene(Sparkle.CSharp.Scenes.Scene)
+  parent: Sparkle.CSharp.Scenes.SceneManager
+  langs:
+  - csharp
+  - vb
+  name: SetScene(Scene?)
+  nameWithType: SceneManager.SetScene(Scene?)
+  fullName: Sparkle.CSharp.Scenes.SceneManager.SetScene(Sparkle.CSharp.Scenes.Scene?)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Scenes/SceneManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SetScene
+    path: ../src/Sparkle/CSharp/Scenes/SceneManager.cs
+    startLine: 191
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Scenes
+  summary: Sets a new active scene and initializes it.
+  example: []
+  syntax:
+    content: public static void SetScene(Scene? scene)
+    parameters:
+    - id: scene
+      type: Sparkle.CSharp.Scenes.Scene
+      description: The scene to set as active.
+    content.vb: Public Shared Sub SetScene(scene As Scene)
+  overload: Sparkle.CSharp.Scenes.SceneManager.SetScene*
+  nameWithType.vb: SceneManager.SetScene(Scene)
+  fullName.vb: Sparkle.CSharp.Scenes.SceneManager.SetScene(Sparkle.CSharp.Scenes.Scene)
+  name.vb: SetScene(Scene)
+references:
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: SceneManager.GraphicsDevice
+  fullName: Sparkle.CSharp.Scenes.SceneManager.GraphicsDevice
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Scenes.SceneManager.ActiveScene*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_ActiveScene
+  name: ActiveScene
+  nameWithType: SceneManager.ActiveScene
+  fullName: Sparkle.CSharp.Scenes.SceneManager.ActiveScene
+- uid: Sparkle.CSharp.Scenes.Scene
+  commentId: T:Sparkle.CSharp.Scenes.Scene
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.Scene.html
+  name: Scene
+  nameWithType: Scene
+  fullName: Sparkle.CSharp.Scenes.Scene
+- uid: Sparkle.CSharp.Scenes.SceneManager.FilterTarget*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_FilterTarget
+  name: FilterTarget
+  nameWithType: SceneManager.FilterTarget
+  fullName: Sparkle.CSharp.Scenes.SceneManager.FilterTarget
+- uid: Bliss.CSharp.Textures.RenderTexture2D
+  commentId: T:Bliss.CSharp.Textures.RenderTexture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: RenderTexture2D
+  nameWithType: RenderTexture2D
+  fullName: Bliss.CSharp.Textures.RenderTexture2D
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Sparkle.CSharp.Scenes.SceneManager.FilterResult*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.FilterResult
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_FilterResult
+  name: FilterResult
+  nameWithType: SceneManager.FilterResult
+  fullName: Sparkle.CSharp.Scenes.SceneManager.FilterResult
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_PostProcessingTarget
+  name: PostProcessingTarget
+  nameWithType: SceneManager.PostProcessingTarget
+  fullName: Sparkle.CSharp.Scenes.SceneManager.PostProcessingTarget
+- uid: Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_PostProcessingResult
+  name: PostProcessingResult
+  nameWithType: SceneManager.PostProcessingResult
+  fullName: Sparkle.CSharp.Scenes.SceneManager.PostProcessingResult
+- uid: Bliss.CSharp.Effects.Effect
+  commentId: T:Bliss.CSharp.Effects.Effect
+  parent: Bliss.CSharp.Effects
+  isExternal: true
+  name: Effect
+  nameWithType: Effect
+  fullName: Bliss.CSharp.Effects.Effect
+- uid: Bliss.CSharp.Effects
+  commentId: N:Bliss.CSharp.Effects
+  isExternal: true
+  name: Bliss.CSharp.Effects
+  nameWithType: Bliss.CSharp.Effects
+  fullName: Bliss.CSharp.Effects
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Effects
+    name: Effects
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Effects
+    name: Effects
+    isExternal: true
+- uid: Sparkle.CSharp.Entities.Camera2D
+  commentId: T:Sparkle.CSharp.Entities.Camera2D
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Camera2D.html
+  name: Camera2D
+  nameWithType: Camera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D
+- uid: Sparkle.CSharp.Entities
+  commentId: N:Sparkle.CSharp.Entities
+  href: Sparkle.html
+  name: Sparkle.CSharp.Entities
+  nameWithType: Sparkle.CSharp.Entities
+  fullName: Sparkle.CSharp.Entities
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+- uid: Sparkle.CSharp.Entities.Camera3D
+  commentId: T:Sparkle.CSharp.Entities.Camera3D
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Camera3D.html
+  name: Camera3D
+  nameWithType: Camera3D
+  fullName: Sparkle.CSharp.Entities.Camera3D
+- uid: Sparkle.CSharp.Scenes.SceneManager.Simulation*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.Simulation
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_Simulation
+  name: Simulation
+  nameWithType: SceneManager.Simulation
+  fullName: Sparkle.CSharp.Scenes.SceneManager.Simulation
+- uid: Sparkle.CSharp.Physics.Simulation
+  commentId: T:Sparkle.CSharp.Physics.Simulation
+  parent: Sparkle.CSharp.Physics
+  href: Sparkle.CSharp.Physics.Simulation.html
+  name: Simulation
+  nameWithType: Simulation
+  fullName: Sparkle.CSharp.Physics.Simulation
+- uid: Sparkle.CSharp.Physics
+  commentId: N:Sparkle.CSharp.Physics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics
+  nameWithType: Sparkle.CSharp.Physics
+  fullName: Sparkle.CSharp.Physics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+- uid: Sparkle.CSharp.Scenes.SceneManager.SetScene*
+  commentId: Overload:Sparkle.CSharp.Scenes.SceneManager.SetScene
+  href: Sparkle.CSharp.Scenes.SceneManager.html#Sparkle_CSharp_Scenes_SceneManager_SetScene_Sparkle_CSharp_Scenes_Scene_
+  name: SetScene
+  nameWithType: SceneManager.SetScene
+  fullName: Sparkle.CSharp.Scenes.SceneManager.SetScene

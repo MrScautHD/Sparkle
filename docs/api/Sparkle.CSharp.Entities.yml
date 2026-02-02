@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Entities
+  commentId: N:Sparkle.CSharp.Entities
+  id: Sparkle.CSharp.Entities
+  children:
+  - Sparkle.CSharp.Entities.Camera2D
+  - Sparkle.CSharp.Entities.Camera3D
+  - Sparkle.CSharp.Entities.Entity
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Entities
+  nameWithType: Sparkle.CSharp.Entities
+  fullName: Sparkle.CSharp.Entities
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Entities.Camera2D
+  commentId: T:Sparkle.CSharp.Entities.Camera2D
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Camera2D.html
+  name: Camera2D
+  nameWithType: Camera2D
+  fullName: Sparkle.CSharp.Entities.Camera2D
+- uid: Sparkle.CSharp.Entities.Camera3D
+  commentId: T:Sparkle.CSharp.Entities.Camera3D
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Camera3D.html
+  name: Camera3D
+  nameWithType: Camera3D
+  fullName: Sparkle.CSharp.Entities.Camera3D
+- uid: Sparkle.CSharp.Entities.Entity
+  commentId: T:Sparkle.CSharp.Entities.Entity
+  parent: Sparkle.CSharp.Entities
+  href: Sparkle.CSharp.Entities.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Sparkle.CSharp.Entities.Entity
+- uid: Sparkle.CSharp.Entities
+  commentId: N:Sparkle.CSharp.Entities
+  href: Sparkle.html
+  name: Sparkle.CSharp.Entities
+  nameWithType: Sparkle.CSharp.Entities
+  fullName: Sparkle.CSharp.Entities
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html

@@ -1,0 +1,986 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  id: TextureButtonData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  children:
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.BorderInsets
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Color
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.DisabledColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Flip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.HoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.ResizeMode
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Sampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.SourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Texture
+  langs:
+  - csharp
+  - vb
+  name: TextureButtonData
+  nameWithType: TextureButtonData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TextureButtonData
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 8
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  syntax:
+    content: public class TextureButtonData
+    content.vb: Public Class TextureButtonData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Texture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Texture
+  id: Texture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: Texture
+  nameWithType: TextureButtonData.Texture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Texture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Texture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 13
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used for the button.
+  example: []
+  syntax:
+    content: public Texture2D Texture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Texture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Sampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Sampler
+  id: Sampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: Sampler
+  nameWithType: TextureButtonData.Sampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Sampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Sampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used to control how the texture is sampled.
+  example: []
+  syntax:
+    content: public Sampler? Sampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public Sampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.SourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.SourceRect
+  id: SourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: SourceRect
+  nameWithType: TextureButtonData.SourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.SourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The section of the texture to be displayed.
+  example: []
+  syntax:
+    content: public Rectangle SourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public SourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.ResizeMode
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.ResizeMode
+  id: ResizeMode
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: ResizeMode
+  nameWithType: TextureButtonData.ResizeMode
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.ResizeMode
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ResizeMode
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The mode used to resize the texture.
+  example: []
+  syntax:
+    content: public ResizeMode ResizeMode
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+    content.vb: Public ResizeMode As ResizeMode
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.BorderInsets
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.BorderInsets
+  id: BorderInsets
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: BorderInsets
+  nameWithType: TextureButtonData.BorderInsets
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.BorderInsets
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BorderInsets
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The border insets used for nine-slice resizing.
+  example: []
+  syntax:
+    content: public BorderInsets BorderInsets
+    return:
+      type: Sparkle.CSharp.GUI.BorderInsets
+    content.vb: Public BorderInsets As BorderInsets
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Color
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Color
+  id: Color
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: Color
+  nameWithType: TextureButtonData.Color
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Color
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Color
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 38
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The primary color.
+  example: []
+  syntax:
+    content: public Color Color
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public Color As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.HoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.HoverColor
+  id: HoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: HoverColor
+  nameWithType: TextureButtonData.HoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.HoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: HoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 43
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color get's applied when the mouse is hover over.
+  example: []
+  syntax:
+    content: public Color HoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public HoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.DisabledColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.DisabledColor
+  id: DisabledColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: DisabledColor
+  nameWithType: TextureButtonData.DisabledColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.DisabledColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 48
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied when the toggle is in an inactive or disabled state.
+  example: []
+  syntax:
+    content: public Color DisabledColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Flip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Flip
+  id: Flip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: Flip
+  nameWithType: TextureButtonData.Flip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.Flip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Flip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 53
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode for the texture (none, horizontal, vertical, both).
+  example: []
+  syntax:
+    content: public SpriteFlip Flip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public Flip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  commentId: M:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  id: '#ctor(Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)'
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  langs:
+  - csharp
+  - vb
+  name: TextureButtonData(Texture2D, Sampler?, Rectangle?, ResizeMode, BorderInsets?, Color?, Color?, Color?, SpriteFlip)
+  nameWithType: TextureButtonData.TextureButtonData(Texture2D, Sampler?, Rectangle?, ResizeMode, BorderInsets?, Color?, Color?, Color?, SpriteFlip)
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.TextureButtonData(Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler?, Bliss.CSharp.Transformations.Rectangle?, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.BorderInsets?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureButtonData.cs
+    startLine: 67
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GUI.Elements.Data.TextureButtonData" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public TextureButtonData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None)
+    parameters:
+    - id: texture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture used for the button.
+    - id: sampler
+      type: Veldrid.Sampler
+      description: The sampler used to control how the texture is sampled.
+    - id: sourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: The section of the texture to be displayed.
+    - id: resizeMode
+      type: Sparkle.CSharp.GUI.ResizeMode
+      description: The mode used to resize the texture.
+    - id: borderInsets
+      type: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+      description: The border insets used for nine-slice resizing.
+    - id: color
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: The primary color.
+    - id: hoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: The color gets applied when the mouse is hover over.
+    - id: disabledColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: The color of the button when it is disabled. Defaults to gray if not specified.
+    - id: flip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: The flip mode for the texture (none, horizontal, vertical, both).
+    content.vb: Public Sub New(texture As Texture2D, sampler As Sampler = Nothing, sourceRect As Rectangle? = Nothing, resizeMode As ResizeMode = ResizeMode.None, borderInsets As BorderInsets? = Nothing, color As Color? = Nothing, hoverColor As Color? = Nothing, disabledColor As Color? = Nothing, flip As SpriteFlip = SpriteFlip.None)
+  overload: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor*
+  nameWithType.vb: TextureButtonData.New(Texture2D, Sampler, Rectangle?, ResizeMode, BorderInsets?, Color?, Color?, Color?, SpriteFlip)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.New(Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler, Bliss.CSharp.Transformations.Rectangle?, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.BorderInsets?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip)
+  name.vb: New(Texture2D, Sampler, Rectangle?, ResizeMode, BorderInsets?, Color?, Color?, Color?, SpriteFlip)
+references:
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Veldrid.Sampler
+  commentId: T:Veldrid.Sampler
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Sampler.cs
+  name: Sampler
+  nameWithType: Sampler
+  fullName: Veldrid.Sampler
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Sparkle.CSharp.GUI.ResizeMode
+  commentId: T:Sparkle.CSharp.GUI.ResizeMode
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.ResizeMode.html
+  name: ResizeMode
+  nameWithType: ResizeMode
+  fullName: Sparkle.CSharp.GUI.ResizeMode
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.BorderInsets
+  commentId: T:Sparkle.CSharp.GUI.BorderInsets
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.BorderInsets.html
+  name: BorderInsets
+  nameWithType: BorderInsets
+  fullName: Sparkle.CSharp.GUI.BorderInsets
+- uid: Bliss.CSharp.Colors.Color
+  commentId: T:Bliss.CSharp.Colors.Color
+  parent: Bliss.CSharp.Colors
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Bliss.CSharp.Colors.Color
+- uid: Bliss.CSharp.Colors
+  commentId: N:Bliss.CSharp.Colors
+  isExternal: true
+  name: Bliss.CSharp.Colors
+  nameWithType: Bliss.CSharp.Colors
+  fullName: Bliss.CSharp.Colors
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteFlip
+  nameWithType: SpriteFlip
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.html
+  name: TextureButtonData
+  nameWithType: TextureButtonData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.#ctor
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.html#Sparkle_CSharp_GUI_Elements_Data_TextureButtonData__ctor_Bliss_CSharp_Textures_Texture2D_Veldrid_Sampler_System_Nullable_Bliss_CSharp_Transformations_Rectangle__Sparkle_CSharp_GUI_ResizeMode_System_Nullable_Sparkle_CSharp_GUI_BorderInsets__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_
+  name: TextureButtonData
+  nameWithType: TextureButtonData.TextureButtonData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.TextureButtonData
+  nameWithType.vb: TextureButtonData.New
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.New
+  name.vb: New
+- uid: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  commentId: T:System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  parent: System
+  definition: System.Nullable`1
+  name: Rectangle?
+  nameWithType: Rectangle?
+  fullName: Bliss.CSharp.Transformations.Rectangle?
+  spec.csharp:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+  commentId: T:System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+  parent: System
+  definition: System.Nullable`1
+  href: Sparkle.CSharp.GUI.BorderInsets.html
+  name: BorderInsets?
+  nameWithType: BorderInsets?
+  fullName: Sparkle.CSharp.GUI.BorderInsets?
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.BorderInsets
+    name: BorderInsets
+    href: Sparkle.CSharp.GUI.BorderInsets.html
+  - name: '?'
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.BorderInsets
+    name: BorderInsets
+    href: Sparkle.CSharp.GUI.BorderInsets.html
+  - name: '?'
+- uid: System.Nullable{Bliss.CSharp.Colors.Color}
+  commentId: T:System.Nullable{Bliss.CSharp.Colors.Color}
+  parent: System
+  definition: System.Nullable`1
+  name: Color?
+  nameWithType: Color?
+  fullName: Bliss.CSharp.Colors.Color?
+  spec.csharp:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

@@ -1,0 +1,821 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  id: GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  children:
+  - Sparkle.CSharp.Graphics.GraphicsContext.#ctor(Veldrid.GraphicsDevice,Veldrid.CommandList,Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch,Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)
+  - Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+  - Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+  - Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+  - Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+  - Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+  - Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+  langs:
+  - csharp
+  - vb
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsContext
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 8
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  syntax:
+    content: public class GraphicsContext
+    content.vb: Public Class GraphicsContext
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+  id: GraphicsDevice
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: GraphicsDevice
+  nameWithType: GraphicsContext.GraphicsDevice
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsDevice
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 13
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The graphics device used for rendering.
+  example: []
+  syntax:
+    content: public GraphicsDevice GraphicsDevice { get; }
+    parameters: []
+    return:
+      type: Veldrid.GraphicsDevice
+    content.vb: Public Property GraphicsDevice As GraphicsDevice
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+  id: CommandList
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: CommandList
+  nameWithType: GraphicsContext.CommandList
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CommandList
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The command list for submitting rendering commands.
+  example: []
+  syntax:
+    content: public CommandList CommandList { get; }
+    parameters: []
+    return:
+      type: Veldrid.CommandList
+    content.vb: Public Property CommandList As CommandList
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.CommandList*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+  id: FullScreenRenderer
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: FullScreenRenderer
+  nameWithType: GraphicsContext.FullScreenRenderer
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FullScreenRenderer
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The full-screen render pass used for post-processing.
+  example: []
+  syntax:
+    content: public FullScreenRenderer FullScreenRenderer { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+    content.vb: Public Property FullScreenRenderer As FullScreenRenderer
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+  id: SpriteBatch
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: SpriteBatch
+  nameWithType: GraphicsContext.SpriteBatch
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SpriteBatch
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The sprite batch used for efficient 2D sprite rendering.
+  example: []
+  syntax:
+    content: public SpriteBatch SpriteBatch { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+    content.vb: Public Property SpriteBatch As SpriteBatch
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+  id: PrimitiveBatch
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: PrimitiveBatch
+  nameWithType: GraphicsContext.PrimitiveBatch
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PrimitiveBatch
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The primitive batch for rendering basic geometric shapes.
+  example: []
+  syntax:
+    content: public PrimitiveBatch PrimitiveBatch { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+    content.vb: Public Property PrimitiveBatch As PrimitiveBatch
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+  commentId: P:Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+  id: ImmediateRenderer
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: ImmediateRenderer
+  nameWithType: GraphicsContext.ImmediateRenderer
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ImmediateRenderer
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 38
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: The immediate renderer for low-level rendering operations.
+  example: []
+  syntax:
+    content: public ImmediateRenderer ImmediateRenderer { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+    content.vb: Public Property ImmediateRenderer As ImmediateRenderer
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer*
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.#ctor(Veldrid.GraphicsDevice,Veldrid.CommandList,Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch,Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)
+  commentId: M:Sparkle.CSharp.Graphics.GraphicsContext.#ctor(Veldrid.GraphicsDevice,Veldrid.CommandList,Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch,Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)
+  id: '#ctor(Veldrid.GraphicsDevice,Veldrid.CommandList,Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch,Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)'
+  parent: Sparkle.CSharp.Graphics.GraphicsContext
+  langs:
+  - csharp
+  - vb
+  name: GraphicsContext(GraphicsDevice, CommandList, FullScreenRenderer, SpriteBatch, PrimitiveBatch, ImmediateRenderer)
+  nameWithType: GraphicsContext.GraphicsContext(GraphicsDevice, CommandList, FullScreenRenderer, SpriteBatch, PrimitiveBatch, ImmediateRenderer)
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsContext(Veldrid.GraphicsDevice, Veldrid.CommandList, Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch, Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Graphics/GraphicsContext.cs
+    startLine: 49
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Graphics.GraphicsContext" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device to use.
+    - id: commandList
+      type: Veldrid.CommandList
+      description: The command list for issuing rendering commands.
+    - id: fullScreenRenderer
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+      description: The render pass used for full-screen rendering operations.
+    - id: spriteBatch
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+      description: The sprite batch for rendering sprites.
+    - id: primitiveBatch
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+      description: The primitive batch for rendering primitive shapes.
+    - id: immediateRenderer
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+      description: The immediate renderer for performing low-level custom rendering.
+    content.vb: Public Sub New(graphicsDevice As GraphicsDevice, commandList As CommandList, fullScreenRenderer As FullScreenRenderer, spriteBatch As SpriteBatch, primitiveBatch As PrimitiveBatch, immediateRenderer As ImmediateRenderer)
+  overload: Sparkle.CSharp.Graphics.GraphicsContext.#ctor*
+  nameWithType.vb: GraphicsContext.New(GraphicsDevice, CommandList, FullScreenRenderer, SpriteBatch, PrimitiveBatch, ImmediateRenderer)
+  fullName.vb: Sparkle.CSharp.Graphics.GraphicsContext.New(Veldrid.GraphicsDevice, Veldrid.CommandList, Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch, Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer)
+  name.vb: New(GraphicsDevice, CommandList, FullScreenRenderer, SpriteBatch, PrimitiveBatch, ImmediateRenderer)
+references:
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: GraphicsContext.GraphicsDevice
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsDevice
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.CommandList*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_CommandList
+  name: CommandList
+  nameWithType: GraphicsContext.CommandList
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.CommandList
+- uid: Veldrid.CommandList
+  commentId: T:Veldrid.CommandList
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  name: CommandList
+  nameWithType: CommandList
+  fullName: Veldrid.CommandList
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_FullScreenRenderer
+  name: FullScreenRenderer
+  nameWithType: GraphicsContext.FullScreenRenderer
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.FullScreenRenderer
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: FullScreenRenderer
+  nameWithType: FullScreenRenderer
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_SpriteBatch
+  name: SpriteBatch
+  nameWithType: GraphicsContext.SpriteBatch
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.SpriteBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteBatch
+  nameWithType: SpriteBatch
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_PrimitiveBatch
+  name: PrimitiveBatch
+  nameWithType: GraphicsContext.PrimitiveBatch
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.PrimitiveBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  isExternal: true
+  name: PrimitiveBatch
+  nameWithType: PrimitiveBatch
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+    name: Primitives
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+    name: Primitives
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext_ImmediateRenderer
+  name: ImmediateRenderer
+  nameWithType: GraphicsContext.ImmediateRenderer
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.ImmediateRenderer
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: ImmediateRenderer
+  nameWithType: ImmediateRenderer
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Sparkle.CSharp.Graphics.GraphicsContext.#ctor*
+  commentId: Overload:Sparkle.CSharp.Graphics.GraphicsContext.#ctor
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html#Sparkle_CSharp_Graphics_GraphicsContext__ctor_Veldrid_GraphicsDevice_Veldrid_CommandList_Bliss_CSharp_Graphics_Rendering_Renderers_FullScreenRenderer_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteBatch_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Primitives_PrimitiveBatch_Bliss_CSharp_Graphics_Rendering_Renderers_ImmediateRenderer_
+  name: GraphicsContext
+  nameWithType: GraphicsContext.GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext.GraphicsContext
+  nameWithType.vb: GraphicsContext.New
+  fullName.vb: Sparkle.CSharp.Graphics.GraphicsContext.New
+  name.vb: New

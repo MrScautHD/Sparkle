@@ -164,14 +164,13 @@ public class TestGui : Gui {
         
         this.AddElement("Texture-Drop-Down", dropDownElement);
         
-        
         // TWO
         TextureDropDownElement dropDownElement2 = new TextureDropDownElement(
             textureDropDownData,
             options,
             4,
             Anchor.CenterLeft,
-            new Vector2(80, -70),
+            new Vector2(40, -70),
             size: new Vector2(140F, 30),
             rotation: 0,
             scale: new Vector2(2, 2),

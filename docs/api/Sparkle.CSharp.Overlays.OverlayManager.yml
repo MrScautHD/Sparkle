@@ -1,0 +1,533 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Overlays.OverlayManager
+  commentId: T:Sparkle.CSharp.Overlays.OverlayManager
+  id: OverlayManager
+  parent: Sparkle.CSharp.Overlays
+  children:
+  - Sparkle.CSharp.Overlays.OverlayManager.AddOverlay(Sparkle.CSharp.Overlays.Overlay)
+  - Sparkle.CSharp.Overlays.OverlayManager.GetOverlays
+  - Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay(Sparkle.CSharp.Overlays.Overlay)
+  langs:
+  - csharp
+  - vb
+  name: OverlayManager
+  nameWithType: OverlayManager
+  fullName: Sparkle.CSharp.Overlays.OverlayManager
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Overlays/OverlayManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: OverlayManager
+    path: ../src/Sparkle/CSharp/Overlays/OverlayManager.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Overlays
+  syntax:
+    content: public static class OverlayManager
+    content.vb: Public Module OverlayManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Overlays.OverlayManager.GetOverlays
+  commentId: M:Sparkle.CSharp.Overlays.OverlayManager.GetOverlays
+  id: GetOverlays
+  parent: Sparkle.CSharp.Overlays.OverlayManager
+  langs:
+  - csharp
+  - vb
+  name: GetOverlays()
+  nameWithType: OverlayManager.GetOverlays()
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.GetOverlays()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Overlays/OverlayManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetOverlays
+    path: ../src/Sparkle/CSharp/Overlays/OverlayManager.cs
+    startLine: 86
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Overlays
+  summary: Retrieves the list of active overlays managed by the <xref href="Sparkle.CSharp.Overlays.OverlayManager" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static IEnumerable<Overlay> GetOverlays()
+    return:
+      type: System.Collections.Generic.IEnumerable{Sparkle.CSharp.Overlays.Overlay}
+      description: A collection of overlays currently managed by the <xref href="Sparkle.CSharp.Overlays.OverlayManager" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Function GetOverlays() As IEnumerable(Of Overlay)
+  overload: Sparkle.CSharp.Overlays.OverlayManager.GetOverlays*
+- uid: Sparkle.CSharp.Overlays.OverlayManager.AddOverlay(Sparkle.CSharp.Overlays.Overlay)
+  commentId: M:Sparkle.CSharp.Overlays.OverlayManager.AddOverlay(Sparkle.CSharp.Overlays.Overlay)
+  id: AddOverlay(Sparkle.CSharp.Overlays.Overlay)
+  parent: Sparkle.CSharp.Overlays.OverlayManager
+  langs:
+  - csharp
+  - vb
+  name: AddOverlay(Overlay)
+  nameWithType: OverlayManager.AddOverlay(Overlay)
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.AddOverlay(Sparkle.CSharp.Overlays.Overlay)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Overlays/OverlayManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AddOverlay
+    path: ../src/Sparkle/CSharp/Overlays/OverlayManager.cs
+    startLine: 94
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Overlays
+  summary: Adds an overlay to the manager.
+  example: []
+  syntax:
+    content: public static void AddOverlay(Overlay overlay)
+    parameters:
+    - id: overlay
+      type: Sparkle.CSharp.Overlays.Overlay
+      description: The overlay to add.
+    content.vb: Public Shared Sub AddOverlay(overlay As Overlay)
+  overload: Sparkle.CSharp.Overlays.OverlayManager.AddOverlay*
+- uid: Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay(Sparkle.CSharp.Overlays.Overlay)
+  commentId: M:Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay(Sparkle.CSharp.Overlays.Overlay)
+  id: RemoveOverlay(Sparkle.CSharp.Overlays.Overlay)
+  parent: Sparkle.CSharp.Overlays.OverlayManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveOverlay(Overlay)
+  nameWithType: OverlayManager.RemoveOverlay(Overlay)
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay(Sparkle.CSharp.Overlays.Overlay)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Overlays/OverlayManager.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RemoveOverlay
+    path: ../src/Sparkle/CSharp/Overlays/OverlayManager.cs
+    startLine: 107
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Overlays
+  summary: Removes an overlay from the manager.
+  example: []
+  syntax:
+    content: public static void RemoveOverlay(Overlay overlay)
+    parameters:
+    - id: overlay
+      type: Sparkle.CSharp.Overlays.Overlay
+      description: The overlay to remove.
+    content.vb: Public Shared Sub RemoveOverlay(overlay As Overlay)
+  overload: Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay*
+references:
+- uid: Sparkle.CSharp.Overlays
+  commentId: N:Sparkle.CSharp.Overlays
+  href: Sparkle.html
+  name: Sparkle.CSharp.Overlays
+  nameWithType: Sparkle.CSharp.Overlays
+  fullName: Sparkle.CSharp.Overlays
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Overlays
+    name: Overlays
+    href: Sparkle.CSharp.Overlays.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Overlays
+    name: Overlays
+    href: Sparkle.CSharp.Overlays.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Overlays.OverlayManager
+  commentId: T:Sparkle.CSharp.Overlays.OverlayManager
+  href: Sparkle.CSharp.Overlays.OverlayManager.html
+  name: OverlayManager
+  nameWithType: OverlayManager
+  fullName: Sparkle.CSharp.Overlays.OverlayManager
+- uid: Sparkle.CSharp.Overlays.OverlayManager.GetOverlays*
+  commentId: Overload:Sparkle.CSharp.Overlays.OverlayManager.GetOverlays
+  href: Sparkle.CSharp.Overlays.OverlayManager.html#Sparkle_CSharp_Overlays_OverlayManager_GetOverlays
+  name: GetOverlays
+  nameWithType: OverlayManager.GetOverlays
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.GetOverlays
+- uid: System.Collections.Generic.IEnumerable{Sparkle.CSharp.Overlays.Overlay}
+  commentId: T:System.Collections.Generic.IEnumerable{Sparkle.CSharp.Overlays.Overlay}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Overlay>
+  nameWithType: IEnumerable<Overlay>
+  fullName: System.Collections.Generic.IEnumerable<Sparkle.CSharp.Overlays.Overlay>
+  nameWithType.vb: IEnumerable(Of Overlay)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Sparkle.CSharp.Overlays.Overlay)
+  name.vb: IEnumerable(Of Overlay)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Sparkle.CSharp.Overlays.Overlay
+    name: Overlay
+    href: Sparkle.CSharp.Overlays.Overlay.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Sparkle.CSharp.Overlays.Overlay
+    name: Overlay
+    href: Sparkle.CSharp.Overlays.Overlay.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Sparkle.CSharp.Overlays.OverlayManager.AddOverlay*
+  commentId: Overload:Sparkle.CSharp.Overlays.OverlayManager.AddOverlay
+  href: Sparkle.CSharp.Overlays.OverlayManager.html#Sparkle_CSharp_Overlays_OverlayManager_AddOverlay_Sparkle_CSharp_Overlays_Overlay_
+  name: AddOverlay
+  nameWithType: OverlayManager.AddOverlay
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.AddOverlay
+- uid: Sparkle.CSharp.Overlays.Overlay
+  commentId: T:Sparkle.CSharp.Overlays.Overlay
+  parent: Sparkle.CSharp.Overlays
+  href: Sparkle.CSharp.Overlays.Overlay.html
+  name: Overlay
+  nameWithType: Overlay
+  fullName: Sparkle.CSharp.Overlays.Overlay
+- uid: Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay*
+  commentId: Overload:Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay
+  href: Sparkle.CSharp.Overlays.OverlayManager.html#Sparkle_CSharp_Overlays_OverlayManager_RemoveOverlay_Sparkle_CSharp_Overlays_Overlay_
+  name: RemoveOverlay
+  nameWithType: OverlayManager.RemoveOverlay
+  fullName: Sparkle.CSharp.Overlays.OverlayManager.RemoveOverlay

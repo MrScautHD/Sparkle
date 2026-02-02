@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Registries
+  commentId: N:Sparkle.CSharp.Registries
+  id: Sparkle.CSharp.Registries
+  children:
+  - Sparkle.CSharp.Registries.Registry
+  - Sparkle.CSharp.Registries.RegistryManager
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Registries
+  nameWithType: Sparkle.CSharp.Registries
+  fullName: Sparkle.CSharp.Registries
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Registries.Registry
+  commentId: T:Sparkle.CSharp.Registries.Registry
+  parent: Sparkle.CSharp.Registries
+  href: Sparkle.CSharp.Registries.Registry.html
+  name: Registry
+  nameWithType: Registry
+  fullName: Sparkle.CSharp.Registries.Registry
+- uid: Sparkle.CSharp.Registries.RegistryManager
+  commentId: T:Sparkle.CSharp.Registries.RegistryManager
+  href: Sparkle.CSharp.Registries.RegistryManager.html
+  name: RegistryManager
+  nameWithType: RegistryManager
+  fullName: Sparkle.CSharp.Registries.RegistryManager
+- uid: Sparkle.CSharp.Registries
+  commentId: N:Sparkle.CSharp.Registries
+  href: Sparkle.html
+  name: Sparkle.CSharp.Registries
+  nameWithType: Sparkle.CSharp.Registries
+  fullName: Sparkle.CSharp.Registries
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html

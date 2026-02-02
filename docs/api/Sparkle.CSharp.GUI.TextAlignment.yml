@@ -1,0 +1,153 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.TextAlignment
+  commentId: T:Sparkle.CSharp.GUI.TextAlignment
+  id: TextAlignment
+  parent: Sparkle.CSharp.GUI
+  children:
+  - Sparkle.CSharp.GUI.TextAlignment.Center
+  - Sparkle.CSharp.GUI.TextAlignment.Left
+  - Sparkle.CSharp.GUI.TextAlignment.Right
+  langs:
+  - csharp
+  - vb
+  name: TextAlignment
+  nameWithType: TextAlignment
+  fullName: Sparkle.CSharp.GUI.TextAlignment
+  type: Enum
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/TextAlignment.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TextAlignment
+    path: ../src/Sparkle/CSharp/GUI/TextAlignment.cs
+    startLine: 2
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  syntax:
+    content: public enum TextAlignment
+    content.vb: Public Enum TextAlignment
+- uid: Sparkle.CSharp.GUI.TextAlignment.Left
+  commentId: F:Sparkle.CSharp.GUI.TextAlignment.Left
+  id: Left
+  parent: Sparkle.CSharp.GUI.TextAlignment
+  langs:
+  - csharp
+  - vb
+  name: Left
+  nameWithType: TextAlignment.Left
+  fullName: Sparkle.CSharp.GUI.TextAlignment.Left
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/TextAlignment.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Left
+    path: ../src/Sparkle/CSharp/GUI/TextAlignment.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Aligns text to the left.
+  example: []
+  syntax:
+    content: Left = 0
+    return:
+      type: Sparkle.CSharp.GUI.TextAlignment
+- uid: Sparkle.CSharp.GUI.TextAlignment.Center
+  commentId: F:Sparkle.CSharp.GUI.TextAlignment.Center
+  id: Center
+  parent: Sparkle.CSharp.GUI.TextAlignment
+  langs:
+  - csharp
+  - vb
+  name: Center
+  nameWithType: TextAlignment.Center
+  fullName: Sparkle.CSharp.GUI.TextAlignment.Center
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/TextAlignment.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Center
+    path: ../src/Sparkle/CSharp/GUI/TextAlignment.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Aligns text to the center.
+  example: []
+  syntax:
+    content: Center = 1
+    return:
+      type: Sparkle.CSharp.GUI.TextAlignment
+- uid: Sparkle.CSharp.GUI.TextAlignment.Right
+  commentId: F:Sparkle.CSharp.GUI.TextAlignment.Right
+  id: Right
+  parent: Sparkle.CSharp.GUI.TextAlignment
+  langs:
+  - csharp
+  - vb
+  name: Right
+  nameWithType: TextAlignment.Right
+  fullName: Sparkle.CSharp.GUI.TextAlignment.Right
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/TextAlignment.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Right
+    path: ../src/Sparkle/CSharp/GUI/TextAlignment.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Aligns text to the right.
+  example: []
+  syntax:
+    content: Right = 2
+    return:
+      type: Sparkle.CSharp.GUI.TextAlignment
+references:
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.TextAlignment
+  commentId: T:Sparkle.CSharp.GUI.TextAlignment
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.TextAlignment.html
+  name: TextAlignment
+  nameWithType: TextAlignment
+  fullName: Sparkle.CSharp.GUI.TextAlignment

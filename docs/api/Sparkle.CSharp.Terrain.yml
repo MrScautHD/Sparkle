@@ -1,0 +1,68 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Terrain
+  commentId: N:Sparkle.CSharp.Terrain
+  id: Sparkle.CSharp.Terrain
+  children:
+  - Sparkle.CSharp.Terrain.MarchingCubes
+  - Sparkle.CSharp.Terrain.MarchingCubesChunk
+  - Sparkle.CSharp.Terrain.MarchingCubesTables
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Terrain
+  nameWithType: Sparkle.CSharp.Terrain
+  fullName: Sparkle.CSharp.Terrain
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Terrain.MarchingCubes
+  commentId: T:Sparkle.CSharp.Terrain.MarchingCubes
+  parent: Sparkle.CSharp.Terrain
+  href: Sparkle.CSharp.Terrain.MarchingCubes.html
+  name: MarchingCubes
+  nameWithType: MarchingCubes
+  fullName: Sparkle.CSharp.Terrain.MarchingCubes
+- uid: Sparkle.CSharp.Terrain.MarchingCubesChunk
+  commentId: T:Sparkle.CSharp.Terrain.MarchingCubesChunk
+  href: Sparkle.CSharp.Terrain.MarchingCubesChunk.html
+  name: MarchingCubesChunk
+  nameWithType: MarchingCubesChunk
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesChunk
+- uid: Sparkle.CSharp.Terrain.MarchingCubesTables
+  commentId: T:Sparkle.CSharp.Terrain.MarchingCubesTables
+  href: Sparkle.CSharp.Terrain.MarchingCubesTables.html
+  name: MarchingCubesTables
+  nameWithType: MarchingCubesTables
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesTables
+- uid: Sparkle.CSharp.Terrain
+  commentId: N:Sparkle.CSharp.Terrain
+  href: Sparkle.html
+  name: Sparkle.CSharp.Terrain
+  nameWithType: Sparkle.CSharp.Terrain
+  fullName: Sparkle.CSharp.Terrain
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Terrain
+    name: Terrain
+    href: Sparkle.CSharp.Terrain.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Terrain
+    name: Terrain
+    href: Sparkle.CSharp.Terrain.html

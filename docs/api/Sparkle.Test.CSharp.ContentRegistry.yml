@@ -1,0 +1,1579 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.Test.CSharp.ContentRegistry
+  commentId: T:Sparkle.Test.CSharp.ContentRegistry
+  id: ContentRegistry
+  parent: Sparkle.Test.CSharp
+  children:
+  - Sparkle.Test.CSharp.ContentRegistry.AnimatedImage
+  - Sparkle.Test.CSharp.ContentRegistry.Button
+  - Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+  - Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+  - Sparkle.Test.CSharp.ContentRegistry.Dispose(System.Boolean)
+  - Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+  - Sparkle.Test.CSharp.ContentRegistry.Fontoe
+  - Sparkle.Test.CSharp.ContentRegistry.Gif
+  - Sparkle.Test.CSharp.ContentRegistry.Load(Sparkle.CSharp.Content.ContentManager)
+  - Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+  - Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+  - Sparkle.Test.CSharp.ContentRegistry.SkyBox
+  - Sparkle.Test.CSharp.ContentRegistry.SlideBar
+  - Sparkle.Test.CSharp.ContentRegistry.Slider
+  - Sparkle.Test.CSharp.ContentRegistry.Sprite
+  - Sparkle.Test.CSharp.ContentRegistry.TextBox
+  - Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+  - Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+  - Sparkle.Test.CSharp.ContentRegistry.TreeModel
+  - Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+  - Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+  - Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+  - Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+  langs:
+  - csharp
+  - vb
+  name: ContentRegistry
+  nameWithType: ContentRegistry
+  fullName: Sparkle.Test.CSharp.ContentRegistry
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ContentRegistry
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 16
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: 'public class ContentRegistry : Registry, IDisposable'
+    content.vb: Public Class ContentRegistry Inherits Registry Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  - Sparkle.CSharp.Registries.Registry
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Sparkle.CSharp.Registries.Registry.Init
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.Test.CSharp.ContentRegistry.Fontoe
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.Fontoe
+  id: Fontoe
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Fontoe
+  nameWithType: ContentRegistry.Fontoe
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Fontoe
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Fontoe
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 18
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Font Fontoe { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Fonts.Font
+    content.vb: Public Shared Property Fontoe As Font
+  overload: Sparkle.Test.CSharp.ContentRegistry.Fontoe*
+- uid: Sparkle.Test.CSharp.ContentRegistry.Sprite
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.Sprite
+  id: Sprite
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Sprite
+  nameWithType: ContentRegistry.Sprite
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Sprite
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Sprite
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 19
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D Sprite { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property Sprite As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.Sprite*
+- uid: Sparkle.Test.CSharp.ContentRegistry.Button
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.Button
+  id: Button
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Button
+  nameWithType: ContentRegistry.Button
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Button
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Button
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 20
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D Button { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property Button As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.Button*
+- uid: Sparkle.Test.CSharp.ContentRegistry.TextBox
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.TextBox
+  id: TextBox
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: TextBox
+  nameWithType: ContentRegistry.TextBox
+  fullName: Sparkle.Test.CSharp.ContentRegistry.TextBox
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TextBox
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 21
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D TextBox { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property TextBox As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.TextBox*
+- uid: Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+  id: ToggleBackground
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: ToggleBackground
+  nameWithType: ContentRegistry.ToggleBackground
+  fullName: Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ToggleBackground
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 22
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D ToggleBackground { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property ToggleBackground As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.ToggleBackground*
+- uid: Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+  id: ToggleCheckmark
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: ToggleCheckmark
+  nameWithType: ContentRegistry.ToggleCheckmark
+  fullName: Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ToggleCheckmark
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 23
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D ToggleCheckmark { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property ToggleCheckmark As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark*
+- uid: Sparkle.Test.CSharp.ContentRegistry.SlideBar
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.SlideBar
+  id: SlideBar
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: SlideBar
+  nameWithType: ContentRegistry.SlideBar
+  fullName: Sparkle.Test.CSharp.ContentRegistry.SlideBar
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SlideBar
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 24
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D SlideBar { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property SlideBar As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.SlideBar*
+- uid: Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+  id: FilledSlideBar
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: FilledSlideBar
+  nameWithType: ContentRegistry.FilledSlideBar
+  fullName: Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FilledSlideBar
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 25
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D FilledSlideBar { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property FilledSlideBar As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar*
+- uid: Sparkle.Test.CSharp.ContentRegistry.Slider
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.Slider
+  id: Slider
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Slider
+  nameWithType: ContentRegistry.Slider
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Slider
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Slider
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 26
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D Slider { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property Slider As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.Slider*
+- uid: Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+  id: CyberCarTexture
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: CyberCarTexture
+  nameWithType: ContentRegistry.CyberCarTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CyberCarTexture
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 27
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D CyberCarTexture { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property CyberCarTexture As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture*
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+  id: UiBannerTexture
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: UiBannerTexture
+  nameWithType: ContentRegistry.UiBannerTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UiBannerTexture
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 28
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D UiBannerTexture { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property UiBannerTexture As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture*
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+  id: UiBannerEdgeLessTexture
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: UiBannerEdgeLessTexture
+  nameWithType: ContentRegistry.UiBannerEdgeLessTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UiBannerEdgeLessTexture
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 29
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D UiBannerEdgeLessTexture { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property UiBannerEdgeLessTexture As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture*
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+  id: UiSliderTexture
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: UiSliderTexture
+  nameWithType: ContentRegistry.UiSliderTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UiSliderTexture
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 30
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D UiSliderTexture { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property UiSliderTexture As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture*
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+  id: UiArrowTexture
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: UiArrowTexture
+  nameWithType: ContentRegistry.UiArrowTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: UiArrowTexture
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 31
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D UiArrowTexture { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Property UiArrowTexture As Texture2D
+  overload: Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture*
+- uid: Sparkle.Test.CSharp.ContentRegistry.AnimatedImage
+  commentId: F:Sparkle.Test.CSharp.ContentRegistry.AnimatedImage
+  id: AnimatedImage
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: AnimatedImage
+  nameWithType: ContentRegistry.AnimatedImage
+  fullName: Sparkle.Test.CSharp.ContentRegistry.AnimatedImage
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AnimatedImage
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 33
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static AnimatedImage AnimatedImage
+    return:
+      type: Bliss.CSharp.Images.AnimatedImage
+    content.vb: Public Shared AnimatedImage As AnimatedImage
+- uid: Sparkle.Test.CSharp.ContentRegistry.Gif
+  commentId: F:Sparkle.Test.CSharp.ContentRegistry.Gif
+  id: Gif
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Gif
+  nameWithType: ContentRegistry.Gif
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Gif
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Gif
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 34
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Texture2D Gif
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public Shared Gif As Texture2D
+- uid: Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+  id: PlayerModel
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: PlayerModel
+  nameWithType: ContentRegistry.PlayerModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PlayerModel
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 36
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Model PlayerModel { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Geometry.Model
+    content.vb: Public Shared Property PlayerModel As Model
+  overload: Sparkle.Test.CSharp.ContentRegistry.PlayerModel*
+- uid: Sparkle.Test.CSharp.ContentRegistry.TreeModel
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.TreeModel
+  id: TreeModel
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: TreeModel
+  nameWithType: ContentRegistry.TreeModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.TreeModel
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TreeModel
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 37
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Model TreeModel { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Geometry.Model
+    content.vb: Public Shared Property TreeModel As Model
+  overload: Sparkle.Test.CSharp.ContentRegistry.TreeModel*
+- uid: Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+  id: CyberCarModel
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: CyberCarModel
+  nameWithType: ContentRegistry.CyberCarModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CyberCarModel
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 38
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static Model CyberCarModel { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Geometry.Model
+    content.vb: Public Shared Property CyberCarModel As Model
+  overload: Sparkle.Test.CSharp.ContentRegistry.CyberCarModel*
+- uid: Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+  id: PlayerMultiInstanceRenderer
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: PlayerMultiInstanceRenderer
+  nameWithType: ContentRegistry.PlayerMultiInstanceRenderer
+  fullName: Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PlayerMultiInstanceRenderer
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 40
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static MultiInstanceRenderer PlayerMultiInstanceRenderer { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+    content.vb: Public Shared Property PlayerMultiInstanceRenderer As MultiInstanceRenderer
+  overload: Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer*
+- uid: Sparkle.Test.CSharp.ContentRegistry.SkyBox
+  commentId: P:Sparkle.Test.CSharp.ContentRegistry.SkyBox
+  id: SkyBox
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: SkyBox
+  nameWithType: ContentRegistry.SkyBox
+  fullName: Sparkle.Test.CSharp.ContentRegistry.SkyBox
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SkyBox
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 42
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  syntax:
+    content: public static SkyBox SkyBox { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Graphics.Rendering.SkyBox
+    content.vb: Public Shared Property SkyBox As SkyBox
+  overload: Sparkle.Test.CSharp.ContentRegistry.SkyBox*
+- uid: Sparkle.Test.CSharp.ContentRegistry.Load(Sparkle.CSharp.Content.ContentManager)
+  commentId: M:Sparkle.Test.CSharp.ContentRegistry.Load(Sparkle.CSharp.Content.ContentManager)
+  id: Load(Sparkle.CSharp.Content.ContentManager)
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Load(ContentManager)
+  nameWithType: ContentRegistry.Load(ContentManager)
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Load(Sparkle.CSharp.Content.ContentManager)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Load
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 44
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  summary: Loads content using the specified <xref href="Sparkle.CSharp.Content.ContentManager" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: protected override void Load(ContentManager content)
+    parameters:
+    - id: content
+      type: Sparkle.CSharp.Content.ContentManager
+      description: The content manager used to load assets.
+    content.vb: Protected Overrides Sub Load(content As ContentManager)
+  overridden: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  overload: Sparkle.Test.CSharp.ContentRegistry.Load*
+- uid: Sparkle.Test.CSharp.ContentRegistry.Dispose(System.Boolean)
+  commentId: M:Sparkle.Test.CSharp.ContentRegistry.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.Test.CSharp.ContentRegistry
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: ContentRegistry.Dispose(bool)
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/ContentRegistry.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle.Test/CSharp/ContentRegistry.cs
+    startLine: 99
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  overload: Sparkle.Test.CSharp.ContentRegistry.Dispose*
+  nameWithType.vb: ContentRegistry.Dispose(Boolean)
+  fullName.vb: Sparkle.Test.CSharp.ContentRegistry.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.Test.CSharp
+  commentId: N:Sparkle.Test.CSharp
+  href: Sparkle.html
+  name: Sparkle.Test.CSharp
+  nameWithType: Sparkle.Test.CSharp
+  fullName: Sparkle.Test.CSharp
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.Test
+    name: Test
+    href: Sparkle.Test.html
+  - name: .
+  - uid: Sparkle.Test.CSharp
+    name: CSharp
+    href: Sparkle.Test.CSharp.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.Test
+    name: Test
+    href: Sparkle.Test.html
+  - name: .
+  - uid: Sparkle.Test.CSharp
+    name: CSharp
+    href: Sparkle.Test.CSharp.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: Sparkle.CSharp.Registries.Registry
+  commentId: T:Sparkle.CSharp.Registries.Registry
+  parent: Sparkle.CSharp.Registries
+  href: Sparkle.CSharp.Registries.Registry.html
+  name: Registry
+  nameWithType: Registry
+  fullName: Sparkle.CSharp.Registries.Registry
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Sparkle.CSharp.Registries.Registry.Init
+  commentId: M:Sparkle.CSharp.Registries.Registry.Init
+  parent: Sparkle.CSharp.Registries.Registry
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Init
+  name: Init()
+  nameWithType: Registry.Init()
+  fullName: Sparkle.CSharp.Registries.Registry.Init()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Registries.Registry.Init
+    name: Init
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Init
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Registries.Registry.Init
+    name: Init
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Init
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Registries
+  commentId: N:Sparkle.CSharp.Registries
+  href: Sparkle.html
+  name: Sparkle.CSharp.Registries
+  nameWithType: Sparkle.CSharp.Registries
+  fullName: Sparkle.CSharp.Registries
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Registries
+    name: Registries
+    href: Sparkle.CSharp.Registries.html
+- uid: Sparkle.Test.CSharp.ContentRegistry.Fontoe*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Fontoe
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Fontoe
+  name: Fontoe
+  nameWithType: ContentRegistry.Fontoe
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Fontoe
+- uid: Bliss.CSharp.Fonts.Font
+  commentId: T:Bliss.CSharp.Fonts.Font
+  parent: Bliss.CSharp.Fonts
+  isExternal: true
+  name: Font
+  nameWithType: Font
+  fullName: Bliss.CSharp.Fonts.Font
+- uid: Bliss.CSharp.Fonts
+  commentId: N:Bliss.CSharp.Fonts
+  isExternal: true
+  name: Bliss.CSharp.Fonts
+  nameWithType: Bliss.CSharp.Fonts
+  fullName: Bliss.CSharp.Fonts
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Fonts
+    name: Fonts
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Fonts
+    name: Fonts
+    isExternal: true
+- uid: Sparkle.Test.CSharp.ContentRegistry.Sprite*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Sprite
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Sprite
+  name: Sprite
+  nameWithType: ContentRegistry.Sprite
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Sprite
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Sparkle.Test.CSharp.ContentRegistry.Button*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Button
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Button
+  name: Button
+  nameWithType: ContentRegistry.Button
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Button
+- uid: Sparkle.Test.CSharp.ContentRegistry.TextBox*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.TextBox
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_TextBox
+  name: TextBox
+  nameWithType: ContentRegistry.TextBox
+  fullName: Sparkle.Test.CSharp.ContentRegistry.TextBox
+- uid: Sparkle.Test.CSharp.ContentRegistry.ToggleBackground*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_ToggleBackground
+  name: ToggleBackground
+  nameWithType: ContentRegistry.ToggleBackground
+  fullName: Sparkle.Test.CSharp.ContentRegistry.ToggleBackground
+- uid: Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_ToggleCheckmark
+  name: ToggleCheckmark
+  nameWithType: ContentRegistry.ToggleCheckmark
+  fullName: Sparkle.Test.CSharp.ContentRegistry.ToggleCheckmark
+- uid: Sparkle.Test.CSharp.ContentRegistry.SlideBar*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.SlideBar
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_SlideBar
+  name: SlideBar
+  nameWithType: ContentRegistry.SlideBar
+  fullName: Sparkle.Test.CSharp.ContentRegistry.SlideBar
+- uid: Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_FilledSlideBar
+  name: FilledSlideBar
+  nameWithType: ContentRegistry.FilledSlideBar
+  fullName: Sparkle.Test.CSharp.ContentRegistry.FilledSlideBar
+- uid: Sparkle.Test.CSharp.ContentRegistry.Slider*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Slider
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Slider
+  name: Slider
+  nameWithType: ContentRegistry.Slider
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Slider
+- uid: Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_CyberCarTexture
+  name: CyberCarTexture
+  nameWithType: ContentRegistry.CyberCarTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.CyberCarTexture
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_UiBannerTexture
+  name: UiBannerTexture
+  nameWithType: ContentRegistry.UiBannerTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiBannerTexture
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_UiBannerEdgeLessTexture
+  name: UiBannerEdgeLessTexture
+  nameWithType: ContentRegistry.UiBannerEdgeLessTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiBannerEdgeLessTexture
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_UiSliderTexture
+  name: UiSliderTexture
+  nameWithType: ContentRegistry.UiSliderTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiSliderTexture
+- uid: Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_UiArrowTexture
+  name: UiArrowTexture
+  nameWithType: ContentRegistry.UiArrowTexture
+  fullName: Sparkle.Test.CSharp.ContentRegistry.UiArrowTexture
+- uid: Bliss.CSharp.Images.AnimatedImage
+  commentId: T:Bliss.CSharp.Images.AnimatedImage
+  parent: Bliss.CSharp.Images
+  isExternal: true
+  name: AnimatedImage
+  nameWithType: AnimatedImage
+  fullName: Bliss.CSharp.Images.AnimatedImage
+- uid: Bliss.CSharp.Images
+  commentId: N:Bliss.CSharp.Images
+  isExternal: true
+  name: Bliss.CSharp.Images
+  nameWithType: Bliss.CSharp.Images
+  fullName: Bliss.CSharp.Images
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Images
+    name: Images
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Images
+    name: Images
+    isExternal: true
+- uid: Sparkle.Test.CSharp.ContentRegistry.PlayerModel*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_PlayerModel
+  name: PlayerModel
+  nameWithType: ContentRegistry.PlayerModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.PlayerModel
+- uid: Bliss.CSharp.Geometry.Model
+  commentId: T:Bliss.CSharp.Geometry.Model
+  parent: Bliss.CSharp.Geometry
+  isExternal: true
+  name: Model
+  nameWithType: Model
+  fullName: Bliss.CSharp.Geometry.Model
+- uid: Bliss.CSharp.Geometry
+  commentId: N:Bliss.CSharp.Geometry
+  isExternal: true
+  name: Bliss.CSharp.Geometry
+  nameWithType: Bliss.CSharp.Geometry
+  fullName: Bliss.CSharp.Geometry
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Geometry
+    name: Geometry
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Geometry
+    name: Geometry
+    isExternal: true
+- uid: Sparkle.Test.CSharp.ContentRegistry.TreeModel*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.TreeModel
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_TreeModel
+  name: TreeModel
+  nameWithType: ContentRegistry.TreeModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.TreeModel
+- uid: Sparkle.Test.CSharp.ContentRegistry.CyberCarModel*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_CyberCarModel
+  name: CyberCarModel
+  nameWithType: ContentRegistry.CyberCarModel
+  fullName: Sparkle.Test.CSharp.ContentRegistry.CyberCarModel
+- uid: Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_PlayerMultiInstanceRenderer
+  name: PlayerMultiInstanceRenderer
+  nameWithType: ContentRegistry.PlayerMultiInstanceRenderer
+  fullName: Sparkle.Test.CSharp.ContentRegistry.PlayerMultiInstanceRenderer
+- uid: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer.html
+  name: MultiInstanceRenderer
+  nameWithType: MultiInstanceRenderer
+  fullName: Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer
+- uid: Sparkle.CSharp.Graphics.Rendering
+  commentId: N:Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics.Rendering
+  nameWithType: Sparkle.CSharp.Graphics.Rendering
+  fullName: Sparkle.CSharp.Graphics.Rendering
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+- uid: Sparkle.Test.CSharp.ContentRegistry.SkyBox*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.SkyBox
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_SkyBox
+  name: SkyBox
+  nameWithType: ContentRegistry.SkyBox
+  fullName: Sparkle.Test.CSharp.ContentRegistry.SkyBox
+- uid: Sparkle.CSharp.Graphics.Rendering.SkyBox
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.SkyBox
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.SkyBox.html
+  name: SkyBox
+  nameWithType: SkyBox
+  fullName: Sparkle.CSharp.Graphics.Rendering.SkyBox
+- uid: Sparkle.CSharp.Content.ContentManager
+  commentId: T:Sparkle.CSharp.Content.ContentManager
+  parent: Sparkle.CSharp.Content
+  href: Sparkle.CSharp.Content.ContentManager.html
+  name: ContentManager
+  nameWithType: ContentManager
+  fullName: Sparkle.CSharp.Content.ContentManager
+- uid: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  commentId: M:Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  parent: Sparkle.CSharp.Registries.Registry
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Load_Sparkle_CSharp_Content_ContentManager_
+  name: Load(ContentManager)
+  nameWithType: Registry.Load(ContentManager)
+  fullName: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+    name: Load
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Load_Sparkle_CSharp_Content_ContentManager_
+  - name: (
+  - uid: Sparkle.CSharp.Content.ContentManager
+    name: ContentManager
+    href: Sparkle.CSharp.Content.ContentManager.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Registries.Registry.Load(Sparkle.CSharp.Content.ContentManager)
+    name: Load
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Load_Sparkle_CSharp_Content_ContentManager_
+  - name: (
+  - uid: Sparkle.CSharp.Content.ContentManager
+    name: ContentManager
+    href: Sparkle.CSharp.Content.ContentManager.html
+  - name: )
+- uid: Sparkle.Test.CSharp.ContentRegistry.Load*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Load
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Load_Sparkle_CSharp_Content_ContentManager_
+  name: Load
+  nameWithType: ContentRegistry.Load
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Load
+- uid: Sparkle.CSharp.Content
+  commentId: N:Sparkle.CSharp.Content
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content
+  nameWithType: Sparkle.CSharp.Content
+  fullName: Sparkle.CSharp.Content
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+- uid: Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Registries.Registry
+  isExternal: true
+  href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Dispose_System_Boolean_
+  name: Dispose(bool)
+  nameWithType: Registry.Dispose(bool)
+  fullName: Sparkle.CSharp.Registries.Registry.Dispose(bool)
+  nameWithType.vb: Registry.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Registries.Registry.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Registries.Registry.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Registries.Registry.html#Sparkle_CSharp_Registries_Registry_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.Test.CSharp.ContentRegistry.Dispose*
+  commentId: Overload:Sparkle.Test.CSharp.ContentRegistry.Dispose
+  href: Sparkle.Test.CSharp.ContentRegistry.html#Sparkle_Test_CSharp_ContentRegistry_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: ContentRegistry.Dispose
+  fullName: Sparkle.Test.CSharp.ContentRegistry.Dispose
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

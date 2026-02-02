@@ -1,0 +1,946 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  commentId: T:Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  id: JsonConfig
+  parent: Sparkle.CSharp.IO.Configs.Json
+  children:
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue``1(System.String,``0)
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue``1(System.String)
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue(System.String)
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue``1(System.String,``0)
+  langs:
+  - csharp
+  - vb
+  name: JsonConfig
+  nameWithType: JsonConfig
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: JsonConfig
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 6
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  syntax:
+    content: public class JsonConfig
+    content.vb: Public Class JsonConfig
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+  commentId: P:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+  id: Directory
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: Directory
+  nameWithType: JsonConfig.Directory
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Directory
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 11
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Gets the directory where the JSON configuration file is stored.
+  example: []
+  syntax:
+    content: public string Directory { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Directory As String
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory*
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+  commentId: P:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+  id: Name
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: JsonConfig.Name
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Name
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 16
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Gets the name of the JSON configuration file, excluding the extension.
+  example: []
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name*
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+  commentId: P:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+  id: Path
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: Path
+  nameWithType: JsonConfig.Path
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Path
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 21
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Gets the full file path of the JSON configuration file.
+  example: []
+  syntax:
+    content: public string Path { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Path As String
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path*
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)
+  id: '#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)'
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: JsonConfig(string, string, Dictionary<string, object>, string)
+  nameWithType: JsonConfig.JsonConfig(string, string, Dictionary<string, object>, string)
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.JsonConfig(string, string, System.Collections.Generic.Dictionary<string, object>, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 37
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Represents a JSON configuration file.
+  example: []
+  syntax:
+    content: public JsonConfig(string directory, string name, Dictionary<string, object> defaultValues, string encryptKey = "")
+    parameters:
+    - id: directory
+      type: System.String
+    - id: name
+      type: System.String
+    - id: defaultValues
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+    - id: encryptKey
+      type: System.String
+    content.vb: Public Sub New(directory As String, name As String, defaultValues As Dictionary(Of String, Object), encryptKey As String = "")
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor*
+  nameWithType.vb: JsonConfig.New(String, String, Dictionary(Of String, Object), String)
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.New(String, String, System.Collections.Generic.Dictionary(Of String, Object), String)
+  name.vb: New(String, String, Dictionary(Of String, Object), String)
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid
+  id: IsValid
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: IsValid()
+  nameWithType: JsonConfig.IsValid()
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IsValid
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 76
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Checks if the JSON configuration file is valid.
+  example: []
+  syntax:
+    content: public bool IsValid()
+    return:
+      type: System.Boolean
+      description: True if the JSON configuration file is valid, otherwise false.
+    content.vb: Public Function IsValid() As Boolean
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid*
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue``1(System.String,``0)
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue``1(System.String,``0)
+  id: SetValue``1(System.String,``0)
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: SetValue<T>(string, T)
+  nameWithType: JsonConfig.SetValue<T>(string, T)
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue<T>(string, T)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SetValue
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 92
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Sets the value of a key in the JSON configuration file.
+  example: []
+  syntax:
+    content: public void SetValue<T>(string key, T value)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key associated with the value.
+    - id: value
+      type: '{T}'
+      description: The new value to set.
+    typeParameters:
+    - id: T
+      description: The type of the value.
+    content.vb: Public Sub SetValue(Of T)(key As String, value As T)
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue*
+  nameWithType.vb: JsonConfig.SetValue(Of T)(String, T)
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue(Of T)(String, T)
+  name.vb: SetValue(Of T)(String, T)
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue``1(System.String,``0)
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue``1(System.String,``0)
+  id: AddValue``1(System.String,``0)
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: AddValue<T>(string, T)
+  nameWithType: JsonConfig.AddValue<T>(string, T)
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue<T>(string, T)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AddValue
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 112
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Adds a value to the JSON configuration file.
+  example: []
+  syntax:
+    content: public void AddValue<T>(string key, T value)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key associated with the value.
+    - id: value
+      type: '{T}'
+      description: The value to be added.
+    typeParameters:
+    - id: T
+      description: The type of the value.
+    content.vb: Public Sub AddValue(Of T)(key As String, value As T)
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue*
+  nameWithType.vb: JsonConfig.AddValue(Of T)(String, T)
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue(Of T)(String, T)
+  name.vb: AddValue(Of T)(String, T)
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue(System.String)
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue(System.String)
+  id: RemoveValue(System.String)
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: RemoveValue(string)
+  nameWithType: JsonConfig.RemoveValue(string)
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue(string)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RemoveValue
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 130
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Removes a value from the JSON configuration file.
+  example: []
+  syntax:
+    content: public void RemoveValue(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key of the value to be removed.
+    content.vb: Public Sub RemoveValue(key As String)
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue*
+  nameWithType.vb: JsonConfig.RemoveValue(String)
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue(String)
+  name.vb: RemoveValue(String)
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue``1(System.String)
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue``1(System.String)
+  id: GetValue``1(System.String)
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: GetValue<T>(string)
+  nameWithType: JsonConfig.GetValue<T>(string)
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue<T>(string)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetValue
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 150
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Retrieves the value associated with the specified key from the JSON configuration file.
+  example: []
+  syntax:
+    content: public T? GetValue<T>(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key of the value to retrieve.
+    typeParameters:
+    - id: T
+      description: The type of the value to retrieve.
+    return:
+      type: '{T}'
+      description: The value associated with the specified key, or default(T) if the key is not found.
+    content.vb: Public Function GetValue(Of T)(key As String) As T
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue*
+  nameWithType.vb: JsonConfig.GetValue(Of T)(String)
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue(Of T)(String)
+  name.vb: GetValue(Of T)(String)
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues
+  commentId: M:Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues
+  id: GetAllValues
+  parent: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  langs:
+  - csharp
+  - vb
+  name: GetAllValues()
+  nameWithType: JsonConfig.GetAllValues()
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetAllValues
+    path: ../src/Sparkle/CSharp/IO/Configs/Json/JsonConfig.cs
+    startLine: 164
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.IO.Configs.Json
+  summary: Retrieves all values from the JSON configuration file.
+  example: []
+  syntax:
+    content: public JObject GetAllValues()
+    return:
+      type: Newtonsoft.Json.Linq.JObject
+      description: A JObject containing all the values from the JSON configuration file.
+    content.vb: Public Function GetAllValues() As JObject
+  overload: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if unable to retrieve the values from the file.
+references:
+- uid: Sparkle.CSharp.IO.Configs.Json
+  commentId: N:Sparkle.CSharp.IO.Configs.Json
+  href: Sparkle.html
+  name: Sparkle.CSharp.IO.Configs.Json
+  nameWithType: Sparkle.CSharp.IO.Configs.Json
+  fullName: Sparkle.CSharp.IO.Configs.Json
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.IO
+    name: IO
+    href: Sparkle.CSharp.IO.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs
+    name: Configs
+    href: Sparkle.CSharp.IO.Configs.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs.Json
+    name: Json
+    href: Sparkle.CSharp.IO.Configs.Json.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.IO
+    name: IO
+    href: Sparkle.CSharp.IO.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs
+    name: Configs
+    href: Sparkle.CSharp.IO.Configs.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs.Json
+    name: Json
+    href: Sparkle.CSharp.IO.Configs.Json.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_Directory
+  name: Directory
+  nameWithType: JsonConfig.Directory
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Directory
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_Name
+  name: Name
+  nameWithType: JsonConfig.Name
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Name
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_Path
+  name: Path
+  nameWithType: JsonConfig.Path
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.Path
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.#ctor
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig__ctor_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_String_
+  name: JsonConfig
+  nameWithType: JsonConfig.JsonConfig
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.JsonConfig
+  nameWithType.vb: JsonConfig.New
+  fullName.vb: Sparkle.CSharp.IO.Configs.Json.JsonConfig.New
+  name.vb: New
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_IsValid
+  name: IsValid
+  nameWithType: JsonConfig.IsValid
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.IsValid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_SetValue__1_System_String___0_
+  name: SetValue
+  nameWithType: JsonConfig.SetValue
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.SetValue
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_AddValue__1_System_String___0_
+  name: AddValue
+  nameWithType: JsonConfig.AddValue
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.AddValue
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_RemoveValue_System_String_
+  name: RemoveValue
+  nameWithType: JsonConfig.RemoveValue
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.RemoveValue
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_GetValue__1_System_String_
+  name: GetValue
+  nameWithType: JsonConfig.GetValue
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetValue
+- uid: System.Exception
+  commentId: T:System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues*
+  commentId: Overload:Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html#Sparkle_CSharp_IO_Configs_Json_JsonConfig_GetAllValues
+  name: GetAllValues
+  nameWithType: JsonConfig.GetAllValues
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig.GetAllValues
+- uid: Newtonsoft.Json.Linq.JObject
+  commentId: T:Newtonsoft.Json.Linq.JObject
+  parent: Newtonsoft.Json.Linq
+  isExternal: true
+  name: JObject
+  nameWithType: JObject
+  fullName: Newtonsoft.Json.Linq.JObject
+- uid: Newtonsoft.Json.Linq
+  commentId: N:Newtonsoft.Json.Linq
+  isExternal: true
+  name: Newtonsoft.Json.Linq
+  nameWithType: Newtonsoft.Json.Linq
+  fullName: Newtonsoft.Json.Linq
+  spec.csharp:
+  - uid: Newtonsoft
+    name: Newtonsoft
+    isExternal: true
+  - name: .
+  - uid: Newtonsoft.Json
+    name: Json
+    isExternal: true
+  - name: .
+  - uid: Newtonsoft.Json.Linq
+    name: Linq
+    isExternal: true
+  spec.vb:
+  - uid: Newtonsoft
+    name: Newtonsoft
+    isExternal: true
+  - name: .
+  - uid: Newtonsoft.Json
+    name: Json
+    isExternal: true
+  - name: .
+  - uid: Newtonsoft.Json.Linq
+    name: Linq
+    isExternal: true

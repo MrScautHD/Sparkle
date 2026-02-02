@@ -1,0 +1,68 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp
+  commentId: N:Sparkle.CSharp
+  id: Sparkle.CSharp
+  children:
+  - Sparkle.CSharp.Game
+  - Sparkle.CSharp.GameSettings
+  - Sparkle.CSharp.SystemInfo
+  - Sparkle.CSharp.Time
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp
+  nameWithType: Sparkle.CSharp
+  fullName: Sparkle.CSharp
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Game
+  commentId: T:Sparkle.CSharp.Game
+  parent: Sparkle.CSharp
+  href: Sparkle.CSharp.Game.html
+  name: Game
+  nameWithType: Game
+  fullName: Sparkle.CSharp.Game
+- uid: Sparkle.CSharp.GameSettings
+  commentId: T:Sparkle.CSharp.GameSettings
+  parent: Sparkle.CSharp
+  href: Sparkle.CSharp.GameSettings.html
+  name: GameSettings
+  nameWithType: GameSettings
+  fullName: Sparkle.CSharp.GameSettings
+- uid: Sparkle.CSharp.SystemInfo
+  commentId: T:Sparkle.CSharp.SystemInfo
+  href: Sparkle.CSharp.SystemInfo.html
+  name: SystemInfo
+  nameWithType: SystemInfo
+  fullName: Sparkle.CSharp.SystemInfo
+- uid: Sparkle.CSharp.Time
+  commentId: T:Sparkle.CSharp.Time
+  href: Sparkle.CSharp.Time.html
+  name: Time
+  nameWithType: Time
+  fullName: Sparkle.CSharp.Time
+- uid: Sparkle.CSharp
+  commentId: N:Sparkle.CSharp
+  href: Sparkle.html
+  name: Sparkle.CSharp
+  nameWithType: Sparkle.CSharp
+  fullName: Sparkle.CSharp
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html

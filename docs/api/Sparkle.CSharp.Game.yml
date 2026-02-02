@@ -1,0 +1,2056 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Game
+  commentId: T:Sparkle.CSharp.Game
+  id: Game
+  parent: Sparkle.CSharp
+  children:
+  - Sparkle.CSharp.Game.#ctor(Sparkle.CSharp.GameSettings)
+  - Sparkle.CSharp.Game.AfterUpdate(System.Double)
+  - Sparkle.CSharp.Game.CommandList
+  - Sparkle.CSharp.Game.Content
+  - Sparkle.CSharp.Game.Dispose(System.Boolean)
+  - Sparkle.CSharp.Game.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.Game.FixedUpdate(System.Double)
+  - Sparkle.CSharp.Game.FullScreenRenderPass
+  - Sparkle.CSharp.Game.GetSampleCount
+  - Sparkle.CSharp.Game.GetTargetFps
+  - Sparkle.CSharp.Game.GlobalImmediateRenderer
+  - Sparkle.CSharp.Game.GlobalPrimitiveBatch
+  - Sparkle.CSharp.Game.GlobalSpriteBatch
+  - Sparkle.CSharp.Game.GraphicsContext
+  - Sparkle.CSharp.Game.GraphicsDevice
+  - Sparkle.CSharp.Game.Init
+  - Sparkle.CSharp.Game.Instance
+  - Sparkle.CSharp.Game.Load(Sparkle.CSharp.Content.ContentManager)
+  - Sparkle.CSharp.Game.MainWindow
+  - Sparkle.CSharp.Game.OnClose
+  - Sparkle.CSharp.Game.OnResize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.Game.OnRun
+  - Sparkle.CSharp.Game.Run(Sparkle.CSharp.Scenes.Scene)
+  - Sparkle.CSharp.Game.SetSampleCount(Veldrid.TextureSampleCount)
+  - Sparkle.CSharp.Game.SetTargetFps(System.Int32)
+  - Sparkle.CSharp.Game.Settings
+  - Sparkle.CSharp.Game.ShouldClose
+  - Sparkle.CSharp.Game.Update(System.Double)
+  - Sparkle.CSharp.Game.Version
+  langs:
+  - csharp
+  - vb
+  name: Game
+  nameWithType: Game
+  fullName: Sparkle.CSharp.Game
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Game
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 25
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  syntax:
+    content: 'public class Game : Disposable, IDisposable'
+    content.vb: Public Class Game Inherits Disposable Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  derivedClasses:
+  - Sparkle.Test.CSharp.TestGame
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Game.Version
+  commentId: F:Sparkle.CSharp.Game.Version
+  id: Version
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: Game.Version
+  fullName: Sparkle.CSharp.Game.Version
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Version
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 30
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The version of the game engine (Sparkle).
+  example: []
+  syntax:
+    content: public static readonly Version Version
+    return:
+      type: System.Version
+    content.vb: Public Shared ReadOnly Version As Version
+- uid: Sparkle.CSharp.Game.Instance
+  commentId: P:Sparkle.CSharp.Game.Instance
+  id: Instance
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: Game.Instance
+  fullName: Sparkle.CSharp.Game.Instance
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Instance
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 35
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The singleton instance of the game.
+  example: []
+  syntax:
+    content: public static Game? Instance { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Game
+    content.vb: Public Shared Property Instance As Game
+  overload: Sparkle.CSharp.Game.Instance*
+- uid: Sparkle.CSharp.Game.Settings
+  commentId: P:Sparkle.CSharp.Game.Settings
+  id: Settings
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Settings
+  nameWithType: Game.Settings
+  fullName: Sparkle.CSharp.Game.Settings
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Settings
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 40
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The settings for the game.
+  example: []
+  syntax:
+    content: public GameSettings Settings { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.GameSettings
+    content.vb: Public Property Settings As GameSettings
+  overload: Sparkle.CSharp.Game.Settings*
+- uid: Sparkle.CSharp.Game.MainWindow
+  commentId: P:Sparkle.CSharp.Game.MainWindow
+  id: MainWindow
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: MainWindow
+  nameWithType: Game.MainWindow
+  fullName: Sparkle.CSharp.Game.MainWindow
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MainWindow
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 45
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The main window of the game.
+  example: []
+  syntax:
+    content: public IWindow MainWindow { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Windowing.IWindow
+    content.vb: Public Property MainWindow As IWindow
+  overload: Sparkle.CSharp.Game.MainWindow*
+- uid: Sparkle.CSharp.Game.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Game.GraphicsDevice
+  id: GraphicsDevice
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GraphicsDevice
+  nameWithType: Game.GraphicsDevice
+  fullName: Sparkle.CSharp.Game.GraphicsDevice
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsDevice
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 50
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The graphics device for rendering.
+  example: []
+  syntax:
+    content: public GraphicsDevice GraphicsDevice { get; }
+    parameters: []
+    return:
+      type: Veldrid.GraphicsDevice
+    content.vb: Public Property GraphicsDevice As GraphicsDevice
+  overload: Sparkle.CSharp.Game.GraphicsDevice*
+- uid: Sparkle.CSharp.Game.CommandList
+  commentId: P:Sparkle.CSharp.Game.CommandList
+  id: CommandList
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: CommandList
+  nameWithType: Game.CommandList
+  fullName: Sparkle.CSharp.Game.CommandList
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CommandList
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 55
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The command list used for rendering commands.
+  example: []
+  syntax:
+    content: public CommandList CommandList { get; }
+    parameters: []
+    return:
+      type: Veldrid.CommandList
+    content.vb: Public Property CommandList As CommandList
+  overload: Sparkle.CSharp.Game.CommandList*
+- uid: Sparkle.CSharp.Game.FullScreenRenderPass
+  commentId: P:Sparkle.CSharp.Game.FullScreenRenderPass
+  id: FullScreenRenderPass
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: FullScreenRenderPass
+  nameWithType: Game.FullScreenRenderPass
+  fullName: Sparkle.CSharp.Game.FullScreenRenderPass
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FullScreenRenderPass
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 60
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Represents the fullscreen render pass used during the rendering process.
+  example: []
+  syntax:
+    content: public FullScreenRenderer FullScreenRenderPass { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+    content.vb: Public Property FullScreenRenderPass As FullScreenRenderer
+  overload: Sparkle.CSharp.Game.FullScreenRenderPass*
+- uid: Sparkle.CSharp.Game.GlobalSpriteBatch
+  commentId: P:Sparkle.CSharp.Game.GlobalSpriteBatch
+  id: GlobalSpriteBatch
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GlobalSpriteBatch
+  nameWithType: Game.GlobalSpriteBatch
+  fullName: Sparkle.CSharp.Game.GlobalSpriteBatch
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GlobalSpriteBatch
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 65
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The default (global) sprite batch used for rendering 2D sprites.
+  example: []
+  syntax:
+    content: public SpriteBatch GlobalSpriteBatch { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+    content.vb: Public Property GlobalSpriteBatch As SpriteBatch
+  overload: Sparkle.CSharp.Game.GlobalSpriteBatch*
+- uid: Sparkle.CSharp.Game.GlobalPrimitiveBatch
+  commentId: P:Sparkle.CSharp.Game.GlobalPrimitiveBatch
+  id: GlobalPrimitiveBatch
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GlobalPrimitiveBatch
+  nameWithType: Game.GlobalPrimitiveBatch
+  fullName: Sparkle.CSharp.Game.GlobalPrimitiveBatch
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GlobalPrimitiveBatch
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 70
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The default (global) primitive batch used for rendering 2D geometric primitives.
+  example: []
+  syntax:
+    content: public PrimitiveBatch GlobalPrimitiveBatch { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+    content.vb: Public Property GlobalPrimitiveBatch As PrimitiveBatch
+  overload: Sparkle.CSharp.Game.GlobalPrimitiveBatch*
+- uid: Sparkle.CSharp.Game.GlobalImmediateRenderer
+  commentId: P:Sparkle.CSharp.Game.GlobalImmediateRenderer
+  id: GlobalImmediateRenderer
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GlobalImmediateRenderer
+  nameWithType: Game.GlobalImmediateRenderer
+  fullName: Sparkle.CSharp.Game.GlobalImmediateRenderer
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GlobalImmediateRenderer
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 75
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The default (global) immediate renderer used for rendering (Vertices...) in immediate mode.
+  example: []
+  syntax:
+    content: public ImmediateRenderer GlobalImmediateRenderer { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+    content.vb: Public Property GlobalImmediateRenderer As ImmediateRenderer
+  overload: Sparkle.CSharp.Game.GlobalImmediateRenderer*
+- uid: Sparkle.CSharp.Game.GraphicsContext
+  commentId: P:Sparkle.CSharp.Game.GraphicsContext
+  id: GraphicsContext
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GraphicsContext
+  nameWithType: Game.GraphicsContext
+  fullName: Sparkle.CSharp.Game.GraphicsContext
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsContext
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 80
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: An instance encapsulating core graphics rendering components associated with the game.
+  example: []
+  syntax:
+    content: public GraphicsContext GraphicsContext { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+    content.vb: Public Property GraphicsContext As GraphicsContext
+  overload: Sparkle.CSharp.Game.GraphicsContext*
+- uid: Sparkle.CSharp.Game.Content
+  commentId: P:Sparkle.CSharp.Game.Content
+  id: Content
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Content
+  nameWithType: Game.Content
+  fullName: Sparkle.CSharp.Game.Content
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Content
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 85
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The content manager used to load game assets.
+  example: []
+  syntax:
+    content: public ContentManager Content { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.Content.ContentManager
+    content.vb: Public Property Content As ContentManager
+  overload: Sparkle.CSharp.Game.Content*
+- uid: Sparkle.CSharp.Game.ShouldClose
+  commentId: F:Sparkle.CSharp.Game.ShouldClose
+  id: ShouldClose
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: ShouldClose
+  nameWithType: Game.ShouldClose
+  fullName: Sparkle.CSharp.Game.ShouldClose
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ShouldClose
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 90
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Flag to indicate if the game should close.
+  example: []
+  syntax:
+    content: public bool ShouldClose
+    return:
+      type: System.Boolean
+    content.vb: Public ShouldClose As Boolean
+- uid: Sparkle.CSharp.Game.#ctor(Sparkle.CSharp.GameSettings)
+  commentId: M:Sparkle.CSharp.Game.#ctor(Sparkle.CSharp.GameSettings)
+  id: '#ctor(Sparkle.CSharp.GameSettings)'
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Game(GameSettings)
+  nameWithType: Game.Game(GameSettings)
+  fullName: Sparkle.CSharp.Game.Game(Sparkle.CSharp.GameSettings)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 131
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Initializes the <xref href="Sparkle.CSharp.Game" data-throw-if-not-resolved="false"></xref> with specified settings.
+  example: []
+  syntax:
+    content: public Game(GameSettings settings)
+    parameters:
+    - id: settings
+      type: Sparkle.CSharp.GameSettings
+      description: The game settings.
+    content.vb: Public Sub New(settings As GameSettings)
+  overload: Sparkle.CSharp.Game.#ctor*
+  nameWithType.vb: Game.New(GameSettings)
+  fullName.vb: Sparkle.CSharp.Game.New(Sparkle.CSharp.GameSettings)
+  name.vb: New(GameSettings)
+- uid: Sparkle.CSharp.Game.Run(Sparkle.CSharp.Scenes.Scene)
+  commentId: M:Sparkle.CSharp.Game.Run(Sparkle.CSharp.Scenes.Scene)
+  id: Run(Sparkle.CSharp.Scenes.Scene)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Run(Scene?)
+  nameWithType: Game.Run(Scene?)
+  fullName: Sparkle.CSharp.Game.Run(Sparkle.CSharp.Scenes.Scene?)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Run
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 141
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Starts the game loop, initializing all necessary components and running the game.
+  example: []
+  syntax:
+    content: public void Run(Scene? scene)
+    parameters:
+    - id: scene
+      type: Sparkle.CSharp.Scenes.Scene
+      description: The scene to load initially.
+    content.vb: Public Sub Run(scene As Scene)
+  overload: Sparkle.CSharp.Game.Run*
+  nameWithType.vb: Game.Run(Scene)
+  fullName.vb: Sparkle.CSharp.Game.Run(Sparkle.CSharp.Scenes.Scene)
+  name.vb: Run(Scene)
+- uid: Sparkle.CSharp.Game.OnRun
+  commentId: M:Sparkle.CSharp.Game.OnRun
+  id: OnRun
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: OnRun()
+  nameWithType: Game.OnRun()
+  fullName: Sparkle.CSharp.Game.OnRun()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: OnRun
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 309
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Virtual method for additional setup when the game starts.
+  example: []
+  syntax:
+    content: protected virtual void OnRun()
+    content.vb: Protected Overridable Sub OnRun()
+  overload: Sparkle.CSharp.Game.OnRun*
+- uid: Sparkle.CSharp.Game.Load(Sparkle.CSharp.Content.ContentManager)
+  commentId: M:Sparkle.CSharp.Game.Load(Sparkle.CSharp.Content.ContentManager)
+  id: Load(Sparkle.CSharp.Content.ContentManager)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Load(ContentManager)
+  nameWithType: Game.Load(ContentManager)
+  fullName: Sparkle.CSharp.Game.Load(Sparkle.CSharp.Content.ContentManager)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Load
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 314
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Loads the required game content and resources.
+  example: []
+  syntax:
+    content: protected virtual void Load(ContentManager content)
+    parameters:
+    - id: content
+      type: Sparkle.CSharp.Content.ContentManager
+    content.vb: Protected Overridable Sub Load(content As ContentManager)
+  overload: Sparkle.CSharp.Game.Load*
+- uid: Sparkle.CSharp.Game.Init
+  commentId: M:Sparkle.CSharp.Game.Init
+  id: Init
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Init()
+  nameWithType: Game.Init()
+  fullName: Sparkle.CSharp.Game.Init()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Init
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 321
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Initializes global game resources.
+  example: []
+  syntax:
+    content: protected virtual void Init()
+    content.vb: Protected Overridable Sub Init()
+  overload: Sparkle.CSharp.Game.Init*
+- uid: Sparkle.CSharp.Game.Update(System.Double)
+  commentId: M:Sparkle.CSharp.Game.Update(System.Double)
+  id: Update(System.Double)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: Game.Update(double)
+  fullName: Sparkle.CSharp.Game.Update(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Update
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 330
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Updates the game state, including scene and UI management.
+  example: []
+  syntax:
+    content: protected virtual void Update(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time delta since the last update.
+    content.vb: Protected Overridable Sub Update(delta As Double)
+  overload: Sparkle.CSharp.Game.Update*
+  nameWithType.vb: Game.Update(Double)
+  fullName.vb: Sparkle.CSharp.Game.Update(Double)
+  name.vb: Update(Double)
+- uid: Sparkle.CSharp.Game.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Game.AfterUpdate(System.Double)
+  id: AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: AfterUpdate(double)
+  nameWithType: Game.AfterUpdate(double)
+  fullName: Sparkle.CSharp.Game.AfterUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: AfterUpdate
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 340
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Final update after regular updates are completed.
+  example: []
+  syntax:
+    content: protected virtual void AfterUpdate(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time delta since the last update.
+    content.vb: Protected Overridable Sub AfterUpdate(delta As Double)
+  overload: Sparkle.CSharp.Game.AfterUpdate*
+  nameWithType.vb: Game.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Game.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+- uid: Sparkle.CSharp.Game.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Game.FixedUpdate(System.Double)
+  id: FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: FixedUpdate(double)
+  nameWithType: Game.FixedUpdate(double)
+  fullName: Sparkle.CSharp.Game.FixedUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedUpdate
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 350
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Executes fixed update logic with the specified time step.
+  example: []
+  syntax:
+    content: protected virtual void FixedUpdate(double fixedStep)
+    parameters:
+    - id: fixedStep
+      type: System.Double
+      description: The fixed time step in seconds.
+    content.vb: Protected Overridable Sub FixedUpdate(fixedStep As Double)
+  overload: Sparkle.CSharp.Game.FixedUpdate*
+  nameWithType.vb: Game.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Game.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+- uid: Sparkle.CSharp.Game.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.Game.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  id: Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: Game.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.Game.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Draw
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 359
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Renders the game scene to the screen.
+  example: []
+  syntax:
+    content: protected virtual void Draw(GraphicsContext context, Framebuffer framebuffer)
+    parameters:
+    - id: context
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+    - id: framebuffer
+      type: Veldrid.Framebuffer
+    content.vb: Protected Overridable Sub Draw(context As GraphicsContext, framebuffer As Framebuffer)
+  overload: Sparkle.CSharp.Game.Draw*
+- uid: Sparkle.CSharp.Game.OnResize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.Game.OnResize(Bliss.CSharp.Transformations.Rectangle)
+  id: OnResize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: OnResize(Rectangle)
+  nameWithType: Game.OnResize(Rectangle)
+  fullName: Sparkle.CSharp.Game.OnResize(Bliss.CSharp.Transformations.Rectangle)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: OnResize
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 368
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Handles window resizing events.
+  example: []
+  syntax:
+    content: protected virtual void OnResize(Rectangle rectangle)
+    parameters:
+    - id: rectangle
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Protected Overridable Sub OnResize(rectangle As Rectangle)
+  overload: Sparkle.CSharp.Game.OnResize*
+- uid: Sparkle.CSharp.Game.OnClose
+  commentId: M:Sparkle.CSharp.Game.OnClose
+  id: OnClose
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: OnClose()
+  nameWithType: Game.OnClose()
+  fullName: Sparkle.CSharp.Game.OnClose()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: OnClose
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 392
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: >-
+    Handles the logic to be executed when the application shuts down.
+
+    This method can be overridden by derived classes to include custom shutdown behavior.
+  example: []
+  syntax:
+    content: protected virtual void OnClose()
+    content.vb: Protected Overridable Sub OnClose()
+  overload: Sparkle.CSharp.Game.OnClose*
+- uid: Sparkle.CSharp.Game.GetTargetFps
+  commentId: M:Sparkle.CSharp.Game.GetTargetFps
+  id: GetTargetFps
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GetTargetFps()
+  nameWithType: Game.GetTargetFps()
+  fullName: Sparkle.CSharp.Game.GetTargetFps()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetTargetFps
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 397
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Gets the target frames per second.
+  example: []
+  syntax:
+    content: public int GetTargetFps()
+    return:
+      type: System.Int32
+    content.vb: Public Function GetTargetFps() As Integer
+  overload: Sparkle.CSharp.Game.GetTargetFps*
+- uid: Sparkle.CSharp.Game.SetTargetFps(System.Int32)
+  commentId: M:Sparkle.CSharp.Game.SetTargetFps(System.Int32)
+  id: SetTargetFps(System.Int32)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: SetTargetFps(int)
+  nameWithType: Game.SetTargetFps(int)
+  fullName: Sparkle.CSharp.Game.SetTargetFps(int)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SetTargetFps
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 404
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Sets the target frames per second.
+  example: []
+  syntax:
+    content: public void SetTargetFps(int fps)
+    parameters:
+    - id: fps
+      type: System.Int32
+    content.vb: Public Sub SetTargetFps(fps As Integer)
+  overload: Sparkle.CSharp.Game.SetTargetFps*
+  nameWithType.vb: Game.SetTargetFps(Integer)
+  fullName.vb: Sparkle.CSharp.Game.SetTargetFps(Integer)
+  name.vb: SetTargetFps(Integer)
+- uid: Sparkle.CSharp.Game.GetSampleCount
+  commentId: M:Sparkle.CSharp.Game.GetSampleCount
+  id: GetSampleCount
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: GetSampleCount()
+  nameWithType: Game.GetSampleCount()
+  fullName: Sparkle.CSharp.Game.GetSampleCount()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetSampleCount
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 412
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Retrieves the texture sample count currently used by the game's MSAA render target texture.
+  example: []
+  syntax:
+    content: public TextureSampleCount? GetSampleCount()
+    return:
+      type: System.Nullable{Veldrid.TextureSampleCount}
+      description: The sample count of the MSAA render target texture.
+    content.vb: Public Function GetSampleCount() As TextureSampleCount?
+  overload: Sparkle.CSharp.Game.GetSampleCount*
+- uid: Sparkle.CSharp.Game.SetSampleCount(Veldrid.TextureSampleCount)
+  commentId: M:Sparkle.CSharp.Game.SetSampleCount(Veldrid.TextureSampleCount)
+  id: SetSampleCount(Veldrid.TextureSampleCount)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: SetSampleCount(TextureSampleCount)
+  nameWithType: Game.SetSampleCount(TextureSampleCount)
+  fullName: Sparkle.CSharp.Game.SetSampleCount(Veldrid.TextureSampleCount)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SetSampleCount
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 420
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Sets the sample count for multi-sample anti-aliasing (MSAA).
+  example: []
+  syntax:
+    content: public void SetSampleCount(TextureSampleCount sampleCount)
+    parameters:
+    - id: sampleCount
+      type: Veldrid.TextureSampleCount
+      description: The texture sample count to apply, defining the level of anti-aliasing.
+    content.vb: Public Sub SetSampleCount(sampleCount As TextureSampleCount)
+  overload: Sparkle.CSharp.Game.SetSampleCount*
+- uid: Sparkle.CSharp.Game.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Game.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Game
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: Game.Dispose(bool)
+  fullName: Sparkle.CSharp.Game.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Game.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle/CSharp/Game.cs
+    startLine: 425
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  overload: Sparkle.CSharp.Game.Dispose*
+  nameWithType.vb: Game.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Game.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.CSharp
+  commentId: N:Sparkle.CSharp
+  href: Sparkle.html
+  name: Sparkle.CSharp
+  nameWithType: Sparkle.CSharp
+  fullName: Sparkle.CSharp
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: System.Version
+  commentId: T:System.Version
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.version
+  name: Version
+  nameWithType: Version
+  fullName: System.Version
+- uid: Sparkle.CSharp.Game.Instance*
+  commentId: Overload:Sparkle.CSharp.Game.Instance
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Instance
+  name: Instance
+  nameWithType: Game.Instance
+  fullName: Sparkle.CSharp.Game.Instance
+- uid: Sparkle.CSharp.Game
+  commentId: T:Sparkle.CSharp.Game
+  parent: Sparkle.CSharp
+  href: Sparkle.CSharp.Game.html
+  name: Game
+  nameWithType: Game
+  fullName: Sparkle.CSharp.Game
+- uid: Sparkle.CSharp.Game.Settings*
+  commentId: Overload:Sparkle.CSharp.Game.Settings
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Settings
+  name: Settings
+  nameWithType: Game.Settings
+  fullName: Sparkle.CSharp.Game.Settings
+- uid: Sparkle.CSharp.GameSettings
+  commentId: T:Sparkle.CSharp.GameSettings
+  parent: Sparkle.CSharp
+  href: Sparkle.CSharp.GameSettings.html
+  name: GameSettings
+  nameWithType: GameSettings
+  fullName: Sparkle.CSharp.GameSettings
+- uid: Sparkle.CSharp.Game.MainWindow*
+  commentId: Overload:Sparkle.CSharp.Game.MainWindow
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_MainWindow
+  name: MainWindow
+  nameWithType: Game.MainWindow
+  fullName: Sparkle.CSharp.Game.MainWindow
+- uid: Bliss.CSharp.Windowing.IWindow
+  commentId: T:Bliss.CSharp.Windowing.IWindow
+  parent: Bliss.CSharp.Windowing
+  isExternal: true
+  name: IWindow
+  nameWithType: IWindow
+  fullName: Bliss.CSharp.Windowing.IWindow
+- uid: Bliss.CSharp.Windowing
+  commentId: N:Bliss.CSharp.Windowing
+  isExternal: true
+  name: Bliss.CSharp.Windowing
+  nameWithType: Bliss.CSharp.Windowing
+  fullName: Bliss.CSharp.Windowing
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+- uid: Sparkle.CSharp.Game.GraphicsDevice*
+  commentId: Overload:Sparkle.CSharp.Game.GraphicsDevice
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: Game.GraphicsDevice
+  fullName: Sparkle.CSharp.Game.GraphicsDevice
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Game.CommandList*
+  commentId: Overload:Sparkle.CSharp.Game.CommandList
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_CommandList
+  name: CommandList
+  nameWithType: Game.CommandList
+  fullName: Sparkle.CSharp.Game.CommandList
+- uid: Veldrid.CommandList
+  commentId: T:Veldrid.CommandList
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  name: CommandList
+  nameWithType: CommandList
+  fullName: Veldrid.CommandList
+- uid: Sparkle.CSharp.Game.FullScreenRenderPass*
+  commentId: Overload:Sparkle.CSharp.Game.FullScreenRenderPass
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_FullScreenRenderPass
+  name: FullScreenRenderPass
+  nameWithType: Game.FullScreenRenderPass
+  fullName: Sparkle.CSharp.Game.FullScreenRenderPass
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: FullScreenRenderer
+  nameWithType: FullScreenRenderer
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.FullScreenRenderer
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+- uid: Sparkle.CSharp.Game.GlobalSpriteBatch*
+  commentId: Overload:Sparkle.CSharp.Game.GlobalSpriteBatch
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GlobalSpriteBatch
+  name: GlobalSpriteBatch
+  nameWithType: Game.GlobalSpriteBatch
+  fullName: Sparkle.CSharp.Game.GlobalSpriteBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteBatch
+  nameWithType: SpriteBatch
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: Sparkle.CSharp.Game.GlobalPrimitiveBatch*
+  commentId: Overload:Sparkle.CSharp.Game.GlobalPrimitiveBatch
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GlobalPrimitiveBatch
+  name: GlobalPrimitiveBatch
+  nameWithType: Game.GlobalPrimitiveBatch
+  fullName: Sparkle.CSharp.Game.GlobalPrimitiveBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  isExternal: true
+  name: PrimitiveBatch
+  nameWithType: PrimitiveBatch
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives.PrimitiveBatch
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+    name: Primitives
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives
+    name: Primitives
+    isExternal: true
+- uid: Sparkle.CSharp.Game.GlobalImmediateRenderer*
+  commentId: Overload:Sparkle.CSharp.Game.GlobalImmediateRenderer
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GlobalImmediateRenderer
+  name: GlobalImmediateRenderer
+  nameWithType: Game.GlobalImmediateRenderer
+  fullName: Sparkle.CSharp.Game.GlobalImmediateRenderer
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers
+  isExternal: true
+  name: ImmediateRenderer
+  nameWithType: ImmediateRenderer
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.ImmediateRenderer
+- uid: Sparkle.CSharp.Game.GraphicsContext*
+  commentId: Overload:Sparkle.CSharp.Game.GraphicsContext
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GraphicsContext
+  name: GraphicsContext
+  nameWithType: Game.GraphicsContext
+  fullName: Sparkle.CSharp.Game.GraphicsContext
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+- uid: Sparkle.CSharp.Game.Content*
+  commentId: Overload:Sparkle.CSharp.Game.Content
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Content
+  name: Content
+  nameWithType: Game.Content
+  fullName: Sparkle.CSharp.Game.Content
+- uid: Sparkle.CSharp.Content.ContentManager
+  commentId: T:Sparkle.CSharp.Content.ContentManager
+  parent: Sparkle.CSharp.Content
+  href: Sparkle.CSharp.Content.ContentManager.html
+  name: ContentManager
+  nameWithType: ContentManager
+  fullName: Sparkle.CSharp.Content.ContentManager
+- uid: Sparkle.CSharp.Content
+  commentId: N:Sparkle.CSharp.Content
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content
+  nameWithType: Sparkle.CSharp.Content
+  fullName: Sparkle.CSharp.Content
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Game.#ctor*
+  commentId: Overload:Sparkle.CSharp.Game.#ctor
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game__ctor_Sparkle_CSharp_GameSettings_
+  name: Game
+  nameWithType: Game.Game
+  fullName: Sparkle.CSharp.Game.Game
+  nameWithType.vb: Game.New
+  fullName.vb: Sparkle.CSharp.Game.New
+  name.vb: New
+- uid: Sparkle.CSharp.Game.Run*
+  commentId: Overload:Sparkle.CSharp.Game.Run
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Run_Sparkle_CSharp_Scenes_Scene_
+  name: Run
+  nameWithType: Game.Run
+  fullName: Sparkle.CSharp.Game.Run
+- uid: Sparkle.CSharp.Scenes.Scene
+  commentId: T:Sparkle.CSharp.Scenes.Scene
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.Scene.html
+  name: Scene
+  nameWithType: Scene
+  fullName: Sparkle.CSharp.Scenes.Scene
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+- uid: Sparkle.CSharp.Game.OnRun*
+  commentId: Overload:Sparkle.CSharp.Game.OnRun
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_OnRun
+  name: OnRun
+  nameWithType: Game.OnRun
+  fullName: Sparkle.CSharp.Game.OnRun
+- uid: Sparkle.CSharp.Game.Load*
+  commentId: Overload:Sparkle.CSharp.Game.Load
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Load_Sparkle_CSharp_Content_ContentManager_
+  name: Load
+  nameWithType: Game.Load
+  fullName: Sparkle.CSharp.Game.Load
+- uid: Sparkle.CSharp.Game.Init*
+  commentId: Overload:Sparkle.CSharp.Game.Init
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Init
+  name: Init
+  nameWithType: Game.Init
+  fullName: Sparkle.CSharp.Game.Init
+- uid: Sparkle.CSharp.Game.Update*
+  commentId: Overload:Sparkle.CSharp.Game.Update
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Update_System_Double_
+  name: Update
+  nameWithType: Game.Update
+  fullName: Sparkle.CSharp.Game.Update
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.Game.AfterUpdate*
+  commentId: Overload:Sparkle.CSharp.Game.AfterUpdate
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_AfterUpdate_System_Double_
+  name: AfterUpdate
+  nameWithType: Game.AfterUpdate
+  fullName: Sparkle.CSharp.Game.AfterUpdate
+- uid: Sparkle.CSharp.Game.FixedUpdate*
+  commentId: Overload:Sparkle.CSharp.Game.FixedUpdate
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_FixedUpdate_System_Double_
+  name: FixedUpdate
+  nameWithType: Game.FixedUpdate
+  fullName: Sparkle.CSharp.Game.FixedUpdate
+- uid: Sparkle.CSharp.Game.Draw*
+  commentId: Overload:Sparkle.CSharp.Game.Draw
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw
+  nameWithType: Game.Draw
+  fullName: Sparkle.CSharp.Game.Draw
+- uid: Veldrid.Framebuffer
+  commentId: T:Veldrid.Framebuffer
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  name: Framebuffer
+  nameWithType: Framebuffer
+  fullName: Veldrid.Framebuffer
+- uid: Sparkle.CSharp.Game.OnResize*
+  commentId: Overload:Sparkle.CSharp.Game.OnResize
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_OnResize_Bliss_CSharp_Transformations_Rectangle_
+  name: OnResize
+  nameWithType: Game.OnResize
+  fullName: Sparkle.CSharp.Game.OnResize
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Sparkle.CSharp.Game.OnClose*
+  commentId: Overload:Sparkle.CSharp.Game.OnClose
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_OnClose
+  name: OnClose
+  nameWithType: Game.OnClose
+  fullName: Sparkle.CSharp.Game.OnClose
+- uid: Sparkle.CSharp.Game.GetTargetFps*
+  commentId: Overload:Sparkle.CSharp.Game.GetTargetFps
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GetTargetFps
+  name: GetTargetFps
+  nameWithType: Game.GetTargetFps
+  fullName: Sparkle.CSharp.Game.GetTargetFps
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Sparkle.CSharp.Game.SetTargetFps*
+  commentId: Overload:Sparkle.CSharp.Game.SetTargetFps
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_SetTargetFps_System_Int32_
+  name: SetTargetFps
+  nameWithType: Game.SetTargetFps
+  fullName: Sparkle.CSharp.Game.SetTargetFps
+- uid: Sparkle.CSharp.Game.GetSampleCount*
+  commentId: Overload:Sparkle.CSharp.Game.GetSampleCount
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_GetSampleCount
+  name: GetSampleCount
+  nameWithType: Game.GetSampleCount
+  fullName: Sparkle.CSharp.Game.GetSampleCount
+- uid: System.Nullable{Veldrid.TextureSampleCount}
+  commentId: T:System.Nullable{Veldrid.TextureSampleCount}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/TextureSampleCount.cs
+  name: TextureSampleCount?
+  nameWithType: TextureSampleCount?
+  fullName: Veldrid.TextureSampleCount?
+  spec.csharp:
+  - uid: Veldrid.TextureSampleCount
+    name: TextureSampleCount
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/TextureSampleCount.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.TextureSampleCount
+    name: TextureSampleCount
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/TextureSampleCount.cs
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Game.SetSampleCount*
+  commentId: Overload:Sparkle.CSharp.Game.SetSampleCount
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_SetSampleCount_Veldrid_TextureSampleCount_
+  name: SetSampleCount
+  nameWithType: Game.SetSampleCount
+  fullName: Sparkle.CSharp.Game.SetSampleCount
+- uid: Veldrid.TextureSampleCount
+  commentId: T:Veldrid.TextureSampleCount
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/TextureSampleCount.cs
+  name: TextureSampleCount
+  nameWithType: TextureSampleCount
+  fullName: Veldrid.TextureSampleCount
+- uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  commentId: M:Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: Dispose(bool)
+  nameWithType: Disposable.Dispose(bool)
+  fullName: Bliss.CSharp.Disposable.Dispose(bool)
+  nameWithType.vb: Disposable.Dispose(Boolean)
+  fullName.vb: Bliss.CSharp.Disposable.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.Game.Dispose*
+  commentId: Overload:Sparkle.CSharp.Game.Dispose
+  href: Sparkle.CSharp.Game.html#Sparkle_CSharp_Game_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: Game.Dispose
+  fullName: Sparkle.CSharp.Game.Dispose

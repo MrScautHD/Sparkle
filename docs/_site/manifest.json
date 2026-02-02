@@ -1,0 +1,2146 @@
+{
+  "source_base_path": "F:/Projects/Sparkle/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.ContentManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.ContentManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.ContentManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.AudioClipProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.AudioClipProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.AudioClipProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.CubemapProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.CubemapProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.CubemapProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.FontProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.FontProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.FontProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.IContentProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.IContentProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.IContentProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.ModelProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.ModelProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.ModelProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.TextureProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.TextureProcessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors.TextureProcessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Processors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Processors.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Processors",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.AudioClipContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.AudioClipContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.AudioClipContent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.CubemapContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.CubemapContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.CubemapContent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.FontContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.FontContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.FontContent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.IContentType-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.IContentType-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.IContentType<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.ModelContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.ModelContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.ModelContent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.TextureContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.TextureContent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types.TextureContent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.Types.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.Types.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content.Types",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Content.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Content.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Content",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.BloomEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.BloomEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.BloomEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.BlurEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.BlurEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.BlurEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.PixelizerEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.PixelizerEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.PixelizerEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.PosterizationEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.PosterizationEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.PosterizationEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.PredatorEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.PredatorEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.PredatorEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.SobelEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.SobelEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters.SobelEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Filters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Filters.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Filters",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Posts.FxaaEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Posts.FxaaEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Posts.FxaaEffect",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Effects.Posts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Effects.Posts.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Effects.Posts",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Camera2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Camera2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Camera2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Camera3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Camera3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Camera3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.Component.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.Component.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.Component",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.InstancedRenderProxy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.InstancedRenderProxy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.InstancedRenderProxy",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.InterpolatedComponent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.InterpolatedComponent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.InterpolatedComponent",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.MeshRenderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.MeshRenderer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.MeshRenderer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.ModelRenderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.ModelRenderer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.ModelRenderer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.RigidBody2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.RigidBody2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.RigidBody2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.RigidBody3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.RigidBody3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.RigidBody3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.SoftBody3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.SoftBody3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.SoftBody3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.Sprite.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.Sprite.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components.Sprite",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Components.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Components.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Components",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.Entity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.Entity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities.Entity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Entities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Entities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Entities",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Anchor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Anchor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Anchor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.BorderInsets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.BorderInsets.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.BorderInsets",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.LabelData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.LabelData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.LabelData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.RectangleButtonData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.RectangleTextBoxData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureButtonData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.TextureButtonData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.TextureSlideBarData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.TextureTextBoxData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.ToggleData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.ToggleData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data.ToggleData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.GuiElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.GuiElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.GuiElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.LabelElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.LabelElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.LabelElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleButtonElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleButtonElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.RectangleButtonElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureButtonElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureButtonElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.TextureButtonElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureDropDownElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureDropDownElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.TextureDropDownElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureSlideBarElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureSlideBarElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.TextureSlideBarElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureTextBoxElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.TextureTextBoxElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.TextureTextBoxElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.ToggleElement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.ToggleElement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements.ToggleElement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Elements.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Elements.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Elements",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.Gui.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.Gui.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.Gui",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.GuiManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.GuiManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.GuiManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.ResizeMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.ResizeMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.ResizeMode",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.TextAlignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.TextAlignment.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI.TextAlignment",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GUI.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GUI",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Game.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Game.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Game",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.GameSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.GameSettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.GameSettings",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.GlobalGraphicsAssets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.GlobalGraphicsAssets.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.GlobalGraphicsAssets",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.GraphicsContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.GraphicsContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.GraphicsContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.MultiInstanceRenderer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.SkyBox.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.SkyBox.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.SkyBox",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.Sprites.SpriteRenderer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.Sprites.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering.Sprites",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.Rendering.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.Rendering.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.Rendering",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.VertexTypes.PhysicsDebugVertex3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.VertexTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.VertexTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics.VertexTypes",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Graphics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Graphics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Graphics",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.Configs.Json.JsonConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.Configs.Json.JsonConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO.Configs.Json.JsonConfig",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.Configs.Json.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.Configs.Json.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO.Configs.Json",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.CryptoProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.CryptoProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO.CryptoProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.FileAccessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.FileAccessor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO.FileAccessor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.IO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.IO.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.IO",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Logging.LogFileWriter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Logging.LogFileWriter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Logging.LogFileWriter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Logging.LogJitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Logging.LogJitter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Logging.LogJitter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Logging.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Logging.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Logging",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Overlays.Overlay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Overlays.Overlay.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Overlays.Overlay",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Overlays.OverlayManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Overlays.OverlayManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Overlays.OverlayManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Overlays.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Overlays.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Overlays",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Def.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Def.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Def",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.CapsuleShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.ChainShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.CircleShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.IShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.PolygonShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes.SegmentShape2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Shapes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Shapes",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.Simulation2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.Simulation2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2.Simulation2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim2",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.Extensions.Matrix4X4Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.Mappables.UnitSphere",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.Mappables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.Mappables.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.Mappables",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.Simulation3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.Simulation3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.Simulation3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.ISoftBodyFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyClothFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodyCubeFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.SoftBodySphereFactory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SimpleSoftBody",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCloth",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodyCube",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.SoftBodySphere",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.SoftBodies.Types.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3.SoftBodies.Types",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Dim3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Dim3.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Dim3",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.Simulation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.Simulation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics.Simulation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Physics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Physics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Physics",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Registries.Registry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Registries.Registry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Registries.Registry",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Registries.RegistryManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Registries.RegistryManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Registries.RegistryManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Registries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Registries.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Registries",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Scenes.Scene.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Scenes.Scene.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Scenes.Scene",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Scenes.SceneManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Scenes.SceneManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Scenes.SceneManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Scenes.SceneType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Scenes.SceneType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Scenes.SceneType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Scenes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Scenes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Scenes",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.SystemInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.SystemInfo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.SystemInfo",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Terrain.MarchingCubes",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubesChunk.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubesChunk.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Terrain.MarchingCubesChunk",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubesTables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Terrain.MarchingCubesTables.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Terrain.MarchingCubesTables",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Terrain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Terrain.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Terrain",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.Time.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.Time.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp.Time",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.CSharp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.CSharp.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.CSharp",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.ContentRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.ContentRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.ContentRegistry",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.Dim2D.TestScene2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.Dim2D.TestScene2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.Dim2D.TestScene2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.Dim2D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.Dim2D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.Dim2D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.Dim3D.TestScene3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.Dim3D.TestScene3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.Dim3D.TestScene3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.Dim3D.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.Dim3D.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.Dim3D",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.TestGame.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.TestGame.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.TestGame",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.TestGui.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.TestGui.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.TestGui",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.TestOverlay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.TestOverlay.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp.TestOverlay",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Sparkle.Test.CSharp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Sparkle.Test.CSharp.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Sparkle.Test.CSharp",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

@@ -1,0 +1,2119 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  id: TextureDropDownData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  children:
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,System.Int32)
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowFlip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowTexture
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledArrowColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledFieldColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledMenuColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderBarColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldBorderInsets
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldFlip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldResizeMode
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldTexture
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.HighlightColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuBorderInsets
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuFlip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuResizeMode
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuTexture
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ScrollBarWidth
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarBorderInsets
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarFlip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarResizeMode
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarTexture
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderFlip
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderHoverColor
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSampler
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSourceRect
+  - Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderTexture
+  langs:
+  - csharp
+  - vb
+  name: TextureDropDownData
+  nameWithType: TextureDropDownData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TextureDropDownData
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 8
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  syntax:
+    content: public class TextureDropDownData
+    content.vb: Public Class TextureDropDownData
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldTexture
+  id: FieldTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldTexture
+  nameWithType: TextureDropDownData.FieldTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 13
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used to render the dropdown field (collapsed state).
+  example: []
+  syntax:
+    content: public Texture2D FieldTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public FieldTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuTexture
+  id: MenuTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuTexture
+  nameWithType: TextureDropDownData.MenuTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 18
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used to render the dropdown menu background.
+  example: []
+  syntax:
+    content: public Texture2D MenuTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public MenuTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarTexture
+  id: SliderBarTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarTexture
+  nameWithType: TextureDropDownData.SliderBarTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used to render the scrollbar track inside the dropdown menu.
+  example: []
+  syntax:
+    content: public Texture2D SliderBarTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public SliderBarTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderTexture
+  id: SliderTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderTexture
+  nameWithType: TextureDropDownData.SliderTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 28
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used to render the scrollbar handle inside the dropdown menu.
+  example: []
+  syntax:
+    content: public Texture2D SliderTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public SliderTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowTexture
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowTexture
+  id: ArrowTexture
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowTexture
+  nameWithType: TextureDropDownData.ArrowTexture
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowTexture
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowTexture
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 33
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The texture used to render the dropdown arrow indicator.
+  example: []
+  syntax:
+    content: public Texture2D? ArrowTexture
+    return:
+      type: Bliss.CSharp.Textures.Texture2D
+    content.vb: Public ArrowTexture As Texture2D
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSampler
+  id: FieldSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldSampler
+  nameWithType: TextureDropDownData.FieldSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 38
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used for sampling the dropdown field texture.
+  example: []
+  syntax:
+    content: public Sampler? FieldSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public FieldSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSampler
+  id: MenuSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuSampler
+  nameWithType: TextureDropDownData.MenuSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 43
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used for sampling the dropdown menu texture.
+  example: []
+  syntax:
+    content: public Sampler? MenuSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public MenuSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSampler
+  id: SliderBarSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarSampler
+  nameWithType: TextureDropDownData.SliderBarSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 48
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used for sampling the scrollbar track texture.
+  example: []
+  syntax:
+    content: public Sampler? SliderBarSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public SliderBarSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSampler
+  id: SliderSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderSampler
+  nameWithType: TextureDropDownData.SliderSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 53
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used for sampling the scrollbar handle texture.
+  example: []
+  syntax:
+    content: public Sampler? SliderSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public SliderSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSampler
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSampler
+  id: ArrowSampler
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowSampler
+  nameWithType: TextureDropDownData.ArrowSampler
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSampler
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowSampler
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 58
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The sampler used for sampling the dropdown arrow texture.
+  example: []
+  syntax:
+    content: public Sampler? ArrowSampler
+    return:
+      type: Veldrid.Sampler
+    content.vb: Public ArrowSampler As Sampler
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSourceRect
+  id: FieldSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldSourceRect
+  nameWithType: TextureDropDownData.FieldSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 63
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle defining the region of the field texture to draw.
+  example: []
+  syntax:
+    content: public Rectangle FieldSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public FieldSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSourceRect
+  id: MenuSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuSourceRect
+  nameWithType: TextureDropDownData.MenuSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 68
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle defining the region of the menu texture to draw.
+  example: []
+  syntax:
+    content: public Rectangle MenuSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public MenuSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSourceRect
+  id: SliderBarSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarSourceRect
+  nameWithType: TextureDropDownData.SliderBarSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 73
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle defining the region of the scrollbar track texture to draw.
+  example: []
+  syntax:
+    content: public Rectangle SliderBarSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public SliderBarSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSourceRect
+  id: SliderSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderSourceRect
+  nameWithType: TextureDropDownData.SliderSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 78
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle defining the region of the scrollbar handle texture to draw.
+  example: []
+  syntax:
+    content: public Rectangle SliderSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public SliderSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSourceRect
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSourceRect
+  id: ArrowSourceRect
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowSourceRect
+  nameWithType: TextureDropDownData.ArrowSourceRect
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowSourceRect
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowSourceRect
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 83
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The source rectangle defining the region of the arrow texture to draw.
+  example: []
+  syntax:
+    content: public Rectangle ArrowSourceRect
+    return:
+      type: Bliss.CSharp.Transformations.Rectangle
+    content.vb: Public ArrowSourceRect As Rectangle
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldResizeMode
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldResizeMode
+  id: FieldResizeMode
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldResizeMode
+  nameWithType: TextureDropDownData.FieldResizeMode
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldResizeMode
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldResizeMode
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 88
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The resize mode applied to the dropdown field texture.
+  example: []
+  syntax:
+    content: public ResizeMode FieldResizeMode
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+    content.vb: Public FieldResizeMode As ResizeMode
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuResizeMode
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuResizeMode
+  id: MenuResizeMode
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuResizeMode
+  nameWithType: TextureDropDownData.MenuResizeMode
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuResizeMode
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuResizeMode
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 93
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The resize mode applied to the dropdown menu texture.
+  example: []
+  syntax:
+    content: public ResizeMode MenuResizeMode
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+    content.vb: Public MenuResizeMode As ResizeMode
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarResizeMode
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarResizeMode
+  id: SliderBarResizeMode
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarResizeMode
+  nameWithType: TextureDropDownData.SliderBarResizeMode
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarResizeMode
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarResizeMode
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 98
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The resize mode applied to the scrollbar track texture.
+  example: []
+  syntax:
+    content: public ResizeMode SliderBarResizeMode
+    return:
+      type: Sparkle.CSharp.GUI.ResizeMode
+    content.vb: Public SliderBarResizeMode As ResizeMode
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldBorderInsets
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldBorderInsets
+  id: FieldBorderInsets
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldBorderInsets
+  nameWithType: TextureDropDownData.FieldBorderInsets
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldBorderInsets
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldBorderInsets
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 103
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The border insets used for nine-slice resizing of the field texture.
+  example: []
+  syntax:
+    content: public BorderInsets FieldBorderInsets
+    return:
+      type: Sparkle.CSharp.GUI.BorderInsets
+    content.vb: Public FieldBorderInsets As BorderInsets
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuBorderInsets
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuBorderInsets
+  id: MenuBorderInsets
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuBorderInsets
+  nameWithType: TextureDropDownData.MenuBorderInsets
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuBorderInsets
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuBorderInsets
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 108
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The border insets used for nine-slice resizing of the menu texture.
+  example: []
+  syntax:
+    content: public BorderInsets MenuBorderInsets
+    return:
+      type: Sparkle.CSharp.GUI.BorderInsets
+    content.vb: Public MenuBorderInsets As BorderInsets
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarBorderInsets
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarBorderInsets
+  id: SliderBarBorderInsets
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarBorderInsets
+  nameWithType: TextureDropDownData.SliderBarBorderInsets
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarBorderInsets
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarBorderInsets
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 113
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The border insets used for nine-slice resizing of the scrollbar track texture.
+  example: []
+  syntax:
+    content: public BorderInsets SliderBarBorderInsets
+    return:
+      type: Sparkle.CSharp.GUI.BorderInsets
+    content.vb: Public SliderBarBorderInsets As BorderInsets
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldColor
+  id: FieldColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldColor
+  nameWithType: TextureDropDownData.FieldColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 118
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the dropdown field.
+  example: []
+  syntax:
+    content: public Color FieldColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public FieldColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuColor
+  id: MenuColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuColor
+  nameWithType: TextureDropDownData.MenuColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 123
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the dropdown menu.
+  example: []
+  syntax:
+    content: public Color MenuColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public MenuColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarColor
+  id: SliderBarColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarColor
+  nameWithType: TextureDropDownData.SliderBarColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 128
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the scrollbar track.
+  example: []
+  syntax:
+    content: public Color SliderBarColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public SliderBarColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderColor
+  id: SliderColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderColor
+  nameWithType: TextureDropDownData.SliderColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 133
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the scrollbar handle.
+  example: []
+  syntax:
+    content: public Color SliderColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public SliderColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowColor
+  id: ArrowColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowColor
+  nameWithType: TextureDropDownData.ArrowColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 138
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The base color applied to the dropdown arrow.
+  example: []
+  syntax:
+    content: public Color ArrowColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public ArrowColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldHoverColor
+  id: FieldHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldHoverColor
+  nameWithType: TextureDropDownData.FieldHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 143
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown field when hovered.
+  example: []
+  syntax:
+    content: public Color FieldHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public FieldHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuHoverColor
+  id: MenuHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuHoverColor
+  nameWithType: TextureDropDownData.MenuHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 148
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown menu when hovered.
+  example: []
+  syntax:
+    content: public Color MenuHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public MenuHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarHoverColor
+  id: SliderBarHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarHoverColor
+  nameWithType: TextureDropDownData.SliderBarHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 153
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the scrollbar track when hovered.
+  example: []
+  syntax:
+    content: public Color SliderBarHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public SliderBarHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderHoverColor
+  id: SliderHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderHoverColor
+  nameWithType: TextureDropDownData.SliderHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 158
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the scrollbar handle when hovered.
+  example: []
+  syntax:
+    content: public Color SliderHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public SliderHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowHoverColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowHoverColor
+  id: ArrowHoverColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowHoverColor
+  nameWithType: TextureDropDownData.ArrowHoverColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowHoverColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowHoverColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 163
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown arrow when hovered.
+  example: []
+  syntax:
+    content: public Color ArrowHoverColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public ArrowHoverColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.HighlightColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.HighlightColor
+  id: HighlightColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: HighlightColor
+  nameWithType: TextureDropDownData.HighlightColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.HighlightColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: HighlightColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 168
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color used to highlight hovered or selected menu items.
+  example: []
+  syntax:
+    content: public Color HighlightColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public HighlightColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledFieldColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledFieldColor
+  id: DisabledFieldColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: DisabledFieldColor
+  nameWithType: TextureDropDownData.DisabledFieldColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledFieldColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledFieldColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 173
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown field when disabled.
+  example: []
+  syntax:
+    content: public Color DisabledFieldColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledFieldColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledMenuColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledMenuColor
+  id: DisabledMenuColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: DisabledMenuColor
+  nameWithType: TextureDropDownData.DisabledMenuColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledMenuColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledMenuColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 178
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown menu when disabled.
+  example: []
+  syntax:
+    content: public Color DisabledMenuColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledMenuColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderBarColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderBarColor
+  id: DisabledSliderBarColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: DisabledSliderBarColor
+  nameWithType: TextureDropDownData.DisabledSliderBarColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderBarColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledSliderBarColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 183
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the scrollbar track when the dropdown is disabled.
+  example: []
+  syntax:
+    content: public Color DisabledSliderBarColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledSliderBarColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderColor
+  id: DisabledSliderColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: DisabledSliderColor
+  nameWithType: TextureDropDownData.DisabledSliderColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledSliderColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledSliderColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 188
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the scrollbar handle when the dropdown is disabled.
+  example: []
+  syntax:
+    content: public Color DisabledSliderColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledSliderColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledArrowColor
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledArrowColor
+  id: DisabledArrowColor
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: DisabledArrowColor
+  nameWithType: TextureDropDownData.DisabledArrowColor
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.DisabledArrowColor
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DisabledArrowColor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 193
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The color applied to the dropdown arrow when disabled.
+  example: []
+  syntax:
+    content: public Color DisabledArrowColor
+    return:
+      type: Bliss.CSharp.Colors.Color
+    content.vb: Public DisabledArrowColor As Color
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldFlip
+  id: FieldFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: FieldFlip
+  nameWithType: TextureDropDownData.FieldFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.FieldFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FieldFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 198
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode applied to the dropdown field texture.
+  example: []
+  syntax:
+    content: public SpriteFlip FieldFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public FieldFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuFlip
+  id: MenuFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: MenuFlip
+  nameWithType: TextureDropDownData.MenuFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.MenuFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MenuFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 203
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode applied to the dropdown menu texture.
+  example: []
+  syntax:
+    content: public SpriteFlip MenuFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public MenuFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarFlip
+  id: SliderBarFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderBarFlip
+  nameWithType: TextureDropDownData.SliderBarFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderBarFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderBarFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 208
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode applied to the scrollbar track texture.
+  example: []
+  syntax:
+    content: public SpriteFlip SliderBarFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public SliderBarFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderFlip
+  id: SliderFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: SliderFlip
+  nameWithType: TextureDropDownData.SliderFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.SliderFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SliderFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 213
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode applied to the scrollbar handle texture.
+  example: []
+  syntax:
+    content: public SpriteFlip SliderFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public SliderFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowFlip
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowFlip
+  id: ArrowFlip
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ArrowFlip
+  nameWithType: TextureDropDownData.ArrowFlip
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ArrowFlip
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ArrowFlip
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 218
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The flip mode applied to the dropdown arrow texture.
+  example: []
+  syntax:
+    content: public SpriteFlip ArrowFlip
+    return:
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+    content.vb: Public ArrowFlip As SpriteFlip
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ScrollBarWidth
+  commentId: F:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ScrollBarWidth
+  id: ScrollBarWidth
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: ScrollBarWidth
+  nameWithType: TextureDropDownData.ScrollBarWidth
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.ScrollBarWidth
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ScrollBarWidth
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 223
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: The width of the scrollbar rendered inside the dropdown menu.
+  example: []
+  syntax:
+    content: public int ScrollBarWidth
+    return:
+      type: System.Int32
+    content.vb: Public ScrollBarWidth As Integer
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,System.Int32)
+  commentId: M:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,System.Int32)
+  id: '#ctor(Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Bliss.CSharp.Textures.Texture2D,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,Veldrid.Sampler,System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},System.Nullable{Bliss.CSharp.Transformations.Rectangle},Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,Sparkle.CSharp.GUI.ResizeMode,System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Sparkle.CSharp.GUI.BorderInsets},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},System.Nullable{Bliss.CSharp.Colors.Color},Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip,System.Int32)'
+  parent: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  langs:
+  - csharp
+  - vb
+  name: TextureDropDownData(Texture2D, Texture2D, Texture2D, Texture2D, Texture2D?, Sampler?, Sampler?, Sampler?, Sampler?, Sampler?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, ResizeMode, ResizeMode, ResizeMode, BorderInsets?, BorderInsets?, BorderInsets?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, int)
+  nameWithType: TextureDropDownData.TextureDropDownData(Texture2D, Texture2D, Texture2D, Texture2D, Texture2D?, Sampler?, Sampler?, Sampler?, Sampler?, Sampler?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, ResizeMode, ResizeMode, ResizeMode, BorderInsets?, BorderInsets?, BorderInsets?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, int)
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.TextureDropDownData(Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D?, Veldrid.Sampler?, Veldrid.Sampler?, Veldrid.Sampler?, Veldrid.Sampler?, Veldrid.Sampler?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.BorderInsets?, Sparkle.CSharp.GUI.BorderInsets?, Sparkle.CSharp.GUI.BorderInsets?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, int)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GUI/Elements/Data/TextureDropDownData.cs
+    startLine: 271
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements.Data
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData" data-throw-if-not-resolved="false"></xref> class, defining all visual, layout, and interaction states for a texture-based dropdown.
+  example: []
+  syntax:
+    content: public TextureDropDownData(Texture2D fieldTexture, Texture2D menuTexture, Texture2D sliderBarTexture, Texture2D sliderTexture, Texture2D? arrowTexture, Sampler? fieldSampler = null, Sampler? menuSampler = null, Sampler? sliderBarSampler = null, Sampler? sliderSampler = null, Sampler? arrowSampler = null, Rectangle? fieldSourceRect = null, Rectangle? menuSourceRect = null, Rectangle? sliderBarSourceRect = null, Rectangle? sliderSourceRect = null, Rectangle? arrowSourceRect = null, ResizeMode fieldResizeMode = ResizeMode.None, ResizeMode menuResizeMode = ResizeMode.None, ResizeMode sliderBarResizeMode = ResizeMode.None, BorderInsets? fieldBorderInsets = null, BorderInsets? menuBorderInsets = null, BorderInsets? sliderBarBorderInsets = null, Color? fieldColor = null, Color? menuColor = null, Color? sliderBarColor = null, Color? sliderColor = null, Color? arrowColor = null, Color? fieldHoverColor = null, Color? menuHoverColor = null, Color? sliderBarHoverColor = null, Color? sliderHoverColor = null, Color? arrowHoverColor = null, Color? highlightColor = null, Color? disabledFieldColor = null, Color? disabledMenuColor = null, Color? disabledSliderBarColor = null, Color? disabledSliderColor = null, Color? disabledArrowColor = null, SpriteFlip fieldFlip = SpriteFlip.None, SpriteFlip menuFlip = SpriteFlip.None, SpriteFlip sliderBarFlip = SpriteFlip.None, SpriteFlip sliderFlip = SpriteFlip.None, SpriteFlip arrowFlip = SpriteFlip.None, int scrollBarWidth = 16)
+    parameters:
+    - id: fieldTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture used to render the dropdown field in its collapsed state.
+    - id: menuTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture used to render the dropdown menu background.
+    - id: sliderBarTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: Optional texture for the dropdown menu's scrollbar track.
+    - id: sliderTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: Optional texture for the dropdown menu's scrollbar handle.
+    - id: arrowTexture
+      type: Bliss.CSharp.Textures.Texture2D
+      description: The texture used to render the dropdown arrow indicator.
+    - id: fieldSampler
+      type: Veldrid.Sampler
+      description: Optional sampler used for sampling the field texture.
+    - id: menuSampler
+      type: Veldrid.Sampler
+      description: Optional sampler used for sampling the menu texture.
+    - id: sliderBarSampler
+      type: Veldrid.Sampler
+      description: Optional sampler used for sampling the slider bar texture.
+    - id: sliderSampler
+      type: Veldrid.Sampler
+      description: Optional sampler used for sampling the slider texture.
+    - id: arrowSampler
+      type: Veldrid.Sampler
+      description: Optional sampler used for sampling the arrow texture.
+    - id: fieldSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the field texture. Defaults to the full texture.
+    - id: menuSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the menu texture. Defaults to the full texture.
+    - id: sliderBarSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the slider bar texture. Defaults to the full texture.
+    - id: sliderSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the slider texture. Defaults to the full texture.
+    - id: arrowSourceRect
+      type: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+      description: Optional source rectangle for the arrow texture. Defaults to the full texture.
+    - id: fieldResizeMode
+      type: Sparkle.CSharp.GUI.ResizeMode
+      description: Resize mode applied to the field texture.
+    - id: menuResizeMode
+      type: Sparkle.CSharp.GUI.ResizeMode
+      description: Resize mode applied to the menu texture.
+    - id: sliderBarResizeMode
+      type: Sparkle.CSharp.GUI.ResizeMode
+      description: Resize mode applied to the slider bar texture.
+    - id: fieldBorderInsets
+      type: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+      description: Border insets used for nine-slice resizing of the field texture.
+    - id: menuBorderInsets
+      type: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+      description: Border insets used for nine-slice resizing of the menu texture.
+    - id: sliderBarBorderInsets
+      type: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+      description: Border insets used for nine-slice resizing of the slider bar texture.
+    - id: fieldColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Base color applied to the dropdown field.
+    - id: menuColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Base color applied to the dropdown menu.
+    - id: sliderBarColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Base color applied to the scrollbar bar.
+    - id: sliderColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Base color applied to the scrollbar handle.
+    - id: arrowColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Base color applied to the dropdown arrow.
+    - id: fieldHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the field when hovered.
+    - id: menuHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the menu when hovered.
+    - id: sliderBarHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the scrollbar bar when hovered.
+    - id: sliderHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the scrollbar handle when hovered.
+    - id: arrowHoverColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the arrow when hovered.
+    - id: highlightColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color used to highlight hovered or selected menu entries.
+    - id: disabledFieldColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the field when the dropdown is disabled.
+    - id: disabledMenuColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the menu when the dropdown is disabled.
+    - id: disabledSliderBarColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the scrollbar bar when the dropdown is disabled.
+    - id: disabledSliderColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the scrollbar handle when the dropdown is disabled.
+    - id: disabledArrowColor
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Color applied to the arrow when the dropdown is disabled.
+    - id: fieldFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Flip mode applied to the field texture.
+    - id: menuFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Flip mode applied to the menu texture.
+    - id: sliderBarFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Flip mode applied to the slider bar texture.
+    - id: sliderFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Flip mode applied to the slider texture.
+    - id: arrowFlip
+      type: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+      description: Flip mode applied to the arrow texture.
+    - id: scrollBarWidth
+      type: System.Int32
+      description: The width of the scrollbar in the dropdown menu.
+    content.vb: Public Sub New(fieldTexture As Texture2D, menuTexture As Texture2D, sliderBarTexture As Texture2D, sliderTexture As Texture2D, arrowTexture As Texture2D, fieldSampler As Sampler = Nothing, menuSampler As Sampler = Nothing, sliderBarSampler As Sampler = Nothing, sliderSampler As Sampler = Nothing, arrowSampler As Sampler = Nothing, fieldSourceRect As Rectangle? = Nothing, menuSourceRect As Rectangle? = Nothing, sliderBarSourceRect As Rectangle? = Nothing, sliderSourceRect As Rectangle? = Nothing, arrowSourceRect As Rectangle? = Nothing, fieldResizeMode As ResizeMode = ResizeMode.None, menuResizeMode As ResizeMode = ResizeMode.None, sliderBarResizeMode As ResizeMode = ResizeMode.None, fieldBorderInsets As BorderInsets? = Nothing, menuBorderInsets As BorderInsets? = Nothing, sliderBarBorderInsets As BorderInsets? = Nothing, fieldColor As Color? = Nothing, menuColor As Color? = Nothing, sliderBarColor As Color? = Nothing, sliderColor As Color? = Nothing, arrowColor As Color? = Nothing, fieldHoverColor As Color? = Nothing, menuHoverColor As Color? = Nothing, sliderBarHoverColor As Color? = Nothing, sliderHoverColor As Color? = Nothing, arrowHoverColor As Color? = Nothing, highlightColor As Color? = Nothing, disabledFieldColor As Color? = Nothing, disabledMenuColor As Color? = Nothing, disabledSliderBarColor As Color? = Nothing, disabledSliderColor As Color? = Nothing, disabledArrowColor As Color? = Nothing, fieldFlip As SpriteFlip = SpriteFlip.None, menuFlip As SpriteFlip = SpriteFlip.None, sliderBarFlip As SpriteFlip = SpriteFlip.None, sliderFlip As SpriteFlip = SpriteFlip.None, arrowFlip As SpriteFlip = SpriteFlip.None, scrollBarWidth As Integer = 16)
+  overload: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor*
+  nameWithType.vb: TextureDropDownData.New(Texture2D, Texture2D, Texture2D, Texture2D, Texture2D, Sampler, Sampler, Sampler, Sampler, Sampler, Rectangle?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, ResizeMode, ResizeMode, ResizeMode, BorderInsets?, BorderInsets?, BorderInsets?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, Integer)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.New(Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Bliss.CSharp.Textures.Texture2D, Veldrid.Sampler, Veldrid.Sampler, Veldrid.Sampler, Veldrid.Sampler, Veldrid.Sampler, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Bliss.CSharp.Transformations.Rectangle?, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.ResizeMode, Sparkle.CSharp.GUI.BorderInsets?, Sparkle.CSharp.GUI.BorderInsets?, Sparkle.CSharp.GUI.BorderInsets?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Colors.Color?, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip, Integer)
+  name.vb: New(Texture2D, Texture2D, Texture2D, Texture2D, Texture2D, Sampler, Sampler, Sampler, Sampler, Sampler, Rectangle?, Rectangle?, Rectangle?, Rectangle?, Rectangle?, ResizeMode, ResizeMode, ResizeMode, BorderInsets?, BorderInsets?, BorderInsets?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, Color?, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, SpriteFlip, Integer)
+references:
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp.Textures.Texture2D
+  commentId: T:Bliss.CSharp.Textures.Texture2D
+  parent: Bliss.CSharp.Textures
+  isExternal: true
+  name: Texture2D
+  nameWithType: Texture2D
+  fullName: Bliss.CSharp.Textures.Texture2D
+- uid: Bliss.CSharp.Textures
+  commentId: N:Bliss.CSharp.Textures
+  isExternal: true
+  name: Bliss.CSharp.Textures
+  nameWithType: Bliss.CSharp.Textures
+  fullName: Bliss.CSharp.Textures
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Textures
+    name: Textures
+    isExternal: true
+- uid: Veldrid.Sampler
+  commentId: T:Veldrid.Sampler
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Sampler.cs
+  name: Sampler
+  nameWithType: Sampler
+  fullName: Veldrid.Sampler
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Bliss.CSharp.Transformations.Rectangle
+  commentId: T:Bliss.CSharp.Transformations.Rectangle
+  parent: Bliss.CSharp.Transformations
+  isExternal: true
+  name: Rectangle
+  nameWithType: Rectangle
+  fullName: Bliss.CSharp.Transformations.Rectangle
+- uid: Bliss.CSharp.Transformations
+  commentId: N:Bliss.CSharp.Transformations
+  isExternal: true
+  name: Bliss.CSharp.Transformations
+  nameWithType: Bliss.CSharp.Transformations
+  fullName: Bliss.CSharp.Transformations
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Transformations
+    name: Transformations
+    isExternal: true
+- uid: Sparkle.CSharp.GUI.ResizeMode
+  commentId: T:Sparkle.CSharp.GUI.ResizeMode
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.ResizeMode.html
+  name: ResizeMode
+  nameWithType: ResizeMode
+  fullName: Sparkle.CSharp.GUI.ResizeMode
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.BorderInsets
+  commentId: T:Sparkle.CSharp.GUI.BorderInsets
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.BorderInsets.html
+  name: BorderInsets
+  nameWithType: BorderInsets
+  fullName: Sparkle.CSharp.GUI.BorderInsets
+- uid: Bliss.CSharp.Colors.Color
+  commentId: T:Bliss.CSharp.Colors.Color
+  parent: Bliss.CSharp.Colors
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Bliss.CSharp.Colors.Color
+- uid: Bliss.CSharp.Colors
+  commentId: N:Bliss.CSharp.Colors
+  isExternal: true
+  name: Bliss.CSharp.Colors
+  nameWithType: Bliss.CSharp.Colors
+  fullName: Bliss.CSharp.Colors
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  commentId: T:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+  parent: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: SpriteFlip
+  nameWithType: SpriteFlip
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites.SpriteFlip
+- uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  commentId: N:Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  isExternal: true
+  name: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  nameWithType: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  fullName: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics
+    name: Graphics
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering
+    name: Rendering
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers
+    name: Renderers
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches
+    name: Batches
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites
+    name: Sprites
+    isExternal: true
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.html
+  name: TextureDropDownData
+  nameWithType: TextureDropDownData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData
+- uid: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.#ctor
+  href: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.html#Sparkle_CSharp_GUI_Elements_Data_TextureDropDownData__ctor_Bliss_CSharp_Textures_Texture2D_Bliss_CSharp_Textures_Texture2D_Bliss_CSharp_Textures_Texture2D_Bliss_CSharp_Textures_Texture2D_Bliss_CSharp_Textures_Texture2D_Veldrid_Sampler_Veldrid_Sampler_Veldrid_Sampler_Veldrid_Sampler_Veldrid_Sampler_System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Transformations_Rectangle__System_Nullable_Bliss_CSharp_Transformations_Rectangle__Sparkle_CSharp_GUI_ResizeMode_Sparkle_CSharp_GUI_ResizeMode_Sparkle_CSharp_GUI_ResizeMode_System_Nullable_Sparkle_CSharp_GUI_BorderInsets__System_Nullable_Sparkle_CSharp_GUI_BorderInsets__System_Nullable_Sparkle_CSharp_GUI_BorderInsets__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__System_Nullable_Bliss_CSharp_Colors_Color__Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_Bliss_CSharp_Graphics_Rendering_Renderers_Batches_Sprites_SpriteFlip_System_Int32_
+  name: TextureDropDownData
+  nameWithType: TextureDropDownData.TextureDropDownData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.TextureDropDownData
+  nameWithType.vb: TextureDropDownData.New
+  fullName.vb: Sparkle.CSharp.GUI.Elements.Data.TextureDropDownData.New
+  name.vb: New
+- uid: System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  commentId: T:System.Nullable{Bliss.CSharp.Transformations.Rectangle}
+  parent: System
+  definition: System.Nullable`1
+  name: Rectangle?
+  nameWithType: Rectangle?
+  fullName: Bliss.CSharp.Transformations.Rectangle?
+  spec.csharp:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+  commentId: T:System.Nullable{Sparkle.CSharp.GUI.BorderInsets}
+  parent: System
+  definition: System.Nullable`1
+  href: Sparkle.CSharp.GUI.BorderInsets.html
+  name: BorderInsets?
+  nameWithType: BorderInsets?
+  fullName: Sparkle.CSharp.GUI.BorderInsets?
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.BorderInsets
+    name: BorderInsets
+    href: Sparkle.CSharp.GUI.BorderInsets.html
+  - name: '?'
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.BorderInsets
+    name: BorderInsets
+    href: Sparkle.CSharp.GUI.BorderInsets.html
+  - name: '?'
+- uid: System.Nullable{Bliss.CSharp.Colors.Color}
+  commentId: T:System.Nullable{Bliss.CSharp.Colors.Color}
+  parent: System
+  definition: System.Nullable`1
+  name: Color?
+  nameWithType: Color?
+  fullName: Bliss.CSharp.Colors.Color?
+  spec.csharp:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content
+  commentId: N:Sparkle.CSharp.Content
+  id: Sparkle.CSharp.Content
+  children:
+  - Sparkle.CSharp.Content.ContentManager
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Content
+  nameWithType: Sparkle.CSharp.Content
+  fullName: Sparkle.CSharp.Content
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Content.ContentManager
+  commentId: T:Sparkle.CSharp.Content.ContentManager
+  parent: Sparkle.CSharp.Content
+  href: Sparkle.CSharp.Content.ContentManager.html
+  name: ContentManager
+  nameWithType: ContentManager
+  fullName: Sparkle.CSharp.Content.ContentManager
+- uid: Sparkle.CSharp.Content
+  commentId: N:Sparkle.CSharp.Content
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content
+  nameWithType: Sparkle.CSharp.Content
+  fullName: Sparkle.CSharp.Content
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html

@@ -1,0 +1,2079 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  id: Physics3DDebugDrawer
+  parent: Sparkle.CSharp.Graphics.Rendering
+  children:
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor(Veldrid.GraphicsDevice,Bliss.CSharp.Windowing.IWindow,System.UInt32)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(System.Boolean)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState(Veldrid.BlendStateDescription)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor(Bliss.CSharp.Colors.Color)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState(Veldrid.DepthStencilStateDescription)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput(Veldrid.OutputDescription)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState(Veldrid.RasterizerStateDescription)
+  - Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+  langs:
+  - csharp
+  - vb
+  name: Physics3DDebugDrawer
+  nameWithType: Physics3DDebugDrawer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Physics3DDebugDrawer
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 16
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  syntax:
+    content: 'public class Physics3DDebugDrawer : Disposable, IDisposable, IDebugDrawer'
+    content.vb: Public Class Physics3DDebugDrawer Inherits Disposable Implements IDisposable, IDebugDrawer
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  implements:
+  - System.IDisposable
+  - Jitter2.IDebugDrawer
+  inheritedMembers:
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+  commentId: P:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+  id: GraphicsDevice
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GraphicsDevice
+  nameWithType: Physics3DDebugDrawer.GraphicsDevice
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GraphicsDevice
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 21
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the graphics device used by the debug drawer.
+  example: []
+  syntax:
+    content: public GraphicsDevice GraphicsDevice { get; }
+    parameters: []
+    return:
+      type: Veldrid.GraphicsDevice
+    content.vb: Public Property GraphicsDevice As GraphicsDevice
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice*
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+  commentId: P:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+  id: Window
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Window
+  nameWithType: Physics3DDebugDrawer.Window
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Window
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 26
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the window associated with the debug drawer.
+  example: []
+  syntax:
+    content: public IWindow Window { get; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Windowing.IWindow
+    content.vb: Public Property Window As IWindow
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window*
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+  commentId: P:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+  id: Capacity
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Capacity
+  nameWithType: Physics3DDebugDrawer.Capacity
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Capacity
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 31
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the maximum number of vertices the drawer can store.
+  example: []
+  syntax:
+    content: public uint Capacity { get; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public Property Capacity As UInteger
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity*
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+  commentId: P:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+  id: DrawCallCount
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawCallCount
+  nameWithType: Physics3DDebugDrawer.DrawCallCount
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DrawCallCount
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 36
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the number of draw calls performed during the current frame.
+  example: []
+  syntax:
+    content: public int DrawCallCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DrawCallCount As Integer
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount*
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor(Veldrid.GraphicsDevice,Bliss.CSharp.Windowing.IWindow,System.UInt32)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor(Veldrid.GraphicsDevice,Bliss.CSharp.Windowing.IWindow,System.UInt32)
+  id: '#ctor(Veldrid.GraphicsDevice,Bliss.CSharp.Windowing.IWindow,System.UInt32)'
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Physics3DDebugDrawer(GraphicsDevice, IWindow, uint)
+  nameWithType: Physics3DDebugDrawer.Physics3DDebugDrawer(GraphicsDevice, IWindow, uint)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Physics3DDebugDrawer(Veldrid.GraphicsDevice, Bliss.CSharp.Windowing.IWindow, uint)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 164
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer" data-throw-if-not-resolved="false"></xref> class with the specified graphics device, window, and optional capacity.
+  example: []
+  syntax:
+    content: public Physics3DDebugDrawer(GraphicsDevice graphicsDevice, IWindow window, uint capacity = 30720)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device used for rendering.
+    - id: window
+      type: Bliss.CSharp.Windowing.IWindow
+      description: The window associated with the rendering context.
+    - id: capacity
+      type: System.UInt32
+      description: The maximum number of vertices that can be rendered in a single batch. Default is 30720.
+    content.vb: Public Sub New(graphicsDevice As GraphicsDevice, window As IWindow, capacity As UInteger = 30720)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor*
+  nameWithType.vb: Physics3DDebugDrawer.New(GraphicsDevice, IWindow, UInteger)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.New(Veldrid.GraphicsDevice, Bliss.CSharp.Windowing.IWindow, UInteger)
+  name.vb: New(GraphicsDevice, IWindow, UInteger)
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  id: Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)
+  nameWithType: Physics3DDebugDrawer.Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList, Veldrid.OutputDescription, Veldrid.BlendStateDescription?, Veldrid.DepthStencilStateDescription?, Veldrid.RasterizerStateDescription?, Bliss.CSharp.Colors.Color?)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Begin
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 197
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Begins a new rendering session with the specified command list and output description.
+  example: []
+  syntax:
+    content: public void Begin(CommandList commandList, OutputDescription output, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null)
+    parameters:
+    - id: commandList
+      type: Veldrid.CommandList
+      description: The command list used for issuing rendering commands.
+    - id: output
+      type: Veldrid.OutputDescription
+      description: The output description for rendering.
+    - id: blendState
+      type: System.Nullable{Veldrid.BlendStateDescription}
+      description: Optional blend state description. If null, a default is used.
+    - id: depthStencilState
+      type: System.Nullable{Veldrid.DepthStencilStateDescription}
+      description: Optional depth-stencil state description. If null, a default is used.
+    - id: rasterizerState
+      type: System.Nullable{Veldrid.RasterizerStateDescription}
+      description: Optional rasterizer state description. If null, a default is used.
+    - id: color
+      type: System.Nullable{Bliss.CSharp.Colors.Color}
+      description: Optional color for rendering debug visuals. If null, white is used.
+    content.vb: Public Sub Begin(commandList As CommandList, output As OutputDescription, blendState As BlendStateDescription? = Nothing, depthStencilState As DepthStencilStateDescription? = Nothing, rasterizerState As RasterizerStateDescription? = Nothing, color As Color? = Nothing)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has already begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End
+  id: End
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: End()
+  nameWithType: Physics3DDebugDrawer.End()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: End
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 217
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Ends the current rendering session and flushes any remaining draw calls.
+  example: []
+  syntax:
+    content: public void End()
+    content.vb: Public Sub [End]()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput
+  id: GetCurrentOutput
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentOutput()
+  nameWithType: Physics3DDebugDrawer.GetCurrentOutput()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCurrentOutput
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 231
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the current output description being used for rendering.
+  example: []
+  syntax:
+    content: public OutputDescription GetCurrentOutput()
+    return:
+      type: Veldrid.OutputDescription
+      description: The current <xref href="Veldrid.OutputDescription" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Function GetCurrentOutput() As OutputDescription
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput(Veldrid.OutputDescription)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput(Veldrid.OutputDescription)
+  id: PushOutput(Veldrid.OutputDescription)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PushOutput(OutputDescription)
+  nameWithType: Physics3DDebugDrawer.PushOutput(OutputDescription)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput(Veldrid.OutputDescription)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PushOutput
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 244
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Pushes a new output description to override the current rendering target.
+  example: []
+  syntax:
+    content: public void PushOutput(OutputDescription output)
+    parameters:
+    - id: output
+      type: Veldrid.OutputDescription
+      description: The new <xref href="Veldrid.OutputDescription" data-throw-if-not-resolved="false"></xref> to apply.
+    content.vb: Public Sub PushOutput(output As OutputDescription)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput
+  id: PopOutput
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PopOutput()
+  nameWithType: Physics3DDebugDrawer.PopOutput()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PopOutput
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 256
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Restores the output description back to the one set at <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList%2cVeldrid.OutputDescription%2cSystem.Nullable%7bVeldrid.BlendStateDescription%7d%2cSystem.Nullable%7bVeldrid.DepthStencilStateDescription%7d%2cSystem.Nullable%7bVeldrid.RasterizerStateDescription%7d%2cSystem.Nullable%7bBliss.CSharp.Colors.Color%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PopOutput()
+    content.vb: Public Sub PopOutput()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState
+  id: GetCurrentBlendState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentBlendState()
+  nameWithType: Physics3DDebugDrawer.GetCurrentBlendState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCurrentBlendState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 269
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the current blend state description being used for rendering.
+  example: []
+  syntax:
+    content: public BlendStateDescription GetCurrentBlendState()
+    return:
+      type: Veldrid.BlendStateDescription
+      description: The current <xref href="Veldrid.BlendStateDescription" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Function GetCurrentBlendState() As BlendStateDescription
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState(Veldrid.BlendStateDescription)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState(Veldrid.BlendStateDescription)
+  id: PushBlendState(Veldrid.BlendStateDescription)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PushBlendState(BlendStateDescription)
+  nameWithType: Physics3DDebugDrawer.PushBlendState(BlendStateDescription)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState(Veldrid.BlendStateDescription)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PushBlendState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 282
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Pushes a new blend state to override the current state.
+  example: []
+  syntax:
+    content: public void PushBlendState(BlendStateDescription blendState)
+    parameters:
+    - id: blendState
+      type: Veldrid.BlendStateDescription
+      description: The new <xref href="Veldrid.BlendStateDescription" data-throw-if-not-resolved="false"></xref> to apply.
+    content.vb: Public Sub PushBlendState(blendState As BlendStateDescription)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState
+  id: PopBlendState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PopBlendState()
+  nameWithType: Physics3DDebugDrawer.PopBlendState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PopBlendState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 294
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Restores the blend state back to the one set at <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList%2cVeldrid.OutputDescription%2cSystem.Nullable%7bVeldrid.BlendStateDescription%7d%2cSystem.Nullable%7bVeldrid.DepthStencilStateDescription%7d%2cSystem.Nullable%7bVeldrid.RasterizerStateDescription%7d%2cSystem.Nullable%7bBliss.CSharp.Colors.Color%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PopBlendState()
+    content.vb: Public Sub PopBlendState()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState
+  id: GetCurrentDepthStencilState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentDepthStencilState()
+  nameWithType: Physics3DDebugDrawer.GetCurrentDepthStencilState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCurrentDepthStencilState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 307
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the current depth-stencil state being used in rendering.
+  example: []
+  syntax:
+    content: public DepthStencilStateDescription GetCurrentDepthStencilState()
+    return:
+      type: Veldrid.DepthStencilStateDescription
+      description: The current depth-stencil state.
+    content.vb: Public Function GetCurrentDepthStencilState() As DepthStencilStateDescription
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if the drawer has not begun rendering yet.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState(Veldrid.DepthStencilStateDescription)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState(Veldrid.DepthStencilStateDescription)
+  id: PushDepthStencilState(Veldrid.DepthStencilStateDescription)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PushDepthStencilState(DepthStencilStateDescription)
+  nameWithType: Physics3DDebugDrawer.PushDepthStencilState(DepthStencilStateDescription)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState(Veldrid.DepthStencilStateDescription)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PushDepthStencilState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 320
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Pushes a new depth-stencil state to override the current state.
+  example: []
+  syntax:
+    content: public void PushDepthStencilState(DepthStencilStateDescription depthStencilState)
+    parameters:
+    - id: depthStencilState
+      type: Veldrid.DepthStencilStateDescription
+      description: The new <xref href="Veldrid.DepthStencilStateDescription" data-throw-if-not-resolved="false"></xref> to apply.
+    content.vb: Public Sub PushDepthStencilState(depthStencilState As DepthStencilStateDescription)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState
+  id: PopDepthStencilState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PopDepthStencilState()
+  nameWithType: Physics3DDebugDrawer.PopDepthStencilState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PopDepthStencilState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 332
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Restores the depth-stencil state back to the one set at <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList%2cVeldrid.OutputDescription%2cSystem.Nullable%7bVeldrid.BlendStateDescription%7d%2cSystem.Nullable%7bVeldrid.DepthStencilStateDescription%7d%2cSystem.Nullable%7bVeldrid.RasterizerStateDescription%7d%2cSystem.Nullable%7bBliss.CSharp.Colors.Color%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PopDepthStencilState()
+    content.vb: Public Sub PopDepthStencilState()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState
+  id: GetCurrentRasterizerState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentRasterizerState()
+  nameWithType: Physics3DDebugDrawer.GetCurrentRasterizerState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCurrentRasterizerState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 345
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the current rasterizer state being used in rendering.
+  example: []
+  syntax:
+    content: public RasterizerStateDescription GetCurrentRasterizerState()
+    return:
+      type: Veldrid.RasterizerStateDescription
+      description: The current rasterizer state.
+    content.vb: Public Function GetCurrentRasterizerState() As RasterizerStateDescription
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if the drawer has not begun rendering yet.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState(Veldrid.RasterizerStateDescription)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState(Veldrid.RasterizerStateDescription)
+  id: PushRasterizerState(Veldrid.RasterizerStateDescription)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PushRasterizerState(RasterizerStateDescription)
+  nameWithType: Physics3DDebugDrawer.PushRasterizerState(RasterizerStateDescription)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState(Veldrid.RasterizerStateDescription)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PushRasterizerState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 358
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Pushes a new rasterizer state to override the current state.
+  example: []
+  syntax:
+    content: public void PushRasterizerState(RasterizerStateDescription rasterizerState)
+    parameters:
+    - id: rasterizerState
+      type: Veldrid.RasterizerStateDescription
+      description: The new <xref href="Veldrid.RasterizerStateDescription" data-throw-if-not-resolved="false"></xref> to apply.
+    content.vb: Public Sub PushRasterizerState(rasterizerState As RasterizerStateDescription)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState
+  id: PopRasterizerState
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PopRasterizerState()
+  nameWithType: Physics3DDebugDrawer.PopRasterizerState()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PopRasterizerState
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 370
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Restores the rasterizer state back to the one set at <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList%2cVeldrid.OutputDescription%2cSystem.Nullable%7bVeldrid.BlendStateDescription%7d%2cSystem.Nullable%7bVeldrid.DepthStencilStateDescription%7d%2cSystem.Nullable%7bVeldrid.RasterizerStateDescription%7d%2cSystem.Nullable%7bBliss.CSharp.Colors.Color%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PopRasterizerState()
+    content.vb: Public Sub PopRasterizerState()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor
+  id: GetCurrentColor
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: GetCurrentColor()
+  nameWithType: Physics3DDebugDrawer.GetCurrentColor()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GetCurrentColor
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 383
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Gets the current color used for rendering debug shapes.
+  example: []
+  syntax:
+    content: public Color GetCurrentColor()
+    return:
+      type: Bliss.CSharp.Colors.Color
+      description: The current color used for rendering.
+    content.vb: Public Function GetCurrentColor() As Color
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if the drawer has not begun rendering yet.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor(Bliss.CSharp.Colors.Color)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor(Bliss.CSharp.Colors.Color)
+  id: PushColor(Bliss.CSharp.Colors.Color)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PushColor(Color)
+  nameWithType: Physics3DDebugDrawer.PushColor(Color)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor(Bliss.CSharp.Colors.Color)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PushColor
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 396
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Pushes a new color to override the current debug shape color.
+  example: []
+  syntax:
+    content: public void PushColor(Color color)
+    parameters:
+    - id: color
+      type: Bliss.CSharp.Colors.Color
+      description: The new <xref href="Bliss.CSharp.Colors.Color" data-throw-if-not-resolved="false"></xref> to apply.
+    content.vb: Public Sub PushColor(color As Color)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor
+  id: PopColor
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: PopColor()
+  nameWithType: Physics3DDebugDrawer.PopColor()
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PopColor
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 408
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Restores the debug shape color back to the one set at <xref href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList%2cVeldrid.OutputDescription%2cSystem.Nullable%7bVeldrid.BlendStateDescription%7d%2cSystem.Nullable%7bVeldrid.DepthStencilStateDescription%7d%2cSystem.Nullable%7bVeldrid.RasterizerStateDescription%7d%2cSystem.Nullable%7bBliss.CSharp.Colors.Color%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PopColor()
+    content.vb: Public Sub PopColor()
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if a rendering session has not begun.
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  id: DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawSegment(in JVector, in JVector)
+  nameWithType: Physics3DDebugDrawer.DrawSegment(in JVector, in JVector)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DrawSegment
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 421
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Draws a line segment using the specified start and end points in 3D space.
+  example: []
+  syntax:
+    content: public void DrawSegment(in JVector pA, in JVector pB)
+    parameters:
+    - id: pA
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the starting point of the segment.
+    - id: pB
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the ending point of the segment.
+    content.vb: Public Sub DrawSegment(pA As JVector, pB As JVector)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment*
+  implements:
+  - Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  nameWithType.vb: Physics3DDebugDrawer.DrawSegment(JVector, JVector)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: DrawSegment(JVector, JVector)
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  id: DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawTriangle(in JVector, in JVector, in JVector)
+  nameWithType: Physics3DDebugDrawer.DrawTriangle(in JVector, in JVector, in JVector)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DrawTriangle
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 444
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Draws a triangle using the specified vertices in 3D space.
+  example: []
+  syntax:
+    content: public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC)
+    parameters:
+    - id: pA
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the first vertex of the triangle.
+    - id: pB
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the second vertex of the triangle.
+    - id: pC
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the third vertex of the triangle.
+    content.vb: Public Sub DrawTriangle(pA As JVector, pB As JVector, pC As JVector)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle*
+  implements:
+  - Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  nameWithType.vb: Physics3DDebugDrawer.DrawTriangle(JVector, JVector, JVector)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: DrawTriangle(JVector, JVector, JVector)
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  id: DrawPoint(Jitter2.LinearMath.JVector@)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: DrawPoint(in JVector)
+  nameWithType: Physics3DDebugDrawer.DrawPoint(in JVector)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(in Jitter2.LinearMath.JVector)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: DrawPoint
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 483
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Draws a point at the specified position.
+  example: []
+  syntax:
+    content: public void DrawPoint(in JVector p)
+    parameters:
+    - id: p
+      type: Jitter2.LinearMath.JVector
+      description: The <xref href="Jitter2.LinearMath.JVector" data-throw-if-not-resolved="false"></xref> representing the position of the point in 3D space.
+    content.vb: Public Sub DrawPoint(p As JVector)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint*
+  implements:
+  - Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  nameWithType.vb: Physics3DDebugDrawer.DrawPoint(JVector)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector)
+  name.vb: DrawPoint(JVector)
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: Physics3DDebugDrawer.Dispose(bool)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Dispose
+    path: ../src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs
+    startLine: 605
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Graphics.Rendering
+  summary: Disposes of the object and releases associated resources.
+  example: []
+  syntax:
+    content: protected override void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: True if called from user code; false if called from a finalizer.
+    content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
+  overridden: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  overload: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose*
+  nameWithType.vb: Physics3DDebugDrawer.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+references:
+- uid: Sparkle.CSharp.Graphics.Rendering
+  commentId: N:Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics.Rendering
+  nameWithType: Sparkle.CSharp.Graphics.Rendering
+  fullName: Sparkle.CSharp.Graphics.Rendering
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics.Rendering
+    name: Rendering
+    href: Sparkle.CSharp.Graphics.Rendering.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Jitter2.IDebugDrawer
+  commentId: T:Jitter2.IDebugDrawer
+  parent: Jitter2
+  isExternal: true
+  name: IDebugDrawer
+  nameWithType: IDebugDrawer
+  fullName: Jitter2.IDebugDrawer
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Jitter2
+  commentId: N:Jitter2
+  isExternal: true
+  name: Jitter2
+  nameWithType: Jitter2
+  fullName: Jitter2
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GraphicsDevice
+  name: GraphicsDevice
+  nameWithType: Physics3DDebugDrawer.GraphicsDevice
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Window
+  name: Window
+  nameWithType: Physics3DDebugDrawer.Window
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window
+- uid: Bliss.CSharp.Windowing.IWindow
+  commentId: T:Bliss.CSharp.Windowing.IWindow
+  parent: Bliss.CSharp.Windowing
+  isExternal: true
+  name: IWindow
+  nameWithType: IWindow
+  fullName: Bliss.CSharp.Windowing.IWindow
+- uid: Bliss.CSharp.Windowing
+  commentId: N:Bliss.CSharp.Windowing
+  isExternal: true
+  name: Bliss.CSharp.Windowing
+  nameWithType: Bliss.CSharp.Windowing
+  fullName: Bliss.CSharp.Windowing
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Capacity
+  name: Capacity
+  nameWithType: Physics3DDebugDrawer.Capacity
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity
+- uid: System.UInt32
+  commentId: T:System.UInt32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint32
+  name: uint
+  nameWithType: uint
+  fullName: uint
+  nameWithType.vb: UInteger
+  fullName.vb: UInteger
+  name.vb: UInteger
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawCallCount
+  name: DrawCallCount
+  nameWithType: Physics3DDebugDrawer.DrawCallCount
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  commentId: T:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+  parent: Sparkle.CSharp.Graphics.Rendering
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html
+  name: Physics3DDebugDrawer
+  nameWithType: Physics3DDebugDrawer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer__ctor_Veldrid_GraphicsDevice_Bliss_CSharp_Windowing_IWindow_System_UInt32_
+  name: Physics3DDebugDrawer
+  nameWithType: Physics3DDebugDrawer.Physics3DDebugDrawer
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Physics3DDebugDrawer
+  nameWithType.vb: Physics3DDebugDrawer.New
+  fullName.vb: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.New
+  name.vb: New
+- uid: System.Exception
+  commentId: T:System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__
+  name: Begin
+  nameWithType: Physics3DDebugDrawer.Begin
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin
+- uid: Veldrid.CommandList
+  commentId: T:Veldrid.CommandList
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  name: CommandList
+  nameWithType: CommandList
+  fullName: Veldrid.CommandList
+- uid: Veldrid.OutputDescription
+  commentId: T:Veldrid.OutputDescription
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs
+  name: OutputDescription
+  nameWithType: OutputDescription
+  fullName: Veldrid.OutputDescription
+- uid: System.Nullable{Veldrid.BlendStateDescription}
+  commentId: T:System.Nullable{Veldrid.BlendStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  name: BlendStateDescription?
+  nameWithType: BlendStateDescription?
+  fullName: Veldrid.BlendStateDescription?
+  spec.csharp:
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Veldrid.DepthStencilStateDescription}
+  commentId: T:System.Nullable{Veldrid.DepthStencilStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  name: DepthStencilStateDescription?
+  nameWithType: DepthStencilStateDescription?
+  fullName: Veldrid.DepthStencilStateDescription?
+  spec.csharp:
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Veldrid.RasterizerStateDescription}
+  commentId: T:System.Nullable{Veldrid.RasterizerStateDescription}
+  parent: System
+  definition: System.Nullable`1
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  name: RasterizerStateDescription?
+  nameWithType: RasterizerStateDescription?
+  fullName: Veldrid.RasterizerStateDescription?
+  spec.csharp:
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+  spec.vb:
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+- uid: System.Nullable{Bliss.CSharp.Colors.Color}
+  commentId: T:System.Nullable{Bliss.CSharp.Colors.Color}
+  parent: System
+  definition: System.Nullable`1
+  name: Color?
+  nameWithType: Color?
+  fullName: Bliss.CSharp.Colors.Color?
+  spec.csharp:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_End
+  name: End
+  nameWithType: Physics3DDebugDrawer.End
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentOutput
+  name: GetCurrentOutput
+  nameWithType: Physics3DDebugDrawer.GetCurrentOutput
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushOutput_Veldrid_OutputDescription_
+  name: PushOutput
+  nameWithType: Physics3DDebugDrawer.PushOutput
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  commentId: M:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+  isExternal: true
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__
+  name: Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)
+  nameWithType: Physics3DDebugDrawer.Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList, Veldrid.OutputDescription, Veldrid.BlendStateDescription?, Veldrid.DepthStencilStateDescription?, Veldrid.RasterizerStateDescription?, Bliss.CSharp.Colors.Color?)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+    name: Begin
+    href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__
+  - name: (
+  - uid: Veldrid.CommandList
+    name: CommandList
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  - name: ','
+  - name: " "
+  - uid: Veldrid.OutputDescription
+    name: OutputDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs
+  - name: ','
+  - name: " "
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})
+    name: Begin
+    href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__
+  - name: (
+  - uid: Veldrid.CommandList
+    name: CommandList
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs
+  - name: ','
+  - name: " "
+  - uid: Veldrid.OutputDescription
+    name: OutputDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs
+  - name: ','
+  - name: " "
+  - uid: Veldrid.BlendStateDescription
+    name: BlendStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Veldrid.DepthStencilStateDescription
+    name: DepthStencilStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Veldrid.RasterizerStateDescription
+    name: RasterizerStateDescription
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: Bliss.CSharp.Colors.Color
+    name: Color
+    isExternal: true
+  - name: '?'
+  - name: )
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopOutput
+  name: PopOutput
+  nameWithType: Physics3DDebugDrawer.PopOutput
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput
+- uid: Veldrid.BlendStateDescription
+  commentId: T:Veldrid.BlendStateDescription
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs
+  name: BlendStateDescription
+  nameWithType: BlendStateDescription
+  fullName: Veldrid.BlendStateDescription
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentBlendState
+  name: GetCurrentBlendState
+  nameWithType: Physics3DDebugDrawer.GetCurrentBlendState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushBlendState_Veldrid_BlendStateDescription_
+  name: PushBlendState
+  nameWithType: Physics3DDebugDrawer.PushBlendState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopBlendState
+  name: PopBlendState
+  nameWithType: Physics3DDebugDrawer.PopBlendState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentDepthStencilState
+  name: GetCurrentDepthStencilState
+  nameWithType: Physics3DDebugDrawer.GetCurrentDepthStencilState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState
+- uid: Veldrid.DepthStencilStateDescription
+  commentId: T:Veldrid.DepthStencilStateDescription
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs
+  name: DepthStencilStateDescription
+  nameWithType: DepthStencilStateDescription
+  fullName: Veldrid.DepthStencilStateDescription
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushDepthStencilState_Veldrid_DepthStencilStateDescription_
+  name: PushDepthStencilState
+  nameWithType: Physics3DDebugDrawer.PushDepthStencilState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopDepthStencilState
+  name: PopDepthStencilState
+  nameWithType: Physics3DDebugDrawer.PopDepthStencilState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentRasterizerState
+  name: GetCurrentRasterizerState
+  nameWithType: Physics3DDebugDrawer.GetCurrentRasterizerState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState
+- uid: Veldrid.RasterizerStateDescription
+  commentId: T:Veldrid.RasterizerStateDescription
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs
+  name: RasterizerStateDescription
+  nameWithType: RasterizerStateDescription
+  fullName: Veldrid.RasterizerStateDescription
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushRasterizerState_Veldrid_RasterizerStateDescription_
+  name: PushRasterizerState
+  nameWithType: Physics3DDebugDrawer.PushRasterizerState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopRasterizerState
+  name: PopRasterizerState
+  nameWithType: Physics3DDebugDrawer.PopRasterizerState
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentColor
+  name: GetCurrentColor
+  nameWithType: Physics3DDebugDrawer.GetCurrentColor
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor
+- uid: Bliss.CSharp.Colors.Color
+  commentId: T:Bliss.CSharp.Colors.Color
+  parent: Bliss.CSharp.Colors
+  isExternal: true
+  name: Color
+  nameWithType: Color
+  fullName: Bliss.CSharp.Colors.Color
+- uid: Bliss.CSharp.Colors
+  commentId: N:Bliss.CSharp.Colors
+  isExternal: true
+  name: Bliss.CSharp.Colors
+  nameWithType: Bliss.CSharp.Colors
+  fullName: Bliss.CSharp.Colors
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Colors
+    name: Colors
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushColor_Bliss_CSharp_Colors_Color_
+  name: PushColor
+  nameWithType: Physics3DDebugDrawer.PushColor
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopColor
+  name: PopColor
+  nameWithType: Physics3DDebugDrawer.PopColor
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor
+- uid: Jitter2.LinearMath.JVector
+  commentId: T:Jitter2.LinearMath.JVector
+  parent: Jitter2.LinearMath
+  isExternal: true
+  name: JVector
+  nameWithType: JVector
+  fullName: Jitter2.LinearMath.JVector
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawSegment_Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__
+  name: DrawSegment
+  nameWithType: Physics3DDebugDrawer.DrawSegment
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment
+- uid: Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Jitter2.IDebugDrawer
+  isExternal: true
+  name: DrawSegment(in JVector, in JVector)
+  nameWithType: IDebugDrawer.DrawSegment(in JVector, in JVector)
+  fullName: Jitter2.IDebugDrawer.DrawSegment(in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector)
+  nameWithType.vb: IDebugDrawer.DrawSegment(JVector, JVector)
+  fullName.vb: Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: DrawSegment(JVector, JVector)
+  spec.csharp:
+  - uid: Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: DrawSegment
+    isExternal: true
+  - name: (
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.IDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: DrawSegment
+    isExternal: true
+  - name: (
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+- uid: Jitter2.LinearMath
+  commentId: N:Jitter2.LinearMath
+  isExternal: true
+  name: Jitter2.LinearMath
+  nameWithType: Jitter2.LinearMath
+  fullName: Jitter2.LinearMath
+  spec.csharp:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.LinearMath
+    name: LinearMath
+    isExternal: true
+  spec.vb:
+  - uid: Jitter2
+    name: Jitter2
+    isExternal: true
+  - name: .
+  - uid: Jitter2.LinearMath
+    name: LinearMath
+    isExternal: true
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawTriangle_Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__
+  name: DrawTriangle
+  nameWithType: Physics3DDebugDrawer.DrawTriangle
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle
+- uid: Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  commentId: M:Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+  parent: Jitter2.IDebugDrawer
+  isExternal: true
+  name: DrawTriangle(in JVector, in JVector, in JVector)
+  nameWithType: IDebugDrawer.DrawTriangle(in JVector, in JVector, in JVector)
+  fullName: Jitter2.IDebugDrawer.DrawTriangle(in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector, in Jitter2.LinearMath.JVector)
+  nameWithType.vb: IDebugDrawer.DrawTriangle(JVector, JVector, JVector)
+  fullName.vb: Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector, Jitter2.LinearMath.JVector)
+  name.vb: DrawTriangle(JVector, JVector, JVector)
+  spec.csharp:
+  - uid: Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: DrawTriangle
+    isExternal: true
+  - name: (
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.IDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)
+    name: DrawTriangle
+    isExternal: true
+  - name: (
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawPoint_Jitter2_LinearMath_JVector__
+  name: DrawPoint
+  nameWithType: Physics3DDebugDrawer.DrawPoint
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint
+- uid: Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  commentId: M:Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+  parent: Jitter2.IDebugDrawer
+  isExternal: true
+  name: DrawPoint(in JVector)
+  nameWithType: IDebugDrawer.DrawPoint(in JVector)
+  fullName: Jitter2.IDebugDrawer.DrawPoint(in Jitter2.LinearMath.JVector)
+  nameWithType.vb: IDebugDrawer.DrawPoint(JVector)
+  fullName.vb: Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector)
+  name.vb: DrawPoint(JVector)
+  spec.csharp:
+  - uid: Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+    name: DrawPoint
+    isExternal: true
+  - name: (
+  - name: in
+  - name: " "
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Jitter2.IDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)
+    name: DrawPoint
+    isExternal: true
+  - name: (
+  - uid: Jitter2.LinearMath.JVector
+    name: JVector
+    isExternal: true
+  - name: )
+- uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  commentId: M:Bliss.CSharp.Disposable.Dispose(System.Boolean)
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: Dispose(bool)
+  nameWithType: Disposable.Dispose(bool)
+  fullName: Bliss.CSharp.Disposable.Dispose(bool)
+  nameWithType.vb: Disposable.Dispose(Boolean)
+  fullName.vb: Bliss.CSharp.Disposable.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose(System.Boolean)
+    name: Dispose
+    isExternal: true
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose*
+  commentId: Overload:Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose
+  href: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: Physics3DDebugDrawer.Dispose
+  fullName: Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

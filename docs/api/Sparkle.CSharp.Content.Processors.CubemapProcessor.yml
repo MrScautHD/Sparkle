@@ -1,0 +1,668 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.CubemapProcessor
+  id: CubemapProcessor
+  parent: Sparkle.CSharp.Content.Processors
+  children:
+  - Sparkle.CSharp.Content.Processors.CubemapProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  - Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: CubemapProcessor
+  nameWithType: CubemapProcessor
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CubemapProcessor
+    path: ../src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+    startLine: 6
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  syntax:
+    content: 'public class CubemapProcessor : IContentProcessor'
+    content.vb: Public Class CubemapProcessor Implements IContentProcessor
+  inheritance:
+  - System.Object
+  implements:
+  - Sparkle.CSharp.Content.Processors.IContentProcessor
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  commentId: M:Sparkle.CSharp.Content.Processors.CubemapProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  id: Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  parent: Sparkle.CSharp.Content.Processors.CubemapProcessor
+  langs:
+  - csharp
+  - vb
+  name: Load<T>(GraphicsDevice, IContentType<T>)
+  nameWithType: CubemapProcessor.Load<T>(GraphicsDevice, IContentType<T>)
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load<T>(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType<T>)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Load
+    path: ../src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+    startLine: 15
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  summary: Loads a cubemap resource into memory using the provided graphics device and content type.
+  example: []
+  syntax:
+    content: public object Load<T>(GraphicsDevice graphicsDevice, IContentType<T> type)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device used for creating GPU resources.
+    - id: type
+      type: Sparkle.CSharp.Content.Types.IContentType{{T}}
+      description: The content type containing metadata about the resource to be loaded.
+    typeParameters:
+    - id: T
+      description: The type of content that will be loaded.
+    return:
+      type: System.Object
+      description: An object representing the loaded cubemap resource.
+    content.vb: Public Function Load(Of T)(graphicsDevice As GraphicsDevice, type As IContentType(Of T)) As Object
+  overload: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load*
+  implements:
+  - Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{{T}})
+  nameWithType.vb: CubemapProcessor.Load(Of T)(GraphicsDevice, IContentType(Of T))
+  fullName.vb: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load(Of T)(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType(Of T))
+  name.vb: Load(Of T)(GraphicsDevice, IContentType(Of T))
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload(System.Object)
+  commentId: M:Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload(System.Object)
+  id: Unload(System.Object)
+  parent: Sparkle.CSharp.Content.Processors.CubemapProcessor
+  langs:
+  - csharp
+  - vb
+  name: Unload(object)
+  nameWithType: CubemapProcessor.Unload(object)
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload(object)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Unload
+    path: ../src/Sparkle/CSharp/Content/Processors/CubemapProcessor.cs
+    startLine: 24
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  summary: Unloads a previously loaded cubemap resource and releases its associated GPU resources.
+  example: []
+  syntax:
+    content: public void Unload(object item)
+    parameters:
+    - id: item
+      type: System.Object
+      description: The cubemap resource to be unloaded.
+    content.vb: Public Sub Unload(item As Object)
+  overload: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload*
+  implements:
+  - Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  nameWithType.vb: CubemapProcessor.Unload(Object)
+  fullName.vb: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload(Object)
+  name.vb: Unload(Object)
+references:
+- uid: Sparkle.CSharp.Content.Processors
+  commentId: N:Sparkle.CSharp.Content.Processors
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Processors
+  nameWithType: Sparkle.CSharp.Content.Processors
+  fullName: Sparkle.CSharp.Content.Processors
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.IContentProcessor
+  parent: Sparkle.CSharp.Content.Processors
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html
+  name: IContentProcessor
+  nameWithType: IContentProcessor
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load*
+  commentId: Overload:Sparkle.CSharp.Content.Processors.CubemapProcessor.Load
+  href: Sparkle.CSharp.Content.Processors.CubemapProcessor.html#Sparkle_CSharp_Content_Processors_CubemapProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  name: Load
+  nameWithType: CubemapProcessor.Load
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor.Load
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{{T}})
+  commentId: M:Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  parent: Sparkle.CSharp.Content.Processors.IContentProcessor
+  definition: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  name: Load<T>(GraphicsDevice, IContentType<T>)
+  nameWithType: IContentProcessor.Load<T>(GraphicsDevice, IContentType<T>)
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Load<T>(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType<T>)
+  nameWithType.vb: IContentProcessor.Load(Of T)(GraphicsDevice, IContentType(Of T))
+  fullName.vb: Sparkle.CSharp.Content.Processors.IContentProcessor.Load(Of T)(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType(Of T))
+  name.vb: Load(Of T)(GraphicsDevice, IContentType(Of T))
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+    name: Load
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: ','
+  - name: " "
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+    name: Load
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: ','
+  - name: " "
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Sparkle.CSharp.Content.Types.IContentType{{T}}
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType{``0}
+  parent: Sparkle.CSharp.Content.Types
+  definition: Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  commentId: M:Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  isExternal: true
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  name: Load<T>(GraphicsDevice, IContentType<T>)
+  nameWithType: IContentProcessor.Load<T>(GraphicsDevice, IContentType<T>)
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Load<T>(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType<T>)
+  nameWithType.vb: IContentProcessor.Load(Of T)(GraphicsDevice, IContentType(Of T))
+  fullName.vb: Sparkle.CSharp.Content.Processors.IContentProcessor.Load(Of T)(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType(Of T))
+  name.vb: Load(Of T)(GraphicsDevice, IContentType(Of T))
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+    name: Load
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: ','
+  - name: " "
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+    name: Load
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Veldrid.GraphicsDevice
+    name: GraphicsDevice
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  - name: ','
+  - name: " "
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+- uid: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload*
+  commentId: Overload:Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload
+  href: Sparkle.CSharp.Content.Processors.CubemapProcessor.html#Sparkle_CSharp_Content_Processors_CubemapProcessor_Unload_System_Object_
+  name: Unload
+  nameWithType: CubemapProcessor.Unload
+  fullName: Sparkle.CSharp.Content.Processors.CubemapProcessor.Unload
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  commentId: M:Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  parent: Sparkle.CSharp.Content.Processors.IContentProcessor
+  isExternal: true
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Unload_System_Object_
+  name: Unload(object)
+  nameWithType: IContentProcessor.Unload(object)
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(object)
+  nameWithType.vb: IContentProcessor.Unload(Object)
+  fullName.vb: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(Object)
+  name.vb: Unload(Object)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+    name: Unload
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Unload_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+    name: Unload
+    href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Unload_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )

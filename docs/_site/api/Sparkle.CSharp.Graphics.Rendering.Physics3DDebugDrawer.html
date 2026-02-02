@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Physics3DDebugDrawer | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Physics3DDebugDrawer | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer">
+
+
+
+  <h1 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer" class="text-break">
+Class Physics3DDebugDrawer  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.Graphics.html">Graphics</a>.<a class="xref" href="Sparkle.CSharp.Graphics.Rendering.html">Rendering</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Physics3DDebugDrawer : Disposable, IDisposable, IDebugDrawer</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Disposable</span></div>
+      <div><span class="xref">Physics3DDebugDrawer</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><span class="xref">IDebugDrawer</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <span class="xref">Disposable.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.ThrowIfDisposed()</span>
+    </div>
+    <div>
+      <span class="xref">Disposable.HasDisposed</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer__ctor_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer__ctor_Veldrid_GraphicsDevice_Bliss_CSharp_Windowing_IWindow_System_UInt32_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.#ctor(Veldrid.GraphicsDevice,Bliss.CSharp.Windowing.IWindow,System.UInt32)">
+  Physics3DDebugDrawer(GraphicsDevice, IWindow, uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html">Physics3DDebugDrawer</a> class with the specified graphics device, window, and optional capacity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Physics3DDebugDrawer(GraphicsDevice graphicsDevice, IWindow window, uint capacity = 30720)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>graphicsDevice</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs">GraphicsDevice</a></dt>
+    <dd><p>The graphics device used for rendering.</p>
+</dd>
+    <dt><code>window</code> <span class="xref">IWindow</span></dt>
+    <dd><p>The window associated with the rendering context.</p>
+</dd>
+    <dt><code>capacity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>The maximum number of vertices that can be rendered in a single batch. Default is 30720.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Capacity_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Capacity" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Capacity">
+  Capacity
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the maximum number of vertices the drawer can store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint Capacity { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawCallCount_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawCallCount" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawCallCount">
+  DrawCallCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of draw calls performed during the current frame.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int DrawCallCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GraphicsDevice_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GraphicsDevice" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GraphicsDevice">
+  GraphicsDevice
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the graphics device used by the debug drawer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GraphicsDevice GraphicsDevice { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs">GraphicsDevice</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Window_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Window" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Window">
+  Window
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the window associated with the debug drawer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWindow Window { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">IWindow</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Begin(Veldrid.CommandList,Veldrid.OutputDescription,System.Nullable{Veldrid.BlendStateDescription},System.Nullable{Veldrid.DepthStencilStateDescription},System.Nullable{Veldrid.RasterizerStateDescription},System.Nullable{Bliss.CSharp.Colors.Color})">
+  Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begins a new rendering session with the specified command list and output description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Begin(CommandList commandList, OutputDescription output, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>commandList</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/CommandList.cs">CommandList</a></dt>
+    <dd><p>The command list used for issuing rendering commands.</p>
+</dd>
+    <dt><code>output</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs">OutputDescription</a></dt>
+    <dd><p>The output description for rendering.</p>
+</dd>
+    <dt><code>blendState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs">BlendStateDescription</a>?</dt>
+    <dd><p>Optional blend state description. If null, a default is used.</p>
+</dd>
+    <dt><code>depthStencilState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs">DepthStencilStateDescription</a>?</dt>
+    <dd><p>Optional depth-stencil state description. If null, a default is used.</p>
+</dd>
+    <dt><code>rasterizerState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs">RasterizerStateDescription</a>?</dt>
+    <dd><p>Optional rasterizer state description. If null, a default is used.</p>
+</dd>
+    <dt><code>color</code> <span class="xref">Color</span>?</dt>
+    <dd><p>Optional color for rendering debug visuals. If null, white is used.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has already begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Dispose_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Dispose_System_Boolean_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L606"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Disposes of the object and releases associated resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if called from user code; false if called from a finalizer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawPoint_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawPoint_Jitter2_LinearMath_JVector__" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawPoint(Jitter2.LinearMath.JVector@)">
+  DrawPoint(in JVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L484"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Draws a point at the specified position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DrawPoint(in JVector p)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>p</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the position of the point in 3D space.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawSegment_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawSegment_Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawSegment(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)">
+  DrawSegment(in JVector, in JVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Draws a line segment using the specified start and end points in 3D space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DrawSegment(in JVector pA, in JVector pB)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pA</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the starting point of the segment.</p>
+</dd>
+    <dt><code>pB</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the ending point of the segment.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawTriangle_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_DrawTriangle_Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__Jitter2_LinearMath_JVector__" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.DrawTriangle(Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@,Jitter2.LinearMath.JVector@)">
+  DrawTriangle(in JVector, in JVector, in JVector)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L445"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Draws a triangle using the specified vertices in 3D space.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>pA</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the first vertex of the triangle.</p>
+</dd>
+    <dt><code>pB</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the second vertex of the triangle.</p>
+</dd>
+    <dt><code>pC</code> <span class="xref">JVector</span></dt>
+    <dd><p>The <span class="xref">Jitter2.LinearMath.JVector</span> representing the third vertex of the triangle.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_End_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_End" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.End">
+  End()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Ends the current rendering session and flushes any remaining draw calls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void End()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentBlendState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentBlendState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentBlendState">
+  GetCurrentBlendState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L270"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current blend state description being used for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlendStateDescription GetCurrentBlendState()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs">BlendStateDescription</a></dt>
+    <dd><p>The current <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs">BlendStateDescription</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentColor_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentColor" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentColor">
+  GetCurrentColor()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L384"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current color used for rendering debug shapes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Color GetCurrentColor()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Color</span></dt>
+    <dd><p>The current color used for rendering.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the drawer has not begun rendering yet.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentDepthStencilState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentDepthStencilState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentDepthStencilState">
+  GetCurrentDepthStencilState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L308"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current depth-stencil state being used in rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DepthStencilStateDescription GetCurrentDepthStencilState()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs">DepthStencilStateDescription</a></dt>
+    <dd><p>The current depth-stencil state.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the drawer has not begun rendering yet.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentOutput_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentOutput" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentOutput">
+  GetCurrentOutput()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current output description being used for rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OutputDescription GetCurrentOutput()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs">OutputDescription</a></dt>
+    <dd><p>The current <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs">OutputDescription</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentRasterizerState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_GetCurrentRasterizerState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.GetCurrentRasterizerState">
+  GetCurrentRasterizerState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L346"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the current rasterizer state being used in rendering.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RasterizerStateDescription GetCurrentRasterizerState()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs">RasterizerStateDescription</a></dt>
+    <dd><p>The current rasterizer state.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if the drawer has not begun rendering yet.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopBlendState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopBlendState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopBlendState">
+  PopBlendState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the blend state back to the one set at <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__">Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PopBlendState()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopColor_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopColor" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopColor">
+  PopColor()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the debug shape color back to the one set at <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__">Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PopColor()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopDepthStencilState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopDepthStencilState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopDepthStencilState">
+  PopDepthStencilState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the depth-stencil state back to the one set at <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__">Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PopDepthStencilState()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopOutput_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopOutput" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopOutput">
+  PopOutput()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the output description back to the one set at <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__">Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PopOutput()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopRasterizerState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PopRasterizerState" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PopRasterizerState">
+  PopRasterizerState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores the rasterizer state back to the one set at <a class="xref" href="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.html#Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_Begin_Veldrid_CommandList_Veldrid_OutputDescription_System_Nullable_Veldrid_BlendStateDescription__System_Nullable_Veldrid_DepthStencilStateDescription__System_Nullable_Veldrid_RasterizerStateDescription__System_Nullable_Bliss_CSharp_Colors_Color__">Begin(CommandList, OutputDescription, BlendStateDescription?, DepthStencilStateDescription?, RasterizerStateDescription?, Color?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PopRasterizerState()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushBlendState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushBlendState_Veldrid_BlendStateDescription_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushBlendState(Veldrid.BlendStateDescription)">
+  PushBlendState(BlendStateDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pushes a new blend state to override the current state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushBlendState(BlendStateDescription blendState)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>blendState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs">BlendStateDescription</a></dt>
+    <dd><p>The new <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/BlendStateDescription.cs">BlendStateDescription</a> to apply.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushColor_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushColor_Bliss_CSharp_Colors_Color_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushColor(Bliss.CSharp.Colors.Color)">
+  PushColor(Color)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L397"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pushes a new color to override the current debug shape color.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushColor(Color color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <span class="xref">Color</span></dt>
+    <dd><p>The new <span class="xref">Bliss.CSharp.Colors.Color</span> to apply.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushDepthStencilState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushDepthStencilState_Veldrid_DepthStencilStateDescription_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushDepthStencilState(Veldrid.DepthStencilStateDescription)">
+  PushDepthStencilState(DepthStencilStateDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L321"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pushes a new depth-stencil state to override the current state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushDepthStencilState(DepthStencilStateDescription depthStencilState)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>depthStencilState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs">DepthStencilStateDescription</a></dt>
+    <dd><p>The new <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/DepthStencilStateDescription.cs">DepthStencilStateDescription</a> to apply.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushOutput_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushOutput_Veldrid_OutputDescription_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushOutput(Veldrid.OutputDescription)">
+  PushOutput(OutputDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pushes a new output description to override the current rendering target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushOutput(OutputDescription output)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>output</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs">OutputDescription</a></dt>
+    <dd><p>The new <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/OutputDescription.cs">OutputDescription</a> to apply.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushRasterizerState_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState*"></a>
+
+  <h3 id="Sparkle_CSharp_Graphics_Rendering_Physics3DDebugDrawer_PushRasterizerState_Veldrid_RasterizerStateDescription_" data-uid="Sparkle.CSharp.Graphics.Rendering.Physics3DDebugDrawer.PushRasterizerState(Veldrid.RasterizerStateDescription)">
+  PushRasterizerState(RasterizerStateDescription)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L359"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pushes a new rasterizer state to override the current state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PushRasterizerState(RasterizerStateDescription rasterizerState)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rasterizerState</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs">RasterizerStateDescription</a></dt>
+    <dd><p>The new <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/RasterizerStateDescription.cs">RasterizerStateDescription</a> to apply.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd><p>Thrown if a rendering session has not begun.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/Graphics/Rendering/Physics3DDebugDrawer.cs/#L17" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

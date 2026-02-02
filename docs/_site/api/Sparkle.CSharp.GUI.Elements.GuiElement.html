@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GuiElement | Sparkle </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GuiElement | Sparkle ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/MrScautHD/Sparkle/new/main/apiSpec/new?filename=Sparkle_CSharp_GUI_Elements_GuiElement.md&amp;value=---%0Auid%3A%20Sparkle.CSharp.GUI.Elements.GuiElement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Sparkle">
+            Sparkle
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Sparkle.CSharp.GUI.Elements.GuiElement">
+
+
+
+  <h1 id="Sparkle_CSharp_GUI_Elements_GuiElement" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement" class="text-break">
+Class GuiElement  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Sparkle.html">Sparkle</a>.<a class="xref" href="Sparkle.CSharp.html">CSharp</a>.<a class="xref" href="Sparkle.CSharp.GUI.html">GUI</a>.<a class="xref" href="Sparkle.CSharp.GUI.Elements.html">Elements</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sparkle.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class GuiElement</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">GuiElement</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.LabelElement.html">LabelElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.RectangleButtonElement.html">RectangleButtonElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html">RectangleSlideBarElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.RectangleTextBoxElement.html">RectangleTextBoxElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.TextureButtonElement.html">TextureButtonElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.TextureDropDownElement.html">TextureDropDownElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.TextureSlideBarElement.html">TextureSlideBarElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.TextureTextBoxElement.html">TextureTextBoxElement</a></div>
+      <div><a class="xref" href="Sparkle.CSharp.GUI.Elements.ToggleElement.html">ToggleElement</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement__ctor_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.#ctor*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement__ctor_Sparkle_CSharp_GUI_Anchor_System_Numerics_Vector2_System_Numerics_Vector2_System_Nullable_System_Numerics_Vector2__System_Nullable_System_Numerics_Vector2__System_Single_System_Func_Sparkle_CSharp_GUI_Elements_GuiElement_System_Boolean__" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.#ctor(Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})">
+  GuiElement(Anchor, Vector2, Vector2, Vector2?, Vector2?, float, Func&lt;GuiElement, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Sparkle.CSharp.GUI.Elements.GuiElement.html">GuiElement</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func&lt;GuiElement, bool&gt;? clickFunc = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>anchor</code> <a class="xref" href="Sparkle.CSharp.GUI.Anchor.html">Anchor</a></dt>
+    <dd><p>The anchor point for positioning the element.</p>
+</dd>
+    <dt><code>offset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The offset from the anchor position.</p>
+</dd>
+    <dt><code>size</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The unscaled size of the element.</p>
+</dd>
+    <dt><code>scale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a>?</dt>
+    <dd><p>Optional scaling factor for the element. Defaults to (1, 1).</p>
+</dd>
+    <dt><code>origin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a>?</dt>
+    <dd><p>Optional origin point for rotation/scaling. Defaults to (0, 0).</p>
+</dd>
+    <dt><code>rotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>Optional rotation in radians. Defaults to 0.</p>
+</dd>
+    <dt><code>clickFunc</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Sparkle.CSharp.GUI.Elements.GuiElement.html">GuiElement</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>Optional function that determines what happens on click. Should return true if handled.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_AnchorPoint" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint">
+  AnchorPoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The anchor point used for positioning this element relative to the screen.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Anchor AnchorPoint</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.GUI.Anchor.html">Anchor</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Enabled" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Enabled">
+  Enabled
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether this element is active and should be updated and drawn.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Enabled</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Interactable" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Interactable">
+  Interactable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the GUI element can respond to user interactions, such as clicks or hover events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Interactable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Offset" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Offset">
+  Offset
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The offset from the anchor point used to position this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 Offset</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Origin" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Origin">
+  Origin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The origin point (pivot) used for rotation and scaling.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 Origin</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Rotation" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Rotation">
+  Rotation
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The rotation applied to the element in radians.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Rotation</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Scale" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Scale">
+  Scale
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The scaling factor applied to the element, modifying its size along the X and Y axes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 Scale</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Size" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Size">
+  Size
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The base size of the element before scaling.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 Size</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Gui_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Gui*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Gui" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Gui">
+  Gui
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The GUI instance to which this element belongs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Gui Gui { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Sparkle.CSharp.GUI.Gui.html">Gui</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_IsClicked_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_IsClicked" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked">
+  IsClicked
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the element has been clicked during this update cycle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsClicked { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_IsHovered_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_IsHovered" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered">
+  IsHovered
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the mouse is currently hovering over this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsHovered { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_IsSelected_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_IsSelected" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected">
+  IsSelected
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether this element is currently selected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSelected { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Name_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Name*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Name" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The unique name of this element within its GUI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Position_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Position*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Position" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Position">
+  Position
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The on-screen position of the element after anchor and offset are applied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 Position { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_ScaledSize_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_ScaledSize" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize">
+  ScaledSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The size of the element after scaling is applied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 ScaledSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_System_Double_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)">
+  AfterUpdate(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invoked after the update process to perform additional operations specific to the element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AfterUpdate(double delta)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The time elapsed since the last update, typically used for time-dependent operations.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos">
+  CalculatePos()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the position of the GUI element based on its anchor point, scaled size, offset, and origin.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Vector2 CalculatePos()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a> representing the calculated position of the element on the screen.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize">
+  CalculateSize()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calculates the scaled size of the GUI element based on the base size and the current scale factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Vector2 CalculateSize()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a></dt>
+    <dd><p>The scaled size of the GUI element as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.vector2">Vector2</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Draw_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Draw*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)">
+  Draw(GraphicsContext, Framebuffer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Renders the graphical representation of the GUI element to the specified framebuffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void Draw(GraphicsContext context, Framebuffer framebuffer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>context</code> <a class="xref" href="Sparkle.CSharp.Graphics.GraphicsContext.html">GraphicsContext</a></dt>
+    <dd><p>The graphics context used for rendering the element.</p>
+</dd>
+    <dt><code>framebuffer</code> <a class="xref" href="https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs">Framebuffer</a></dt>
+    <dd><p>The framebuffer where the element will be drawn.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_System_Double_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)">
+  FixedUpdate(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Executes logic that requires a constant fixed time step for this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void FixedUpdate(double fixedStep)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fixedStep</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The fixed time step duration, typically used for physics or other time-dependent updates.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Resize_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Resize*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Resize_Bliss_CSharp_Transformations_Rectangle_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)">
+  Resize(Rectangle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional method for responding to window or viewport resize events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Resize(Rectangle rectangle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rectangle</code> <span class="xref">Rectangle</span></dt>
+    <dd><p>The new size and bounds of the rendering area.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Sparkle_CSharp_GUI_Elements_GuiElement_Update_" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Update*"></a>
+
+  <h3 id="Sparkle_CSharp_GUI_Elements_GuiElement_Update_System_Double_System_Boolean__" data-uid="Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)">
+  Update(double, ref bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates the state of the GuiElement during each frame with the given time delta.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Update(double delta, ref bool interactionHandled)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The time elapsed between the current and the previous frame, in seconds.</p>
+</dd>
+    <dt><code>interactionHandled</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A reference to a boolean tracking whether interaction has already been handled by another element.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/MrScautHD/Sparkle/blob/main/src/Sparkle/CSharp/GUI/Elements/GuiElement.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

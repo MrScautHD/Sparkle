@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.IO.Configs.Json
+  commentId: N:Sparkle.CSharp.IO.Configs.Json
+  id: Sparkle.CSharp.IO.Configs.Json
+  children:
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  - Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.IO.Configs.Json
+  nameWithType: Sparkle.CSharp.IO.Configs.Json
+  fullName: Sparkle.CSharp.IO.Configs.Json
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  commentId: T:Sparkle.CSharp.IO.Configs.Json.JsonConfig
+  parent: Sparkle.CSharp.IO.Configs.Json
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfig.html
+  name: JsonConfig
+  nameWithType: JsonConfig
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfig
+- uid: Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder
+  commentId: T:Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder
+  parent: Sparkle.CSharp.IO.Configs.Json
+  href: Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder.html
+  name: JsonConfigBuilder
+  nameWithType: JsonConfigBuilder
+  fullName: Sparkle.CSharp.IO.Configs.Json.JsonConfigBuilder
+- uid: Sparkle.CSharp.IO.Configs.Json
+  commentId: N:Sparkle.CSharp.IO.Configs.Json
+  href: Sparkle.html
+  name: Sparkle.CSharp.IO.Configs.Json
+  nameWithType: Sparkle.CSharp.IO.Configs.Json
+  fullName: Sparkle.CSharp.IO.Configs.Json
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.IO
+    name: IO
+    href: Sparkle.CSharp.IO.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs
+    name: Configs
+    href: Sparkle.CSharp.IO.Configs.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs.Json
+    name: Json
+    href: Sparkle.CSharp.IO.Configs.Json.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.IO
+    name: IO
+    href: Sparkle.CSharp.IO.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs
+    name: Configs
+    href: Sparkle.CSharp.IO.Configs.html
+  - name: .
+  - uid: Sparkle.CSharp.IO.Configs.Json
+    name: Json
+    href: Sparkle.CSharp.IO.Configs.Json.html

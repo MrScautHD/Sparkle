@@ -1,0 +1,119 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Entities.Components
+  commentId: N:Sparkle.CSharp.Entities.Components
+  id: Sparkle.CSharp.Entities.Components
+  children:
+  - Sparkle.CSharp.Entities.Components.Component
+  - Sparkle.CSharp.Entities.Components.InstancedRenderProxy
+  - Sparkle.CSharp.Entities.Components.InterpolatedComponent
+  - Sparkle.CSharp.Entities.Components.MeshRenderer
+  - Sparkle.CSharp.Entities.Components.ModelRenderer
+  - Sparkle.CSharp.Entities.Components.RigidBody2D
+  - Sparkle.CSharp.Entities.Components.RigidBody3D
+  - Sparkle.CSharp.Entities.Components.SoftBody3D
+  - Sparkle.CSharp.Entities.Components.Sprite
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Entities.Components
+  nameWithType: Sparkle.CSharp.Entities.Components
+  fullName: Sparkle.CSharp.Entities.Components
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Entities.Components.Component
+  commentId: T:Sparkle.CSharp.Entities.Components.Component
+  parent: Sparkle.CSharp.Entities.Components
+  href: Sparkle.CSharp.Entities.Components.Component.html
+  name: Component
+  nameWithType: Component
+  fullName: Sparkle.CSharp.Entities.Components.Component
+- uid: Sparkle.CSharp.Entities.Components.InstancedRenderProxy
+  commentId: T:Sparkle.CSharp.Entities.Components.InstancedRenderProxy
+  href: Sparkle.CSharp.Entities.Components.InstancedRenderProxy.html
+  name: InstancedRenderProxy
+  nameWithType: InstancedRenderProxy
+  fullName: Sparkle.CSharp.Entities.Components.InstancedRenderProxy
+- uid: Sparkle.CSharp.Entities.Components.InterpolatedComponent
+  commentId: T:Sparkle.CSharp.Entities.Components.InterpolatedComponent
+  parent: Sparkle.CSharp.Entities.Components
+  href: Sparkle.CSharp.Entities.Components.InterpolatedComponent.html
+  name: InterpolatedComponent
+  nameWithType: InterpolatedComponent
+  fullName: Sparkle.CSharp.Entities.Components.InterpolatedComponent
+- uid: Sparkle.CSharp.Entities.Components.MeshRenderer
+  commentId: T:Sparkle.CSharp.Entities.Components.MeshRenderer
+  href: Sparkle.CSharp.Entities.Components.MeshRenderer.html
+  name: MeshRenderer
+  nameWithType: MeshRenderer
+  fullName: Sparkle.CSharp.Entities.Components.MeshRenderer
+- uid: Sparkle.CSharp.Entities.Components.ModelRenderer
+  commentId: T:Sparkle.CSharp.Entities.Components.ModelRenderer
+  href: Sparkle.CSharp.Entities.Components.ModelRenderer.html
+  name: ModelRenderer
+  nameWithType: ModelRenderer
+  fullName: Sparkle.CSharp.Entities.Components.ModelRenderer
+- uid: Sparkle.CSharp.Entities.Components.RigidBody2D
+  commentId: T:Sparkle.CSharp.Entities.Components.RigidBody2D
+  href: Sparkle.CSharp.Entities.Components.RigidBody2D.html
+  name: RigidBody2D
+  nameWithType: RigidBody2D
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody2D
+- uid: Sparkle.CSharp.Entities.Components.RigidBody3D
+  commentId: T:Sparkle.CSharp.Entities.Components.RigidBody3D
+  href: Sparkle.CSharp.Entities.Components.RigidBody3D.html
+  name: RigidBody3D
+  nameWithType: RigidBody3D
+  fullName: Sparkle.CSharp.Entities.Components.RigidBody3D
+- uid: Sparkle.CSharp.Entities.Components.SoftBody3D
+  commentId: T:Sparkle.CSharp.Entities.Components.SoftBody3D
+  href: Sparkle.CSharp.Entities.Components.SoftBody3D.html
+  name: SoftBody3D
+  nameWithType: SoftBody3D
+  fullName: Sparkle.CSharp.Entities.Components.SoftBody3D
+- uid: Sparkle.CSharp.Entities.Components.Sprite
+  commentId: T:Sparkle.CSharp.Entities.Components.Sprite
+  href: Sparkle.CSharp.Entities.Components.Sprite.html
+  name: Sprite
+  nameWithType: Sprite
+  fullName: Sparkle.CSharp.Entities.Components.Sprite
+- uid: Sparkle.CSharp.Entities.Components
+  commentId: N:Sparkle.CSharp.Entities.Components
+  href: Sparkle.html
+  name: Sparkle.CSharp.Entities.Components
+  nameWithType: Sparkle.CSharp.Entities.Components
+  fullName: Sparkle.CSharp.Entities.Components
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities.Components
+    name: Components
+    href: Sparkle.CSharp.Entities.Components.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities
+    name: Entities
+    href: Sparkle.CSharp.Entities.html
+  - name: .
+  - uid: Sparkle.CSharp.Entities.Components
+    name: Components
+    href: Sparkle.CSharp.Entities.Components.html

@@ -1,0 +1,282 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor
+  commentId: T:Sparkle.CSharp.Content.Processors.IContentProcessor
+  id: IContentProcessor
+  parent: Sparkle.CSharp.Content.Processors
+  children:
+  - Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  - Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IContentProcessor
+  nameWithType: IContentProcessor
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor
+  type: Interface
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IContentProcessor
+    path: ../src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+    startLine: 5
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  syntax:
+    content: public interface IContentProcessor
+    content.vb: Public Interface IContentProcessor
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  commentId: M:Sparkle.CSharp.Content.Processors.IContentProcessor.Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  id: Load``1(Veldrid.GraphicsDevice,Sparkle.CSharp.Content.Types.IContentType{``0})
+  parent: Sparkle.CSharp.Content.Processors.IContentProcessor
+  langs:
+  - csharp
+  - vb
+  name: Load<T>(GraphicsDevice, IContentType<T>)
+  nameWithType: IContentProcessor.Load<T>(GraphicsDevice, IContentType<T>)
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Load<T>(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType<T>)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Load
+    path: ../src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+    startLine: 14
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  summary: Loads the specified content of type <code class="typeparamref">T</code> using the appropriate content processor.
+  example: []
+  syntax:
+    content: object Load<T>(GraphicsDevice graphicsDevice, IContentType<T> type)
+    parameters:
+    - id: graphicsDevice
+      type: Veldrid.GraphicsDevice
+      description: The graphics device used for loading content.
+    - id: type
+      type: Sparkle.CSharp.Content.Types.IContentType{{T}}
+      description: The content type descriptor that includes information about the path and content.
+    typeParameters:
+    - id: T
+      description: The type of the content to load.
+    return:
+      type: System.Object
+      description: The loaded content item of type <code class="typeparamref">T</code>.
+    content.vb: Function Load(Of T)(graphicsDevice As GraphicsDevice, type As IContentType(Of T)) As Object
+  overload: Sparkle.CSharp.Content.Processors.IContentProcessor.Load*
+  nameWithType.vb: IContentProcessor.Load(Of T)(GraphicsDevice, IContentType(Of T))
+  fullName.vb: Sparkle.CSharp.Content.Processors.IContentProcessor.Load(Of T)(Veldrid.GraphicsDevice, Sparkle.CSharp.Content.Types.IContentType(Of T))
+  name.vb: Load(Of T)(GraphicsDevice, IContentType(Of T))
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  commentId: M:Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(System.Object)
+  id: Unload(System.Object)
+  parent: Sparkle.CSharp.Content.Processors.IContentProcessor
+  langs:
+  - csharp
+  - vb
+  name: Unload(object)
+  nameWithType: IContentProcessor.Unload(object)
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(object)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Unload
+    path: ../src/Sparkle/CSharp/Content/Processors/IContentProcessor.cs
+    startLine: 20
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Processors
+  summary: Unloads the specified content item and releases any resources associated with it.
+  example: []
+  syntax:
+    content: void Unload(object item)
+    parameters:
+    - id: item
+      type: System.Object
+      description: The content item to unload.
+    content.vb: Sub Unload(item As Object)
+  overload: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload*
+  nameWithType.vb: IContentProcessor.Unload(Object)
+  fullName.vb: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload(Object)
+  name.vb: Unload(Object)
+references:
+- uid: Sparkle.CSharp.Content.Processors
+  commentId: N:Sparkle.CSharp.Content.Processors
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Processors
+  nameWithType: Sparkle.CSharp.Content.Processors
+  fullName: Sparkle.CSharp.Content.Processors
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Processors
+    name: Processors
+    href: Sparkle.CSharp.Content.Processors.html
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Load*
+  commentId: Overload:Sparkle.CSharp.Content.Processors.IContentProcessor.Load
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Load__1_Veldrid_GraphicsDevice_Sparkle_CSharp_Content_Types_IContentType___0__
+  name: Load
+  nameWithType: IContentProcessor.Load
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Load
+- uid: Veldrid.GraphicsDevice
+  commentId: T:Veldrid.GraphicsDevice
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsDevice.cs
+  name: GraphicsDevice
+  nameWithType: GraphicsDevice
+  fullName: Veldrid.GraphicsDevice
+- uid: Sparkle.CSharp.Content.Types.IContentType{{T}}
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType{``0}
+  parent: Sparkle.CSharp.Content.Types
+  definition: Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload*
+  commentId: Overload:Sparkle.CSharp.Content.Processors.IContentProcessor.Unload
+  href: Sparkle.CSharp.Content.Processors.IContentProcessor.html#Sparkle_CSharp_Content_Processors_IContentProcessor_Unload_System_Object_
+  name: Unload
+  nameWithType: IContentProcessor.Unload
+  fullName: Sparkle.CSharp.Content.Processors.IContentProcessor.Unload

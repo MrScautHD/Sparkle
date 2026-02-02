@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim3
+  commentId: N:Sparkle.CSharp.Physics.Dim3
+  id: Sparkle.CSharp.Physics.Dim3
+  children:
+  - Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+  - Sparkle.CSharp.Physics.Dim3.Simulation3D
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim3
+  nameWithType: Sparkle.CSharp.Physics.Dim3
+  fullName: Sparkle.CSharp.Physics.Dim3
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+  commentId: T:Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+  parent: Sparkle.CSharp.Physics.Dim3
+  href: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D.html
+  name: PhysicsSettings3D
+  nameWithType: PhysicsSettings3D
+  fullName: Sparkle.CSharp.Physics.Dim3.PhysicsSettings3D
+- uid: Sparkle.CSharp.Physics.Dim3.Simulation3D
+  commentId: T:Sparkle.CSharp.Physics.Dim3.Simulation3D
+  parent: Sparkle.CSharp.Physics.Dim3
+  href: Sparkle.CSharp.Physics.Dim3.Simulation3D.html
+  name: Simulation3D
+  nameWithType: Simulation3D
+  fullName: Sparkle.CSharp.Physics.Dim3.Simulation3D
+- uid: Sparkle.CSharp.Physics.Dim3
+  commentId: N:Sparkle.CSharp.Physics.Dim3
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim3
+  nameWithType: Sparkle.CSharp.Physics.Dim3
+  fullName: Sparkle.CSharp.Physics.Dim3
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim3
+    name: Dim3
+    href: Sparkle.CSharp.Physics.Dim3.html

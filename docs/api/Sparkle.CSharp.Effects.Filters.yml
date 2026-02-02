@@ -1,0 +1,102 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Effects.Filters
+  commentId: N:Sparkle.CSharp.Effects.Filters
+  id: Sparkle.CSharp.Effects.Filters
+  children:
+  - Sparkle.CSharp.Effects.Filters.BloomEffect
+  - Sparkle.CSharp.Effects.Filters.BlurEffect
+  - Sparkle.CSharp.Effects.Filters.PixelizerEffect
+  - Sparkle.CSharp.Effects.Filters.PosterizationEffect
+  - Sparkle.CSharp.Effects.Filters.PredatorEffect
+  - Sparkle.CSharp.Effects.Filters.SobelEffect
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Effects.Filters
+  nameWithType: Sparkle.CSharp.Effects.Filters
+  fullName: Sparkle.CSharp.Effects.Filters
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Effects.Filters.BloomEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.BloomEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.BloomEffect.html
+  name: BloomEffect
+  nameWithType: BloomEffect
+  fullName: Sparkle.CSharp.Effects.Filters.BloomEffect
+- uid: Sparkle.CSharp.Effects.Filters.BlurEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.BlurEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.BlurEffect.html
+  name: BlurEffect
+  nameWithType: BlurEffect
+  fullName: Sparkle.CSharp.Effects.Filters.BlurEffect
+- uid: Sparkle.CSharp.Effects.Filters.PixelizerEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.PixelizerEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.PixelizerEffect.html
+  name: PixelizerEffect
+  nameWithType: PixelizerEffect
+  fullName: Sparkle.CSharp.Effects.Filters.PixelizerEffect
+- uid: Sparkle.CSharp.Effects.Filters.PosterizationEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.PosterizationEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.PosterizationEffect.html
+  name: PosterizationEffect
+  nameWithType: PosterizationEffect
+  fullName: Sparkle.CSharp.Effects.Filters.PosterizationEffect
+- uid: Sparkle.CSharp.Effects.Filters.PredatorEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.PredatorEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.PredatorEffect.html
+  name: PredatorEffect
+  nameWithType: PredatorEffect
+  fullName: Sparkle.CSharp.Effects.Filters.PredatorEffect
+- uid: Sparkle.CSharp.Effects.Filters.SobelEffect
+  commentId: T:Sparkle.CSharp.Effects.Filters.SobelEffect
+  parent: Sparkle.CSharp.Effects.Filters
+  href: Sparkle.CSharp.Effects.Filters.SobelEffect.html
+  name: SobelEffect
+  nameWithType: SobelEffect
+  fullName: Sparkle.CSharp.Effects.Filters.SobelEffect
+- uid: Sparkle.CSharp.Effects.Filters
+  commentId: N:Sparkle.CSharp.Effects.Filters
+  href: Sparkle.html
+  name: Sparkle.CSharp.Effects.Filters
+  nameWithType: Sparkle.CSharp.Effects.Filters
+  fullName: Sparkle.CSharp.Effects.Filters
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects
+    name: Effects
+    href: Sparkle.CSharp.Effects.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects.Filters
+    name: Filters
+    href: Sparkle.CSharp.Effects.Filters.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects
+    name: Effects
+    href: Sparkle.CSharp.Effects.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects.Filters
+    name: Filters
+    href: Sparkle.CSharp.Effects.Filters.html

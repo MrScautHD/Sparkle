@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics
+  commentId: N:Sparkle.CSharp.Physics
+  id: Sparkle.CSharp.Physics
+  children:
+  - Sparkle.CSharp.Physics.Simulation
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics
+  nameWithType: Sparkle.CSharp.Physics
+  fullName: Sparkle.CSharp.Physics
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Simulation
+  commentId: T:Sparkle.CSharp.Physics.Simulation
+  parent: Sparkle.CSharp.Physics
+  href: Sparkle.CSharp.Physics.Simulation.html
+  name: Simulation
+  nameWithType: Simulation
+  fullName: Sparkle.CSharp.Physics.Simulation
+- uid: Sparkle.CSharp.Physics
+  commentId: N:Sparkle.CSharp.Physics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics
+  nameWithType: Sparkle.CSharp.Physics
+  fullName: Sparkle.CSharp.Physics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html

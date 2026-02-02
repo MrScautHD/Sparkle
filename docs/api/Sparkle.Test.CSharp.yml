@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.Test.CSharp
+  commentId: N:Sparkle.Test.CSharp
+  id: Sparkle.Test.CSharp
+  children:
+  - Sparkle.Test.CSharp.ContentRegistry
+  - Sparkle.Test.CSharp.TestGame
+  - Sparkle.Test.CSharp.TestGui
+  - Sparkle.Test.CSharp.TestOverlay
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.Test.CSharp
+  nameWithType: Sparkle.Test.CSharp
+  fullName: Sparkle.Test.CSharp
+  type: Namespace
+  assemblies:
+  - Sparkle.Test
+references:
+- uid: Sparkle.Test.CSharp.ContentRegistry
+  commentId: T:Sparkle.Test.CSharp.ContentRegistry
+  href: Sparkle.Test.CSharp.ContentRegistry.html
+  name: ContentRegistry
+  nameWithType: ContentRegistry
+  fullName: Sparkle.Test.CSharp.ContentRegistry
+- uid: Sparkle.Test.CSharp.TestGame
+  commentId: T:Sparkle.Test.CSharp.TestGame
+  href: Sparkle.Test.CSharp.TestGame.html
+  name: TestGame
+  nameWithType: TestGame
+  fullName: Sparkle.Test.CSharp.TestGame
+- uid: Sparkle.Test.CSharp.TestGui
+  commentId: T:Sparkle.Test.CSharp.TestGui
+  href: Sparkle.Test.CSharp.TestGui.html
+  name: TestGui
+  nameWithType: TestGui
+  fullName: Sparkle.Test.CSharp.TestGui
+- uid: Sparkle.Test.CSharp.TestOverlay
+  commentId: T:Sparkle.Test.CSharp.TestOverlay
+  href: Sparkle.Test.CSharp.TestOverlay.html
+  name: TestOverlay
+  nameWithType: TestOverlay
+  fullName: Sparkle.Test.CSharp.TestOverlay

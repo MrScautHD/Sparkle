@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Effects.Posts
+  commentId: N:Sparkle.CSharp.Effects.Posts
+  id: Sparkle.CSharp.Effects.Posts
+  children:
+  - Sparkle.CSharp.Effects.Posts.FxaaEffect
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Effects.Posts
+  nameWithType: Sparkle.CSharp.Effects.Posts
+  fullName: Sparkle.CSharp.Effects.Posts
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Effects.Posts.FxaaEffect
+  commentId: T:Sparkle.CSharp.Effects.Posts.FxaaEffect
+  parent: Sparkle.CSharp.Effects.Posts
+  href: Sparkle.CSharp.Effects.Posts.FxaaEffect.html
+  name: FxaaEffect
+  nameWithType: FxaaEffect
+  fullName: Sparkle.CSharp.Effects.Posts.FxaaEffect
+- uid: Sparkle.CSharp.Effects.Posts
+  commentId: N:Sparkle.CSharp.Effects.Posts
+  href: Sparkle.html
+  name: Sparkle.CSharp.Effects.Posts
+  nameWithType: Sparkle.CSharp.Effects.Posts
+  fullName: Sparkle.CSharp.Effects.Posts
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects
+    name: Effects
+    href: Sparkle.CSharp.Effects.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects.Posts
+    name: Posts
+    href: Sparkle.CSharp.Effects.Posts.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects
+    name: Effects
+    href: Sparkle.CSharp.Effects.html
+  - name: .
+  - uid: Sparkle.CSharp.Effects.Posts
+    name: Posts
+    href: Sparkle.CSharp.Effects.Posts.html

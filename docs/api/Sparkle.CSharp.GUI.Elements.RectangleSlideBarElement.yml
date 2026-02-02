@@ -1,0 +1,1427 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  commentId: T:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  id: RectangleSlideBarElement
+  parent: Sparkle.CSharp.GUI.Elements
+  children:
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData,Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Single,System.Single,System.Boolean,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MaxValue
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MinValue
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update(System.Double,System.Boolean@)
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.ValueUpdated
+  - Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.WholeNumbers
+  langs:
+  - csharp
+  - vb
+  name: RectangleSlideBarElement
+  nameWithType: RectangleSlideBarElement
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: RectangleSlideBarElement
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  syntax:
+    content: 'public class RectangleSlideBarElement : GuiElement'
+    content.vb: Public Class RectangleSlideBarElement Inherits GuiElement
+  inheritance:
+  - System.Object
+  - Sparkle.CSharp.GUI.Elements.GuiElement
+  inheritedMembers:
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  - Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  - Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  - Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  - Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  - Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+  commentId: P:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+  id: Data
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: RectangleSlideBarElement.Data
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Data
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The data used to render the slide bar.
+  example: []
+  syntax:
+    content: public RectangleSlideBarData Data { get; }
+    parameters: []
+    return:
+      type: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+    content.vb: Public Property Data As RectangleSlideBarData
+  overload: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data*
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MinValue
+  commentId: F:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MinValue
+  id: MinValue
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: MinValue
+  nameWithType: RectangleSlideBarElement.MinValue
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MinValue
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MinValue
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 22
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The minimum allowable value for the slider bar, defining the lower limit of the slider's range.
+  example: []
+  syntax:
+    content: public float MinValue
+    return:
+      type: System.Single
+    content.vb: Public MinValue As Single
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MaxValue
+  commentId: F:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MaxValue
+  id: MaxValue
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: MaxValue
+  nameWithType: RectangleSlideBarElement.MaxValue
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.MaxValue
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MaxValue
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 27
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The maximum allowable value for the slider bar, defining the upper limit of the slider's range.
+  example: []
+  syntax:
+    content: public float MaxValue
+    return:
+      type: System.Single
+    content.vb: Public MaxValue As Single
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+  commentId: P:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+  id: Value
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: RectangleSlideBarElement.Value
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Value
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 34
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The current value of the slider bar, clamped between the minimum and maximum values.
+  example: []
+  syntax:
+    content: public float Value { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Value As Single
+  overload: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value*
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.WholeNumbers
+  commentId: F:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.WholeNumbers
+  id: WholeNumbers
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: WholeNumbers
+  nameWithType: RectangleSlideBarElement.WholeNumbers
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.WholeNumbers
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: WholeNumbers
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 46
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: The slider value should be rounded to the nearest whole number.
+  example: []
+  syntax:
+    content: public bool WholeNumbers
+    return:
+      type: System.Boolean
+    content.vb: Public WholeNumbers As Boolean
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.ValueUpdated
+  commentId: E:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.ValueUpdated
+  id: ValueUpdated
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: ValueUpdated
+  nameWithType: RectangleSlideBarElement.ValueUpdated
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.ValueUpdated
+  type: Event
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ValueUpdated
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 52
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: >-
+    An event that triggers when the slider value is updated.
+
+    The new value of the slider is passed as a parameter to the attached event handlers.
+  example: []
+  syntax:
+    content: public event Action<float>? ValueUpdated
+    return:
+      type: System.Action{System.Single}
+    content.vb: Public Event ValueUpdated As Action(Of Single)
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData,Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Single,System.Single,System.Boolean,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  commentId: M:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData,Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Single,System.Single,System.Boolean,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})
+  id: '#ctor(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData,Sparkle.CSharp.GUI.Anchor,System.Numerics.Vector2,System.Numerics.Vector2,System.Single,System.Single,System.Single,System.Boolean,System.Nullable{System.Numerics.Vector2},System.Nullable{System.Numerics.Vector2},System.Single,System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean})'
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: RectangleSlideBarElement(RectangleSlideBarData, Anchor, Vector2, Vector2, float, float, float, bool, Vector2?, Vector2?, float, Func<GuiElement, bool>?)
+  nameWithType: RectangleSlideBarElement.RectangleSlideBarElement(RectangleSlideBarData, Anchor, Vector2, Vector2, float, float, float, bool, Vector2?, Vector2?, float, Func<GuiElement, bool>?)
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.RectangleSlideBarElement(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData, Sparkle.CSharp.GUI.Anchor, System.Numerics.Vector2, System.Numerics.Vector2, float, float, float, bool, System.Numerics.Vector2?, System.Numerics.Vector2?, float, System.Func<Sparkle.CSharp.GUI.Elements.GuiElement, bool>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 74
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public RectangleSlideBarElement(RectangleSlideBarData data, Anchor anchor, Vector2 offset, Vector2 size, float minValue, float maxValue, float value = 0, bool wholeNumbers = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null)
+    parameters:
+    - id: data
+      type: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+      description: The visual and styling data used to render the slide bar.
+    - id: anchor
+      type: Sparkle.CSharp.GUI.Anchor
+      description: The anchor point used to position the element.
+    - id: offset
+      type: System.Numerics.Vector2
+      description: The offset from the anchor position.
+    - id: size
+      type: System.Numerics.Vector2
+      description: The size of the slide bar.
+    - id: minValue
+      type: System.Single
+      description: The minimum value of the slide bar.
+    - id: maxValue
+      type: System.Single
+      description: The maximum value of the slide bar.
+    - id: value
+      type: System.Single
+      description: The initial value of the slide bar.
+    - id: wholeNumbers
+      type: System.Boolean
+      description: Indicates whether the value should be restricted to whole numbers.
+    - id: scale
+      type: System.Nullable{System.Numerics.Vector2}
+      description: Optional scale applied to the element.
+    - id: origin
+      type: System.Nullable{System.Numerics.Vector2}
+      description: Optional origin point used for rotation and alignment.
+    - id: rotation
+      type: System.Single
+      description: The rotation of the element in degrees.
+    - id: clickFunc
+      type: System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+      description: Optional function invoked when the element is clicked.
+    content.vb: Public Sub New(data As RectangleSlideBarData, anchor As Anchor, offset As Vector2, size As Vector2, minValue As Single, maxValue As Single, value As Single = 0, wholeNumbers As Boolean = False, scale As Vector2? = Nothing, origin As Vector2? = Nothing, rotation As Single = 0, clickFunc As Func(Of GuiElement, Boolean) = Nothing)
+  overload: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor*
+  nameWithType.vb: RectangleSlideBarElement.New(RectangleSlideBarData, Anchor, Vector2, Vector2, Single, Single, Single, Boolean, Vector2?, Vector2?, Single, Func(Of GuiElement, Boolean))
+  fullName.vb: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.New(Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData, Sparkle.CSharp.GUI.Anchor, System.Numerics.Vector2, System.Numerics.Vector2, Single, Single, Single, Boolean, System.Numerics.Vector2?, System.Numerics.Vector2?, Single, System.Func(Of Sparkle.CSharp.GUI.Elements.GuiElement, Boolean))
+  name.vb: New(RectangleSlideBarData, Anchor, Vector2, Vector2, Single, Single, Single, Boolean, Vector2?, Vector2?, Single, Func(Of GuiElement, Boolean))
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update(System.Double,System.Boolean@)
+  commentId: M:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update(System.Double,System.Boolean@)
+  id: Update(System.Double,System.Boolean@)
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: Update(double, ref bool)
+  nameWithType: RectangleSlideBarElement.Update(double, ref bool)
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update(double, ref bool)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Update
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 87
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Updates the visual state and properties of the rectangle slide bar element based on time delta and user interactions.
+  example: []
+  syntax:
+    content: protected override void Update(double delta, ref bool interactionHandled)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The elapsed time, in seconds, since the last update, used for time-based calculations or animations.
+    - id: interactionHandled
+      type: System.Boolean
+      description: A reference to a boolean tracking whether interaction has already been handled by another element.
+    content.vb: Protected Overrides Sub Update(delta As Double, interactionHandled As Boolean)
+  overridden: Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  overload: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update*
+  nameWithType.vb: RectangleSlideBarElement.Update(Double, Boolean)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update(Double, Boolean)
+  name.vb: Update(Double, Boolean)
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  id: Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  langs:
+  - csharp
+  - vb
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: RectangleSlideBarElement.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Draw
+    path: ../src/Sparkle/CSharp/GUI/Elements/RectangleSlideBarElement.cs
+    startLine: 133
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI.Elements
+  summary: Renders the rectangle slide bar element onto the specified framebuffer using the provided graphics context.
+  example: []
+  syntax:
+    content: protected override void Draw(GraphicsContext context, Framebuffer framebuffer)
+    parameters:
+    - id: context
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+      description: The graphics context used for rendering operations, including primitive drawing.
+    - id: framebuffer
+      type: Veldrid.Framebuffer
+      description: The framebuffer target where the slide bar will be rendered.
+    content.vb: Protected Overrides Sub Draw(context As GraphicsContext, framebuffer As Framebuffer)
+  overridden: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  overload: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw*
+references:
+- uid: Sparkle.CSharp.GUI.Elements
+  commentId: N:Sparkle.CSharp.GUI.Elements
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements
+  nameWithType: Sparkle.CSharp.GUI.Elements
+  fullName: Sparkle.CSharp.GUI.Elements
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement
+  commentId: T:Sparkle.CSharp.GUI.Elements.GuiElement
+  parent: Sparkle.CSharp.GUI.Elements
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  name: GuiElement
+  nameWithType: GuiElement
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Gui
+  name: Gui
+  nameWithType: GuiElement.Gui
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Gui
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Name
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Name
+  name: Name
+  nameWithType: GuiElement.Name
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Name
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Enabled
+  name: Enabled
+  nameWithType: GuiElement.Enabled
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Enabled
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Interactable
+  name: Interactable
+  nameWithType: GuiElement.Interactable
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Interactable
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_AnchorPoint
+  name: AnchorPoint
+  nameWithType: GuiElement.AnchorPoint
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.AnchorPoint
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Offset
+  name: Offset
+  nameWithType: GuiElement.Offset
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Offset
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Size
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Size
+  name: Size
+  nameWithType: GuiElement.Size
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Size
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Scale
+  name: Scale
+  nameWithType: GuiElement.Scale
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Scale
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Origin
+  name: Origin
+  nameWithType: GuiElement.Origin
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Origin
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  commentId: F:Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Rotation
+  name: Rotation
+  nameWithType: GuiElement.Rotation
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Rotation
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsHovered
+  name: IsHovered
+  nameWithType: GuiElement.IsHovered
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsHovered
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsClicked
+  name: IsClicked
+  nameWithType: GuiElement.IsClicked
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsClicked
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_IsSelected
+  name: IsSelected
+  nameWithType: GuiElement.IsSelected
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.IsSelected
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.Position
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Position
+  name: Position
+  nameWithType: GuiElement.Position
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Position
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  commentId: P:Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_ScaledSize
+  name: ScaledSize
+  nameWithType: GuiElement.ScaledSize
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.ScaledSize
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  isExternal: true
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_System_Double_
+  name: AfterUpdate(double)
+  nameWithType: GuiElement.AfterUpdate(double)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(double)
+  nameWithType.vb: GuiElement.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  isExternal: true
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_System_Double_
+  name: FixedUpdate(double)
+  nameWithType: GuiElement.FixedUpdate(double)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(double)
+  nameWithType.vb: GuiElement.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  isExternal: true
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize(Rectangle)
+  nameWithType: GuiElement.Resize(Rectangle)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos
+  name: CalculatePos()
+  nameWithType: GuiElement.CalculatePos()
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos()
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+    name: CalculatePos
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculatePos
+    name: CalculatePos
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculatePos
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize
+  name: CalculateSize()
+  nameWithType: GuiElement.CalculateSize()
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize()
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+    name: CalculateSize
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.CalculateSize
+    name: CalculateSize
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_CalculateSize
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html#Sparkle_CSharp_GUI_Elements_RectangleSlideBarElement_Data
+  name: Data
+  nameWithType: RectangleSlideBarElement.Data
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Data
+- uid: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+  commentId: T:Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+  parent: Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData.html
+  name: RectangleSlideBarData
+  nameWithType: RectangleSlideBarData
+  fullName: Sparkle.CSharp.GUI.Elements.Data.RectangleSlideBarData
+- uid: Sparkle.CSharp.GUI.Elements.Data
+  commentId: N:Sparkle.CSharp.GUI.Elements.Data
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI.Elements.Data
+  nameWithType: Sparkle.CSharp.GUI.Elements.Data
+  fullName: Sparkle.CSharp.GUI.Elements.Data
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements
+    name: Elements
+    href: Sparkle.CSharp.GUI.Elements.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI.Elements.Data
+    name: Data
+    href: Sparkle.CSharp.GUI.Elements.Data.html
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html#Sparkle_CSharp_GUI_Elements_RectangleSlideBarElement_Value
+  name: Value
+  nameWithType: RectangleSlideBarElement.Value
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Value
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Action{System.Single}
+  commentId: T:System.Action{System.Single}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<float>
+  nameWithType: Action<float>
+  fullName: System.Action<float>
+  nameWithType.vb: Action(Of Single)
+  fullName.vb: System.Action(Of Single)
+  name.vb: Action(Of Single)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  commentId: T:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html
+  name: RectangleSlideBarElement
+  nameWithType: RectangleSlideBarElement
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.#ctor
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html#Sparkle_CSharp_GUI_Elements_RectangleSlideBarElement__ctor_Sparkle_CSharp_GUI_Elements_Data_RectangleSlideBarData_Sparkle_CSharp_GUI_Anchor_System_Numerics_Vector2_System_Numerics_Vector2_System_Single_System_Single_System_Single_System_Boolean_System_Nullable_System_Numerics_Vector2__System_Nullable_System_Numerics_Vector2__System_Single_System_Func_Sparkle_CSharp_GUI_Elements_GuiElement_System_Boolean__
+  name: RectangleSlideBarElement
+  nameWithType: RectangleSlideBarElement.RectangleSlideBarElement
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.RectangleSlideBarElement
+  nameWithType.vb: RectangleSlideBarElement.New
+  fullName.vb: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.New
+  name.vb: New
+- uid: Sparkle.CSharp.GUI.Anchor
+  commentId: T:Sparkle.CSharp.GUI.Anchor
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.Anchor.html
+  name: Anchor
+  nameWithType: Anchor
+  fullName: Sparkle.CSharp.GUI.Anchor
+- uid: System.Numerics.Vector2
+  commentId: T:System.Numerics.Vector2
+  parent: System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2
+  nameWithType: Vector2
+  fullName: System.Numerics.Vector2
+- uid: System.Nullable{System.Numerics.Vector2}
+  commentId: T:System.Nullable{System.Numerics.Vector2}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  name: Vector2?
+  nameWithType: Vector2?
+  fullName: System.Numerics.Vector2?
+  spec.csharp:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+  spec.vb:
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: '?'
+- uid: System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+  commentId: T:System.Func{Sparkle.CSharp.GUI.Elements.GuiElement,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<GuiElement, bool>
+  nameWithType: Func<GuiElement, bool>
+  fullName: System.Func<Sparkle.CSharp.GUI.Elements.GuiElement, bool>
+  nameWithType.vb: Func(Of GuiElement, Boolean)
+  fullName.vb: System.Func(Of Sparkle.CSharp.GUI.Elements.GuiElement, Boolean)
+  name.vb: Func(Of GuiElement, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement
+    name: GuiElement
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement
+    name: GuiElement
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Numerics
+    name: Numerics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  isExternal: true
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Update_System_Double_System_Boolean__
+  name: Update(double, ref bool)
+  nameWithType: GuiElement.Update(double, ref bool)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Update(double, ref bool)
+  nameWithType.vb: GuiElement.Update(Double, Boolean)
+  fullName.vb: Sparkle.CSharp.GUI.Elements.GuiElement.Update(Double, Boolean)
+  name.vb: Update(Double, Boolean)
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+    name: Update
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Update_System_Double_System_Boolean__
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Update(System.Double,System.Boolean@)
+    name: Update
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Update_System_Double_System_Boolean__
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html#Sparkle_CSharp_GUI_Elements_RectangleSlideBarElement_Update_System_Double_System_Boolean__
+  name: Update
+  nameWithType: RectangleSlideBarElement.Update
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Update
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.GUI.Elements.GuiElement
+  isExternal: true
+  href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: GuiElement.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.GUI.Elements.GuiElement.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.GUI.Elements.GuiElement.html#Sparkle_CSharp_GUI_Elements_GuiElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+- uid: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw*
+  commentId: Overload:Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw
+  href: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.html#Sparkle_CSharp_GUI_Elements_RectangleSlideBarElement_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw
+  nameWithType: RectangleSlideBarElement.Draw
+  fullName: Sparkle.CSharp.GUI.Elements.RectangleSlideBarElement.Draw
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Veldrid.Framebuffer
+  commentId: T:Veldrid.Framebuffer
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  name: Framebuffer
+  nameWithType: Framebuffer
+  fullName: Veldrid.Framebuffer
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid

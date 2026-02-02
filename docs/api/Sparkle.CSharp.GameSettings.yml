@@ -1,0 +1,920 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GameSettings
+  commentId: T:Sparkle.CSharp.GameSettings
+  id: GameSettings
+  parent: Sparkle.CSharp
+  children:
+  - Sparkle.CSharp.GameSettings.#ctor
+  - Sparkle.CSharp.GameSettings.Backend
+  - Sparkle.CSharp.GameSettings.FixedTimeStep
+  - Sparkle.CSharp.GameSettings.IconPath
+  - Sparkle.CSharp.GameSettings.LogDirectory
+  - Sparkle.CSharp.GameSettings.MinSize
+  - Sparkle.CSharp.GameSettings.SampleCount
+  - Sparkle.CSharp.GameSettings.Size
+  - Sparkle.CSharp.GameSettings.TargetFps
+  - Sparkle.CSharp.GameSettings.Title
+  - Sparkle.CSharp.GameSettings.VSync
+  - Sparkle.CSharp.GameSettings.WindowFlags
+  langs:
+  - csharp
+  - vb
+  name: GameSettings
+  nameWithType: GameSettings
+  fullName: Sparkle.CSharp.GameSettings
+  type: Struct
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: GameSettings
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 6
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  syntax:
+    content: public struct GameSettings
+    content.vb: Public Structure GameSettings
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Sparkle.CSharp.GameSettings.Title
+  commentId: P:Sparkle.CSharp.GameSettings.Title
+  id: Title
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: Title
+  nameWithType: GameSettings.Title
+  fullName: Sparkle.CSharp.GameSettings.Title
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Title
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 11
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The title of the game window.
+  example: []
+  syntax:
+    content: public string Title { readonly get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Title As String
+  overload: Sparkle.CSharp.GameSettings.Title*
+- uid: Sparkle.CSharp.GameSettings.Size
+  commentId: P:Sparkle.CSharp.GameSettings.Size
+  id: Size
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: Size
+  nameWithType: GameSettings.Size
+  fullName: Sparkle.CSharp.GameSettings.Size
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Size
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 16
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The dimensions of the game window, defined as a tuple containing the width and height in pixels.
+  example: []
+  syntax:
+    content: public (int Width, int Height) Size { readonly get; init; }
+    parameters: []
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Property Size As (Width As Integer, Height As Integer)
+  overload: Sparkle.CSharp.GameSettings.Size*
+- uid: Sparkle.CSharp.GameSettings.MinSize
+  commentId: P:Sparkle.CSharp.GameSettings.MinSize
+  id: MinSize
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: MinSize
+  nameWithType: GameSettings.MinSize
+  fullName: Sparkle.CSharp.GameSettings.MinSize
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MinSize
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 21
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The minimum allowed dimensions for the game window, defined as a tuple of width and height.
+  example: []
+  syntax:
+    content: public (int Width, int Height) MinSize { readonly get; init; }
+    parameters: []
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Property MinSize As (Width As Integer, Height As Integer)
+  overload: Sparkle.CSharp.GameSettings.MinSize*
+- uid: Sparkle.CSharp.GameSettings.IconPath
+  commentId: P:Sparkle.CSharp.GameSettings.IconPath
+  id: IconPath
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: IconPath
+  nameWithType: GameSettings.IconPath
+  fullName: Sparkle.CSharp.GameSettings.IconPath
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IconPath
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 26
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The file path to the icon used for the game window.
+  example: []
+  syntax:
+    content: public string IconPath { readonly get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property IconPath As String
+  overload: Sparkle.CSharp.GameSettings.IconPath*
+- uid: Sparkle.CSharp.GameSettings.LogDirectory
+  commentId: P:Sparkle.CSharp.GameSettings.LogDirectory
+  id: LogDirectory
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: LogDirectory
+  nameWithType: GameSettings.LogDirectory
+  fullName: Sparkle.CSharp.GameSettings.LogDirectory
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LogDirectory
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 31
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The directory path where log files will be stored.
+  example: []
+  syntax:
+    content: public string LogDirectory { readonly get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LogDirectory As String
+  overload: Sparkle.CSharp.GameSettings.LogDirectory*
+- uid: Sparkle.CSharp.GameSettings.TargetFps
+  commentId: P:Sparkle.CSharp.GameSettings.TargetFps
+  id: TargetFps
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: TargetFps
+  nameWithType: GameSettings.TargetFps
+  fullName: Sparkle.CSharp.GameSettings.TargetFps
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TargetFps
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 36
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The target frames per second (FPS). A value of 0 means no FPS cap.
+  example: []
+  syntax:
+    content: public int TargetFps { readonly get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property TargetFps As Integer
+  overload: Sparkle.CSharp.GameSettings.TargetFps*
+- uid: Sparkle.CSharp.GameSettings.FixedTimeStep
+  commentId: P:Sparkle.CSharp.GameSettings.FixedTimeStep
+  id: FixedTimeStep
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: FixedTimeStep
+  nameWithType: GameSettings.FixedTimeStep
+  fullName: Sparkle.CSharp.GameSettings.FixedTimeStep
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedTimeStep
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 41
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The fixed time step for game updates, typically used for physics calculations.
+  example: []
+  syntax:
+    content: public float FixedTimeStep { readonly get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property FixedTimeStep As Single
+  overload: Sparkle.CSharp.GameSettings.FixedTimeStep*
+- uid: Sparkle.CSharp.GameSettings.WindowFlags
+  commentId: P:Sparkle.CSharp.GameSettings.WindowFlags
+  id: WindowFlags
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: WindowFlags
+  nameWithType: GameSettings.WindowFlags
+  fullName: Sparkle.CSharp.GameSettings.WindowFlags
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: WindowFlags
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 46
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The window state flags that define the behavior and appearance of the game window.
+  example: []
+  syntax:
+    content: public WindowState WindowFlags { readonly get; init; }
+    parameters: []
+    return:
+      type: Bliss.CSharp.Windowing.WindowState
+    content.vb: Public Property WindowFlags As WindowState
+  overload: Sparkle.CSharp.GameSettings.WindowFlags*
+- uid: Sparkle.CSharp.GameSettings.Backend
+  commentId: P:Sparkle.CSharp.GameSettings.Backend
+  id: Backend
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: Backend
+  nameWithType: GameSettings.Backend
+  fullName: Sparkle.CSharp.GameSettings.Backend
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Backend
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 51
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The graphics backend to use for rendering (e.g., Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES).
+  example: []
+  syntax:
+    content: public GraphicsBackend Backend { readonly get; init; }
+    parameters: []
+    return:
+      type: Veldrid.GraphicsBackend
+    content.vb: Public Property Backend As GraphicsBackend
+  overload: Sparkle.CSharp.GameSettings.Backend*
+- uid: Sparkle.CSharp.GameSettings.VSync
+  commentId: P:Sparkle.CSharp.GameSettings.VSync
+  id: VSync
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: VSync
+  nameWithType: GameSettings.VSync
+  fullName: Sparkle.CSharp.GameSettings.VSync
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: VSync
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 56
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Indicates whether vertical sync (VSync) is enabled to prevent screen tearing.
+  example: []
+  syntax:
+    content: public bool VSync { readonly get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property VSync As Boolean
+  overload: Sparkle.CSharp.GameSettings.VSync*
+- uid: Sparkle.CSharp.GameSettings.SampleCount
+  commentId: P:Sparkle.CSharp.GameSettings.SampleCount
+  id: SampleCount
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: SampleCount
+  nameWithType: GameSettings.SampleCount
+  fullName: Sparkle.CSharp.GameSettings.SampleCount
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SampleCount
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 61
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: The sample count for anti-aliasing. Higher values result in smoother edges but increase performance cost.
+  example: []
+  syntax:
+    content: public TextureSampleCount SampleCount { readonly get; init; }
+    parameters: []
+    return:
+      type: Veldrid.TextureSampleCount
+    content.vb: Public Property SampleCount As TextureSampleCount
+  overload: Sparkle.CSharp.GameSettings.SampleCount*
+- uid: Sparkle.CSharp.GameSettings.#ctor
+  commentId: M:Sparkle.CSharp.GameSettings.#ctor
+  id: '#ctor'
+  parent: Sparkle.CSharp.GameSettings
+  langs:
+  - csharp
+  - vb
+  name: GameSettings()
+  nameWithType: GameSettings.GameSettings()
+  fullName: Sparkle.CSharp.GameSettings.GameSettings()
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GameSettings.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/GameSettings.cs
+    startLine: 66
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.GameSettings" data-throw-if-not-resolved="false"></xref> struct with default values.
+  example: []
+  syntax:
+    content: public GameSettings()
+    content.vb: Public Sub New()
+  overload: Sparkle.CSharp.GameSettings.#ctor*
+  nameWithType.vb: GameSettings.New()
+  fullName.vb: Sparkle.CSharp.GameSettings.New()
+  name.vb: New()
+references:
+- uid: Sparkle.CSharp
+  commentId: N:Sparkle.CSharp
+  href: Sparkle.html
+  name: Sparkle.CSharp
+  nameWithType: Sparkle.CSharp
+  fullName: Sparkle.CSharp
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.GameSettings.Title*
+  commentId: Overload:Sparkle.CSharp.GameSettings.Title
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_Title
+  name: Title
+  nameWithType: GameSettings.Title
+  fullName: Sparkle.CSharp.GameSettings.Title
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.GameSettings.Size*
+  commentId: Overload:Sparkle.CSharp.GameSettings.Size
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_Size
+  name: Size
+  nameWithType: GameSettings.Size
+  fullName: Sparkle.CSharp.GameSettings.Size
+- uid: System.ValueTuple{System.Int32,System.Int32}
+  commentId: T:System.ValueTuple{System.Int32,System.Int32}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int Width, int Height)
+  nameWithType: (int Width, int Height)
+  fullName: (int Width, int Height)
+  nameWithType.vb: (Width As Integer, Height As Integer)
+  fullName.vb: (Width As Integer, Height As Integer)
+  name.vb: (Width As Integer, Height As Integer)
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Width
+    name: Width
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.width
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Height
+    name: Height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.height
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Width
+    name: Width
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.width
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Height
+    name: Height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.height
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: Sparkle.CSharp.GameSettings.MinSize*
+  commentId: Overload:Sparkle.CSharp.GameSettings.MinSize
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_MinSize
+  name: MinSize
+  nameWithType: GameSettings.MinSize
+  fullName: Sparkle.CSharp.GameSettings.MinSize
+- uid: Sparkle.CSharp.GameSettings.IconPath*
+  commentId: Overload:Sparkle.CSharp.GameSettings.IconPath
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_IconPath
+  name: IconPath
+  nameWithType: GameSettings.IconPath
+  fullName: Sparkle.CSharp.GameSettings.IconPath
+- uid: Sparkle.CSharp.GameSettings.LogDirectory*
+  commentId: Overload:Sparkle.CSharp.GameSettings.LogDirectory
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_LogDirectory
+  name: LogDirectory
+  nameWithType: GameSettings.LogDirectory
+  fullName: Sparkle.CSharp.GameSettings.LogDirectory
+- uid: Sparkle.CSharp.GameSettings.TargetFps*
+  commentId: Overload:Sparkle.CSharp.GameSettings.TargetFps
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_TargetFps
+  name: TargetFps
+  nameWithType: GameSettings.TargetFps
+  fullName: Sparkle.CSharp.GameSettings.TargetFps
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Sparkle.CSharp.GameSettings.FixedTimeStep*
+  commentId: Overload:Sparkle.CSharp.GameSettings.FixedTimeStep
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_FixedTimeStep
+  name: FixedTimeStep
+  nameWithType: GameSettings.FixedTimeStep
+  fullName: Sparkle.CSharp.GameSettings.FixedTimeStep
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: Sparkle.CSharp.GameSettings.WindowFlags*
+  commentId: Overload:Sparkle.CSharp.GameSettings.WindowFlags
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_WindowFlags
+  name: WindowFlags
+  nameWithType: GameSettings.WindowFlags
+  fullName: Sparkle.CSharp.GameSettings.WindowFlags
+- uid: Bliss.CSharp.Windowing.WindowState
+  commentId: T:Bliss.CSharp.Windowing.WindowState
+  parent: Bliss.CSharp.Windowing
+  isExternal: true
+  name: WindowState
+  nameWithType: WindowState
+  fullName: Bliss.CSharp.Windowing.WindowState
+- uid: Bliss.CSharp.Windowing
+  commentId: N:Bliss.CSharp.Windowing
+  isExternal: true
+  name: Bliss.CSharp.Windowing
+  nameWithType: Bliss.CSharp.Windowing
+  fullName: Bliss.CSharp.Windowing
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp.Windowing
+    name: Windowing
+    isExternal: true
+- uid: Sparkle.CSharp.GameSettings.Backend*
+  commentId: Overload:Sparkle.CSharp.GameSettings.Backend
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_Backend
+  name: Backend
+  nameWithType: GameSettings.Backend
+  fullName: Sparkle.CSharp.GameSettings.Backend
+- uid: Veldrid.GraphicsBackend
+  commentId: T:Veldrid.GraphicsBackend
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/GraphicsBackend.cs
+  name: GraphicsBackend
+  nameWithType: GraphicsBackend
+  fullName: Veldrid.GraphicsBackend
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid
+- uid: Sparkle.CSharp.GameSettings.VSync*
+  commentId: Overload:Sparkle.CSharp.GameSettings.VSync
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_VSync
+  name: VSync
+  nameWithType: GameSettings.VSync
+  fullName: Sparkle.CSharp.GameSettings.VSync
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.GameSettings.SampleCount*
+  commentId: Overload:Sparkle.CSharp.GameSettings.SampleCount
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings_SampleCount
+  name: SampleCount
+  nameWithType: GameSettings.SampleCount
+  fullName: Sparkle.CSharp.GameSettings.SampleCount
+- uid: Veldrid.TextureSampleCount
+  commentId: T:Veldrid.TextureSampleCount
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/TextureSampleCount.cs
+  name: TextureSampleCount
+  nameWithType: TextureSampleCount
+  fullName: Veldrid.TextureSampleCount
+- uid: Sparkle.CSharp.GameSettings
+  commentId: T:Sparkle.CSharp.GameSettings
+  parent: Sparkle.CSharp
+  href: Sparkle.CSharp.GameSettings.html
+  name: GameSettings
+  nameWithType: GameSettings
+  fullName: Sparkle.CSharp.GameSettings
+- uid: Sparkle.CSharp.GameSettings.#ctor*
+  commentId: Overload:Sparkle.CSharp.GameSettings.#ctor
+  href: Sparkle.CSharp.GameSettings.html#Sparkle_CSharp_GameSettings__ctor
+  name: GameSettings
+  nameWithType: GameSettings.GameSettings
+  fullName: Sparkle.CSharp.GameSettings.GameSettings
+  nameWithType.vb: GameSettings.New
+  fullName.vb: Sparkle.CSharp.GameSettings.New
+  name.vb: New

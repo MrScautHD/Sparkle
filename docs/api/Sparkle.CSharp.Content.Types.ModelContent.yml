@@ -1,0 +1,585 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Types.ModelContent
+  commentId: T:Sparkle.CSharp.Content.Types.ModelContent
+  id: ModelContent
+  parent: Sparkle.CSharp.Content.Types
+  children:
+  - Sparkle.CSharp.Content.Types.ModelContent.#ctor(System.String,System.Boolean,System.Boolean)
+  - Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+  - Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+  - Sparkle.CSharp.Content.Types.ModelContent.Path
+  langs:
+  - csharp
+  - vb
+  name: ModelContent
+  nameWithType: ModelContent
+  fullName: Sparkle.CSharp.Content.Types.ModelContent
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/ModelContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: ModelContent
+    path: ../src/Sparkle/CSharp/Content/Types/ModelContent.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  syntax:
+    content: 'public class ModelContent : IContentType<Model>'
+    content.vb: Public Class ModelContent Implements IContentType(Of Model)
+  inheritance:
+  - System.Object
+  implements:
+  - Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Content.Types.ModelContent.Path
+  commentId: P:Sparkle.CSharp.Content.Types.ModelContent.Path
+  id: Path
+  parent: Sparkle.CSharp.Content.Types.ModelContent
+  langs:
+  - csharp
+  - vb
+  name: Path
+  nameWithType: ModelContent.Path
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.Path
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/ModelContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Path
+    path: ../src/Sparkle/CSharp/Content/Types/ModelContent.cs
+    startLine: 9
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: The file path of the model content.
+  example: []
+  syntax:
+    content: public string Path { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Path As String
+  overload: Sparkle.CSharp.Content.Types.ModelContent.Path*
+  implements:
+  - Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}.Path
+- uid: Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+  commentId: P:Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+  id: LoadMaterial
+  parent: Sparkle.CSharp.Content.Types.ModelContent
+  langs:
+  - csharp
+  - vb
+  name: LoadMaterial
+  nameWithType: ModelContent.LoadMaterial
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/ModelContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: LoadMaterial
+    path: ../src/Sparkle/CSharp/Content/Types/ModelContent.cs
+    startLine: 14
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Indicates whether to load the material with the model.
+  example: []
+  syntax:
+    content: public bool LoadMaterial { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property LoadMaterial As Boolean
+  overload: Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial*
+- uid: Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+  commentId: P:Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+  id: FlipUv
+  parent: Sparkle.CSharp.Content.Types.ModelContent
+  langs:
+  - csharp
+  - vb
+  name: FlipUv
+  nameWithType: ModelContent.FlipUv
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/ModelContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FlipUv
+    path: ../src/Sparkle/CSharp/Content/Types/ModelContent.cs
+    startLine: 19
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Indicates whether to flip the model's UV mapping.
+  example: []
+  syntax:
+    content: public bool FlipUv { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property FlipUv As Boolean
+  overload: Sparkle.CSharp.Content.Types.ModelContent.FlipUv*
+- uid: Sparkle.CSharp.Content.Types.ModelContent.#ctor(System.String,System.Boolean,System.Boolean)
+  commentId: M:Sparkle.CSharp.Content.Types.ModelContent.#ctor(System.String,System.Boolean,System.Boolean)
+  id: '#ctor(System.String,System.Boolean,System.Boolean)'
+  parent: Sparkle.CSharp.Content.Types.ModelContent
+  langs:
+  - csharp
+  - vb
+  name: ModelContent(string, bool, bool)
+  nameWithType: ModelContent.ModelContent(string, bool, bool)
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.ModelContent(string, bool, bool)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/ModelContent.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Content/Types/ModelContent.cs
+    startLine: 27
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Content.Types.ModelContent" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public ModelContent(string path, bool loadMaterial = true, bool flipUv = false)
+    parameters:
+    - id: path
+      type: System.String
+      description: The file path of the model.
+    - id: loadMaterial
+      type: System.Boolean
+      description: Whether to load the model's material (default is true).
+    - id: flipUv
+      type: System.Boolean
+      description: Whether to flip the model's UV mapping (default is false).
+    content.vb: Public Sub New(path As String, loadMaterial As Boolean = True, flipUv As Boolean = False)
+  overload: Sparkle.CSharp.Content.Types.ModelContent.#ctor*
+  nameWithType.vb: ModelContent.New(String, Boolean, Boolean)
+  fullName.vb: Sparkle.CSharp.Content.Types.ModelContent.New(String, Boolean, Boolean)
+  name.vb: New(String, Boolean, Boolean)
+references:
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}
+  parent: Sparkle.CSharp.Content.Types
+  definition: Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<Model>
+  nameWithType: IContentType<Model>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<Bliss.CSharp.Geometry.Model>
+  nameWithType.vb: IContentType(Of Model)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of Bliss.CSharp.Geometry.Model)
+  name.vb: IContentType(Of Model)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - uid: Bliss.CSharp.Geometry.Model
+    name: Model
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bliss.CSharp.Geometry.Model
+    name: Model
+    isExternal: true
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Types.ModelContent.Path*
+  commentId: Overload:Sparkle.CSharp.Content.Types.ModelContent.Path
+  href: Sparkle.CSharp.Content.Types.ModelContent.html#Sparkle_CSharp_Content_Types_ModelContent_Path
+  name: Path
+  nameWithType: ModelContent.Path
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.Path
+- uid: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}.Path
+  commentId: P:Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}.Path
+  parent: Sparkle.CSharp.Content.Types.IContentType{Bliss.CSharp.Geometry.Model}
+  definition: Sparkle.CSharp.Content.Types.IContentType`1.Path
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html#Sparkle_CSharp_Content_Types_IContentType_1_Path
+  name: Path
+  nameWithType: IContentType<Model>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<Bliss.CSharp.Geometry.Model>.Path
+  nameWithType.vb: IContentType(Of Model).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of Bliss.CSharp.Geometry.Model).Path
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.Content.Types.IContentType`1.Path
+  commentId: P:Sparkle.CSharp.Content.Types.IContentType`1.Path
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html#Sparkle_CSharp_Content_Types_IContentType_1_Path
+  name: Path
+  nameWithType: IContentType<T>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>.Path
+  nameWithType.vb: IContentType(Of T).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T).Path
+- uid: Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial*
+  commentId: Overload:Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+  href: Sparkle.CSharp.Content.Types.ModelContent.html#Sparkle_CSharp_Content_Types_ModelContent_LoadMaterial
+  name: LoadMaterial
+  nameWithType: ModelContent.LoadMaterial
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.LoadMaterial
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Sparkle.CSharp.Content.Types.ModelContent.FlipUv*
+  commentId: Overload:Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+  href: Sparkle.CSharp.Content.Types.ModelContent.html#Sparkle_CSharp_Content_Types_ModelContent_FlipUv
+  name: FlipUv
+  nameWithType: ModelContent.FlipUv
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.FlipUv
+- uid: Sparkle.CSharp.Content.Types.ModelContent
+  commentId: T:Sparkle.CSharp.Content.Types.ModelContent
+  href: Sparkle.CSharp.Content.Types.ModelContent.html
+  name: ModelContent
+  nameWithType: ModelContent
+  fullName: Sparkle.CSharp.Content.Types.ModelContent
+- uid: Sparkle.CSharp.Content.Types.ModelContent.#ctor*
+  commentId: Overload:Sparkle.CSharp.Content.Types.ModelContent.#ctor
+  href: Sparkle.CSharp.Content.Types.ModelContent.html#Sparkle_CSharp_Content_Types_ModelContent__ctor_System_String_System_Boolean_System_Boolean_
+  name: ModelContent
+  nameWithType: ModelContent.ModelContent
+  fullName: Sparkle.CSharp.Content.Types.ModelContent.ModelContent
+  nameWithType.vb: ModelContent.New
+  fullName.vb: Sparkle.CSharp.Content.Types.ModelContent.New
+  name.vb: New

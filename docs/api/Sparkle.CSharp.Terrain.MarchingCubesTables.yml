@@ -1,0 +1,469 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Terrain.MarchingCubesTables
+  commentId: T:Sparkle.CSharp.Terrain.MarchingCubesTables
+  id: MarchingCubesTables
+  parent: Sparkle.CSharp.Terrain
+  children:
+  - Sparkle.CSharp.Terrain.MarchingCubesTables.Corners
+  - Sparkle.CSharp.Terrain.MarchingCubesTables.Edges
+  - Sparkle.CSharp.Terrain.MarchingCubesTables.Triangles
+  langs:
+  - csharp
+  - vb
+  name: MarchingCubesTables
+  nameWithType: MarchingCubesTables
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesTables
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: MarchingCubesTables
+    path: ../src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Terrain
+  syntax:
+    content: public static class MarchingCubesTables
+    content.vb: Public Module MarchingCubesTables
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.CSharp.Terrain.MarchingCubesTables.Corners
+  commentId: F:Sparkle.CSharp.Terrain.MarchingCubesTables.Corners
+  id: Corners
+  parent: Sparkle.CSharp.Terrain.MarchingCubesTables
+  langs:
+  - csharp
+  - vb
+  name: Corners
+  nameWithType: MarchingCubesTables.Corners
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesTables.Corners
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Corners
+    path: ../src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+    startLine: 9
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Terrain
+  summary: Represents the eight corners of a cube in 3D space.
+  example: []
+  syntax:
+    content: public static readonly Vector3[] Corners
+    return:
+      type: System.Numerics.Vector3[]
+    content.vb: Public Shared ReadOnly Corners As Vector3()
+- uid: Sparkle.CSharp.Terrain.MarchingCubesTables.Edges
+  commentId: F:Sparkle.CSharp.Terrain.MarchingCubesTables.Edges
+  id: Edges
+  parent: Sparkle.CSharp.Terrain.MarchingCubesTables
+  langs:
+  - csharp
+  - vb
+  name: Edges
+  nameWithType: MarchingCubesTables.Edges
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesTables.Edges
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Edges
+    path: ../src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+    startLine: 23
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Terrain
+  summary: Represents the edges of a cube in 3D space.
+  example: []
+  syntax:
+    content: public static readonly Vector3[,] Edges
+    return:
+      type: System.Numerics.Vector3[,]
+    content.vb: Public Shared ReadOnly Edges As Vector3(,)
+- uid: Sparkle.CSharp.Terrain.MarchingCubesTables.Triangles
+  commentId: F:Sparkle.CSharp.Terrain.MarchingCubesTables.Triangles
+  id: Triangles
+  parent: Sparkle.CSharp.Terrain.MarchingCubesTables
+  langs:
+  - csharp
+  - vb
+  name: Triangles
+  nameWithType: MarchingCubesTables.Triangles
+  fullName: Sparkle.CSharp.Terrain.MarchingCubesTables.Triangles
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Triangles
+    path: ../src/Sparkle/CSharp/Terrain/MarchingCubesTables.cs
+    startLine: 41
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Terrain
+  summary: Represents a collection of triangles.
+  example: []
+  syntax:
+    content: public static readonly int[,] Triangles
+    return:
+      type: System.Int32[,]
+    content.vb: Public Shared ReadOnly Triangles As Integer(,)
+references:
+- uid: Sparkle.CSharp.Terrain
+  commentId: N:Sparkle.CSharp.Terrain
+  href: Sparkle.html
+  name: Sparkle.CSharp.Terrain
+  nameWithType: Sparkle.CSharp.Terrain
+  fullName: Sparkle.CSharp.Terrain
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Terrain
+    name: Terrain
+    href: Sparkle.CSharp.Terrain.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Terrain
+    name: Terrain
+    href: Sparkle.CSharp.Terrain.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Numerics.Vector3[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  name: Vector3[]
+  nameWithType: Vector3[]
+  fullName: System.Numerics.Vector3[]
+  nameWithType.vb: Vector3()
+  fullName.vb: System.Numerics.Vector3()
+  name.vb: Vector3()
+  spec.csharp:
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: (
+  - name: )
+- uid: System.Numerics.Vector3[,]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  name: Vector3[,]
+  nameWithType: Vector3[,]
+  fullName: System.Numerics.Vector3[,]
+  nameWithType.vb: Vector3(,)
+  fullName.vb: System.Numerics.Vector3(,)
+  name.vb: Vector3(,)
+  spec.csharp:
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: '['
+  - name: ','
+  - name: ']'
+  spec.vb:
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: (
+  - name: ','
+  - name: )
+- uid: System.Int32[,]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[,]
+  nameWithType: int[,]
+  fullName: int[,]
+  nameWithType.vb: Integer(,)
+  fullName.vb: Integer(,)
+  name.vb: Integer(,)
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ','
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: ','
+  - name: )

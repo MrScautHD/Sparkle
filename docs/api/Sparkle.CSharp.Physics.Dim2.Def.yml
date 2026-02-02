@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2.Def
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Def
+  id: Sparkle.CSharp.Physics.Dim2.Def
+  children:
+  - Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Physics.Dim2.Def
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Def
+  fullName: Sparkle.CSharp.Physics.Dim2.Def
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  commentId: T:Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+  parent: Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition.html
+  name: BodyDefinition
+  nameWithType: BodyDefinition
+  fullName: Sparkle.CSharp.Physics.Dim2.Def.BodyDefinition
+- uid: Sparkle.CSharp.Physics.Dim2.Def
+  commentId: N:Sparkle.CSharp.Physics.Dim2.Def
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2.Def
+  nameWithType: Sparkle.CSharp.Physics.Dim2.Def
+  fullName: Sparkle.CSharp.Physics.Dim2.Def
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2.Def
+    name: Def
+    href: Sparkle.CSharp.Physics.Dim2.Def.html

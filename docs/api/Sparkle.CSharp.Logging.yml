@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Logging
+  commentId: N:Sparkle.CSharp.Logging
+  id: Sparkle.CSharp.Logging
+  children:
+  - Sparkle.CSharp.Logging.LogFileWriter
+  - Sparkle.CSharp.Logging.LogJitter
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Logging
+  nameWithType: Sparkle.CSharp.Logging
+  fullName: Sparkle.CSharp.Logging
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Logging.LogFileWriter
+  commentId: T:Sparkle.CSharp.Logging.LogFileWriter
+  href: Sparkle.CSharp.Logging.LogFileWriter.html
+  name: LogFileWriter
+  nameWithType: LogFileWriter
+  fullName: Sparkle.CSharp.Logging.LogFileWriter
+- uid: Sparkle.CSharp.Logging.LogJitter
+  commentId: T:Sparkle.CSharp.Logging.LogJitter
+  href: Sparkle.CSharp.Logging.LogJitter.html
+  name: LogJitter
+  nameWithType: LogJitter
+  fullName: Sparkle.CSharp.Logging.LogJitter

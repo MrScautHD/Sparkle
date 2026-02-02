@@ -1,0 +1,1321 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  commentId: T:Sparkle.Test.CSharp.Dim3D.TestScene3D
+  id: TestScene3D
+  parent: Sparkle.Test.CSharp.Dim3D
+  children:
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor(System.String)
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate(System.Double)
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D.Init
+  - Sparkle.Test.CSharp.Dim3D.TestScene3D.Update(System.Double)
+  langs:
+  - csharp
+  - vb
+  name: TestScene3D
+  nameWithType: TestScene3D
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  type: Class
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TestScene3D
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 24
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  syntax:
+    content: 'public class TestScene3D : Scene, IDisposable'
+    content.vb: Public Class TestScene3D Inherits Scene Implements IDisposable
+  inheritance:
+  - System.Object
+  - Bliss.CSharp.Disposable
+  - Sparkle.CSharp.Scenes.Scene
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Sparkle.CSharp.Scenes.Scene.Name
+  - Sparkle.CSharp.Scenes.Scene.SceneType
+  - Sparkle.CSharp.Scenes.Scene.Simulation
+  - Sparkle.CSharp.Scenes.Scene.Renderer
+  - Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer
+  - Sparkle.CSharp.Scenes.Scene.SpriteRenderer
+  - Sparkle.CSharp.Scenes.Scene.FilterEffect
+  - Sparkle.CSharp.Scenes.Scene.SkyBox
+  - Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)
+  - Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+  - Sparkle.CSharp.Scenes.Scene.GetEntities
+  - Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)
+  - Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)
+  - Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)
+  - Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)
+  - Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+  - Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+  - Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+  - Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+  - Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)
+  - Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)
+  - Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)
+  - Bliss.CSharp.Disposable.Dispose
+  - Bliss.CSharp.Disposable.ThrowIfDisposed
+  - Bliss.CSharp.Disposable.HasDisposed
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor(System.String)
+  commentId: M:Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: TestScene3D(string)
+  nameWithType: TestScene3D.TestScene3D(string)
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.TestScene3D(string)
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 26
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  syntax:
+    content: public TestScene3D(string name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(name As String)
+  overload: Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor*
+  nameWithType.vb: TestScene3D.New(String)
+  fullName.vb: Sparkle.Test.CSharp.Dim3D.TestScene3D.New(String)
+  name.vb: New(String)
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Init
+  commentId: M:Sparkle.Test.CSharp.Dim3D.TestScene3D.Init
+  id: Init
+  parent: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: Init()
+  nameWithType: TestScene3D.Init()
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Init()
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Init
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 28
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  summary: Initializes the scene. Can be overridden in derived classes.
+  example: []
+  syntax:
+    content: protected override void Init()
+    content.vb: Protected Overrides Sub Init()
+  overridden: Sparkle.CSharp.Scenes.Scene.Init
+  overload: Sparkle.Test.CSharp.Dim3D.TestScene3D.Init*
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update(System.Double)
+  commentId: M:Sparkle.Test.CSharp.Dim3D.TestScene3D.Update(System.Double)
+  id: Update(System.Double)
+  parent: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: Update(double)
+  nameWithType: TestScene3D.Update(double)
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Update
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 142
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  summary: Updates all entities in the scene.
+  example: []
+  syntax:
+    content: protected override void Update(double delta)
+    parameters:
+    - id: delta
+      type: System.Double
+      description: The time elapsed since the last update.
+    content.vb: Protected Overrides Sub Update(delta As Double)
+  overridden: Sparkle.CSharp.Scenes.Scene.Update(System.Double)
+  overload: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update*
+  nameWithType.vb: TestScene3D.Update(Double)
+  fullName.vb: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update(Double)
+  name.vb: Update(Double)
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate(System.Double)
+  commentId: M:Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate(System.Double)
+  id: FixedUpdate(System.Double)
+  parent: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: FixedUpdate(double)
+  nameWithType: TestScene3D.FixedUpdate(double)
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate(double)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: FixedUpdate
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 211
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  summary: Performs a fixed update for the current scene, updating the simulation and invoking the fixed update for all entities.
+  example: []
+  syntax:
+    content: protected override void FixedUpdate(double timeStep)
+    parameters:
+    - id: timeStep
+      type: System.Double
+    content.vb: Protected Overrides Sub FixedUpdate(timeStep As Double)
+  overridden: Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)
+  overload: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate*
+  nameWithType.vb: TestScene3D.FixedUpdate(Double)
+  fullName.vb: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  id: Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.Test.CSharp.Dim3D.TestScene3D
+  langs:
+  - csharp
+  - vb
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: TestScene3D.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  type: Method
+  source:
+    remote:
+      path: src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Draw
+    path: ../src/Sparkle.Test/CSharp/Dim3D/TestScene3D.cs
+    startLine: 254
+  assemblies:
+  - Sparkle.Test
+  namespace: Sparkle.Test.CSharp.Dim3D
+  summary: Draws all entities in the scene.
+  example: []
+  syntax:
+    content: protected override void Draw(GraphicsContext context, Framebuffer framebuffer)
+    parameters:
+    - id: context
+      type: Sparkle.CSharp.Graphics.GraphicsContext
+      description: The graphics context.
+    - id: framebuffer
+      type: Veldrid.Framebuffer
+      description: The framebuffer to render into.
+    content.vb: Protected Overrides Sub Draw(context As GraphicsContext, framebuffer As Framebuffer)
+  overridden: Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  overload: Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw*
+references:
+- uid: Sparkle.Test.CSharp.Dim3D
+  commentId: N:Sparkle.Test.CSharp.Dim3D
+  href: Sparkle.html
+  name: Sparkle.Test.CSharp.Dim3D
+  nameWithType: Sparkle.Test.CSharp.Dim3D
+  fullName: Sparkle.Test.CSharp.Dim3D
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.Test
+    name: Test
+    href: Sparkle.Test.html
+  - name: .
+  - uid: Sparkle.Test.CSharp
+    name: CSharp
+    href: Sparkle.Test.CSharp.html
+  - name: .
+  - uid: Sparkle.Test.CSharp.Dim3D
+    name: Dim3D
+    href: Sparkle.Test.CSharp.Dim3D.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.Test
+    name: Test
+    href: Sparkle.Test.html
+  - name: .
+  - uid: Sparkle.Test.CSharp
+    name: CSharp
+    href: Sparkle.Test.CSharp.html
+  - name: .
+  - uid: Sparkle.Test.CSharp.Dim3D
+    name: Dim3D
+    href: Sparkle.Test.CSharp.Dim3D.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Bliss.CSharp.Disposable
+  commentId: T:Bliss.CSharp.Disposable
+  parent: Bliss.CSharp
+  isExternal: true
+  name: Disposable
+  nameWithType: Disposable
+  fullName: Bliss.CSharp.Disposable
+- uid: Sparkle.CSharp.Scenes.Scene
+  commentId: T:Sparkle.CSharp.Scenes.Scene
+  parent: Sparkle.CSharp.Scenes
+  href: Sparkle.CSharp.Scenes.Scene.html
+  name: Scene
+  nameWithType: Scene
+  fullName: Sparkle.CSharp.Scenes.Scene
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Sparkle.CSharp.Scenes.Scene.Name
+  commentId: P:Sparkle.CSharp.Scenes.Scene.Name
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Name
+  name: Name
+  nameWithType: Scene.Name
+  fullName: Sparkle.CSharp.Scenes.Scene.Name
+- uid: Sparkle.CSharp.Scenes.Scene.SceneType
+  commentId: P:Sparkle.CSharp.Scenes.Scene.SceneType
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_SceneType
+  name: SceneType
+  nameWithType: Scene.SceneType
+  fullName: Sparkle.CSharp.Scenes.Scene.SceneType
+- uid: Sparkle.CSharp.Scenes.Scene.Simulation
+  commentId: P:Sparkle.CSharp.Scenes.Scene.Simulation
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Simulation
+  name: Simulation
+  nameWithType: Scene.Simulation
+  fullName: Sparkle.CSharp.Scenes.Scene.Simulation
+- uid: Sparkle.CSharp.Scenes.Scene.Renderer
+  commentId: P:Sparkle.CSharp.Scenes.Scene.Renderer
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Renderer
+  name: Renderer
+  nameWithType: Scene.Renderer
+  fullName: Sparkle.CSharp.Scenes.Scene.Renderer
+- uid: Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer
+  commentId: P:Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Physics3DDebugDrawer
+  name: Physics3DDebugDrawer
+  nameWithType: Scene.Physics3DDebugDrawer
+  fullName: Sparkle.CSharp.Scenes.Scene.Physics3DDebugDrawer
+- uid: Sparkle.CSharp.Scenes.Scene.SpriteRenderer
+  commentId: P:Sparkle.CSharp.Scenes.Scene.SpriteRenderer
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_SpriteRenderer
+  name: SpriteRenderer
+  nameWithType: Scene.SpriteRenderer
+  fullName: Sparkle.CSharp.Scenes.Scene.SpriteRenderer
+- uid: Sparkle.CSharp.Scenes.Scene.FilterEffect
+  commentId: F:Sparkle.CSharp.Scenes.Scene.FilterEffect
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_FilterEffect
+  name: FilterEffect
+  nameWithType: Scene.FilterEffect
+  fullName: Sparkle.CSharp.Scenes.Scene.FilterEffect
+- uid: Sparkle.CSharp.Scenes.Scene.SkyBox
+  commentId: F:Sparkle.CSharp.Scenes.Scene.SkyBox
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_SkyBox
+  name: SkyBox
+  nameWithType: Scene.SkyBox
+  fullName: Sparkle.CSharp.Scenes.Scene.SkyBox
+- uid: Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AfterUpdate_System_Double_
+  name: AfterUpdate(double)
+  nameWithType: Scene.AfterUpdate(double)
+  fullName: Sparkle.CSharp.Scenes.Scene.AfterUpdate(double)
+  nameWithType.vb: Scene.AfterUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.AfterUpdate(Double)
+  name.vb: AfterUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.AfterUpdate(System.Double)
+    name: AfterUpdate
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AfterUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Resize_Bliss_CSharp_Transformations_Rectangle_
+  name: Resize(Rectangle)
+  nameWithType: Scene.Resize(Rectangle)
+  fullName: Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.Resize(Bliss.CSharp.Transformations.Rectangle)
+    name: Resize
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Resize_Bliss_CSharp_Transformations_Rectangle_
+  - name: (
+  - uid: Bliss.CSharp.Transformations.Rectangle
+    name: Rectangle
+    isExternal: true
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.GetEntities
+  commentId: M:Sparkle.CSharp.Scenes.Scene.GetEntities
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntities
+  name: GetEntities()
+  nameWithType: Scene.GetEntities()
+  fullName: Sparkle.CSharp.Scenes.Scene.GetEntities()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntities
+    name: GetEntities
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntities
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntities
+    name: GetEntities
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntities
+  - name: (
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntitiesWithTag_System_String_
+  name: GetEntitiesWithTag(string)
+  nameWithType: Scene.GetEntitiesWithTag(string)
+  fullName: Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(string)
+  nameWithType.vb: Scene.GetEntitiesWithTag(String)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(String)
+  name.vb: GetEntitiesWithTag(String)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)
+    name: GetEntitiesWithTag
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntitiesWithTag_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntitiesWithTag(System.String)
+    name: GetEntitiesWithTag
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntitiesWithTag_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_HasEntity_System_UInt32_
+  name: HasEntity(uint)
+  nameWithType: Scene.HasEntity(uint)
+  fullName: Sparkle.CSharp.Scenes.Scene.HasEntity(uint)
+  nameWithType.vb: Scene.HasEntity(UInteger)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.HasEntity(UInteger)
+  name.vb: HasEntity(UInteger)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)
+    name: HasEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_HasEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.HasEntity(System.UInt32)
+    name: HasEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_HasEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntity_System_UInt32_
+  name: GetEntity(uint)
+  nameWithType: Scene.GetEntity(uint)
+  fullName: Sparkle.CSharp.Scenes.Scene.GetEntity(uint)
+  nameWithType.vb: Scene.GetEntity(UInteger)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.GetEntity(UInteger)
+  name.vb: GetEntity(UInteger)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)
+    name: GetEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.GetEntity(System.UInt32)
+    name: GetEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_GetEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryGetEntity_System_UInt32_Sparkle_CSharp_Entities_Entity__
+  name: TryGetEntity(uint, out Entity)
+  nameWithType: Scene.TryGetEntity(uint, out Entity)
+  fullName: Sparkle.CSharp.Scenes.Scene.TryGetEntity(uint, out Sparkle.CSharp.Entities.Entity)
+  nameWithType.vb: Scene.TryGetEntity(UInteger, Entity)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.TryGetEntity(UInteger, Sparkle.CSharp.Entities.Entity)
+  name.vb: TryGetEntity(UInteger, Entity)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)
+    name: TryGetEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryGetEntity_System_UInt32_Sparkle_CSharp_Entities_Entity__
+  - name: (
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryGetEntity(System.UInt32,Sparkle.CSharp.Entities.Entity@)
+    name: TryGetEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryGetEntity_System_UInt32_Sparkle_CSharp_Entities_Entity__
+  - name: (
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: ','
+  - name: " "
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AddEntity_Sparkle_CSharp_Entities_Entity_
+  name: AddEntity(Entity)
+  nameWithType: Scene.AddEntity(Entity)
+  fullName: Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+    name: AddEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AddEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.AddEntity(Sparkle.CSharp.Entities.Entity)
+    name: AddEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_AddEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryAddEntity_Sparkle_CSharp_Entities_Entity_
+  name: TryAddEntity(Entity)
+  nameWithType: Scene.TryAddEntity(Entity)
+  fullName: Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+    name: TryAddEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryAddEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryAddEntity(Sparkle.CSharp.Entities.Entity)
+    name: TryAddEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryAddEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_Sparkle_CSharp_Entities_Entity_
+  name: RemoveEntity(Entity)
+  nameWithType: Scene.RemoveEntity(Entity)
+  fullName: Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+    name: RemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(Sparkle.CSharp.Entities.Entity)
+    name: RemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_Sparkle_CSharp_Entities_Entity_
+  name: TryRemoveEntity(Entity)
+  nameWithType: Scene.TryRemoveEntity(Entity)
+  fullName: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+    name: TryRemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(Sparkle.CSharp.Entities.Entity)
+    name: TryRemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_Sparkle_CSharp_Entities_Entity_
+  - name: (
+  - uid: Sparkle.CSharp.Entities.Entity
+    name: Entity
+    href: Sparkle.CSharp.Entities.Entity.html
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_System_UInt32_
+  name: RemoveEntity(uint)
+  nameWithType: Scene.RemoveEntity(uint)
+  fullName: Sparkle.CSharp.Scenes.Scene.RemoveEntity(uint)
+  nameWithType.vb: Scene.RemoveEntity(UInteger)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.RemoveEntity(UInteger)
+  name.vb: RemoveEntity(UInteger)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)
+    name: RemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.RemoveEntity(System.UInt32)
+    name: RemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_RemoveEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_System_UInt32_
+  name: TryRemoveEntity(uint)
+  nameWithType: Scene.TryRemoveEntity(uint)
+  fullName: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(uint)
+  nameWithType.vb: Scene.TryRemoveEntity(UInteger)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(UInteger)
+  name.vb: TryRemoveEntity(UInteger)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)
+    name: TryRemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.TryRemoveEntity(System.UInt32)
+    name: TryRemoveEntity
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_TryRemoveEntity_System_UInt32_
+  - name: (
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: )
+- uid: Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Dispose_System_Boolean_
+  name: Dispose(bool)
+  nameWithType: Scene.Dispose(bool)
+  fullName: Sparkle.CSharp.Scenes.Scene.Dispose(bool)
+  nameWithType.vb: Scene.Dispose(Boolean)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.Dispose(System.Boolean)
+    name: Dispose
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Dispose_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bliss.CSharp.Disposable.Dispose
+  commentId: M:Bliss.CSharp.Disposable.Dispose
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: Disposable.Dispose()
+  fullName: Bliss.CSharp.Disposable.Dispose()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.Dispose
+    name: Dispose
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+  commentId: M:Bliss.CSharp.Disposable.ThrowIfDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: ThrowIfDisposed()
+  nameWithType: Disposable.ThrowIfDisposed()
+  fullName: Bliss.CSharp.Disposable.ThrowIfDisposed()
+  spec.csharp:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bliss.CSharp.Disposable.ThrowIfDisposed
+    name: ThrowIfDisposed
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bliss.CSharp.Disposable.HasDisposed
+  commentId: P:Bliss.CSharp.Disposable.HasDisposed
+  parent: Bliss.CSharp.Disposable
+  isExternal: true
+  name: HasDisposed
+  nameWithType: Disposable.HasDisposed
+  fullName: Bliss.CSharp.Disposable.HasDisposed
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bliss.CSharp
+  commentId: N:Bliss.CSharp
+  isExternal: true
+  name: Bliss.CSharp
+  nameWithType: Bliss.CSharp
+  fullName: Bliss.CSharp
+  spec.csharp:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+  spec.vb:
+  - uid: Bliss
+    name: Bliss
+    isExternal: true
+  - name: .
+  - uid: Bliss.CSharp
+    name: CSharp
+    isExternal: true
+- uid: Sparkle.CSharp.Scenes
+  commentId: N:Sparkle.CSharp.Scenes
+  href: Sparkle.html
+  name: Sparkle.CSharp.Scenes
+  nameWithType: Sparkle.CSharp.Scenes
+  fullName: Sparkle.CSharp.Scenes
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Scenes
+    name: Scenes
+    href: Sparkle.CSharp.Scenes.html
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor*
+  commentId: Overload:Sparkle.Test.CSharp.Dim3D.TestScene3D.#ctor
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html#Sparkle_Test_CSharp_Dim3D_TestScene3D__ctor_System_String_
+  name: TestScene3D
+  nameWithType: TestScene3D.TestScene3D
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.TestScene3D
+  nameWithType.vb: TestScene3D.New
+  fullName.vb: Sparkle.Test.CSharp.Dim3D.TestScene3D.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Sparkle.CSharp.Scenes.Scene.Init
+  commentId: M:Sparkle.CSharp.Scenes.Scene.Init
+  parent: Sparkle.CSharp.Scenes.Scene
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Init
+  name: Init()
+  nameWithType: Scene.Init()
+  fullName: Sparkle.CSharp.Scenes.Scene.Init()
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.Init
+    name: Init
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Init
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.Init
+    name: Init
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Init
+  - name: (
+  - name: )
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Init*
+  commentId: Overload:Sparkle.Test.CSharp.Dim3D.TestScene3D.Init
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html#Sparkle_Test_CSharp_Dim3D_TestScene3D_Init
+  name: Init
+  nameWithType: TestScene3D.Init
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Init
+- uid: Sparkle.CSharp.Scenes.Scene.Update(System.Double)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.Update(System.Double)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Update_System_Double_
+  name: Update(double)
+  nameWithType: Scene.Update(double)
+  fullName: Sparkle.CSharp.Scenes.Scene.Update(double)
+  nameWithType.vb: Scene.Update(Double)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.Update(Double)
+  name.vb: Update(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.Update(System.Double)
+    name: Update
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Update_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update*
+  commentId: Overload:Sparkle.Test.CSharp.Dim3D.TestScene3D.Update
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html#Sparkle_Test_CSharp_Dim3D_TestScene3D_Update_System_Double_
+  name: Update
+  nameWithType: TestScene3D.Update
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Update
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_FixedUpdate_System_Double_
+  name: FixedUpdate(double)
+  nameWithType: Scene.FixedUpdate(double)
+  fullName: Sparkle.CSharp.Scenes.Scene.FixedUpdate(double)
+  nameWithType.vb: Scene.FixedUpdate(Double)
+  fullName.vb: Sparkle.CSharp.Scenes.Scene.FixedUpdate(Double)
+  name.vb: FixedUpdate(Double)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.FixedUpdate(System.Double)
+    name: FixedUpdate
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_FixedUpdate_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate*
+  commentId: Overload:Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html#Sparkle_Test_CSharp_Dim3D_TestScene3D_FixedUpdate_System_Double_
+  name: FixedUpdate
+  nameWithType: TestScene3D.FixedUpdate
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.FixedUpdate
+- uid: Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  commentId: M:Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+  parent: Sparkle.CSharp.Scenes.Scene
+  isExternal: true
+  href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw(GraphicsContext, Framebuffer)
+  nameWithType: Scene.Draw(GraphicsContext, Framebuffer)
+  fullName: Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext, Veldrid.Framebuffer)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+  spec.vb:
+  - uid: Sparkle.CSharp.Scenes.Scene.Draw(Sparkle.CSharp.Graphics.GraphicsContext,Veldrid.Framebuffer)
+    name: Draw
+    href: Sparkle.CSharp.Scenes.Scene.html#Sparkle_CSharp_Scenes_Scene_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  - name: (
+  - uid: Sparkle.CSharp.Graphics.GraphicsContext
+    name: GraphicsContext
+    href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  - name: ','
+  - name: " "
+  - uid: Veldrid.Framebuffer
+    name: Framebuffer
+    isExternal: true
+    href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  - name: )
+- uid: Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw*
+  commentId: Overload:Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw
+  href: Sparkle.Test.CSharp.Dim3D.TestScene3D.html#Sparkle_Test_CSharp_Dim3D_TestScene3D_Draw_Sparkle_CSharp_Graphics_GraphicsContext_Veldrid_Framebuffer_
+  name: Draw
+  nameWithType: TestScene3D.Draw
+  fullName: Sparkle.Test.CSharp.Dim3D.TestScene3D.Draw
+- uid: Sparkle.CSharp.Graphics.GraphicsContext
+  commentId: T:Sparkle.CSharp.Graphics.GraphicsContext
+  parent: Sparkle.CSharp.Graphics
+  href: Sparkle.CSharp.Graphics.GraphicsContext.html
+  name: GraphicsContext
+  nameWithType: GraphicsContext
+  fullName: Sparkle.CSharp.Graphics.GraphicsContext
+- uid: Veldrid.Framebuffer
+  commentId: T:Veldrid.Framebuffer
+  parent: Veldrid
+  isExternal: true
+  href: https://github.com/ppy/veldrid/blob/a405fe8484fa5384dfbd1faff58c74f717f46651/src/Veldrid/Framebuffer.cs
+  name: Framebuffer
+  nameWithType: Framebuffer
+  fullName: Veldrid.Framebuffer
+- uid: Sparkle.CSharp.Graphics
+  commentId: N:Sparkle.CSharp.Graphics
+  href: Sparkle.html
+  name: Sparkle.CSharp.Graphics
+  nameWithType: Sparkle.CSharp.Graphics
+  fullName: Sparkle.CSharp.Graphics
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Graphics
+    name: Graphics
+    href: Sparkle.CSharp.Graphics.html
+- uid: Veldrid
+  commentId: N:Veldrid
+  isExternal: true
+  name: Veldrid
+  nameWithType: Veldrid
+  fullName: Veldrid

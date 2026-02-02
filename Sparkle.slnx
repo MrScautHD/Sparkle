@@ -1,0 +1,6 @@
+<Solution>
+
+    <Project Path="src/Sparkle/Sparkle.csproj" />
+    <Project Path="src/Sparkle.Test/Sparkle.Test.csproj" />
+
+</Solution>

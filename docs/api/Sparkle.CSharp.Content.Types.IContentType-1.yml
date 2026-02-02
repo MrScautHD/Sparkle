@@ -1,0 +1,132 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  id: IContentType`1
+  parent: Sparkle.CSharp.Content.Types
+  children:
+  - Sparkle.CSharp.Content.Types.IContentType`1.Path
+  langs:
+  - csharp
+  - vb
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  type: Interface
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/IContentType.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: IContentType
+    path: ../src/Sparkle/CSharp/Content/Types/IContentType.cs
+    startLine: 2
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  syntax:
+    content: public interface IContentType<T>
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IContentType(Of T)
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+- uid: Sparkle.CSharp.Content.Types.IContentType`1.Path
+  commentId: P:Sparkle.CSharp.Content.Types.IContentType`1.Path
+  id: Path
+  parent: Sparkle.CSharp.Content.Types.IContentType`1
+  langs:
+  - csharp
+  - vb
+  name: Path
+  nameWithType: IContentType<T>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>.Path
+  type: Property
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Content/Types/IContentType.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Path
+    path: ../src/Sparkle/CSharp/Content/Types/IContentType.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Content.Types
+  summary: The file path of the content.
+  example: []
+  syntax:
+    content: string Path { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Path As String
+  overload: Sparkle.CSharp.Content.Types.IContentType`1.Path*
+  nameWithType.vb: IContentType(Of T).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T).Path
+references:
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  href: Sparkle.html
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Content
+    name: Content
+    href: Sparkle.CSharp.Content.html
+  - name: .
+  - uid: Sparkle.CSharp.Content.Types
+    name: Types
+    href: Sparkle.CSharp.Content.Types.html
+- uid: Sparkle.CSharp.Content.Types.IContentType`1.Path*
+  commentId: Overload:Sparkle.CSharp.Content.Types.IContentType`1.Path
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html#Sparkle_CSharp_Content_Types_IContentType_1_Path
+  name: Path
+  nameWithType: IContentType<T>.Path
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>.Path
+  nameWithType.vb: IContentType(Of T).Path
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T).Path
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

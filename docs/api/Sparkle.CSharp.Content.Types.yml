@@ -1,0 +1,77 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Content.Types
+  commentId: N:Sparkle.CSharp.Content.Types
+  id: Sparkle.CSharp.Content.Types
+  children:
+  - Sparkle.CSharp.Content.Types.AudioClipContent
+  - Sparkle.CSharp.Content.Types.CubemapContent
+  - Sparkle.CSharp.Content.Types.FontContent
+  - Sparkle.CSharp.Content.Types.IContentType`1
+  - Sparkle.CSharp.Content.Types.ModelContent
+  - Sparkle.CSharp.Content.Types.TextureContent
+  langs:
+  - csharp
+  - vb
+  name: Sparkle.CSharp.Content.Types
+  nameWithType: Sparkle.CSharp.Content.Types
+  fullName: Sparkle.CSharp.Content.Types
+  type: Namespace
+  assemblies:
+  - Sparkle
+references:
+- uid: Sparkle.CSharp.Content.Types.AudioClipContent
+  commentId: T:Sparkle.CSharp.Content.Types.AudioClipContent
+  href: Sparkle.CSharp.Content.Types.AudioClipContent.html
+  name: AudioClipContent
+  nameWithType: AudioClipContent
+  fullName: Sparkle.CSharp.Content.Types.AudioClipContent
+- uid: Sparkle.CSharp.Content.Types.CubemapContent
+  commentId: T:Sparkle.CSharp.Content.Types.CubemapContent
+  href: Sparkle.CSharp.Content.Types.CubemapContent.html
+  name: CubemapContent
+  nameWithType: CubemapContent
+  fullName: Sparkle.CSharp.Content.Types.CubemapContent
+- uid: Sparkle.CSharp.Content.Types.FontContent
+  commentId: T:Sparkle.CSharp.Content.Types.FontContent
+  href: Sparkle.CSharp.Content.Types.FontContent.html
+  name: FontContent
+  nameWithType: FontContent
+  fullName: Sparkle.CSharp.Content.Types.FontContent
+- uid: Sparkle.CSharp.Content.Types.IContentType`1
+  commentId: T:Sparkle.CSharp.Content.Types.IContentType`1
+  href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  name: IContentType<T>
+  nameWithType: IContentType<T>
+  fullName: Sparkle.CSharp.Content.Types.IContentType<T>
+  nameWithType.vb: IContentType(Of T)
+  fullName.vb: Sparkle.CSharp.Content.Types.IContentType(Of T)
+  name.vb: IContentType(Of T)
+  spec.csharp:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Sparkle.CSharp.Content.Types.IContentType`1
+    name: IContentType
+    href: Sparkle.CSharp.Content.Types.IContentType-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Sparkle.CSharp.Content.Types.ModelContent
+  commentId: T:Sparkle.CSharp.Content.Types.ModelContent
+  href: Sparkle.CSharp.Content.Types.ModelContent.html
+  name: ModelContent
+  nameWithType: ModelContent
+  fullName: Sparkle.CSharp.Content.Types.ModelContent
+- uid: Sparkle.CSharp.Content.Types.TextureContent
+  commentId: T:Sparkle.CSharp.Content.Types.TextureContent
+  href: Sparkle.CSharp.Content.Types.TextureContent.html
+  name: TextureContent
+  nameWithType: TextureContent
+  fullName: Sparkle.CSharp.Content.Types.TextureContent

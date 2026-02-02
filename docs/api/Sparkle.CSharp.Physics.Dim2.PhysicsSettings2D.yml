@@ -1,0 +1,423 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  id: PhysicsSettings2D
+  parent: Sparkle.CSharp.Physics.Dim2
+  children:
+  - Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor
+  - Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.SubStepCount
+  - Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.WorldDef
+  langs:
+  - csharp
+  - vb
+  name: PhysicsSettings2D
+  nameWithType: PhysicsSettings2D
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  type: Struct
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: PhysicsSettings2D
+    path: ../src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+    startLine: 4
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2
+  syntax:
+    content: public struct PhysicsSettings2D
+    content.vb: Public Structure PhysicsSettings2D
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.WorldDef
+  commentId: F:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.WorldDef
+  id: WorldDef
+  parent: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  langs:
+  - csharp
+  - vb
+  name: WorldDef
+  nameWithType: PhysicsSettings2D.WorldDef
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.WorldDef
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: WorldDef
+    path: ../src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+    startLine: 9
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2
+  summary: The definition of the physics world, including its properties and settings.
+  example: []
+  syntax:
+    content: public WorldDef WorldDef
+    return:
+      type: Box2D.WorldDef
+    content.vb: Public WorldDef As WorldDef
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.SubStepCount
+  commentId: F:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.SubStepCount
+  id: SubStepCount
+  parent: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  langs:
+  - csharp
+  - vb
+  name: SubStepCount
+  nameWithType: PhysicsSettings2D.SubStepCount
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.SubStepCount
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: SubStepCount
+    path: ../src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+    startLine: 14
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2
+  summary: The number of substeps used for physics simulations in a single timestep.
+  example: []
+  syntax:
+    content: public int SubStepCount
+    return:
+      type: System.Int32
+    content.vb: Public SubStepCount As Integer
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor
+  commentId: M:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor
+  id: '#ctor'
+  parent: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  langs:
+  - csharp
+  - vb
+  name: PhysicsSettings2D()
+  nameWithType: PhysicsSettings2D.PhysicsSettings2D()
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.PhysicsSettings2D()
+  type: Constructor
+  source:
+    remote:
+      path: src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: .ctor
+    path: ../src/Sparkle/CSharp/Physics/Dim2/PhysicsSettings2D.cs
+    startLine: 19
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.Physics.Dim2
+  summary: Initializes a new instance of the <xref href="Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D" data-throw-if-not-resolved="false"></xref> struct with default values.
+  example: []
+  syntax:
+    content: public PhysicsSettings2D()
+    content.vb: Public Sub New()
+  overload: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor*
+  nameWithType.vb: PhysicsSettings2D.New()
+  fullName.vb: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.New()
+  name.vb: New()
+references:
+- uid: Sparkle.CSharp.Physics.Dim2
+  commentId: N:Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.html
+  name: Sparkle.CSharp.Physics.Dim2
+  nameWithType: Sparkle.CSharp.Physics.Dim2
+  fullName: Sparkle.CSharp.Physics.Dim2
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics
+    name: Physics
+    href: Sparkle.CSharp.Physics.html
+  - name: .
+  - uid: Sparkle.CSharp.Physics.Dim2
+    name: Dim2
+    href: Sparkle.CSharp.Physics.Dim2.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Box2D.WorldDef
+  commentId: T:Box2D.WorldDef
+  parent: Box2D
+  isExternal: true
+  name: WorldDef
+  nameWithType: WorldDef
+  fullName: Box2D.WorldDef
+- uid: Box2D
+  commentId: N:Box2D
+  isExternal: true
+  name: Box2D
+  nameWithType: Box2D
+  fullName: Box2D
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  commentId: T:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+  parent: Sparkle.CSharp.Physics.Dim2
+  href: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.html
+  name: PhysicsSettings2D
+  nameWithType: PhysicsSettings2D
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D
+- uid: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor*
+  commentId: Overload:Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.#ctor
+  href: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.html#Sparkle_CSharp_Physics_Dim2_PhysicsSettings2D__ctor
+  name: PhysicsSettings2D
+  nameWithType: PhysicsSettings2D.PhysicsSettings2D
+  fullName: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.PhysicsSettings2D
+  nameWithType.vb: PhysicsSettings2D.New
+  fullName.vb: Sparkle.CSharp.Physics.Dim2.PhysicsSettings2D.New
+  name.vb: New

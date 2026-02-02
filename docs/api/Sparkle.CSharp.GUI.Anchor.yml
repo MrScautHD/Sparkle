@@ -1,0 +1,327 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sparkle.CSharp.GUI.Anchor
+  commentId: T:Sparkle.CSharp.GUI.Anchor
+  id: Anchor
+  parent: Sparkle.CSharp.GUI
+  children:
+  - Sparkle.CSharp.GUI.Anchor.BottomCenter
+  - Sparkle.CSharp.GUI.Anchor.BottomLeft
+  - Sparkle.CSharp.GUI.Anchor.BottomRight
+  - Sparkle.CSharp.GUI.Anchor.Center
+  - Sparkle.CSharp.GUI.Anchor.CenterLeft
+  - Sparkle.CSharp.GUI.Anchor.CenterRight
+  - Sparkle.CSharp.GUI.Anchor.TopCenter
+  - Sparkle.CSharp.GUI.Anchor.TopLeft
+  - Sparkle.CSharp.GUI.Anchor.TopRight
+  langs:
+  - csharp
+  - vb
+  name: Anchor
+  nameWithType: Anchor
+  fullName: Sparkle.CSharp.GUI.Anchor
+  type: Enum
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Anchor
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 2
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  syntax:
+    content: public enum Anchor
+    content.vb: Public Enum Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.TopLeft
+  commentId: F:Sparkle.CSharp.GUI.Anchor.TopLeft
+  id: TopLeft
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: TopLeft
+  nameWithType: Anchor.TopLeft
+  fullName: Sparkle.CSharp.GUI.Anchor.TopLeft
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TopLeft
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 7
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the top-left corner.
+  example: []
+  syntax:
+    content: TopLeft = 0
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.TopCenter
+  commentId: F:Sparkle.CSharp.GUI.Anchor.TopCenter
+  id: TopCenter
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: TopCenter
+  nameWithType: Anchor.TopCenter
+  fullName: Sparkle.CSharp.GUI.Anchor.TopCenter
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TopCenter
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 12
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the top-center edge.
+  example: []
+  syntax:
+    content: TopCenter = 1
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.TopRight
+  commentId: F:Sparkle.CSharp.GUI.Anchor.TopRight
+  id: TopRight
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: TopRight
+  nameWithType: Anchor.TopRight
+  fullName: Sparkle.CSharp.GUI.Anchor.TopRight
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: TopRight
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 17
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the top-right corner.
+  example: []
+  syntax:
+    content: TopRight = 2
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.CenterLeft
+  commentId: F:Sparkle.CSharp.GUI.Anchor.CenterLeft
+  id: CenterLeft
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: CenterLeft
+  nameWithType: Anchor.CenterLeft
+  fullName: Sparkle.CSharp.GUI.Anchor.CenterLeft
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CenterLeft
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 22
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the center-left edge.
+  example: []
+  syntax:
+    content: CenterLeft = 3
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.Center
+  commentId: F:Sparkle.CSharp.GUI.Anchor.Center
+  id: Center
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: Center
+  nameWithType: Anchor.Center
+  fullName: Sparkle.CSharp.GUI.Anchor.Center
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: Center
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 27
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the center of its bounds.
+  example: []
+  syntax:
+    content: Center = 4
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.CenterRight
+  commentId: F:Sparkle.CSharp.GUI.Anchor.CenterRight
+  id: CenterRight
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: CenterRight
+  nameWithType: Anchor.CenterRight
+  fullName: Sparkle.CSharp.GUI.Anchor.CenterRight
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: CenterRight
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 32
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the center-right edge.
+  example: []
+  syntax:
+    content: CenterRight = 5
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.BottomLeft
+  commentId: F:Sparkle.CSharp.GUI.Anchor.BottomLeft
+  id: BottomLeft
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: BottomLeft
+  nameWithType: Anchor.BottomLeft
+  fullName: Sparkle.CSharp.GUI.Anchor.BottomLeft
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BottomLeft
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 37
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the bottom-left corner.
+  example: []
+  syntax:
+    content: BottomLeft = 6
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.BottomCenter
+  commentId: F:Sparkle.CSharp.GUI.Anchor.BottomCenter
+  id: BottomCenter
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: BottomCenter
+  nameWithType: Anchor.BottomCenter
+  fullName: Sparkle.CSharp.GUI.Anchor.BottomCenter
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BottomCenter
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 42
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the bottom-center edge.
+  example: []
+  syntax:
+    content: BottomCenter = 7
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+- uid: Sparkle.CSharp.GUI.Anchor.BottomRight
+  commentId: F:Sparkle.CSharp.GUI.Anchor.BottomRight
+  id: BottomRight
+  parent: Sparkle.CSharp.GUI.Anchor
+  langs:
+  - csharp
+  - vb
+  name: BottomRight
+  nameWithType: Anchor.BottomRight
+  fullName: Sparkle.CSharp.GUI.Anchor.BottomRight
+  type: Field
+  source:
+    remote:
+      path: src/Sparkle/CSharp/GUI/Anchor.cs
+      branch: main
+      repo: https://github.com/MrScautHD/Sparkle.git
+    id: BottomRight
+    path: ../src/Sparkle/CSharp/GUI/Anchor.cs
+    startLine: 47
+  assemblies:
+  - Sparkle
+  namespace: Sparkle.CSharp.GUI
+  summary: Anchors the element to the bottom-right corner.
+  example: []
+  syntax:
+    content: BottomRight = 8
+    return:
+      type: Sparkle.CSharp.GUI.Anchor
+references:
+- uid: Sparkle.CSharp.GUI
+  commentId: N:Sparkle.CSharp.GUI
+  href: Sparkle.html
+  name: Sparkle.CSharp.GUI
+  nameWithType: Sparkle.CSharp.GUI
+  fullName: Sparkle.CSharp.GUI
+  spec.csharp:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+  spec.vb:
+  - uid: Sparkle
+    name: Sparkle
+    href: Sparkle.html
+  - name: .
+  - uid: Sparkle.CSharp
+    name: CSharp
+    href: Sparkle.CSharp.html
+  - name: .
+  - uid: Sparkle.CSharp.GUI
+    name: GUI
+    href: Sparkle.CSharp.GUI.html
+- uid: Sparkle.CSharp.GUI.Anchor
+  commentId: T:Sparkle.CSharp.GUI.Anchor
+  parent: Sparkle.CSharp.GUI
+  href: Sparkle.CSharp.GUI.Anchor.html
+  name: Anchor
+  nameWithType: Anchor
+  fullName: Sparkle.CSharp.GUI.Anchor
