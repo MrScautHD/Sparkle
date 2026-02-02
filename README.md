@@ -34,7 +34,7 @@ dotnet add package Sparkle --version [VERSION]
 ---
 
 # ⭐ Getting Started
-> Explore our [Documentation](https://github.com/MrScautHD/Sparkle/wiki/Getting-Started) to kick off smoothly.
+> Explore our [Documentation](https://mrscauthd.github.io/Bliss/) to kick off smoothly.
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
