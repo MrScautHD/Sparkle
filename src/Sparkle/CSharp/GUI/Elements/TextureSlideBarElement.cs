@@ -85,8 +85,9 @@ public class TextureSlideBarElement : GuiElement {
     /// handling dragging behavior, and updating the current value based on user input.
     /// </summary>
     /// <param name="delta">The time elapsed since the last update, in seconds.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
+        base.Update(delta, ref interactionHandled);
         
         if (this.Interactable) {
             if (this.IsClicked) {

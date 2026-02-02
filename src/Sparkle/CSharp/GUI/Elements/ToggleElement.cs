@@ -60,9 +60,10 @@ public class ToggleElement : GuiElement {
     /// Updates the toggle state each frame.
     /// </summary>
     /// <param name="delta">The elapsed time since the last frame.</param>
-    protected internal override void Update(double delta) {
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
         this.Size = this.CalculateSize(this.ToggleData, this.LabelData, this.BoxTextSpacing);
-        base.Update(delta);
+        base.Update(delta, ref interactionHandled);
         
         if (this.Interactable) {
             if (this.IsClicked) {

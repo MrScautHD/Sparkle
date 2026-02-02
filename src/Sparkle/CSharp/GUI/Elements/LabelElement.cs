@@ -31,9 +31,10 @@ public class LabelElement : GuiElement {
     /// Updates the state of the LabelElement during each frame with the given time delta.
     /// </summary>
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
-    protected internal override void Update(double delta) {
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
         this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, Vector2.One, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
-        base.Update(delta);
+        base.Update(delta, ref interactionHandled);
     }
     
     /// <summary>

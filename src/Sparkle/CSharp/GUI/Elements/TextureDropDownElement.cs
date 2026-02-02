@@ -177,8 +177,9 @@ public class TextureDropDownElement : GuiElement {
     /// and selecting options, and managing the visibility of the dropdown menu.
     /// </summary>
     /// <param name="delta">The time elapsed since the last update, in seconds, used for timing-related logic.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
+        base.Update(delta, ref interactionHandled);
         
         // Arrow animation.
         float targetRotation = this.IsMenuOpen ? MathF.PI : 0.0F;
@@ -409,10 +410,11 @@ public class TextureDropDownElement : GuiElement {
         
         // We calculate the position based on the field size only, ignoring the extra height from the open menu.
         Vector2 pos = Vector2.Zero;
-        Vector2 fieldScaledSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+        int scaleFactor = this.Gui.ScaleFactor;
+        Vector2 fieldScaledSize = this.Size * this.Scale * scaleFactor;
         
-        float width = GlobalGraphicsAssets.Window.GetWidth();
-        float height = GlobalGraphicsAssets.Window.GetHeight();
+        float width = MathF.Floor((float) GlobalGraphicsAssets.Window.GetWidth() / scaleFactor) * scaleFactor;
+        float height = MathF.Floor((float) GlobalGraphicsAssets.Window.GetHeight() / scaleFactor) * scaleFactor;
         
         switch (this.AnchorPoint) {
             case Anchor.TopLeft:
@@ -455,9 +457,12 @@ public class TextureDropDownElement : GuiElement {
                 break;
         }
         
-        pos += (this.Offset * this.Gui.ScaleFactor) + this.Origin;
+        Vector2 finalPos = pos + (this.Offset * scaleFactor) + this.Origin;
         
-        return pos;
+        return new Vector2(
+            MathF.Floor(finalPos.X / scaleFactor) * scaleFactor,
+            MathF.Floor(finalPos.Y / scaleFactor) * scaleFactor
+        );
     }
     
     /// <summary>

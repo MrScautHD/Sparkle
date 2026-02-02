@@ -117,8 +117,9 @@ public class TextureTextBoxElement : GuiElement {
     /// Updates the state of the <see cref="TextureTextBoxElement"/>.
     /// </summary>
     /// <param name="delta">Elapsed time in seconds since the last update.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
+        base.Update(delta, ref interactionHandled);
         
         // Enable text input system.
         if (this.IsSelected) {

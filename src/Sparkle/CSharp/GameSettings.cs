@@ -10,16 +10,16 @@ public struct GameSettings {
     /// The title of the game window.
     /// </summary>
     public string Title { get; init; }
-    
+
     /// <summary>
-    /// The width of the game window in pixels.
+    /// The dimensions of the game window, defined as a tuple containing the width and height in pixels.
     /// </summary>
-    public int Width { get; init; }
-    
+    public (int Width, int Height) Size { get; init; }
+
     /// <summary>
-    /// The height of the game window in pixels.
+    /// The minimum allowed dimensions for the game window, defined as a tuple of width and height.
     /// </summary>
-    public int Height { get; init; }
+    public (int Width, int Height) MinSize { get; init; }
     
     /// <summary>
     /// The file path to the icon used for the game window.
@@ -66,8 +66,8 @@ public struct GameSettings {
     /// </summary>
     public GameSettings() {
         this.Title = Assembly.GetEntryAssembly()?.GetName().Name ?? "Sparkle";
-        this.Width = 1280;
-        this.Height = 720;
+        this.Size = (1280, 720);
+        this.MinSize = (640, 480);
         this.IconPath = string.Empty;
         this.LogDirectory = "logs";
         this.TargetFps = 0;

@@ -50,9 +50,11 @@ public abstract class Gui : Disposable {
     /// </summary>
     /// <param name="delta">Elapsed time since the last frame in seconds.</param>
     protected internal virtual void Update(double delta) {
-        foreach (GuiElement element in this._elements.Values) {
+        bool interactionHandled = false;
+        
+        foreach (GuiElement element in this._elements.Values.Reverse()) {
             if (element.Enabled) {
-                element.Update(delta);
+                element.Update(delta, ref interactionHandled);
             }
         }
     }

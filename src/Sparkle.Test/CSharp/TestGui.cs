@@ -2,6 +2,8 @@ using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Mice.Cursors;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -139,7 +141,7 @@ public class TestGui : Gui {
             4,
             Anchor.CenterLeft,
             new Vector2(40, 0),
-            size: new Vector2(140.5F, 30),
+            size: new Vector2(140F, 30),
             rotation: 0,
             scale: new Vector2(2, 2),
             fieldTextOffset: new Vector2(10, 1),
@@ -161,6 +163,62 @@ public class TestGui : Gui {
         };
         
         this.AddElement("Texture-Drop-Down", dropDownElement);
+        
+        
+        // TWO
+        TextureDropDownElement dropDownElement2 = new TextureDropDownElement(
+            textureDropDownData,
+            options,
+            4,
+            Anchor.CenterLeft,
+            new Vector2(80, -70),
+            size: new Vector2(140F, 30),
+            rotation: 0,
+            scale: new Vector2(2, 2),
+            fieldTextOffset: new Vector2(10, 1),
+            menuTextOffset: new Vector2(10, 1),
+            menuTextAlignment: TextAlignment.Left,
+            sliderOffset: new Vector2(-1F, 0),
+            scrollMaskInsets: (3, 3)
+        );
+        
+        dropDownElement2.MenuToggled += (isMenuOpen) => {
+            if (isMenuOpen) {
+                if (dropDownElement2.Options.Count > dropDownElement2.MaxVisibleOptions) {
+                    dropDownElement2.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+                } 
+            }
+            else {
+                dropDownElement2.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+            }
+        };
+        
+        this.AddElement("Texture-Drop-Down2", dropDownElement2);
+    }
+
+    protected override void Update(double delta) {
+        base.Update(delta);
+        
+        // Set the cursor state. // !WARNING! It's not recommended to create a cursor every tick!
+        //foreach (GuiElement element in this.GetElements()) {
+        //    if (element.IsHovered) {
+        //        if (element is TextureTextBoxElement textBoxElement) {
+        //            if (textBoxElement.IsSelected) {
+        //                Input.SetMouseCursor(new Sdl3Cursor(SystemCursor.Text));
+        //            }
+        //            else {
+        //                Input.SetMouseCursor(new Sdl3Cursor(SystemCursor.Pointer));
+        //            }
+        //        }
+        //        else {
+        //            Input.SetMouseCursor(new Sdl3Cursor(SystemCursor.Pointer));
+        //        }
+        //        break;
+        //    }
+        //    else {
+        //        Input.SetMouseCursor(new Sdl3Cursor(SystemCursor.Default));
+        //    }
+        //}
     }
     
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {

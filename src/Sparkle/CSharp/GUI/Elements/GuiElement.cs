@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Interact.Mice.Cursors;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrid;
@@ -117,14 +118,16 @@ public abstract class GuiElement {
     /// Updates the state of the GuiElement during each frame with the given time delta.
     /// </summary>
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
-    protected internal virtual void Update(double delta) {
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal virtual void Update(double delta, ref bool interactionHandled) {
         this.ScaledSize = this.CalculateSize();
         this.Position = this.CalculatePos();
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         
-        if (rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
+        if (!interactionHandled && rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
             this.IsHovered = true;
+            interactionHandled = true;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Interactable) {
                 if (this._clickFunc?.Invoke(this) ?? true) {

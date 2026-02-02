@@ -82,8 +82,9 @@ public class RectangleSlideBarElement : GuiElement {
     /// Updates the visual state and properties of the rectangle slide bar element based on time delta and user interactions.
     /// </summary>
     /// <param name="delta">The elapsed time, in seconds, since the last update, used for time-based calculations or animations.</param>
-    protected internal override void Update(double delta) {
-        base.Update(delta);
+    /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
+    protected internal override void Update(double delta, ref bool interactionHandled) {
+        base.Update(delta, ref interactionHandled);
         
         if (this.Interactable) {
             if (this.IsClicked) {
