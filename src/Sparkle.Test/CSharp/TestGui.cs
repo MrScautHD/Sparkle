@@ -221,6 +221,7 @@ public class TestGui : Gui {
     }
     
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        //GuiManager.Scale = 1.5F;
         
         // Draw background.
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
