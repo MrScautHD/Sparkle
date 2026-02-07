@@ -155,7 +155,7 @@ public class TestGui : Gui {
             if (isMenuOpen) {
                 if (dropDownElement.Options.Count > dropDownElement.MaxVisibleOptions) {
                     dropDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
-                } 
+                }
             }
             else {
                 dropDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
@@ -164,35 +164,40 @@ public class TestGui : Gui {
         
         this.AddElement("Texture-Drop-Down", dropDownElement);
         
-        // TWO
-        TextureDropDownElement dropDownElement2 = new TextureDropDownElement(
-            textureDropDownData,
-            options,
-            4,
-            Anchor.CenterLeft,
-            new Vector2(40, -70),
-            size: new Vector2(140F, 30),
-            rotation: 0,
-            scale: new Vector2(2, 2),
-            fieldTextOffset: new Vector2(10, 1),
-            menuTextOffset: new Vector2(10, 1),
-            menuTextAlignment: TextAlignment.Left,
-            sliderOffset: new Vector2(-1F, 0),
-            scrollMaskInsets: (3, 3)
-        );
-        
-        dropDownElement2.MenuToggled += (isMenuOpen) => {
-            if (isMenuOpen) {
-                if (dropDownElement2.Options.Count > dropDownElement2.MaxVisibleOptions) {
-                    dropDownElement2.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
-                } 
-            }
-            else {
-                dropDownElement2.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
-            }
+        // Rectangle drop down element.
+        RectangleDropDownData rectangleDropDownData = new RectangleDropDownData() {
+            FieldOutlineThickness = 4,
+            MenuOutlineThickness = 4,
+            SliderOutlineThickness = 4,
+            SliderSize = new Vector2(18, 18)
         };
         
-        this.AddElement("Texture-Drop-Down2", dropDownElement2);
+        List<LabelData> rectOptions = [
+            new LabelData(ContentRegistry.Fontoe, "Option 1", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 2", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 3", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 4", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 5", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 6", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 7", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 8", 18),
+            new LabelData(ContentRegistry.Fontoe, "Option 9", 18)
+        ];
+
+        RectangleDropDownElement rectangleDropDownElement = new RectangleDropDownElement(
+            rectangleDropDownData,
+            rectOptions,
+            4,
+            Anchor.CenterLeft,
+            new Vector2(40, -80),
+            new Vector2(140, 30),
+            new Vector2(2, 2),
+            rotation: 0,
+            fieldTextOffset: new Vector2(10, 0),
+            menuTextOffset: new Vector2(10, 0)
+        );
+        
+        this.AddElement("Rectangle-Drop-Down", rectangleDropDownElement);
     }
 
     protected override void Update(double delta) {

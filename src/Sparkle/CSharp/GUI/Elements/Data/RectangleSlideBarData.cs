@@ -168,6 +168,7 @@ public class RectangleSlideBarData {
         this.BarOutlineColor = barOutlineColor ?? Color.DarkGray;
         this.BarOutlineHoverColor = barOutlineHoverColor ?? this.BarOutlineColor;
         this.DisabledBarOutlineColor = disabledBarOutlineColor ?? Color.DarkGray;
+        
         this.FilledBarColor = filledBarColor ?? Color.White;
         this.FilledBarHoverColor = filledBarHoverColor ?? this.FilledBarColor;
         this.DisabledFilledBarColor = disabledFilledBarColor ?? Color.Gray;
@@ -175,6 +176,7 @@ public class RectangleSlideBarData {
         this.FilledBarOutlineColor = filledBarOutlineColor ?? Color.DarkGray;
         this.FilledBarOutlineHoverColor = filledBarOutlineHoverColor ?? this.FilledBarOutlineColor;
         this.DisabledFilledBarOutlineColor = disabledFilledBarOutlineColor ?? Color.DarkGray;
+        
         this.SliderColor = sliderColor ?? Color.LightGray;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
         this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;

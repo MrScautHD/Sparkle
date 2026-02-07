@@ -1,23 +1,22 @@
 ﻿using System.Numerics;
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
-using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrid;
-using Color = Bliss.CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
-public class TextureDropDownElement : GuiElement {
+public class RectangleDropDownElement : GuiElement {
     
     /// <summary>
-    /// The visual and texture configuration used to render the dropdown field and menu.
+    /// The data used to configure and customize the behavior and appearance of the dropdown element.
     /// </summary>
-    public TextureDropDownData DropDownData { get; private set; }
+    public RectangleDropDownData DropDownData { get; private set; }
     
     /// <summary>
     /// The list of selectable options displayed in the dropdown menu.
@@ -53,21 +52,11 @@ public class TextureDropDownElement : GuiElement {
     /// The offset applied to the text displayed in the dropdown menu items.
     /// </summary>
     public Vector2 MenuTextOffset;
-
-    /// <summary>
-    /// The offset applied to the slider element used within the dropdown component.
-    /// </summary>
-    public Vector2 SliderOffset;
     
     /// <summary>
     /// The offset applied to the dropdown arrow indicator.
     /// </summary>
     public Vector2 ArrowOffset;
-    
-    /// <summary>
-    /// The insets applied to the scroll mask for controlling the visible region of the dropdown menu's scrollable content.
-    /// </summary>
-    public (float Top, float Bottom) ScrollMaskInsets;
     
     /// <summary>
     /// The sensitivity of the dropdown scroll when navigating through options.
@@ -88,7 +77,7 @@ public class TextureDropDownElement : GuiElement {
     /// Triggered when the selected option in the dropdown menu changes.
     /// </summary>
     public event Action<LabelData>? OptionChanged;
-
+    
     /// <summary>
     /// Event triggered when the dropdown menu is toggled open or closed.
     /// </summary>
@@ -115,47 +104,43 @@ public class TextureDropDownElement : GuiElement {
     private bool _isDraggingSlider;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="TextureDropDownElement"/> class.
+    /// Initializes a new instance of the <see cref="RectangleDropDownElement"/> class.
     /// </summary>
-    /// <param name="dropDownData">The visual and texture data used to render the dropdown field and menu.</param>
-    /// <param name="options">The list of label data entries representing selectable options.</param>
-    /// <param name="maxVisibleOptions">The maximum number of options visible in the dropdown menu at a time.</param>
-    /// <param name="anchor">The anchor point used to position the dropdown element.</param>
-    /// <param name="offset">The offset from the anchor position.</param>
-    /// <param name="fieldTextAlignment">The text alignment used for the selected value displayed in the field.</param>
-    /// <param name="menuTextAlignment">The text alignment used for options displayed in the dropdown menu.</param>
-    /// <param name="fieldTextOffset">The offset applied to the field text.</param>
-    /// <param name="menuTextOffset">The offset applied to the menu option text.</param>
-    /// <param name="sliderOffset">An optional offset applied to the position of the slider within the dropdown menu.</param>
-    /// <param name="arrowOffset">The offset applied to the dropdown arrow indicator.</param>
-    /// <param name="scrollMaskInsets">Defines top and bottom padding for the scroll text clipping mask.</param>
-    /// <param name="scrollSensitivity">Indicates how sensitive the dropdown menu scrolling is to user input.</param>
-    /// <param name="scrollLerpSpeed">Specifies the speed at which the dropdown menu's scroll position interpolates to the target position.</param>
-    /// <param name="size">The size of the dropdown element.</param>
-    /// <param name="scale">Optional scale applied to the dropdown element.</param>
-    /// <param name="origin">Optional origin point used for rotation and alignment.</param>
-    /// <param name="rotation">The rotation of the dropdown element in radians.</param>
-    /// <param name="clickFunc">Optional function invoked when the dropdown field is clicked.</param>
-    public TextureDropDownElement(
-        TextureDropDownData dropDownData,
+    /// <param name="dropDownData">Visual styling data for the dropdown.</param>
+    /// <param name="options">List of selectable options.</param>
+    /// <param name="maxVisibleOptions">Maximum number of visible menu items.</param>
+    /// <param name="anchor">Anchor point of the element.</param>
+    /// <param name="offset">Offset from the anchor.</param>
+    /// <param name="size">Size of the dropdown field.</param>
+    /// <param name="scale">Optional scale override.</param>
+    /// <param name="fieldTextAlignment">Alignment of the selected field text.</param>
+    /// <param name="menuTextAlignment">Alignment of menu option text.</param>
+    /// <param name="fieldTextOffset">Offset applied to field text.</param>
+    /// <param name="menuTextOffset">Offset applied to menu text.</param>
+    /// <param name="arrowOffset">Offset applied to the dropdown arrow.</param>
+    /// <param name="scrollSensitivity">Mouse wheel scroll sensitivity.</param>
+    /// <param name="scrollLerpSpeed">Smooth scroll interpolation speed.</param>
+    /// <param name="origin">Origin point for rotation and scaling.</param>
+    /// <param name="rotation">Initial rotation in degrees.</param>
+    /// <param name="clickFunc">Optional custom click handler.</param>
+    public RectangleDropDownElement(
+        RectangleDropDownData dropDownData,
         List<LabelData> options,
         int maxVisibleOptions,
         Anchor anchor,
         Vector2 offset,
+        Vector2 size,
+        Vector2? scale = null,
         TextAlignment fieldTextAlignment = TextAlignment.Left,
         TextAlignment menuTextAlignment = TextAlignment.Left,
         Vector2? fieldTextOffset = null,
         Vector2? menuTextOffset = null,
-        Vector2? sliderOffset = null,
         Vector2? arrowOffset = null,
-        (float Top, float Bottom)? scrollMaskInsets = null,
         float scrollSensitivity = 0.1F,
         float scrollLerpSpeed = 10.0F,
-        Vector2? size = null,
-        Vector2? scale = null,
         Vector2? origin = null,
-        float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        float rotation = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
@@ -164,19 +149,16 @@ public class TextureDropDownElement : GuiElement {
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
         this.MenuTextOffset = menuTextOffset ?? Vector2.Zero;
-        this.SliderOffset = sliderOffset ?? Vector2.Zero;
         this.ArrowOffset = arrowOffset ?? new Vector2(10.0F, 0.0F);
-        this.ScrollMaskInsets = scrollMaskInsets ?? (0.0F, 0.0F);
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
-        this.Size = size ?? new Vector2(dropDownData.FieldSourceRect.Width, dropDownData.FieldSourceRect.Height);
     }
-    
+
     /// <summary>
-    /// Updates the state of the texture-based dropdown element, including handling user interactions such as clicking
-    /// and selecting options, and managing the visibility of the dropdown menu.
+    /// Updates the state of the <see cref="RectangleDropDownElement"/> and handles animations, scrolling,
+    /// user interaction, and menu state transitions.
     /// </summary>
-    /// <param name="delta">The time elapsed since the last update, in seconds, used for timing-related logic.</param>
+    /// <param name="delta">The time elapsed since the last update, used for animations and smooth transitions.</param>
     /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
         base.Update(delta, ref interactionHandled);
@@ -243,7 +225,7 @@ public class TextureDropDownElement : GuiElement {
                 }
                 
                 if (this._isDraggingSlider) {
-                    float sliderHeight = this.DropDownData.SliderSourceRect.Height * scale.Y;
+                    float sliderHeight = this.DropDownData.SliderSize.Y * scale.Y;
                     float trackTop = fieldSize.Y;
                     
                     // Calculate percentage using the localMouse.Y we already computed.
@@ -333,55 +315,72 @@ public class TextureDropDownElement : GuiElement {
     }
     
     /// <summary>
-    /// Renders the texture-based dropdown element, including its field, menu, arrow, and text components, based on the current state and interaction details.
+    /// Renders the <see cref="RectangleDropDownElement"/> and its associated visual components.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering operations, including sprite batching.</param>
-    /// <param name="framebuffer">The target framebuffer where the dropdown element will be drawn.</param>
+    /// <param name="context">The graphics context used for rendering operations.</param>
+    /// <param name="framebuffer">The framebuffer to which the rendering output should be drawn.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        // Draw field texture.
-        Color buttonColor = this.IsHovered ? this.DropDownData.FieldHoverColor : this.DropDownData.FieldColor;
+        // Draw the filled field rectangle.
+        Color fieldColor = this.IsHovered ? this.DropDownData.FieldHoverColor : this.DropDownData.FieldColor;
         
         if (!this.Interactable) {
-            buttonColor = this.DropDownData.DisabledFieldColor;
+            fieldColor = this.DropDownData.DisabledFieldColor;
         }
+
+        Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldColor);
         
-        switch (this.DropDownData.FieldResizeMode) {
-            case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, buttonColor, this.DropDownData.FieldFlip);
-                break;
+        // Draw the empty field rectangle.
+        if (this.DropDownData.FieldOutlineThickness > 0.0F) {
+            Color fieldOutlineColor = this.IsHovered ? this.DropDownData.FieldOutlineHoverColor : this.DropDownData.FieldOutlineColor;
             
-            case ResizeMode.NineSlice:
-            case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, this.DropDownData.FieldBorderInsets, this.DropDownData.FieldResizeMode == ResizeMode.TileCenter, buttonColor, this.DropDownData.FieldFlip);
-                break;
+            if (!this.Interactable) {
+                fieldOutlineColor = this.DropDownData.DisabledFieldOutlineColor;
+            }
+            
+            Vector2 fieldOutlineSize = this.Size * this.Scale * this.Gui.ScaleFactor;
+            float outlineThickness = this.DropDownData.FieldOutlineThickness * this.Gui.ScaleFactor;
+            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldOutlineSize.X, fieldOutlineSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldOutlineColor);
         }
         
-        // Draw arrow texture.
-        this.DrawArrow(context.SpriteBatch);
-        
-        // Draw field text.
-        if (this.SelectedOption != null) {
-            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset);
-        }
+        // Draw arrow.
+        this.DrawArrow(context.PrimitiveBatch);
         
         if (this.IsMenuOpen) {
             
-            // Draw menu texture.
+            // Menu color.
             Color menuColor = this.IsHovered ? this.DropDownData.MenuHoverColor : this.DropDownData.MenuColor;
             
             if (!this.Interactable) {
                 menuColor = this.DropDownData.DisabledMenuColor;
             }
             
-            this.DrawMenu(context.SpriteBatch, menuColor);
+            // Menu outline color.
+            Color menuOutlineColor = this.IsHovered ? this.DropDownData.MenuOutlineHoverColor : this.DropDownData.MenuOutlineColor;
+            
+            if (!this.Interactable) {
+                menuOutlineColor = this.DropDownData.DisabledMenuOutlineColor;
+            }
+            
+            // Draw menu rectangle.
+            this.DrawMenu(context.PrimitiveBatch, menuColor, menuOutlineColor);
             
             // Draw the scroll bar.
-            this.DrawSliderBar(context.SpriteBatch);
+            this.DrawScrollBar(context.PrimitiveBatch);
             
             // Draw the slider.
-            this.DrawSlider(context.SpriteBatch);
+            this.DrawSlider(context.PrimitiveBatch);
+        }
+        
+        context.PrimitiveBatch.End();
+        
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        
+        // Draw field text.
+        if (this.SelectedOption != null) {
+            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset);
         }
         
         context.SpriteBatch.End();
@@ -389,20 +388,17 @@ public class TextureDropDownElement : GuiElement {
         if (this.IsMenuOpen) {
             
             // Draw highlight.
-            this.DrawHighlight(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+            this.DrawHighlight(context.CommandList, framebuffer, context.PrimitiveBatch);
             
             // Draw options text.
             this.DrawOptionsText(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
         }
     }
-    
+
     /// <summary>
-    /// Calculates the position of the texture drop-down element based on its anchor point, offset, scale, and other transformation factors.
-    /// If the drop-down menu is closed, the position is determined using the base implementation.
+    /// Calculates the position of the dropdown element based on its field size, anchor point, offset, and origin.
     /// </summary>
-    /// <returns>
-    /// A <see cref="Vector2"/> representing the calculated position of the element on the screen.
-    /// </returns>
+    /// <returns>A <see cref="Vector2"/> representing the calculated position of the element in the GUI.</returns>
     protected override Vector2 CalculatePos() {
         if (!this.IsMenuOpen) {
             return base.CalculatePos();
@@ -483,210 +479,63 @@ public class TextureDropDownElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws a texture at the specified position with optional scaling, rotation, and flipping.
+    /// Draws the dropdown menu, including its background and outline.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for drawing the texture.</param>
-    /// <param name="texture">The texture to be rendered.</param>
-    /// <param name="sampler">Optional sampler state specifying the sampling behavior for texture rendering.</param>
-    /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
-    /// <param name="color">The color tint to apply to the texture during rendering.</param>
-    /// <param name="flip">Specifies the sprite flipping options for the texture.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
-        if (sampler != null) spriteBatch.PopSampler();
-    }
-    
-    /// <summary>
-    /// Renders a nine-slice element with specified texture, border insets, and optional tiling for the center region.
-    /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for drawing the nine-slice element.</param>
-    /// <param name="texture">The texture to be rendered in the nine-slice layout.</param>
-    /// <param name="sampler">Optional sampler state specifying the sampling behavior for texture rendering.</param>
-    /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
-    /// <param name="borderInsets">The insets defining the borders of the nine-slice layout.</param>
-    /// <param name="tileCenter">Indicates whether the center region of the nine-slice is tiled.</param>
-    /// <param name="color">The color tint to apply to the texture during rendering.</param>
-    /// <param name="flip">Specifies the sprite flipping options for the nine-slice element.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip) {
-        Vector2 baseScale = this.Scale * this.Gui.ScaleFactor;
-        
-        // Calculate sizes and clamp to a minimum to prevent overlap.
-        float minW = borderInsets.Left + borderInsets.Right;
-        float minH = borderInsets.Top + borderInsets.Bottom;
-        
-        Vector2 visualSize = new Vector2(MathF.Max(this.Size.X, minW), MathF.Max(this.Size.Y, minH));
-        Vector2 finalSize = visualSize * baseScale;
-        
-        // Centering logic for buttons smaller than their borders.
-        float diffX = (this.Size.X < minW) ? (minW - this.Size.X) * baseScale.X : 0.0F;
-        float diffY = (this.Size.Y < minH) ? (minH - this.Size.Y) * baseScale.Y : 0.0F;
-        Vector2 pivot = (this.Origin * baseScale) + new Vector2(diffX, diffY) * 0.5F;
-        
-        // Calculate edge dimensions.
-        float leftW = borderInsets.Left * baseScale.X;
-        float rightW = borderInsets.Right * baseScale.X;
-        float topH = borderInsets.Top * baseScale.Y;
-        float bottomH = borderInsets.Bottom * baseScale.Y;
-        float innerW = finalSize.X - leftW - rightW;
-        float innerH = finalSize.Y - topH - bottomH;
-        
-        // Define source rectangles for all 9 segments.
-        int right = sourceRect.X + sourceRect.Width;
-        int bottom = sourceRect.Y + sourceRect.Height;
-        
-        Rectangle sourceTopLeft = new Rectangle(sourceRect.X, sourceRect.Y, borderInsets.Left, borderInsets.Top);
-        Rectangle sourceTopRight = new Rectangle(right - borderInsets.Right, sourceRect.Y, borderInsets.Right, borderInsets.Top);
-        Rectangle sourceBottomLeft = new Rectangle(sourceRect.X, bottom - borderInsets.Bottom, borderInsets.Left, borderInsets.Bottom);
-        Rectangle sourceBottomRight = new Rectangle(right - borderInsets.Right, bottom - borderInsets.Bottom, borderInsets.Right, borderInsets.Bottom);
-        
-        Rectangle sourceTop = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
-        Rectangle sourceBottom = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
-        Rectangle sourceLeft = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle sourceRight = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle sourceCenter = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        
-        // Adjust for Horizontal Flip.
-        if (flip.HasFlag(SpriteFlip.Horizontal)) {
-            (sourceTopLeft, sourceTopRight) = (sourceTopRight, sourceTopLeft);
-            (sourceBottomLeft, sourceBottomRight) = (sourceBottomRight, sourceBottomLeft);
-            (sourceLeft, sourceRight) = (sourceRight, sourceLeft);
-            (leftW, rightW) = (rightW, leftW);
-        }
-        
-        // Adjust for Vertical Flip.
-        if (flip.HasFlag(SpriteFlip.Vertical)) {
-            (sourceTopLeft, sourceBottomLeft) = (sourceBottomLeft, sourceTopLeft);
-            (sourceTopRight, sourceBottomRight) = (sourceBottomRight, sourceTopRight);
-            (sourceTop, sourceBottom) = (sourceBottom, sourceTop);
-            (topH, bottomH) = (bottomH, topH);
-        }
-        
-        // Push sampler.
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        
-        // Draw Corners.
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopLeft, baseScale, pivot / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomLeft, baseScale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
-        
-        // Draw Edges.
-        if (innerH > 0.0F) {
-            if (tileCenter) {
-                float tileH = sourceLeft.Height * baseScale.Y;
-                for (float y = 0.0F; y < innerH; y += tileH) {
-                    float drawH = MathF.Min(tileH, innerH - y);
-                    Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cL, baseScale, (pivot - new Vector2(0.0F, topH + y)) / baseScale, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cR, baseScale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / baseScale, this.Rotation, color, flip);
-                }
-            }
-            else {
-                Vector2 sV = new Vector2(baseScale.X, innerH / sourceLeft.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, this.Rotation, color, flip);
-            }
-        }
-        
-        if (innerW > 0.0F) {
-            if (tileCenter) {
-                float tileW = sourceTop.Width * baseScale.X;
-                for (float x = 0.0F; x < innerW; x += tileW) {
-                    float drawW = MathF.Min(tileW, innerW - x);
-                    Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), sourceTop.Height);
-                    Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), sourceBottom.Height);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, baseScale, (pivot - new Vector2(leftW + x, 0.0F)) / baseScale, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, baseScale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
-                }
-            }
-            else {
-                int clipW = Math.Min(sourceTop.Width, (int) MathF.Ceiling(innerW / baseScale.X));
-                Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
-                Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
-                Vector2 sH = (innerW > sourceTop.Width * baseScale.X) ? new Vector2(innerW / sourceTop.Width, baseScale.Y) : baseScale;
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, this.Rotation, color, flip);
-            }
-        }
-        
-        // Draw Center.
-        if (innerW > 0.0F && innerH > 0.0F) {
-            if (tileCenter) {
-                float tileW = sourceCenter.Width * baseScale.X;
-                float tileH = sourceCenter.Height * baseScale.Y;
-                
-                for (float y = 0.0F; y < innerH; y += tileH) {
-                    float drawH = MathF.Min(tileH, innerH - y);
-                    for (float x = 0.0F; x < innerW; x += tileW) {
-                        float drawW = MathF.Min(tileW, innerW - x);
-                        Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / baseScale.X), (int) MathF.Ceiling(drawH / baseScale.Y));
-                        spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, baseScale, (pivot - new Vector2(leftW + x, topH + y)) / baseScale, this.Rotation, color, flip);
-                    }
-                }
-            }
-            else {
-                int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / baseScale.X));
-                Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
-                Vector2 sC = (innerW > sourceCenter.Width * baseScale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(baseScale.X, innerH / sourceCenter.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, this.Rotation, color, flip);
-            }
-        }
-        
-        // Pop sampler.
-        if (sampler != null) spriteBatch.PopSampler();
-    }
-    
-    /// <summary>
-    /// Draws the dropdown menu, including its background, resizing behavior, and the labels of its options, using the specified sprite batch and menu color.
-    /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the dropdown menu and its components.</param>
-    /// <param name="color">The color applied to the menu background during rendering.</param>
-    private void DrawMenu(SpriteBatch spriteBatch, Color color) {
-        Vector2 originalSize = this.Size;
-        Vector2 originalOrigin = this.Origin;
-        
-        int visibleOptions = this.Options.Count;
-        
-        if (this.Options.Count > this.MaxVisibleOptions) {
-            visibleOptions = this.MaxVisibleOptions;
-        }
-        
-        // Calculate menu size.
-        this.Size = new Vector2(this.Size.X, this.Size.Y * visibleOptions);
-        
-        // Changing the size of the menu when the scrollbar appears.
-        if (this.Options.Count > this.MaxVisibleOptions) {
-            this.Size.X -= this.DropDownData.SliderBarWidth;
-        }
-        
-        // Calculate the origin so it draws below the field.
-        this.Origin = originalOrigin - new Vector2(0.0F, originalSize.Y);
-        
-        switch (this.DropDownData.MenuResizeMode) {
-            case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, color, this.DropDownData.MenuFlip);
-                break;
+    /// <param name="primitiveBatch">The primitive batch for rendering graphical primitives.</param>
+    /// <param name="color">The fill color of the menu background.</param>
+    /// <param name="outlineColor">The color of the menu's outline.</param>
+    private void DrawMenu(PrimitiveBatch primitiveBatch, Color color, Color outlineColor) {
+        int visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions);
+        float scaleFactor = this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * scaleFactor;
+
+        // Calculate the menu dimensions locally
+        Vector2 menuSize = new Vector2(this.Size.X, this.Size.Y * visibleOptions);
             
-            case ResizeMode.NineSlice:
-            case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, this.DropDownData.MenuBorderInsets, this.DropDownData.MenuResizeMode == ResizeMode.TileCenter, color, this.DropDownData.MenuFlip);
-                break;
+        if (this.Options.Count > this.MaxVisibleOptions) {
+            menuSize.X -= this.DropDownData.SliderBarWidth;
         }
+
+        // Calculate the origin offset locally so it draws below the field
+        Vector2 menuOrigin = (this.Origin - new Vector2(0.0F, this.Size.Y)) * scale;
+        Vector2 scaledMenuSize = menuSize * scale;
         
-        // Restore original values.
-        this.Size = originalSize;
-        this.Origin = originalOrigin;
+        // Draw the filled menu rectangle
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), menuOrigin, this.Rotation, 0.5F, color);
+
+        // Draw the empty menu rectangle
+        if (this.DropDownData.MenuOutlineThickness > 0.0F) {
+            float outlineThickness = this.DropDownData.MenuOutlineThickness * scaleFactor;
+            Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation), this.Position);
+            
+            // Calculate the four corners relative to Position, adjusted by Origin.
+            Vector2 p1 = Vector2.Transform(this.Position - menuOrigin, rotationMatrix);
+            Vector2 p2 = Vector2.Transform(new Vector2(this.Position.X + scaledMenuSize.X, this.Position.Y) - menuOrigin, rotationMatrix);
+            Vector2 p3 = Vector2.Transform(new Vector2(this.Position.X, this.Position.Y + scaledMenuSize.Y) - menuOrigin, rotationMatrix);
+            Vector2 p4 = Vector2.Transform(new Vector2(this.Position.X + scaledMenuSize.X, this.Position.Y + scaledMenuSize.Y) - menuOrigin, rotationMatrix);
+            
+            // Calculate thickness offsets.
+            Vector2 horizontalNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (outlineThickness / 2f);
+            Vector2 verticalNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (outlineThickness / 2f);
+            
+            // Left line.
+            primitiveBatch.DrawLine(p1 - verticalNormal, p3 - verticalNormal, outlineThickness, 0.5F, outlineColor);
+            
+            // Bottom line.
+            primitiveBatch.DrawLine(p3 - horizontalNormal, p4 - horizontalNormal, outlineThickness, 0.5F, outlineColor);
+            
+            // Right line.
+            primitiveBatch.DrawLine(p2 + verticalNormal, p4 + verticalNormal, outlineThickness, 0.5F, outlineColor);
+        }
     }
     
     /// <summary>
-    /// Renders the text of the dropdown menu options onto the screen, managing visible options and applying a clipping mask for scrolling.
+    /// Renders the dropdown menu's selectable options text, applying clipping and scrolling as needed.
     /// </summary>
-    /// <param name="commandList">The command list used for issuing rendering commands.</param>
-    /// <param name="framebuffer">The framebuffer used as the rendering target.</param>
-    /// <param name="spriteBatch">The sprite batch renderer used for drawing the option text.</param>
-    /// <param name="primitiveBatch">The primitive batch renderer used for drawing the stencil mask for scrolling.</param>
+    /// <param name="commandList">The command list used to issue rendering commands.</param>
+    /// <param name="framebuffer">The framebuffer to which the options text is rendered.</param>
+    /// <param name="spriteBatch">The sprite batch used for rendering text and graphical elements.</param>
+    /// <param name="primitiveBatch">The primitive batch used to draw stencil masks for clipping.</param>
     private void DrawOptionsText(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
         int visibleOptions = this.Options.Count;
         float currentScrollIndex = 0;
@@ -710,12 +559,13 @@ public class TextureDropDownElement : GuiElement {
             maskWidth -= this.DropDownData.SliderBarWidth * scale.X;
         }
         
-        float maskHeight = fieldSize.Y * this.MaxVisibleOptions - (this.ScrollMaskInsets.Top + this.ScrollMaskInsets.Bottom) * scale.Y;
+        float outlineThicknessScale = this.DropDownData.MenuOutlineThickness * scale.Y;
+        float maskHeight = fieldSize.Y * this.MaxVisibleOptions - (this.DropDownData.MenuOutlineThickness) * scale.Y + outlineThicknessScale / 2.0F;
         
         // Define the clipping mask area (the visible part of the dropdown list).
         RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, maskWidth, maskHeight);
-        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y) - new Vector2(0.0F, this.ScrollMaskInsets.Top * scale.Y);
-        
+        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y) - new Vector2(0.0F, this.DropDownData.MenuOutlineThickness / 2.0F * scale.Y) + new Vector2(0.0F, outlineThicknessScale / 2.0F);
+
         DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
             StencilTestEnabled = true,
             StencilWriteMask = 0xFF,
@@ -787,9 +637,8 @@ public class TextureDropDownElement : GuiElement {
     /// </summary>
     /// <param name="commandList">The command list used for drawing commands.</param>
     /// <param name="framebuffer">The framebuffer where the highlight will be rendered.</param>
-    /// <param name="spriteBatch">The sprite batch for rendering textured elements.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering geometric shapes.</param>
-    private void DrawHighlight(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+    private void DrawHighlight(CommandList commandList, Framebuffer framebuffer, PrimitiveBatch primitiveBatch) {
         Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         
@@ -899,98 +748,178 @@ public class TextureDropDownElement : GuiElement {
             }
         };
         
+        // Menu outline color.
+        Color menuOutlineColor = this.IsHovered ? this.DropDownData.MenuOutlineHoverColor : this.DropDownData.MenuOutlineColor;
+        
+        if (!this.Interactable) {
+            menuOutlineColor = this.DropDownData.DisabledMenuOutlineColor;
+        }
+        
         // Draw the actual highlight.
-        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
-        spriteBatch.PushDepthStencilState(stencilTest);
-        this.DrawMenu(spriteBatch, this.DropDownData.HighlightColor);
-        spriteBatch.PopDepthStencilState();
-        spriteBatch.End();
+        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+        primitiveBatch.PushDepthStencilState(stencilTest);
+        this.DrawMenu(primitiveBatch, this.DropDownData.HighlightColor, menuOutlineColor);
+        primitiveBatch.PopDepthStencilState();
+        primitiveBatch.End();
     }
     
     /// <summary>
-    /// Draws the scrollbar for the dropdown menu based on the current number of options and visual properties.
+    /// Renders the scrollbar for the dropdown menu if the total number of options exceeds the maximum visible options.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the scrollbar.</param>
-    private void DrawSliderBar(SpriteBatch spriteBatch) {
+    /// <param name="primitiveBatch">The rendering batch used to draw primitive shapes.</param>
+    private void DrawScrollBar(PrimitiveBatch primitiveBatch) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
         
-        Vector2 originalSize = this.Size;
-        Vector2 originalOrigin = this.Origin;
+        float scaleFactor = this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * scaleFactor;
         
-        // Calculate the scrollbar size and offset origin.
-        this.Size = new Vector2(this.DropDownData.SliderBarWidth, originalSize.Y * this.MaxVisibleOptions);
-        this.Origin = originalOrigin - new Vector2(originalSize.X - this.DropDownData.SliderBarWidth, originalSize.Y);
+        // Calculate local dimensions for the scrollbar track.
+        Vector2 trackSize = new Vector2(this.DropDownData.SliderBarWidth, this.Size.Y * this.MaxVisibleOptions) * scale;
+        Vector2 trackOrigin = (this.Origin - new Vector2(this.Size.X - this.DropDownData.SliderBarWidth, this.Size.Y)) * scale;
         
+        // Slide bar color.
         Color color = this.IsHovered ? this.DropDownData.SliderBarHoverColor : this.DropDownData.SliderBarColor;
         
         if (!this.Interactable) {
             color = this.DropDownData.DisabledSliderBarColor;
         }
         
-        switch (this.DropDownData.FieldResizeMode) {
-            case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip);
-                break;
-            
-            case ResizeMode.NineSlice:
-            case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip);
-                break;
-        }
+        // Draw track background.
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, trackSize.X, trackSize.Y), trackOrigin, this.Rotation, 0.5F, color);
         
-        // Restore original values.
-        this.Size = originalSize;
-        this.Origin = originalOrigin;
+        // Draw track outline.
+        if (this.DropDownData.MenuOutlineThickness > 0.0F) {
+            float outlineThickness = this.DropDownData.MenuOutlineThickness * scaleFactor;
+            Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation), this.Position);
+            
+            // Calculate corners.
+            Vector2 p1 = Vector2.Transform(this.Position - trackOrigin, rotationMatrix);
+            Vector2 p2 = Vector2.Transform(new Vector2(this.Position.X + trackSize.X, this.Position.Y) - trackOrigin, rotationMatrix);
+            Vector2 p3 = Vector2.Transform(new Vector2(this.Position.X, this.Position.Y + trackSize.Y) - trackOrigin, rotationMatrix);
+            Vector2 p4 = Vector2.Transform(new Vector2(this.Position.X + trackSize.X, this.Position.Y + trackSize.Y) - trackOrigin, rotationMatrix);
+            
+            // Normals for thickness offset.
+            Vector2 hNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (outlineThickness / 2.0F);
+            Vector2 vNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (outlineThickness / 2.0F);
+            
+            // Slide bar outline color.
+            Color outlineColor = this.IsHovered ? this.DropDownData.MenuOutlineHoverColor : this.DropDownData.MenuOutlineColor;
+        
+            if (!this.Interactable) {
+                outlineColor = this.DropDownData.DisabledMenuOutlineColor;
+            }
+            
+            // Draw outline segments.
+            primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, outlineThickness, 0.5F, outlineColor);
+            primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, outlineThickness, 0.5F, outlineColor);
+        }
     }
     
     /// <summary>
-    /// Draws the slider within the dropdown menu based on the current scroll position and visual configuration.
+    /// Draws the slider for the dropdown menu, visually representing the scroll position.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the slider component.</param>
-    private void DrawSlider(SpriteBatch spriteBatch) {
+    /// <param name="primitiveBatch">The primitive batch used for rendering graphical elements.</param>
+    private void DrawSlider(PrimitiveBatch primitiveBatch) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
         
-        float scrollBarHeight = this.Size.Y * (this.MaxVisibleOptions);
-        float sliderHeight = this.DropDownData.SliderSourceRect.Height;
-        float scrollRange = scrollBarHeight - sliderHeight;
+        float scaleFactor = this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * scaleFactor;
         
-        float xOffset = this.Size.X - this.DropDownData.SliderBarWidth + (this.DropDownData.SliderBarWidth - this.DropDownData.SliderSourceRect.Width) / 2.0F;
-        float yOffset = this.Size.Y + scrollRange * this._scrollPercent;
-        Vector2 origin = this.Origin - new Vector2(xOffset, yOffset) - this.SliderOffset;
+        // Calculate the total track height.
+        float trackHeight = (this.Size.Y * this.MaxVisibleOptions) - this.DropDownData.MenuOutlineThickness / 2.0F;
+        float sliderHeight = this.DropDownData.SliderSize.Y;
+        float usableTrackHeight = trackHeight - sliderHeight;
         
-        Color color = this.IsHovered ? this.DropDownData.SliderHoverColor : this.DropDownData.SliderColor;
+        // Calculate the Y offset of the slider within the track based on scroll percentage.
+        float sliderYOffset = this.Size.Y + (this._scrollPercent * usableTrackHeight);
+        
+        // The slider is horizontally centered in the SliderBarWidth area, plus the SliderOffset.X.
+        float sliderXOffset = this.Size.X - this.DropDownData.SliderBarWidth + (this.DropDownData.SliderBarWidth - this.DropDownData.SliderSize.X) / 2.0F - this.DropDownData.MenuOutlineThickness / 4.0F;
+        
+        Vector2 sliderSize = this.DropDownData.SliderSize * scale;
+        Vector2 sliderOrigin = (this.Origin - new Vector2(sliderXOffset, sliderYOffset)) * scale;
+        
+        // Slider color.
+        Color sliderColor = this.IsHovered ? this.DropDownData.SliderHoverColor : this.DropDownData.SliderColor;
         
         if (!this.Interactable) {
-            color = this.DropDownData.DisabledSliderColor;
+            sliderColor = this.DropDownData.DisabledSliderColor;
         }
         
-        if (this.DropDownData.SliderSampler != null) spriteBatch.PushSampler(this.DropDownData.SliderSampler);
-        spriteBatch.DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, this.DropDownData.SliderFlip);
-        if (this.DropDownData.SliderSampler != null) spriteBatch.PopSampler();
+        // Draw slider rectangle.
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), sliderOrigin, this.Rotation, 0.5F, sliderColor);
+        
+        // Draw slider outline.
+        if (this.DropDownData.SliderOutlineThickness > 0.0F) {
+            float thickness = this.DropDownData.SliderOutlineThickness * scaleFactor;
+            Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation), this.Position);
+            
+            // Calculate corners.
+            Vector2 p1 = Vector2.Transform(this.Position - sliderOrigin, rotationMatrix);
+            Vector2 p2 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y) - sliderOrigin, rotationMatrix);
+            Vector2 p3 = Vector2.Transform(new Vector2(this.Position.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
+            Vector2 p4 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
+            
+            // Normals for thickness offset.
+            Vector2 hNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (thickness / 2.0F);
+            Vector2 vNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (thickness / 2.0F);
+            
+            Color outlineColor = this.IsHovered ? this.DropDownData.SliderOutlineHoverColor : this.DropDownData.SliderOutlineColor;
+            
+            if (!this.Interactable) {
+                outlineColor = this.DropDownData.DisabledSliderOutlineColor;
+            }
+            
+            // Draw outline segments.
+            primitiveBatch.DrawLine(p1 + hNormal, p2 + hNormal, thickness, 0.5F, outlineColor);
+            primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, thickness, 0.5F, outlineColor);
+            primitiveBatch.DrawLine(p1 - vNormal, p3 - vNormal, thickness, 0.5F, outlineColor);
+            primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, thickness, 0.5F, outlineColor); 
+        }
     }
     
     /// <summary>
-    /// Draws the arrow texture on the screen, with its size, position, offset, and visual properties determined by the dropdown's data.
+    /// Draws the arrow for the dropdown element using the specified primitive batch.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the arrow texture.</param>
-    private void DrawArrow(SpriteBatch spriteBatch) {
-        if (this.DropDownData.ArrowTexture == null) {
+    /// <param name="primitiveBatch">The primitive batch used for rendering the arrow shape.</param>
+    private void DrawArrow(PrimitiveBatch primitiveBatch) {
+        if (!this.DropDownData.ArrowSize.HasValue) {
             return;
         }
         
-        float offsetX = this.Size.X - this.DropDownData.ArrowSourceRect.Width - this.ArrowOffset.X;
-        float offsetY = (this.Size.Y - this.DropDownData.ArrowSourceRect.Height) / 2.0F + this.ArrowOffset.Y;
+        float scaleFactor = this.Gui.ScaleFactor;
+        Vector2 scale = this.Scale * scaleFactor;
         
-        Vector2 arrowSize = new Vector2(this.DropDownData.ArrowSourceRect.Width, this.DropDownData.ArrowSourceRect.Height);
+        float arrowWidth = this.DropDownData.ArrowSize.Value.X;
+        float arrowHeight = this.DropDownData.ArrowSize.Value.Y;
+        
+        float offsetX = this.Size.X - arrowWidth - this.ArrowOffset.X;
+        float offsetY = (this.Size.Y - arrowHeight) / 2.0F + this.ArrowOffset.Y;
+        
+        Vector2 arrowSize = new Vector2(arrowWidth, arrowHeight);
         Vector2 arrowCenter = arrowSize / 2.0F;
         
-        Vector2 localToArrowCenter = (new Vector2(offsetX, offsetY) + arrowCenter - this.Origin) * this.Scale * this.Gui.ScaleFactor;
+        // Calculate the world position of the arrow center.
+        Vector2 localToArrowCenter = (new Vector2(offsetX, offsetY) + arrowCenter - this.Origin) * scale;
         Vector2 rotatedLocalToArrowCenter = Vector2.Transform(localToArrowCenter, Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation)));
         Vector2 arrowWorldCenter = this.Position + rotatedLocalToArrowCenter;
+        
+        // Local triangle vertices relative to the arrow center.
+        Vector2 v1 = new Vector2(-arrowCenter.X, -arrowCenter.Y) * scaleFactor;
+        Vector2 v2 = new Vector2(arrowCenter.X, -arrowCenter.Y) * scaleFactor;
+        Vector2 v3 = new Vector2(0.0F, arrowCenter.Y) * scaleFactor;
+        
+        // Apply rotation.
+        float totalRotation = float.DegreesToRadians(this.Rotation) + this._arrowRotation;
+        Matrix3x2 arrowRotationMatrix = Matrix3x2.CreateRotation(totalRotation);
+        
+        Vector2 p1 = arrowWorldCenter + Vector2.Transform(v1, arrowRotationMatrix);
+        Vector2 p2 = arrowWorldCenter + Vector2.Transform(v2, arrowRotationMatrix);
+        Vector2 p3 = arrowWorldCenter + Vector2.Transform(v3, arrowRotationMatrix);
         
         Color color = this.IsHovered ? this.DropDownData.ArrowHoverColor : this.DropDownData.ArrowColor;
         
@@ -998,18 +927,16 @@ public class TextureDropDownElement : GuiElement {
             color = this.DropDownData.DisabledArrowColor;
         }
         
-        if (this.DropDownData.ArrowSampler != null) spriteBatch.PushSampler(this.DropDownData.ArrowSampler);
-        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
-        if (this.DropDownData.ArrowSampler != null) spriteBatch.PopSampler();
+        primitiveBatch.DrawFilledTriangle(p1, p2, p3, 0.5F, color);
     }
     
     /// <summary>
-    /// Draws the specified text on the screen with alignment, offset, and style settings.
+    /// Renders text on the GUI element using the specified parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the text.</param>
-    /// <param name="labelData">The data containing font, text, size, style, and other text attributes.</param>
-    /// <param name="textAlignment">The alignment of the text (Left, Center, or Right).</param>
-    /// <param name="textOffset">The offset added to the text's position for rendering.</param>
+    /// <param name="spriteBatch">The <see cref="SpriteBatch"/> used to render the text.</param>
+    /// <param name="labelData">The <see cref="LabelData"/> containing font, text, and styling information.</param>
+    /// <param name="textAlignment">The <see cref="TextAlignment"/> specifying the alignment of the text (Left, Center, or Right).</param>
+    /// <param name="textOffset">The offset for the text position relative to the element.</param>
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset) {
         if (labelData.Text == string.Empty) {
             return;

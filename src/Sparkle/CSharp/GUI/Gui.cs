@@ -58,7 +58,7 @@ public abstract class Gui : Disposable {
             }
         }
     }
-
+    
     /// <summary>
     /// Performs post-update logic on all enabled elements.
     /// </summary>

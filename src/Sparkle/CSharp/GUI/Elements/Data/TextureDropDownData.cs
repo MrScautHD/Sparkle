@@ -221,7 +221,7 @@ public class TextureDropDownData {
     /// <summary>
     /// The width of the scrollbar rendered inside the dropdown menu.
     /// </summary>
-    public int ScrollBarWidth;
+    public int SliderBarWidth;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureDropDownData"/> class, defining all visual, layout, and interaction states for a texture-based dropdown.
@@ -268,7 +268,7 @@ public class TextureDropDownData {
     /// <param name="sliderBarFlip">Flip mode applied to the slider bar texture.</param>
     /// <param name="sliderFlip">Flip mode applied to the slider texture.</param>
     /// <param name="arrowFlip">Flip mode applied to the arrow texture.</param>
-    /// <param name="scrollBarWidth">The width of the scrollbar in the dropdown menu.</param>
+    /// <param name="sliderBarWidth">The width of the scrollbar in the dropdown menu.</param>
     public TextureDropDownData(
         Texture2D fieldTexture,
         Texture2D menuTexture,
@@ -312,7 +312,7 @@ public class TextureDropDownData {
         SpriteFlip sliderBarFlip = SpriteFlip.None,
         SpriteFlip sliderFlip = SpriteFlip.None,
         SpriteFlip arrowFlip = SpriteFlip.None,
-        int scrollBarWidth = 16) {
+        int sliderBarWidth = 16) {
         this.FieldTexture = fieldTexture;
         this.MenuTexture = menuTexture;
         this.ArrowTexture = arrowTexture;
@@ -355,6 +355,6 @@ public class TextureDropDownData {
         this.SliderBarFlip = sliderBarFlip;
         this.SliderFlip = sliderFlip; 
         this.ArrowFlip = arrowFlip; 
-        this.ScrollBarWidth = scrollBarWidth; 
+        this.SliderBarWidth = sliderBarWidth; 
     }
 }
