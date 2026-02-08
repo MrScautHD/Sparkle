@@ -76,7 +76,6 @@ public class LogFileWriter {
             path = Path.Combine(this._directory, $"log - {DateTime.Now:yyyy-MM-dd}-{fileCounter}.txt");
             fileCounter++;
         } while (File.Exists(path));
-
         
         if (!Directory.Exists(this._directory)) {
             Directory.CreateDirectory(this._directory);

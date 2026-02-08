@@ -163,7 +163,7 @@ public class MarchingCubes {
     /// </summary>
     public Mesh GenMesh(GraphicsDevice graphicsDevice) {
         Material material = new Material(GlobalResource.DefaultModelEffect);
-    
+        
         material.AddMaterialMap(MaterialMapType.Albedo, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White

@@ -144,7 +144,7 @@ public class Game : Disposable {
             this._logFileWriter = new LogFileWriter(this.Settings.LogDirectory);
             Logger.Message += this._logFileWriter.WriteFileMsg;
         }
-
+        
         // Setup jitter logger.
         this._logJitter = new LogJitter();
         JLogger.Listener += this._logJitter.Log;
