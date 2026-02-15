@@ -19,8 +19,8 @@ namespace Sparkle.Test.CSharp.Dim2D;
 
 public class TestScene2D : Scene {
     
-    public TestScene2D(string name) : base(name, SceneType.Scene2D, null, () => new Simulation2D(new PhysicsSettings2D() { WorldDef = new WorldDef() { Gravity = new Vector2(0, 9.81F) }})) { }
-
+    public TestScene2D(string name) : base(name, SceneType.Scene2D, null, null, () => new Simulation2D(new PhysicsSettings2D() { WorldDef = new WorldDef() { Gravity = new Vector2(0, 9.81F) }})) { }
+    
     protected override void Init() {
         base.Init();
         

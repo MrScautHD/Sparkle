@@ -3,6 +3,13 @@ namespace Sparkle.CSharp.IO;
 public static class FileAccessor {
     
     /// <summary>
+    /// A static synchronization object used to coordinate access to file-related operations
+    /// within the <see cref="FileAccessor"/> class. This ensures thread safety when performing
+    /// concurrent file operations, preventing race conditions.
+    /// </summary>
+    private static readonly object FileLock = new();
+    
+    /// <summary>
     /// Creates a new file with the specified name and directory.
     /// </summary>
     /// <param name="directory">The directory where the file should be created.</param>
@@ -24,9 +31,11 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">The text to be written to the file.</param>
     public static void Write(string path, string text) {
-        using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
-            using (StreamWriter writer = new StreamWriter(stream)) {
-                writer.Write(text);
+        lock (FileLock) {
+            using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
+                using (StreamWriter writer = new StreamWriter(stream)) {
+                    writer.Write(text);
+                }
             }
         }
     }
@@ -37,9 +46,11 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">The text to be written to the file.</param>
     public static void WriteLine(string path, string text) {
-        using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
-            using (StreamWriter writer = new StreamWriter(stream)) {
-                writer.WriteLine(text);
+        lock (FileLock) {
+            using (FileStream stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read)) {
+                using (StreamWriter writer = new StreamWriter(stream)) {
+                    writer.WriteLine(text);
+                }
             }
         }
     }
@@ -50,7 +61,9 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">The text to be written to the file.</param>
     public static void WriteAll(string path, string text) {
-        File.WriteAllText(path, text);
+        lock (FileLock) {
+            File.WriteAllText(path, text);
+        }
     }
 
     /// <summary>
@@ -59,7 +72,9 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <param name="text">An array of strings containing the lines of text to write to the file.</param>
     public static void WriteAllLines(string path, string[] text) {
-        File.WriteAllLines(path, text);
+        lock (FileLock) {
+            File.WriteAllLines(path, text);
+        }
     }
 
     /// <summary>
@@ -68,9 +83,11 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <returns>A string containing the text read from the file.</returns>
     public static string Read(string path) {
-        return File.ReadAllText(path);
+        lock (FileLock) {
+            return File.ReadAllText(path);
+        }
     }
-
+    
     /// <summary>
     /// Retrieves a specific line of text from a file at the given path.
     /// </summary>
@@ -78,7 +95,9 @@ public static class FileAccessor {
     /// <param name="index">The index of the line to retrieve.</param>
     /// <returns>The specified line of text from the file.</returns>
     public static string ReadLine(string path, int index) {
-        return File.ReadAllLines(path)[index];
+        lock (FileLock) {
+            return File.ReadAllLines(path)[index];
+        }
     }
 
     /// <summary>
@@ -87,7 +106,9 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <returns>The text content of the file.</returns>
     public static string ReadAll(string path) {
-        return File.ReadAllText(path);
+        lock (FileLock) {
+            return File.ReadAllText(path);
+        }
     }
 
     /// <summary>
@@ -96,7 +117,9 @@ public static class FileAccessor {
     /// <param name="path">The full path to the file.</param>
     /// <returns>An array of strings containing all the lines from the file.</returns>
     public static string[] ReadAllLines(string path) {
-        return File.ReadAllLines(path);
+        lock (FileLock) {
+            return File.ReadAllLines(path);
+        }
     }
 
     /// <summary>
@@ -104,7 +127,9 @@ public static class FileAccessor {
     /// </summary>
     /// <param name="path">The full path to the file.</param>
     public static void Clear(string path) {
-        File.WriteAllText(path, string.Empty);
+        lock (FileLock) {
+            File.WriteAllText(path, string.Empty);
+        }
     }
 
     /// <summary>

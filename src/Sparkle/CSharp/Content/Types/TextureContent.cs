@@ -10,6 +10,11 @@ public class TextureContent : IContentType<Texture2D> {
     public string Path { get; }
     
     /// <summary>
+    /// An action that is invoked when the content is loaded.
+    /// </summary>
+    public Action<object>? OnLoaded { get; set; }
+    
+    /// <summary>
     /// Indicates whether to generate mipmaps for the texture.
     /// </summary>
     public bool Mipmap { get; }

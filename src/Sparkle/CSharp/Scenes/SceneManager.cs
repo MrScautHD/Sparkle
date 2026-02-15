@@ -1,11 +1,13 @@
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Images;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Loading;
 using Sparkle.CSharp.Physics;
 using Veldrid;
 
@@ -22,6 +24,11 @@ public static class SceneManager {
     /// Gets the currently active scene.
     /// </summary>
     public static Scene? ActiveScene { get; private set; }
+    
+    /// <summary>
+    /// The current loading screen, if any.
+    /// </summary>
+    public static LoadingScreen? ActiveLoadingScreen { get; private set; }
     
     /// <summary>
     /// The render target used for filter effects.
@@ -57,7 +64,7 @@ public static class SceneManager {
     /// The active 3D camera in the scene.
     /// </summary>
     public static Camera3D? ActiveCam3D;
-
+    
     /// <summary>
     /// Gets the simulation associated with the active scene.
     /// </summary>
@@ -97,6 +104,11 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnUpdate(double delta) {
+        if (ActiveLoadingScreen != null) {
+            ActiveLoadingScreen.Update(delta);
+            return;
+        }
+        
         ActiveScene?.Update(delta);
     }
 
@@ -105,6 +117,11 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnAfterUpdate(double delta) {
+        if (ActiveLoadingScreen != null) {
+            ActiveLoadingScreen.AfterUpdate(delta);
+            return;
+        }
+        
         ActiveScene?.AfterUpdate(delta);
     }
     
@@ -113,6 +130,11 @@ public static class SceneManager {
     /// </summary>
     /// <param name="fixedStep">The fixed time-step duration.</param>
     internal static void OnFixedUpdate(double fixedStep) {
+        if (ActiveLoadingScreen != null) {
+            ActiveLoadingScreen.FixedUpdate(fixedStep);
+            return;
+        }
+        
         ActiveScene?.FixedUpdate(fixedStep);
     }
 
@@ -122,6 +144,11 @@ public static class SceneManager {
     /// <param name="context">The graphics context used for drawing.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
+        if (ActiveLoadingScreen != null) {
+            ActiveLoadingScreen.Draw(context, framebuffer);
+            return;
+        }
+        
         context.CommandList.SetFramebuffer(FilterTarget.Framebuffer);
         context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
@@ -184,19 +211,43 @@ public static class SceneManager {
         PostProcessingResult.Dispose();
         PostProcessingResult = new Texture2D(GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
     }
-
+    
     /// <summary>
     /// Sets a new active scene and initializes it.
     /// </summary>
     /// <param name="scene">The scene to set as active.</param>
-    public static void SetScene(Scene? scene) {
-        ActiveScene?.Dispose();
-        ActiveScene = scene;
-        ActiveScene?.Init();
-        ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
-        ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+    public static void SetScene(Scene? scene, LoadingScreen? loadingScreen = null) {
+        if (loadingScreen == null) {
+            ActiveScene?.Dispose();
+            ActiveScene = scene;
+            ActiveScene?.Init();
+            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            return;
+        }
+        
+        ActiveLoadingScreen = loadingScreen;
+        
+        Task.Run(() => {
+            DateTime startTime = DateTime.Now;
+            
+            ActiveScene?.Dispose();
+            ActiveScene = scene;
+            ActiveScene?.Init();
+            
+            float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
+            float remaining = Math.Max(0, ActiveLoadingScreen.MinTime - elapsed);
+            
+            if (remaining > 0) {
+                Thread.Sleep((int) (remaining * 1000));
+            }
+            
+            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            ActiveLoadingScreen = null;
+        });
     }
-
+    
     /// <summary>
     /// Cleans up resources associated with the scene manager.
     /// </summary>

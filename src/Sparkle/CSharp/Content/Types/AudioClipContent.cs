@@ -10,6 +10,11 @@ public class AudioClipContent : IContentType<AudioClip> {
     public string Path { get; }
     
     /// <summary>
+    /// An action that is invoked when the content is loaded.
+    /// </summary>
+    public Action<object>? OnLoaded { get; set; }
+    
+    /// <summary>
     /// Determines whether the audio clip should be streamed from disk instead of loading into memory.
     /// </summary>
     public bool StreamFromDisk { get; }

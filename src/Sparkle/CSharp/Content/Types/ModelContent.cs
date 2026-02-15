@@ -10,6 +10,11 @@ public class ModelContent : IContentType<Model> {
     public string Path { get; }
     
     /// <summary>
+    /// An action that is invoked when the content is loaded.
+    /// </summary>
+    public Action<object>? OnLoaded { get; set; }
+    
+    /// <summary>
     /// Indicates whether to load the material with the model.
     /// </summary>
     public bool LoadMaterial { get; }

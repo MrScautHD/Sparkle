@@ -5,12 +5,12 @@ using Veldrid;
 namespace Sparkle.CSharp.Overlays;
 
 public abstract class Overlay {
-
+    
     /// <summary>
     /// Gets the name of the overlay.
     /// </summary>
     public string Name { get; private set; }
-
+    
     /// <summary>
     /// Determines whether the overlay is enabled.
     /// </summary>
@@ -25,7 +25,7 @@ public abstract class Overlay {
         this.Name = name;
         this.Enabled = enabled;
     }
-
+    
     /// <summary>
     /// Updates the overlay each frame.
     /// </summary>
@@ -55,5 +55,5 @@ public abstract class Overlay {
     /// Executes when the window is resized.
     /// </summary>
     /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
-    protected internal virtual void Resize(Rectangle rectangle) {}
+    protected internal virtual void Resize(Rectangle rectangle) { }
 }

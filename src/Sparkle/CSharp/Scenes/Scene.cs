@@ -3,6 +3,7 @@ using Bliss.CSharp;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
@@ -28,6 +29,11 @@ public abstract class Scene : Disposable {
     public SceneType SceneType { get; private set; }
     
     /// <summary>
+    /// Gets the collection keys used to load related content for the scene.
+    /// </summary>
+    public string[] CollectionKeys { get; private set; }
+    
+    /// <summary>
     /// Gets the physics simulation associated with the scene.
     /// </summary>
     public Simulation Simulation { get; private set; }
@@ -36,7 +42,7 @@ public abstract class Scene : Disposable {
     /// Gets the forward renderer responsible for rendering 3D content in the scene.
     /// </summary>
     public IRenderer Renderer { get; private set; }
-
+    
     /// <summary>
     /// Provides tools for visual debugging of 3D physics simulations.
     /// </summary>
@@ -87,21 +93,31 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="name">The name of the scene.</param>
     /// <param name="sceneType">The type of the scene (2D or 3D).</param>
+    /// <param name="collectionKeys">The content collection key used to load assets associated with this scene.</param>
     /// <param name="rendererFactory">Optional factory used to create a custom renderer for the scene.</param>
     /// <param name="simulationFactory">Optional factory used to create a custom physics simulation.</param>
-    protected Scene(string name, SceneType sceneType, Func<GraphicsDevice, IRenderer>? rendererFactory = null, Func<Simulation>? simulationFactory = null) {
+    protected Scene(string name, SceneType sceneType, string[]? collectionKeys = null, Func<GraphicsDevice, IRenderer>? rendererFactory = null, Func<Simulation>? simulationFactory = null) {
         this.Name = name;
         this.SceneType = sceneType;
+        this.CollectionKeys = collectionKeys ?? [];
         this._rendererFactory = rendererFactory;
         this._simulationFactory = simulationFactory;
         this.Entities = new Dictionary<uint, Entity>();
         this._multiInstanceRenderers = new List<MultiInstanceRenderer>();
     }
     
+    protected internal virtual void Load(ContentManager content) { }
+    
     /// <summary>
     /// Initializes the scene. Can be overridden in derived classes.
     /// </summary>
     protected internal virtual void Init() {
+        
+        // Load collections content.
+        foreach (string key in this.CollectionKeys) {
+            Game.Instance?.Content.LoadCollection(key);
+        }
+        
         this.Renderer = this._rendererFactory?.Invoke(GlobalGraphicsAssets.GraphicsDevice) ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
         this.Physics3DDebugDrawer = new Physics3DDebugDrawer(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
         this.SpriteRenderer = new SpriteRenderer();
@@ -375,6 +391,11 @@ public abstract class Scene : Disposable {
             this.Simulation.Dispose();
             this.Renderer.Dispose();
             this.Physics3DDebugDrawer.Dispose();
+            
+            // Unload collections content.
+            foreach (string key in this.CollectionKeys) {
+                Game.Instance?.Content.UnloadCollection(key);
+            }
         }
     }
 }

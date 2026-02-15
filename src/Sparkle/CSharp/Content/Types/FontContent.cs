@@ -9,12 +9,17 @@ public class FontContent : IContentType<Font> {
     /// The file path of the font.
     /// </summary>
     public string Path { get; }
-
+    
+    /// <summary>
+    /// An action that is invoked when the content is loaded.
+    /// </summary>
+    public Action<object>? OnLoaded { get; set; }
+    
     /// <summary>
     /// The settings used to configure the font system when loading this font.
     /// </summary>
     public FontSystemSettings? Settings;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="FontContent"/> class with the specified path and optional settings.
     /// </summary>

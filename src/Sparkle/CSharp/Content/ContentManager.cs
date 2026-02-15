@@ -18,11 +18,16 @@ public class ContentManager : Disposable {
     /// The graphics device used for loading graphical assets.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
-
+    
     /// <summary>
     /// Stores loaded content items.
     /// </summary>
-    private List<object> _content;
+    private Dictionary<string, object> _content;
+    
+    /// <summary>
+    /// List of collections that have been loaded.
+    /// </summary>
+    private Dictionary<string, ContentCollection> _collections;
     
     /// <summary>
     /// Maps content types to their respective content processors.
@@ -35,7 +40,8 @@ public class ContentManager : Disposable {
     /// <param name="graphicsDevice">The graphics device used for loading assets.</param>
     public ContentManager(GraphicsDevice graphicsDevice) {
         this.GraphicsDevice = graphicsDevice;
-        this._content = new List<object>();
+        this._content = new Dictionary<string, object>();
+        this._collections = new Dictionary<string, ContentCollection>();
         this._processors = new Dictionary<Type, IContentProcessor>();
         
         // Add default processors.
@@ -45,7 +51,7 @@ public class ContentManager : Disposable {
         this.AddProcessors(typeof(Model), new ModelProcessor());
         this.AddProcessors(typeof(AudioClip), new AudioClipProcessor());
     }
-
+    
     /// <summary>
     /// Retrieves all content processors currently registered in the content manager.
     /// </summary>
@@ -53,7 +59,7 @@ public class ContentManager : Disposable {
     public IEnumerable<IContentProcessor> GetProcessors() {
         return this._processors.Values;
     }
-
+    
     /// <summary>
     /// Determines whether a content processor exists for the specified type.
     /// </summary>
@@ -62,7 +68,7 @@ public class ContentManager : Disposable {
     public bool HasProcessor(Type type) {
         return this._processors.ContainsKey(type);
     }
-
+    
     /// <summary>
     /// Retrieves a content processor for the specified type, if one exists.
     /// </summary>
@@ -108,65 +114,172 @@ public class ContentManager : Disposable {
     }
     
     /// <summary>
-    /// Adds an unmanaged item to the content manager.
-    /// </summary>
-    /// <typeparam name="T">The type of content.</typeparam>
-    /// <param name="item">The item to add.</param>
-    public void AddUnmanagedItem<T>(T item) {
-        if (!this._content.Contains(item!)) {
-            if (!this._processors.ContainsKey(typeof(T))) {
-                Logger.Warn($"This item is of an unsupported type: [{typeof(T)}]");
-            }
-            else {
-                this._content.Add(item!);
-            }
-        }
-        else {
-            Logger.Warn($"The item is already present in the content manager for the specified type: [{typeof(T)}]");
-        }
-    }
-
-    /// <summary>
     /// Loads content using an appropriate processor.
     /// </summary>
-    /// <typeparam name="T">The type of content to load.</typeparam>
-    /// <param name="type">The content type to load.</param>
+    /// <typeparam name="T">The item of content to load.</typeparam>
+    /// <param name="item">The content item to load.</param>
     /// <returns>The loaded content.</returns>
-    public T Load<T>(IContentType<T> type) {
-        if (!this.TryGetProcessor(typeof(T), out IContentProcessor? processor)) {
-            Logger.Fatal($"Failed to find a valid ContentProcessor for type: [{typeof(T)}]");
+    public T Load<T>(IContentType<T> item) {
+        if (this._content.TryGetValue(item.Path, out object? cachedItem)) {
+            return (T) cachedItem;
         }
-
-        T item = (T) processor!.Load(this.GraphicsDevice, type);
         
-        this._content.Add(item!);
-        return item;
+        if (!this.TryGetProcessor(typeof(T), out IContentProcessor? processor)) {
+            throw new Exception($"Failed to find a valid ContentProcessor for item: [{typeof(T)}]");
+        }
+        
+        T loadedItem = (T) processor.Load(this.GraphicsDevice, item);
+        
+        if (loadedItem == null) {
+            throw new Exception($"Failed to load content of type [{typeof(T).Name}] from path: {item.Path}");
+        }
+        
+        item.OnLoaded?.Invoke(loadedItem);
+        
+        this._content.Add(item.Path, loadedItem);
+        return loadedItem;
     }
-
+    
     /// <summary>
-    /// Unloads a content item, freeing associated resources.
+    /// Unloads a content item by its path, freeing associated resources.
     /// </summary>
     /// <typeparam name="T">The type of content to unload.</typeparam>
-    /// <param name="item">The item to unload.</param>
-    public void Unload<T>(T item) {
-        if (this._content.Contains(item!)) {
+    /// <param name="path">The path of the item to unload.</param>
+    public void Unload<T>(string path) {
+        if (this._content.TryGetValue(path, out object? item)) {
             if (!this.TryGetProcessor(typeof(T), out IContentProcessor? processor)) {
                 Logger.Error($"Failed to find a valid ContentProcessor for type: [{typeof(T)}]");
             }
             else {
-                processor!.Unload(item!);
-                this._content.Remove(item!);
+                processor.Unload(item);
+                this._content.Remove(path);
             }
         }
         else {
-           Logger.Warn($"Attempted to unload an item of type: [{typeof(T)}] that was not loaded in the ContentManager.");
+            Logger.Warn($"Attempted to unload an item at path: [{path}] that was not loaded in the ContentManager.");
         }
+    }
+    
+    /// <summary>
+    /// Unloads a content item by its instance, freeing associated resources.
+    /// </summary>
+    /// <typeparam name="T">The type of content to unload.</typeparam>
+    /// <param name="item">The item instance to unload.</param>
+    public void Unload<T>(T item) {
+        foreach (KeyValuePair<string, object> content in this._content) {
+            if (ReferenceEquals(content.Value, item)) {
+                if (this.TryGetProcessor(typeof(T), out IContentProcessor? processor)) {
+                    processor.Unload(item);
+                    this._content.Remove(content.Key);
+                }
+                else {
+                    Logger.Error($"Failed to find a valid ContentProcessor for type: [{typeof(T)}]");
+                }
+                
+                return;
+            }
+        }
+        
+        Logger.Warn($"Attempted to unload an item of type: [{typeof(T)}] that was not found in the ContentManager.");
+    }
+    
+    /// <summary>
+    /// Creates and registers a new <see cref="ContentCollection"/> with the specified key and items.
+    /// </summary>
+    /// <param name="key">The unique key used to identify the collection.</param>
+    /// <param name="items">The array of content items to include in the collection.</param>
+    /// <returns>The newly created <see cref="ContentCollection"/>.</returns>
+    /// <exception cref="Exception">Thrown when a collection with the provided key already exists.</exception>
+    public ContentCollection DefineCollection(string key, IContentType[] items) {
+        if (this._collections.ContainsKey(key)) {
+            throw new Exception($"A collection with the key [{key}] already exists.");
+        }
+        
+        ContentCollection collection = new ContentCollection(key, items);
+        this._collections.Add(key, collection);
+        
+        return collection;
+    }
+    
+    /// <summary>
+    /// Removes a content collection associated with the specified key from the manager.
+    /// </summary>
+    /// <param name="key">The key of the content collection to be removed.</param>
+    public void UndefineCollection(string key) {
+        if (!this._collections.Remove(key)) {
+            Logger.Warn($"Failed to undefine collection. A collection with the key [{key}] was not found.");
+        }
+    }
+    
+    /// <summary>
+    /// Loads the specified content collection by key, ensuring all contained items are processed and loaded.
+    /// </summary>
+    /// <param name="key">The unique identifier for the content collection to load.</param>
+    /// <exception cref="Exception">Thrown if the specified collection is not defined, a content processor for an item is not found, or an item fails to load.</exception>
+    internal void LoadCollection(string key) {
+        if (!this._collections.TryGetValue(key, out ContentCollection? collection)) {
+            throw new Exception($"Failed to load collection: [{key}]. It has not been defined.");
+        }
+        
+        // Check if the collection is already loaded.
+        if (collection.IsLoaded) {
+            return;
+        }
+        
+        // Mark the collection as loaded.
+        collection.IsLoaded = true;
+        
+        foreach (IContentType item in collection.Items) {
+            if (!this.TryGetProcessor(item.ContentType, out IContentProcessor? processor)) {
+                throw new Exception($"Failed to find a valid ContentProcessor for item: [{item.ContentType}] in collection: [{key}]");
+            }
+            
+            object loadedItem = processor.Load(this.GraphicsDevice, (dynamic) item);
+            
+            if (loadedItem == null) {
+                throw new Exception($"Failed to load content for item: [{item.ContentType}] in collection: [{key}] from path: {item.Path}");
+            }
+            
+            item.OnLoaded?.Invoke(loadedItem);
+            collection.AddContent(item.Path, loadedItem);
+        }
+    }
+    
+    /// <summary>
+    /// Unloads a content collection and releases its associated resources.
+    /// </summary>
+    /// <param name="key">The unique identifier of the content collection to unload.</param>
+    internal void UnloadCollection(string key) {
+        if (!this._collections.TryGetValue(key, out ContentCollection? collection)) {
+            Logger.Warn($"Attempted to unload collection: [{key}] that was not found.");
+            return;
+        }
+        
+        // Check if the collection is already unloaded.
+        if (!collection.IsLoaded) {
+            return;
+        }
+        
+        // Mark the collection as unloaded.
+        collection.IsLoaded = false;
+        
+        foreach (IContentType item in collection.Items) {
+            if (collection.TryGet(item.Path, out object? loadedItem)) {
+                if (this.TryGetProcessor(item.ContentType, out IContentProcessor? processor)) {
+                    processor.Unload(loadedItem);
+                }
+            }
+        }
+        
+        collection.ClearContent();
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            foreach (object item in this._content) {
-                this.GetProcessor(item.GetType())!.Unload(item);
+            foreach (object item in this._content.Values) {
+                if (this.TryGetProcessor(item.GetType(), out IContentProcessor? processor)) {
+                    processor.Unload(item);
+                }
             }
             
             this._content.Clear();

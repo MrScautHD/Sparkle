@@ -29,11 +29,6 @@ public class InstancedRenderProxy : InterpolatedComponent {
     internal BoundingBox BaseBox;
     
     /// <summary>
-    /// Stores the dynamically adjusted bounding box used for frustum culling.
-    /// </summary>
-    internal BoundingBox FrustumBox;
-    
-    /// <summary>
     /// Initializes a new instance of the <see cref="InstancedRenderProxy"/> class.
     /// </summary>
     /// <param name="multiInstanceRenderer">The multi-instance renderer responsible for drawing this proxy.</param>
@@ -44,7 +39,7 @@ public class InstancedRenderProxy : InterpolatedComponent {
         this.MultiInstanceRenderer = multiInstanceRenderer;
         this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
-        this.BaseBox = this.FrustumBox = this.GenBoundingBox();
+        this.BaseBox = this.GenBoundingBox();
     }
     
     /// <summary>
@@ -58,37 +53,6 @@ public class InstancedRenderProxy : InterpolatedComponent {
         
         // Add this to the scene. (It gets automatically handled)
         this.Entity.Scene.AddMultiInstanceRenderer(this.MultiInstanceRenderer);
-    }
-    
-    /// <summary>
-    /// Updates the frustum-aligned bounding box based on the interpolated transform state.
-    /// </summary>
-    protected internal void UpdateFrustumBox() {
-        
-        // Calculate original dimensions and center offset in local space.
-        Vector3 originalCenter = (this.BaseBox.Min + this.BaseBox.Max) / 2.0F;
-        Vector3 originalDimension = this.BaseBox.Max - this.BaseBox.Min;
-        
-        // Scale everything.
-        Vector3 dimension = originalDimension * this.LerpedScale;
-        Vector3 centerOffset = originalCenter * this.LerpedScale;
-        
-        // Normalize X and Z dimensions to the maximum width.
-        float maxSide = Math.Max(dimension.X, dimension.Z);
-        dimension.X = maxSide;
-        dimension.Z = maxSide;
-        
-        // Calculate bounding box position using the lerped global position and the center offset.
-        Vector3 lerpedPos = this.LerpedGlobalPosition;
-        Vector3 finalCenter = lerpedPos + centerOffset;
-        
-        this.FrustumBox.Min.X = finalCenter.X - dimension.X / 2.0F;
-        this.FrustumBox.Min.Y = lerpedPos.Y + (this.BaseBox.Min.Y * this.LerpedScale.Y);
-        this.FrustumBox.Min.Z = finalCenter.Z - dimension.Z / 2.0F;
-        
-        this.FrustumBox.Max.X = finalCenter.X + dimension.X / 2.0F;
-        this.FrustumBox.Max.Y = lerpedPos.Y + (this.BaseBox.Max.Y * this.LerpedScale.Y);
-        this.FrustumBox.Max.Z = finalCenter.Z + dimension.Z / 2.0F;
     }
     
     /// <summary>

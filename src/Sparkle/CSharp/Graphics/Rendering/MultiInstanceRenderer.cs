@@ -101,16 +101,11 @@ public class MultiInstanceRenderer {
             for (int i = 0; i < this._instancedRenderProxies.Count; i++) {
                 InstancedRenderProxy renderProxy = this._instancedRenderProxies[i];
                 
-                // Updates frustum box.
-                renderProxy.UpdateFrustumBox();
-                
-                if (cam3D.GetFrustum().ContainsOrientedBox(renderProxy.FrustumBox, renderProxy.LerpedGlobalPosition, renderProxy.LerpedRotation)) {
-                    renderable.Transforms[i] = new Transform() {
-                        Translation = renderProxy.LerpedGlobalPosition,
-                        Rotation = renderProxy.LerpedRotation,
-                        Scale = renderProxy.LerpedScale
-                    };
-                }
+                renderable.Transforms[i] = new Transform() {
+                    Translation = renderProxy.LerpedGlobalPosition,
+                    Rotation = renderProxy.LerpedRotation,
+                    Scale = renderProxy.LerpedScale
+                };
                 
                 // Draw the box.
                 if (renderProxy.DrawBox) {

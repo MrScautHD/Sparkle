@@ -310,8 +310,9 @@ public class Game : Disposable {
     protected virtual void OnRun() { }
 
     /// <summary>
-    /// Loads the required game content and resources.
+    /// Loads the content for the game using the specified content manager and content key.
     /// </summary>
+    /// <param name="content">The content manager responsible for managing game content.</param>
     protected virtual void Load(ContentManager content) {
         RegistryManager.OnLoad(content);
     }

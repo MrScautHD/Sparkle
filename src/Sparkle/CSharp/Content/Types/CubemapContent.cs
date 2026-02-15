@@ -8,7 +8,12 @@ public class CubemapContent : IContentType<Cubemap> {
     /// The file path of the cubemap.
     /// </summary>
     public string Path { get; }
-
+    
+    /// <summary>
+    /// An action that is invoked when the content is loaded.
+    /// </summary>
+    public Action<object>? OnLoaded { get; set; }
+    
     /// <summary>
     /// The layout configuration of the cubemap.
     /// </summary>

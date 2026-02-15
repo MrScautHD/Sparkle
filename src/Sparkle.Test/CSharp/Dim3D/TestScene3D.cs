@@ -24,7 +24,7 @@ namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TestScene3D : Scene {
     
-    public TestScene3D(string name) : base(name, SceneType.Scene3D) { }
+    public TestScene3D(string name) : base(name, SceneType.Scene3D, ["Scene-Test"]) { }
     
     protected override void Init() {
         base.Init();
