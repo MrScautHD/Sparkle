@@ -31,12 +31,11 @@ public static class SceneManager {
     /// Indicates whether a scene is currently being loaded.
     /// </summary>
     public static bool IsLoading { get; private set; }
-
+    
     /// <summary>
-    /// An object used to synchronize access to critical sections of code
-    /// during scene loading operations in the SceneManager.
+    /// An object used to synchronize access to critical sections of code during scene loading operations in the SceneManager.
     /// </summary>
-    private static readonly object LoadLock = new();
+    private static readonly Lock LoadLock = new();
     
     /// <summary>
     /// The render target used for filter effects.
@@ -234,7 +233,7 @@ public static class SceneManager {
         PostProcessingResult.Dispose();
         PostProcessingResult = new Texture2D(GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
     }
-
+    
     /// <summary>
     /// Sets the specified scene as the active scene and initializes it, with an optional loading screen displayed during the loading process.
     /// </summary>

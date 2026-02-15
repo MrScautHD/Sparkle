@@ -7,7 +7,7 @@ public static class FileAccessor {
     /// within the <see cref="FileAccessor"/> class. This ensures thread safety when performing
     /// concurrent file operations, preventing race conditions.
     /// </summary>
-    private static readonly object FileLock = new();
+    private static readonly Lock FileLock = new();
     
     /// <summary>
     /// Creates a new file with the specified name and directory.
