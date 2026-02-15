@@ -57,7 +57,7 @@ public class TestScene2D : Scene {
             this.AddEntity(element);
         }
     }
-
+    
     protected override void FixedUpdate(double delta) {
         base.FixedUpdate(delta);
         Entity player = this.GetEntity(2)!;

@@ -34,7 +34,7 @@ public abstract class Gui : Disposable {
     /// </summary>
     /// <param name="name">The name of the GUI.</param>
     /// <param name="size">The width and height of the GUI.</param>
-    public Gui(string name, (int, int)? size = null) {
+    protected Gui(string name, (int, int)? size = null) {
         this.Name = name;
         this.Size = size ?? (1280, 720);
         this._elements = new Dictionary<string, GuiElement>();
@@ -179,6 +179,10 @@ public abstract class Gui : Disposable {
         
         element.Gui = this;
         element.Name = name;
+        
+        // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
+        bool dummy = false;
+        element.Update(0, ref dummy);
         
         this._elements.Add(name, element);
         return true;

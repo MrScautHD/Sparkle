@@ -2,7 +2,6 @@ using System.Numerics;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
-using Bliss.CSharp.Interact.Mice.Cursors;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrid;

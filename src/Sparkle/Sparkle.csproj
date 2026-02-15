@@ -30,7 +30,7 @@
     <ItemGroup>
         <PackageReference Include="Bliss" Version="1.4.3" />
         <PackageReference Include="HughPH.Box2D" Version="2025.6.30.1625" />
-        <PackageReference Include="Jitter2" Version="2.7.8" />
+        <PackageReference Include="Jitter2" Version="2.7.9" />
         <PackageReference Include="LibNoise" Version="0.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>

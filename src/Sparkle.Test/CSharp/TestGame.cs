@@ -1,7 +1,7 @@
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Sparkle.CSharp;
-using Sparkle.CSharp.Loading;
+using Sparkle.CSharp.GUI.Loading;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Scenes;
@@ -28,13 +28,13 @@ public class TestGame : Game {
 
     protected override void Update(double delta) {
         base.Update(delta);
-
+        
         if (Input.IsKeyPressed(KeyboardKey.V)) {
-            SceneManager.SetScene(new TestScene2D("TEST"), LoadingScreen.Loading(ContentRegistry.Fontoe));
+            SceneManager.SetScene(new TestScene2D("TEST"), new ProgressBarLoadingGui("Loading"));
         }
         
         if (Input.IsKeyPressed(KeyboardKey.B)) {
-            SceneManager.SetScene(new TestScene3D("TEST"), LoadingScreen.Loading(ContentRegistry.Fontoe));
+            SceneManager.SetScene(new TestScene3D("TEST"), new ProgressBarLoadingGui("Loading"));
         }
     }
 }

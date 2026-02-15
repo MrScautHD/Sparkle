@@ -8,7 +8,8 @@ using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Loading;
+using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.GUI.Loading;
 using Sparkle.CSharp.Physics;
 using Veldrid;
 
@@ -25,11 +26,6 @@ public static class SceneManager {
     /// Gets the currently active scene.
     /// </summary>
     public static Scene? ActiveScene { get; private set; }
-    
-    /// <summary>
-    /// The current loading screen, if any.
-    /// </summary>
-    public static LoadingScreen? ActiveLoadingScreen { get; private set; }
     
     /// <summary>
     /// The render target used for filter effects.
@@ -116,8 +112,7 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnUpdate(double delta) {
-        if (ActiveLoadingScreen != null) {
-            ActiveLoadingScreen.Update(delta);
+        if (GuiManager.ActiveGui is LoadingGui) {
             return;
         }
         
@@ -129,8 +124,7 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnAfterUpdate(double delta) {
-        if (ActiveLoadingScreen != null) {
-            ActiveLoadingScreen.AfterUpdate(delta);
+        if (GuiManager.ActiveGui is LoadingGui) {
             return;
         }
         
@@ -142,8 +136,7 @@ public static class SceneManager {
     /// </summary>
     /// <param name="fixedStep">The fixed time-step duration.</param>
     internal static void OnFixedUpdate(double fixedStep) {
-        if (ActiveLoadingScreen != null) {
-            ActiveLoadingScreen.FixedUpdate(fixedStep);
+        if (GuiManager.ActiveGui is LoadingGui) {
             return;
         }
         
@@ -156,8 +149,7 @@ public static class SceneManager {
     /// <param name="context">The graphics context used for drawing.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
-        if (ActiveLoadingScreen != null) {
-            ActiveLoadingScreen.Draw(context, framebuffer);
+        if (GuiManager.ActiveGui is LoadingGui) {
             return;
         }
         
@@ -223,52 +215,67 @@ public static class SceneManager {
         PostProcessingResult.Dispose();
         PostProcessingResult = new Texture2D(GraphicsDevice, new Image(rectangle.Width, rectangle.Height), false);
     }
-    
+
     /// <summary>
-    /// Sets a new active scene and initializes it.
+    /// Sets the specified scene as the active scene and initializes it, with an optional loading screen displayed during the loading process.
     /// </summary>
-    /// <param name="scene">The scene to set as active.</param>
-    public static void SetScene(Scene? scene, LoadingScreen? loadingScreen = null) {
-        if (loadingScreen == null) {
+    /// <param name="scene">The scene to set as the active scene.</param>
+    /// <param name="loadingGui">An optional loading GUI to display during scene loading. If null, no loading screen is shown.</param>
+    public static void SetScene(Scene? scene, LoadingGui? loadingGui = null) {
+        if (loadingGui == null) {
             Logger.Info($"Setting active scene to: {scene?.Name}");
+            
             ActiveScene?.Dispose();
             ActiveScene = scene;
+            
             Logger.Info("Load active scene content...");
             if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
             Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+            
             Logger.Info("Initialize active scene...");
             ActiveScene?.Init();
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
             Logger.Info($"Scene {scene?.Name} initialized successfully.");
+            
             return;
         }
         
-        ActiveLoadingScreen = loadingScreen;
+        GuiManager.SetGui(loadingGui);
         
         Task.Run(() => {
             DateTime startTime = DateTime.Now;
+            loadingGui.Progress = 0.0F;
             
             Logger.Info($"Setting active scene to: {scene?.Name}");
+            
             ActiveScene?.Dispose();
             ActiveScene = scene;
+            loadingGui.Progress = 0.2F;
+            
             Logger.Info("Load active scene content...");
             if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+            loadingGui.Progress = 0.7F;
             Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+            
             Logger.Info("Initialize active scene...");
             ActiveScene?.Init();
+            loadingGui.Progress = 0.9F;
             
             float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
-            float remaining = Math.Max(0, ActiveLoadingScreen.MinTime - elapsed);
+            float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
             
             if (remaining > 0) {
                 Thread.Sleep((int) (remaining * 1000));
             }
             
+            loadingGui.Progress = 1.0F;
+            
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
             Logger.Info($"Scene {scene?.Name} initialized successfully.");
-            ActiveLoadingScreen = null;
+            
+            GuiManager.SetGui(null);
         });
     }
     
