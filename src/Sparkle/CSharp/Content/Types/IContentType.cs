@@ -1,6 +1,6 @@
 namespace Sparkle.CSharp.Content.Types;
 
-public interface IContentType {
+public interface IContentType<T> {
     
     /// <summary>
     /// The file path of the content.
@@ -8,22 +8,9 @@ public interface IContentType {
     string Path { get; }
     
     /// <summary>
-    /// The type of the content.
-    /// </summary>
-    Type ContentType { get; }
-    
-    /// <summary>
     /// An action that is invoked when the content is loaded.
     /// </summary>
     Action<object>? OnLoaded { get; set; }
-}
-
-public interface IContentType<T> : IContentType {
-    
-    /// <summary>
-    /// The type of the content represented by the instance.
-    /// </summary>
-    Type IContentType.ContentType => typeof(T);
 }
 
 public static class ContentTypeExtensions {

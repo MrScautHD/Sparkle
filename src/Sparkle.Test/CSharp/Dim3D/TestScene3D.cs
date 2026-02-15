@@ -1,6 +1,9 @@
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
@@ -12,9 +15,12 @@ using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
 using Sparkle.CSharp;
+using Sparkle.CSharp.Content;
+using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
@@ -24,7 +30,58 @@ namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TestScene3D : Scene {
     
-    public TestScene3D(string name) : base(name, SceneType.Scene3D, ["Scene-Test"]) { }
+    public Texture2D CyberCarTexture { get; private set; }
+    
+    public Model PlayerModel { get; private set; }
+    public Model TreeModel { get; private set; }
+    public Model CyberCarModel { get; private set; }
+    
+    public MultiInstanceRenderer PlayerMultiInstanceRenderer { get; private set; }
+    
+    public SkyBox CloudySkybox { get; private set; }
+    
+    public TestScene3D(string name) : base(name, SceneType.Scene3D) { }
+    
+    protected override void Load(ContentManager content) {
+        base.Load(content);
+        
+        // Textures:
+        this.CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"), false);
+        
+        // Models:
+        this.PlayerModel = content.Load(new ModelContent("content/model.glb").Do(model => {
+            foreach (Mesh mesh in model.Meshes) {
+                mesh.Material.RenderMode = RenderMode.Cutout;
+            }
+        }), false);
+        
+        this.TreeModel = content.Load(new ModelContent("content/tree.glb").Do(model => {
+            foreach (Mesh mesh in model.Meshes) {
+                mesh.Material.RenderMode = RenderMode.Cutout;
+                mesh.Material.RasterizerState = RasterizerStateDescription.CULL_NONE;
+            }
+        }), false);
+        
+        this.CyberCarModel = content.Load(new ModelContent("content/cybercar.glb").Do(model => {
+            foreach (Mesh mesh in model.Meshes) {
+                mesh.Material.SetMapTexture(MaterialMapType.Albedo, this.CyberCarTexture);
+                mesh.Material.RenderMode = RenderMode.Cutout;
+            }
+
+            model.Meshes[12].Material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
+            model.Meshes[12].Material.RenderMode = RenderMode.Translucent;
+        }), false);
+        
+        // Multi instance renderers:
+        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(this.PlayerModel, true);
+        
+        foreach (Mesh mesh in this.PlayerMultiInstanceRenderer.Meshes) {
+            this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(mesh).Effect = GlobalResource.ModelInstancingEffect;
+        }
+        
+        // Skybox's:
+        this.CloudySkybox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
+    }
     
     protected override void Init() {
         base.Init();
@@ -32,8 +89,8 @@ public class TestScene3D : Scene {
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
         
-        // SKYBOX
-        this.SkyBox = ContentRegistry.SkyBox;
+        // Set skybox.
+        this.SkyBox = this.CloudySkybox;
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
@@ -46,7 +103,7 @@ public class TestScene3D : Scene {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer playerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
         player.AddComponent(playerBody);
         player.AddComponent(playerModelRenderer);
         this.AddEntity(player);
@@ -54,7 +111,7 @@ public class TestScene3D : Scene {
         // PLAYER LOCK ROTATION (Cannot fall over).
         HingeAngle angleConstraint = playerBody.World.CreateConstraint<HingeAngle>(playerBody.Body, playerBody.World.NullBody);
         angleConstraint.Initialize(JVector.UnitY, AngularLimit.Full);
-
+        
         // SOFT CUBE
         Entity softCube = new Entity(new Transform() { Translation = new Vector3(3, 19, 0) });
         SoftBody3D softBodyCube = new SoftBody3D(new SoftBodyCubeFactory(new Vector3(1, 1, 1)));
@@ -110,7 +167,7 @@ public class TestScene3D : Scene {
         
         // TREE
         Entity tree = new Entity(new Transform() { Translation = new Vector3(0, 0, 20) });
-        tree.AddComponent(new ModelRenderer(ContentRegistry.TreeModel, Vector3.Zero));
+        tree.AddComponent(new ModelRenderer(this.TreeModel, Vector3.Zero));
         this.AddEntity(tree);
         
         // CAR
@@ -119,7 +176,7 @@ public class TestScene3D : Scene {
             DrawDebug = true,
             DebugDrawColor = Color.Green
         };
-        ModelRenderer carModelRenderer = new ModelRenderer(ContentRegistry.CyberCarModel, -Vector3.UnitY);
+        ModelRenderer carModelRenderer = new ModelRenderer(this.CyberCarModel, -Vector3.UnitY);
         car.AddComponent(carBody);
         car.AddComponent(carModelRenderer);
         this.AddEntity(car);
@@ -132,7 +189,7 @@ public class TestScene3D : Scene {
                     DrawDebug = true,
                     DebugDrawColor = Color.Green
                 };
-                InstancedRenderProxy instancedMultiRenderer = new InstancedRenderProxy(ContentRegistry.PlayerMultiInstanceRenderer, -Vector3.UnitY, true);
+                InstancedRenderProxy instancedMultiRenderer = new InstancedRenderProxy(this.PlayerMultiInstanceRenderer, -Vector3.UnitY, true);
                 instancedPlayer.AddComponent(instancedPlayerBody);
                 instancedPlayer.AddComponent(instancedMultiRenderer);
                 this.AddEntity(instancedPlayer);
@@ -280,5 +337,13 @@ public class TestScene3D : Scene {
         
         // Draw the base method.
         base.Draw(context, framebuffer);
+    }
+
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        
+        if (disposing) {
+            this.CloudySkybox.Dispose();
+        }
     }
 }

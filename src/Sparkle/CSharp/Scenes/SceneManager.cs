@@ -5,6 +5,7 @@ using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
+using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Loading;
@@ -91,14 +92,25 @@ public static class SceneManager {
     }
     
     /// <summary>
+    /// Loads the active scene.
+    /// </summary>
+    internal static void OnLoad(ContentManager content) {
+        Logger.Info("Load active scene content...");
+        ActiveScene?.Load(content);
+        Logger.Info($"Scene {ActiveScene?.Name} content loaded successfully.");
+    }
+    
+    /// <summary>
     /// Initializes the active scene.
     /// </summary>
     internal static void OnInit() {
+        Logger.Info("Initialize active scene...");
         ActiveScene?.Init();
         ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
         ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        Logger.Info($"Scene {ActiveScene?.Name} initialized successfully.");
     }
-
+    
     /// <summary>
     /// Updates the active scene logic.
     /// </summary>
@@ -218,11 +230,17 @@ public static class SceneManager {
     /// <param name="scene">The scene to set as active.</param>
     public static void SetScene(Scene? scene, LoadingScreen? loadingScreen = null) {
         if (loadingScreen == null) {
+            Logger.Info($"Setting active scene to: {scene?.Name}");
             ActiveScene?.Dispose();
             ActiveScene = scene;
+            Logger.Info("Load active scene content...");
+            if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+            Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+            Logger.Info("Initialize active scene...");
             ActiveScene?.Init();
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            Logger.Info($"Scene {scene?.Name} initialized successfully.");
             return;
         }
         
@@ -231,8 +249,13 @@ public static class SceneManager {
         Task.Run(() => {
             DateTime startTime = DateTime.Now;
             
+            Logger.Info($"Setting active scene to: {scene?.Name}");
             ActiveScene?.Dispose();
             ActiveScene = scene;
+            Logger.Info("Load active scene content...");
+            if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+            Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+            Logger.Info("Initialize active scene...");
             ActiveScene?.Init();
             
             float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
@@ -244,6 +267,7 @@ public static class SceneManager {
             
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            Logger.Info($"Scene {scene?.Name} initialized successfully.");
             ActiveLoadingScreen = null;
         });
     }

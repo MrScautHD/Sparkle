@@ -1,15 +1,9 @@
-using Bliss.CSharp;
 using Bliss.CSharp.Fonts;
-using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Images;
-using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
-using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Registries;
-using Veldrid;
 
 namespace Sparkle.Test.CSharp;
 
@@ -35,26 +29,6 @@ public class ContentRegistry : Registry {
     // Gifs:
     public static AnimatedImage AnimatedImage;
     public static Texture2D Gif;
-        
-    // Skybox's:
-    public static SkyBox SkyBox { get; private set; }
-    
-    // ------------ Scene 3D Collection Start ------------ \\
-    
-    public static ContentCollection Scene3DCollection { get; private set; }
-    
-    // Scene textures:
-    public static Texture2D CyberCarTexture => Scene3DCollection.Get<Texture2D>("content/cybercar.png");
-    
-    // Scene models:
-    public static Model PlayerModel => Scene3DCollection.Get<Model>("content/model.glb");
-    public static Model TreeModel => Scene3DCollection.Get<Model>("content/tree.glb");
-    public static Model CyberCarModel => Scene3DCollection.Get<Model>("content/cybercar.glb");
-    
-    // Scene player multiInstanceRenderer:
-    public static MultiInstanceRenderer PlayerMultiInstanceRenderer { get; private set; }
-    
-    // ------------ Scene 3D Collection End ------------ \\
     
     /// <summary>
     /// Loads the content for the registry, including fonts, textures, models, and other assets.
@@ -85,52 +59,5 @@ public class ContentRegistry : Registry {
         // Gifs:
         AnimatedImage = new AnimatedImage("content/test.gif");
         Gif = new Texture2D(content.GraphicsDevice, AnimatedImage.SpriteSheet);
-        
-        // Skybox's:
-        SkyBox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png")));
-        
-        // Scene Collection:
-        Scene3DCollection = content.DefineCollection("Scene-Test", [
-            
-            // Textures:
-            new TextureContent("content/cybercar.png"),
-            
-            // Models:
-            new ModelContent("content/model.glb").Do(model => {
-                foreach (Mesh mesh in model.Meshes) {
-                    mesh.Material.RenderMode = RenderMode.Cutout;
-                }
-                
-                // Set player multi instance renderer.
-                PlayerMultiInstanceRenderer = new MultiInstanceRenderer(model, true);
-                
-                foreach (Mesh mesh in PlayerMultiInstanceRenderer.Meshes) {
-                    PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(mesh).Effect = GlobalResource.ModelInstancingEffect;
-                }
-            }),
-            new ModelContent("content/tree.glb").Do(model => {
-                foreach (Mesh mesh in model.Meshes) {
-                    mesh.Material.RenderMode = RenderMode.Cutout;
-                    mesh.Material.RasterizerState = RasterizerStateDescription.CULL_NONE;
-                }
-            }),
-            new ModelContent("content/cybercar.glb").Do(model => {
-                foreach (Mesh mesh in model.Meshes) {
-                    mesh.Material.SetMapTexture(MaterialMapType.Albedo, CyberCarTexture);
-                    mesh.Material.RenderMode = RenderMode.Cutout;
-                }
-                
-                model.Meshes[12].Material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
-                model.Meshes[12].Material.RenderMode = RenderMode.Translucent;
-            })
-        ]);
-    }
-    
-    protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-        
-        if (disposing) {
-            SkyBox.Dispose();
-        }
     }
 }

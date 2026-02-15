@@ -315,6 +315,7 @@ public class Game : Disposable {
     /// <param name="content">The content manager responsible for managing game content.</param>
     protected virtual void Load(ContentManager content) {
         RegistryManager.OnLoad(content);
+        SceneManager.OnLoad(content);
     }
     
     /// <summary>
