@@ -28,6 +28,17 @@ public static class SceneManager {
     public static Scene? ActiveScene { get; private set; }
     
     /// <summary>
+    /// Indicates whether a scene is currently being loaded.
+    /// </summary>
+    public static bool IsLoading { get; private set; }
+
+    /// <summary>
+    /// An object used to synchronize access to critical sections of code
+    /// during scene loading operations in the SceneManager.
+    /// </summary>
+    private static readonly object LoadLock = new();
+    
+    /// <summary>
     /// The render target used for filter effects.
     /// </summary>
     public static RenderTexture2D FilterTarget { get; private set; }
@@ -112,11 +123,13 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnUpdate(double delta) {
-        if (GuiManager.ActiveGui is LoadingGui) {
-            return;
-        }
+        lock (LoadLock) {
+            if (GuiManager.ActiveGui is LoadingGui || IsLoading) {
+                return;
+            }
         
-        ActiveScene?.Update(delta);
+            ActiveScene?.Update(delta);
+        }
     }
 
     /// <summary>
@@ -124,11 +137,13 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnAfterUpdate(double delta) {
-        if (GuiManager.ActiveGui is LoadingGui) {
-            return;
-        }
+        lock (LoadLock) {
+            if (GuiManager.ActiveGui is LoadingGui || IsLoading) {
+                return;
+            }
         
-        ActiveScene?.AfterUpdate(delta);
+            ActiveScene?.AfterUpdate(delta);
+        }
     }
     
     /// <summary>
@@ -136,11 +151,13 @@ public static class SceneManager {
     /// </summary>
     /// <param name="fixedStep">The fixed time-step duration.</param>
     internal static void OnFixedUpdate(double fixedStep) {
-        if (GuiManager.ActiveGui is LoadingGui) {
-            return;
-        }
+        lock (LoadLock) {
+            if (GuiManager.ActiveGui is LoadingGui || IsLoading) {
+                return;
+            }
         
-        ActiveScene?.FixedUpdate(fixedStep);
+            ActiveScene?.FixedUpdate(fixedStep);
+        }
     }
 
     /// <summary>
@@ -149,52 +166,54 @@ public static class SceneManager {
     /// <param name="context">The graphics context used for drawing.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
-        if (GuiManager.ActiveGui is LoadingGui) {
-            return;
-        }
-        
-        context.CommandList.SetFramebuffer(FilterTarget.Framebuffer);
-        context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
-        context.CommandList.ClearDepthStencil(1.0F);
-        
-        switch (ActiveScene?.SceneType) {
-            case SceneType.Scene2D:
-                ActiveCam2D?.Begin();
-                ActiveScene.Draw(context, FilterTarget.Framebuffer);
-                ActiveCam2D?.End();
-                break;
+        lock (LoadLock) {
+            if (GuiManager.ActiveGui is LoadingGui || IsLoading) {
+                return;
+            }
             
-            case SceneType.Scene3D:
-                ActiveCam3D?.Begin();
-                ActiveScene.Draw(context, FilterTarget.Framebuffer);
-                ActiveCam3D?.End();
-                break;
-        }
-        
-        // Apply MSAA. 
-        if (FilterTarget.SampleCount != TextureSampleCount.Count1) {
-            context.CommandList.ResolveTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
-        }
-        else {
-            context.CommandList.CopyTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
-        }
-        
-        if (PostEffect != null) {
+            context.CommandList.SetFramebuffer(FilterTarget.Framebuffer);
+            context.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
+            context.CommandList.ClearDepthStencil(1.0F);
             
-            // Draw the filter effect into the post-processing framebuffer.
-            context.CommandList.SetFramebuffer(PostProcessingTarget.Framebuffer);
-            context.FullScreenRenderer.Draw(context.CommandList, FilterResult, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            switch (ActiveScene?.SceneType) {
+                case SceneType.Scene2D:
+                    ActiveCam2D?.Begin();
+                    ActiveScene.Draw(context, FilterTarget.Framebuffer);
+                    ActiveCam2D?.End();
+                    break;
+                
+                case SceneType.Scene3D:
+                    ActiveCam3D?.Begin();
+                    ActiveScene.Draw(context, FilterTarget.Framebuffer);
+                    ActiveCam3D?.End();
+                    break;
+            }
             
-            // Draw the post-processing effect into the final framebuffer.
-            context.CommandList.SetFramebuffer(framebuffer);
-            context.CommandList.CopyTexture(PostProcessingTarget.ColorTexture, PostProcessingResult.DeviceTexture);
-            context.FullScreenRenderer.Draw(context.CommandList, PostProcessingResult, framebuffer.OutputDescription, PostEffect);
-        }
-        else {
+            // Apply MSAA. 
+            if (FilterTarget.SampleCount != TextureSampleCount.Count1) {
+                context.CommandList.ResolveTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
+            }
+            else {
+                context.CommandList.CopyTexture(FilterTarget.ColorTexture, FilterResult.DeviceTexture);
+            }
             
-            // Draw the filter effect into the final framebuffer.
-            context.CommandList.SetFramebuffer(framebuffer);
-            context.FullScreenRenderer.Draw(context.CommandList, FilterResult, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            if (PostEffect != null) {
+                
+                // Draw the filter effect into the post-processing framebuffer.
+                context.CommandList.SetFramebuffer(PostProcessingTarget.Framebuffer);
+                context.FullScreenRenderer.Draw(context.CommandList, FilterResult, PostProcessingTarget.Framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+                
+                // Draw the post-processing effect into the final framebuffer.
+                context.CommandList.SetFramebuffer(framebuffer);
+                context.CommandList.CopyTexture(PostProcessingTarget.ColorTexture, PostProcessingResult.DeviceTexture);
+                context.FullScreenRenderer.Draw(context.CommandList, PostProcessingResult, framebuffer.OutputDescription, PostEffect);
+            }
+            else {
+                
+                // Draw the filter effect into the final framebuffer.
+                context.CommandList.SetFramebuffer(framebuffer);
+                context.FullScreenRenderer.Draw(context.CommandList, FilterResult, framebuffer.OutputDescription, ActiveScene?.FilterEffect);
+            }
         }
     }
 
@@ -222,6 +241,15 @@ public static class SceneManager {
     /// <param name="scene">The scene to set as the active scene.</param>
     /// <param name="loadingGui">An optional loading GUI to display during scene loading. If null, no loading screen is shown.</param>
     public static void SetScene(Scene? scene, LoadingGui? loadingGui = null) {
+        lock (LoadLock) {
+            if (IsLoading) {
+                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name}");
+                return;
+            }
+            
+            IsLoading = true;
+        }
+        
         if (loadingGui == null) {
             Logger.Info($"Setting active scene to: {scene?.Name}");
             
@@ -237,7 +265,8 @@ public static class SceneManager {
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
             Logger.Info($"Scene {scene?.Name} initialized successfully.");
-            
+
+            IsLoading = false;
             return;
         }
         
@@ -276,6 +305,7 @@ public static class SceneManager {
             Logger.Info($"Scene {scene?.Name} initialized successfully.");
             
             GuiManager.SetGui(null);
+            IsLoading = false;
         });
     }
     
