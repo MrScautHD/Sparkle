@@ -101,20 +101,24 @@ public static class SceneManager {
     /// Loads the active scene.
     /// </summary>
     internal static void OnLoad(ContentManager content) {
-        Logger.Info("Load active scene content...");
-        ActiveScene?.Load(content);
-        Logger.Info($"Scene {ActiveScene?.Name} content loaded successfully.");
+        if (ActiveScene != null) {
+            Logger.Info("Load active scene content...");
+            ActiveScene.Load(content);
+            Logger.Info($"Scene {ActiveScene?.Name} content loaded successfully.");
+        }
     }
     
     /// <summary>
     /// Initializes the active scene.
     /// </summary>
     internal static void OnInit() {
-        Logger.Info("Initialize active scene...");
-        ActiveScene?.Init();
-        ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
-        ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-        Logger.Info($"Scene {ActiveScene?.Name} initialized successfully.");
+        if (ActiveScene != null) {
+            Logger.Info("Initialize active scene...");
+            ActiveScene.Init();
+            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            Logger.Info($"Scene {ActiveScene?.Name} initialized successfully.");
+        }
     }
     
     /// <summary>
