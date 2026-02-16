@@ -1,7 +1,6 @@
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
-using Sparkle.CSharp.Graphics.Rendering;
 using Veldrid;
 
 namespace Sparkle.CSharp.Graphics;
