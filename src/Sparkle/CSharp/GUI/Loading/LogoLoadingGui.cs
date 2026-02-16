@@ -71,11 +71,12 @@ public class LogoLoadingGui : LoadingGui {
         this._timer += (float) delta;
         
         float progress = Math.Clamp(this._timer / this._logoFadeInTime, 0.0F, 1.0F);
-        float easedAlpha = (float) Math.Pow(progress, 5.0F);
+        float easedAlpha = MathF.Pow(progress, 5.0F);
+        byte alphaByte = (byte) Math.Min(255, Math.Floor(easedAlpha * 255.5F));
         
         if (this.TryGetElement("logo", out GuiElement? element)) {
             if (element is ImageElement imageElement) {
-                imageElement.Data.Color = new Color(255, 255, 255, (byte) (easedAlpha * 255));
+                imageElement.Data.Color = new Color(255, 255, 255, alphaByte);
             }
         }
     }
