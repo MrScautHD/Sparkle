@@ -264,48 +264,48 @@ public static class SceneManager {
             ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
             Logger.Info($"Scene {scene?.Name} initialized successfully.");
-
+            
             IsLoading = false;
-            return;
         }
-        
-        GuiManager.SetGui(loadingGui);
-        
-        Task.Run(() => {
-            DateTime startTime = DateTime.Now;
-            loadingGui.Progress = 0.0F;
+        else {
+            GuiManager.SetLoadingGui(loadingGui);
             
-            Logger.Info($"Setting active scene to: {scene?.Name}");
-            
-            ActiveScene?.Dispose();
-            ActiveScene = scene;
-            loadingGui.Progress = 0.2F;
-            
-            Logger.Info("Load active scene content...");
-            if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
-            loadingGui.Progress = 0.7F;
-            Logger.Info($"Scene {scene?.Name} content loaded successfully.");
-            
-            Logger.Info("Initialize active scene...");
-            ActiveScene?.Init();
-            loadingGui.Progress = 0.9F;
-            
-            float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
-            float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
-            
-            if (remaining > 0) {
-                Thread.Sleep((int) (remaining * 1000));
-            }
-            
-            loadingGui.Progress = 1.0F;
-            
-            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
-            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-            Logger.Info($"Scene {scene?.Name} initialized successfully.");
-            
-            GuiManager.SetGui(null);
-            IsLoading = false;
-        });
+            Task.Run(() => {
+                DateTime startTime = DateTime.Now;
+                loadingGui.Progress = 0.0F;
+                
+                Logger.Info($"Setting active scene to: {scene?.Name}");
+                
+                ActiveScene?.Dispose();
+                ActiveScene = scene;
+                loadingGui.Progress = 0.2F;
+                
+                Logger.Info("Load active scene content...");
+                if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+                loadingGui.Progress = 0.7F;
+                Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+                
+                Logger.Info("Initialize active scene...");
+                ActiveScene?.Init();
+                loadingGui.Progress = 0.9F;
+                
+                float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
+                float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
+                
+                if (remaining > 0.0F) {
+                    Thread.Sleep((int) (remaining * 1000.0F));
+                }
+                
+                loadingGui.Progress = 1.0F;
+                
+                ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+                ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+                Logger.Info($"Scene {scene?.Name} initialized successfully.");
+                
+                GuiManager.SetLoadingGui(null);
+                IsLoading = false;
+            });
+        }
     }
     
     /// <summary>

@@ -1,5 +1,6 @@
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Loading;
 using Veldrid;
 
 namespace Sparkle.CSharp.GUI;
@@ -9,12 +10,23 @@ public static class GuiManager {
     /// <summary>
     /// The currently active GUI.
     /// </summary>
-    public static Gui? ActiveGui { get; private set; }
+    public static Gui? ActiveGui => _activeLoadingGui ?? _activeGui;
     
     /// <summary>
     /// A scaling factor applied to the GUI.
     /// </summary>
     public static float Scale;
+    
+    /// <summary>
+    /// The primary GUI instance currently active.
+    /// </summary>
+    private static Gui? _activeGui;
+    
+    /// <summary>
+    /// The currently active loading GUI, if one is set.
+    /// This is used to manage transitional or temporary GUI states, such as loading screens.
+    /// </summary>
+    private static LoadingGui? _activeLoadingGui;
     
     /// <summary>
     /// Initializes the GUI manager.
@@ -69,11 +81,22 @@ public static class GuiManager {
     /// </summary>
     /// <param name="gui">The new GUI to set as active, or null to unset the active GUI.</param>
     public static void SetGui(Gui? gui) {
-        ActiveGui?.Dispose();
-        ActiveGui = gui;
+        _activeGui?.Dispose();
+        _activeGui = gui;
         gui?.Init();
     }
-
+    
+    /// <summary>
+    /// Sets the active loading GUI used during scene transitions or other loading processes.
+    /// Disposes of the currently active loading GUI, if any, and initializes the new one.
+    /// </summary>
+    /// <param name="loadingGui">The new loading GUI to be set. Pass null to clear the active loading GUI.</param>
+    internal static void SetLoadingGui(LoadingGui? loadingGui) {
+        _activeLoadingGui?.Dispose();
+        _activeLoadingGui = loadingGui;
+        loadingGui?.Init();
+    }
+    
     /// <summary>
     /// Releases resources associated with the currently active GUI, if any.
     /// </summary>

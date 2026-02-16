@@ -14,6 +14,7 @@ using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.GUI.Loading;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
@@ -136,10 +137,11 @@ public class Game : Disposable {
     }
     
     /// <summary>
-    /// Starts the game loop, initializing all necessary components and running the game.
+    /// Runs the game with the specified scene and loading interface.
     /// </summary>
-    /// <param name="scene">The scene to load initially.</param>
-    public void Run(Scene? scene) {
+    /// <param name="scene">The initial scene to load. Can be null if no scene is to be loaded initially.</param>
+    /// <param name="loadingGui">The graphical interface displayed while loading resources.</param>
+    public void Run(Scene? scene, LoadingGui? loadingGui = null) {
         if (this.Settings.LogDirectory != string.Empty) {
             this._logFileWriter = new LogFileWriter(this.Settings.LogDirectory);
             Logger.Message += this._logFileWriter.WriteFileMsg;
@@ -206,7 +208,7 @@ public class Game : Disposable {
         Logger.Info("Initialize global resources...");
         GlobalResource.Init(graphicsDevice);
         
-        Logger.Info("Initialize global graphics assets...");
+        Logger.Info("Initialize global graphics assets manager...");
         GlobalGraphicsAssets.Init(graphicsDevice, this.MainWindow);
         
         Logger.Info("Initialize full screen renderer...");
@@ -245,10 +247,50 @@ public class Game : Disposable {
         
         this.OnRun();
         
-        Logger.Info("Load content...");
-        this.Load(this.Content);
+        bool isLoaded = false;
         
-        this.Init();
+        if (loadingGui == null) {
+            Logger.Info("Load global graphics assets...");
+            GlobalGraphicsAssets.Load(this.Content);
+            
+            Logger.Info("Load content...");
+            this.Load(this.Content);
+            
+            Logger.Info("Initialize game...");
+            this.Init();
+        }
+        else {
+            GuiManager.SetLoadingGui(loadingGui);
+            
+            Task.Run(() => {
+                DateTime startTime = DateTime.Now;
+                loadingGui.Progress = 0.0F;
+                
+                Logger.Info("Load global graphics assets...");
+                GlobalGraphicsAssets.Load(this.Content);
+                loadingGui.Progress = 0.3F;
+                
+                Logger.Info("Load content...");
+                this.Load(this.Content);
+                loadingGui.Progress = 0.7F;
+                
+                Logger.Info("Initialize game...");
+                this.Init();
+                loadingGui.Progress = 0.9F;
+                
+                float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
+                float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
+                
+                if (remaining > 0.0F) {
+                    Thread.Sleep((int) (remaining * 1000.0F));
+                }
+                
+                loadingGui.Progress = 1.0F;
+                
+                GuiManager.SetLoadingGui(null);
+                isLoaded = true;
+            });
+        }
         
         Logger.Info("Start game loop...");
         while (!this.ShouldClose && this.MainWindow.Exists) {
@@ -261,13 +303,26 @@ public class Game : Disposable {
             Input.Begin();
             
             AudioContext.Update();
-            this.Update(Time.Delta);
-            this.AfterUpdate(Time.Delta);
-
-            this._fixedUpdateTimer += Time.Delta;
-            while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
-                this.FixedUpdate(this._fixedUpdateTimeStep);
-                this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+            
+            if (isLoaded) {
+                this.Update(Time.Delta);
+                this.AfterUpdate(Time.Delta);
+                
+                this._fixedUpdateTimer += Time.Delta;
+                while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
+                    this.FixedUpdate(this._fixedUpdateTimeStep);
+                    this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+                }
+            }
+            else {
+                GuiManager.OnUpdate(Time.Delta);
+                GuiManager.OnAfterUpdate(Time.Delta);
+                
+                this._fixedUpdateTimer += Time.Delta;
+                while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
+                    GuiManager.OnFixedUpdate(this._fixedUpdateTimeStep);
+                    this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+                }
             }
             
             // Draw.
@@ -276,7 +331,12 @@ public class Game : Disposable {
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             this.CommandList.ClearDepthStencil(1.0F);
             
-            this.Draw(this.GraphicsContext, this._renderTarget.Framebuffer);
+            if (isLoaded) {
+                this.Draw(this.GraphicsContext, this._renderTarget.Framebuffer);
+            }
+            else {
+                GuiManager.OnDraw(this.GraphicsContext, this._renderTarget.Framebuffer);
+            }
             
             // Apply MSAA.
             if (this._renderTarget.SampleCount != TextureSampleCount.Count1) {
