@@ -119,8 +119,7 @@ public abstract class GuiElement {
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
     /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
     protected internal virtual void Update(double delta, ref bool interactionHandled) {
-        this.ScaledSize = this.CalculateSize();
-        this.Position = this.CalculatePos();
+        this.UpdatePosAndSize();
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
         
@@ -243,5 +242,13 @@ public abstract class GuiElement {
     /// <returns>The scaled size of the GUI element as a <see cref="Vector2"/>.</returns>
     protected virtual Vector2 CalculateSize() {
         return this.Size * this.Scale * this.Gui.ScaleFactor;
+    }
+    
+    /// <summary>
+    /// Updates the position and scaled size of the GUI element based on the current state of its configuration.
+    /// </summary>
+    internal void UpdatePosAndSize() {
+        this.ScaledSize = this.CalculateSize();
+        this.Position = this.CalculatePos();
     }
 }

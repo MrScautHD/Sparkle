@@ -258,6 +258,8 @@ public class Game : Disposable {
             
             Logger.Info("Initialize game...");
             this.Init();
+            
+            isLoaded = true;
         }
         else {
             GuiManager.SetLoadingGui(loadingGui);

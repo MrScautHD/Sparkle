@@ -181,8 +181,7 @@ public abstract class Gui : Disposable {
         element.Name = name;
         
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
-        bool dummy = false;
-        element.Update(0, ref dummy);
+        element.UpdatePosAndSize();
         
         this._elements.Add(name, element);
         return true;
