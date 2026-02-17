@@ -11,6 +11,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Loading;
 using Sparkle.CSharp.Physics;
+using Sparkle.CSharp.Utils.Async;
 using Veldrid;
 
 namespace Sparkle.CSharp.Scenes;
@@ -239,11 +240,10 @@ public static class SceneManager {
     }
     
     /// <summary>
-    /// Sets the specified scene as the active scene and initializes it, with an optional loading screen displayed during the loading process.
+    /// Loads the given scene and sets it as the active scene.
     /// </summary>
-    /// <param name="scene">The scene to set as the active scene.</param>
-    /// <param name="loadingGui">An optional loading GUI to display during scene loading. If null, no loading screen is shown.</param>
-    public static void SetScene(Scene? scene, LoadingGui? loadingGui = null) {
+    /// <param name="scene">The scene to be loaded. If null, the current scene will be unloaded without setting a new active scene.</param>
+    public static void LoadScene(Scene? scene) {
         lock (LoadLock) {
             if (IsLoading) {
                 Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name}");
@@ -253,63 +253,100 @@ public static class SceneManager {
             IsLoading = true;
         }
         
-        if (loadingGui == null) {
+        Logger.Info($"Setting active scene to: {scene?.Name}");
+        
+        ActiveScene?.Dispose();
+        ActiveScene = scene;
+        
+        Logger.Info("Load active scene content...");
+        if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+        Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+        
+        Logger.Info("Initialize active scene...");
+        ActiveScene?.Init();
+        ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+        ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+        Logger.Info($"Scene {scene?.Name} initialized successfully.");
+        
+        IsLoading = false;
+    }
+    
+    /// <summary>
+    /// Asynchronously loads the specified scene, with an optional loading GUI to display progress.
+    /// </summary>
+    /// <param name="scene">The scene to be loaded. Pass null to unload the current scene without loading a new one.</param>
+    /// <param name="loadingGui">The optional loading GUI used to display the loading progress.</param>
+    /// <returns>An AsyncOperation that represents the loading process and allows monitoring its completion.</returns>
+    public static AsyncOperation LoadSceneAsync(Scene? scene, LoadingGui? loadingGui = null) {
+        lock (LoadLock) {
+            if (IsLoading) {
+                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name}");
+                
+                return new AsyncOperation(new AsyncState {
+                    Progress = 1.0F
+                });
+            }
+            
+            IsLoading = true;
+        }
+        
+        AsyncState state = new AsyncState();
+        AsyncOperation operation = new AsyncOperation(state);
+        
+        if (loadingGui != null) {
+            GuiManager.SetLoadingGui(loadingGui);
+        }
+        
+        Task.Run(() => {
+            DateTime startTime = DateTime.Now;
+            state.Progress = 0.0F;
+            loadingGui?.Progress = 0.0F;
             Logger.Info($"Setting active scene to: {scene?.Name}");
             
             ActiveScene?.Dispose();
             ActiveScene = scene;
+            state.Progress = 0.2F;
+            loadingGui?.Progress = 0.2F;
             
             Logger.Info("Load active scene content...");
             if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
+            state.Progress = 0.7F;
+            loadingGui?.Progress = 0.7F;
             Logger.Info($"Scene {scene?.Name} content loaded successfully.");
             
             Logger.Info("Initialize active scene...");
             ActiveScene?.Init();
-            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
-            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-            Logger.Info($"Scene {scene?.Name} initialized successfully.");
+            state.Progress = 0.9F;
+            loadingGui?.Progress = 0.9F;
             
-            IsLoading = false;
-        }
-        else {
-            GuiManager.SetLoadingGui(loadingGui);
-            
-            Task.Run(() => {
-                DateTime startTime = DateTime.Now;
-                loadingGui.Progress = 0.0F;
-                
-                Logger.Info($"Setting active scene to: {scene?.Name}");
-                
-                ActiveScene?.Dispose();
-                ActiveScene = scene;
-                loadingGui.Progress = 0.2F;
-                
-                Logger.Info("Load active scene content...");
-                if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
-                loadingGui.Progress = 0.7F;
-                Logger.Info($"Scene {scene?.Name} content loaded successfully.");
-                
-                Logger.Info("Initialize active scene...");
-                ActiveScene?.Init();
-                loadingGui.Progress = 0.9F;
-                
+            if (loadingGui != null) {
                 float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
-                float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
+                float remaining = Math.Max(0.0F, loadingGui.MinTime - elapsed);
                 
                 if (remaining > 0.0F) {
                     Thread.Sleep((int) (remaining * 1000.0F));
                 }
-                
-                loadingGui.Progress = 1.0F;
-                
-                ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
-                ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-                Logger.Info($"Scene {scene?.Name} initialized successfully.");
-                
+            }
+            
+            ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
+            ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
+            
+            state.Progress = 1.0F;
+            loadingGui?.Progress = 1.0F;
+            Logger.Info($"Scene {scene?.Name} initialized successfully.");
+            
+            if (loadingGui != null) {
                 GuiManager.SetLoadingGui(null);
+            }
+            
+            lock (LoadLock) {
                 IsLoading = false;
-            });
-        }
+            }
+            
+            state.Invoke(true);
+        });
+        
+        return operation;
     }
     
     /// <summary>

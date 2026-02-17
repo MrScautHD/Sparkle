@@ -58,7 +58,7 @@ public class LogoLoadingGui : LoadingGui {
         base.Init();
         this.Logo = Game.Instance?.Content.Load(new TextureContent(this._logoPath))!;
         
-        ImageData imageData = new ImageData(this.Logo, color: new Color(255, 255, 255, 0));
+        ImageData imageData = new ImageData(this.Logo);
         this.AddElement("logo", new ImageElement(imageData, Anchor.Center, Vector2.Zero, scale: new Vector2(5, 5)));
     }
     
@@ -72,7 +72,7 @@ public class LogoLoadingGui : LoadingGui {
         
         float progress = Math.Clamp(this._timer / this._logoFadeInTime, 0.0F, 1.0F);
         float easedAlpha = MathF.Pow(progress, 5.0F);
-        byte alphaByte = (byte) Math.Min(255, Math.Floor(easedAlpha * 255.5F));
+        byte alphaByte = (byte) Math.Min(255, Math.Floor(easedAlpha * 255.0F));
         
         if (this.TryGetElement("logo", out GuiElement? element)) {
             if (element is ImageElement imageElement) {

@@ -30,11 +30,11 @@ public class TestGame : Game {
         base.Update(delta);
         
         if (Input.IsKeyPressed(KeyboardKey.V)) {
-            SceneManager.SetScene(new TestScene2D("TEST"), new ProgressBarLoadingGui("Loading"));
+            SceneManager.LoadSceneAsync(new TestScene2D("TEST"), new ProgressBarLoadingGui("Loading"));
         }
         
         if (Input.IsKeyPressed(KeyboardKey.B)) {
-            SceneManager.SetScene(new TestScene3D("TEST"), new ProgressBarLoadingGui("Loading"));
+            SceneManager.LoadSceneAsync(new TestScene3D("TEST"), new ProgressBarLoadingGui("Loading"));
         }
     }
 }
