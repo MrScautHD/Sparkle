@@ -26,7 +26,7 @@ public abstract class Component : Disposable {
     /// <summary>
     /// Gets the global position of the component, calculated as the entity's position plus the offset.
     /// </summary>
-    public Vector3 GlobalPosition => this.Entity.Transform.Translation + Vector3.Transform(this.OffsetPosition, this.Entity.Transform.Rotation);
+    public Vector3 GlobalPosition => this.Entity.GlobalTransform.Translation + Vector3.Transform(this.OffsetPosition, this.Entity.GlobalTransform.Rotation);
     
     /// <summary>
     /// The local offset position relative to the entity's transform.

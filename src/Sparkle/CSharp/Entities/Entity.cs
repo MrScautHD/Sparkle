@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities.Components;
@@ -21,31 +22,61 @@ public class Entity : Disposable {
     public uint Id { get; internal set; }
     
     /// <summary>
+    /// The parent of this entity.
+    /// </summary>
+    public Entity? Parent { get; private set; }
+    
+    /// <summary>
     /// A tag used to categorize or identify the entity.
     /// </summary>
     public string Tag;
     
     /// <summary>
-    /// The transform representing the position, rotation, and scale of the entity.
+    /// The local transformation of the entity within its parent's coordinate space.
     /// </summary>
-    public Transform Transform;
-
+    public Transform LocalTransform;
+    
+    /// <summary>
+    /// The global transformation of the entity, combining its local transformation with the transformations of all its ancestors in the hierarchy.
+    /// </summary>
+    public Transform GlobalTransform {
+        get {
+            if (this.Parent == null) {
+                return this.LocalTransform;
+            }
+            
+            Transform parentTransform = this.Parent.GlobalTransform;
+            
+            return new Transform() {
+                Translation = parentTransform.Translation + Vector3.Transform(this.LocalTransform.Translation * parentTransform.Scale, parentTransform.Rotation),
+                Rotation = parentTransform.Rotation * this.LocalTransform.Rotation,
+                Scale = parentTransform.Scale * this.LocalTransform.Scale
+            };
+        }
+    }
+    
     /// <summary>
     /// A dictionary storing all components attached to this entity.
     /// </summary>
     internal Dictionary<Type, Component> Components;
-
+    
+    /// <summary>
+    /// A list of children attached to this entity.
+    /// </summary>
+    private Dictionary<uint, Entity> _children;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="Entity"/> class.
     /// </summary>
     /// <param name="transform">The transform defining the position, rotation, and scale of the entity.</param>
     /// <param name="tag">An optional tag used to categorize or identify the entity.</param>
     public Entity(Transform transform, string? tag = null) {
-        this.Transform = transform;
+        this.LocalTransform = transform;
         this.Tag = tag ?? string.Empty;
         this.Components = new Dictionary<Type, Component>();
+        this._children = new Dictionary<uint, Entity>();
     }
-
+    
     /// <summary>
     /// Called once when the entity is initialized.
     /// </summary>
@@ -105,12 +136,131 @@ public class Entity : Disposable {
             component.Resize(rectangle);
         }
     }
-
+    
+    /// <summary>
+    /// Retrieves all child entities of the current entity.
+    /// </summary>
+    /// <returns>A read-only collection containing the child entities.</returns>
+    public IReadOnlyCollection<Entity> GetChildren() {
+        return this._children.Values;
+    }
+    
+    /// <summary>
+    /// Determines whether this entity contains a child entity with the specified ID.
+    /// </summary>
+    /// <param name="id">The unique identifier of the child entity to check for.</param>
+    /// <returns>true if a child entity with the specified ID exists; otherwise, false.</returns>
+    public bool HasChild(uint id) {
+        return this._children.ContainsKey(id);
+    }
+    
+    /// <summary>
+    /// Retrieves a child entity by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the child entity to retrieve.</param>
+    /// <returns>The child entity with the specified identifier, or <c>null</c> if no such child exists.</returns>
+    public Entity? GetChild(uint id) {
+        if (!this.TryGetChild(id, out Entity? result)) {
+            return null;
+        }
+        
+        return result;
+    }
+    
+    /// <summary>
+    /// Attempts to retrieve a child entity by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the child entity to retrieve.</param>
+    /// <param name="child">When this method returns, contains the child entity associated with the specified identifier, if the operation succeeded; otherwise, null.</param>
+    /// <returns><c>true</c> if a child entity with the specified identifier was found; otherwise, <c>false</c>.</returns>
+    public bool TryGetChild(uint id, [NotNullWhen(true)] out Entity? child) {
+        return this._children.TryGetValue(id, out child);
+    }
+    
+    /// <summary>
+    /// Adds a child entity to the current entity.
+    /// </summary>
+    /// <param name="child">The entity to be added as a child. The child must not already have a parent entity.</param>
+    /// <exception cref="Exception">Thrown if the specified child entity is already a child of another entity or this entity.</exception>
+    public void AddChild(Entity child) {
+        if (!this.TryAddChild(child)) {
+            throw new Exception($"The entity: [{child.Id}] is already a child of another entity or this entity.");
+        }
+    }
+    
+    /// <summary>
+    /// Attempts to add the specified entity as a child of this entity.
+    /// </summary>
+    /// <param name="child">The entity to be added as a child.</param>
+    /// <returns>True if the child was successfully added; otherwise, false.</returns>
+    public bool TryAddChild(Entity child) {
+        if (child.Parent != null) {
+            return false;
+        }
+        
+        if (!this._children.TryAdd(child.Id, child)) {
+            return false;
+        }
+        
+        child.Parent = this;
+        return true;
+    }
+    
+    /// <summary>
+    /// Removes the specified child entity from the current entity's list of children.
+    /// </summary>
+    /// <param name="child">The child entity to be removed.</param>
+    /// <exception cref="Exception">Thrown when the specified entity is not a child of the current entity.</exception>
+    public void RemoveChild(Entity child) {
+        if (!this.TryRemoveChild(child)) {
+            throw new Exception($"The entity: [{child.Id}] is not a child of this entity: [{this.Id}].");
+        }
+    }
+    
+    /// <summary>
+    /// Attempts to remove the specified child entity from the current entity's collection of children.
+    /// </summary>
+    /// <param name="child">The child entity to remove from the current entity.</param>
+    /// <returns>True if the child entity was successfully removed; otherwise, false.</returns>
+    public bool TryRemoveChild(Entity child) {
+        if (!this._children.ContainsKey(child.Id)) {
+            return false;
+        }
+        
+        child.Parent = null;
+        return this._children.Remove(child.Id);
+    }
+    
+    /// <summary>
+    /// Removes a child entity with the specified ID from the current entity's hierarchy.
+    /// </summary>
+    /// <param name="id">The unique identifier of the child entity to be removed.</param>
+    /// <exception cref="Exception">Thrown if the entity with the specified ID is not a child of the current entity.</exception>
+    public void RemoveChild(uint id) {
+        if (!this.TryRemoveChild(id)) {
+            throw new Exception($"The entity: [{id}] is not a child of this entity: [{this.Id}].");
+        }
+    }
+    
+    /// <summary>
+    /// Attempts to remove a child entity with the specified identifier from this entity's list of children.
+    /// </summary>
+    /// <param name="id">The unique identifier of the child entity to remove.</param>
+    /// <return><c>true</c> if the child entity was successfully removed; otherwise, <c>false</c>.</return>
+    public bool TryRemoveChild(uint id) {
+        if (!this._children.TryGetValue(id, out Entity? child)) {
+            return false;
+        }
+        
+        child.Parent = null;
+        return this._children.Remove(id);
+    }
+    
     /// <summary>
     /// Retrieves all components attached to the entity.
     /// </summary>
     /// <returns>An enumerable collection of components associated with the entity.</returns>
-    public IEnumerable<Component> GetComponents() {
+    public IReadOnlyCollection<Component> GetComponents() {
         return this.Components.Values;
     }
 
@@ -257,6 +407,15 @@ public class Entity : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            
+            // Detach children.
+            foreach (Entity child in this._children.Values) {
+                child.Parent = null;
+            }
+            
+            this._children.Clear();
+            
+            // Dispose components.
             var enumerator = this.Components.GetEnumerator();
             
             while (enumerator.MoveNext()) {
@@ -268,7 +427,8 @@ public class Entity : Disposable {
                     this.Components.Remove(component.GetType());
                 }
             }
-
+            
+            // Remove entity from scene.
             this.Scene.Entities.Remove(this.Id);
         }
     }

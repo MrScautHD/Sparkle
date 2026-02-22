@@ -209,7 +209,7 @@ public abstract class Scene : Disposable {
     /// <summary>
     /// Retrieves all entities in the scene.
     /// </summary>
-    public IEnumerable<Entity> GetEntities() {
+    public IReadOnlyCollection<Entity> GetEntities() {
         return this.Entities.Values;
     }
     

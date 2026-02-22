@@ -3,27 +3,27 @@ using System.Numerics;
 namespace Sparkle.CSharp.Entities.Components;
 
 public abstract class InterpolatedComponent : Component {
-
+    
     /// <summary>
     /// Interpolated local position.
     /// </summary>
     public Vector3 LerpedPosition => Vector3.Lerp(this._previousPos, this._currentPos, (float) (Time.FixedAccumulator / Time.FixedStep));
-
+    
     /// <summary>
     /// Interpolated global position.
     /// </summary>
     public Vector3 LerpedGlobalPosition => Vector3.Lerp(this._previousGlobalPos, this._currentGlobalPos, (float) (Time.FixedAccumulator / Time.FixedStep));
-
+    
     /// <summary>
     /// Interpolated rotation.
     /// </summary>
     public Quaternion LerpedRotation => Quaternion.Slerp(this._previousRot, this._currentRot, (float) (Time.FixedAccumulator / Time.FixedStep));
-
+    
     /// <summary>
     /// Interpolated scale.
     /// </summary>
     public Vector3 LerpedScale => Vector3.Lerp(this._previousScale, this._currentScale, (float) (Time.FixedAccumulator / Time.FixedStep));
-
+    
     /// <summary>
     /// The position of the component during the previous fixed update.
     /// </summary>
@@ -78,15 +78,15 @@ public abstract class InterpolatedComponent : Component {
     protected internal override void FixedUpdate(double fixedStep) {
         base.FixedUpdate(fixedStep);
         this._previousPos = this._currentPos;
-        this._currentPos = this.Entity.Transform.Translation;
+        this._currentPos = this.Entity.GlobalTransform.Translation;
         
         this._previousGlobalPos = this._currentGlobalPos;
         this._currentGlobalPos = this.GlobalPosition;
-
+        
         this._previousRot = this._currentRot;
-        this._currentRot = this.Entity.Transform.Rotation;
-
+        this._currentRot = this.Entity.GlobalTransform.Rotation;
+        
         this._previousScale = this._currentScale;
-        this._currentScale = this.Entity.Transform.Scale;
+        this._currentScale = this.Entity.GlobalTransform.Scale;
     }
 }

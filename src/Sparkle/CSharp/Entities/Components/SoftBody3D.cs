@@ -138,10 +138,18 @@ public class SoftBody3D : Component {
         base.Init();
         this.CreateSoftBody();
         this._renderable = new Renderable(this.Mesh, new Transform());
-        this.Simulation.BodyMoved += this.OnBodyMoving;
-        this.Entity.Transform.OnUpdate += this.OnEntityMoving;
+        this.Simulation.BodyMoved += this.SyncEntityToBodyTransform;
     }
-
+    
+    /// <summary>
+    /// Updates the state of the <see cref="SoftBody3D"/> component during the simulation step.
+    /// </summary>
+    /// <param name="delta">The time elapsed since the last frame, in seconds.</param>
+    protected internal override void Update(double delta) {
+        base.Update(delta);
+        this.SyncBodyToEntityTransform(this.Entity.GlobalTransform);
+    }
+    
     /// <summary>
     /// Renders the soft body mesh if it falls within the active camera's frustum, applying optional visual configurations.
     /// </summary>
@@ -188,64 +196,129 @@ public class SoftBody3D : Component {
     /// Creates a soft body instance associated with the current <see cref="SoftBody3D"/> component.
     /// </summary>
     private void CreateSoftBody() {
-        Transform transform = this.Entity.Transform;
-        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, this.GlobalPosition, transform.Rotation);
+        Transform transform = this.Entity.GlobalTransform;
+        this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, transform.Translation, transform.Rotation);
     }
     
-    /// <summary>
-    /// Handles the logic for syncing the entity's position and rotation with the associated physics body's movement.
-    /// </summary>
-    private void OnBodyMoving(RigidBody body) {
+    private void SyncEntityToBodyTransform(RigidBody body) {
         if (body == this.Center) {
             if (!this._isSyncing) {
                 this._isSyncing = true;
                 try {
-                    // Sync Position.
-                    Vector3 entityPos = this.Entity.Transform.Translation;
+                    Transform globalTransform = this.Entity.GlobalTransform;
+                    
+                    Vector3 entityPos = globalTransform.Translation;
                     Vector3 bodyPos = body.Position;
-
-                    if (bodyPos != entityPos) {
-                        this.Entity.Transform.Translation = bodyPos;
-                    }
-
-                    // Sync Rotation.
-                    Quaternion entityRot = this.Entity.Transform.Rotation;
+                    
+                    Quaternion entityRot = globalTransform.Rotation;
                     Quaternion bodyRot = body.Orientation;
-
-                    if (entityRot != bodyRot) {
-                        this.Entity.Transform.Rotation = bodyRot;
+                    
+                    if (bodyPos != entityPos || bodyRot != entityRot) {
+                        if (this.Entity.Parent == null) {
+                            if (bodyPos != entityPos) {
+                                this.Entity.LocalTransform.Translation = bodyPos;
+                            }
+                            
+                            if (bodyRot != entityRot) {
+                                this.Entity.LocalTransform.Rotation = bodyRot;
+                            }
+                        }
+                        else {
+                            Transform parentGlobal = this.Entity.Parent.GlobalTransform;
+                            Quaternion invParentRot = Quaternion.Inverse(parentGlobal.Rotation);
+                            
+                            if (bodyPos != entityPos) {
+                                this.Entity.LocalTransform.Translation = Vector3.Transform(bodyPos - parentGlobal.Translation, invParentRot) / parentGlobal.Scale;
+                            }
+                            
+                            if (bodyRot != entityRot) {
+                                this.Entity.LocalTransform.Rotation = invParentRot * bodyRot;
+                            }
+                        }
+                        
+                        // Restore children's global transforms using inline math.
+                        IReadOnlyCollection<Entity> children = this.Entity.GetChildren();
+                        
+                        if (children.Count > 0) {
+                            Transform newGlobalTransform = this.Entity.GlobalTransform;
+                            Quaternion invNewParentRot = Quaternion.Inverse(newGlobalTransform.Rotation);
+                            
+                            foreach (Entity child in children) {
+                                bool hasPhysics = false;
+                                bool isKinematic = false;
+                                
+                                if (child.TryGetComponent(out RigidBody3D? childRb)) {
+                                    hasPhysics = true;
+                                    isKinematic = childRb.MotionType == MotionType.Kinematic;
+                                    
+                                    if (isKinematic) {
+                                        childRb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                    }
+                                }
+                                else if (child.TryGetComponent(out SoftBody3D? childSb)) {
+                                    hasPhysics = true;
+                                    isKinematic = childSb.Center.MotionType == MotionType.Kinematic;
+                                    
+                                    if (isKinematic) {
+                                        childSb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                    }
+                                }
+                                
+                                if (hasPhysics && !isKinematic) {
+                                    
+                                    // Calculate what the child's global transform was.
+                                    Vector3 oldChildGlobalPos = globalTransform.Translation + Vector3.Transform(child.LocalTransform.Translation * globalTransform.Scale, globalTransform.Rotation);
+                                    Quaternion oldChildGlobalRot = globalTransform.Rotation * child.LocalTransform.Rotation;
+                                    
+                                    // Apply it as the new LocalTransform relative to the parent's new position.
+                                    child.LocalTransform.Translation = Vector3.Transform(oldChildGlobalPos - newGlobalTransform.Translation, invNewParentRot) / newGlobalTransform.Scale;
+                                    child.LocalTransform.Rotation = invNewParentRot * oldChildGlobalRot;
+                                }
+                            }
+                        }
                     }
-                } finally {
+                }
+                finally {
                     this._isSyncing = false;
                 }
             }
         }
     }
-
+    
     /// <summary>
     /// Handles the logic for sync the body's position and rotation with the associated entity movement.
     /// </summary>
     /// <param name="transform">The transform of the entity.</param>
-    private void OnEntityMoving(Transform transform) {
+    internal void SyncBodyToEntityTransform(Transform transform) {
         if (!this._isSyncing) {
             this._isSyncing = true;
             try {
-                // Sync Position.
                 Vector3 entityPos = transform.Translation;
                 Vector3 bodyPos = this.Center.Position;
-
-                if (bodyPos != entityPos) {
-                    this.Center.Position = entityPos;
-                }
-
-                // Sync Rotation.
+                Vector3 posDiff = entityPos - bodyPos;
+                
                 Quaternion entityRot = transform.Rotation;
                 Quaternion bodyRot = this.Center.Orientation;
-
-                if (entityRot != bodyRot) {
+                Quaternion rotDiff = Quaternion.Inverse(bodyRot) * entityRot;
+                
+                // Only move if the position or rotation actually changed.
+                if (posDiff != Vector3.Zero || rotDiff != Quaternion.Identity) {
+                    
+                    // Move and rotate the Center body
+                    this.Center.Position = entityPos;
                     this.Center.Orientation = entityRot;
+                    
+                    // Move and rotate all the Vertices relative to the Center.
+                    foreach (RigidBody vertex in this.Vertices) {
+                        Vector3 localVertexPos = vertex.Position - bodyPos;
+                        Vector3 rotatedLocalPos = Vector3.Transform(localVertexPos, rotDiff);
+                        
+                        vertex.Position = entityPos + rotatedLocalPos;
+                        vertex.Orientation = vertex.Orientation * rotDiff;
+                    }
                 }
-            } finally {
+            }
+            finally {
                 this._isSyncing = false;
             }
         }
@@ -255,8 +328,7 @@ public class SoftBody3D : Component {
         base.Dispose(disposing);
         
         if (disposing) {
-            this.Simulation.BodyMoved -= this.OnBodyMoving;
-            this.Entity.Transform.OnUpdate -= this.OnEntityMoving;
+            this.Simulation.BodyMoved -= this.SyncEntityToBodyTransform;
             this.SoftBody.Destroy();
         }
     }

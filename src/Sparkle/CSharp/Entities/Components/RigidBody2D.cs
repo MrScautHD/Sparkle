@@ -277,8 +277,16 @@ public class RigidBody2D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateBody();
-        this.Simulation.BodyMoved += this.BodyMoving;
-        this.Entity.Transform.OnUpdate += this.OnEntityMoving;
+        this.Simulation.BodyMoved += this.SyncEntityToBodyTransform;
+    }
+    
+    /// <summary>
+    /// Updates the state of the <see cref="RigidBody2D"/> component during the simulation step.
+    /// </summary>
+    /// <param name="delta">The time elapsed since the last update, in seconds.</param>
+    protected internal override void Update(double delta) {
+        base.Update(delta);
+        this.SyncBodyToEntityTransform(this.Entity.GlobalTransform);
     }
 
     /// <summary>
@@ -471,8 +479,8 @@ public class RigidBody2D : Component {
     private void CreateBody() {
         this._body = this.World.CreateBody(new BodyDef() {
             Type = this._bodyDef.Type,
-            Position = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y),
-            Rotation = this.Entity.Transform.Rotation.ToEuler().Z,
+            Position = new Vector2(this.Entity.GlobalTransform.Translation.X, this.Entity.GlobalTransform.Translation.Y),
+            Rotation = this.Entity.GlobalTransform.Rotation.ToEuler().Z,
             LinearVelocity = this._bodyDef.LinearVelocity,
             AngularVelocity = this._bodyDef.AngularVelocity,
             LinearDamping = this._bodyDef.LinearDamping,
@@ -498,61 +506,107 @@ public class RigidBody2D : Component {
     /// Handles the logic for syncing the entity's position and rotation with the associated physics body's movement.
     /// </summary>
     /// <param name="moveEvent">The event data containing information about the body movement.</param>
-    private void BodyMoving(BodyMoveEvent moveEvent) {
+    private void SyncEntityToBodyTransform(BodyMoveEvent moveEvent) {
         if (moveEvent.Body == this._body) {
             if (!this._isSyncing) {
                 this._isSyncing = true;
                 try {
-                    // Sync Position.
-                    Vector2 entityPos = new Vector2(this.Entity.Transform.Translation.X, this.Entity.Transform.Translation.Y);
+                    Transform globalTransform = this.Entity.GlobalTransform;
+                    
+                    Vector2 entityPos = new Vector2(globalTransform.Translation.X, globalTransform.Translation.Y);
                     Vector2 bodyPos = moveEvent.Body.Position;
-
-                    if (bodyPos != entityPos) {
-                        this.Entity.Transform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0);
-                    }
-
-                    // Sync Rotation.
-                    Quaternion entityRot = this.Entity.Transform.Rotation;
+                    
+                    Quaternion entityRot = globalTransform.Rotation;
                     Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, moveEvent.Body.Rotation);
-
-                    if (entityRot != bodyRot) {
-                        this.Entity.Transform.Rotation = bodyRot;
+                    
+                    if (bodyPos != entityPos || bodyRot != entityRot) {
+                        if (this.Entity.Parent == null) {
+                            if (bodyPos != entityPos) {
+                                this.Entity.LocalTransform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0);
+                            }
+                            
+                            if (bodyRot != entityRot) {
+                                this.Entity.LocalTransform.Rotation = bodyRot;
+                            }
+                        }
+                        else {
+                            Transform parentGlobal = this.Entity.Parent.GlobalTransform;
+                            Quaternion invParentRot = Quaternion.Inverse(parentGlobal.Rotation);
+                            
+                            if (bodyPos != entityPos) {
+                                this.Entity.LocalTransform.Translation = Vector3.Transform(new Vector3(bodyPos.X, bodyPos.Y, 0) - parentGlobal.Translation, invParentRot) / parentGlobal.Scale;
+                            }
+                            
+                            if (bodyRot != entityRot) {
+                                this.Entity.LocalTransform.Rotation = invParentRot * bodyRot;
+                            }
+                        }
+                        
+                        // Restore children's global transforms using inline math.
+                        IReadOnlyCollection<Entity> children = this.Entity.GetChildren();
+                        
+                        if (children.Count > 0) {
+                            Transform newGlobalTransform = this.Entity.GlobalTransform;
+                            Quaternion invNewParentRot = Quaternion.Inverse(newGlobalTransform.Rotation);
+                            
+                            foreach (Entity child in children) {
+                                if (child.TryGetComponent(out RigidBody2D? childRb)) {
+                                    if (childRb.Type != BodyType.Kinematic) {
+                                        
+                                        // Calculate what the child's global transform was.
+                                        Vector3 oldChildGlobalPos = globalTransform.Translation + Vector3.Transform(child.LocalTransform.Translation * globalTransform.Scale, globalTransform.Rotation);
+                                        Quaternion oldChildGlobalRot = globalTransform.Rotation * child.LocalTransform.Rotation;
+                                        
+                                        // Apply it as the new LocalTransform relative to the parent's new position.
+                                        child.LocalTransform.Translation = Vector3.Transform(oldChildGlobalPos - newGlobalTransform.Translation, invNewParentRot) / newGlobalTransform.Scale;
+                                        child.LocalTransform.Rotation = invNewParentRot * oldChildGlobalRot;
+                                    }
+                                    else {
+                                        
+                                        // Immediately sync its physics body so it doesn't fall behind in the physics step!
+                                        childRb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                    }
+                                }
+                            }
+                        }
                     }
-                } finally {
+                }
+                finally {
                     this._isSyncing = false;
                 }
             }
         }
     }
-
+    
     /// <summary>
     /// Handles the logic for sync the body's position and rotation with the associated entity movement.
     /// </summary>
     /// <param name="transform">The transform of the entity.</param>
-    private void OnEntityMoving(Transform transform) {
+    internal void SyncBodyToEntityTransform(Transform transform) {
         if (!this._isSyncing) {
             this._isSyncing = true;
             try {
                 // Sync Position.
                 Vector2 entityPos = new Vector2(transform.Translation.X, transform.Translation.Y);
                 Vector2 bodyPos = this.Position;
-
+                
                 if (bodyPos != entityPos) {
                     this.Transform = this.Transform with {
                         Position = entityPos
                     };
                 }
-
+                
                 // Sync Rotation.
                 Quaternion entityRot = transform.Rotation;
                 Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, this.Rotation);
-
+                
                 if (entityRot != bodyRot) {
                     this.Transform = this.Transform with {
                         Rotation = entityRot.ToEuler().Z
                     };
                 }
-            } finally {
+            }
+            finally {
                 this._isSyncing = false;
             }
         }
@@ -562,8 +616,7 @@ public class RigidBody2D : Component {
         base.Dispose(disposing);
 
         if (disposing) {
-            this.Simulation.BodyMoved -= this.BodyMoving;
-            this.Entity.Transform.OnUpdate -= this.OnEntityMoving;
+            this.Simulation.BodyMoved -= this.SyncEntityToBodyTransform;
             this._body.Destroy();
         }
     }

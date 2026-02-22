@@ -65,11 +65,11 @@ public class TestScene2D : Scene {
         Camera2D cam2D = SceneManager.ActiveCam2D!;
         
         if (Input.IsKeyDown(KeyboardKey.G)) {
-            player.Transform.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, float.DegreesToRadians(90));
+            player.LocalTransform.Rotation = Quaternion.CreateFromYawPitchRoll(0, 0, float.DegreesToRadians(90));
         }
         
         if (Input.IsKeyDown(KeyboardKey.H)) {
-            player.Transform.Translation += Vector3.One;
+            player.LocalTransform.Translation += Vector3.One;
         }
         
         if (Input.IsKeyDown(KeyboardKey.W)) {

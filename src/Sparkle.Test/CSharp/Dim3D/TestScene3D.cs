@@ -7,6 +7,7 @@ using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -99,7 +100,7 @@ public class TestScene3D : Scene {
         
         // PLAYER
         Entity player = new Entity(new Transform() { Translation = new Vector3(12, 2, 0)});
-        RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0))) {
+        RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
@@ -150,11 +151,11 @@ public class TestScene3D : Scene {
         softBodyCloth.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
         
         // SOFT SPHERE
-        Entity sphere = new Entity(new Transform() { Translation = new Vector3(0, 1, 0) });
+        Entity sphere = new Entity(new Transform() { Translation = new Vector3(4, 1, 0) });
         SoftBody3D softBodySphere = new SoftBody3D(new SoftBodySphereFactory(new Vector3(1, 1, 1), subdivisions: 3));
         sphere.AddComponent(softBodySphere);
         this.AddEntity(sphere);
-
+        
         softBodySphere.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
         
         // GROUND
@@ -184,10 +185,10 @@ public class TestScene3D : Scene {
         // INSTANCING PLAYER
         for (int x = 0; x < 3; x++) {
             for (int z = 0; z < 3; z++) {
-                Entity instancedPlayer = new Entity(new Transform() { Translation = new Vector3(0 + (x * 2), 25, 0 + (z * 2)) });
-                RigidBody3D instancedPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0))) {
+                Entity instancedPlayer = new Entity(new Transform() { Translation = new Vector3(-2 + (x * 2.5F), 25, -2 + (z * 2.5F)) });
+                RigidBody3D instancedPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
                     DrawDebug = true,
-                    DebugDrawColor = Color.Green
+                    DebugDrawColor = Color.Green,
                 };
                 InstancedRenderProxy instancedMultiRenderer = new InstancedRenderProxy(this.PlayerMultiInstanceRenderer, -Vector3.UnitY, true);
                 instancedPlayer.AddComponent(instancedPlayerBody);
@@ -195,6 +196,39 @@ public class TestScene3D : Scene {
                 this.AddEntity(instancedPlayer);
             }
         }
+        
+        // Child system example.
+        Entity parentPlayerEntity = new Entity(new Transform() { Translation = new Vector3(20, 2, 0), Rotation = Quaternion.CreateFromYawPitchRoll(float.DegreesToRadians(10), 0, 0)});
+        RigidBody3D parentPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Red
+        };
+        ModelRenderer parentPlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        parentPlayerEntity.AddComponent(parentPlayerBody);
+        parentPlayerEntity.AddComponent(parentPlayerModelRenderer);
+        this.AddEntity(parentPlayerEntity);
+        
+        Entity child1PlayerEntity = new Entity(new Transform() { Translation = new Vector3(4, 2, 0)});
+        RigidBody3D child1PlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Red
+        };
+        ModelRenderer child1PlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        child1PlayerEntity.AddComponent(child1PlayerBody);
+        child1PlayerEntity.AddComponent(child1PlayerModelRenderer);
+        this.AddEntity(child1PlayerEntity);
+        parentPlayerEntity.AddChild(child1PlayerEntity);
+        
+        Entity child2PlayerEntity = new Entity(new Transform() { Translation = new Vector3(4, 2, 0)});
+        RigidBody3D child2PlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
+            DrawDebug = true,
+            DebugDrawColor = Color.Red
+        };
+        ModelRenderer child2PlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        child2PlayerEntity.AddComponent(child2PlayerBody);
+        child2PlayerEntity.AddComponent(child2PlayerModelRenderer);
+        this.AddEntity(child2PlayerEntity);
+        child1PlayerEntity.AddChild(child2PlayerEntity);
     }
     
     protected override void Update(double delta) {
@@ -280,13 +314,13 @@ public class TestScene3D : Scene {
         //}
 
         if (Input.IsKeyDown(KeyboardKey.G)) {
-            this.GetEntity(2)!.Transform.Rotation *= Quaternion.CreateFromYawPitchRoll(float.DegreesToRadians(2), 0, 0);
+            this.GetEntity(2)!.LocalTransform.Rotation *= Quaternion.CreateFromYawPitchRoll(float.DegreesToRadians(2), 0, 0);
         }
         
         if (Input.IsKeyDown(KeyboardKey.R)) {
-            this.GetEntity(2)!.Transform.Translation += Vector3.UnitY;
+            this.GetEntity(2)!.LocalTransform.Translation += Vector3.UnitY;
         }
-
+        
         if (Input.IsKeyDown(KeyboardKey.I)) {
             playerBody.SetActivationState(true);
             playerBody.AddForce(new Vector3(0, 100, 0));

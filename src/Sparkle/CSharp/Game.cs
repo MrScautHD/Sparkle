@@ -265,32 +265,35 @@ public class Game : Disposable {
             GuiManager.SetLoadingGui(loadingGui);
             
             Task.Run(() => {
-                DateTime startTime = DateTime.Now;
-                loadingGui.Progress = 0.0F;
-                
-                Logger.Info("Load global graphics assets...");
-                GlobalGraphicsAssets.Load(this.Content);
-                loadingGui.Progress = 0.3F;
-                
-                Logger.Info("Load content...");
-                this.Load(this.Content);
-                loadingGui.Progress = 0.7F;
-                
-                Logger.Info("Initialize game...");
-                this.Init();
-                loadingGui.Progress = 0.9F;
-                
-                float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
-                float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
-                
-                if (remaining > 0.0F) {
-                    Thread.Sleep((int) (remaining * 1000.0F));
+                try {
+                    DateTime startTime = DateTime.Now;
+                    loadingGui.Progress = 0.0F;
+                    
+                    Logger.Info("Load global graphics assets...");
+                    GlobalGraphicsAssets.Load(this.Content);
+                    loadingGui.Progress = 0.3F;
+                    
+                    Logger.Info("Load content...");
+                    this.Load(this.Content);
+                    loadingGui.Progress = 0.7F;
+                    
+                    Logger.Info("Initialize game...");
+                    this.Init();
+                    loadingGui.Progress = 0.9F;
+                    
+                    float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
+                    float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
+                    
+                    if (remaining > 0.0F) {
+                        Thread.Sleep((int) (remaining * 1000.0F));
+                    }
+                    
+                    loadingGui.Progress = 1.0F;
                 }
-                
-                loadingGui.Progress = 1.0F;
-                
-                GuiManager.SetLoadingGui(null);
-                isLoaded = true;
+                finally {
+                    GuiManager.SetLoadingGui(null);
+                    isLoaded = true;
+                }
             });
         }
         
