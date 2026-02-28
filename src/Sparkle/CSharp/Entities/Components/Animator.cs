@@ -58,7 +58,7 @@ public class Animator : InterpolatedComponent {
     protected internal override void Update(double delta) {
         base.Update(delta);
         
-        if (this._modelRenderer?.Model.Skeleton == null) {
+        if (this._modelRenderer?.Model.Skeleton is not { } skeleton) {
             return;
         }
         
@@ -74,7 +74,7 @@ public class Animator : InterpolatedComponent {
         }
         
         if (this.CurrentState != null) {
-            Matrix4x4[] currentMatrices = this.GetEvaluatedMatrices(this.CurrentState, this._currentTime, this.Interpolation);
+            Matrix4x4[] currentMatrices = this.GetEvaluatedMatrices(skeleton, this.CurrentState, this._currentTime, this.Interpolation);
             Matrix4x4[] finalMatrices = currentMatrices;
             
             // Apply blending if we are transitioning between states.
@@ -85,12 +85,11 @@ public class Animator : InterpolatedComponent {
                     previousMatrices = this._snapshotMatrices;
                 }
                 else if (this.PreviousState != null) {
-                    previousMatrices = this.GetEvaluatedMatrices(this.PreviousState, this._previousTime, this.Interpolation);
+                    previousMatrices = this.GetEvaluatedMatrices(skeleton, this.PreviousState, this._previousTime, this.Interpolation);
                 }
                 
                 // Perform the blend if we have valid matrices to blend from.
                 if (previousMatrices != null) {
-                    Skeleton skeleton = this._modelRenderer.Model.Skeleton;
                     Matrix4x4[] blendedGlobalPoses = new Matrix4x4[currentMatrices.Length];
                     
                     finalMatrices = new Matrix4x4[currentMatrices.Length];
@@ -273,7 +272,7 @@ public class Animator : InterpolatedComponent {
         }
     }
     
-    private Matrix4x4[] GetEvaluatedMatrices(AnimatorState state, double time, bool enableInterpolation) {
+    private Matrix4x4[] GetEvaluatedMatrices(Skeleton skeleton, AnimatorState state, double time, bool enableInterpolation) {
         ModelAnimation animation = state.AnimationClip;
         int maxFrames = animation.BoneFrameTransformations.Count - 1;
         
@@ -286,7 +285,7 @@ public class Animator : InterpolatedComponent {
         int currentFrame = Math.Clamp((int) Math.Floor(time), 0, maxFrames);
         int nextFrame = Math.Clamp(currentFrame + 1, 0, maxFrames);
         
-        // Loop frameB back to 0 if the animation loops, and we hit the end.
+        // Loop nextFrame back to 0 if the animation loops, and we hit the end.
         if (nextFrame == maxFrames && state.IsLooping) {
             nextFrame = 0;
         }
@@ -296,13 +295,6 @@ public class Animator : InterpolatedComponent {
         Matrix4x4[] currentFrameMatrices = animation.BoneFrameTransformations[currentFrame];
         Matrix4x4[] nextFrameMatrices = animation.BoneFrameTransformations[nextFrame];
         Matrix4x4[] interpolated = new Matrix4x4[currentFrameMatrices.Length];
-        
-        Skeleton? skeleton = this._modelRenderer?.Model.Skeleton;
-
-        if (skeleton == null) {
-            return interpolated;
-        }
-        
         Matrix4x4[] blendedGlobalPoses = new Matrix4x4[currentFrameMatrices.Length];
         
         for (int i = 0; i < currentFrameMatrices.Length; i++) {
