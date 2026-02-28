@@ -7,7 +7,6 @@ using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -33,7 +32,6 @@ public class TestScene3D : Scene {
     
     public Texture2D CyberCarTexture { get; private set; }
     
-    public Model PlayerModel { get; private set; }
     public Model TreeModel { get; private set; }
     public Model CyberCarModel { get; private set; }
     
@@ -48,13 +46,6 @@ public class TestScene3D : Scene {
         
         // Textures:
         this.CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"), false);
-        
-        // Models:
-        this.PlayerModel = content.Load(new ModelContent("content/model.glb").Do(model => {
-            foreach (Mesh mesh in model.Meshes) {
-                mesh.Material.RenderMode = RenderMode.Cutout;
-            }
-        }), false);
         
         this.TreeModel = content.Load(new ModelContent("content/tree.glb").Do(model => {
             foreach (Mesh mesh in model.Meshes) {
@@ -74,7 +65,7 @@ public class TestScene3D : Scene {
         }), false);
         
         // Multi instance renderers:
-        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(this.PlayerModel, true);
+        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(ContentRegistry.PlayerModel, true);
         
         foreach (Mesh mesh in this.PlayerMultiInstanceRenderer.Meshes) {
             this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(mesh).Effect = GlobalResource.ModelInstancingEffect;
@@ -99,18 +90,18 @@ public class TestScene3D : Scene {
         this.AddEntity(camera3D);
         
         // PLAYER
-        Entity player = new Entity(new Transform() { Translation = new Vector3(12, 2, 0)});
-        RigidBody3D playerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
+        Entity testPlayer = new Entity(new Transform() { Translation = new Vector3(12, 2, 0)});
+        RigidBody3D testPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer playerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
-        player.AddComponent(playerBody);
-        player.AddComponent(playerModelRenderer);
-        this.AddEntity(player);
+        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        testPlayer.AddComponent(testPlayerBody);
+        testPlayer.AddComponent(playerModelRenderer);
+        this.AddEntity(testPlayer);
         
         // PLAYER LOCK ROTATION (Cannot fall over).
-        HingeAngle angleConstraint = playerBody.World.CreateConstraint<HingeAngle>(playerBody.Body, playerBody.World.NullBody);
+        HingeAngle angleConstraint = testPlayerBody.World.CreateConstraint<HingeAngle>(testPlayerBody.Body, testPlayerBody.World.NullBody);
         angleConstraint.Initialize(JVector.UnitY, AngularLimit.Full);
         
         // SOFT CUBE
@@ -203,7 +194,7 @@ public class TestScene3D : Scene {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer parentPlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer parentPlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
         parentPlayerEntity.AddComponent(parentPlayerBody);
         parentPlayerEntity.AddComponent(parentPlayerModelRenderer);
         this.AddEntity(parentPlayerEntity);
@@ -213,7 +204,7 @@ public class TestScene3D : Scene {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer child1PlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer child1PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
         child1PlayerEntity.AddComponent(child1PlayerBody);
         child1PlayerEntity.AddComponent(child1PlayerModelRenderer);
         this.AddEntity(child1PlayerEntity);
@@ -224,11 +215,15 @@ public class TestScene3D : Scene {
             DrawDebug = true,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer child2PlayerModelRenderer = new ModelRenderer(this.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer child2PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
         child2PlayerEntity.AddComponent(child2PlayerBody);
         child2PlayerEntity.AddComponent(child2PlayerModelRenderer);
         this.AddEntity(child2PlayerEntity);
         child1PlayerEntity.AddChild(child2PlayerEntity);
+        
+        // Player.
+        Player player = new Player(new Transform() { Translation = new Vector3(20, 4, 20) });
+        this.AddEntity(player);
     }
     
     protected override void Update(double delta) {

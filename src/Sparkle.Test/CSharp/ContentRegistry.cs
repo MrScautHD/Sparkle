@@ -1,4 +1,6 @@
 using Bliss.CSharp.Fonts;
+using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Content;
@@ -25,6 +27,9 @@ public class ContentRegistry : Registry {
     public static Texture2D UiBannerEdgeLessTexture { get; private set; }
     public static Texture2D UiSliderTexture { get; private set; }
     public static Texture2D UiArrowTexture { get; private set; }
+    
+    // Models:
+    public static Model PlayerModel { get; private set; }
     
     // Gifs:
     public static AnimatedImage AnimatedImage;
@@ -55,6 +60,13 @@ public class ContentRegistry : Registry {
         UiBannerEdgeLessTexture = content.Load(new TextureContent("content/ui_banner_edgeless.png"));
         UiSliderTexture = content.Load(new TextureContent("content/slider_high_res.png"));
         UiArrowTexture = content.Load(new TextureContent("content/ui_arrow.png"));
+        
+        // Models:
+        PlayerModel = content.Load(new ModelContent("content/model.glb").Do(model => {
+            foreach (Mesh mesh in model.Meshes) {
+                mesh.Material.RenderMode = RenderMode.Cutout;
+            }
+        }));
         
         // Gifs:
         AnimatedImage = new AnimatedImage("content/test.gif");

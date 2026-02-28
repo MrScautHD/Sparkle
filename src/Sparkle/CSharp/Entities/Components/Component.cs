@@ -11,12 +11,12 @@ public abstract class Component : Disposable {
     /// <summary>
     /// Gets the graphics device used by the game.
     /// </summary>
-    public GraphicsDevice GraphicsDevice => Game.Instance?.GraphicsDevice ?? throw new Exception("Run the game before trying to access the Graphics device!");
+    public GraphicsDevice GraphicsDevice => GlobalGraphicsAssets.GraphicsDevice ?? throw new Exception("Run the game before trying to access the Graphics device!");
     
     /// <summary>
     /// Gets or sets the entity to which this component is attached.
     /// </summary>
-    protected internal Entity Entity { get; internal set; }
+    public Entity Entity { get; internal set; }
     
     /// <summary>
     /// The collection of component types that are incompatible.
