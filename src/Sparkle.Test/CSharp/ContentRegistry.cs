@@ -5,6 +5,7 @@ using Bliss.CSharp.Images;
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Graphics.Animations;
 using Sparkle.CSharp.Registries;
 
 namespace Sparkle.Test.CSharp;
@@ -32,8 +33,12 @@ public class ContentRegistry : Registry {
     public static Model PlayerModel { get; private set; }
     
     // Gifs:
-    public static AnimatedImage AnimatedImage;
-    public static Texture2D Gif;
+    public static AnimatedImage AnimatedImage { get; private set; }
+    public static Texture2D Gif { get; private set; }
+    
+    // Animator Controllers:
+    public static AnimatorController PlayerBasicAnimatorController { get; private set; }
+    public static AnimatorController PlayerUpperBodyAnimatorController { get; private set; }
     
     /// <summary>
     /// Loads the content for the registry, including fonts, textures, models, and other assets.
@@ -71,5 +76,58 @@ public class ContentRegistry : Registry {
         // Gifs:
         AnimatedImage = new AnimatedImage("content/test.gif");
         Gif = new Texture2D(content.GraphicsDevice, AnimatedImage.SpriteSheet);
+        
+        // Animator Controllers:
+        PlayerBasicAnimatorController = new AnimatorController();
+        
+        // Create animator states.
+        AnimatorState idleState = new AnimatorState("Idle", PlayerModel.Animations[0], true);
+        AnimatorState walkState = new AnimatorState("Walk", PlayerModel.Animations[1], true, 1.1F);
+        AnimatorState runState = new AnimatorState("Run", PlayerModel.Animations[2], true, 1.2F);
+        AnimatorState jumpState = new AnimatorState("Jump", PlayerModel.Animations[3], false, 0.8F);
+        
+        // Idle => Walk
+        idleState.AddTransition(new AnimatorTransition("Walk", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed is > 0.1F and <= 3.5F));
+        
+        // Idle => Run
+        idleState.AddTransition(new AnimatorTransition("Run", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed > 3.5F));
+        
+        // Walk => Idle
+        walkState.AddTransition(new AnimatorTransition("Idle", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed <= 0.1F));
+        
+        // Walk => Run
+        walkState.AddTransition(new AnimatorTransition("Run", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed > 3.5F));
+        
+        // Run => Idle
+        runState.AddTransition(new AnimatorTransition("Idle", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed <= 0.1F));
+        
+        // Run => Walk
+        runState.AddTransition(new AnimatorTransition("Walk", 0.2F).AddCondition(animator => ((Player) animator.Entity).Speed is > 0.1F and <= 3.5F));
+        
+        // Any => Jump.
+        AnimatorTransition jumpTransition = new AnimatorTransition("Jump", 0.1F).AddCondition(animator => !((Player) animator.Entity).IsOnGround);
+        idleState.AddTransition(jumpTransition);
+        walkState.AddTransition(jumpTransition);
+        runState.AddTransition(jumpTransition);
+        
+        // Jump => Landing.
+        jumpState.AddTransition(new AnimatorTransition("Idle", 0.4F).AddCondition(animator => ((Player) animator.Entity).IsOnGround));
+        jumpState.AddTransition(new AnimatorTransition("Walk", 0.4F).AddCondition(animator => ((Player) animator.Entity).IsOnGround));
+        jumpState.AddTransition(new AnimatorTransition("Run", 0.4F).AddCondition(animator => ((Player) animator.Entity).IsOnGround));
+        
+        // Adding animation states to the controller.
+        PlayerBasicAnimatorController.AddState(idleState);
+        PlayerBasicAnimatorController.AddState(walkState);
+        PlayerBasicAnimatorController.AddState(runState);
+        PlayerBasicAnimatorController.AddState(jumpState);
+        
+        // Create a player upper body controller.
+        PlayerUpperBodyAnimatorController = new AnimatorController();
+        
+        // Create an animator state.
+        AnimatorState upperSwingState = new AnimatorState("SwingArms", PlayerModel.Animations[2], true, 1.2F);
+        
+        // Adding animation state to the controller.
+        PlayerUpperBodyAnimatorController.AddState(upperSwingState);
     }
 }

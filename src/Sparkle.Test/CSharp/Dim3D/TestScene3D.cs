@@ -220,10 +220,6 @@ public class TestScene3D : Scene {
         child2PlayerEntity.AddComponent(child2PlayerModelRenderer);
         this.AddEntity(child2PlayerEntity);
         child1PlayerEntity.AddChild(child2PlayerEntity);
-        
-        // Player.
-        Player player = new Player(new Transform() { Translation = new Vector3(20, 4, 20) });
-        this.AddEntity(player);
     }
     
     protected override void Update(double delta) {
