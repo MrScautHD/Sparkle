@@ -10,27 +10,77 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class Animator : InterpolatedComponent {
     
-    // TODO: IDK IF I WILL LEAVE IT THERE...
-    //public AnimatorController Controller => this._layers["Base"].Controller;
-    //
-    //public AnimatorState? CurrentState => this._layers["Base"].CurrentState;
-    //
-    //public AnimatorState? PreviousState => this._layers["Base"].PreviousState;
-    
+    /// <summary>
+    /// Controls the global playback speed multiplier applied to all animation layers.
+    /// </summary>
     public float GlobalPlaybackSpeed;
     
+    /// <summary>
+    /// Gets or sets a value indicating whether frame interpolation between keyframes is enabled.
+    /// </summary>
     public bool Interpolation;
     
+    /// <summary>
+    /// Gets the positional offset applied by this component. Always returns <see cref="Vector3.Zero"/>.
+    /// </summary>
     public new Vector3 OffsetPosition => Vector3.Zero;
     
+    /// <summary>
+    /// Occurs after final local bone transforms are evaluated but before hierarchy reconstruction, allowing external modification of bone matrices.
+    /// </summary>
     public event Action<Dictionary<string, Matrix4x4>>? OnBoneTransformsReady;
     
+    /// <summary>
+    /// Stores the current local bone matrices indexed by bone name.
+    /// </summary>
     private Dictionary<string, Matrix4x4> _currentBoneMatrices;
     
+    /// <summary>
+    /// Contains all animation layers managed by this animator, indexed by layer name.
+    /// </summary>
     private Dictionary<string, AnimationLayer> _layers;
     
+    /// <summary>
+    /// Cached reference to the associated <see cref="ModelRenderer"/> component.
+    /// </summary>
     private ModelRenderer? _modelRenderer;
     
+    /// <summary>
+    /// Cache storing the currently evaluated local poses for a layer.
+    /// </summary>
+    private Matrix4x4[]? _currentLocalPosesCache;
+    
+    /// <summary>
+    /// Cache storing the previously evaluated local poses for blending.
+    /// </summary>
+    private Matrix4x4[]? _previousLocalPosesCache;
+    
+    /// <summary>
+    /// Cache storing the blended local poses for a specific layer.
+    /// </summary>
+    private Matrix4x4[]? _layerLocalPosesCache;
+    
+    /// <summary>
+    /// Cache storing the final blended local poses across all layers.
+    /// </summary>
+    private Matrix4x4[]? _finalLocalPosesCache;
+    
+    /// <summary>
+    /// Cache storing reconstructed global bone transforms.
+    /// </summary>
+    private Matrix4x4[]? _globalPosesCache;
+    
+    /// <summary>
+    /// Cache storing the final baked bone matrices ready for rendering.
+    /// </summary>
+    private Matrix4x4[]? _bakedMatricesCache;
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Animator"/> class.
+    /// </summary>
+    /// <param name="controller">The base animator controller assigned to the default layer.</param>
+    /// <param name="globalPlaybackSpeed">The global playback speed multiplier.</param>
+    /// <param name="interpolation">If true, enables interpolation between animation frames.</param>
     public Animator(AnimatorController controller, float globalPlaybackSpeed = 1.0F, bool interpolation = true) : base(Vector3.Zero) {
         this.GlobalPlaybackSpeed = globalPlaybackSpeed;
         this.Interpolation = interpolation;
@@ -39,6 +89,9 @@ public class Animator : InterpolatedComponent {
         this.AddLayer(new AnimationLayer("Base", controller));
     }
     
+    /// <summary>
+    /// Initializes the animator and validates required components.
+    /// </summary>
     protected internal override void Init() {
         base.Init();
         
@@ -47,6 +100,10 @@ public class Animator : InterpolatedComponent {
         }
     }
     
+    /// <summary>
+    /// Updates the animator.
+    /// </summary>
+    /// <param name="delta">The time in seconds since the last update, used for advancing animation playback.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
         
@@ -55,7 +112,16 @@ public class Animator : InterpolatedComponent {
             return;
         }
         
-        Matrix4x4[]? finalLocalPoses = null;
+        // Create cache arrays.
+        int boneCount = skeleton.Bones.Count;
+        this._finalLocalPosesCache = this.EnsureArraySize(this._finalLocalPosesCache, boneCount);
+        this._globalPosesCache = this.EnsureArraySize(this._globalPosesCache, boneCount);
+        this._bakedMatricesCache = this.EnsureArraySize(this._bakedMatricesCache, boneCount);
+        this._layerLocalPosesCache = this.EnsureArraySize(this._layerLocalPosesCache, boneCount);
+        this._currentLocalPosesCache = this.EnsureArraySize(this._currentLocalPosesCache, boneCount);
+        this._previousLocalPosesCache = this.EnsureArraySize(this._previousLocalPosesCache, boneCount);
+        
+        bool hasFinalPoses = false;
         
         // Evaluate all layers and blend them together.
         foreach (AnimationLayer layer in this._layers.Values) {
@@ -71,8 +137,8 @@ public class Animator : InterpolatedComponent {
             }
             
             if (layer.CurrentState != null) {
-                Matrix4x4[] currentLocalPoses = this.GetFrameLocalPoses(skeleton, layer.CurrentState, layer.CurrentTime, this.Interpolation);
-                Matrix4x4[] layerLocalPoses = currentLocalPoses;
+                this.GetFrameLocalPoses(skeleton, layer.CurrentState, layer.CurrentTime, this.Interpolation, this._currentLocalPosesCache);
+                Array.Copy(this._currentLocalPosesCache, this._layerLocalPosesCache, boneCount);
                 
                 // Apply blending if transitioning states.
                 if (layer.BlendWeight < 1.0F) {
@@ -82,75 +148,72 @@ public class Animator : InterpolatedComponent {
                         previousLocalPoses = layer.BlendStartSnapshot; 
                     }
                     else if (layer.PreviousState != null) {
-                        previousLocalPoses = this.GetFrameLocalPoses(skeleton, layer.PreviousState, layer.PreviousTime, this.Interpolation);
+                        this.GetFrameLocalPoses(skeleton, layer.PreviousState, layer.PreviousTime, this.Interpolation, this._previousLocalPosesCache);
+                        previousLocalPoses = this._previousLocalPosesCache;
                     }
                     
                     if (previousLocalPoses != null) {
-                        layerLocalPoses = new Matrix4x4[currentLocalPoses.Length];
-                        
-                        for (int i = 0; i < layerLocalPoses.Length; i++) {
+                        for (int i = 0; i < boneCount; i++) {
                             Matrix4x4 previousMatrix = i < previousLocalPoses.Length ? previousLocalPoses[i] : Matrix4x4.Identity;
-                            layerLocalPoses[i] = Matrix4x4.LerpSrt(previousMatrix, currentLocalPoses[i], layer.BlendWeight);
+                            this._layerLocalPosesCache[i] = Matrix4x4.LerpSrt(previousMatrix, this._currentLocalPosesCache[i], layer.BlendWeight);
                         }
                     }
                 }
                 
                 // Save a snapshot for future interruptions.
-                if (layer.SnapshotLocalPoses == null || layer.SnapshotLocalPoses.Length != layerLocalPoses.Length) {
-                    layer.SnapshotLocalPoses = new Matrix4x4[layerLocalPoses.Length];
+                if (layer.SnapshotLocalPoses == null || layer.SnapshotLocalPoses.Length != boneCount) {
+                    layer.SnapshotLocalPoses = new Matrix4x4[boneCount];
                 }
                 
-                Array.Copy(layerLocalPoses, layer.SnapshotLocalPoses, layerLocalPoses.Length);
+                Array.Copy(this._layerLocalPosesCache, layer.SnapshotLocalPoses, boneCount);
                 
                 // Blend layer onto the final output based on BoneMask and Weight.
-                if (finalLocalPoses == null) {
-                    finalLocalPoses = new Matrix4x4[layerLocalPoses.Length];
-                    Array.Copy(layerLocalPoses, finalLocalPoses, layerLocalPoses.Length);
+                if (!hasFinalPoses) {
+                    Array.Copy(this._layerLocalPosesCache, this._finalLocalPosesCache, boneCount);
+                    hasFinalPoses = true;
                 }
                 else {
-                    for (int i = 0; i < finalLocalPoses.Length; i++) {
+                    for (int i = 0; i < boneCount; i++) {
                         if (layer.BoneMask.Count == 0 || layer.BoneMask.Contains(skeleton.Bones[i].Name)) {
-                            finalLocalPoses[i] = Matrix4x4.LerpSrt(finalLocalPoses[i], layerLocalPoses[i], layer.Weight);
+                            this._finalLocalPosesCache[i] = Matrix4x4.LerpSrt(this._finalLocalPosesCache[i], this._layerLocalPosesCache[i], layer.Weight);
                         }
                     }
                 }
             }
             
             // Apply custom procedural modifiers and reconstruct global space.
-            if (finalLocalPoses != null) {
-                Matrix4x4[] globalPoses = new Matrix4x4[finalLocalPoses.Length];
-                Matrix4x4[] bakedMatrices = new Matrix4x4[finalLocalPoses.Length];
+            if (hasFinalPoses) {
                 
                 // Populate the dictionary with the raw animation matrices.
                 this._currentBoneMatrices.Clear();
                 
-                for (int i = 0; i < finalLocalPoses.Length; i++) {
+                for (int i = 0; i < boneCount; i++) {
                     string boneName = skeleton.Bones[i].Name;
-                    this._currentBoneMatrices[boneName] = finalLocalPoses[i];
+                    this._currentBoneMatrices[boneName] = this._finalLocalPosesCache[i];
                 }
                 
                 // Fire the event, Let the user override or modify the matrices directly.
                 this.OnBoneTransformsReady?.Invoke(this._currentBoneMatrices);
                 
                 // Reconstruct and apply to the hierarchy.
-                for (int i = 0; i < finalLocalPoses.Length; i++) {
+                for (int i = 0; i < boneCount; i++) {
                     string boneName = skeleton.Bones[i].Name;
                     int parentId = skeleton.Bones[i].ParentId;
                     
                     // Grab the potentially modified matrix from the dictionary.
-                    Matrix4x4 localPose = this._currentBoneMatrices.TryGetValue(boneName, out Matrix4x4 modifiedMatrix) ? modifiedMatrix : finalLocalPoses[i];
+                    Matrix4x4 localPose = this._currentBoneMatrices.TryGetValue(boneName, out Matrix4x4 modifiedMatrix) ? modifiedMatrix : this._finalLocalPosesCache[i];
                     
                     // Reconstruct global pose hierarchy.
-                    if (parentId >= 0 && parentId < finalLocalPoses.Length) {
-                        globalPoses[i] = localPose * globalPoses[parentId];
+                    if (parentId >= 0 && parentId < boneCount) {
+                        this._globalPosesCache[i] = localPose * this._globalPosesCache[parentId];
                     }
                     else {
-                        globalPoses[i] = localPose;
+                        this._globalPosesCache[i] = localPose;
                     }
                     
                     // Bake matrix.
                     Matrix4x4 inverseBindPose = skeleton.Bones[i].Transformation;
-                    bakedMatrices[i] = inverseBindPose * globalPoses[i];
+                    this._bakedMatricesCache[i] = inverseBindPose * this._globalPosesCache[i];
                 }
                 
                 // Apply to the renderer meshes.
@@ -158,8 +221,8 @@ public class Animator : InterpolatedComponent {
                     Matrix4x4[]? renderableMatrices = this._modelRenderer.GetRenderableBoneMatricesByMesh(mesh);
                     
                     if (renderableMatrices != null) {
-                        for (int boneId = 0; boneId < bakedMatrices.Length && boneId < renderableMatrices.Length; boneId++) {
-                            renderableMatrices[boneId] = bakedMatrices[boneId];
+                        for (int boneId = 0; boneId < boneCount && boneId < renderableMatrices.Length; boneId++) {
+                            renderableMatrices[boneId] = this._bakedMatricesCache[boneId];
                         }
                     }
                 }
@@ -167,6 +230,13 @@ public class Animator : InterpolatedComponent {
         }
     }
     
+    /// <summary>
+    /// Plays an animation state on the specified layer with optional blending.
+    /// </summary>
+    /// <param name="stateName">The name of the animation state to play.</param>
+    /// <param name="blendDuration">The duration in seconds for cross-fading between states.</param>
+    /// <param name="normalizedTime">The normalized start time (0.0–1.0) within the animation.</param>
+    /// <param name="layerName">The name of the animation layer.</param>
     public void Play(string stateName, float blendDuration = 0.0F, float normalizedTime = 0.0F, string layerName = "Base") {
         AnimationLayer? layer = this.GetLayer(layerName);
         
@@ -222,6 +292,10 @@ public class Animator : InterpolatedComponent {
         }
     }
     
+    /// <summary>
+    /// Stops animation playback on the specified layer.
+    /// </summary>
+    /// <param name="layerName">The name of the animation layer.</param>
     public void Stop(string layerName = "Base") {
         AnimationLayer? layer = this.GetLayer(layerName);
         
@@ -235,10 +309,19 @@ public class Animator : InterpolatedComponent {
         layer.BlendWeight = 1.0F;
     }
     
+    /// <summary>
+    /// Gets all animation layers managed by this animator.
+    /// </summary>
+    /// <returns>A read-only collection of animation layers.</returns>
     public IReadOnlyCollection<AnimationLayer> GetLayers() {
         return this._layers.Values;
     }
     
+    /// <summary>
+    /// Gets the animation layer with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the layer.</param>
+    /// <returns>The layer if found; otherwise, <c>null</c>.</returns>
     public AnimationLayer? GetLayer(string name) {
         if (!this.TryGetLayer(name, out AnimationLayer? result)) {
             return null;
@@ -247,20 +330,42 @@ public class Animator : InterpolatedComponent {
         return result;
     }
     
+    /// <summary>
+    /// Attempts to retrieve the animation layer with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the layer.</param>
+    /// <param name="layer">When this method returns, contains the layer if found.</param>
+    /// <returns><c>true</c> if the layer exists; otherwise, <c>false</c>.</returns>
     public bool TryGetLayer(string name, [NotNullWhen(true)] out AnimationLayer? layer) {
         return this._layers.TryGetValue(name, out layer);
     }
     
+    /// <summary>
+    /// Adds a new animation layer to the animator.
+    /// </summary>
+    /// <param name="layer">The layer to add.</param>
     public void AddLayer(AnimationLayer layer) {
         if (!this.TryAddLayer(layer)) {
             throw new Exception($"The layer with the name: [{layer.Name}] is already added!");
         }
     }
     
+    /// <summary>
+    /// Attempts to add a new animation layer.
+    /// </summary>
+    /// <param name="layer">The layer to add.</param>
+    /// <returns><c>true</c> if the layer was added successfully; otherwise, <c>false</c>.</returns>
     public bool TryAddLayer(AnimationLayer layer) {
         return this._layers.TryAdd(layer.Name, layer);
     }
     
+    /// <summary>
+    /// Advances animation time based on delta time, playback speed, and looping settings.
+    /// </summary>
+    /// <param name="state">The animation state being advanced.</param>
+    /// <param name="time">The current animation time.</param>
+    /// <param name="delta">The frame delta time.</param>
+    /// <returns>The updated animation time.</returns>
     private double AdvanceTime(AnimatorState state, double time, double delta) {
         ModelAnimation clip = state.AnimationClip;
         
@@ -285,6 +390,11 @@ public class Animator : InterpolatedComponent {
         return time;
     }
     
+    /// <summary>
+    /// Updates blending weight for the specified animation layer.
+    /// </summary>
+    /// <param name="layer">The layer to update.</param>
+    /// <param name="delta">The frame delta time.</param>
     private void UpdateBlending(AnimationLayer layer, double delta) {
         if (layer.PreviousState == null || layer.BlendWeight >= 1.0F) {
             layer.BlendWeight = 1.0F;
@@ -298,7 +408,11 @@ public class Animator : InterpolatedComponent {
             layer.PreviousState = null;
         }
     }
-
+    
+    /// <summary>
+    /// Evaluates and triggers animation state transitions for the specified layer.
+    /// </summary>
+    /// <param name="layer">The animation layer to evaluate.</param>
     private void EvaluateTransitions(AnimationLayer layer) {
         if (layer.CurrentState == null) {
             return;
@@ -321,10 +435,17 @@ public class Animator : InterpolatedComponent {
         }
     }
     
-    private Matrix4x4[] GetFrameLocalPoses(Skeleton skeleton, AnimatorState state, double time, bool enableInterpolation) {
+    /// <summary>
+    /// Evaluates the local bone poses for a specific animation state at a given time, optionally interpolating between frames.
+    /// </summary>
+    /// <param name="skeleton">The skeleton being evaluated.</param>
+    /// <param name="state">The animation state.</param>
+    /// <param name="time">The current animation time.</param>
+    /// <param name="enableInterpolation">If true, interpolates between frames.</param>
+    /// <param name="localPoses">The output array storing computed local poses.</param>
+    private void GetFrameLocalPoses(Skeleton skeleton, AnimatorState state, double time, bool enableInterpolation, Matrix4x4[] localPoses) {
         ModelAnimation animation = state.AnimationClip;
         int maxFrames = animation.BoneFrameTransformations.Count - 1;
-        
         int currentFrame = Math.Clamp((int) Math.Floor(time), 0, maxFrames);
         int nextFrame = Math.Clamp(currentFrame + 1, 0, maxFrames);
         
@@ -342,7 +463,6 @@ public class Animator : InterpolatedComponent {
         
         Matrix4x4[] currentFrameMatrices = animation.BoneFrameTransformations[currentFrame];
         Matrix4x4[] nextFrameMatrices = animation.BoneFrameTransformations[nextFrame];
-        Matrix4x4[] localPoses = new Matrix4x4[currentFrameMatrices.Length];
         
         for (int i = 0; i < currentFrameMatrices.Length; i++) {
             
@@ -377,7 +497,20 @@ public class Animator : InterpolatedComponent {
             // Interpolate between frames.
             localPoses[i] = enableInterpolation ? Matrix4x4.LerpSrt(currentLocalPose, nextLocalPose, fraction) : currentLocalPose;
         }
+    }
+    
+    /// <summary>
+    /// Ensures the specified matrix array matches the required size,
+    /// allocating a new array if necessary.
+    /// </summary>
+    /// <param name="array">The array to validate.</param>
+    /// <param name="size">The required size.</param>
+    /// <returns>A matrix array of the specified size.</returns>
+    private Matrix4x4[] EnsureArraySize(Matrix4x4[]? array, int size) {
+        if (array == null || array.Length != size) {
+            return new Matrix4x4[size];
+        }
         
-        return localPoses;
+        return array;
     }
 }

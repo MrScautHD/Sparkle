@@ -55,7 +55,7 @@ public class PlayerMovementScene : Scene {
         Player player = new Player(new Transform() { Translation = new Vector3(0, 4, 0) });
         this.AddEntity(player);
     }
-
+    
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         
         // Track camera Target to player.
