@@ -1,14 +1,10 @@
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
-using Bliss.CSharp.Logging;
 using Sparkle.CSharp;
-using Sparkle.CSharp.GUI.Loading;
+using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
-using Sparkle.CSharp.Scenes;
-using Sparkle.CSharp.Utils.Async;
-using Sparkle.Test.CSharp.Dim2D;
-using Sparkle.Test.CSharp.Dim3D;
+using Sparkle.Test.CSharp.Menus;
 
 namespace Sparkle.Test.CSharp;
 
@@ -32,17 +28,12 @@ public class TestGame : Game {
         base.Update(delta);
         
         if (Input.IsKeyPressed(KeyboardKey.V)) {
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(new TestScene2D("TEST"), new ProgressBarLoadingGui("Loading"));
-            
-            asyncOperation.Completed += (success) => {
-                if (success) {
-                    Logger.Warn("LOADED");
-                }
-            };
-        }
-        
-        if (Input.IsKeyPressed(KeyboardKey.B)) {
-            SceneManager.LoadSceneAsync(new TestScene3D("TEST"), new ProgressBarLoadingGui("Loading"));
+            if (GuiManager.ActiveGui == null) {
+                GuiManager.SetGui(new SceneSwitcherMenu("Scene-Switcher"));
+            }
+            else {
+                GuiManager.SetGui(null);
+            }
         }
     }
 }

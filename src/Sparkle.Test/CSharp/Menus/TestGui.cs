@@ -12,7 +12,7 @@ using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrid;
 
-namespace Sparkle.Test.CSharp;
+namespace Sparkle.Test.CSharp.Menus;
 
 public class TestGui : Gui {
     

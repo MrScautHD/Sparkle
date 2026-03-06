@@ -20,8 +20,8 @@ public class PlayerMovementScene : Scene {
     
     public SkyBox CloudySkybox { get; private set; }
     
-    public PlayerMovementScene(string name) : base(name, SceneType.Scene3D) { }
-
+    public PlayerMovementScene() : base("Player-Movement-Scene", SceneType.Scene3D) { }
+    
     protected override void Load(ContentManager content) {
         base.Load(content);
         

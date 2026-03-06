@@ -40,52 +40,52 @@ public abstract class Component : Disposable {
     protected Component(Vector3 offsetPosition) {
         this.OffsetPosition = offsetPosition;
     }
-
+    
     /// <summary>
     /// Called when the component is first initialized.
     /// </summary>
     protected internal virtual void Init() { }
-
+    
     /// <summary>
     /// Called every frame to update the component's logic.
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) { }
-
+    
     /// <summary>
     /// Called after the main update phase to handle additional logic.
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) { }
-
+    
     /// <summary>
     /// Called at fixed time intervals to update the component's logic with a consistent step size.
     /// </summary>
     /// <param name="fixedStep">The fixed time step for the update.</param>
     protected internal virtual void FixedUpdate(double fixedStep) { }
-
+    
     /// <summary>
     /// Called to render the component using the provided graphics context and framebuffer.
     /// </summary>
     /// <param name="context">The graphics context used for rendering operations.</param>
     /// <param name="framebuffer">The framebuffer where the rendering occurs.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) { }
-
+    
     /// <summary>
     /// Called when the window is resized.
     /// </summary>
     /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
     protected internal virtual void Resize(Rectangle rectangle) { }
-
+    
     /// <summary>
     /// Determines if the current component has a conflict with another specified component type.
     /// </summary>
     /// <typeparam name="T">The type of the component to check for conflicts.</typeparam>
     /// <returns>True if the current component conflicts with the specified component type; otherwise, false.</returns>
     public bool ConflictsWith<T>(T component) where T : Component {
-        return this.InCompatibleTypes.Contains(component.GetType());
+        return this.InCompatibleTypes.Contains(component.GetType()) || component.InCompatibleTypes.Contains(typeof(T));
     }
-
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.Entity.Components.Remove(this.GetType());

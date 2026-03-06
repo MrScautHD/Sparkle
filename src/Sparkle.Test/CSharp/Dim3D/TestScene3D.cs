@@ -24,6 +24,7 @@ using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
+using Sparkle.Test.CSharp.Menus;
 using Veldrid;
 
 namespace Sparkle.Test.CSharp.Dim3D;
@@ -39,7 +40,7 @@ public class TestScene3D : Scene {
     
     public SkyBox CloudySkybox { get; private set; }
     
-    public TestScene3D(string name) : base(name, SceneType.Scene3D) { }
+    public TestScene3D() : base("Test-3D-Scene", SceneType.Scene3D) { }
     
     protected override void Load(ContentManager content) {
         base.Load(content);
