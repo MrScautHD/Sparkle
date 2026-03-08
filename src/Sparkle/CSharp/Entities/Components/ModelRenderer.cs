@@ -18,6 +18,11 @@ public class ModelRenderer : InterpolatedComponent {
     public Model Model { get; private set; }
     
     /// <summary>
+    /// Enables or disables frustum culling for this model.
+    /// </summary>
+    public bool FrustumCulling;
+    
+    /// <summary>
     /// Whether the bounding box should be rendered for the associated model.
     /// </summary>
     public bool DrawBox;
@@ -48,10 +53,12 @@ public class ModelRenderer : InterpolatedComponent {
     /// <param name="model">The model containing the meshes to be rendered.</param>
     /// <param name="offsetPosition">The positional offset applied to the model renderer.</param>
     /// <param name="copyModelMaterials">Whether to clone the model's materials so they can be modified independently.</param>
+    /// <param name="frustumCulling">Whether the model should be skipped when outside the camera frustum.</param>
     /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) { // TODO: ADD LOCAL TRANSFORM
+    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
         this.Model = model;
+        this.FrustumCulling = frustumCulling;
         this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
         this._baseBox = this._frustumBox = model.GenBoundingBox();
@@ -75,10 +82,14 @@ public class ModelRenderer : InterpolatedComponent {
             return;
         }
         
-        // Updates frustum box.
-        this.UpdateFrustumBox();
+        bool shouldRender = true;
         
-        if (cam3D.GetFrustum().ContainsOrientedBox(this._frustumBox, this.LerpedGlobalPosition, this.LerpedRotation)) {
+        if (this.FrustumCulling) {
+            this.UpdateFrustumBox();
+            shouldRender = cam3D.GetFrustum().ContainsOrientedBox(this._frustumBox, this.LerpedGlobalPosition, this.LerpedRotation);
+        }
+        
+        if (shouldRender) {
             Transform modelTransform = new Transform() {
                 Translation = this.LerpedGlobalPosition,
                 Rotation = this.LerpedRotation,

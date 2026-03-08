@@ -28,6 +28,11 @@ public class MeshRenderer : InterpolatedComponent {
     public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
     
     /// <summary>
+    /// Enables or disables frustum culling for this mesh.
+    /// </summary>
+    public bool FrustumCulling;
+    
+    /// <summary>
     /// Whether the bounding box should be rendered for the associated mesh.
     /// </summary>
     public bool DrawBox;
@@ -58,9 +63,10 @@ public class MeshRenderer : InterpolatedComponent {
     /// <param name="mesh">The mesh to be rendered.</param>
     /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
     /// <param name="copyMeshMaterial">Whether to clone the mesh material for independent modification.</param>
+    /// <param name="frustumCulling">Whether the mesh should be skipped when outside the camera frustum.</param>
     /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool drawBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, drawBox, boxColor) { }
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, frustumCulling, drawBox, boxColor) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
@@ -68,10 +74,12 @@ public class MeshRenderer : InterpolatedComponent {
     /// <param name="mesh">The mesh to be rendered.</param>
     /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
     /// <param name="material">The material used to render the mesh.</param>
+    /// <param name="frustumCulling">Whether the mesh should be skipped when outside the camera frustum.</param>
     /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
+    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
         this.Mesh = mesh;
+        this.FrustumCulling = frustumCulling;
         this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
         this._baseBox = this._frustumBox = mesh.GenBoundingBox();
@@ -91,10 +99,14 @@ public class MeshRenderer : InterpolatedComponent {
             return;
         }
         
-        // Updates frustum box.
-        this.UpdateFrustumBox();
+        bool shouldRender = true;
         
-        if (cam3D.GetFrustum().ContainsOrientedBox(this._frustumBox, this.LerpedGlobalPosition, this.LerpedRotation)) {
+        if (this.FrustumCulling) {
+            this.UpdateFrustumBox();
+            shouldRender = cam3D.GetFrustum().ContainsOrientedBox(this._frustumBox, this.LerpedGlobalPosition, this.LerpedRotation);
+        }
+        
+        if (shouldRender) {
             Transform meshTransform = new Transform() {
                 Translation = this.LerpedGlobalPosition,
                 Rotation = this.LerpedRotation,

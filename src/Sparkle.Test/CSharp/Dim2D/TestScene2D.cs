@@ -1,13 +1,19 @@
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim2;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Box2D;
+using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Particles;
+using Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Physics.Dim2.Shapes;
@@ -19,7 +25,18 @@ namespace Sparkle.Test.CSharp.Dim2D;
 
 public class TestScene2D : Scene {
     
+    public Mesh RainParticleMesh { get; private set; }
+    
     public TestScene2D() : base("Test-2D-Scene", SceneType.Scene2D, null, () => new Simulation2D(new PhysicsSettings2D() { WorldDef = new WorldDef() { Gravity = new Vector2(0, 9.81F) }})) { }
+    
+    protected override void Load(ContentManager content) {
+        base.Load(content);
+        
+        // Meshes:
+        this.RainParticleMesh = Mesh.GenQuad(GlobalGraphicsAssets.GraphicsDevice, 1, 1);
+        this.RainParticleMesh.Material.Effect = GlobalResource.ModelInstancingEffect;
+        this.RainParticleMesh.Material.SetMapColor(MaterialMapType.Albedo, Color.Blue);
+    }
     
     protected override void Init() {
         base.Init();
@@ -56,6 +73,37 @@ public class TestScene2D : Scene {
             element.AddComponent(new RigidBody2D(new BodyDefinition() { Type = BodyType.Static }, new PolygonShape2D(Polygon.MakeBox(8, 8), new ShapeDef())));
             this.AddEntity(element);
         }
+        
+        // Fountain particle emitter.
+        Entity particleSpreader = new Entity(new Transform() { Translation = new Vector3(0, -32, 0) });
+        
+        ParticleDefinition particleDefinition = new ParticleDefinition() {
+            Looping = true,
+            Duration = 9999.0F,
+            EmissionRate = 140.0F,
+            MaxParticles = 600,
+            StartLifetime = 1.8F,
+            LifetimeRandomness = 0.35F,
+            StartSpeed = 8.5F,
+            SpeedRandomness = 1.5F,
+            StartScale = new Vector3(0.12F, 0.12F, 1.0F),
+            EndScale = new Vector3(0.04F, 0.04F, 1.0F),
+            Acceleration = Vector3.Zero,
+            Gravity = new Vector3(0, 12.0F, 0),
+            Direction = new Vector3(0, -1, 0),
+            Spread = 0.22F,
+            SpawnBox = new Vector3(6.0F, 2.0F, 0.0F),
+            CollisionProvider = new ParticleCollisionProvider2D((Simulation2D) this.Simulation),
+            Bounciness = 0.15F,
+            CollisionDamping = 0.35F,
+            CollisionSurfaceOffset = 0.02F,
+            SimulateInWorldSpace = true,
+            Billboard = false
+        };
+        
+        ParticleSystem particleSystem = new ParticleSystem(this.RainParticleMesh, particleDefinition, Vector3.Zero);
+        particleSpreader.AddComponent(particleSystem);
+        this.AddEntity(particleSpreader);
     }
     
     protected override void FixedUpdate(double delta) {
@@ -102,5 +150,13 @@ public class TestScene2D : Scene {
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -192, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
         context.PrimitiveBatch.End();
+    }
+    
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        
+        if (disposing) {
+            this.RainParticleMesh.Dispose();
+        }
     }
 }

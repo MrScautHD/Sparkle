@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
@@ -92,22 +93,35 @@ public class MultiInstanceRenderer {
             return;
         }
         
+        Frustum frustum = cam3D.GetFrustum();
+        
         foreach (Renderable renderable in this._renderables.Values) {
             
             // Adjust instance storage.
             this.AdjustInstanceStorage(renderable);
             
-            // Set transform.
+            int visibleCount = 0;
+            
             for (int i = 0; i < this._instancedRenderProxies.Count; i++) {
                 InstancedRenderProxy renderProxy = this._instancedRenderProxies[i];
                 
-                renderable.Transforms[i] = new Transform() {
+                // Updates frustum box.
+                renderProxy.UpdateFrustumBox();
+                
+                bool visible = !renderProxy.FrustumCulling || frustum.ContainsOrientedBox(renderProxy.FrustumBox, renderProxy.LerpedGlobalPosition, renderProxy.LerpedRotation);
+                
+                if (!visible) {
+                    continue;
+                }
+                
+                // Set the renderable transforms.
+                renderable.Transforms[visibleCount] = new Transform() {
                     Translation = renderProxy.LerpedGlobalPosition,
                     Rotation = renderProxy.LerpedRotation,
                     Scale = renderProxy.LerpedScale
                 };
                 
-                // Draw the box.
+                // Draw the bounding box.
                 if (renderProxy.DrawBox) {
                     Transform boxTransform = new Transform() {
                         Translation = renderProxy.LerpedGlobalPosition,
@@ -118,9 +132,18 @@ public class MultiInstanceRenderer {
                     // Draw box.
                     context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, boxTransform, renderProxy.BaseBox, renderProxy.BoxColor);
                 }
+                
+                visibleCount++;
             }
             
-            // Draw.
+            if (visibleCount == 0) {
+                continue;
+            }
+            
+            if (renderable.Transforms.Length != visibleCount) {
+                Array.Resize(ref renderable.Transforms, visibleCount);
+            }
+            
             SceneManager.ActiveScene?.Renderer.DrawRenderable(renderable);
         }
     }

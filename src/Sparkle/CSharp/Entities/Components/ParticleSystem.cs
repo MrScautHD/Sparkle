@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -308,6 +309,7 @@ public class ParticleSystem : InterpolatedComponent {
             };
         }
         
+        // TODO: FIX 2D particles! (They need a spriteRenderer instead of this because this only renders with a cam3D)
         this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
     }
     
