@@ -186,7 +186,8 @@ public class TextureSlideBarData {
         Color? disabledSliderColor = null,
         SpriteFlip barFlip = SpriteFlip.None,
         SpriteFlip filledBarFlip = SpriteFlip.None,
-        SpriteFlip sliderFlip = SpriteFlip.None) {
+        SpriteFlip sliderFlip = SpriteFlip.None
+    ) {
         this.BarTexture = barTexture;
         this.FilledBarTexture = filledBarTexture;
         this.SliderTexture = sliderTexture;

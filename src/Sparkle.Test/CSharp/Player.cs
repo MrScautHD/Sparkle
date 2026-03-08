@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Transformations;
@@ -8,6 +10,7 @@ using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Animations;
 using Sparkle.CSharp.Scenes;
 

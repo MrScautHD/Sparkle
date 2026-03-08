@@ -226,7 +226,8 @@ public class RectangleDropDownData {
         Color? arrowColor = null,
         Color? arrowHoverColor = null,
         Color? disabledArrowColor = null,
-        Color? highlightColor = null) {
+        Color? highlightColor = null
+    ) {
         this.FieldColor = fieldColor ?? Color.Gray;
         this.FieldHoverColor = fieldHoverColor ?? this.FieldColor;
         this.DisabledFieldColor = disabledFieldColor ?? Color.DarkGray;

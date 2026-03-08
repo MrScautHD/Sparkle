@@ -160,7 +160,8 @@ public class RectangleSlideBarData {
         float sliderOutlineThickness = 0.0F,
         Color? sliderOutlineColor = null,
         Color? sliderOutlineHoverColor = null,
-        Color? disabledSliderOutlineColor = null) {
+        Color? disabledSliderOutlineColor = null
+    ) {
         this.BarColor = barColor ?? Color.Gray;
         this.BarHoverColor = barHoverColor ?? this.BarColor;
         this.DisabledBarColor = disabledBarColor ?? Color.DarkGray;

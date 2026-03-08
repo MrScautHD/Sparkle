@@ -312,7 +312,8 @@ public class TextureDropDownData {
         SpriteFlip sliderBarFlip = SpriteFlip.None,
         SpriteFlip sliderFlip = SpriteFlip.None,
         SpriteFlip arrowFlip = SpriteFlip.None,
-        int sliderBarWidth = 16) {
+        int sliderBarWidth = 16
+    ) {
         this.FieldTexture = fieldTexture;
         this.MenuTexture = menuTexture;
         this.ArrowTexture = arrowTexture;
