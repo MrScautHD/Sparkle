@@ -28,7 +28,7 @@ public class Camera2D : Entity {
     /// <summary>
     /// Gets the transform representation of the camera.
     /// </summary>
-    public new Transform Transform => new Transform() {
+    public new Transform LocalTransform => new Transform() {
         Translation = new Vector3(this._cam2D.Position, 0),
         Rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitZ, float.DegreesToRadians(this._cam2D.Rotation)),
         Scale = Vector3.One
@@ -117,7 +117,7 @@ public class Camera2D : Entity {
     /// <param name="delta">The time elapsed since the last frame, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-        this._cam2D.Update(Time.Delta);
+        this._cam2D.Update(delta);
     }
 
     /// <summary>

@@ -29,11 +29,11 @@ public class Camera3D : Entity {
     public Camera3D(Vector3 position, Vector3 target, float aspectRatio, Vector3? up = null, ProjectionType projectionType = ProjectionType.Perspective, CameraMode mode = CameraMode.Free, float fov = 70.0F, float nearPlane = 0.1F, float farPlane = 1000.0F) : base(new Transform(), "camera3D") {
         this._cam3D = new Cam3D(position, target, aspectRatio, up, projectionType, mode, fov, nearPlane, farPlane);
     }
-
+    
     /// <summary>
     /// Gets the transformation of the camera.
     /// </summary>
-    public new Transform Transform => new Transform() {
+    public new Transform LocalTransform => new Transform() {
         Translation = this._cam3D.Position,
         Rotation = Quaternion.CreateFromRotationMatrix(this._cam3D.GetView()),
         Scale = Vector3.One
@@ -141,7 +141,7 @@ public class Camera3D : Entity {
 
         // To make sure just the active camera moves from the input.
         if (SceneManager.ActiveCam3D == this && GuiManager.ActiveGui == null) {
-            this._cam3D.Update(Time.Delta);
+            this._cam3D.Update(delta);
         }
     }
     

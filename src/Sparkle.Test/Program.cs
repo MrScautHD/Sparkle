@@ -6,7 +6,7 @@ using Sparkle.Test.CSharp.Dim3D;
 
 try {
     GameSettings settings = new GameSettings() {
-        Title = "Sparkle - [Test]"
+        Title = "Sparkle - [Test]",
     };
     
     using TestGame testGame = new TestGame(settings);
