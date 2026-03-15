@@ -190,7 +190,7 @@ public class Game : Disposable {
             Input.Init(new Sdl3InputContext(this.MainWindow));
         }
         else {
-            Logger.Fatal("This type of window is not supported by the InputContext!");
+            throw new NotSupportedException("This type of window is not supported by the InputContext!");
         }
         
         Logger.Info("Initialize command list...");
@@ -297,15 +297,22 @@ public class Game : Disposable {
             });
         }
         
-        while (!this.ShouldClose && this.MainWindow.Exists) {
+        // Game loop.
+        while (true) {
             if (this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
             }
             Time.Update();
             
+            // Process window events.
             this.MainWindow.PumpEvents();
-            Input.Begin();
             
+            // Handle shutdown (Do not allow shutting down the game while it is in a loading GUI).
+            if ((this.ShouldClose || !this.MainWindow.Exists) && GuiManager.ActiveGui is not LoadingGui) {
+                break;
+            }
+            
+            Input.Begin();
             AudioContext.Update();
             
             if (isLoaded) {

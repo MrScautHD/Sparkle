@@ -55,10 +55,6 @@ public class LogFileWriter {
             case LogType.Error:
                 FileAccessor.WriteLine(this.FilePath, text);
                 return false;
-            
-            case LogType.Fatal:
-                FileAccessor.WriteLine(this.FilePath, text);
-                return false;
         }
         
         return false;
