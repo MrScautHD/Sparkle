@@ -359,7 +359,7 @@ public class RigidBody3D : Component {
     /// Clears all collision shapes attached to the rigid body.
     /// </summary>
     /// <param name="setMassInertia">Determines whether to recalculate mass and inertia after clearing the shapes.</param>
-    [Obsolete($"{nameof(this.ClearShapes)} is deprecated, please use {nameof(this.RemoveShape)} instead.")]
+    [Obsolete($"{nameof(ClearShapes)} is deprecated, please use {nameof(RemoveShape)} instead.")]
     public void ClearShapes(bool setMassInertia = true) {
         this.Body.ClearShapes(setMassInertia);
     }
