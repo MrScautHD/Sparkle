@@ -101,8 +101,8 @@ public class TestScene2D : Scene {
             SimulateInWorldSpace = true
         };
         
-        ParticleSystem2D particleSystem3D = new ParticleSystem2D(particleDefinition, Vector3.Zero);
-        particleSpreader.AddComponent(particleSystem3D);
+        ParticleSystem2D particleSystem2D = new ParticleSystem2D(particleDefinition, Vector3.Zero);
+        particleSpreader.AddComponent(particleSystem2D);
         this.AddEntity(particleSpreader);
     }
     

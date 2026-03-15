@@ -613,8 +613,6 @@ public class RigidBody2D : Component {
     }
     
     protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-
         if (disposing) {
             this.Simulation.BodyMoved -= this.SyncEntityToBodyTransform;
             this._body.Destroy();

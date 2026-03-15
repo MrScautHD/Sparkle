@@ -418,4 +418,6 @@ public class ParticleSystem2D : InterpolatedComponent {
     private float RandomRange(float min, float max) {
         return min + (float) this._random.NextDouble() * (max - min);
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

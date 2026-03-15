@@ -130,4 +130,6 @@ public class ContentRegistry : Registry {
         // Adding animation state to the controller.
         PlayerUpperBodyAnimatorController.AddState(upperSwingState);
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

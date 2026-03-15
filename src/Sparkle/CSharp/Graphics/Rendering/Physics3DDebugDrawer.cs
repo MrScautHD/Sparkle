@@ -570,6 +570,10 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         Cam3D? cam3D = Cam3D.ActiveCamera;
         
         if (cam3D == null) {
+            
+            // Clear data.
+            this._currentBatchCount = 0;
+            Array.Clear(this._vertices);
             return;
         }
         

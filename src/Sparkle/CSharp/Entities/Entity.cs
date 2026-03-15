@@ -360,17 +360,11 @@ public class Entity : Disposable {
     /// <param name="component">The component to remove.</param>
     /// <returns>True if the component was removed, otherwise false.</returns>
     public bool TryRemoveComponent(Component component) {
-        if (!this.Components.ContainsKey(component.GetType())) {
+        if (!this.Components.Remove(component.GetType())) {
             return false;
         }
         
         component.Dispose();
-        
-        // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-        if (this.Components.ContainsKey(component.GetType())) {
-            this.Components.Remove(component.GetType());
-        }
-
         return true;
     }
     
@@ -384,24 +378,18 @@ public class Entity : Disposable {
             throw new Exception($"Failed to Remove/Dispose the component type: [{nameof(T)}] from the entity: [{this.Id}].");
         }
     }
-
+    
     /// <summary>
     /// Attempts to remove a component of a specific type from this entity.
     /// </summary>
     /// <typeparam name="T">The type of component to remove.</typeparam>
     /// <returns>True if the component was removed, otherwise false.</returns>
     public bool TryRemoveComponent<T>() where T : Component {
-        if (!this.Components.TryGetValue(typeof(T), out Component? component)) {
+        if (!this.Components.Remove(typeof(T), out Component? component)) {
             return false;
         }
         
         component.Dispose();
-        
-        // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-        if (this.Components.ContainsKey(component.GetType())) {
-            this.Components.Remove(component.GetType());
-        }
-
         return true;
     }
     
@@ -416,20 +404,11 @@ public class Entity : Disposable {
             this._children.Clear();
             
             // Dispose components.
-            var enumerator = this.Components.GetEnumerator();
-            
-            while (enumerator.MoveNext()) {
-                Component component = enumerator.Current.Value;
+            foreach (Component component in this.Components.Values) {
                 component.Dispose();
-                
-                // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-                if (this.Components.ContainsKey(component.GetType())) {
-                    this.Components.Remove(component.GetType());
-                }
             }
             
-            // Remove entity from scene.
-            this.Scene.Entities.Remove(this.Id);
+            this.Components.Clear();
         }
     }
 }

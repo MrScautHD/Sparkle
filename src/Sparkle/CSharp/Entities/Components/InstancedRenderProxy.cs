@@ -136,8 +136,6 @@ public class InstancedRenderProxy : InterpolatedComponent {
     }
     
     protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-        
         if (disposing) {
             
             // Remove the render proxy from the multi-instance renderer.

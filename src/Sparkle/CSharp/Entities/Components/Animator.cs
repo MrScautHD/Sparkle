@@ -513,4 +513,6 @@ public class Animator : InterpolatedComponent {
         
         return array;
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

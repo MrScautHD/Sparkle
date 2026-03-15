@@ -85,10 +85,4 @@ public abstract class Component : Disposable {
     public bool ConflictsWith<T>(T component) where T : Component {
         return this.InCompatibleTypes.Contains(component.GetType()) || component.InCompatibleTypes.Contains(typeof(T));
     }
-    
-    protected override void Dispose(bool disposing) {
-        if (disposing) {
-            this.Entity.Components.Remove(this.GetType());
-        }
-    }
 }

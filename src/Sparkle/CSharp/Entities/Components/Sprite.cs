@@ -119,4 +119,6 @@ public class Sprite : InterpolatedComponent {
         // Draw sprite.
         this.Entity.Scene.SpriteRenderer.DrawSprite(this.Texture, this.Sampler, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), this.LayerDepth, source, scale, origin, rotation, this.Color, this.Flip, this.Effect, this.BlendState, this.DepthStencilState, this.RasterizerState, this.ScissorRect);
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

@@ -3,7 +3,9 @@ using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Jitter2.Collision.Shapes;
@@ -131,7 +133,7 @@ public class PlayerMovementScene : Scene {
         // Draw the base method.
         base.Draw(context, framebuffer);
     }
-    
+
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
         

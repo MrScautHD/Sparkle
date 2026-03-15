@@ -119,27 +119,21 @@ public static class RegistryManager {
             throw new Exception($"Failed to Remove/Dispose the registry type: [{nameof(registry)}] from the RegistryManager!");
         }
     }
-
+    
     /// <summary>
     /// Attempts to remove a specified registry from the list of managed registries.
     /// </summary>
     /// <param name="registry">The registry to be removed.</param>
     /// <returns>True if the registry is successfully removed; otherwise, false if the registry does not exist in the list.</returns>
     public static bool TryRemoveRegistry(Registry registry) {
-        if (!Registries.ContainsKey(registry.GetType())) {
+        if (!Registries.Remove(registry.GetType())) {
             return false;
         }
         
         registry.Dispose();
-        
-        // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
-        if (Registries.ContainsKey(registry.GetType())) {
-            Registries.Remove(registry.GetType());
-        }
-        
         return true;
     }
-
+    
     /// <summary>
     /// Removes a registry of the specified type from the registry manager.
     /// </summary>
@@ -149,41 +143,29 @@ public static class RegistryManager {
             throw new Exception($"Failed to Remove/Dispose the registry type: [{nameof(T)}] from the RegistryManager!");
         }
     }
-
+    
     /// <summary>
     /// Attempts to remove the specified registry type from the list of managed registries.
     /// </summary>
     /// <typeparam name="T">The type of the registry to remove.</typeparam>
     /// <returns>True if the registry was successfully removed; otherwise, false.</returns>
     public static bool TryRemoveRegistry<T>() where T : Registry {
-        if (!Registries.TryGetValue(typeof(T), out Registry? registry)) {
+        if (!Registries.Remove(typeof(T), out Registry? registry)) {
             return false;
         }
-    
+        
         registry.Dispose();
-        
-        // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
-        if (Registries.ContainsKey(registry.GetType())) {
-            Registries.Remove(registry.GetType());
-        }
-        
         return true;
     }
-
+    
     /// <summary>
     /// Clears all registries.
     /// </summary>
     internal static void Destroy() {
-        var enumerator = Registries.GetEnumerator();
-
-        while (enumerator.MoveNext()) {
-            Registry registry = enumerator.Current.Value;
+        foreach (Registry registry in Registries.Values) {
             registry.Dispose();
-            
-            // Ensure the registry is removed, even if `Dispose` was overridden incorrectly.
-            if (Registries.ContainsKey(registry.GetType())) {
-                Registries.Remove(registry.GetType());
-            }
         }
+        
+        Registries.Clear();
     }
 }

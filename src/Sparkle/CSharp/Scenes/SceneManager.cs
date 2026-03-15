@@ -116,6 +116,7 @@ public static class SceneManager {
         if (ActiveScene != null) {
             Logger.Info("Initialize active scene...");
             ActiveScene.Init();
+            ActiveScene.IsInitialized = true;
             ActiveCam2D = (Camera2D) ActiveScene.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
             ActiveCam3D = (Camera3D) ActiveScene.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
             Logger.Info($"Scene {ActiveScene.Name} initialized successfully.");
@@ -264,6 +265,7 @@ public static class SceneManager {
         
         Logger.Info("Initialize active scene...");
         ActiveScene?.Init();
+        ActiveScene?.IsInitialized = true;
         ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
         ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
         Logger.Info($"Scene {scene?.Name} initialized successfully.");
@@ -317,6 +319,7 @@ public static class SceneManager {
                 
                 Logger.Info("Initialize active scene...");
                 ActiveScene?.Init();
+                ActiveScene?.IsInitialized = true;
                 state.Progress = 0.9F;
                 loadingGui?.Progress = 0.9F;
                 

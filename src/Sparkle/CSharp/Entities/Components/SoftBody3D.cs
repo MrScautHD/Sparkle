@@ -325,8 +325,6 @@ public class SoftBody3D : Component {
     }
     
     protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-        
         if (disposing) {
             this.Simulation.BodyMoved -= this.SyncEntityToBodyTransform;
             this.SoftBody.Destroy();

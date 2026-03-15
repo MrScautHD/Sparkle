@@ -164,4 +164,6 @@ public class ModelRenderer : InterpolatedComponent {
         this._frustumBox.Max.Y = lerpedPos.Y + (this._baseBox.Max.Y * this.LerpedScale.Y);
         this._frustumBox.Max.Z = finalCenter.Z + dimension.Z / 2.0F;
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

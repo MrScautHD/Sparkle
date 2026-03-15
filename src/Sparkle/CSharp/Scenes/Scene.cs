@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
@@ -27,6 +28,11 @@ public abstract class Scene : Disposable {
     /// Gets the type of the scene (2D or 3D).
     /// </summary>
     public SceneType SceneType { get; private set; }
+    
+    /// <summary>
+    /// Gets a value indicating whether the scene has completed initialization.
+    /// </summary>
+    public bool IsInitialized { get; internal set; }
     
     /// <summary>
     /// Gets the physics simulation associated with the scene.
@@ -64,6 +70,16 @@ public abstract class Scene : Disposable {
     internal Dictionary<uint, Entity> Entities;
     
     /// <summary>
+    /// Stores entities that will be added to the scene during the next update pass.
+    /// </summary>
+    private List<Entity> _entitiesToAdd;
+    
+    /// <summary>
+    /// Stores the IDs of entities scheduled for removal during the next update pass.
+    /// </summary>
+    private List<uint> _entitiesToRemove;
+    
+    /// <summary>
     /// Counter for generating unique entity IDs.
     /// </summary>
     private uint _entityIds;
@@ -96,6 +112,8 @@ public abstract class Scene : Disposable {
         this._rendererFactory = rendererFactory;
         this._simulationFactory = simulationFactory;
         this.Entities = new Dictionary<uint, Entity>();
+        this._entitiesToAdd = new List<Entity>();
+        this._entitiesToRemove = new List<uint>();
         this._multiInstanceRenderers = new List<MultiInstanceRenderer>();
     }
     
@@ -120,11 +138,29 @@ public abstract class Scene : Disposable {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     protected internal virtual void Update(double delta) {
+        
+        // Handle adding entities.
+        foreach (Entity entity in this._entitiesToAdd) {
+            this.Entities.Add(entity.Id, entity);
+        }
+        
+        this._entitiesToAdd.Clear();
+        
+        // Handle removing entities.
+        foreach (uint id in this._entitiesToRemove) {
+            if (this.Entities.Remove(id, out Entity? entity)) {
+                entity.Dispose();
+            }
+        }
+        
+        this._entitiesToRemove.Clear();
+        
+        // Update entities.
         foreach (Entity entity in this.Entities.Values) {
             entity.Update(delta);
         }
     }
-
+    
     /// <summary>
     /// Called after the main update loop. Allows for post-update logic.
     /// </summary>
@@ -134,7 +170,7 @@ public abstract class Scene : Disposable {
             entity.AfterUpdate(delta);
         }
     }
-
+    
     /// <summary>
     /// Performs a fixed update for the current scene, updating the simulation and invoking the fixed update for all entities.
     /// </summary>
@@ -267,11 +303,15 @@ public abstract class Scene : Disposable {
     /// <param name="entity">The entity to add.</param>
     /// <returns>True if the entity was successfully added; otherwise, false.</returns>
     public bool TryAddEntity(Entity entity) {
-        if (this.Entities.ContainsKey(entity.Id)) {
+        if (entity.Id != 0) {
             return false;
         }
         
-        if (entity.Id != 0) {
+        if (this._entitiesToAdd.Contains(entity)) {
+            return false;
+        }
+        
+        if (this.Entities.ContainsKey(entity.Id)) {
             return false;
         }
         
@@ -279,7 +319,13 @@ public abstract class Scene : Disposable {
         entity.Id = ++this._entityIds;
         entity.Init();
         
-        this.Entities.Add(entity.Id, entity);
+        if (!this.IsInitialized) {
+            this.Entities.Add(entity.Id, entity);
+        }
+        else {
+            this._entitiesToAdd.Add(entity);
+        }
+        
         return true;
     }
     
@@ -300,17 +346,19 @@ public abstract class Scene : Disposable {
     /// <param name="entity">The entity to remove.</param>
     /// <returns>True if the entity was successfully removed; otherwise, false.</returns>
     public bool TryRemoveEntity(Entity entity) {
+        if (entity.Id == 0) {
+            return false;
+        }
+        
         if (!this.Entities.ContainsKey(entity.Id)) {
             return false;
         }
         
-        entity.Dispose();
-        
-        // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-        if (this.Entities.ContainsKey(entity.Id)) {
-            this.Entities.Remove(entity.Id);
+        if (this._entitiesToRemove.Contains(entity.Id)) {
+            return false;
         }
         
+        this._entitiesToRemove.Add(entity.Id);
         return true;
     }
 
@@ -331,17 +379,19 @@ public abstract class Scene : Disposable {
     /// <param name="id">The ID of the entity to remove.</param>
     /// <returns>True if the entity was successfully removed; otherwise, false.</returns>
     public bool TryRemoveEntity(uint id) {
-        if (!this.Entities.TryGetValue(id, out Entity? entity)) {
+        if (id == 0) {
             return false;
         }
         
-        entity.Dispose();
-        
-        // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-        if (this.Entities.ContainsKey(id)) {
-            this.Entities.Remove(id);
+        if (!this.Entities.ContainsKey(id)) {
+            return false;
         }
-
+        
+        if (this._entitiesToRemove.Contains(id)) {
+            return false;
+        }
+        
+        this._entitiesToRemove.Add(id);
         return true;
     }
     
@@ -366,19 +416,13 @@ public abstract class Scene : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            var enumerator = this.Entities.GetEnumerator();
-            
-            while (enumerator.MoveNext()) {
-                Entity entity = enumerator.Current.Value;
+            foreach (Entity entity in this.Entities.Values) {
                 entity.Dispose();
-                
-                // Ensure the component is removed, even if `Dispose` was overridden incorrectly.
-                if (this.Entities.ContainsKey(entity.Id)) {
-                    this.Entities.Remove(entity.Id);
-                }
             }
             
+            this.Entities.Clear();
             this._entityIds = 0;
+            
             this.Simulation.Dispose();
             this.Renderer.Dispose();
             this.Physics3DDebugDrawer.Dispose();
