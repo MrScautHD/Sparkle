@@ -517,12 +517,12 @@ public class RigidBody2D : Component {
                     Vector2 bodyPos = moveEvent.Body.Position;
                     
                     Quaternion entityRot = globalTransform.Rotation;
-                    Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, moveEvent.Body.Rotation);
+                    Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0.0F, 0.0F, moveEvent.Body.Rotation);
                     
                     if (bodyPos != entityPos || bodyRot != entityRot) {
                         if (this.Entity.Parent == null) {
                             if (bodyPos != entityPos) {
-                                this.Entity.LocalTransform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0);
+                                this.Entity.LocalTransform.Translation = new Vector3(bodyPos.X, bodyPos.Y, 0.0F);
                             }
                             
                             if (bodyRot != entityRot) {
@@ -534,7 +534,7 @@ public class RigidBody2D : Component {
                             Quaternion invParentRot = Quaternion.Inverse(parentGlobal.Rotation);
                             
                             if (bodyPos != entityPos) {
-                                this.Entity.LocalTransform.Translation = Vector3.Transform(new Vector3(bodyPos.X, bodyPos.Y, 0) - parentGlobal.Translation, invParentRot) / parentGlobal.Scale;
+                                this.Entity.LocalTransform.Translation = Vector3.Transform(new Vector3(bodyPos.X, bodyPos.Y, 0.0F) - parentGlobal.Translation, invParentRot) / parentGlobal.Scale;
                             }
                             
                             if (bodyRot != entityRot) {
@@ -598,7 +598,7 @@ public class RigidBody2D : Component {
                 
                 // Sync Rotation.
                 Quaternion entityRot = transform.Rotation;
-                Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0, 0, this.Rotation);
+                Quaternion bodyRot = Quaternion.CreateFromYawPitchRoll(0.0F, 0.0F, this.Rotation);
                 
                 if (entityRot != bodyRot) {
                     this.Transform = this.Transform with {
