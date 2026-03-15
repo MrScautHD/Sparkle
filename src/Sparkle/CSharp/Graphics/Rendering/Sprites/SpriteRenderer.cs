@@ -45,7 +45,7 @@ public class SpriteRenderer {
     public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
         this._sprites.Add(new SpriteData(texture, sampler, position, layerDepth, sourceRect, scale, origin, rotation, color, flip, effect, blendState, depthStencilState, rasterizerState, scissorRect));
     }
-
+    
     /// <summary>
     /// Draws all queued sprites onto the specified framebuffer using the provided graphics context.
     /// </summary>

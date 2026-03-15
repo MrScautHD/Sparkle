@@ -13,31 +13,6 @@ namespace Sparkle.CSharp.Entities.Components;
 public class Sprite : InterpolatedComponent {
     
     /// <summary>
-    /// Optional custom shader effect to apply during rendering.
-    /// </summary>
-    public Effect? Effect;
-    
-    /// <summary>
-    /// Optional blend state override used when drawing the sprite.
-    /// </summary>
-    public BlendStateDescription? BlendState;
-
-    /// <summary>
-    /// Optional depth-stencil state override used when drawing the sprite.
-    /// </summary>
-    public DepthStencilStateDescription? DepthStencilState;
-
-    /// <summary>
-    /// Optional rasterizer state override used when drawing the sprite.
-    /// </summary>
-    public RasterizerStateDescription? RasterizerState;
-
-    /// <summary>
-    /// Optional scissor rectangle to define a clipping region during rendering.
-    /// </summary>
-    public Rectangle? ScissorRect;
-    
-    /// <summary>
     /// The texture used to render the sprite.
     /// </summary>
     public Texture2D Texture;
@@ -71,7 +46,32 @@ public class Sprite : InterpolatedComponent {
     /// The flip mode of the sprite (e.g., horizontal, vertical, or none).
     /// </summary>
     public SpriteFlip Flip;
-
+    
+    /// <summary>
+    /// Optional custom shader effect to apply during rendering.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// Optional blend state override used when drawing the sprite.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
+    /// Optional depth-stencil state override used when drawing the sprite.
+    /// </summary>
+    public DepthStencilStateDescription? DepthStencilState;
+    
+    /// <summary>
+    /// Optional rasterizer state override used when drawing the sprite.
+    /// </summary>
+    public RasterizerStateDescription? RasterizerState;
+    
+    /// <summary>
+    /// Optional scissor rectangle to define a clipping region during rendering.
+    /// </summary>
+    public Rectangle? ScissorRect;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="Sprite"/> class with configurable rendering and transform options.
     /// </summary>

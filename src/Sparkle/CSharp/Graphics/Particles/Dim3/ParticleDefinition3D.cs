@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
-using Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 
-namespace Sparkle.CSharp.Graphics.Particles;
+namespace Sparkle.CSharp.Graphics.Particles.Dim3;
 
-public class ParticleDefinition {
+public class ParticleDefinition3D {
     
     /// <summary>
     /// Whether particles should face the active 3D camera.
@@ -98,12 +98,17 @@ public class ParticleDefinition {
     /// <summary>
     /// Rotation at the start of life, expressed in radians as Euler angles.
     /// </summary>
-    public Vector3 StartRotationEuler;
+    public Vector3 StartRotation;
     
     /// <summary>
     /// Rotation at the end of life, expressed in radians as Euler angles.
     /// </summary>
-    public Vector3 EndRotationEuler;
+    public Vector3 EndRotation;
+    
+    /// <summary>
+    /// Random rotation variation applied when particles spawn, expressed in radians as Euler angles.
+    /// </summary>
+    public Vector3 RotationRandomness;
     
     /// <summary>
     /// Constant angular velocity applied every frame.
@@ -126,12 +131,12 @@ public class ParticleDefinition {
     public float RotationBySpeed;
     
     /// <summary>
-    /// Particle scale at the start of life.
+    /// Particle3D scale at the start of life.
     /// </summary>
     public Vector3 StartScale;
     
     /// <summary>
-    /// Particle scale at the end of life.
+    /// Particle3D scale at the end of life.
     /// </summary>
     public Vector3 EndScale;
     
@@ -163,7 +168,7 @@ public class ParticleDefinition {
     /// <summary>
     /// Provides collision behavior for particles (Enables collisions).
     /// </summary>
-    public IParticleCollisionProvider? CollisionProvider;
+    public IParticleCollisionProvider3D? CollisionProvider;
     
     /// <summary>
     /// Energy preserved after collision.
@@ -181,7 +186,7 @@ public class ParticleDefinition {
     public float CollisionSurfaceOffset;
     
     /// <summary>
-    /// Initializes a new particle definition with a required mesh and optional defaults.
+    /// Initializes a new particle definition3D with a required mesh and optional defaults.
     /// </summary>
     /// <param name="billboard">Whether particles should face the active 3D camera.</param>
     /// <param name="simulateInWorldSpace">Whether particles remain in world space after spawning.</param>
@@ -201,14 +206,15 @@ public class ParticleDefinition {
     /// <param name="gravity">Gravity applied every update step.</param>
     /// <param name="velocityOverLifetime">Extra velocity contribution over lifetime.</param>
     /// <param name="forceOverLifetime">Extra force contribution over lifetime.</param>
-    /// <param name="startRotationEuler">Rotation at the start of life, expressed in radians as Euler angles.</param>
-    /// <param name="endRotationEuler">Rotation at the end of life, expressed in radians as Euler angles.</param>
+    /// <param name="startRotation">Rotation at the start of life, expressed in radians as Euler angles.</param>
+    /// <param name="endRotation">Rotation at the end of life, expressed in radians as Euler angles.</param>
+    /// <param name="rotationRandomness">Random rotation variation applied when particles spawn, expressed in radians as Euler angles.</param>
     /// <param name="angularVelocity">Constant angular velocity applied every frame.</param>
     /// <param name="startAngularVelocity">Angular velocity at the start of life.</param>
     /// <param name="endAngularVelocity">Angular velocity at the end of life.</param>
     /// <param name="rotationBySpeed">Additional angular motion based on particle speed.</param>
-    /// <param name="startScale">Particle scale at the start of life.</param>
-    /// <param name="endScale">Particle scale at the end of life.</param>
+    /// <param name="startScale">Particle3D scale at the start of life.</param>
+    /// <param name="endScale">Particle3D scale at the end of life.</param>
     /// <param name="scaleBySpeed">Additional scale multiplier based on particle speed.</param>
     /// <param name="useNoise">Whether procedural noise motion is enabled.</param>
     /// <param name="noiseStrength">Strength of the procedural noise motion.</param>
@@ -218,7 +224,7 @@ public class ParticleDefinition {
     /// <param name="bounciness">Energy preserved after collision.</param>
     /// <param name="collisionDamping">Extra damping applied after collision.</param>
     /// <param name="collisionSurfaceOffset">Small offset used to push particles away from a collision surface.</param>
-    public ParticleDefinition(
+    public ParticleDefinition3D(
         bool billboard = false,
         bool simulateInWorldSpace = true,
         float simulationSpeed = 1.0F,
@@ -237,8 +243,9 @@ public class ParticleDefinition {
         Vector3? gravity = null,
         Vector3? velocityOverLifetime = null,
         Vector3? forceOverLifetime = null,
-        Vector3? startRotationEuler = null,
-        Vector3? endRotationEuler = null,
+        Vector3? startRotation = null,
+        Vector3? endRotation = null,
+        Vector3? rotationRandomness = null,
         Vector3? angularVelocity = null,
         Vector3? startAngularVelocity = null,
         Vector3? endAngularVelocity = null,
@@ -250,7 +257,7 @@ public class ParticleDefinition {
         float noiseStrength = 0.0F,
         float noiseFrequency = 1.0F,
         float noiseScrollSpeed = 1.0F,
-        IParticleCollisionProvider? collisionProvider = null,
+        IParticleCollisionProvider3D? collisionProvider = null,
         float bounciness = 0.5F,
         float collisionDamping = 0.1F,
         float collisionSurfaceOffset = 0.01F
@@ -273,8 +280,9 @@ public class ParticleDefinition {
         this.Gravity = gravity ?? new Vector3(0, -9.81F, 0);
         this.VelocityOverLifetime = velocityOverLifetime ?? Vector3.Zero;
         this.ForceOverLifetime = forceOverLifetime ?? Vector3.Zero;
-        this.StartRotationEuler = startRotationEuler ?? Vector3.Zero;
-        this.EndRotationEuler = endRotationEuler ?? Vector3.Zero;
+        this.StartRotation = startRotation ?? Vector3.Zero;
+        this.EndRotation = endRotation ?? Vector3.Zero;
+        this.RotationRandomness = rotationRandomness ?? Vector3.Zero;
         this.AngularVelocity = angularVelocity ?? Vector3.Zero;
         this.StartAngularVelocity = startAngularVelocity ?? Vector3.Zero;
         this.EndAngularVelocity = endAngularVelocity ?? Vector3.Zero;

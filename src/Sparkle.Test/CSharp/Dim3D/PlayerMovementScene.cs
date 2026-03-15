@@ -13,8 +13,8 @@ using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Particles;
-using Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+using Sparkle.CSharp.Graphics.Particles.Dim3;
+using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Scenes;
@@ -68,10 +68,11 @@ public class PlayerMovementScene : Scene {
         Player player = new Player(new Transform() { Translation = new Vector3(0, 4, 0) });
         this.AddEntity(player);
         
-        // Particle spreader.
-        Entity particleSpreader = new Entity(new Transform() { Translation = new Vector3(5, 0, 5) });
+        // Particle3D spreader.
+        Entity particleSpreader = new Entity(new Transform() { Translation = new Vector3(5, 0.1F, 5) });
         
-        ParticleDefinition particleDefinition = new ParticleDefinition() {
+        ParticleDefinition3D particleDefinition = new ParticleDefinition3D() {
+            Billboard = true,
             Looping = true,
             Duration = 9999.0F,
             EmissionRate = 140.0F,
@@ -91,12 +92,11 @@ public class PlayerMovementScene : Scene {
             Bounciness = 0.15F,
             CollisionDamping = 0.35F,
             CollisionSurfaceOffset = 0.02F,
-            SimulateInWorldSpace = true,
-            Billboard = true
+            SimulateInWorldSpace = true
         };
         
-        ParticleSystem particleSystem = new ParticleSystem(this.RainParticleMesh, particleDefinition, Vector3.Zero);
-        particleSpreader.AddComponent(particleSystem);
+        ParticleSystem3D particleSystem3D = new ParticleSystem3D(this.RainParticleMesh, particleDefinition, Vector3.Zero);
+        particleSpreader.AddComponent(particleSystem3D);
         this.AddEntity(particleSpreader);
     }
     

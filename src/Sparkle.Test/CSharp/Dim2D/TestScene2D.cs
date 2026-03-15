@@ -12,8 +12,9 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Particles;
-using Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+using Sparkle.CSharp.Graphics.Particles.Dim2;
+using Sparkle.CSharp.Graphics.Particles.Dim2.Collisions.Providers;
+using Sparkle.CSharp.Graphics.Particles.Dim3;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Physics.Dim2.Shapes;
@@ -75,34 +76,33 @@ public class TestScene2D : Scene {
         }
         
         // Fountain particle emitter.
-        Entity particleSpreader = new Entity(new Transform() { Translation = new Vector3(0, -32, 0) });
+        Entity particleSpreader = new Entity(new Transform() { Translation = new Vector3(64, -56, 0) });
         
-        ParticleDefinition particleDefinition = new ParticleDefinition() {
+        ParticleDefinition2D particleDefinition = new ParticleDefinition2D(ContentRegistry.Sprite) {
             Looping = true,
             Duration = 9999.0F,
             EmissionRate = 140.0F,
             MaxParticles = 600,
             StartLifetime = 1.8F,
             LifetimeRandomness = 0.35F,
-            StartSpeed = 8.5F,
+            StartSpeed = 8.5F * 16,
             SpeedRandomness = 1.5F,
-            StartScale = new Vector3(0.12F, 0.12F, 1.0F),
-            EndScale = new Vector3(0.04F, 0.04F, 1.0F),
-            Acceleration = Vector3.Zero,
-            Gravity = new Vector3(0, 12.0F, 0),
-            Direction = new Vector3(0, -1, 0),
+            StartScale = new Vector2(0.12F, 0.12F),
+            EndScale = new Vector2(0.04F, 0.04F),
+            Acceleration = Vector2.Zero,
+            Gravity = new Vector2(0, 12.0F) * 16,
+            Direction = new Vector2(0, -1),
             Spread = 0.22F,
-            SpawnBox = new Vector3(6.0F, 2.0F, 0.0F),
+            SpawnBox = new Vector2(6.0F, 2.0F),
             CollisionProvider = new ParticleCollisionProvider2D((Simulation2D) this.Simulation),
             Bounciness = 0.15F,
             CollisionDamping = 0.35F,
             CollisionSurfaceOffset = 0.02F,
-            SimulateInWorldSpace = true,
-            Billboard = false
+            SimulateInWorldSpace = true
         };
         
-        ParticleSystem particleSystem = new ParticleSystem(this.RainParticleMesh, particleDefinition, Vector3.Zero);
-        particleSpreader.AddComponent(particleSystem);
+        ParticleSystem2D particleSystem3D = new ParticleSystem2D(particleDefinition, Vector3.Zero);
+        particleSpreader.AddComponent(particleSystem3D);
         this.AddEntity(particleSpreader);
     }
     

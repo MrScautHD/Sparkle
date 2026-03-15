@@ -129,14 +129,14 @@ public class RigidBody2D : Component {
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody2D"/> class with a single collision shape.
     /// </summary>
-    /// <param name="bodyDef">The body definition containing physical properties.</param>
+    /// <param name="bodyDef">The body definition3D containing physical properties.</param>
     /// <param name="shape">The collision shape to attach to the body.</param>
     public RigidBody2D(BodyDefinition bodyDef, IShape2D shape) : this(bodyDef, [shape]) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody2D"/> class with multiple collision shapes.
     /// </summary>
-    /// <param name="bodyDef">The body definition containing physical properties.</param>
+    /// <param name="bodyDef">The body definition3D containing physical properties.</param>
     /// <param name="shapes">The list of collision shapes to attach to the body.</param>
     public RigidBody2D(BodyDefinition bodyDef, List<IShape2D> shapes) : base(Vector3.Zero) {
         this._bodyDef = bodyDef;
@@ -425,9 +425,9 @@ public class RigidBody2D : Component {
     }
 
     /// <summary>
-    /// Creates a new shape and attaches it to the body using the specified shape definition and geometry.
+    /// Creates a new shape and attaches it to the body using the specified shape definition3D and geometry.
     /// </summary>
-    /// <param name="def">The shape definition containing physical and configuration data for the shape.</param>
+    /// <param name="def">The shape definition3D containing physical and configuration data for the shape.</param>
     /// <param name="circle">The circle geometry representing the shape.</param>
     /// <returns>The created shape instance.</returns>
     public Shape CreateShape(ShapeDef def, Circle circle) {
@@ -435,9 +435,9 @@ public class RigidBody2D : Component {
     }
 
     /// <summary>
-    /// Creates a new shape for the rigid body using the specified shape definition and segment.
+    /// Creates a new shape for the rigid body using the specified shape definition3D and segment.
     /// </summary>
-    /// <param name="def">The shape definition that specifies the properties of the shape.</param>
+    /// <param name="def">The shape definition3D that specifies the properties of the shape.</param>
     /// <param name="segment">The segment used to define specific geometry of the shape.</param>
     /// <returns>The created shape instance.</returns>
     public Shape CreateShape(ShapeDef def, Segment segment) {
@@ -445,9 +445,9 @@ public class RigidBody2D : Component {
     }
 
     /// <summary>
-    /// Creates a new shape and attaches it to the body based on the provided definition and capsule geometry.
+    /// Creates a new shape and attaches it to the body based on the provided definition3D and capsule geometry.
     /// </summary>
-    /// <param name="def">The shape definition containing attributes such as density, friction, and filter information.</param>
+    /// <param name="def">The shape definition3D containing attributes such as density, friction, and filter information.</param>
     /// <param name="capsule">The capsule geometry describing the shape's dimensions and orientation.</param>
     /// <returns>A <see cref="Shape"/> instance representing the newly created shape.</returns>
     public Shape CreateShape(ShapeDef def, Capsule capsule) {
@@ -455,9 +455,9 @@ public class RigidBody2D : Component {
     }
 
     /// <summary>
-    /// Creates a new shape and attaches it to the rigid body using the provided shape definition and polygon data.
+    /// Creates a new shape and attaches it to the rigid body using the provided shape definition3D and polygon data.
     /// </summary>
-    /// <param name="def">The shape definition containing properties for the new shape.</param>
+    /// <param name="def">The shape definition3D containing properties for the new shape.</param>
     /// <param name="polygon">The polygon data defining the geometry of the shape.</param>
     /// <return>Returns the created <see cref="Shape"/> instance.</return>
     public Shape CreateShape(ShapeDef def, Polygon polygon) {
@@ -465,16 +465,16 @@ public class RigidBody2D : Component {
     }
 
     /// <summary>
-    /// Creates a new chain shape based on the specified chain definition.
+    /// Creates a new chain shape based on the specified chain definition3D.
     /// </summary>
-    /// <param name="def">The chain definition containing the configuration details for the chain shape.</param>
+    /// <param name="def">The chain definition3D containing the configuration details for the chain shape.</param>
     /// <returns>A <see cref="ChainShape"/> instance representing the created chain shape.</returns>
     public ChainShape CreateChain(ChainDef def) {
         return this._body.CreateChain(def);
     }
 
     /// <summary>
-    /// Creates and initializes a physical body in the 2D world using the specified body definition and associated shapes.
+    /// Creates and initializes a physical body in the 2D world using the specified body definition3D and associated shapes.
     /// </summary>
     private void CreateBody() {
         this._body = this.World.CreateBody(new BodyDef() {

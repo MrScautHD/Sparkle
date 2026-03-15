@@ -2,19 +2,18 @@
 using System.Runtime.InteropServices;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Particles;
-using Sparkle.CSharp.Graphics.Particles.Collisions;
-using Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+using Sparkle.CSharp.Graphics.Particles.Dim3;
+using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions;
+using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class ParticleSystem : InterpolatedComponent {
+public class ParticleSystem3D : InterpolatedComponent {
     
     /// <summary>
     /// The mesh used to render each particle instance.
@@ -34,7 +33,7 @@ public class ParticleSystem : InterpolatedComponent {
     /// <summary>
     /// The particle behavior and rendering settings used by this system.
     /// </summary>
-    public ParticleDefinition Definition { get; private set; }
+    public ParticleDefinition3D Definition { get; private set; }
     
     /// <summary>
     /// Determines whether the particle system is currently emitting particles.
@@ -49,7 +48,7 @@ public class ParticleSystem : InterpolatedComponent {
     /// <summary>
     /// The collection of currently active particles.
     /// </summary>
-    private List<Particle> _particles;
+    private List<Particle3D> _particles;
     
     /// <summary>
     /// The random generator used for particle spawning and variation.
@@ -67,29 +66,29 @@ public class ParticleSystem : InterpolatedComponent {
     private float _emissionAccumulator;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="ParticleSystem"/> class using either the mesh material or a cloned copy.
+    /// Initializes a new instance of the <see cref="ParticleSystem3D"/> class using either the mesh material or a cloned copy.
     /// </summary>
     /// <param name="mesh">The mesh used to render each particle instance.</param>
     /// <param name="definition">The particle behavior and rendering settings used by this system.</param>
     /// <param name="offsetPosition">The local offset position of the particle system component.</param>
     /// <param name="copyMeshMaterial">Whether to clone the mesh material instead of using the original instance.</param>
     /// <param name="isPlaying">Whether the particle system should start in the playing state.</param>
-    public ParticleSystem(Mesh mesh, ParticleDefinition definition, Vector3 offsetPosition, bool copyMeshMaterial = false, bool isPlaying = true) : this(mesh, definition, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, isPlaying) { }
+    public ParticleSystem3D(Mesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, bool copyMeshMaterial = false, bool isPlaying = true) : this(mesh, definition, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, isPlaying) { }
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="ParticleSystem"/> class.
+    /// Initializes a new instance of the <see cref="ParticleSystem3D"/> class.
     /// </summary>
     /// <param name="mesh">The mesh used to render each particle instance.</param>
     /// <param name="definition">The particle behavior and rendering settings used by this system.</param>
     /// <param name="offsetPosition">The local offset position of the particle system component.</param>
     /// <param name="material">The material used to render the particle instances.</param>
     /// <param name="isPlaying">Whether the particle system should start in the playing state.</param>
-    public ParticleSystem(Mesh mesh, ParticleDefinition definition, Vector3 offsetPosition, Material material, bool isPlaying = true) : base(offsetPosition) {
+    public ParticleSystem3D(Mesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, Material material, bool isPlaying = true) : base(offsetPosition) {
         this.Mesh = mesh;
         this.Definition = definition;
         this.IsPlaying = isPlaying;
         this._renderable = new Renderable(mesh, new Transform(), material);
-        this._particles = new List<Particle>();
+        this._particles = new List<Particle3D>();
         this._random = new Random();
     }
     
@@ -129,7 +128,7 @@ public class ParticleSystem : InterpolatedComponent {
         Vector3 emitterScale = this.Entity.GlobalTransform.Scale;
         
         for (int i = 0; i < count && this._particles.Count < this.Definition.MaxParticles; i++) {
-            Particle particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
+            Particle3D particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
             this._particles.Add(particle);
         }
     }
@@ -160,7 +159,7 @@ public class ParticleSystem : InterpolatedComponent {
                     Vector3 emitterScale = this.Entity.GlobalTransform.Scale;
                     
                     while (this._emissionAccumulator >= 1.0F && this._particles.Count < this.Definition.MaxParticles) {
-                        Particle particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
+                        Particle3D particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
                         
                         this._particles.Add(particle);
                         this._emissionAccumulator -= 1.0F;
@@ -176,11 +175,11 @@ public class ParticleSystem : InterpolatedComponent {
             }
         }
         
-        Span<Particle> particles = CollectionsMarshal.AsSpan(this._particles);
+        Span<Particle3D> particles = CollectionsMarshal.AsSpan(this._particles);
         
         // Update all living particles.
         for (int i = 0; i < particles.Length; i++) {
-            ref Particle particle = ref particles[i];
+            ref Particle3D particle = ref particles[i];
             
             particle.PreviousPosition = particle.Position;
             particle.Age += dt;
@@ -215,7 +214,7 @@ public class ParticleSystem : InterpolatedComponent {
                 angularVelocity += Vector3.One * (speed * this.Definition.RotationBySpeed);
             }
             
-            particle.SpinEuler += angularVelocity * dt;
+            particle.Spin += angularVelocity * dt;
             
             // Scale particle over a lifetime, optionally affected by speed.
             Vector3 baseScale = Vector3.Lerp(this.Definition.StartScale, this.Definition.EndScale, life);
@@ -246,6 +245,11 @@ public class ParticleSystem : InterpolatedComponent {
     /// <param name="framebuffer">The target framebuffer.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D == null) {
+            return;
+        }
         
         int aliveCount = this._particles.Count;
         
@@ -257,16 +261,17 @@ public class ParticleSystem : InterpolatedComponent {
         this.AdjustInstanceStorage();
         
         for (int i = 0; i < aliveCount; i++) {
-            Particle particle = this._particles[i];
+            Particle3D particle = this._particles[i];
             float life = particle.Age / particle.Lifetime;
             
             // Interpolate the configured rotation over the particle lifetime.
-            float lerpedRotYaw = float.Lerp(this.Definition.StartRotationEuler.Y, this.Definition.EndRotationEuler.Y, life);
-            float lerpedRotPitch = float.Lerp(this.Definition.StartRotationEuler.X, this.Definition.EndRotationEuler.X, life);
-            float lerpedRotRoll = float.Lerp(this.Definition.StartRotationEuler.Z, this.Definition.EndRotationEuler.Z, life);
+            float lerpedRotYaw = float.Lerp(this.Definition.StartRotation.Y, this.Definition.EndRotation.Y, life);
+            float lerpedRotPitch = float.Lerp(this.Definition.StartRotation.X, this.Definition.EndRotation.X, life);
+            float lerpedRotRoll = float.Lerp(this.Definition.StartRotation.Z, this.Definition.EndRotation.Z, life);
             
+            Quaternion randomRotation = Quaternion.CreateFromYawPitchRoll(particle.RotationOffset.Y, particle.RotationOffset.X, particle.RotationOffset.Z);
             Quaternion lifetimeRotation = Quaternion.CreateFromYawPitchRoll(lerpedRotYaw, lerpedRotPitch, lerpedRotRoll);
-            Quaternion spinRotation = Quaternion.CreateFromYawPitchRoll(particle.SpinEuler.Y, particle.SpinEuler.X, particle.SpinEuler.Z);
+            Quaternion spinRotation = Quaternion.CreateFromYawPitchRoll(particle.Spin.Y, particle.Spin.X, particle.Spin.Z);
             
             Quaternion baseRotation;
             
@@ -279,22 +284,23 @@ public class ParticleSystem : InterpolatedComponent {
                 
                 up = Vector3.Normalize(Vector3.Cross(forward, right));
                 
-                Matrix4x4 rotationMatrix = Matrix4x4.Identity;
-                
-                // Right axis.
-                rotationMatrix.M11 = right.X;
-                rotationMatrix.M12 = right.Y;
-                rotationMatrix.M13 = right.Z;
-                
-                // Up axis.
-                rotationMatrix.M21 = up.X;
-                rotationMatrix.M22 = up.Y;
-                rotationMatrix.M23 = up.Z;
-                
-                // Forward axis.
-                rotationMatrix.M31 = forward.X;
-                rotationMatrix.M32 = forward.Y;
-                rotationMatrix.M33 = forward.Z;
+                Matrix4x4 rotationMatrix = Matrix4x4.Identity with {
+                    
+                    // Right axis.
+                    M11 = right.X,
+                    M12 = right.Y,
+                    M13 = right.Z,
+                    
+                    // Up axis.
+                    M21 = up.X,
+                    M22 = up.Y,
+                    M23 = up.Z,
+                    
+                    // Forward axis.
+                    M31 = forward.X,
+                    M32 = forward.Y,
+                    M33 = forward.Z
+                };
                 
                 baseRotation = Quaternion.Normalize(Quaternion.CreateFromRotationMatrix(rotationMatrix) * Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathF.PI));
             }
@@ -304,23 +310,22 @@ public class ParticleSystem : InterpolatedComponent {
             
             this._renderable.Transforms[i] = new Transform() {
                 Translation = this.Definition.SimulateInWorldSpace ? particle.Position : this.LerpedGlobalPosition + particle.Position,
-                Rotation = Quaternion.Normalize(baseRotation * lifetimeRotation * spinRotation),
+                Rotation = Quaternion.Normalize(baseRotation * randomRotation * lifetimeRotation * spinRotation),
                 Scale = this.Definition.SimulateInWorldSpace ? particle.Scale * particle.SpawnScale : particle.Scale * this.LerpedScale
             };
         }
         
-        // TODO: FIX 2D particles! (They need a spriteRenderer instead of this because this only renders with a cam3D)
         this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
     }
     
     /// <summary>
-    /// Creates a new particle using the current emitter transform and particle definition.
+    /// Creates a new particle using the current emitter transform and particle definition3D.
     /// </summary>
     /// <param name="emitterPosition">The world-space position of the emitter.</param>
     /// <param name="emitterRotation">The world-space rotation of the emitter.</param>
     /// <param name="emitterScale">The world-space scale of the emitter.</param>
-    /// <returns>A newly initialized <see cref="Particle"/> instance.</returns>
-    private Particle CreateParticle(Vector3 emitterPosition, Quaternion emitterRotation, Vector3 emitterScale) {
+    /// <returns>A newly initialized <see cref="Particle3D"/> instance.</returns>
+    private Particle3D CreateParticle(Vector3 emitterPosition, Quaternion emitterRotation, Vector3 emitterScale) {
         Vector3 baseDirection;
         
         // Choose a random direction when no base direction is set, otherwise use the configured direction with spread.
@@ -342,17 +347,25 @@ public class ParticleSystem : InterpolatedComponent {
             Z = this.RandomRange(-this.Definition.SpawnBox.Z * 0.5F, this.Definition.SpawnBox.Z * 0.5F)
         };
         
+        // Pick a random spawn rotation.
+        Vector3 rotationOffset = new Vector3(
+            this.RandomRange(-this.Definition.RotationRandomness.X, this.Definition.RotationRandomness.X),
+            this.RandomRange(-this.Definition.RotationRandomness.Y, this.Definition.RotationRandomness.Y),
+            this.RandomRange(-this.Definition.RotationRandomness.Z, this.Definition.RotationRandomness.Z)
+        );
+        
         // Convert the spawn position and movement direction into world space when needed.
         if (this.Definition.SimulateInWorldSpace) {
             Vector3 worldSpawnOffset = Vector3.Transform(spawnOffset * emitterScale, emitterRotation);
             Vector3 worldDirection = Vector3.Transform(baseDirection, emitterRotation);
             
-            return new Particle() {
+            return new Particle3D() {
                 Position = emitterPosition + worldSpawnOffset,
                 PreviousPosition = emitterPosition + worldSpawnOffset,
                 Velocity = worldDirection * speed,
                 RotationSpace = emitterRotation,
-                SpinEuler = Vector3.Zero,
+                RotationOffset = rotationOffset,
+                Spin = Vector3.Zero,
                 Scale = this.Definition.StartScale,
                 SpawnScale = emitterScale,
                 Age = 0.0F,
@@ -362,12 +375,13 @@ public class ParticleSystem : InterpolatedComponent {
         }
         
         // Otherwise keep the particle data in local emitter space.
-        return new Particle() {
+        return new Particle3D() {
             Position = spawnOffset,
             PreviousPosition = spawnOffset,
             Velocity = baseDirection * speed,
             RotationSpace = Quaternion.Identity,
-            SpinEuler = Vector3.Zero,
+            RotationOffset = rotationOffset,
+            Spin = Vector3.Zero,
             Scale = this.Definition.StartScale,
             SpawnScale = Vector3.One,
             Age = 0.0F,
@@ -380,18 +394,18 @@ public class ParticleSystem : InterpolatedComponent {
     /// Resolves particle collisions along the particle movement segment.
     /// </summary>
     /// <param name="particle">The particle to test and update on collision.</param>
-    private void ResolveCollision(ref Particle particle) {
+    private void ResolveCollision(ref Particle3D particle) {
         if (particle.Position == particle.PreviousPosition) {
             return;
         }
         
-        IParticleCollisionProvider? collisionProvider = this.Definition.CollisionProvider;
+        IParticleCollisionProvider3D? collisionProvider = this.Definition.CollisionProvider;
         
         if (collisionProvider == null) {
             return;
         }
         
-        if (!collisionProvider.TryRayCast(particle.PreviousPosition, particle.Position, out ParticleCollisionHit hit)) {
+        if (!collisionProvider.TryRayCast(particle.PreviousPosition, particle.Position, out ParticleCollisionHit3D hit)) {
             return;
         }
         

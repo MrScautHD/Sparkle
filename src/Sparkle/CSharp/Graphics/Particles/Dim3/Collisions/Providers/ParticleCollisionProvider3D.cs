@@ -2,9 +2,9 @@
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Physics.Dim3;
 
-namespace Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+namespace Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 
-public class ParticleCollisionProvider3D : IParticleCollisionProvider {
+public class ParticleCollisionProvider3D : IParticleCollisionProvider3D {
     
     /// <summary>
     /// The 3D simulation used to perform collision ray casts.
@@ -26,35 +26,26 @@ public class ParticleCollisionProvider3D : IParticleCollisionProvider {
     /// <param name="end">The world-space end position of the ray.</param>
     /// <param name="hit">When this method returns <see langword="true"/>, contains information about the detected collision.</param>
     /// <returns><see langword="true"/> if the ray hits a surface; otherwise, <see langword="false"/>.</returns>
-    public bool TryRayCast(Vector3 start, Vector3 end, out ParticleCollisionHit hit) {
-        hit = default;
-        
-        Vector3 delta = end - start;
+    public bool TryRayCast(Vector3 start, Vector3 end, out ParticleCollisionHit3D hit) {
+        Vector3 translation = end - start;
         
         // Ignore zero-length rays.
-        if (delta.LengthSquared() <= float.Epsilon) {
+        if (translation.LengthSquared() <= float.Epsilon) {
+            hit = default;
             return false;
         }
         
-        bool hasHit = this._simulation.World.DynamicTree.RayCast(
-            start,
-            delta,
-            null,
-            null,
-            out _,
-            out JVector normal,
-            out float fraction
-        );
+        bool hasHit = this._simulation.World.DynamicTree.RayCast(start, translation, null, null, out _, out JVector normal, out float fraction);
         
         // Ignore invalid hits and anything outside the segment.
-        if (!hasHit || fraction <= 0.001F || fraction > 1.0F) {
+        if (!hasHit || fraction < 0.0F || fraction > 1.0F) {
+            hit = default;
             return false;
         }
         
-        Vector3 point = start + delta * fraction;
-        Vector3 hitNormal = new Vector3(normal.X, normal.Y, normal.Z);
+        Vector3 point = start + translation * fraction;
         
-        hit = new ParticleCollisionHit(point, hitNormal);
+        hit = new ParticleCollisionHit3D(point, normal);
         return true;
     }
 }

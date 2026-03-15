@@ -2,9 +2,9 @@
 using Box2D;
 using Sparkle.CSharp.Physics.Dim2;
 
-namespace Sparkle.CSharp.Graphics.Particles.Collisions.Providers;
+namespace Sparkle.CSharp.Graphics.Particles.Dim2.Collisions.Providers;
 
-public class ParticleCollisionProvider2D : IParticleCollisionProvider {
+public class ParticleCollisionProvider2D : IParticleCollisionProvider2D {
     
     /// <summary>
     /// The 2D simulation used to perform collision ray casts.
@@ -26,29 +26,25 @@ public class ParticleCollisionProvider2D : IParticleCollisionProvider {
     /// <param name="end">The world-space end position of the ray.</param>
     /// <param name="hit">When this method returns <see langword="true"/>, contains information about the detected collision.</param>
     /// <returns><see langword="true"/> if the ray hits a surface; otherwise, <see langword="false"/>.</returns>
-    public bool TryRayCast(Vector3 start, Vector3 end, out ParticleCollisionHit hit) {
-        hit = default;
-        
-        Vector2 origin = new Vector2(start.X, start.Y);
-        Vector2 translation = new Vector2(end.X - start.X, end.Y - start.Y);
+    public bool TryRayCast(Vector2 start, Vector2 end, out ParticleCollisionHit2D hit) {
+        Vector2 translation = end - start;
         
         // Ignore zero-length rays.
         if (translation.LengthSquared() <= float.Epsilon) {
+            hit = default;
             return false;
         }
         
         QueryFilter filter = new QueryFilter();
-        RayResult result = this._simulation.World.CastRayClosest(origin, translation, filter);
+        RayResult result = this._simulation.World.CastRayClosest(start, translation, filter);
         
         // Ignore invalid hits and anything outside the segment.
-        if (!result.Shape.Valid || result.Fraction <= 0.001F || result.Fraction > 1.0F) {
+        if (!result.Shape.Valid || result.Fraction < 0.0F || result.Fraction > 1.0F) {
+            hit = default;
             return false;
         }
         
-        Vector3 point = new Vector3(result.Point.X, result.Point.Y, start.Z);
-        Vector3 normal = new Vector3(result.Normal.X, result.Normal.Y, 0.0F);
-        
-        hit = new ParticleCollisionHit(point, normal);
+        hit = new ParticleCollisionHit2D(result.Point, result.Normal);
         return true;
     }
 }
