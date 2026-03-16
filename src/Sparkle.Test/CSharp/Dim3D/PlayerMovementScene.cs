@@ -114,15 +114,16 @@ public class PlayerMovementScene : Scene {
             }
             
             if (SceneManager.ActiveCam3D != null) {
+                Camera3D camera = SceneManager.ActiveCam3D;
                 
                 // Keep the camera position direction before updating the target.
-                Vector3 direction = Vector3.Normalize(SceneManager.ActiveCam3D.Position - SceneManager.ActiveCam3D.Target);
+                Vector3 direction = Vector3.Normalize(camera.Position - camera.Target);
                 
                 // Set the camera target to the player.
-                SceneManager.ActiveCam3D.Target = new Vector3(targetPosition.X, targetPosition.Y + 2.0F, targetPosition.Z);
+                camera.Target = new Vector3(targetPosition.X, targetPosition.Y + 2.0F, targetPosition.Z);
                 
                 // Update the camera position based on the new target and the previous direction.
-                SceneManager.ActiveCam3D.Position = SceneManager.ActiveCam3D.Target + direction * 5.0F;
+                camera.Position = camera.Target + direction * 5.0F;
             }
         }
         

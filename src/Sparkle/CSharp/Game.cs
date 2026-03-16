@@ -117,23 +117,13 @@ public class Game : Disposable {
     private double _fixedFrameRate;
     
     /// <summary>
-    /// The time step for fixed updates.
-    /// </summary>
-    private readonly double _fixedUpdateTimeStep;
-    
-    /// <summary>
-    /// The timer for tracking the fixed update time.
-    /// </summary>
-    private double _fixedUpdateTimer;
-    
-    /// <summary>
     /// Initializes the <see cref="Game"/> with specified settings.
     /// </summary>
     /// <param name="settings">The game settings.</param>
     public Game(GameSettings settings) {
         Instance = this;
         this.Settings = settings;
-        this._fixedUpdateTimeStep = settings.FixedTimeStep;
+        Time.FixedStep = settings.FixedTimeStep;
     }
     
     /// <summary>
@@ -299,7 +289,7 @@ public class Game : Disposable {
         
         // Game loop.
         while (true) {
-            if (this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
+            if (!this.Settings.VSync && this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
             }
             Time.Update();
@@ -319,20 +309,18 @@ public class Game : Disposable {
                 this.Update(Time.Delta);
                 this.AfterUpdate(Time.Delta);
                 
-                this._fixedUpdateTimer += Time.Delta;
-                while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
-                    this.FixedUpdate(this._fixedUpdateTimeStep);
-                    this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+                while (Time.ShouldRunFixedStep()) {
+                    this.FixedUpdate(Time.FixedStep);
+                    Time.ConsumeFixedStep();
                 }
             }
             else {
                 GuiManager.OnUpdate(Time.Delta);
                 GuiManager.OnAfterUpdate(Time.Delta);
                 
-                this._fixedUpdateTimer += Time.Delta;
-                while (this._fixedUpdateTimer >= this._fixedUpdateTimeStep) {
-                    GuiManager.OnFixedUpdate(this._fixedUpdateTimeStep);
-                    this._fixedUpdateTimer -= this._fixedUpdateTimeStep;
+                while (Time.ShouldRunFixedStep()) {
+                    GuiManager.OnFixedUpdate(Time.FixedStep);
+                    Time.ConsumeFixedStep();
                 }
             }
             

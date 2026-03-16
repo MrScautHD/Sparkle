@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Bliss.CSharp.Logging;
 
 namespace Sparkle.CSharp;
 
@@ -13,12 +14,12 @@ public static class Time {
     /// Represents an accumulator used to track fixed time steps for the physics or fixed update loop.
     /// </summary>
     public static double FixedAccumulator { get; private set; }
-
+    
     /// <summary>
     /// Gets the fixed time step interval defined in the current game settings.
     /// </summary>
-    public static double FixedStep => Game.Instance?.Settings.FixedTimeStep ?? throw new Exception("Something went wrong!");
-
+    public static double FixedStep { get; internal set; }
+    
     /// <summary>
     /// Gets the total elapsed time since the start of the application.
     /// </summary>
@@ -33,15 +34,17 @@ public static class Time {
     /// A private static stopwatch used for measuring the total elapsed time since the start of the application.
     /// </summary>
     private static Stopwatch _totalTimeWatch;
-
+    
     /// <summary>
     /// Initializes the Time class.
     /// </summary>
     internal static void Init() {
+        Delta = 0.0;
+        FixedAccumulator = 0.0;
         DeltaTimer = Stopwatch.StartNew();
         _totalTimeWatch = Stopwatch.StartNew();
     }
-
+    
     /// <summary>
     /// Updates the Time class by calculating the time delta and restarting the timer.
     /// </summary>
@@ -53,9 +56,19 @@ public static class Time {
         
         // Calculate fixed accumulator.
         FixedAccumulator += Delta;
-
-        while (FixedAccumulator >= FixedStep) {
-            FixedAccumulator -= FixedStep;
-        }
+    }
+    
+    /// <summary>
+    /// Returns whether another fixed step should run.
+    /// </summary>
+    internal static bool ShouldRunFixedStep() {
+        return FixedAccumulator >= FixedStep;
+    }
+    
+    /// <summary>
+    /// Consumes a single fixed step from the accumulator.
+    /// </summary>
+    internal static void ConsumeFixedStep() {
+        FixedAccumulator -= FixedStep;
     }
 }
