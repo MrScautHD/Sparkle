@@ -3,9 +3,7 @@ using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
-using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Interact;
-using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Jitter2.Collision.Shapes;
@@ -20,6 +18,7 @@ using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Scenes;
+using Sparkle.CSharp.Terrain;
 using Veldrid;
 
 namespace Sparkle.Test.CSharp.Dim3D;
@@ -100,6 +99,42 @@ public class PlayerMovementScene : Scene {
         ParticleSystem3D particleSystem3D = new ParticleSystem3D(this.RainParticleMesh, particleDefinition, Vector3.Zero);
         particleSpreader.AddComponent(particleSystem3D);
         this.AddEntity(particleSpreader);
+        
+        // Terrain.
+        int chunks = 2;
+        int chunkSize = 16;
+        int maxHeight = 8;
+        float heightThreshold = 0.5f;
+
+        for (int i = 0; i < chunks; i++) {
+            for (int j = 0; j < chunks; j++) {
+                Vector3 chunkPosition = new Vector3(i * chunkSize / 2.0F, 0, j * chunkSize / 2.0F);
+
+                MarchingCubes mc = new MarchingCubes(chunkSize, maxHeight, heightThreshold);
+
+                for (int x = 0; x <= chunkSize; x++) {
+                    for (int z = 0; z <= chunkSize; z++) {
+                        for (int y = 0; y <= maxHeight; y++) {
+                            float value = 0f;
+                            if (y <= 1) value = 1f; // base plane
+                            Vector2 center = new Vector2(chunkSize / 2f, chunkSize / 2f);
+                            float distance = Vector2.Distance(new Vector2(x, z), center);
+                            float hillHeight = MathF.Max(0, 4.0f - distance);
+                            if (y <= hillHeight) value = 1f;
+                            mc.SetHeight(x, y, z, value);
+                        }
+                    }
+                }
+
+                MarchingCubesChunk chunk = new MarchingCubesChunk(mc, chunkPosition, chunkSize, maxHeight);
+                chunk.Generate();
+                chunk.Mesh.Material.SetMapTexture(MaterialMapType.Albedo, ContentRegistry.Sprite);
+
+                Entity chunkEntity = new Entity(new Transform() { Translation = chunkPosition });
+                chunkEntity.AddComponent(new MeshRenderer(chunk.Mesh, new Vector3()));
+                this.AddEntity(chunkEntity);
+            }
+        }
     }
     
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {

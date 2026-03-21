@@ -87,7 +87,7 @@ public class ParticleSystem3D : InterpolatedComponent {
         this.Mesh = mesh;
         this.Definition = definition;
         this.IsPlaying = isPlaying;
-        this._renderable = new Renderable(mesh, new Transform(), material);
+        this._renderable = new Renderable(mesh, new Transform(), material, true);
         this._particles = new List<Particle3D>();
         this._random = new Random();
     }

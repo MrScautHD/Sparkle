@@ -1,6 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Geometry;
+using Sparkle.CSharp.Graphics;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -31,14 +32,13 @@ public class MarchingCubesChunk : Disposable {
     /// Generates a Marching Cubes chunk.
     /// </summary>
     public void Generate() {
-        this.MarchingCubes.SetHeights(this.Position, this.Width, this.Height);
         this.MarchingCubes.MarchCubes(this.Position, this.Width, this.Height);
-        //this.Mesh = this.MarchingCubes.GenMesh(); //TODO: IDK YET
+        this.Mesh = this.MarchingCubes.GenMesh(GlobalGraphicsAssets.GraphicsDevice);
     }
 
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            //this.Mesh.Unload();
+            this.Mesh.Dispose();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
@@ -40,7 +41,7 @@ public class MultiInstanceRenderer {
         // Create renderables.
         this._renderables = new Dictionary<Mesh, Renderable>();
         foreach (Mesh mesh in this.Meshes) {
-            this._renderables.Add(mesh, new Renderable(mesh, new Transform(), copyModelMaterials));
+            this._renderables.Add(mesh, new Renderable(mesh, new Transform(), copyModelMaterials, true));
         }
     }
     
@@ -60,7 +61,7 @@ public class MultiInstanceRenderer {
         this.Meshes = [mesh];
         this._instancedRenderProxies = new List<InstancedRenderProxy>();
         this._renderables = new Dictionary<Mesh, Renderable>();
-        this._renderables.Add(mesh, new Renderable(mesh, new Transform(), material));
+        this._renderables.Add(mesh, new Renderable(mesh, new Transform(), material, true));
     }
     
     /// <summary>

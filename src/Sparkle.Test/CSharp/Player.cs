@@ -274,11 +274,13 @@ public class Player : Entity {
         // Handle ActionLayer (Play as test just arm Swinging).
         AnimationLayer actionLayer = this._animator.GetLayer("ActionLayer")!;
         
-        if (Input.IsKeyPressed(KeyboardKey.F)) {
+        bool isHolding = Input.IsKeyDown(KeyboardKey.F);
+        
+        if (isHolding && actionLayer.Weight == 0.0F) {
             this._animator.Play("SwingArms", layerName: "ActionLayer");
         }
         
-        float targetWeight = Input.IsKeyDown(KeyboardKey.F) ? 1.0F : 0.0F;
+        float targetWeight = isHolding ? 1.0F : 0.0F;
         actionLayer.Weight = float.Lerp(actionLayer.Weight, targetWeight, (float) delta * 10.0F);
         
         if (actionLayer.Weight < 0.01F) {
