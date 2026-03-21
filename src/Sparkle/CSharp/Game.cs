@@ -292,6 +292,8 @@ public class Game : Disposable {
             if (!this.Settings.VSync && this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
             }
+            
+            graphicsDevice.WaitForNextFrameReady();
             Time.Update();
             
             // Process window events.
