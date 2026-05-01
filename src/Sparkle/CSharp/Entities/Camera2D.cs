@@ -1,6 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Camera.Dim2;
 using Bliss.CSharp.Transformations;
+using Veldrid;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -128,12 +129,13 @@ public class Camera2D : Entity {
         base.Resize(rectangle);
         this._cam2D.Resize((uint) rectangle.Width, (uint) rectangle.Height);
     }
-
+    
     /// <summary>
     /// Begins rendering with this camera.
     /// </summary>
-    public void Begin() {
-        this._cam2D.Begin();
+    /// <param name="commandList">The command list used for rendering operations.</param>
+    public void Begin(CommandList commandList) {
+        this._cam2D.Begin(commandList);
     }
 
     /// <summary>

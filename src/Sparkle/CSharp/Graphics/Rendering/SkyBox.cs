@@ -6,7 +6,6 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Pipelines;
-using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Textures.Cubemaps;
 using Veldrid;
@@ -29,11 +28,26 @@ public class SkyBox : Disposable {
     /// The sampler used for texture sampling.
     /// </summary>
     public Sampler Sampler;
-    
+
     /// <summary>
     /// The color tint applied to the skybox.
     /// </summary>
-    public Color Color;
+    public Color Color {
+        get;
+        set {
+            if (field == value) {
+                return;
+            }
+
+            field = value;
+            this._isDirty = true;
+        }
+    }
+    
+    /// <summary>
+    /// Indicates whether the vertex buffer needs to be updated.
+    /// </summary>
+    private bool _isDirty;
     
     /// <summary>
     /// The effect used for rendering the skybox.
@@ -59,11 +73,6 @@ public class SkyBox : Disposable {
     /// The buffer containing index data.
     /// </summary>
     private DeviceBuffer _indexBuffer;
-    
-    /// <summary>
-    /// The buffer containing the projection and view matrices.
-    /// </summary>
-    private SimpleUniformBuffer<Matrix4x4> _projViewBuffer;
 
     /// <summary>
     /// The description of the rendering pipeline used for the skybox.
@@ -88,15 +97,13 @@ public class SkyBox : Disposable {
         uint vertexBufferSize = (uint) Marshal.SizeOf<CubemapVertex3D>() * 8;
         this._vertices = this.GenVertices();
         this._vertexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(vertexBufferSize, BufferUsage.VertexBuffer | BufferUsage.Dynamic));
-
+        graphicsDevice.UpdateBuffer(this._vertexBuffer, 0, this._vertices);
+        
         // Create index buffer.
         uint indexBufferSize = sizeof(uint) * 36;
         this._indices = this.GenIndices();
         this._indexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(indexBufferSize, BufferUsage.IndexBuffer | BufferUsage.Dynamic));
         graphicsDevice.UpdateBuffer(this._indexBuffer, 0, this._indices);
-        
-        // Create projection view buffer.
-        this._projViewBuffer = new SimpleUniformBuffer<Matrix4x4>(graphicsDevice, 2, ShaderStages.Vertex);
         
         // Create pipeline.
         this._pipelineDescription = new SimplePipelineDescription() {
@@ -115,11 +122,11 @@ public class SkyBox : Disposable {
             },
             BufferLayouts = this._effect.GetBufferLayouts(),
             TextureLayouts = this._effect.GetTextureLayouts(),
-            ShaderSet = this._effect.ShaderSet,
+            ShaderSet = new ShaderSetDescription(CubemapVertex3D.VertexLayout.Layouts, this._effect.Shaders),
             PrimitiveTopology = PrimitiveTopology.TriangleList,
         };
     }
-
+    
     /// <summary>
     /// Renders the skybox using the specified command list and output description.
     /// </summary>
@@ -132,24 +139,17 @@ public class SkyBox : Disposable {
             return;
         }
         
-        // Update projection/view buffer.
-        this._projViewBuffer.SetValue(0, cam3D.GetProjection());
-        this._projViewBuffer.SetValue(1, cam3D.GetView() with {
-            M41 = 0.0F,
-            M42 = 0.0F,
-            M43 = 0.0F
-        });
-        this._projViewBuffer.UpdateBufferDeferred(commandList);
-        
         // Update pipeline description.
         this._pipelineDescription.Outputs = output;
         
         // Update vertex buffer.
-        for (int i = 0; i < this._vertices.Length; i++) {
-            this._vertices[i].Color = this.Color.ToRgbaFloatVec4();
+        if (this._isDirty) {
+            for (int i = 0; i < this._vertices.Length; i++) {
+                this._vertices[i].Color = this.Color.ToRgbaFloatVec4();
+            }
+            
+            commandList.UpdateBuffer(this._vertexBuffer, 0, this._vertices);
         }
-        
-        commandList.UpdateBuffer(this._vertexBuffer, 0, this._vertices);
         
         // Set vertex and index buffer.
         commandList.SetVertexBuffer(0, this._vertexBuffer);
@@ -158,8 +158,8 @@ public class SkyBox : Disposable {
         // Set pipeline.
         commandList.SetPipeline(this._effect.GetPipeline(this._pipelineDescription).Pipeline);
         
-        // Set projection view buffer.
-        commandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("ProjectionViewBuffer"), this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
+        // Set matrix buffer.
+        commandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("MatrixBuffer"), cam3D.GetMatrixBuffer().GetResourceSet(this._effect.GetBufferLayout("MatrixBuffer")));
         
         // Set resourceSet of the cubemap.
         commandList.SetGraphicsResourceSet(this._effect.GetTextureLayoutSlot("fCubemap"), this.Cubemap.GetResourceSet(this.Sampler, this._effect.GetTextureLayout("fCubemap")));
@@ -199,19 +199,19 @@ public class SkyBox : Disposable {
         return [
             0, 1, 2,
             2, 3, 0,
-
+            
             4, 5, 6,
             6, 7, 4,
             
             4, 0, 3,
             3, 7, 4,
-
+            
             1, 5, 6,
             6, 2, 1,
-
+            
             3, 2, 6,
             6, 7, 3,
-
+            
             4, 5, 1,
             1, 0, 4
         ];
@@ -221,7 +221,6 @@ public class SkyBox : Disposable {
         if (disposing) {
             this._vertexBuffer.Dispose();
             this._indexBuffer.Dispose();
-            this._projViewBuffer.Dispose();
         }
     }
 }

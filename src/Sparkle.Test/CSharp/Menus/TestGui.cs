@@ -236,4 +236,6 @@ public class TestGui : Gui {
         // Draw elements.
         base.Draw(context, framebuffer);
     }
+
+    protected override void Dispose(bool disposing) { }
 }

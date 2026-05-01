@@ -1,4 +1,4 @@
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Models;
 using Sparkle.CSharp.Content.Types;
 using Veldrid;
 
@@ -15,9 +15,9 @@ public class ModelProcessor : IContentProcessor {
     /// <returns>A loaded model instance.</returns>
     public object Load<T>(GraphicsDevice graphicsDevice, IContentType<T> type) {
         ModelContent contentType = (ModelContent) type;
-        return Model.Load(graphicsDevice, contentType.Path, contentType.LoadMaterial, contentType.FlipUv);
+        return Model.Load(graphicsDevice, contentType.Path, contentType.LoadMaterial, contentType.FlipUv, contentType.IsSkinned);
     }
-
+    
     /// <summary>
     /// Unloads the specified model and releases any associated resources.
     /// </summary>

@@ -24,7 +24,7 @@ public static class FileAccessor {
             File.Create(GetPath(directory, name)).Close();
         }
     }
-
+    
     /// <summary>
     /// Writes the specified text to the file at the given path.
     /// </summary>
@@ -39,7 +39,7 @@ public static class FileAccessor {
             }
         }
     }
-
+    
     /// <summary>
     /// Writes the specified text followed by a new line to the file at the given path.
     /// </summary>
@@ -54,7 +54,7 @@ public static class FileAccessor {
             }
         }
     }
-
+    
     /// <summary>
     /// Writes the specified text to the file at the given path, replacing any existing content.
     /// </summary>
@@ -62,10 +62,14 @@ public static class FileAccessor {
     /// <param name="text">The text to be written to the file.</param>
     public static void WriteAll(string path, string text) {
         lock (FileLock) {
-            File.WriteAllText(path, text);
+            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) {
+                using (StreamWriter writer = new StreamWriter(stream)) {
+                    writer.Write(text);
+                }
+            }
         }
     }
-
+    
     /// <summary>
     /// Writes all lines of text to the file at the specified path.
     /// </summary>
@@ -73,10 +77,16 @@ public static class FileAccessor {
     /// <param name="text">An array of strings containing the lines of text to write to the file.</param>
     public static void WriteAllLines(string path, string[] text) {
         lock (FileLock) {
-            File.WriteAllLines(path, text);
+            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) {
+                using (StreamWriter writer = new StreamWriter(stream)) {
+                    for (int i = 0; i < text.Length; i++) {
+                        writer.WriteLine(text[i]);
+                    }
+                }
+            }
         }
     }
-
+    
     /// <summary>
     /// Reads all text from the file at the specified path.
     /// </summary>
@@ -84,7 +94,11 @@ public static class FileAccessor {
     /// <returns>A string containing the text read from the file.</returns>
     public static string Read(string path) {
         lock (FileLock) {
-            return File.ReadAllText(path);
+            using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite)) {
+                using (StreamReader reader = new StreamReader(stream)) {
+                    return reader.ReadToEnd();
+                }
+            }
         }
     }
     
@@ -96,10 +110,10 @@ public static class FileAccessor {
     /// <returns>The specified line of text from the file.</returns>
     public static string ReadLine(string path, int index) {
         lock (FileLock) {
-            return File.ReadAllLines(path)[index];
+            return ReadAllLines(path)[index];
         }
     }
-
+    
     /// <summary>
     /// Reads all text from the file at the specified path.
     /// </summary>
@@ -107,10 +121,14 @@ public static class FileAccessor {
     /// <returns>The text content of the file.</returns>
     public static string ReadAll(string path) {
         lock (FileLock) {
-            return File.ReadAllText(path);
+            using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite)) {
+                using (StreamReader reader = new StreamReader(stream)) {
+                    return reader.ReadToEnd();
+                }
+            }
         }
     }
-
+    
     /// <summary>
     /// Reads all lines from the file at the specified path.
     /// </summary>
@@ -118,20 +136,32 @@ public static class FileAccessor {
     /// <returns>An array of strings containing all the lines from the file.</returns>
     public static string[] ReadAllLines(string path) {
         lock (FileLock) {
-            return File.ReadAllLines(path);
+            using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite)) {
+                using (StreamReader reader = new StreamReader(stream)) {
+                    List<string> lines = new List<string>();
+                    string? line;
+                    while ((line = reader.ReadLine()) != null) {
+                        lines.Add(line);
+                    }
+
+                    return lines.ToArray();
+                }
+            }
         }
     }
-
+    
     /// <summary>
     /// Clears the content of the file at the specified path.
     /// </summary>
     /// <param name="path">The full path to the file.</param>
     public static void Clear(string path) {
         lock (FileLock) {
-            File.WriteAllText(path, string.Empty);
+            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) {
+                stream.SetLength(0);
+            }
         }
     }
-
+    
     /// <summary>
     /// Combines the specified file name and directory path to create a full file path.
     /// </summary>

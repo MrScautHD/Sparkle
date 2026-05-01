@@ -40,12 +40,11 @@ public class FxaaEffect : Effect {
     /// Initializes a new instance of the <see cref="FxaaEffect"/> class with optional FXAA tuning values.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
-    /// <param name="vertexLayout">The layout of vertices for the full-screen pass.</param>
     /// <param name="reduceMin">Minimum amount of local contrast reduction.</param>
     /// <param name="reduceMul">Multiplier for local contrast reduction.</param>
     /// <param name="spanMax">Maximum blur span.</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public FxaaEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public FxaaEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, float reduceMin = 1.0F / 128.0F, float reduceMul = 1.0F / 8.0F, float spanMax = 8.0F) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             ReduceMin = reduceMin,

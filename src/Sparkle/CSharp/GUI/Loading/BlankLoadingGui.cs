@@ -23,4 +23,6 @@ public class BlankLoadingGui : LoadingGui {
         context.CommandList.ClearColorTarget(0, Color.Black.ToRgbaFloat());
         base.Draw(context, framebuffer);
     }
+
+    protected override void Dispose(bool disposing) { }
 }

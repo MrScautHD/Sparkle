@@ -2,8 +2,11 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Geometry.Models;
+using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
@@ -35,6 +38,7 @@ public class TestScene3D : Scene {
     
     public Model TreeModel { get; private set; }
     public Model CyberCarModel { get; private set; }
+    public Model InstancedPlayer { get; private set; }
     
     public MultiInstanceRenderer PlayerMultiInstanceRenderer { get; private set; }
     
@@ -49,27 +53,43 @@ public class TestScene3D : Scene {
         this.CyberCarTexture = content.Load(new TextureContent("content/cybercar.png"), false);
         
         this.TreeModel = content.Load(new ModelContent("content/tree.glb").Do(model => {
-            foreach (Mesh mesh in model.Meshes) {
+            foreach (IMesh mesh in model.Meshes) {
                 mesh.Material.RenderMode = RenderMode.Cutout;
                 mesh.Material.RasterizerState = RasterizerStateDescription.CULL_NONE;
             }
         }), false);
         
         this.CyberCarModel = content.Load(new ModelContent("content/cybercar.glb").Do(model => {
-            foreach (Mesh mesh in model.Meshes) {
+            foreach (IMesh mesh in model.Meshes) {
                 mesh.Material.SetMapTexture(MaterialMapType.Albedo, this.CyberCarTexture);
                 mesh.Material.RenderMode = RenderMode.Cutout;
             }
-
+            
             model.Meshes[12].Material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
             model.Meshes[12].Material.RenderMode = RenderMode.Translucent;
         }), false);
         
         // Multi instance renderers:
-        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(ContentRegistry.PlayerModel, true);
+        InstancedPlayer = content.Load(new ModelContent("content/model.glb").Do(model => {
+            foreach (IMesh mesh in model.Meshes) {
+                mesh.Material.RenderMode = RenderMode.Cutout;
+            }
+        }), false);
         
-        foreach (Mesh mesh in this.PlayerMultiInstanceRenderer.Meshes) {
-            this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(mesh).Effect = GlobalResource.ModelInstancingEffect;
+        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(InstancedPlayer);
+        
+        foreach (IMesh playerMesh in this.PlayerMultiInstanceRenderer.Meshes) {
+            this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(playerMesh).Effect = GlobalResource.DefaultModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+            
+            if (playerMesh is Mesh<Vertex3D> mesh) {
+                mesh.MeshData.VertexFormat = new VertexFormat(
+                    Vertex3D.VertexLayout.Name,
+                    [
+                        ..Vertex3D.VertexLayout.Layouts,
+                        ..Vertex3D.InstanceMatrixLayout.Layouts
+                    ]
+                );
+            }
         }
         
         // Skybox's:
@@ -93,10 +113,12 @@ public class TestScene3D : Scene {
         // PLAYER
         Entity testPlayer = new Entity(new Transform() { Translation = new Vector3(12, 2, 0)});
         RigidBody3D testPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer playerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {
+            DebugDrawEnabled = true
+        };
         testPlayer.AddComponent(testPlayerBody);
         testPlayer.AddComponent(playerModelRenderer);
         this.AddEntity(testPlayer);
@@ -116,7 +138,7 @@ public class TestScene3D : Scene {
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
         SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10))) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Green
         };
         cloth.AddComponent(softBodyCloth);
@@ -153,7 +175,7 @@ public class TestScene3D : Scene {
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
         ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, MotionType.Static) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Green
         });
         this.AddEntity(ground);
@@ -166,7 +188,7 @@ public class TestScene3D : Scene {
         // CAR
         Entity car = new Entity(new Transform() { Translation = new Vector3(8, 5, 0)} );
         RigidBody3D carBody = new RigidBody3D(new TransformedShape(new BoxShape(4, 2, 8), new Vector3(0, 0.5F, 0))) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Green
         };
         ModelRenderer carModelRenderer = new ModelRenderer(this.CyberCarModel, -Vector3.UnitY);
@@ -179,7 +201,7 @@ public class TestScene3D : Scene {
             for (int z = 0; z < 3; z++) {
                 Entity instancedPlayer = new Entity(new Transform() { Translation = new Vector3(-2 + (x * 2.5F), 25, -2 + (z * 2.5F)) });
                 RigidBody3D instancedPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Dynamic) {
-                    DrawDebug = true,
+                    DrawDebug = false,
                     DebugDrawColor = Color.Green,
                 };
                 InstancedRenderProxy instancedMultiRenderer = new InstancedRenderProxy(this.PlayerMultiInstanceRenderer, -Vector3.UnitY, true);
@@ -192,20 +214,24 @@ public class TestScene3D : Scene {
         // Child system example.
         Entity parentPlayerEntity = new Entity(new Transform() { Translation = new Vector3(20, 2, 0), Rotation = Quaternion.CreateFromYawPitchRoll(float.DegreesToRadians(10), 0, 0)});
         RigidBody3D parentPlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer parentPlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer parentPlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {
+            DebugDrawEnabled = true
+        };
         parentPlayerEntity.AddComponent(parentPlayerBody);
         parentPlayerEntity.AddComponent(parentPlayerModelRenderer);
         this.AddEntity(parentPlayerEntity);
         
         Entity child1PlayerEntity = new Entity(new Transform() { Translation = new Vector3(4, 2, 0)});
         RigidBody3D child1PlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer child1PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer child1PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {
+            DebugDrawEnabled = true
+        };
         child1PlayerEntity.AddComponent(child1PlayerBody);
         child1PlayerEntity.AddComponent(child1PlayerModelRenderer);
         this.AddEntity(child1PlayerEntity);
@@ -213,10 +239,12 @@ public class TestScene3D : Scene {
         
         Entity child2PlayerEntity = new Entity(new Transform() { Translation = new Vector3(4, 2, 0)});
         RigidBody3D child2PlayerBody = new RigidBody3D(new TransformedShape(new CapsuleShape(0.5F, 2), new Vector3(0, 0.5F, 0)), motionType: MotionType.Kinematic) {
-            DrawDebug = true,
+            DrawDebug = false,
             DebugDrawColor = Color.Red
         };
-        ModelRenderer child2PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: true, boxColor: Color.Magenta);
+        ModelRenderer child2PlayerModelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {
+            DebugDrawEnabled = true
+        };
         child2PlayerEntity.AddComponent(child2PlayerBody);
         child2PlayerEntity.AddComponent(child2PlayerModelRenderer);
         this.AddEntity(child2PlayerEntity);
@@ -336,9 +364,10 @@ public class TestScene3D : Scene {
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        this.ImmediateRenderer.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw gird.
-        context.ImmediateRenderer.DrawGrid(context.CommandList, framebuffer.OutputDescription, new Transform(), 96, 1, 16, Color.Gray);
+        this.ImmediateRenderer.DrawGrid(new Transform(), 96, 1, 16, Color.Gray);
         
         // Draw GIF billboard.
         Texture2D gif = ContentRegistry.Gif;
@@ -357,9 +386,11 @@ public class TestScene3D : Scene {
         
         Rectangle sourceRect = new Rectangle(column * width, row * height, width, height);
         
-        context.ImmediateRenderer.SetTexture(gif, sourceRect: sourceRect);
-        context.ImmediateRenderer.DrawBillboard(context.CommandList, framebuffer.OutputDescription, new Vector3(18, 2, 0), new Vector2(1, 1));
-        context.ImmediateRenderer.SetTexture(null);
+        this.ImmediateRenderer.PushTexture(gif, sourceRect: sourceRect);
+        this.ImmediateRenderer.DrawBillboard(new Vector3(18, 2, 0), new Vector2(1, 1));
+        this.ImmediateRenderer.PopTexture();
+        
+        this.ImmediateRenderer.End();
         
         // Draw the base method.
         base.Draw(context, framebuffer);

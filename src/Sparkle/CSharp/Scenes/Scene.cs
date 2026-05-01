@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
@@ -9,6 +11,7 @@ using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
+using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Graphics.Rendering.Sprites;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Dim2;
@@ -43,6 +46,8 @@ public abstract class Scene : Disposable {
     /// Gets the forward renderer responsible for rendering 3D content in the scene.
     /// </summary>
     public IRenderer Renderer { get; private set; }
+    
+    public ImmediateRenderer ImmediateRenderer { get; private set; }
     
     /// <summary>
     /// Provides tools for visual debugging of 3D physics simulations.
@@ -128,6 +133,7 @@ public abstract class Scene : Disposable {
     /// </summary>
     protected internal virtual void Init() {
         this.Renderer = this._rendererFactory?.Invoke(GlobalGraphicsAssets.GraphicsDevice) ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.ImmediateRenderer = new ImmediateRenderer(GlobalGraphicsAssets.GraphicsDevice);
         this.Physics3DDebugDrawer = new Physics3DDebugDrawer(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
         this.SpriteRenderer = new SpriteRenderer();
         this.Simulation = this._simulationFactory?.Invoke() ?? (this.SceneType == SceneType.Scene2D ? new Simulation2D(new PhysicsSettings2D()) : new Simulation3D(new PhysicsSettings3D()));
@@ -189,6 +195,21 @@ public abstract class Scene : Disposable {
     /// <param name="context">The graphics context.</param>
     /// <param name="framebuffer">The framebuffer to render into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        
+        // Draw immediate renderer.
+        this.ImmediateRenderer.Begin(context.CommandList, framebuffer.OutputDescription);
+        
+        foreach (Entity entity in this.Entities.Values) {
+            foreach (Component component in entity.GetComponents()) {
+                if (component is IDebugDrawable debugDrawable) {
+                    if (debugDrawable.DebugDrawEnabled) {
+                        debugDrawable.DrawDebug(this.ImmediateRenderer);
+                    }
+                }
+            }
+        }
+        
+        this.ImmediateRenderer.End();
         
         // Draw skybox.
         this.SkyBox?.Draw(context.CommandList, framebuffer.OutputDescription);
@@ -422,9 +443,14 @@ public abstract class Scene : Disposable {
             
             this.Entities.Clear();
             this._entityIds = 0;
+
+            foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
+                multiInstanceRenderer.Dispose();
+            }
             
             this.Simulation.Dispose();
             this.Renderer.Dispose();
+            this.ImmediateRenderer.Dispose();
             this.Physics3DDebugDrawer.Dispose();
             Game.Instance?.Content.UnloadSceneContent();
         }

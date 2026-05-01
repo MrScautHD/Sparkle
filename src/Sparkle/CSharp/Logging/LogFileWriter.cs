@@ -23,7 +23,7 @@ public class LogFileWriter {
         this._directory = directory;
         this.FilePath = this.CreateLogFile();
     }
-
+    
     /// <summary>
     /// Writes a log message to the log file with the specified log type, message, color, and source information.
     /// </summary>

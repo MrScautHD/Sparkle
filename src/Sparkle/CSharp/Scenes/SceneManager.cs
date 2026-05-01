@@ -182,13 +182,13 @@ public static class SceneManager {
             
             switch (ActiveScene?.SceneType) {
                 case SceneType.Scene2D:
-                    ActiveCam2D?.Begin();
+                    ActiveCam2D?.Begin(context.CommandList);
                     ActiveScene.Draw(context, FilterTarget.Framebuffer);
                     ActiveCam2D?.End();
                     break;
                 
                 case SceneType.Scene3D:
-                    ActiveCam3D?.Begin();
+                    ActiveCam3D?.Begin(context.CommandList);
                     ActiveScene.Draw(context, FilterTarget.Framebuffer);
                     ActiveCam3D?.End();
                     break;

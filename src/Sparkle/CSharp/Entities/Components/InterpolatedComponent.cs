@@ -69,6 +69,18 @@ public abstract class InterpolatedComponent : Component {
     /// </summary>
     /// <param name="offsetPosition">The offset position relative to the entity's transform.</param>
     protected InterpolatedComponent(Vector3 offsetPosition) : base(offsetPosition) { }
+    
+    /// <summary>
+    /// Performs initialization for the component, setting up its initial state and ensuring all required dependencies are resolved.
+    /// This method should be overridden by derived classes to implement additional setup logic.
+    /// </summary>
+    protected internal override void Init() {
+        base.Init();
+        this._previousPos = this._currentPos = this.Entity.GlobalTransform.Translation;
+        this._previousGlobalPos = this._currentGlobalPos = this.GlobalPosition;
+        this._previousRot = this._currentRot = this.Entity.GlobalTransform.Rotation;
+        this._previousScale = this._currentScale = this.Entity.GlobalTransform.Scale;
+    }
 
     /// <summary>
     /// Updates the interpolated component's state in fixed intervals, aligning the current and previous

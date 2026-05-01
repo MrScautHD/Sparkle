@@ -40,10 +40,9 @@ public class PosterizationEffect : Effect {
     /// Initializes a new instance of the <see cref="PosterizationEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device for buffer and resource allocation.</param>
-    /// <param name="vertexLayout">Vertex layout used by the full-screen pass.</param>
     /// <param name="numOfColors">Number of discrete color levels to use (defaults to 8).</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public PosterizationEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, int numOfColors = 8) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public PosterizationEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, int numOfColors = 8) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             NumOfColors = numOfColors

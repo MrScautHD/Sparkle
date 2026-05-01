@@ -5,12 +5,12 @@ using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines;
-using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Windowing;
 using Jitter2;
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
+using Logger = Bliss.CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 
@@ -47,19 +47,14 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     private PhysicsDebugVertex3D[] _vertices;
     
     /// <summary>
-    /// Temporary list of vertices used to accumulate draw calls before batching.
+    /// The number of vertices currently in the batch.
     /// </summary>
-    private List<PhysicsDebugVertex3D> _tempVertices;
+    private int _vertexCount;
     
     /// <summary>
     /// The GPU buffer storing vertex data for rendering.
     /// </summary>
     private DeviceBuffer _vertexBuffer;
-    
-    /// <summary>
-    /// The buffer storing the projection and view matrices.
-    /// </summary>
-    private SimpleUniformBuffer<Matrix4x4> _projViewBuffer;
     
     /// <summary>
     /// Description of the graphics pipeline used for debug rendering.
@@ -150,11 +145,6 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// The requested <see cref="Color"/>.
     /// </summary>
     private Color _requestedColor;
-
-    /// <summary>
-    /// The number of vertices currently in the batch.
-    /// </summary>
-    private uint _currentBatchCount;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class with the specified graphics device, window, and optional capacity.
@@ -170,21 +160,17 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         
         // Create vertex buffer.
         this._vertices = new PhysicsDebugVertex3D[this.Capacity];
-        this._tempVertices = new List<PhysicsDebugVertex3D>();
         this._vertexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(this.Capacity * (uint) Marshal.SizeOf<PhysicsDebugVertex3D>(), BufferUsage.VertexBuffer | BufferUsage.Dynamic));
-        
-        // Create projection view buffer.
-        this._projViewBuffer = new SimpleUniformBuffer<Matrix4x4>(graphicsDevice, 2, ShaderStages.Vertex);
         
         // Create pipeline description.
         this._pipelineDescription = new SimplePipelineDescription() {
             BufferLayouts = this._effect.GetBufferLayouts(),
             TextureLayouts = this._effect.GetTextureLayouts(),
-            ShaderSet = this._effect.ShaderSet,
+            ShaderSet = new ShaderSetDescription(PhysicsDebugVertex3D.VertexLayout.Layouts, this._effect.Shaders),
             PrimitiveTopology = PrimitiveTopology.LineList
         };
     }
-
+    
     /// <summary>
     /// Begins a new rendering session with the specified command list and output description.
     /// </summary>
@@ -219,7 +205,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
-
+        
         this._begun = false;
         this.Flush();
     }
@@ -258,7 +244,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
-
+        
         this._requestedOutput = this._mainOutput;
     }
     
@@ -420,20 +406,21 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="pA">The <see cref="JVector"/> representing the starting point of the segment.</param>
     /// <param name="pB">The <see cref="JVector"/> representing the ending point of the segment.</param>
     public void DrawSegment(in JVector pA, in JVector pB) {
+        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
+        
+        this.Prepare(2);
         
         // Add start vertex.
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pA,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
+            Color = colorVec4
+        };
         
         // Add end vertex.
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pB,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        
-        this.AddVertices(this._tempVertices);
+            Color = colorVec4
+        };
     }
 
     /// <summary>
@@ -443,38 +430,39 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="pB">The <see cref="JVector"/> representing the second vertex of the triangle.</param>
     /// <param name="pC">The <see cref="JVector"/> representing the third vertex of the triangle.</param>
     public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC) {
+        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
+        
+        this.Prepare(6);
         
         // Add 1 side vertices.
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pA,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pB,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
+            Color = colorVec4
+        };
         
         // Add 2 side vertices.
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pB,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pC,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
+            Color = colorVec4
+        };
         
         // Add 3 side vertices.
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pC,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = pA,
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        
-        this.AddVertices(this._tempVertices);
+            Color = colorVec4
+        };
     }
 
     /// <summary>
@@ -482,55 +470,58 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// </summary>
     /// <param name="p">The <see cref="JVector"/> representing the position of the point in 3D space.</param>
     public void DrawPoint(in JVector p) {
+        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
         float size = 0.1f;
         
+        this.Prepare(6);
+        
         // Add horizontal line (X-axis)
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X - size, p.Y, p.Z),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X + size, p.Y, p.Z),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
+            Color = colorVec4
+        };
         
         // Add vertical line (Y-axis)
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X, p.Y + size, p.Z),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X, p.Y - size, p.Z),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
+            Color = colorVec4
+        };
         
         // Add depth line (Z-axis)
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X, p.Y, p.Z + size),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-        this._tempVertices.Add(new PhysicsDebugVertex3D() {
+            Color = colorVec4
+        };
+        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
             Position = new JVector(p.X, p.Y, p.Z - size),
-            Color = this._currentColor.ToRgbaFloatVec4()
-        });
-
-        this.AddVertices(this._tempVertices);
+            Color = colorVec4
+        };
     }
-
-    /// <summary>
-    /// Adds a collection of vertices to the debug drawer for rendering.
-    /// </summary>
-    /// <param name="vertices">The list of vertices to be added for rendering.</param>
-    private void AddVertices(List<PhysicsDebugVertex3D> vertices) {
+    
+    private int Prepare(int vertexCount) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        if (!this._currentOutput.Equals(this._requestedOutput) ||
-            !this._currentBlendState.Equals(this._requestedBlendState) ||
-            !this._currentDepthStencilState.Equals(this._requestedDepthStencilState) ||
-            !this._currentRasterizerState.Equals(this._requestedRasterizerState) ||
-            this._currentColor != this._requestedColor) {
+        if (vertexCount > this.Capacity) {
+            throw new InvalidOperationException($"The number of provided vertices exceeds the capacity! [{vertexCount} > {this.Capacity}]");
+        }
+        
+        bool stateChanged = !this._currentOutput.Equals(this._requestedOutput) ||
+                            !this._currentBlendState.Equals(this._requestedBlendState) ||
+                            !this._currentDepthStencilState.Equals(this._requestedDepthStencilState) ||
+                            !this._currentRasterizerState.Equals(this._requestedRasterizerState) ||
+                            this._currentColor != this._requestedColor;
+        
+        if (stateChanged) {
             this.Flush();
         }
         
@@ -546,24 +537,18 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._pipelineDescription.RasterizerState = this._currentRasterizerState;
         this._pipelineDescription.Outputs = this._currentOutput;
         
-        if (this._currentBatchCount + vertices.Count >= this._vertices.Length) {
+        if (this._vertexCount + vertexCount > this._vertices.Length) {
             this.Flush();
         }
         
-        for (int i = 0; i < vertices.Count; i++) {
-            this._vertices[this._currentBatchCount] = vertices[i];
-            this._currentBatchCount++;
-        }
-        
-        // Clear temp data.
-        this._tempVertices.Clear();
+        return this._vertexCount;
     }
 
     /// <summary>
     /// Flushes the current batch of vertices to the GPU for rendering.
     /// </summary>
     private void Flush() {
-        if (this._currentBatchCount == 0) {
+        if (this._vertexCount == 0) {
             return;
         }
         
@@ -571,19 +556,13 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         
         if (cam3D == null) {
             
-            // Clear data.
-            this._currentBatchCount = 0;
-            Array.Clear(this._vertices);
+            // Reset indexer.
+            this._vertexCount = 0;
             return;
         }
         
-        // Update projection view buffer.
-        this._projViewBuffer.SetValue(0, cam3D.GetProjection());
-        this._projViewBuffer.SetValue(1, cam3D.GetView());
-        this._projViewBuffer.UpdateBufferDeferred(this._currentCommandList);
-        
         // Update vertex buffer.
-        this._currentCommandList.UpdateBuffer(this._vertexBuffer, 0, new ReadOnlySpan<PhysicsDebugVertex3D>(this._vertices, 0, (int) this._currentBatchCount));
+        this._currentCommandList.UpdateBuffer(this._vertexBuffer, 0, new ReadOnlySpan<PhysicsDebugVertex3D>(this._vertices, 0, this._vertexCount));
         
         // Set vertex buffer.
         this._currentCommandList.SetVertexBuffer(0, this._vertexBuffer);
@@ -591,26 +570,24 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         // Set pipeline.
         this._currentCommandList.SetPipeline(this._effect.GetPipeline(this._pipelineDescription).Pipeline);
         
-        // Set projection view buffer.
-        this._currentCommandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("ProjectionViewBuffer"), this._projViewBuffer.GetResourceSet(this._effect.GetBufferLayout("ProjectionViewBuffer")));
+        // Set matrix buffer.
+        this._currentCommandList.SetGraphicsResourceSet(this._effect.GetBufferLayoutSlot("MatrixBuffer"), cam3D.GetMatrixBuffer().GetResourceSet(this._effect.GetBufferLayout("MatrixBuffer")));
         
         // Apply effect.
         this._effect.Apply(this._currentCommandList);
         
         // Draw.
-        this._currentCommandList.Draw(this._currentBatchCount);
+        this._currentCommandList.Draw((uint) this._vertexCount);
         
-        // Clear data.
-        this._currentBatchCount = 0;
-        Array.Clear(this._vertices);
-
+        // Reset indexer.
+        this._vertexCount = 0;
+        
         this.DrawCallCount++;
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this._vertexBuffer.Dispose();
-            this._projViewBuffer.Dispose();
         }
     }
 }

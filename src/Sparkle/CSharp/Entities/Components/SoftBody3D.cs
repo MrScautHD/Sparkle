@@ -1,6 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
@@ -67,21 +67,19 @@ public class SoftBody3D : Component {
     /// Indicates whether the soft body is currently active in the simulation.
     /// </summary>
     public bool IsActive => this.SoftBody.IsActive;
-    
+
     /// <summary>
     /// The mesh used to visually represent the soft body.
     /// </summary>
-    public Mesh Mesh => this.SoftBody.Mesh;
+    public IMesh Mesh => this.SoftBody.Mesh;
     
     /// <summary>
-    /// A reference to the material used for rendering the mesh.
+    /// The material used for rendering the renderable.
     /// </summary>
-    public ref Material Material => ref this._renderable.Material;
-    
-    /// <summary>
-    /// A reference to the bone matrices for skeletal animation, if applicable.
-    /// </summary>
-    public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
+    public Material Material {
+        get => this.SoftBody.Renderable.Material;
+        set => this.SoftBody.Renderable.Material = value;
+    }
     
     /// <summary>
     /// Indicates whether the mesh associated with the soft body should be drawn.
@@ -107,11 +105,6 @@ public class SoftBody3D : Component {
     /// The factory responsible for creating a soft body instance.
     /// </summary>
     private ISoftBodyFactory _factory;
-
-    /// <summary>
-    /// The underlying renderable object associated with the soft body.
-    /// </summary>
-    private Renderable _renderable;
     
     /// <summary>
     /// Indicates whether the synchronization process is currently active (When sync entity with body).
@@ -137,7 +130,6 @@ public class SoftBody3D : Component {
     protected internal override void Init() {
         base.Init();
         this.CreateSoftBody();
-        this._renderable = new Renderable(this.Mesh, new Transform());
         this.Simulation.BodyMoved += this.SyncEntityToBodyTransform;
     }
     
@@ -165,12 +157,15 @@ public class SoftBody3D : Component {
                 return;
             }
             
-            // Update mesh data.
-            this.SoftBody.UpdateMesh(context.CommandList);
-            
             // Draw the mesh.
             if (this.Vertices.Any(v => cam3D.GetFrustum().ContainsPoint(this.GetLerpedVertexPos(this.Vertices.IndexOf(v))))) {
-                this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
+                
+                // Update mesh data.
+                if (this.IsActive) {
+                    this.SoftBody.UpdateBoneMatrix(context.CommandList);
+                }
+                
+                this.Entity.Scene.Renderer.DrawRenderable(this.SoftBody.Renderable);
             }
         }
     }
@@ -200,6 +195,11 @@ public class SoftBody3D : Component {
         this.SoftBody = this._factory.CreateSoftBody(this.GraphicsDevice, this.World, transform.Translation, transform.Rotation);
     }
     
+    /// <summary>
+    /// Synchronizes the transform of the entity with the transform of the specified rigid body.
+    /// This ensures that the entity's position and orientation are consistent with the physical body's state.
+    /// </summary>
+    /// <param name="body">The rigid body whose transform is used to synchronize the entity.</param>
     private void SyncEntityToBodyTransform(RigidBody body) {
         if (body == this.Center) {
             if (!this._isSyncing) {

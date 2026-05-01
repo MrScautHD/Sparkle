@@ -1,7 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Materials;
 using Jitter2;
@@ -12,6 +13,7 @@ using Jitter2.LinearMath;
 using Jitter2.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.Mappables;
 using Veldrid;
+using Logger = Bliss.CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 
@@ -21,6 +23,17 @@ public class SoftBodySphere : SimpleSoftBody {
     /// The central rigid body of the soft body.
     /// </summary>
     public sealed override RigidBody Center { get; protected set; }
+    
+    /// <summary>
+    /// A mapping of rigid bodies to their corresponding bone indices in the soft body structure.
+    /// </summary>
+    private Dictionary<RigidBody, int> _boneIndices;
+    
+    /// <summary>
+    /// Stores the inverse bind pose matrices for each of the 8 corner vertices.
+    /// Used to compute the final bone transform: inverseBindPose * currentTransform.
+    /// </summary>
+    private Matrix4x4[] _inverseBindPose;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="SoftBodySphere"/> class, constructing a soft-body physics object
@@ -38,6 +51,8 @@ public class SoftBodySphere : SimpleSoftBody {
     /// <param name="centerInertia">The inertia tensor scaling factor for the central body. Default is 0.05.</param>
     /// <param name="softness">The softness value used for spring constraints between the center and vertex bodies. Default is 0.5.</param>
     public SoftBodySphere(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, int subdivisions = 4, float vertexMass = 200.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) : base(graphicsDevice, world) {
+        this._boneIndices = new Dictionary<RigidBody, int>();
+        
         List<JTriangle> triangles = ShapeHelper.MakeHull(new UnitSphere(), subdivisions)
             .Select(t => new JTriangle(
                 Vector3.Transform(t.V0, rotation) * (size / 2 * scale),
@@ -69,12 +84,20 @@ public class SoftBodySphere : SimpleSoftBody {
         Vector3 centerPos = Vector3.Zero;
         
         // Create rigid bodies for vertices.
-        foreach (Vector3 vertex in vertices) {
+        for (int i = 0; i < vertices.Count; i++) {
             RigidBody body = world.CreateRigidBody();
             body.SetMassInertia(JMatrix.Zero, vertexMass, true);
-            body.Position = vertex + position;
-            centerPos += (Vector3) body.Position;
+            body.Position = vertices[i] + position;
+            centerPos += body.Position;
             this.Vertices.Add(body);
+            this._boneIndices[body] = i;
+        }
+        
+        // Store inverse bind pose for each vertex body.
+        this._inverseBindPose = new Matrix4x4[this.Vertices.Count];
+        
+        for (int i = 0; i < this.Vertices.Count; i++) {
+            this._inverseBindPose[i] = Matrix4x4.CreateTranslation(-(Vector3) this.Vertices[i].Position);
         }
         
         // Create a center body.
@@ -105,8 +128,8 @@ public class SoftBodySphere : SimpleSoftBody {
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create the mesh and render its contents.</param>
     /// <returns>A mesh constructed from the soft body geometry, configured with vertices, indices, and material.</returns>
-    protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) {
-        Vertex3D[] vertices = new Vertex3D[this.Shapes.Count * 3];
+    protected override IMesh CreateMesh(GraphicsDevice graphicsDevice) {
+        SkinnedVertex3D[] vertices = new SkinnedVertex3D[this.Shapes.Count * 3];
         uint[] indices = new uint[this.Shapes.Count * 3];
         
         // Calculate vertices and indices.
@@ -124,24 +147,34 @@ public class SoftBodySphere : SimpleSoftBody {
                     if (uv1.X < 0.5f) uv1.X += 1.0f;
                     if (uv2.X < 0.5f) uv2.X += 1.0f;
                 }
-
-                vertices[vertexIndex] = new Vertex3D {
+                
+                SkinnedVertex3D vertex1 = new SkinnedVertex3D {
                     Position = triangle.Vertex1.Position,
                     TexCoords = uv0,
                     Color = Color.White.ToRgbaFloatVec4()
                 };
                 
-                vertices[vertexIndex + 1] = new Vertex3D {
+                vertex1.AddBone((uint) this._boneIndices[triangle.Vertex1], 1.0F);
+                
+                SkinnedVertex3D vertex2 = new SkinnedVertex3D {
                     Position = triangle.Vertex2.Position,
                     TexCoords = uv1,
                     Color = Color.White.ToRgbaFloatVec4()
                 };
                 
-                vertices[vertexIndex + 2] = new Vertex3D {
+                vertex2.AddBone((uint) this._boneIndices[triangle.Vertex2], 1.0F);
+                
+                SkinnedVertex3D vertex3 = new SkinnedVertex3D {
                     Position = triangle.Vertex3.Position,
                     TexCoords = uv2,
                     Color = Color.White.ToRgbaFloatVec4()
                 };
+                
+                vertex3.AddBone((uint) this._boneIndices[triangle.Vertex3], 1.0F);
+                
+                vertices[vertexIndex] = vertex1;
+                vertices[vertexIndex + 1] = vertex2;
+                vertices[vertexIndex + 2] = vertex3;
                 
                 indices[vertexIndex] = (uint) vertexIndex;
                 indices[vertexIndex + 1] = (uint) (vertexIndex + 2);
@@ -149,48 +182,31 @@ public class SoftBodySphere : SimpleSoftBody {
             }
         }
         
-        Material material = new Material(GlobalResource.DefaultModelEffect);
+        Material material = new Material(GlobalResource.DefaultSkinnedModelEffect);
         
-        material.AddMaterialMap(MaterialMapType.Albedo, new MaterialMap {
+        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });
         
-        return new Mesh(graphicsDevice, material, vertices, indices);
+        return new Mesh<SkinnedVertex3D>(graphicsDevice, material, new SkinnedMeshData(vertices, indices, (uint) this._boneIndices.Count));
     }
 
     /// <summary>
     /// Updates the mesh to reflect the current positions of the vertices in the soft body structure.
     /// </summary>
     /// <param name="commandList">The command list used to update the vertex buffer for rendering.</param>
-    protected internal override void UpdateMesh(CommandList commandList) {
-        for (int i = 0; i < this.Shapes.Count; i++) {
-            if (this.Shapes[i] is SoftBodyTriangle triangle) {
-                int vertexIndex = i * 3;
-                
-                this.Mesh.SetVertexValue(vertexIndex, new Vertex3D {
-                    Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex1)),
-                    TexCoords = this.Mesh.Vertices[vertexIndex].TexCoords,
-                    Color = Color.White.ToRgbaFloatVec4()
-                });
-                
-                this.Mesh.SetVertexValue(vertexIndex + 1, new Vertex3D {
-                    Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex2)),
-                    TexCoords = this.Mesh.Vertices[vertexIndex + 1].TexCoords,
-                    Color = Color.White.ToRgbaFloatVec4()
-                });
-                
-                this.Mesh.SetVertexValue(vertexIndex + 2, new Vertex3D {
-                    Position = this.GetLerpedVertexPos(this.Vertices.IndexOf(triangle.Vertex3)),
-                    TexCoords = this.Mesh.Vertices[vertexIndex + 2].TexCoords,
-                    Color = Color.White.ToRgbaFloatVec4()
-                });
-            }
+    protected internal override void UpdateBoneMatrix(CommandList commandList) {
+        if (!this.Renderable.HasBones) {
+            return;
         }
         
-        this.Mesh.UpdateVertexBuffer(commandList);
+        for (int i = 0; i < this._boneIndices.Count; i++) {
+            Matrix4x4 boneMatrix = this._inverseBindPose[i] * Matrix4x4.CreateTranslation(this.GetLerpedVertexPos(i));
+            this.Renderable.SetBoneMatrix(i, boneMatrix);
+        }
     }
-
+    
     /// <summary>
     /// Renders debug visualizations for the soft body.
     /// </summary>

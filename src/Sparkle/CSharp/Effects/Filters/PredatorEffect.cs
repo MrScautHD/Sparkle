@@ -40,9 +40,8 @@ public class PredatorEffect : Effect {
     /// Initializes a new instance of the <see cref="PredatorEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">Graphics device to create GPU resources.</param>
-    /// <param name="vertexLayout">Vertex layout description for the full-screen quad.</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public PredatorEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public PredatorEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight())
         };

@@ -1,4 +1,4 @@
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Models;
 
 namespace Sparkle.CSharp.Content.Types;
 
@@ -25,14 +25,21 @@ public class ModelContent : IContentType<Model> {
     public bool FlipUv { get; }
     
     /// <summary>
+    /// Gets a value indicating whether the model uses skeletal animation (is a skinned mesh).
+    /// </summary>
+    public bool IsSkinned { get; }
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="ModelContent"/> class.
     /// </summary>
     /// <param name="path">The file path of the model.</param>
     /// <param name="loadMaterial">Whether to load the model's material (default is true).</param>
     /// <param name="flipUv">Whether to flip the model's UV mapping (default is false).</param>
-    public ModelContent(string path, bool loadMaterial = true, bool flipUv = false) {
+    /// <param name="isSkinned">Indicates whether the model uses skeletal animation (skinned mesh). Default is <c>false</c>.</param>
+    public ModelContent(string path, bool loadMaterial = true, bool flipUv = false, bool isSkinned = false) {
         this.Path = path;
         this.LoadMaterial = loadMaterial;
         this.FlipUv = flipUv;
+        this.IsSkinned = isSkinned;
     }
 }

@@ -45,14 +45,16 @@ public class SceneSwitcherMenu : Gui {
         
         List<LabelData> options = [
             new LabelData(ContentRegistry.Fontoe, "Test 3D", 18),
+            new LabelData(ContentRegistry.Fontoe, "Test Player", 18),
+            new LabelData(ContentRegistry.Fontoe, "Terrain", 18),
             new LabelData(ContentRegistry.Fontoe, "Test 2D", 18),
-            new LabelData(ContentRegistry.Fontoe, "Test Player", 18)
         ];
         
         string currentSceneName = SceneManager.ActiveScene switch {
             TestScene3D => "Test 3D",
-            TestScene2D => "Test 2D",
             PlayerMovementScene => "Test Player",
+            TerrainScene => "Terrain",
+            TestScene2D => "Test 2D",
             _ => "Test 3D"
         };
         
@@ -92,14 +94,19 @@ public class SceneSwitcherMenu : Gui {
                     SceneManager.LoadSceneAsync(new TestScene3D(), new ProgressBarLoadingGui("Loading"));
                     break;
                 
-                case "Test 2D":
-                    GuiManager.SetGui(null);
-                    SceneManager.LoadSceneAsync(new TestScene2D(), new ProgressBarLoadingGui("Loading"));
-                    break;
-                
                 case "Test Player":
                     GuiManager.SetGui(null);
                     SceneManager.LoadSceneAsync(new PlayerMovementScene(), new ProgressBarLoadingGui("Loading"));
+                    break;
+                
+                case "Terrain":
+                    GuiManager.SetGui(null);
+                    SceneManager.LoadSceneAsync(new TerrainScene(), new ProgressBarLoadingGui("Loading"));
+                    break;
+                
+                case "Test 2D":
+                    GuiManager.SetGui(null);
+                    SceneManager.LoadSceneAsync(new TestScene2D(), new ProgressBarLoadingGui("Loading"));
                     break;
             }
         };
@@ -118,9 +125,9 @@ public class SceneSwitcherMenu : Gui {
     }
     
     protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-        
-        // Relative mouse mode.
-        Input.EnableRelativeMouseMode();
+        if (disposing) {
+            // Relative mouse mode.
+            Input.EnableRelativeMouseMode();
+        }
     }
 }

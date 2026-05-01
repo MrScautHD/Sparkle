@@ -1,0 +1,90 @@
+using System.Numerics;
+using Bliss.CSharp.Camera.Dim3;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Entities;
+using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Scenes;
+using Sparkle.CSharp.Terrain;
+using Sparkle.CSharp.Terrain.Marching;
+
+namespace Sparkle.Test.CSharp.Dim3D;
+
+public class TerrainScene : Scene {
+    
+    private const float BrushRadius = 8.0F;
+    private const float BrushStrength = 4.0F;
+    private const float BrushMaxDistance = 200.0F;
+    private const float BrushStepSize = 0.5F;
+    
+    private ITerrain? _terrain;
+    
+    public TerrainScene() : base("Terrain3D-Scene", SceneType.Scene3D) { }
+    
+    protected override void Init() {
+        base.Init();
+        
+        // Relative mouse mode.
+        Input.EnableRelativeMouseMode();
+        
+        // Create camera.
+        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
+        Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
+        this.AddEntity(camera3D);
+        
+        // Create terrain.
+        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
+        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, Vector3.Zero) {
+            DebugDrawEnabled = true
+        });
+        this.AddEntity(terrainEntity);
+    }
+    
+    protected override void Update(double delta) {
+        base.Update(delta);
+        
+        if (this._terrain == null) {
+            return;
+        }
+        
+        bool addMaterial = Input.IsMouseButtonDown(MouseButton.Left);
+        bool removeMaterial = Input.IsMouseButtonDown(MouseButton.Right);
+        
+        if (!addMaterial && !removeMaterial) {
+            return;
+        }
+        
+        Camera3D? cam = SceneManager.ActiveCam3D;
+        
+        if (cam == null) {
+            return;
+        }
+        
+        // Convert camera world position into terrain local space
+        Vector3 terrainOffset = new Vector3(0.0F, -64, 0.0F);
+        Vector3 localCamPos = cam.Position - terrainOffset;
+        
+        if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), BrushMaxDistance, BrushStepSize, out Vector3 hitPosition, out _)) {
+            return;
+        }
+        
+        float strength = (addMaterial ? BrushStrength : -BrushStrength) * (float) delta;
+        this._terrain.ApplyBrush(hitPosition, BrushRadius, strength);
+    }
+    
+    private async Task<ITerrain> CreateTerrainAsync() {
+        const int terrainWidth = 1024;
+        const int terrainHeight = 128;
+        const int terrainDepth = 1024;
+        const int chunkSize = 64;
+        const int surfaceHeight = 64;
+        
+        FlatChunkGenerator chunkGenerator = new FlatChunkGenerator(chunkSize, terrainHeight, surfaceHeight);
+        MarchingCubesTerrain terrain = await MarchingCubesTerrain.CreateAsync(chunkGenerator, terrainWidth, terrainHeight, terrainDepth, chunkSize);
+
+        this._terrain = terrain;
+        return terrain;
+    }
+}

@@ -234,10 +234,4 @@ public abstract class Gui : Disposable {
         
         return true;
     }
-    
-    protected override void Dispose(bool disposing) {
-        if (disposing) {
-            this._elements.Clear();
-        }
-    }
 }

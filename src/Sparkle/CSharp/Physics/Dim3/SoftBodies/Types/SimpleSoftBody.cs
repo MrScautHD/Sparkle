@@ -1,5 +1,7 @@
 using System.Numerics;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Transformations;
 using Jitter2;
 using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
@@ -13,7 +15,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     /// The graphics device used to create and manage GPU resources.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
-
+    
     /// <summary>
     /// The central rigid body representing the core of the soft body structure.
     /// </summary>
@@ -22,12 +24,40 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     /// <summary>
     /// The GPU mesh associated with the soft body. Created lazily on first access.
     /// </summary>
-    public Mesh Mesh => this._mesh ??= this.CreateMesh(this.GraphicsDevice);
+    public IMesh Mesh {
+        get {
+            if (this._mesh != null) {
+                return this._mesh;
+            }
+            
+            this._mesh = this.CreateMesh(this.GraphicsDevice);
+            return this._mesh;
+        }
+    }
+    
+    /// <summary>
+    /// The renderable instance of the soft body mesh.
+    /// </summary>
+    public Renderable Renderable {
+        get {
+            if (this._renderable != null) {
+                return this._renderable;
+            }
+            
+            this._renderable = new Renderable(this.Mesh, new Transform());
+            return this._renderable;
+        }
+    }
     
     /// <summary>
     /// Internal cached mesh instance.
     /// </summary>
-    private Mesh? _mesh;
+    private IMesh? _mesh;
+    
+    /// <summary>
+    /// Internal cached renderable instance.
+    /// </summary>
+    private Renderable? _renderable;
     
     /// <summary>
     /// Maintains a history of vertex positions for interpolation.
@@ -43,7 +73,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
         this.GraphicsDevice = graphicsDevice;
         this._vertexPositonsHistory = new Dictionary<RigidBody, (Vector3 Previous, Vector3 Current)>();
     }
-
+    
     /// <summary>
     /// Executes actions required after the simulation step has completed.
     /// </summary>
@@ -61,7 +91,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
             }
         }
     }
-
+    
     /// <summary>
     /// Gets the interpolated position of a vertex at the specified index based on its history.
     /// </summary>
@@ -76,20 +106,20 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
         
         return this.Vertices[index].Position;
     }
-
+    
     /// <summary>
     /// Creates the mesh representation of this soft body using the specified graphics device.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create the mesh.</param>
     /// <returns>A new <see cref="Mesh"/> instance representing the soft body.</returns>
-    protected abstract Mesh CreateMesh(GraphicsDevice graphicsDevice);
-
+    protected abstract IMesh CreateMesh(GraphicsDevice graphicsDevice);
+    
     /// <summary>
-    /// Updates the mesh with the latest simulation and rendering data.
+    /// Updates the bone matrix of the soft body using the provided command list.
     /// </summary>
-    /// <param name="commandList">The command list used to issue rendering commands to the GPU.</param>
-    protected internal abstract void UpdateMesh(CommandList commandList);
-
+    /// <param name="commandList">The command list used to update the rendering data for the soft body.</param>
+    protected internal abstract void UpdateBoneMatrix(CommandList commandList);
+    
     /// <summary>
     /// Draws debug visuals for this soft body using the specified debug drawer.
     /// </summary>
@@ -100,5 +130,6 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
         base.Destroy();
         this.World.Remove(this.Center);
         this._mesh?.Dispose();
+        this._renderable?.Dispose();
     }
 }

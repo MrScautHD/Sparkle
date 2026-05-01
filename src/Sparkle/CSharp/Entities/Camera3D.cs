@@ -2,8 +2,10 @@ using System.Numerics;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Scenes;
+using Veldrid;
 
 namespace Sparkle.CSharp.Entities;
 
@@ -27,7 +29,7 @@ public class Camera3D : Entity {
     /// <param name="nearPlane">The near clipping plane. Must be positive and smaller than <paramref name="farPlane"/>.</param>
     /// <param name="farPlane">The far clipping plane. Must be positive and greater than <paramref name="nearPlane"/>.</param>
     public Camera3D(Vector3 position, Vector3 target, float aspectRatio, Vector3? up = null, ProjectionType projectionType = ProjectionType.Perspective, CameraMode mode = CameraMode.Free, float fov = 70.0F, float nearPlane = 0.1F, float farPlane = 1000.0F) : base(new Transform(), "camera3D") {
-        this._cam3D = new Cam3D(position, target, aspectRatio, up, projectionType, mode, fov, nearPlane, farPlane);
+        this._cam3D = new Cam3D(GlobalGraphicsAssets.GraphicsDevice, position, target, aspectRatio, up, projectionType, mode, fov, nearPlane, farPlane);
     }
     
     /// <summary>
@@ -155,10 +157,11 @@ public class Camera3D : Entity {
     }
     
     /// <summary>
-    /// Begins the camera rendering process.
+    /// Begins the camera rendering process by recording commands to the specified command list.
     /// </summary>
-    public void Begin() {
-        this._cam3D.Begin();
+    /// <param name="commandList">The command list where rendering commands for the camera will be recorded.</param>
+    public void Begin(CommandList commandList) {
+        this._cam3D.Begin(commandList);
     }
 
     /// <summary>

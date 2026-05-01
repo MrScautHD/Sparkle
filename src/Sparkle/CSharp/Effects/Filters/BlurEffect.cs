@@ -40,11 +40,10 @@ public class BlurEffect : Effect {
     /// Initializes a new instance of the <see cref="BlurEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
-    /// <param name="vertexLayout">The layout of the vertices used in the full-screen pass.</param>
     /// <param name="intensity">The strength of the blur effect.</param>
     /// <param name="radius">The blur radius determining the spread of the blur.</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public BlurEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float intensity = 3.0F, int radius = 5) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public BlurEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, float intensity = 3.0F, int radius = 5) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             Intensity = intensity,

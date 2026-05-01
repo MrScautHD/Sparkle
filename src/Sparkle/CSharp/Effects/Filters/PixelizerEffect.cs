@@ -40,10 +40,9 @@ public class PixelizerEffect : Effect {
     /// Initializes a new instance of the <see cref="PixelizerEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device for buffer and resource allocation.</param>
-    /// <param name="vertexLayout">Vertex layout used by the full-screen pass.</param>
     /// <param name="pixelSize">The pixel size to simulate (defaults to 8x8 if null).</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public PixelizerEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, Vector2? pixelSize = null) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public PixelizerEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, Vector2? pixelSize = null) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             PixelSize = pixelSize ?? new Vector2(8, 8)

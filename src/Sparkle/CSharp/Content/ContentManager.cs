@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Fonts;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Models;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Textures.Cubemaps;

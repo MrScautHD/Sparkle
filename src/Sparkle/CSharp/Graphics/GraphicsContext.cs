@@ -31,11 +31,6 @@ public class GraphicsContext {
     /// The primitive batch for rendering basic geometric shapes.
     /// </summary>
     public PrimitiveBatch PrimitiveBatch { get; private set; }
-    
-    /// <summary>
-    /// The immediate renderer for low-level rendering operations.
-    /// </summary>
-    public ImmediateRenderer ImmediateRenderer { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
@@ -45,13 +40,11 @@ public class GraphicsContext {
     /// <param name="fullScreenRenderer">The render pass used for full-screen rendering operations.</param>
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
-    /// <param name="immediateRenderer">The immediate renderer for performing low-level custom rendering.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImmediateRenderer immediateRenderer) {
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.FullScreenRenderer = fullScreenRenderer;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
-        this.ImmediateRenderer = immediateRenderer;
     }
 }

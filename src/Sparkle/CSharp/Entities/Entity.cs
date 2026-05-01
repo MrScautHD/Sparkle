@@ -39,7 +39,7 @@ public class Entity : Disposable {
     /// <summary>
     /// The global transformation of the entity, combining its local transformation with the transformations of all its ancestors in the hierarchy.
     /// </summary>
-    public Transform GlobalTransform {
+    public Transform GlobalTransform { // TODO: Rename it to world makes more sense i guess and also allow to set it.
         get {
             if (this.Parent == null) {
                 return this.LocalTransform;

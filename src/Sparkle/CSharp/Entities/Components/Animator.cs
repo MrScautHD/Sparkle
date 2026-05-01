@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Animation;
+using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Mathematics;
 using Sparkle.CSharp.Graphics.Animations;
@@ -217,12 +217,12 @@ public class Animator : InterpolatedComponent {
                 }
                 
                 // Apply to the renderer meshes.
-                foreach (Mesh mesh in this._modelRenderer.Model.Meshes) {
-                    Matrix4x4[]? renderableMatrices = this._modelRenderer.GetRenderableBoneMatricesByMesh(mesh);
-                    
-                    if (renderableMatrices != null) {
+                foreach (IMesh mesh in this._modelRenderer.Model.Meshes) {
+                    if (this._modelRenderer.HasRenderableBonesByMesh(mesh)) {
+                        ReadOnlySpan<Matrix4x4> renderableMatrices = this._modelRenderer.GetRenderableBoneMatricesByMesh(mesh);
+                        
                         for (int boneId = 0; boneId < boneCount && boneId < renderableMatrices.Length; boneId++) {
-                            renderableMatrices[boneId] = this._bakedMatricesCache[boneId];
+                            this._modelRenderer.SetRenderableBoneMatrixByMesh(mesh, boneId, this._bakedMatricesCache[boneId]);
                         }
                     }
                 }

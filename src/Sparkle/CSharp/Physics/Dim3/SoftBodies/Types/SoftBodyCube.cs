@@ -1,7 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Materials;
 using Jitter2;
@@ -10,6 +11,7 @@ using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
 using Jitter2.SoftBodies;
 using Veldrid;
+using Material = Bliss.CSharp.Materials.Material;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 
@@ -28,7 +30,13 @@ public class SoftBodyCube : SimpleSoftBody {
     /// The central rigid body of the soft body.
     /// </summary>
     public sealed override RigidBody Center { get; protected set; }
-
+    
+    /// <summary>
+    /// Stores the inverse bind pose matrices for each of the 8 corner vertices.
+    /// Used to compute the final bone transform: inverseBindPose * currentTransform.
+    /// </summary>
+    private Matrix4x4[] _inverseBindPose;
+    
     /// <summary>
     /// Constructs a new soft body cube within the specified physics world.
     /// </summary>
@@ -72,6 +80,13 @@ public class SoftBodyCube : SimpleSoftBody {
             this.Vertices.Add(body);
         }
         
+        // Store inverse bind pose for each vertex body.
+        this._inverseBindPose = new Matrix4x4[8];
+        
+        for (int i = 0; i < 8; i++) {
+            this._inverseBindPose[i] = Matrix4x4.CreateTranslation(-(Vector3) this.Vertices[i].Position);
+        }
+        
         // Create tetrahedrons.
         SoftBodyTetrahedron[] tetrahedrons = [
             new SoftBodyTetrahedron(this, this.Vertices[0], this.Vertices[1], this.Vertices[5], this.Vertices[2]),
@@ -105,9 +120,9 @@ public class SoftBodyCube : SimpleSoftBody {
     /// Creates a mesh representation of the soft body cube for rendering purposes.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering-related operations.</param>
-    /// <returns>A new <see cref="Mesh"/> instance representing the soft body cube.</returns>
-    protected override Mesh CreateMesh(GraphicsDevice graphicsDevice) {
-        Vertex3D[] vertices = new Vertex3D[24];
+    /// <returns>A new <see cref="IMesh"/> instance representing the soft body cube.</returns>
+    protected override IMesh CreateMesh(GraphicsDevice graphicsDevice) {
+        SkinnedVertex3D[] vertices = new SkinnedVertex3D[24];
         uint[] indices = new uint[36];
         
         float uLeft = 0.0F;
@@ -179,11 +194,15 @@ public class SoftBodyCube : SimpleSoftBody {
                 };
 
                 // Add the generated vertex.
-                vertices[face * 4 + corner] = new Vertex3D() {
+                SkinnedVertex3D vertex = new SkinnedVertex3D() {
                     Position = this.Vertices[faceVertexIndex].Position,
                     TexCoords = texCoord,
                     Color = Color.White.ToRgbaFloatVec4()
                 };
+                
+                vertex.AddBone((uint) faceVertexIndex, 1.0F);
+                
+                vertices[face * 4 + corner] = vertex;
             }
             
             // Add two triangles for the current face.
@@ -196,66 +215,32 @@ public class SoftBodyCube : SimpleSoftBody {
             indices[indexIndex + 4] = (uint) (baseIndex + 0);
             indices[indexIndex + 5] = (uint) (baseIndex + 3);
         }
-
-        Material material = new Material(GlobalResource.DefaultModelEffect);
         
-        material.AddMaterialMap(MaterialMapType.Albedo, new MaterialMap {
+        Material material = new Material(GlobalResource.DefaultSkinnedModelEffect);
+        
+        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });
-
-        return new Mesh(graphicsDevice, material, vertices, indices);
+        
+        return new Mesh<SkinnedVertex3D>(graphicsDevice, material, new SkinnedMeshData(vertices, indices, 8));
     }
 
     /// <summary>
-    /// Updates the vertex data of the mesh to match the current vertex positions of the soft body.
+    /// Updates the bone matrix for the soft body cube within the provided command list.
     /// </summary>
-    /// <param name="commandList">The command list used for issuing graphics commands to the GPU.</param>
-    protected internal override void UpdateMesh(CommandList commandList) {
-        for (int face = 0; face < 6; face++) {
-            
-            // Define face vertex indices.
-            (int, int, int, int) faceVertexIndices = face switch {
-                // Front.
-                0 => (0, 1, 5, 4),
-                // Back.
-                1 => (2, 3, 7, 6),
-                // Left.
-                2 => (3, 0, 4, 7),
-                // Right.
-                3 => (1, 2, 6, 5),
-                // Top.
-                4 => (4, 5, 6, 7),
-                // Bottom.
-                5 => (3, 2, 1, 0),
-                _ => (0, 0, 0, 0)
-            };
-            
-            // Generate the 4 corners for the current face.
-            for (int corner = 0; corner < 4; corner++) {
-                
-                // Calculate the face vertex index.
-                int faceVertexIndex = corner switch {
-                    0 => faceVertexIndices.Item1,
-                    1 => faceVertexIndices.Item2,
-                    2 => faceVertexIndices.Item3,
-                    3 => faceVertexIndices.Item4,
-                    _ => 0
-                };
-                
-                // Add the generated vertex.
-                this.Mesh.SetVertexValue(face * 4 + corner, new Vertex3D() {
-                    Position = this.GetLerpedVertexPos(faceVertexIndex),
-                    TexCoords = this.Mesh.Vertices[face * 4 + corner].TexCoords,
-                    Color = Color.White.ToRgbaFloatVec4()
-                });
-            }
+    /// <param name="commandList">The command list used to execute rendering operations.</param>
+    protected internal override void UpdateBoneMatrix(CommandList commandList) {
+        if (!this.Renderable.HasBones) {
+            return;
         }
-
-        // Update the vertex buffer.
-        this.Mesh.UpdateVertexBuffer(commandList);
+        
+        for (int i = 0; i < 8; i++) {
+            Matrix4x4 boneMatrix = this._inverseBindPose[i] * Matrix4x4.CreateTranslation(this.GetLerpedVertexPos(i));
+            this.Renderable.SetBoneMatrix(i, boneMatrix);
+        }
     }
-
+    
     /// <summary>
     /// Renders the debug visualization for the soft body by drawing its edges and center.
     /// </summary>

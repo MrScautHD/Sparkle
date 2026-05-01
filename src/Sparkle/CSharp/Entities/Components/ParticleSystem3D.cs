@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
-using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
@@ -18,17 +18,20 @@ public class ParticleSystem3D : InterpolatedComponent {
     /// <summary>
     /// The mesh used to render each particle instance.
     /// </summary>
-    public Mesh Mesh { get; private set; }
+    public IMesh Mesh { get; private set; }
     
     /// <summary>
     /// The material used by the particle system renderable.
     /// </summary>
-    public ref Material Material => ref this._renderable.Material;
-
+    public Material Material {
+        get => this._renderable.Material;
+        set => this._renderable.Material = value;
+    }
+    
     /// <summary>
-    /// An array of transformation matrices representing bone animations for the particle instances.
+    /// Indicates whether the particle system's mesh supports skeletal animation with bones.
     /// </summary>
-    public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
+    public bool HasBones => this._renderable.HasBones;
     
     /// <summary>
     /// The particle behavior and rendering settings used by this system.
@@ -73,7 +76,7 @@ public class ParticleSystem3D : InterpolatedComponent {
     /// <param name="offsetPosition">The local offset position of the particle system component.</param>
     /// <param name="copyMeshMaterial">Whether to clone the mesh material instead of using the original instance.</param>
     /// <param name="isPlaying">Whether the particle system should start in the playing state.</param>
-    public ParticleSystem3D(Mesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, bool copyMeshMaterial = false, bool isPlaying = true) : this(mesh, definition, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, isPlaying) { }
+    public ParticleSystem3D(IMesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, bool copyMeshMaterial = false, bool isPlaying = true) : this(mesh, definition, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, isPlaying) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="ParticleSystem3D"/> class.
@@ -83,13 +86,37 @@ public class ParticleSystem3D : InterpolatedComponent {
     /// <param name="offsetPosition">The local offset position of the particle system component.</param>
     /// <param name="material">The material used to render the particle instances.</param>
     /// <param name="isPlaying">Whether the particle system should start in the playing state.</param>
-    public ParticleSystem3D(Mesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, Material material, bool isPlaying = true) : base(offsetPosition) {
+    public ParticleSystem3D(IMesh mesh, ParticleDefinition3D definition, Vector3 offsetPosition, Material material, bool isPlaying = true) : base(offsetPosition) {
         this.Mesh = mesh;
         this.Definition = definition;
         this.IsPlaying = isPlaying;
         this._renderable = new Renderable(mesh, new Transform(), material, true);
         this._particles = new List<Particle3D>();
         this._random = new Random();
+    }
+    
+    /// <summary>
+    /// Retrieves the bone transformation matrices associated with the particles in the system.
+    /// </summary>
+    /// <returns> A read-only span of <see cref="Matrix4x4"/> representing the bone transformation matrices. </returns>
+    public ReadOnlySpan<Matrix4x4> GetBoneMatrices() {
+        return this._renderable.GetBoneMatrices();
+    }
+    
+    /// <summary>
+    /// Sets the transformation matrix for a specific bone in the particle system's internal renderable.
+    /// </summary>
+    /// <param name="index">The index of the bone to update.</param>
+    /// <param name="value">The transformation matrix to apply to the specified bone.</param>
+    public void SetBoneMatrix(int index, Matrix4x4 value) {
+        this._renderable.SetBoneMatrix(index, value);
+    }
+    
+    /// <summary>
+    /// Clears all bone matrices associated with the particle system's renderable component.
+    /// </summary>
+    public void ClearBoneMatrices() {
+        this._renderable.ClearBoneMatrices();
     }
     
     /// <summary>
@@ -258,7 +285,7 @@ public class ParticleSystem3D : InterpolatedComponent {
         }
         
         // Make sure the instance array matches the particle count.
-        this.AdjustInstanceStorage();
+        this._renderable.ResizeTransformArray((uint) this._particles.Count);
         
         for (int i = 0; i < aliveCount; i++) {
             Particle3D particle = this._particles[i];
@@ -308,11 +335,11 @@ public class ParticleSystem3D : InterpolatedComponent {
                 baseRotation = this.Definition.SimulateInWorldSpace ? particle.RotationSpace : this.LerpedRotation;
             }
             
-            this._renderable.Transforms[i] = new Transform() {
+            this._renderable.SetTransform(i, new Transform() {
                 Translation = this.Definition.SimulateInWorldSpace ? particle.Position : this.LerpedGlobalPosition + particle.Position,
                 Rotation = Quaternion.Normalize(baseRotation * randomRotation * lifetimeRotation * spinRotation),
                 Scale = this.Definition.SimulateInWorldSpace ? particle.Scale * particle.SpawnScale : particle.Scale * this.LerpedScale
-            };
+            });
         }
         
         this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
@@ -438,17 +465,6 @@ public class ParticleSystem3D : InterpolatedComponent {
     }
     
     /// <summary>
-    /// Ensures the renderable instance storage matches the current particle count.
-    /// </summary>
-    private void AdjustInstanceStorage() {
-        int requiredCount = this._particles.Count;
-        
-        if (this._renderable.Transforms.Length != requiredCount) {
-            Array.Resize(ref this._renderable.Transforms, requiredCount);
-        }
-    }
-    
-    /// <summary>
     /// Generates a random normalized direction vector.
     /// </summary>
     /// <returns>A random unit vector.</returns>
@@ -489,6 +505,10 @@ public class ParticleSystem3D : InterpolatedComponent {
     private float RandomRange(float min, float max) {
         return min + (float) this._random.NextDouble() * (max - min);
     }
-    
-    protected override void Dispose(bool disposing) { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this._renderable.Dispose();
+        }
+    }
 }

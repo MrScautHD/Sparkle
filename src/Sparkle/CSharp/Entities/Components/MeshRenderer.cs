@@ -1,31 +1,37 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class MeshRenderer : InterpolatedComponent {
+public class MeshRenderer : InterpolatedComponent, IDebugDrawable {
     
     /// <summary>
     /// The 3D mesh to render.
     /// </summary>
-    public Mesh Mesh { get; private set; }
+    public IMesh Mesh { get; private set; }
     
     /// <summary>
-    /// A reference to the material used for rendering the mesh.
+    /// The material used for rendering the renderable.
     /// </summary>
-    public ref Material Material => ref this._renderable.Material;
+    public Material Material {
+        get => this._renderable.Material;
+        set => this._renderable.Material = value;
+    }
     
     /// <summary>
-    /// A reference to the bone matrices for skeletal animation, if applicable.
+    /// Indicates whether the associated mesh supports skeletal animation by containing bone data.
     /// </summary>
-    public Matrix4x4[]? BoneMatrics => this._renderable.BoneMatrices;
+    public bool HasBones => this._renderable.HasBones;
     
     /// <summary>
     /// Enables or disables frustum culling for this mesh.
@@ -33,14 +39,14 @@ public class MeshRenderer : InterpolatedComponent {
     public bool FrustumCulling;
     
     /// <summary>
-    /// Whether the bounding box should be rendered for the associated mesh.
-    /// </summary>
-    public bool DrawBox;
-    
-    /// <summary>
     /// The color used for rendering the bounding box of the mesh.
     /// </summary>
     public Color BoxColor;
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether debug drawing is enabled.
+    /// </summary>
+    public bool DebugDrawEnabled { get; set; }
     
     /// <summary>
     /// The original bounding box of the mesh before being transformed.
@@ -64,9 +70,8 @@ public class MeshRenderer : InterpolatedComponent {
     /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
     /// <param name="copyMeshMaterial">Whether to clone the mesh material for independent modification.</param>
     /// <param name="frustumCulling">Whether the mesh should be skipped when outside the camera frustum.</param>
-    /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, frustumCulling, drawBox, boxColor) { }
+    public MeshRenderer(IMesh mesh, Vector3 offsetPosition, bool copyMeshMaterial = false, bool frustumCulling = true, Color? boxColor = null) : this(mesh, offsetPosition, copyMeshMaterial ? (Material) mesh.Material.Clone() : mesh.Material, frustumCulling, boxColor) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="MeshRenderer"/> class.
@@ -75,12 +80,10 @@ public class MeshRenderer : InterpolatedComponent {
     /// <param name="offsetPosition">The positional offset applied to the renderer.</param>
     /// <param name="material">The material used to render the mesh.</param>
     /// <param name="frustumCulling">Whether the mesh should be skipped when outside the camera frustum.</param>
-    /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public MeshRenderer(Mesh mesh, Vector3 offsetPosition, Material material, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
+    public MeshRenderer(IMesh mesh, Vector3 offsetPosition, Material material, bool frustumCulling = true, Color? boxColor = null) : base(offsetPosition) {
         this.Mesh = mesh;
         this.FrustumCulling = frustumCulling;
-        this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
         this._baseBox = this._frustumBox = mesh.GenBoundingBox();
         this._renderable = new Renderable(this.Mesh, new Transform(), material);
@@ -114,21 +117,57 @@ public class MeshRenderer : InterpolatedComponent {
             };
             
             // Draw the mesh.
-            this._renderable.Transforms[0] = meshTransform;
+            this._renderable.SetTransform(0, meshTransform);
             this.Entity.Scene.Renderer.DrawRenderable(this._renderable);
-            
-            // Draw the bounding box.
-            if (this.DrawBox) {
-                Transform boxTransform = new Transform() {
-                    Translation = this.LerpedGlobalPosition,
-                    Rotation = this.LerpedRotation,
-                    Scale = this.LerpedScale
-                };
-                
-                // Draw box.
-                context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, boxTransform, this._baseBox, this.BoxColor);
-            }
         }
+    }
+    
+    /// <summary>
+    /// Renders debug visualization.
+    /// </summary>
+    /// <param name="immediateRenderer">The renderer used to draw debug primitives.</param>
+    public void DrawDebug(ImmediateRenderer immediateRenderer) {
+        Transform boxTransform = new Transform() {
+            Translation = this.LerpedGlobalPosition,
+            Rotation = this.LerpedRotation,
+            Scale = this.LerpedScale
+        };
+        
+        immediateRenderer.DrawBoundingBox(boxTransform, this._baseBox, this.BoxColor);
+    }
+    
+    /// <summary>
+    /// Replaces the base/frustum bounds used for culling.
+    /// Useful for dynamic meshes where generated geometry changes over time.
+    /// </summary>
+    /// <param name="bounds">New local-space bounding box.</param>
+    public void SetCullingBounds(BoundingBox bounds) {
+        this._baseBox = bounds;
+        this._frustumBox = bounds;
+    }
+    
+    /// <summary>
+    /// Retrieves the current bone transformation matrices used for animating the mesh.
+    /// </summary>
+    /// <returns>A read-only span containing the bone transformation matrices.</returns>
+    public ReadOnlySpan<Matrix4x4> GetBoneMatrices() {
+        return this._renderable.GetBoneMatrices();
+    }
+    
+    /// <summary>
+    /// Updates the matrix for a specific bone in the mesh renderer.
+    /// </summary>
+    /// <param name="index">The index of the bone to update.</param>
+    /// <param name="value">The transformation matrix to set for the bone.</param>
+    public void SetBoneMatrix(int index, Matrix4x4 value) {
+        this._renderable.SetBoneMatrix(index, value);
+    }
+    
+    /// <summary>
+    /// Resets all bone matrices associated with the mesh renderer to their default state.
+    /// </summary>
+    public void ClearBoneMatrices() {
+        this._renderable.ClearBoneMatrices();
     }
     
     /// <summary>
@@ -161,6 +200,10 @@ public class MeshRenderer : InterpolatedComponent {
         this._frustumBox.Max.Y = lerpedPos.Y + (this._baseBox.Max.Y * this.LerpedScale.Y);
         this._frustumBox.Max.Z = finalCenter.Z + dimension.Z / 2.0F;
     }
-    
-    protected override void Dispose(bool disposing) { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this._renderable.Dispose();
+        }
+    }
 }

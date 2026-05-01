@@ -40,11 +40,10 @@ public class BloomEffect : Effect {
     /// Initializes a new instance of the <see cref="BloomEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
-    /// <param name="vertexLayout">The vertex layout for full-screen rendering.</param>
     /// <param name="samples">The number of blur samples to use in the bloom effect.</param>
     /// <param name="quality">The quality factor of the bloom blur.</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public BloomEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions, float samples = 5.0F, float quality = 2.5F) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public BloomEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, float samples = 5.0F, float quality = 2.5F) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()),
             Samples = samples,

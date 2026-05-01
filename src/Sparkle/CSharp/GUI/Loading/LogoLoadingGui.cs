@@ -98,4 +98,6 @@ public class LogoLoadingGui : LoadingGui {
         
         base.Draw(context, framebuffer);
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

@@ -1,16 +1,20 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Geometry.Models;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class ModelRenderer : InterpolatedComponent {
+public class ModelRenderer : InterpolatedComponent, IDebugDrawable {
     
     /// <summary>
     /// The model to be rendered.
@@ -23,15 +27,15 @@ public class ModelRenderer : InterpolatedComponent {
     public bool FrustumCulling;
     
     /// <summary>
-    /// Whether the bounding box should be rendered for the associated model.
-    /// </summary>
-    public bool DrawBox;
-    
-    /// <summary>
     /// The color used for rendering the bounding box of the model.
     /// </summary>
     public Color BoxColor;
     
+    /// <summary>
+    /// Gets or sets a value indicating whether debug drawing is enabled.
+    /// </summary>
+    public bool DebugDrawEnabled { get; set; }
+
     /// <summary>
     /// The original bounding box of the model before being transformed.
     /// </summary>
@@ -45,7 +49,7 @@ public class ModelRenderer : InterpolatedComponent {
     /// <summary>
     /// A collection that maps each mesh in the model to its corresponding renderable representation.
     /// </summary>
-    private Dictionary<Mesh, Renderable> _renderables;
+    private Dictionary<IMesh, Renderable> _renderables;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="ModelRenderer"/> class.
@@ -54,17 +58,15 @@ public class ModelRenderer : InterpolatedComponent {
     /// <param name="offsetPosition">The positional offset applied to the model renderer.</param>
     /// <param name="copyModelMaterials">Whether to clone the model's materials so they can be modified independently.</param>
     /// <param name="frustumCulling">Whether the model should be skipped when outside the camera frustum.</param>
-    /// <param name="drawBox">Whether to render the bounding box for debugging.</param>
     /// <param name="boxColor">The color used to render the bounding box.</param>
-    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool frustumCulling = true, bool drawBox = false, Color? boxColor = null) : base(offsetPosition) {
+    public ModelRenderer(Model model, Vector3 offsetPosition, bool copyModelMaterials = false, bool frustumCulling = true, Color? boxColor = null) : base(offsetPosition) {
         this.Model = model;
         this.FrustumCulling = frustumCulling;
-        this.DrawBox = drawBox;
         this.BoxColor = boxColor ?? Color.White;
         this._baseBox = this._frustumBox = model.GenBoundingBox();
-        this._renderables = new Dictionary<Mesh, Renderable>();
+        this._renderables = new Dictionary<IMesh, Renderable>();
         
-        foreach (Mesh mesh in this.Model.Meshes) {
+        foreach (IMesh mesh in this.Model.Meshes) {
             this._renderables.Add(mesh, new Renderable(mesh, new Transform(), copyModelMaterials));
         }
     }
@@ -98,42 +100,90 @@ public class ModelRenderer : InterpolatedComponent {
             
             // Draw the model.
             foreach (Renderable renderable in this._renderables.Values) {
-                renderable.Transforms[0] = modelTransform;
+                renderable.SetTransform(0, modelTransform);
                 this.Entity.Scene.Renderer.DrawRenderable(renderable);
-            }
-            
-            // Draw the bounding box.
-            if (this.DrawBox) {
-                Transform boxTransform = new Transform() {
-                    Translation = this.LerpedGlobalPosition,
-                    Rotation = this.LerpedRotation,
-                    Scale = this.LerpedScale
-                };
-                
-                // Draw box.
-                context.ImmediateRenderer.DrawBoundingBox(context.CommandList, framebuffer.OutputDescription, boxTransform, this._baseBox, this.BoxColor);
             }
         }
     }
     
     /// <summary>
-    /// Retrieves the material associated with the specified mesh.
+    /// Renders debug visualization.
     /// </summary>
-    /// <param name="mesh">The mesh for which the material is to be retrieved.</param>
-    /// <returns>A reference to the material associated with the specified mesh.</returns>
-    public ref Material GetRenderableMaterialByMesh(Mesh mesh) {
-        return ref this._renderables[mesh].Material;
+    /// <param name="immediateRenderer">The renderer used to draw debug primitives.</param>
+    public void DrawDebug(ImmediateRenderer immediateRenderer) {
+        Transform boxTransform = new Transform() {
+            Translation = this.LerpedGlobalPosition,
+            Rotation = this.LerpedRotation,
+            Scale = this.LerpedScale
+        };
+        
+        immediateRenderer.DrawBoundingBox(boxTransform, this._baseBox, this.BoxColor);
     }
     
     /// <summary>
-    /// Retrieves the bone matrices for a specified mesh.
+    /// Replaces the base/frustum bounds used for culling.
+    /// Useful for dynamic models where generated geometry changes over time.
     /// </summary>
-    /// <param name="mesh">The mesh for which the bone matrices are to be retrieved.</param>
-    /// <returns>A reference to an array of bone matrices associated with the specified mesh, or null if no matrices exist.</returns>
-    public Matrix4x4[]? GetRenderableBoneMatricesByMesh(Mesh mesh) {
-        return this._renderables[mesh].BoneMatrices;
+    /// <param name="bounds">New local-space bounding box.</param>
+    public void SetCullingBounds(BoundingBox bounds) {
+        this._baseBox = bounds;
+        this._frustumBox = bounds;
     }
-
+    
+    /// <summary>
+    /// Retrieves the material associated with the renderable representation of the specified mesh.
+    /// </summary>
+    /// <param name="mesh">The mesh for which to retrieve the renderable material.</param>
+    /// <returns>The material associated with the given mesh's renderable representation.</returns>
+    public Material GetRenderableMaterialByMesh(IMesh mesh) {
+        return this._renderables[mesh].Material;
+    }
+    
+    /// <summary>
+    /// Sets the material for the renderable associated with the specified mesh.
+    /// </summary>
+    /// <param name="mesh">The mesh whose renderable's material should be updated.</param>
+    /// <param name="material">The new material to assign to the renderable.</param>
+    public void SetRenderableMaterialByMesh(IMesh mesh, Material material) {
+        this._renderables[mesh].Material = material;
+    }
+    
+    /// <summary>
+    /// Checks if the renderable associated with the specified mesh contains bones.
+    /// </summary>
+    /// <param name="mesh">The mesh for which the bone data is being queried.</param>
+    /// <returns>True if the renderable associated with the mesh contains bones; otherwise, false.</returns>
+    public bool HasRenderableBonesByMesh(IMesh mesh) {
+        return this._renderables[mesh].HasBones;
+    }
+    
+    /// <summary>
+    /// Retrieves the collection of bone transformation matrices for a specific mesh's renderable representation.
+    /// </summary>
+    /// <param name="mesh">The mesh for which bone transformation matrices are to be retrieved.</param>
+    /// <returns>A read-only span containing the bone transformation matrices for the specified mesh.</returns>
+    public ReadOnlySpan<Matrix4x4> GetRenderableBoneMatricesByMesh(IMesh mesh) {
+        return this._renderables[mesh].GetBoneMatrices();
+    }
+    
+    /// <summary>
+    /// Sets the transformation matrix for a specific bone of a renderable mesh within the model.
+    /// </summary>
+    /// <param name="mesh">The mesh whose renderable representation contains the bone to be updated.</param>
+    /// <param name="index">The index of the bone in the specified mesh.</param>
+    /// <param name="value">The transformation matrix to be assigned to the bone.</param>
+    public void SetRenderableBoneMatrixByMesh(IMesh mesh, int index, Matrix4x4 value) {
+        this._renderables[mesh].SetBoneMatrix(index, value);
+    }
+    
+    /// <summary>
+    /// Clears all the bone matrices associated with a specific mesh in the model renderer.
+    /// </summary>
+    /// <param name="mesh">The mesh whose bone matrices should be cleared.</param>
+    public void ClearRenderableBoneMatricesByMesh(IMesh mesh) {
+        this._renderables[mesh].ClearBoneMatrices();
+    }
+    
     /// <summary>
     /// Updates the frustum-aligned bounding box.
     /// </summary>
@@ -164,6 +214,12 @@ public class ModelRenderer : InterpolatedComponent {
         this._frustumBox.Max.Y = lerpedPos.Y + (this._baseBox.Max.Y * this.LerpedScale.Y);
         this._frustumBox.Max.Z = finalCenter.Z + dimension.Z / 2.0F;
     }
-    
-    protected override void Dispose(bool disposing) { }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            foreach (Renderable renderable in this._renderables.Values) {
+                renderable.Dispose();
+            }
+        }
+    }
 }

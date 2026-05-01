@@ -40,9 +40,8 @@ public class SobelEffect : Effect {
     /// Initializes a new instance of the <see cref="SobelEffect"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
-    /// <param name="vertexLayout">The vertex layout description for the full-screen quad.</param>
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    public SobelEffect(GraphicsDevice graphicsDevice, VertexLayoutDescription vertexLayout, CrossCompileOptions compileOptions) : base(graphicsDevice, vertexLayout, VertPath, FragPath, compileOptions) {
+    public SobelEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions) : base(graphicsDevice, VertPath, FragPath, compileOptions) {
         this._parameters = new Parameters() {
             Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight())
         };

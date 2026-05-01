@@ -66,7 +66,9 @@ public class Player : Entity {
     protected override void Init() {
         
         // Renderer.
-        this._modelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, drawBox: false, boxColor: Color.Magenta);
+        this._modelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {
+            DebugDrawEnabled = false
+        };
         this.AddComponent(this._modelRenderer);
         
         // Animator.
@@ -140,7 +142,7 @@ public class Player : Entity {
         // Handle debug drawing.
         if (Input.IsKeyPressed(KeyboardKey.O)) {
             this._rigidBody.DrawDebug = !this._rigidBody.DrawDebug;
-            this._modelRenderer.DrawBox = !this._modelRenderer.DrawBox;
+            this._modelRenderer.DebugDrawEnabled = !this._modelRenderer.DebugDrawEnabled;
         }
         
         // Handle input direction.

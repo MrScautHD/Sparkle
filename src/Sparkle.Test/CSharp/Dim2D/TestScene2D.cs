@@ -1,20 +1,15 @@
 using System.Numerics;
-using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim2;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
-using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Box2D;
-using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Particles.Dim2;
 using Sparkle.CSharp.Graphics.Particles.Dim2.Collisions.Providers;
-using Sparkle.CSharp.Graphics.Particles.Dim3;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim2.Def;
 using Sparkle.CSharp.Physics.Dim2.Shapes;
@@ -26,18 +21,7 @@ namespace Sparkle.Test.CSharp.Dim2D;
 
 public class TestScene2D : Scene {
     
-    public Mesh RainParticleMesh { get; private set; }
-    
     public TestScene2D() : base("Test-2D-Scene", SceneType.Scene2D, null, () => new Simulation2D(new PhysicsSettings2D() { WorldDef = new WorldDef() { Gravity = new Vector2(0, 9.81F) }})) { }
-    
-    protected override void Load(ContentManager content) {
-        base.Load(content);
-        
-        // Meshes:
-        this.RainParticleMesh = Mesh.GenQuad(GlobalGraphicsAssets.GraphicsDevice, 1, 1);
-        this.RainParticleMesh.Material.Effect = GlobalResource.ModelInstancingEffect;
-        this.RainParticleMesh.Material.SetMapColor(MaterialMapType.Albedo, Color.Blue);
-    }
     
     protected override void Init() {
         base.Init();
@@ -150,13 +134,5 @@ public class TestScene2D : Scene {
         context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -192, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
         context.PrimitiveBatch.End();
-    }
-    
-    protected override void Dispose(bool disposing) {
-        base.Dispose(disposing);
-        
-        if (disposing) {
-            this.RainParticleMesh.Dispose();
-        }
     }
 }

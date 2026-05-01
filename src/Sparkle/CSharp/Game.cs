@@ -72,11 +72,6 @@ public class Game : Disposable {
     public PrimitiveBatch GlobalPrimitiveBatch { get; private set; }
 
     /// <summary>
-    /// The default (global) immediate renderer used for rendering (Vertices...) in immediate mode.
-    /// </summary>
-    public ImmediateRenderer GlobalImmediateRenderer { get; private set; }
-
-    /// <summary>
     /// An instance encapsulating core graphics rendering components associated with the game.
     /// </summary>
     public GraphicsContext GraphicsContext { get; private set; }
@@ -214,11 +209,8 @@ public class Game : Disposable {
         Logger.Info("Initialize global primitive batch...");
         this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow);
         
-        Logger.Info("Initialize global immediate renderer...");
-        this.GlobalImmediateRenderer = new ImmediateRenderer(graphicsDevice);
-        
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.GlobalImmediateRenderer);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -293,7 +285,6 @@ public class Game : Disposable {
                 continue;
             }
             
-            graphicsDevice.WaitForNextFrameReady();
             Time.Update();
             
             // Process window events.
@@ -441,7 +432,7 @@ public class Game : Disposable {
         
         // Resize scene manager.
         SceneManager.OnResize(rectangle);
-
+        
         // Resize overlay manager.
         OverlayManager.OnResize(rectangle);
         
@@ -499,7 +490,6 @@ public class Game : Disposable {
             this._renderResult.Dispose();
             this.FullScreenRenderPass.Dispose();
             
-            this.GlobalImmediateRenderer.Dispose();
             this.GlobalPrimitiveBatch.Dispose();
             this.GlobalSpriteBatch.Dispose();
             
