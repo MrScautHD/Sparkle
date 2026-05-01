@@ -8,7 +8,7 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
-using Sparkle.CSharp.Terrain.Marching;
+using Sparkle.CSharp.Terrain.Heightmap;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 
@@ -31,13 +31,23 @@ public class TerrainScene : Scene {
         
         // Create camera.
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
-        Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
+        Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F) {
+            MovementSpeed = 250
+        };
         this.AddEntity(camera3D);
         
         // Create terrain.
         Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
-        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, Vector3.Zero) {
-            DebugDrawEnabled = true
+        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, Vector3.Zero, frustumCulling: true) {
+            DebugDrawEnabled = false,
+            DebugDrawChunks = false,
+            EnableLod = true,
+            LodDistances = [400.0F, 600.0F, 900.0F, 1500.0F, 2500],
+            LodHysteresis = 0.2F,
+            CullChunksBeyondLastLod = false,
+            MaxChunkBuildsPerFrame = 24,
+            MaxConcurrentChunkBuilds = 12,
+            MaxChunkUploadsPerFrame = 16
         });
         this.AddEntity(terrainEntity);
     }
@@ -75,15 +85,15 @@ public class TerrainScene : Scene {
     }
     
     private async Task<ITerrain> CreateTerrainAsync() {
-        const int terrainWidth = 1024;
+        const int terrainWidth = 8192;
         const int terrainHeight = 128;
-        const int terrainDepth = 1024;
-        const int chunkSize = 16;
+        const int terrainDepth = 8192;
+        const int chunkSize = 256;
         const int surfaceHeight = 64;
         
         FlatChunkGenerator chunkGenerator = new FlatChunkGenerator(chunkSize, terrainHeight, surfaceHeight);
-        MarchingCubesTerrain terrain = await MarchingCubesTerrain.CreateAsync(chunkGenerator, terrainWidth, terrainHeight, terrainDepth, chunkSize);
-
+        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, terrainWidth, terrainHeight, terrainDepth, chunkSize);
+        
         this._terrain = terrain;
         return terrain;
     }

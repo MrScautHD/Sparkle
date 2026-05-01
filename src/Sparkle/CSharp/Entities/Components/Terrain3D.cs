@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
@@ -14,835 +15,1129 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
-using Sparkle.CSharp.Terrain.Marching;
+using Sparkle.CSharp.Terrain.Heightmap;
 using Veldrid;
-using Color = Bliss.CSharp.Colors.Color;
-using Material = Bliss.CSharp.Materials.Material;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-/// <summary>
-/// A component that renders a chunked, LOD-aware 3D terrain on the entity it is attached to.
-///
-/// Rendering: chunks are grouped into <see cref="RegionChunkCount"/>×<see cref="RegionChunkCount"/>
-/// regions. Each region's geometry is merged into one <see cref="Mesh{T}"/> — one draw call per
-/// region instead of one per chunk.
-///
-/// Editing performance: when a region needs rebuilding, the CPU vertex merge runs on a background
-/// thread. The main thread only takes a lightweight cache snapshot and later performs the GPU buffer
-/// upload, keeping frame time smooth during active brush strokes.
-/// </summary>
 public class Terrain3D : InterpolatedComponent, IDebugDrawable {
-
-    /// <summary>The terrain data source that provides chunks and dimension information.</summary>
-    public ITerrain Terrain { get; private set; }
-
-    /// <summary>
-    /// Maximum number of chunks processed from the upload queue per frame.
-    /// Each processed chunk may schedule an async region rebuild.
-    /// Raise while editing to surface rebuilt meshes faster.
-    /// </summary>
-    public int MaxChunkUploadsPerFrame;
-
-    /// <summary>When <c>true</c>, regions outside the active camera frustum are skipped.</summary>
-    public bool FrustumCulling;
-
-    /// <summary>Color used for region bounding boxes when <see cref="DebugDrawEnabled"/> is <c>true</c>.</summary>
-    public Color RegionBoxColor;
-
-    /// <summary>Color used for individual chunk bounding boxes when <see cref="DebugDrawEnabled"/> is <c>true</c>.</summary>
-    public Color ChunkBoxColor;
-
-    /// <inheritdoc/>
+    
+    public ITerrain Terrain { get; private set; } = null!;
+    
     public bool DebugDrawEnabled { get; set; }
+    
+    public bool DebugDrawChunks { get; set; }
+    
+    public bool FrustumCulling;
+    
+    public int MaxChunkUploadsPerFrame { get; set; }
+    
+    public int MaxChunkBuildsPerFrame { get; set; }
 
-    /// <summary>Number of regions submitted for rendering during the most recent frame.</summary>
-    public int VisibleChunkCount { get; private set; }
+    public float ChunkBuildScheduleBudgetMilliseconds { get; set; }
+    
+    public int MaxConcurrentChunkBuilds { get; set; }
+    
+    public float[] LodDistances { get; set; }
+    
+    public bool EnableLod { get; set; }
+    
+    public float LodHysteresis { get; set; }
+    
+    public bool CullChunksBeyondLastLod { get; set; }
+    
+    public bool UseCameraFarPlaneForLodRange { get; set; }
+    
+    public bool PreloadChunksOnInit { get; set; }
 
-    /// <summary>Total vertices rendered during the most recent frame.</summary>
-    public int VisibleVertexCount { get; private set; }
+    public bool PauseTerrainWorkWhenOutOfView { get; set; }
 
-    /// <summary>Camera distances at which the terrain steps to the next LOD level.</summary>
-    public float[] LodDistances {
-        get => this._lodDistances;
-        set {
-            this._lodDistances = value;
-            this.RebuildLodDistancesSq();
-        }
-    }
+    public float LodUpdateIntervalSeconds { get; set; }
 
-    /// <summary>Total vertex count across all region batches that have an uploaded mesh.</summary>
-    public int TotalVertexCount {
-        get {
-            int count = 0;
-            foreach (RegionBatch batch in this._regionBatches) {
-                count += (int) (batch.Mesh?.VertexCount ?? 0);
-            }
-            return count;
-        }
-    }
+    public float LodUpdateCameraMoveThreshold { get; set; }
 
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Region batching
-    // ══════════════════════════════════════════════════════════════════════════════════════════
+    public bool EnableFarChunkBatching { get; set; }
 
-    /// <summary>
-    /// Chunks per region along X and Z.
-    /// Smaller → more draw calls but faster region rebuilds when editing.
-    /// Larger  → fewer draw calls but slower rebuilds.
-    /// 4 gives 16 chunks per region and ~64 total regions for a 1024×1024 terrain at ChunkSize=32.
-    /// </summary>
-    private const int RegionChunkCount = 4;
+    public int FarChunkBatchMinLod { get; set; }
 
-    private RegionBatch[] _regionBatches;
-    private int[]         _chunkToRegion;
-    private readonly HashSet<int> _dirtyRegions;
+    public int FarChunkBatchRegionSizeInChunks { get; set; }
 
-    // Per-chunk CPU vertex/index cache — populated when a chunk finishes generating geometry.
-    // Null entries = chunk is empty (uniform or LOD-culled).
-    private Vertex3D[]?[] _chunkVertexCache;
-    private uint[]?[]     _chunkIndexCache;
+    public int MaxRegionRebuildsPerFrame { get; set; }
 
-    // ── Region build state ─────────────────────────────────────────────────────────────────
+    public int MaxRegionUploadsPerFrame { get; set; }
 
-    /// <summary>Region build-state: idle and ready to be scheduled.</summary>
-    private const int RegStatIdle     = 0;
+    public float RegionScheduleBudgetMilliseconds { get; set; }
 
-    /// <summary>Region build-state: CPU merge running on a background thread.</summary>
-    private const int RegStatBuilding = 1;
+    public float RegionUploadBudgetMilliseconds { get; set; }
 
-    /// <summary>Per-region atomic build state (parallel to <see cref="_regionBatches"/>).</summary>
-    private int[] _regionBuildState;
+    public int MidRingLodUpdateIntervalTicks { get; set; }
 
-    /// <summary>
-    /// Per-region flag set on the main thread when a rebuild is requested while the region is
-    /// already building. Checked on upload to immediately schedule another rebuild.
-    /// Only accessed from the main thread — no atomics needed.
-    /// </summary>
-    private bool[] _regionNeedsRebuildAfterCurrent;
-
-    /// <summary>
-    /// Completed CPU merges waiting for a main-thread GPU upload.
-    /// Written by background tasks, drained by the main thread each frame.
-    /// </summary>
-    private readonly ConcurrentQueue<(int RegionIdx, Vertex3D[] Vertices, uint[] Indices)> _regionUploadQueue;
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Chunk build state
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    private const int StatIdle       = 0;
-    private const int StatGenerating = 1;
-    private const int StatReady      = 2;
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Per-chunk arrays
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    private float[] _lodDistances;
-    private float[] _lodDistancesSq;
-    private int[]   _lodSteps;
-
-    private IChunk[]  _chunkArray;
-    private Vector3[] _chunkLocalCenters;
-    private Vector3[] _chunkWorldCenters;
-    private int[]     _chunkBuildState;
-
-    // ── Queues / priority sets ─────────────────────────────────────────────────────────────
-
-    private readonly ConcurrentQueue<int>                            _uploadQueue;
-    private readonly ConcurrentQueue<int>                            _pendingRebuildQueue;
-    private readonly HashSet<int>                                    _lodPrioritySet;
-    private readonly List<(int Index, float DistSq, int Category, int Lod)> _sortBuffer;
-
-    // ── Transform cache ────────────────────────────────────────────────────────────────────
-
-    private Vector3    _cachedPos;
-    private Quaternion _cachedRot;
-    private Vector3    _cachedScale;
-    private Vector3    _lastCamPos;
-
+    public int FarRingLodUpdateIntervalTicks { get; set; }
+    
+    public int TotalVertexCount { get; private set; }
+    
     private readonly Func<Task<ITerrain>> _terrainFactory;
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Constructor
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    public Terrain3D(Func<Task<ITerrain>> terrainFactory, Vector3 offsetPosition, int maxChunkUploadsPerFrame = 4, bool frustumCulling = true) : base(offsetPosition) {
-        this._terrainFactory          = terrainFactory;
-        this.MaxChunkUploadsPerFrame  = Math.Max(1, maxChunkUploadsPerFrame);
-        this.FrustumCulling           = frustumCulling;
-        this.RegionBoxColor           = new Color(0, 100, 255, 255);   // Blue
-        this.ChunkBoxColor            = new Color(160, 160, 160, 255); // Gray
-        this._lodDistances            = [200.0F, 400.0F, 800.0F];
-        this._lodDistancesSq          = [40000.0F, 160000.0F, 640000.0F];
-        this._lodSteps                = [2, 4, 8];
-        this._chunkArray              = [];
-        this._chunkLocalCenters       = [];
-        this._chunkWorldCenters       = [];
-        this._chunkBuildState         = [];
-        this._chunkVertexCache        = [];
-        this._chunkIndexCache         = [];
-        this._chunkToRegion           = [];
-        this._regionBatches           = [];
-        this._regionBuildState        = [];
-        this._regionNeedsRebuildAfterCurrent = [];
-        this._uploadQueue             = new ConcurrentQueue<int>();
-        this._pendingRebuildQueue     = new ConcurrentQueue<int>();
-        this._regionUploadQueue       = new ConcurrentQueue<(int, Vertex3D[], uint[])>();
-        this._dirtyRegions            = new HashSet<int>();
-        this._lodPrioritySet          = new HashSet<int>();
-        this._sortBuffer              = new List<(int, float, int, int)>();
-        this._cachedRot               = Quaternion.Identity;
-        this._cachedScale             = Vector3.One;
+    private readonly List<IChunk> _meshChunkList;
+    private readonly ConcurrentQueue<IChunk> _pendingUpload;
+    private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
+    private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
+    private readonly ConcurrentQueue<RegionBuildResult> _pendingRegionUploads;
+    private readonly ConcurrentDictionary<RegionKey, byte> _regionBuildingSet;
+    private readonly Dictionary<IChunk, Renderable> _renderables;
+    private readonly Dictionary<IChunk, BoundingBox> _chunkLocalBounds;
+    private readonly Dictionary<IChunk, Vector3> _chunkLocalCenters;
+    private readonly Dictionary<IChunk, CachedWorldBounds> _chunkWorldBounds;
+    private readonly Dictionary<IChunk, int> _chunkRenderableTransformVersions;
+    private readonly List<IChunk> _dirtyScheduleBuffer;
+    private readonly Dictionary<IChunk, RegionKey> _chunkRegions;
+    private readonly Dictionary<RegionKey, HashSet<IChunk>> _regionMembers;
+    private readonly Dictionary<RegionKey, RegionBatch> _regionBatches;
+    private readonly Dictionary<RegionKey, CachedWorldBounds> _regionWorldBounds;
+    private readonly Dictionary<RegionKey, int> _regionRenderableTransformVersions;
+    private readonly HashSet<RegionKey> _dirtyRegions;
+    private readonly List<RegionKey> _regionDirtyBuffer;
+    
+    private Task<ITerrain>? _terrainTask;
+    private bool _initializedTerrain;
+    private BoundingBox _terrainBaseBox;
+    private BoundingBox _terrainWorldBounds;
+    private int _terrainWorldBoundsVersion;
+    private int _boundsTransformVersion;
+    private bool _hasBoundsTransformCache;
+    private Vector3 _boundsTransformPosition;
+    private Quaternion _boundsTransformRotation;
+    private Vector3 _boundsTransformScale;
+    private int _renderTransformVersion;
+    private bool _hasRenderTransformCache;
+    private Vector3 _renderTransformPosition;
+    private Quaternion _renderTransformRotation;
+    private Vector3 _renderTransformScale;
+    private Transform _sharedRenderTransform;
+    private float _lodUpdateAccumulator;
+    private int _lodRingTick;
+    private bool _hasLastLodCameraPosition;
+    private Vector3 _lastLodCameraPosition;
+    
+    private static Material? _sharedFarBatchMaterial;
+    
+    public Terrain3D(Func<Task<ITerrain>> terrainFactory, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
+        this._terrainFactory = terrainFactory;
+        this.FrustumCulling = frustumCulling;
+        this.MaxChunkUploadsPerFrame = 6;
+        this.MaxChunkBuildsPerFrame = 8;
+        this.ChunkBuildScheduleBudgetMilliseconds = 1.5F;
+        this.MaxConcurrentChunkBuilds = Math.Max(1, Environment.ProcessorCount - 1);
+        this.LodDistances = [200.0F, 400.0F, 800.0F];
+        this.EnableLod = true;
+        this.LodHysteresis = 0.15F;
+        this.CullChunksBeyondLastLod = false;
+        this.UseCameraFarPlaneForLodRange = true;
+        this.PreloadChunksOnInit = true;
+        this.PauseTerrainWorkWhenOutOfView = true;
+        this.LodUpdateIntervalSeconds = 0.08F;
+        this.LodUpdateCameraMoveThreshold = 16.0F;
+        this.EnableFarChunkBatching = true;
+        this.FarChunkBatchMinLod = 2;
+        this.FarChunkBatchRegionSizeInChunks = 4;
+        this.MaxRegionRebuildsPerFrame = 1;
+        this.MaxRegionUploadsPerFrame = 1;
+        this.RegionScheduleBudgetMilliseconds = 1.0F;
+        this.RegionUploadBudgetMilliseconds = 1.0F;
+        this.MidRingLodUpdateIntervalTicks = 3;
+        this.FarRingLodUpdateIntervalTicks = 10;
+        this.DebugDrawChunks = false;
+        this._meshChunkList = new List<IChunk>();
+        this._pendingUpload = new ConcurrentQueue<IChunk>();
+        this._queuedSet = new ConcurrentDictionary<IChunk, byte>();
+        this._buildingSet = new ConcurrentDictionary<IChunk, byte>();
+        this._pendingRegionUploads = new ConcurrentQueue<RegionBuildResult>();
+        this._regionBuildingSet = new ConcurrentDictionary<RegionKey, byte>();
+        this._renderables = new Dictionary<IChunk, Renderable>();
+        this._chunkLocalBounds = new Dictionary<IChunk, BoundingBox>();
+        this._chunkLocalCenters = new Dictionary<IChunk, Vector3>();
+        this._chunkWorldBounds = new Dictionary<IChunk, CachedWorldBounds>();
+        this._chunkRenderableTransformVersions = new Dictionary<IChunk, int>();
+        this._dirtyScheduleBuffer = new List<IChunk>();
+        this._chunkRegions = new Dictionary<IChunk, RegionKey>();
+        this._regionMembers = new Dictionary<RegionKey, HashSet<IChunk>>();
+        this._regionBatches = new Dictionary<RegionKey, RegionBatch>();
+        this._regionWorldBounds = new Dictionary<RegionKey, CachedWorldBounds>();
+        this._regionRenderableTransformVersions = new Dictionary<RegionKey, int>();
+        this._dirtyRegions = new HashSet<RegionKey>();
+        this._regionDirtyBuffer = new List<RegionKey>();
+        this._terrainBaseBox = new BoundingBox();
+        this._terrainWorldBoundsVersion = -1;
+        this._boundsTransformVersion = 0;
+        this._hasBoundsTransformCache = false;
+        this._renderTransformVersion = 0;
+        this._hasRenderTransformCache = false;
+        this._sharedRenderTransform = new Transform();
+        this._lodUpdateAccumulator = float.PositiveInfinity;
+        this._lodRingTick = 0;
     }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Init
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
+    
     protected internal override void Init() {
         base.Init();
-        this.Terrain     = this._terrainFactory().GetAwaiter().GetResult();
-        this._chunkArray = this.Terrain.GetChunks().ToArray();
-
-        int n = this._chunkArray.Length;
-        this._chunkLocalCenters = new Vector3[n];
-        this._chunkWorldCenters = new Vector3[n];
-        this._chunkBuildState   = new int[n];
-        this._chunkVertexCache  = new Vertex3D[]?[n];
-        this._chunkIndexCache   = new uint[]?[n];
-        this._chunkToRegion     = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            IChunk c = this._chunkArray[i];
-            this._chunkLocalCenters[i] = c.Position + new Vector3(c.Width * 0.5F, c.Height * 0.5F, c.Depth * 0.5F);
+        
+        if (this.PreloadChunksOnInit) {
+            ITerrain terrain = this._terrainFactory().GetAwaiter().GetResult();
+            this.InitializeTerrain(terrain);
+            this.PreloadAllChunkMeshes();
+            return;
         }
-
-        if (this.Terrain is MarchingCubesTerrain mct) {
-            mct.OnChunkMarkedDirty += this.EnqueuePendingRebuild;
-        }
-
-        this.RebuildLodDistancesSq();
-        this.RefreshChunkWorldCenters(force: true);
-        this.UpdateLodLevels();
-        this.BuildRegionBatches();
-
-        // Generate all chunk geometries in parallel.
-        Parallel.For(0, n, i => this._chunkArray[i].GenerateGeometry());
-
-        // Cache all chunk CPU data.
-        for (int i = 0; i < n; i++) {
-            this.CacheChunkData(i);
-        }
-
-        // Merge all regions in parallel (CPU only), then upload sequentially on the main thread.
-        var mergedRegions = new (Vertex3D[] Verts, uint[] Inds)[this._regionBatches.Length];
-        Parallel.For(0, this._regionBatches.Length, r => mergedRegions[r] = this.MergeRegionCpu(r));
-
-        for (int r = 0; r < this._regionBatches.Length; r++) {
-            this.UploadRegionBatch(this.GraphicsDevice, r, mergedRegions[r].Verts, mergedRegions[r].Inds);
-        }
-
-        this._lodPrioritySet.Clear();
-        this._dirtyRegions.Clear();
-
-        // Drain any notifications fired during init — handled by the loops above.
-        while (this._pendingRebuildQueue.TryDequeue(out _)) { }
+        
+        this._terrainTask = this._terrainFactory();
     }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Draw
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        base.Draw(context, framebuffer);
-
-        this.VisibleChunkCount  = 0;
-        this.VisibleVertexCount = 0;
-
-        this.RefreshChunkWorldCenters(force: false);
-        this.UpdateLodLevels();
-        this.ProcessDirtyChunks(context.GraphicsDevice);
-
-        Camera3D? cam3D      = SceneManager.ActiveCam3D;
-        bool      doFrustum  = cam3D != null && this.FrustumCulling;
-        float     maxDistSq  = this._lodDistancesSq.Length > 0 ? this._lodDistancesSq[^1] : 0f;
-        float     cullDistSq = maxDistSq * 1.1f;
-
-        foreach (RegionBatch batch in this._regionBatches) {
-            if (batch.Renderable == null) {
-                continue;
-            }
-
-            Vector3 regionWorldOrigin = this._cachedPos + Vector3.Transform(batch.LocalOrigin * this._cachedScale, this._cachedRot);
-
-            Transform regionTransform = new Transform {
-                Translation = regionWorldOrigin,
-                Rotation    = this._cachedRot,
-                Scale       = this._cachedScale
-            };
-
-            // Distance cull.
-            Vector3 regionWorldCenter = regionWorldOrigin + Vector3.Transform((batch.LocalBounds.Max * 0.5f) * this._cachedScale, this._cachedRot);
-
-            if (cam3D != null && Vector3.DistanceSquared(cam3D.Position, regionWorldCenter) > cullDistSq) {
-                continue;
-            }
-
-            // Frustum cull.
-            if (doFrustum) {
-                BoundingBox frustumBox = this.ComputeFrustumBox(batch.LocalBounds, in regionTransform);
-
-                if (!cam3D!.GetFrustum().ContainsOrientedBox(frustumBox, regionTransform.Translation, regionTransform.Rotation)) {
-                    continue;
-                }
-            }
-
-            this.VisibleChunkCount++;
-            this.VisibleVertexCount += (int) batch.Mesh!.VertexCount;
-
-            batch.Renderable.SetTransform(0, regionTransform);
-            this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
-        }
-    }
-
-    /// <inheritdoc/>
-    public void DrawDebug(ImmediateRenderer immediateRenderer) {
-        // Draw region bounding boxes in blue.
-        foreach (RegionBatch batch in this._regionBatches) {
-            Vector3 regionWorldOrigin = this._cachedPos + Vector3.Transform(batch.LocalOrigin * this._cachedScale, this._cachedRot);
-
-            Transform regionTransform = new Transform {
-                Translation = regionWorldOrigin,
-                Rotation    = this._cachedRot,
-                Scale       = this._cachedScale
-            };
-
-            immediateRenderer.DrawBoundingBox(regionTransform, batch.LocalBounds, this.RegionBoxColor);
-        }
-
-        // Draw individual chunk bounding boxes in gray.
-        for (int i = 0; i < this._chunkArray.Length; i++) {
-            IChunk chunk = this._chunkArray[i];
-
-            // Skip empty/culled chunks so the view isn't cluttered with invisible volumes.
-            if (this._chunkVertexCache[i] == null) {
-                continue;
-            }
-
-            Vector3 chunkWorldOrigin = this._cachedPos + Vector3.Transform(chunk.Position * this._cachedScale, this._cachedRot);
-
-            Transform chunkTransform = new Transform {
-                Translation = chunkWorldOrigin,
-                Rotation    = this._cachedRot,
-                Scale       = this._cachedScale
-            };
-
-            BoundingBox chunkBounds = new BoundingBox(Vector3.Zero, new Vector3(chunk.Width, chunk.Height, chunk.Depth));
-            immediateRenderer.DrawBoundingBox(chunkTransform, chunkBounds, this.ChunkBoxColor);
-        }
-    }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Dirty chunk pipeline
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    private void ProcessDirtyChunks(GraphicsDevice graphicsDevice) {
-        // ── LOD priority scheduling ────────────────────────────────────────────────────────────
-        if (this._lodPrioritySet.Count > 0) {
-            Camera3D? cam3D = SceneManager.ActiveCam3D;
-
-            if (cam3D != null) {
-                Vector3 cameraPos = cam3D.Position;
-                this._sortBuffer.Clear();
-
-                foreach (int idx in this._lodPrioritySet) {
-                    IChunk chunk    = this._chunkArray[idx];
-                    int    category = chunk.Lod == -1
-                        ? 2
-                        : chunk.CurrentLod is -2 or -1 || chunk.Lod < chunk.CurrentLod
-                            ? 0
-                            : chunk.Lod > chunk.CurrentLod
-                                ? 1
-                                : 3;
-
-                    this._sortBuffer.Add((idx, Vector3.DistanceSquared(cameraPos, this._chunkWorldCenters[idx]), category, chunk.Lod));
-                }
-
-                this._sortBuffer.Sort(static (a, b) => {
-                    if (a.Category != b.Category) return a.Category.CompareTo(b.Category);
-
-                    return a.Category switch {
-                        0 => a.Lod != b.Lod ? a.Lod.CompareTo(b.Lod) : a.DistSq.CompareTo(b.DistSq),
-                        1 => a.Lod != b.Lod ? b.Lod.CompareTo(a.Lod) : b.DistSq.CompareTo(a.DistSq),
-                        _ => b.DistSq.CompareTo(a.DistSq)
-                    };
-                });
-
-                foreach ((int idx, _, _, _) in this._sortBuffer) {
-                    this.ScheduleChunkBackground(idx);
-                }
-            }
-            else {
-                foreach (int idx in this._lodPrioritySet) {
-                    this.ScheduleChunkBackground(idx);
-                }
-            }
-
-            this._lodPrioritySet.Clear();
-        }
-
-        // ── Dirty chunk scheduling ─────────────────────────────────────────────────────────────
-        if (this.Terrain is MarchingCubesTerrain) {
-            while (this._pendingRebuildQueue.TryDequeue(out int pendingIdx)) {
-                if (this._chunkBuildState[pendingIdx] == StatIdle && this._chunkArray[pendingIdx].IsDirty) {
-                    this.ScheduleChunkBackground(pendingIdx);
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < this._chunkArray.Length; i++) {
-                if (this._chunkBuildState[i] == StatIdle && this._chunkArray[i].IsDirty) {
-                    this.ScheduleChunkBackground(i);
-                }
-            }
-        }
-
-        // ── Cache finished chunks and mark their regions dirty ─────────────────────────────────
-        int processed = 0;
-
-        while (processed < this.MaxChunkUploadsPerFrame && this._uploadQueue.TryDequeue(out int idx)) {
-            this.CacheChunkData(idx);
-            processed++;
-        }
-
-        // ── Schedule async CPU merges for dirty regions ────────────────────────────────────────
-        // The heavy vertex merge work is done on a background thread (see ScheduleRegionRebuild).
-        // Only scheduling and the later GPU upload happen on the main thread.
-        foreach (int regionIdx in this._dirtyRegions) {
-            this.ScheduleRegionRebuild(regionIdx);
-        }
-
-        this._dirtyRegions.Clear();
-
-        // ── GPU upload for completed region merges ─────────────────────────────────────────────
-        // Background tasks enqueue here when their CPU merge is done.
-        // Creating the Mesh<Vertex3D> (buffer allocation + DMA upload) must be on the main thread
-        // but is fast compared to the vertex merge, so it does not cause visible frame drops.
-        while (this._regionUploadQueue.TryDequeue(out var item)) {
-            this.UploadRegionBatch(graphicsDevice, item.RegionIdx, item.Vertices, item.Indices);
-        }
-    }
-
-    private void EnqueuePendingRebuild(int index) {
-        this._pendingRebuildQueue.Enqueue(index);
-    }
-
-    /// <summary>
-    /// Atomically transitions a chunk from idle to generating and kicks off a background Task.
-    /// No-op when the chunk is already in flight.
-    /// </summary>
-    private void ScheduleChunkBackground(int index) {
-        if (Interlocked.CompareExchange(ref this._chunkBuildState[index], StatGenerating, StatIdle) != StatIdle) {
+    
+    protected internal override void Update(double delta) {
+        base.Update(delta);
+        
+        if (!this.EnsureTerrainReady()) {
             return;
         }
 
-        IChunk chunk = this._chunkArray[index];
+        this.RefreshBoundsTransformVersion();
 
-        Task.Run(() => {
-            chunk.GenerateGeometry();
-            Interlocked.Exchange(ref this._chunkBuildState[index], StatReady);
-            this._uploadQueue.Enqueue(index);
-        });
-    }
-
-    /// <summary>
-    /// Reads the chunk's pending CPU geometry into the per-chunk cache, discards the individual
-    /// GPU mesh, resets the build state, and marks the owning region dirty for an async rebuild.
-    /// Called on the main thread after a chunk's background <see cref="IChunk.GenerateGeometry"/> finishes.
-    /// </summary>
-    private void CacheChunkData(int chunkIdx) {
-        if (this._chunkArray[chunkIdx] is MarchingCubesChunk mcc) {
-            Vertex3D[] verts = mcc.GetPendingVertices();
-            uint[]     inds  = mcc.GetPendingIndices();
-
-            this._chunkVertexCache[chunkIdx] = verts.Length > 0 ? verts : null;
-            this._chunkIndexCache[chunkIdx]  = verts.Length > 0 ? inds  : null;
-
-            mcc.DiscardGeometry();
-        }
-
-        Interlocked.Exchange(ref this._chunkBuildState[chunkIdx], StatIdle);
-        this._dirtyRegions.Add(this._chunkToRegion[chunkIdx]);
-
-        if (this._chunkArray[chunkIdx].IsDirty) {
-            this.ScheduleChunkBackground(chunkIdx);
-        }
-    }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Async region rebuild — the fix for editing performance
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    /// <summary>
-    /// Schedules an async CPU merge for the region at <paramref name="regionIdx"/>.
-    ///
-    /// Main-thread work (this method):
-    ///   • Atomic CAS to claim the region (skips if already building).
-    ///   • Takes a lightweight snapshot of cached vertex/index array references — O(chunks_per_region) pointer copies.
-    ///
-    /// Background-thread work (Task.Run):
-    ///   • Iterates the snapshot arrays and merges vertices with chunk-to-region offsets applied.
-    ///   • Enqueues the finished arrays to <see cref="_regionUploadQueue"/>.
-    ///
-    /// Main-thread work (next drain in <see cref="ProcessDirtyChunks"/>):
-    ///   • Creates <see cref="Mesh{T}"/> from merged arrays (GPU buffer alloc + DMA upload).
-    ///   • Replaces the old batch mesh.
-    /// </summary>
-    private void ScheduleRegionRebuild(int regionIdx) {
-        // Only one rebuild in flight per region at a time.
-        if (Interlocked.CompareExchange(ref this._regionBuildState[regionIdx], RegStatBuilding, RegStatIdle) != RegStatIdle) {
-            // Already rebuilding — flag so we kick off another one when the current finishes.
-            this._regionNeedsRebuildAfterCurrent[regionIdx] = true;
-            return;
-        }
-
-        RegionBatch batch = this._regionBatches[regionIdx];
-        int         n     = batch.ChunkIndices.Length;
-
-        // Snapshot the cache array references on the main thread.
-        // The background thread reads these arrays but never writes to them.
-        // The main thread may later replace the references in the cache arrays (a different slot),
-        // but since each slot is a separate array object this does not affect the snapshot.
-        var vertSnap = new Vertex3D[]?[n];
-        var idxSnap  = new uint[]?[n];
-
-        for (int i = 0; i < n; i++) {
-            vertSnap[i] = this._chunkVertexCache[batch.ChunkIndices[i]];
-            idxSnap[i]  = this._chunkIndexCache[batch.ChunkIndices[i]];
-        }
-
-        // Capture everything the background lambda needs (avoid capturing 'this' fields that change).
-        int     capturedRegionIdx = regionIdx;
-        IChunk[] chunkArray       = this._chunkArray;
-        Vector3 localOrigin       = batch.LocalOrigin;
-        int[]   chunkIndices      = batch.ChunkIndices;
-
-        Task.Run(() => {
-            // ── CPU merge (background thread) ──────────────────────────────────────────────────
-            // This is the expensive part — iterating and copying all vertex data.
-            // Running it here keeps the main thread free to render at full speed.
-            List<Vertex3D> mergedVerts = new List<Vertex3D>();
-            List<uint>     mergedInds  = new List<uint>();
-
-            for (int i = 0; i < n; i++) {
-                Vertex3D[]? verts = vertSnap[i];
-                uint[]?     inds  = idxSnap[i];
-
-                if (verts == null || verts.Length == 0) {
-                    continue;
-                }
-
-                uint    indexOffset = (uint) mergedVerts.Count;
-                // Offset from chunk-local space into region-local space.
-                Vector3 chunkOffset = chunkArray[chunkIndices[i]].Position - localOrigin;
-
-                foreach (Vertex3D v in verts) {
-                    Vertex3D sv = v;
-                    sv.Position += chunkOffset;
-                    mergedVerts.Add(sv);
-                }
-
-                foreach (uint idx in inds!) {
-                    mergedInds.Add(idx + indexOffset);
-                }
-            }
-
-            // Deliver the merged arrays back to the main thread for GPU upload.
-            this._regionUploadQueue.Enqueue((capturedRegionIdx, mergedVerts.ToArray(), mergedInds.ToArray()));
-        });
-    }
-
-    /// <summary>
-    /// Performs the GPU-side part of a region rebuild: creates a new <see cref="Mesh{T}"/> from
-    /// the pre-merged vertex/index arrays and replaces the region's batch mesh.
-    /// Must be called on the main (render) thread.
-    /// If the region was marked dirty again while its merge was running, a new async rebuild is
-    /// scheduled immediately so the next edit appears without an extra frame of delay.
-    /// </summary>
-    private void UploadRegionBatch(GraphicsDevice graphicsDevice, int regionIdx, Vertex3D[] vertices, uint[] indices) {
-        RegionBatch batch = this._regionBatches[regionIdx];
-
-        // Release previous GPU resources.
-        batch.Mesh?.Dispose();
-        batch.Mesh       = null;
-        batch.Renderable = null;
-
-        if (vertices.Length > 0 && indices.Length > 0) {
-            Material material = new Material(GlobalResource.DefaultModelEffect);
-
-            material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
-                Texture = GlobalResource.DefaultModelTexture,
-                Color   = Color.White
-            });
-
-            if (this.DebugDrawEnabled) {
-                material.RasterizerState = new RasterizerStateDescription {
-                    FillMode = PolygonFillMode.Wireframe
-                };
-            }
-
-            batch.Mesh       = new Mesh<Vertex3D>(graphicsDevice, material, new BasicMeshData(vertices, indices));
-            batch.Renderable = new Renderable(batch.Mesh, new Transform(), batch.Mesh.Material);
-        }
-
-        // Mark the region idle.
-        Interlocked.Exchange(ref this._regionBuildState[regionIdx], RegStatIdle);
-
-        // If the region was dirtied while we were merging, kick off another rebuild now
-        // so the player sees the most up-to-date result as soon as the new merge completes.
-        if (this._regionNeedsRebuildAfterCurrent[regionIdx]) {
-            this._regionNeedsRebuildAfterCurrent[regionIdx] = false;
-            this.ScheduleRegionRebuild(regionIdx);
-        }
-    }
-
-    /// <summary>
-    /// Pure CPU merge of all cached chunk geometries for a region into a single vertex/index pair.
-    /// Thread-safe to run in parallel across different regions (each region reads different chunk indices).
-    /// Used during <see cref="Init"/> where the cache is fully populated and not being written.
-    /// </summary>
-    private (Vertex3D[] Vertices, uint[] Indices) MergeRegionCpu(int regionIdx) {
-        RegionBatch    batch       = this._regionBatches[regionIdx];
-        List<Vertex3D> mergedVerts = new List<Vertex3D>();
-        List<uint>     mergedInds  = new List<uint>();
-
-        foreach (int chunkIdx in batch.ChunkIndices) {
-            Vertex3D[]? verts = this._chunkVertexCache[chunkIdx];
-            uint[]?     inds  = this._chunkIndexCache[chunkIdx];
-
-            if (verts == null || verts.Length == 0) {
-                continue;
-            }
-
-            uint    indexOffset = (uint) mergedVerts.Count;
-            Vector3 chunkOffset = this._chunkArray[chunkIdx].Position - batch.LocalOrigin;
-
-            foreach (Vertex3D v in verts) {
-                Vertex3D sv = v;
-                sv.Position += chunkOffset;
-                mergedVerts.Add(sv);
-            }
-
-            foreach (uint idx in inds!) {
-                mergedInds.Add(idx + indexOffset);
-            }
-        }
-
-        return (mergedVerts.ToArray(), mergedInds.ToArray());
-    }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Region structure
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    private void BuildRegionBatches() {
-        if (this.Terrain is not MarchingCubesTerrain mct) {
-            this._regionBatches                  = Array.Empty<RegionBatch>();
-            this._regionBuildState               = Array.Empty<int>();
-            this._regionNeedsRebuildAfterCurrent = Array.Empty<bool>();
-            return;
-        }
-
-        int chunkSize   = mct.ChunkSize;
-        int chunkCountX = (mct.Width  + chunkSize - 1) / chunkSize;
-        int chunkCountY = (mct.Height + chunkSize - 1) / chunkSize;
-        int chunkCountZ = (mct.Depth  + chunkSize - 1) / chunkSize;
-
-        int regionCountX = (chunkCountX + RegionChunkCount - 1) / RegionChunkCount;
-        int regionCountZ = (chunkCountZ + RegionChunkCount - 1) / RegionChunkCount;
-
-        int totalRegions = regionCountX * regionCountZ;
-        this._regionBatches                  = new RegionBatch[totalRegions];
-        this._regionBuildState               = new int[totalRegions];
-        this._regionNeedsRebuildAfterCurrent = new bool[totalRegions];
-
-        for (int rx = 0; rx < regionCountX; rx++) {
-            for (int rz = 0; rz < regionCountZ; rz++) {
-                int cxStart = rx * RegionChunkCount;
-                int czStart = rz * RegionChunkCount;
-                int cxEnd   = Math.Min(cxStart + RegionChunkCount, chunkCountX);
-                int czEnd   = Math.Min(czStart + RegionChunkCount, chunkCountZ);
-
-                List<int> chunkIndices = new List<int>();
-
-                for (int cx = cxStart; cx < cxEnd; cx++) {
-                    for (int cy = 0; cy < chunkCountY; cy++) {
-                        for (int cz = czStart; cz < czEnd; cz++) {
-                            int chunkIdx = cx * chunkCountY * chunkCountZ + cy * chunkCountZ + cz;
-                            chunkIndices.Add(chunkIdx);
-                            this._chunkToRegion[chunkIdx] = rx * regionCountZ + rz;
-                        }
-                    }
-                }
-
-                Vector3 localOrigin = new Vector3(cxStart * chunkSize, 0, czStart * chunkSize);
-                Vector3 extent = new Vector3(
-                    Math.Min((cxEnd - cxStart) * chunkSize, mct.Width  - (int) localOrigin.X),
-                    mct.Height,
-                    Math.Min((czEnd - czStart) * chunkSize, mct.Depth  - (int) localOrigin.Z));
-
-                int regionIdx = rx * regionCountZ + rz;
-                this._regionBatches[regionIdx] = new RegionBatch(chunkIndices.ToArray(), localOrigin, extent);
-            }
-        }
-    }
-
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Transform and LOD helpers
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-
-    private void RefreshChunkWorldCenters(bool force) {
-        Vector3    pos   = this.LerpedGlobalPosition;
-        Quaternion rot   = this.LerpedRotation;
-        Vector3    scale = this.LerpedScale;
-
-        if (!force
-            && Vector3.DistanceSquared(pos, this._cachedPos) < 1e-6f
-            && Quaternion.Dot(rot, this._cachedRot) > 0.9999f
-            && Vector3.DistanceSquared(scale, this._cachedScale) < 1e-6f) {
-            return;
-        }
-
-        this._cachedPos   = pos;
-        this._cachedRot   = rot;
-        this._cachedScale = scale;
-
-        for (int i = 0; i < this._chunkArray.Length; i++) {
-            this._chunkWorldCenters[i] = pos + Vector3.Transform(this._chunkLocalCenters[i] * scale, rot);
-        }
-    }
-
-    private void RebuildLodDistancesSq() {
-        this._lodDistancesSq = new float[this._lodDistances.Length];
-        this._lodSteps       = new int[this._lodDistances.Length];
-
-        for (int i = 0; i < this._lodDistances.Length; i++) {
-            this._lodDistancesSq[i] = this._lodDistances[i] * this._lodDistances[i];
-            this._lodSteps[i]       = 1 << (i + 1);
-        }
-    }
-
-    private void UpdateLodLevels() {
         Camera3D? cam3D = SceneManager.ActiveCam3D;
 
+        if (this.PauseTerrainWorkWhenOutOfView &&
+            this.FrustumCulling &&
+            cam3D != null &&
+            !cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds())) {
+            return;
+        }
+        
+        this._lodUpdateAccumulator += (float) delta;
+        this.UpdateLodLevels();
+        this.ProcessDirtyRegions(false);
+        
+        int buildBudget = Math.Min(this.MaxChunkBuildsPerFrame, Math.Max(0, this.MaxConcurrentChunkBuilds - this._buildingSet.Count));
+
+        if (buildBudget <= 0) {
+            return;
+        }
+        
+        int scheduled = 0;
+        Vector3 camPos = cam3D?.Position ?? Vector3.Zero;
+
+        this._dirtyScheduleBuffer.Clear();
+
+        foreach (IChunk chunk in this.Terrain.GetDirtyChunks()) {
+            if (this.ShouldSchedule(chunk)) {
+                this._dirtyScheduleBuffer.Add(chunk);
+            }
+        }
+
+        if (cam3D != null) {
+            this._dirtyScheduleBuffer.Sort((a, b) => {
+                int lodCompare = Math.Max(0, a.Lod).CompareTo(Math.Max(0, b.Lod));
+                
+                if (lodCompare != 0) {
+                    return lodCompare;
+                }
+                
+                return this.GetChunkDistanceSquared(camPos, a).CompareTo(this.GetChunkDistanceSquared(camPos, b));
+            });
+        }
+
+        Stopwatch scheduleStopwatch = Stopwatch.StartNew();
+        double scheduleBudgetMs = Math.Max(0.0F, this.ChunkBuildScheduleBudgetMilliseconds);
+
+        foreach (IChunk chunk in this._dirtyScheduleBuffer) {
+            if (scheduleBudgetMs > 0.0 && scheduled > 0 && scheduleStopwatch.Elapsed.TotalMilliseconds >= scheduleBudgetMs) {
+                break;
+            }
+
+            this.ScheduleBackground(chunk);
+            scheduled++;
+            
+            if (scheduled >= buildBudget) {
+                break;
+            }
+        }
+    }
+    
+    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        base.Draw(context, framebuffer);
+        
+        if (!this.EnsureTerrainReady()) {
+            return;
+        }
+
+        this.RefreshBoundsTransformVersion();
+        this.RefreshRenderTransformVersion();
+        
+        this.ProcessPendingUploads(this.GraphicsDevice);
+        this.ProcessPendingRegionUploads();
+        
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D != null && this.FrustumCulling) {
+            bool visible = cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds());
+            
+            if (!visible) {
+                return;
+            }
+        }
+        
+        this.TotalVertexCount = 0;
+
+        this.DrawFarBatches(cam3D);
+        
+        foreach (IChunk chunk in this._meshChunkList) {
+            if (chunk.Mesh == null) {
+                continue;
+            }
+            
+            if (chunk is HeightmapChunk heightmapChunk) {
+                heightmapChunk.FlushDeferredUpload(context.CommandList);
+            }
+            
+            if (chunk.Lod < 0) {
+                continue;
+            }
+
+            if (this._chunkRegions.TryGetValue(chunk, out RegionKey regionKey) &&
+                this._regionBatches.TryGetValue(regionKey, out RegionBatch? regionBatch) &&
+                regionBatch.Mesh != null) {
+                continue;
+            }
+            
+            if (cam3D != null && this.FrustumCulling && this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBounds)) {
+                bool chunkVisible = cam3D.GetFrustum().ContainsBox(this.GetChunkWorldBounds(chunk, chunkBounds));
+                
+                if (!chunkVisible) {
+                    continue;
+                }
+            }
+            
+            if (!this._renderables.TryGetValue(chunk, out Renderable? renderable) || !ReferenceEquals(renderable.Mesh, chunk.Mesh)) {
+                renderable?.Dispose();
+                renderable = new Renderable(chunk.Mesh, new Transform());
+                this._renderables[chunk] = renderable;
+                this._chunkRenderableTransformVersions.Remove(chunk);
+            }
+            
+            this.ApplyChunkRenderableTransform(chunk, renderable);
+            this.Entity.Scene.Renderer.DrawRenderable(renderable);
+            this.TotalVertexCount += (int) chunk.Mesh.VertexCount;
+        }
+    }
+    
+    public void DrawDebug(ImmediateRenderer immediateRenderer) {
+        if (!this._initializedTerrain) {
+            return;
+        }
+
+        this.RefreshBoundsTransformVersion();
+        
+        Transform boxTransform = new Transform {
+            Translation = this.LerpedGlobalPosition,
+            Rotation = this.LerpedRotation,
+            Scale = this.LerpedScale
+        };
+        
+        immediateRenderer.DrawBoundingBox(boxTransform, this._terrainBaseBox, Color.Green);
+        
+        if (!this.DebugDrawChunks) {
+            return;
+        }
+        
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            Color chunkColor;
+            bool hasMeshColor;
+            
+            if (this._buildingSet.ContainsKey(chunk) || this._queuedSet.ContainsKey(chunk) || chunk.IsDirty) {
+                chunkColor = Color.White;
+                hasMeshColor = false;
+            }
+            else if (chunk.Mesh != null) {
+                chunkColor = Color.LightGray;
+                hasMeshColor = true;
+            }
+            else {
+                chunkColor = Color.DarkGray;
+                hasMeshColor = false;
+            }
+            
+            if (cam3D != null && this.FrustumCulling && this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox frustumBounds)) {
+                bool chunkVisible = cam3D.GetFrustum().ContainsBox(this.GetChunkWorldBounds(chunk, frustumBounds));
+                
+                if (!chunkVisible && hasMeshColor) {
+                    chunkColor = Color.Gray;
+                }
+            }
+            
+            BoundingBox chunkBox = new BoundingBox {
+                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
+                Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
+            };
+            
+            immediateRenderer.DrawBoundingBox(boxTransform, chunkBox, chunkColor);
+        }
+    }
+    
+    private bool EnsureTerrainReady() {
+        if (this._initializedTerrain) {
+            return true;
+        }
+        
+        if (this._terrainTask == null || !this._terrainTask.IsCompletedSuccessfully) {
+            return false;
+        }
+        
+        this.InitializeTerrain(this._terrainTask.Result);
+        return true;
+    }
+    
+    private void InitializeTerrain(ITerrain terrain) {
+        this.Terrain = terrain;
+        this._initializedTerrain = true;
+        
+        this._terrainBaseBox = new BoundingBox {
+            Min = new Vector3(0.0F, -this.Terrain.Height, 0.0F),
+            Max = new Vector3(this.Terrain.Width, this.Terrain.Height, this.Terrain.Depth)
+        };
+        
+        this._chunkLocalBounds.Clear();
+        this._chunkLocalCenters.Clear();
+        this._chunkWorldBounds.Clear();
+        this._terrainWorldBoundsVersion = -1;
+        
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            this._chunkLocalBounds[chunk] = new BoundingBox {
+                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
+                Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
+            };
+            this._chunkLocalCenters[chunk] = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
+        }
+
+        this._lodUpdateAccumulator = float.PositiveInfinity;
+        this._hasLastLodCameraPosition = false;
+    }
+    
+    private void PreloadAllChunkMeshes() {
+        Camera3D? camera = (Camera3D?) this.Entity.Scene.GetEntitiesWithTag("camera3D").FirstOrDefault();
+        Vector3 cameraPosition = camera?.Position ?? Vector3.Zero;
+        float maxLodDistance = this.UseCameraFarPlaneForLodRange && camera != null ? camera.FarPlane : float.PositiveInfinity;
+        float maxLodDistanceSquared = maxLodDistance * maxLodDistance;
+        
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            float distanceSquared = this.GetChunkDistanceSquared(cameraPosition, chunk);
+            int targetLod = this.EnableLod ? DetermineLod(distanceSquared, this.LodDistances, this.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
+            
+            if (chunk.Lod != targetLod) {
+                chunk.Lod = targetLod;
+            }
+        }
+        
+        IChunk[] chunks = this.Terrain.GetChunks().Where(chunk => chunk.Lod >= 0).ToArray();
+        
+        Parallel.ForEach(chunks, new ParallelOptions {
+            MaxDegreeOfParallelism = Math.Max(1, this.MaxConcurrentChunkBuilds)
+        }, chunk => chunk.GenerateGeometry());
+        
+        foreach (IChunk chunk in chunks) {
+            chunk.UploadGeometry(this.GraphicsDevice);
+            this.RefreshMeshChunkState(chunk);
+        }
+
+        this.UpdateFarChunkMembership();
+        this.ProcessDirtyRegions(true);
+    }
+    
+    private void ScheduleBackground(IChunk chunk) {
+        if (!this._buildingSet.TryAdd(chunk, 0)) {
+            return;
+        }
+        
+        _ = Task.Run(() => {
+            try {
+                chunk.GenerateGeometry();
+                if (this._queuedSet.TryAdd(chunk, 0)) {
+                    this._pendingUpload.Enqueue(chunk);
+                }
+            }
+            finally {
+                this._buildingSet.TryRemove(chunk, out _);
+            }
+        });
+    }
+    
+    private bool ShouldSchedule(IChunk chunk) {
+        if (this._queuedSet.ContainsKey(chunk) || this._buildingSet.ContainsKey(chunk)) {
+            return false;
+        }
+        
+        if (chunk.Lod < 0 && chunk.Mesh == null) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void UpdateLodLevels() {
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
         if (cam3D == null) {
             return;
         }
 
-        Vector3 cameraPos = cam3D.Position;
+        float interval = Math.Max(0.0F, this.LodUpdateIntervalSeconds);
+        float moveThreshold = Math.Max(0.0F, this.LodUpdateCameraMoveThreshold);
+        bool movedEnough = !this._hasLastLodCameraPosition ||
+                           Vector3.DistanceSquared(this._lastLodCameraPosition, cam3D.Position) >= (moveThreshold * moveThreshold);
 
-        if (Vector3.DistanceSquared(cameraPos, this._lastCamPos) < 4.0f) {
+        if (!movedEnough && this._lodUpdateAccumulator < interval) {
             return;
         }
 
-        this._lastCamPos = cameraPos;
+        this._lodUpdateAccumulator = 0.0F;
+        this._hasLastLodCameraPosition = true;
+        this._lastLodCameraPosition = cam3D.Position;
+        this._lodRingTick++;
+        
+        float maxLodDistance = this.UseCameraFarPlaneForLodRange ? cam3D.FarPlane : float.PositiveInfinity;
+        float maxLodDistanceSquared = maxLodDistance * maxLodDistance;
 
-        float maxDistSq       = this._lodDistancesSq.Length > 0 ? this._lodDistancesSq[^1] : 0f;
-        float cullThresholdSq = maxDistSq * 1.1f;
+        float nearRingDistance = this.LodDistances.Length == 0 ? float.PositiveInfinity : this.LodDistances[Math.Min(1, this.LodDistances.Length - 1)];
+        float midRingDistance = this.LodDistances.Length == 0 ? float.PositiveInfinity : this.LodDistances[Math.Min(2, this.LodDistances.Length - 1)];
+        float nearRingDistanceSquared = nearRingDistance * nearRingDistance;
+        float midRingDistanceSquared = midRingDistance * midRingDistance;
+        int midInterval = Math.Max(1, this.MidRingLodUpdateIntervalTicks);
+        int farInterval = Math.Max(1, this.FarRingLodUpdateIntervalTicks);
+        
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            float distanceSquared = this.GetChunkDistanceSquared(cam3D.Position, chunk);
 
-        for (int i = 0; i < this._chunkArray.Length; i++) {
-            IChunk chunk  = this._chunkArray[i];
-            float  distSq = Vector3.DistanceSquared(cameraPos, this._chunkWorldCenters[i]);
+            bool updateThisChunk = distanceSquared <= nearRingDistanceSquared ||
+                                   (distanceSquared <= midRingDistanceSquared && (this._lodRingTick % midInterval == 0)) ||
+                                   (distanceSquared > midRingDistanceSquared && (this._lodRingTick % farInterval == 0));
 
-            if (distSq > cullThresholdSq) {
-                if (chunk.Lod != -1) {
-                    chunk.Lod = -1;
-                    chunk.MarkDirty();
-                    this._lodPrioritySet.Add(i);
-                }
-
+            if (!updateThisChunk) {
                 continue;
             }
 
-            int targetLod = 1;
-
-            for (int li = 0; li < this._lodDistancesSq.Length; li++) {
-                if (distSq > this._lodDistancesSq[li]) {
-                    targetLod = this._lodSteps[li];
-                }
-                else {
-                    break;
-                }
+            int targetLod = this.EnableLod ? DetermineLod(distanceSquared, this.LodDistances, this.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
+            
+            if (this.ShouldHoldCurrentLod(chunk.Lod, targetLod, distanceSquared)) {
+                continue;
             }
-
+            
             if (chunk.Lod != targetLod) {
                 chunk.Lod = targetLod;
-                chunk.MarkDirty();
-                this._lodPrioritySet.Add(i);
+                this.UpdateChunkRegionMembership(chunk);
+            }
+        }
+    }
+    
+    private static int DetermineLod(float distanceSquared, float[] lodDistances, bool cullBeyondLastLod, float maxDistanceSquared) {
+        if (distanceSquared > maxDistanceSquared) {
+            return -1;
+        }
+        
+        if (lodDistances.Length == 0) {
+            return 0;
+        }
+        
+        for (int i = 0; i < lodDistances.Length; i++) {
+            float lodDistance = lodDistances[i];
+
+            if (distanceSquared <= lodDistance * lodDistance) {
+                return i;
+            }
+        }
+        
+        return cullBeyondLastLod ? -1 : lodDistances.Length - 1;
+    }
+    
+    private bool ShouldHoldCurrentLod(int currentLod, int targetLod, float distanceSquared) {
+        if (currentLod < 0 || targetLod == currentLod || this.LodDistances.Length == 0 || this.LodHysteresis <= 0.0F) {
+            return false;
+        }
+        
+        if (targetLod > currentLod) {
+            if (currentLod >= this.LodDistances.Length) {
+                return false;
+            }
+            
+            float threshold = this.LodDistances[currentLod] * (1.0F + this.LodHysteresis);
+            return distanceSquared <= threshold * threshold;
+        }
+        
+        if (targetLod < 0 || targetLod >= this.LodDistances.Length) {
+            return false;
+        }
+        
+        float lowerThreshold = this.LodDistances[targetLod] * (1.0F - this.LodHysteresis);
+        return distanceSquared >= lowerThreshold * lowerThreshold;
+    }
+    
+    private float GetChunkDistanceSquared(Vector3 cameraPosition, IChunk chunk) {
+        if (!this._chunkLocalCenters.TryGetValue(chunk, out Vector3 chunkCenter)) {
+            chunkCenter = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
+            this._chunkLocalCenters[chunk] = chunkCenter;
+        }
+
+        Vector3 chunkWorldCenter = this.LerpedGlobalPosition + chunkCenter;
+        return Vector3.DistanceSquared(cameraPosition, chunkWorldCenter);
+    }
+    
+    private void ProcessPendingUploads(GraphicsDevice graphicsDevice) {
+        int uploads = 0;
+        
+        while (uploads < this.MaxChunkUploadsPerFrame && this._pendingUpload.TryDequeue(out IChunk? chunk)) {
+            this._queuedSet.TryRemove(chunk, out _);
+            chunk.UploadGeometry(graphicsDevice);
+            this.RefreshMeshChunkState(chunk);
+            uploads++;
+        }
+    }
+
+    private void ProcessPendingRegionUploads() {
+        int uploads = 0;
+        int uploadBudget = Math.Max(0, this.MaxRegionUploadsPerFrame);
+
+        if (uploadBudget == 0) {
+            return;
+        }
+
+        Stopwatch uploadStopwatch = Stopwatch.StartNew();
+        double uploadBudgetMs = Math.Max(0.0F, this.RegionUploadBudgetMilliseconds);
+
+        while (uploads < uploadBudget && this._pendingRegionUploads.TryDequeue(out RegionBuildResult result)) {
+            if (uploadBudgetMs > 0.0 && uploads > 0 && uploadStopwatch.Elapsed.TotalMilliseconds >= uploadBudgetMs) {
+                this._pendingRegionUploads.Enqueue(result);
+                break;
+            }
+
+            this.DisposeRegionBatch(result.Key);
+
+            if (result.HasGeometry) {
+                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, GetFarBatchMaterial(), new BasicMeshData(result.Vertices!, result.Indices!));
+                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount);
+                this._regionBatches[result.Key] = batch;
+            }
+
+            this._regionWorldBounds.Remove(result.Key);
+            this._regionRenderableTransformVersions.Remove(result.Key);
+            uploads++;
+        }
+    }
+    
+    private void RefreshMeshChunkState(IChunk chunk) {
+        if (chunk.Mesh != null) {
+            if (!this._meshChunkList.Contains(chunk)) {
+                this._meshChunkList.Add(chunk);
+            }
+
+            this.UpdateChunkRegionMembership(chunk);
+            return;
+        }
+        
+        this._meshChunkList.Remove(chunk);
+        this.RemoveChunkFromRegion(chunk);
+        this._chunkWorldBounds.Remove(chunk);
+        this._chunkRenderableTransformVersions.Remove(chunk);
+        
+        if (this._renderables.Remove(chunk, out Renderable? renderable)) {
+            renderable.Dispose();
+        }
+    }
+    
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            foreach (Renderable renderable in this._renderables.Values) {
+                renderable.Dispose();
+            }
+            
+            this._renderables.Clear();
+            
+            foreach (RegionBatch batch in this._regionBatches.Values) {
+                batch.Dispose();
+            }
+            
+            this._regionBatches.Clear();
+            
+            if (this._initializedTerrain) {
+                foreach (IChunk chunk in this.Terrain.GetChunks()) {
+                    chunk.Dispose();
+                }
+            }
+            
+            this._meshChunkList.Clear();
+            this._buildingSet.Clear();
+            this._queuedSet.Clear();
+            this._regionBuildingSet.Clear();
+            this._chunkLocalBounds.Clear();
+            this._chunkLocalCenters.Clear();
+            this._chunkWorldBounds.Clear();
+            this._chunkRenderableTransformVersions.Clear();
+            this._chunkRegions.Clear();
+            this._regionMembers.Clear();
+            this._regionWorldBounds.Clear();
+            this._regionRenderableTransformVersions.Clear();
+            this._dirtyRegions.Clear();
+            
+            while (this._pendingUpload.TryDequeue(out _)) {
+            }
+
+            while (this._pendingRegionUploads.TryDequeue(out _)) {
             }
         }
     }
 
-    private BoundingBox ComputeFrustumBox(BoundingBox localBox, in Transform ct) {
-        Vector3 center    = (localBox.Min + localBox.Max) * 0.5F;
-        Vector3 dimension = (localBox.Max - localBox.Min) * ct.Scale;
-        Vector3 offset    = center * ct.Scale;
+    private void DrawFarBatches(Camera3D? cam3D) {
+        foreach (KeyValuePair<RegionKey, RegionBatch> pair in this._regionBatches) {
+            RegionKey regionKey = pair.Key;
+            RegionBatch batch = pair.Value;
 
-        float maxSide = Math.Max(dimension.X, dimension.Z);
-        dimension.X = maxSide;
-        dimension.Z = maxSide;
+            if (batch.Mesh == null || batch.Renderable == null) {
+                continue;
+            }
 
-        Vector3 fc = ct.Translation + offset;
+            if (cam3D != null && this.FrustumCulling) {
+                bool visible = cam3D.GetFrustum().ContainsBox(this.GetRegionWorldBounds(regionKey, batch.LocalBounds));
+
+                if (!visible) {
+                    continue;
+                }
+            }
+            
+            this.ApplyRegionRenderableTransform(regionKey, batch.Renderable);
+            this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
+            this.TotalVertexCount += batch.VertexCount;
+        }
+    }
+
+    private void RefreshBoundsTransformVersion() {
+        if (!this._hasBoundsTransformCache ||
+            this._boundsTransformPosition != this.LerpedGlobalPosition ||
+            this._boundsTransformRotation != this.LerpedRotation ||
+            this._boundsTransformScale != this.LerpedScale) {
+            this._hasBoundsTransformCache = true;
+            this._boundsTransformPosition = this.LerpedGlobalPosition;
+            this._boundsTransformRotation = this.LerpedRotation;
+            this._boundsTransformScale = this.LerpedScale;
+            this._boundsTransformVersion++;
+        }
+    }
+
+    private void RefreshRenderTransformVersion() {
+        if (!this._hasRenderTransformCache ||
+            this._renderTransformPosition != this.LerpedGlobalPosition ||
+            this._renderTransformRotation != this.LerpedRotation ||
+            this._renderTransformScale != this.LerpedScale) {
+            this._hasRenderTransformCache = true;
+            this._renderTransformPosition = this.LerpedGlobalPosition;
+            this._renderTransformRotation = this.LerpedRotation;
+            this._renderTransformScale = this.LerpedScale;
+            this._renderTransformVersion++;
+
+            this._sharedRenderTransform.Translation = this.LerpedGlobalPosition;
+            this._sharedRenderTransform.Rotation = this.LerpedRotation;
+            this._sharedRenderTransform.Scale = this.LerpedScale;
+        }
+    }
+
+    private void ApplyChunkRenderableTransform(IChunk chunk, Renderable renderable) {
+        if (this._chunkRenderableTransformVersions.TryGetValue(chunk, out int version) && version == this._renderTransformVersion) {
+            return;
+        }
+
+        renderable.SetTransform(0, this._sharedRenderTransform);
+        this._chunkRenderableTransformVersions[chunk] = this._renderTransformVersion;
+    }
+
+    private void ApplyRegionRenderableTransform(RegionKey key, Renderable renderable) {
+        if (this._regionRenderableTransformVersions.TryGetValue(key, out int version) && version == this._renderTransformVersion) {
+            return;
+        }
+
+        renderable.SetTransform(0, this._sharedRenderTransform);
+        this._regionRenderableTransformVersions[key] = this._renderTransformVersion;
+    }
+
+    private BoundingBox GetTerrainWorldBounds() {
+        if (this._terrainWorldBoundsVersion == this._boundsTransformVersion) {
+            return this._terrainWorldBounds;
+        }
+
+        this._terrainWorldBounds = this.ComputeWorldAabb(this._terrainBaseBox);
+        this._terrainWorldBoundsVersion = this._boundsTransformVersion;
+        return this._terrainWorldBounds;
+    }
+
+    private BoundingBox GetChunkWorldBounds(IChunk chunk, BoundingBox localBounds) {
+        if (this._chunkWorldBounds.TryGetValue(chunk, out CachedWorldBounds cached) &&
+            cached.Version == this._boundsTransformVersion) {
+            return cached.Bounds;
+        }
+
+        BoundingBox worldBounds = this.ComputeWorldAabb(localBounds);
+        this._chunkWorldBounds[chunk] = new CachedWorldBounds(worldBounds, this._boundsTransformVersion);
+        return worldBounds;
+    }
+
+    private BoundingBox GetRegionWorldBounds(RegionKey key, BoundingBox localBounds) {
+        if (this._regionWorldBounds.TryGetValue(key, out CachedWorldBounds cached) &&
+            cached.Version == this._boundsTransformVersion) {
+            return cached.Bounds;
+        }
+
+        BoundingBox worldBounds = this.ComputeWorldAabb(localBounds);
+        this._regionWorldBounds[key] = new CachedWorldBounds(worldBounds, this._boundsTransformVersion);
+        return worldBounds;
+    }
+
+    private BoundingBox ComputeWorldAabb(BoundingBox localBox) {
+        Vector3 worldMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+        Vector3 worldMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+        this.ExpandWorldBounds(localBox.Min.X, localBox.Min.Y, localBox.Min.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Max.X, localBox.Min.Y, localBox.Min.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Min.X, localBox.Max.Y, localBox.Min.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Max.X, localBox.Max.Y, localBox.Min.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Min.X, localBox.Min.Y, localBox.Max.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Max.X, localBox.Min.Y, localBox.Max.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Min.X, localBox.Max.Y, localBox.Max.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldBounds(localBox.Max.X, localBox.Max.Y, localBox.Max.Z, ref worldMin, ref worldMax);
 
         return new BoundingBox {
-            Min = new Vector3(fc.X - dimension.X * 0.5F, ct.Translation.Y + localBox.Min.Y * ct.Scale.Y, fc.Z - dimension.Z * 0.5F),
-            Max = new Vector3(fc.X + dimension.X * 0.5F, ct.Translation.Y + localBox.Max.Y * ct.Scale.Y, fc.Z + dimension.Z * 0.5F)
+            Min = worldMin,
+            Max = worldMax
         };
     }
 
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Inner types
-    // ══════════════════════════════════════════════════════════════════════════════════════════
+    private void ExpandWorldBounds(float x, float y, float z, ref Vector3 worldMin, ref Vector3 worldMax) {
+        Vector3 local = new Vector3(x, y, z);
+        Vector3 scaled = local * this.LerpedScale;
+        Vector3 rotated = Vector3.Transform(scaled, this.LerpedRotation);
+        Vector3 world = rotated + this.LerpedGlobalPosition;
+        worldMin = Vector3.Min(worldMin, world);
+        worldMax = Vector3.Max(worldMax, world);
+    }
 
-    private sealed class RegionBatch {
-        public readonly int[]       ChunkIndices;
-        public readonly Vector3     LocalOrigin;
-        public readonly BoundingBox LocalBounds;
-        public IMesh?      Mesh;
-        public Renderable? Renderable;
-
-        public RegionBatch(int[] chunkIndices, Vector3 localOrigin, Vector3 extent) {
-            this.ChunkIndices = chunkIndices;
-            this.LocalOrigin  = localOrigin;
-            this.LocalBounds  = new BoundingBox(Vector3.Zero, extent);
+    private void UpdateFarChunkMembership() {
+        if (!this.EnableFarChunkBatching || this.FarChunkBatchRegionSizeInChunks <= 0) {
+            this.ClearAllChunkRegions();
+            return;
         }
 
-        public void Dispose() {
-            this.Mesh?.Dispose();
-            this.Mesh       = null;
-            this.Renderable = null;
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            this.UpdateChunkRegionMembership(chunk);
         }
     }
 
-    // ══════════════════════════════════════════════════════════════════════════════════════════
-    // Dispose
-    // ══════════════════════════════════════════════════════════════════════════════════════════
+    private void UpdateChunkRegionMembership(IChunk chunk) {
+        bool shouldBatch = this.ShouldBatchChunk(chunk);
 
-    protected override void Dispose(bool disposing) {
-        if (disposing) {
-            if (this.Terrain is MarchingCubesTerrain mct) {
-                mct.OnChunkMarkedDirty -= this.EnqueuePendingRebuild;
+        if (!shouldBatch) {
+            this.RemoveChunkFromRegion(chunk);
+            return;
+        }
+
+        RegionKey newKey = this.GetRegionKey(chunk);
+
+        if (this._chunkRegions.TryGetValue(chunk, out RegionKey currentKey) && currentKey.Equals(newKey)) {
+            return;
+        }
+
+        this.RemoveChunkFromRegion(chunk);
+        this._chunkRegions[chunk] = newKey;
+
+        if (!this._regionMembers.TryGetValue(newKey, out HashSet<IChunk>? members)) {
+            members = new HashSet<IChunk>();
+            this._regionMembers[newKey] = members;
+        }
+
+        members.Add(chunk);
+        this._dirtyRegions.Add(newKey);
+    }
+
+    private void RemoveChunkFromRegion(IChunk chunk) {
+        if (!this._chunkRegions.TryGetValue(chunk, out RegionKey key)) {
+            return;
+        }
+
+        this._chunkRegions.Remove(chunk);
+
+        if (this._regionMembers.TryGetValue(key, out HashSet<IChunk>? members)) {
+            members.Remove(chunk);
+
+            if (members.Count == 0) {
+                this._regionMembers.Remove(key);
+            }
+        }
+
+        this._dirtyRegions.Add(key);
+    }
+
+    private void ClearAllChunkRegions() {
+        foreach (RegionBatch batch in this._regionBatches.Values) {
+            batch.Dispose();
+        }
+
+        this._chunkRegions.Clear();
+        this._regionMembers.Clear();
+        this._regionBatches.Clear();
+        this._regionWorldBounds.Clear();
+        this._regionRenderableTransformVersions.Clear();
+        this._dirtyRegions.Clear();
+    }
+
+    private bool ShouldBatchChunk(IChunk chunk) {
+        if (chunk.Mesh == null || chunk.Lod < 0 || chunk.CurrentLod < 0) {
+            return false;
+        }
+
+        if (chunk.Lod < this.FarChunkBatchMinLod || chunk.CurrentLod < this.FarChunkBatchMinLod) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private RegionKey GetRegionKey(IChunk chunk) {
+        int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
+        int regionChunkSize = Math.Max(1, this.FarChunkBatchRegionSizeInChunks);
+        int chunkX = Math.Max(0, (int) chunk.Position.X / chunkSize);
+        int chunkZ = Math.Max(0, (int) chunk.Position.Z / chunkSize);
+
+        return new RegionKey(chunkX / regionChunkSize, chunkZ / regionChunkSize, chunk.CurrentLod);
+    }
+
+    private void ProcessDirtyRegions(bool forceAll) {
+        if (this._dirtyRegions.Count == 0) {
+            return;
+        }
+
+        this._regionDirtyBuffer.Clear();
+        this._regionDirtyBuffer.AddRange(this._dirtyRegions);
+
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+
+        if (cam3D != null) {
+            this._regionDirtyBuffer.Sort((a, b) => {
+                float da = this.GetRegionDistanceSquared(cam3D.Position, a);
+                float db = this.GetRegionDistanceSquared(cam3D.Position, b);
+                return da.CompareTo(db);
+            });
+        }
+
+        int budget = forceAll ? int.MaxValue : Math.Max(0, this.MaxRegionRebuildsPerFrame);
+        int scheduled = 0;
+        Stopwatch scheduleStopwatch = Stopwatch.StartNew();
+        double scheduleBudgetMs = forceAll ? double.PositiveInfinity : Math.Max(0.0F, this.RegionScheduleBudgetMilliseconds);
+
+        foreach (RegionKey key in this._regionDirtyBuffer) {
+            if (scheduled >= budget) {
+                break;
             }
 
-            foreach (RegionBatch batch in this._regionBatches) {
-                batch.Dispose();
+            if (scheduleBudgetMs > 0.0 && scheduled > 0 && scheduleStopwatch.Elapsed.TotalMilliseconds >= scheduleBudgetMs) {
+                break;
             }
 
-            for (int i = 0; i < this._chunkArray.Length; i++) {
-                this._chunkArray[i].Dispose();
+            if (this.ScheduleRegionBuild(key)) {
+                this._dirtyRegions.Remove(key);
+                scheduled++;
             }
+        }
+    }
+
+    private float GetRegionDistanceSquared(Vector3 cameraPosition, RegionKey key) {
+        int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
+        int regionChunkSize = Math.Max(1, this.FarChunkBatchRegionSizeInChunks);
+        float regionWorldSize = chunkSize * regionChunkSize;
+        float centerX = ((key.X + 0.5F) * regionWorldSize);
+        float centerZ = ((key.Z + 0.5F) * regionWorldSize);
+        float centerY = this.Terrain.Height * 0.5F;
+        Vector3 worldCenter = this.LerpedGlobalPosition + new Vector3(centerX, centerY, centerZ);
+        return Vector3.DistanceSquared(cameraPosition, worldCenter);
+    }
+
+    private bool ScheduleRegionBuild(RegionKey key) {
+        if (!this._regionBuildingSet.TryAdd(key, 0)) {
+            return false;
+        }
+
+        IChunk[] memberSnapshot = this._regionMembers.TryGetValue(key, out HashSet<IChunk>? members) ? members.ToArray() : [];
+
+        _ = Task.Run(() => {
+            try {
+                RegionBuildResult result = BuildRegionGeometry(key, memberSnapshot);
+                this._pendingRegionUploads.Enqueue(result);
+            }
+            finally {
+                this._regionBuildingSet.TryRemove(key, out _);
+            }
+        });
+
+        return true;
+    }
+
+    private RegionBuildResult BuildRegionGeometry(RegionKey key, IChunk[] members) {
+        int totalVertexCount = 0;
+        int totalIndexCount = 0;
+        bool hasBounds = false;
+        BoundingBox bounds = default;
+        List<BasicMeshData> sourceData = new List<BasicMeshData>(members.Length);
+
+        foreach (IChunk chunk in members) {
+            if (chunk.Mesh is not Mesh<Vertex3D> mesh || mesh.MeshData is not BasicMeshData meshData || meshData.Vertices.Length == 0 || meshData.Indices.Length == 0) {
+                continue;
+            }
+
+            sourceData.Add(meshData);
+            totalVertexCount += meshData.Vertices.Length;
+            totalIndexCount += meshData.Indices.Length;
+
+            if (this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBounds)) {
+                if (!hasBounds) {
+                    bounds = chunkBounds;
+                    hasBounds = true;
+                }
+                else {
+                    bounds = new BoundingBox {
+                        Min = Vector3.Min(bounds.Min, chunkBounds.Min),
+                        Max = Vector3.Max(bounds.Max, chunkBounds.Max)
+                    };
+                }
+            }
+        }
+
+        if (totalVertexCount == 0 || totalIndexCount == 0 || !hasBounds) {
+            return RegionBuildResult.Empty(key);
+        }
+
+        Vertex3D[] mergedVertices = new Vertex3D[totalVertexCount];
+        uint[] mergedIndices = new uint[totalIndexCount];
+
+        int vertexOffset = 0;
+        int indexOffset = 0;
+
+        foreach (BasicMeshData meshData in sourceData) {
+            Array.Copy(meshData.Vertices, 0, mergedVertices, vertexOffset, meshData.Vertices.Length);
+
+            for (int i = 0; i < meshData.Indices.Length; i++) {
+                mergedIndices[indexOffset + i] = meshData.Indices[i] + (uint) vertexOffset;
+            }
+
+            vertexOffset += meshData.Vertices.Length;
+            indexOffset += meshData.Indices.Length;
+        }
+
+        return RegionBuildResult.Create(key, mergedVertices, mergedIndices, bounds, totalVertexCount);
+    }
+
+    private void DisposeRegionBatch(RegionKey key) {
+        if (!this._regionBatches.Remove(key, out RegionBatch? batch)) {
+            return;
+        }
+
+        this._regionWorldBounds.Remove(key);
+        this._regionRenderableTransformVersions.Remove(key);
+        batch.Dispose();
+    }
+
+    private static Material GetFarBatchMaterial() {
+        if (_sharedFarBatchMaterial != null) {
+            return _sharedFarBatchMaterial;
+        }
+
+        RasterizerStateDescription rasterizerState = new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Wireframe, FrontFace.Clockwise, true, false);
+        Material material = new Material(GlobalResource.DefaultModelEffect, rasterizerState);
+
+        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White
+        });
+
+        _sharedFarBatchMaterial = material;
+        return material;
+    }
+
+    private readonly struct RegionBuildResult {
+        public RegionKey Key { get; }
+        public Vertex3D[]? Vertices { get; }
+        public uint[]? Indices { get; }
+        public BoundingBox LocalBounds { get; }
+        public int VertexCount { get; }
+        public bool HasGeometry { get; }
+
+        private RegionBuildResult(RegionKey key, Vertex3D[]? vertices, uint[]? indices, BoundingBox localBounds, int vertexCount, bool hasGeometry) {
+            this.Key = key;
+            this.Vertices = vertices;
+            this.Indices = indices;
+            this.LocalBounds = localBounds;
+            this.VertexCount = vertexCount;
+            this.HasGeometry = hasGeometry;
+        }
+
+        public static RegionBuildResult Empty(RegionKey key) {
+            return new RegionBuildResult(key, null, null, default, 0, false);
+        }
+
+        public static RegionBuildResult Create(RegionKey key, Vertex3D[] vertices, uint[] indices, BoundingBox localBounds, int vertexCount) {
+            return new RegionBuildResult(key, vertices, indices, localBounds, vertexCount, true);
+        }
+    }
+
+    private readonly struct RegionKey : IEquatable<RegionKey> {
+        public int X { get; }
+        public int Z { get; }
+        public int Lod { get; }
+
+        public RegionKey(int x, int z, int lod) {
+            this.X = x;
+            this.Z = z;
+            this.Lod = lod;
+        }
+
+        public bool Equals(RegionKey other) {
+            return this.X == other.X && this.Z == other.Z && this.Lod == other.Lod;
+        }
+
+        public override bool Equals(object? obj) {
+            return obj is RegionKey other && this.Equals(other);
+        }
+
+        public override int GetHashCode() {
+            return HashCode.Combine(this.X, this.Z, this.Lod);
+        }
+    }
+
+    private readonly struct CachedWorldBounds {
+        public BoundingBox Bounds { get; }
+        public int Version { get; }
+
+        public CachedWorldBounds(BoundingBox bounds, int version) {
+            this.Bounds = bounds;
+            this.Version = version;
+        }
+    }
+
+    private sealed class RegionBatch : IDisposable {
+        public IMesh? Mesh { get; private set; }
+        public Renderable? Renderable { get; private set; }
+        public BoundingBox LocalBounds { get; }
+        public int VertexCount { get; }
+
+        public RegionBatch(IMesh mesh, Renderable renderable, BoundingBox localBounds, int vertexCount) {
+            this.Mesh = mesh;
+            this.Renderable = renderable;
+            this.LocalBounds = localBounds;
+            this.VertexCount = vertexCount;
+        }
+
+        public void Dispose() {
+            this.Renderable?.Dispose();
+            this.Renderable = null;
+            this.Mesh?.Dispose();
+            this.Mesh = null;
         }
     }
 }

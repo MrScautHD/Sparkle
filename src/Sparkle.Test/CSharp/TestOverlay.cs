@@ -29,11 +29,11 @@ public class TestOverlay : Overlay {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"FPS: {this._fps}", new Vector2(10, 10), 18, scale: new Vector2(2, 2));
         
-        if (SceneManager.ActiveScene?.Name == "Terrain3D-Scene") {
-            context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Vertices: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.TotalVertexCount}", new Vector2(10, 42), 18, scale: new Vector2(2, 2));
-            context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Chunks: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.Terrain.GetChunks().Count}", new Vector2(10, 84), 18, scale: new Vector2(2, 2));
-            context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Chunk size: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.Terrain.ChunkSize}", new Vector2(10, 126), 18, scale: new Vector2(2, 2));
-        }
+        //if (SceneManager.ActiveScene?.Name == "Terrain3D-Scene") {
+        //    context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Vertices: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.TotalVertexCount}", new Vector2(10, 42), 18, scale: new Vector2(2, 2));
+        //    context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Chunks: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.Terrain.GetChunks().Count}", new Vector2(10, 84), 18, scale: new Vector2(2, 2));
+        //    context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"Terrain Chunk size: {SceneManager.ActiveScene.GetEntitiesWithTag("terrain").FirstOrDefault()?.GetComponent<Terrain3D>()?.Terrain.ChunkSize}", new Vector2(10, 126), 18, scale: new Vector2(2, 2));
+        //}
         
         context.SpriteBatch.End();
     }
