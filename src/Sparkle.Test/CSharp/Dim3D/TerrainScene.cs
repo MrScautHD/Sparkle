@@ -42,8 +42,8 @@ public class TerrainScene : Scene {
         this.AddEntity(terrainEntity);
     }
     
-    protected override void Update(double delta) {
-        base.Update(delta);
+    protected override void FixedUpdate(double delta) {
+        base.FixedUpdate(delta);
         
         if (this._terrain == null) {
             return;
@@ -78,7 +78,7 @@ public class TerrainScene : Scene {
         const int terrainWidth = 1024;
         const int terrainHeight = 128;
         const int terrainDepth = 1024;
-        const int chunkSize = 64;
+        const int chunkSize = 16;
         const int surfaceHeight = 64;
         
         FlatChunkGenerator chunkGenerator = new FlatChunkGenerator(chunkSize, terrainHeight, surfaceHeight);
