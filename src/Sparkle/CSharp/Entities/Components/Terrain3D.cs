@@ -1,17 +1,14 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Numerics;
-using Bliss.CSharp;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Geometry.Meshes.Data;
-using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Materials;
-using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
@@ -33,7 +30,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     public int MaxChunkUploadsPerFrame { get; set; }
     
     public int MaxChunkBuildsPerFrame { get; set; }
-
+    
     public float ChunkBuildScheduleBudgetMilliseconds { get; set; }
     
     public int MaxConcurrentChunkBuilds { get; set; }
@@ -49,32 +46,34 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     public bool UseCameraFarPlaneForLodRange { get; set; }
     
     public bool PreloadChunksOnInit { get; set; }
-
+    
     public bool PauseTerrainWorkWhenOutOfView { get; set; }
-
+    
     public float LodUpdateIntervalSeconds { get; set; }
-
+    
     public float LodUpdateCameraMoveThreshold { get; set; }
-
+    
     public bool EnableFarChunkBatching { get; set; }
-
+    
     public int FarChunkBatchMinLod { get; set; }
-
+    
     public int FarChunkBatchRegionSizeInChunks { get; set; }
-
+    
     public int MaxRegionRebuildsPerFrame { get; set; }
-
+    
     public int MaxRegionUploadsPerFrame { get; set; }
-
+    
     public float RegionScheduleBudgetMilliseconds { get; set; }
-
+    
     public float RegionUploadBudgetMilliseconds { get; set; }
-
+    
     public int MidRingLodUpdateIntervalTicks { get; set; }
-
+    
     public int FarRingLodUpdateIntervalTicks { get; set; }
     
     public int TotalVertexCount { get; private set; }
+    
+    public int TotalIndexCount { get; private set; }
     
     private readonly Func<Task<ITerrain>> _terrainFactory;
     private readonly List<IChunk> _meshChunkList;
@@ -281,6 +280,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         this.TotalVertexCount = 0;
+        this.TotalIndexCount = 0;
 
         this.DrawFarBatches(cam3D);
         
@@ -323,6 +323,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.ApplyTerrainMaterial(renderable);
             this.Entity.Scene.Renderer.DrawRenderable(renderable);
             this.TotalVertexCount += (int) chunk.Mesh.VertexCount;
+
+            if (chunk.Mesh is Mesh<Vertex3D> mesh && mesh.MeshData is BasicMeshData meshData) {
+                this.TotalIndexCount += meshData.Indices.Length;
+            }
         }
     }
     
@@ -615,7 +619,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
 
             if (result.HasGeometry) {
                 Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.Terrain.Material, new BasicMeshData(result.Vertices!, result.Indices!));
-                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount);
+                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount, result.IndexCount);
                 this._regionBatches[result.Key] = batch;
             }
 
@@ -741,6 +745,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.ApplyTerrainMaterial(batch.Renderable);
             this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
             this.TotalVertexCount += batch.VertexCount;
+            this.TotalIndexCount += batch.IndexCount;
         }
     }
 
@@ -1062,7 +1067,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             indexOffset += meshData.Indices.Length;
         }
 
-        return RegionBuildResult.Create(key, mergedVertices, mergedIndices, bounds, totalVertexCount);
+        return RegionBuildResult.Create(key, mergedVertices, mergedIndices, bounds, totalVertexCount, totalIndexCount);
     }
 
     private void DisposeRegionBatch(RegionKey key) {
@@ -1117,23 +1122,25 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         public uint[]? Indices { get; }
         public BoundingBox LocalBounds { get; }
         public int VertexCount { get; }
+        public int IndexCount { get; }
         public bool HasGeometry { get; }
 
-        private RegionBuildResult(RegionKey key, Vertex3D[]? vertices, uint[]? indices, BoundingBox localBounds, int vertexCount, bool hasGeometry) {
+        private RegionBuildResult(RegionKey key, Vertex3D[]? vertices, uint[]? indices, BoundingBox localBounds, int vertexCount, int indexCount, bool hasGeometry) {
             this.Key = key;
             this.Vertices = vertices;
             this.Indices = indices;
             this.LocalBounds = localBounds;
             this.VertexCount = vertexCount;
+            this.IndexCount = indexCount;
             this.HasGeometry = hasGeometry;
         }
 
         public static RegionBuildResult Empty(RegionKey key) {
-            return new RegionBuildResult(key, null, null, default, 0, false);
+            return new RegionBuildResult(key, null, null, default, 0, 0, false);
         }
 
-        public static RegionBuildResult Create(RegionKey key, Vertex3D[] vertices, uint[] indices, BoundingBox localBounds, int vertexCount) {
-            return new RegionBuildResult(key, vertices, indices, localBounds, vertexCount, true);
+        public static RegionBuildResult Create(RegionKey key, Vertex3D[] vertices, uint[] indices, BoundingBox localBounds, int vertexCount, int indexCount) {
+            return new RegionBuildResult(key, vertices, indices, localBounds, vertexCount, indexCount, true);
         }
     }
 
@@ -1176,12 +1183,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         public Renderable? Renderable { get; private set; }
         public BoundingBox LocalBounds { get; }
         public int VertexCount { get; }
+        public int IndexCount { get; }
 
-        public RegionBatch(IMesh mesh, Renderable renderable, BoundingBox localBounds, int vertexCount) {
+        public RegionBatch(IMesh mesh, Renderable renderable, BoundingBox localBounds, int vertexCount, int indexCount) {
             this.Mesh = mesh;
             this.Renderable = renderable;
             this.LocalBounds = localBounds;
             this.VertexCount = vertexCount;
+            this.IndexCount = indexCount;
         }
 
         public void Dispose() {
