@@ -1,4 +1,4 @@
-﻿namespace Sparkle.CSharp.Terrain;
+﻿namespace Sparkle.CSharp.Terrain.Generators;
 
 public class FlatChunkGenerator : IChunkGenerator {
     

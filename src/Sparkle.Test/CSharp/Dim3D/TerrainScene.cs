@@ -5,7 +5,6 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
@@ -13,6 +12,7 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
+using Sparkle.CSharp.Terrain.Generators;
 using Sparkle.CSharp.Terrain.Heightmap;
 using Veldrid;
 
