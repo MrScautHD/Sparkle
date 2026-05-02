@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Meshes;
@@ -314,13 +315,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             
             if (!this._renderables.TryGetValue(chunk, out Renderable? renderable) || !ReferenceEquals(renderable.Mesh, chunk.Mesh)) {
                 renderable?.Dispose();
-                renderable = new Renderable(chunk.Mesh, new Transform());
+                renderable = new Renderable(chunk.Mesh, new Transform(), this.Terrain.Material);
                 this._renderables[chunk] = renderable;
                 this._chunkRenderableTransformVersions.Remove(chunk);
             }
             
             this.ApplyChunkRenderableTransform(chunk, renderable);
-            this.ApplyTerrainMaterial(renderable);
             this.Entity.Scene.Renderer.DrawRenderable(renderable);
             this.TotalVertexCount += (int) chunk.Mesh.VertexCount;
 
@@ -619,7 +619,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
 
             if (result.HasGeometry) {
                 Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.Terrain.Material, new BasicMeshData(result.Vertices!, result.Indices!));
-                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount, result.IndexCount);
+                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform(), this.Terrain.Material), result.LocalBounds, result.VertexCount, result.IndexCount);
                 this._regionBatches[result.Key] = batch;
             }
 
@@ -742,7 +742,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             }
             
             this.ApplyRegionRenderableTransform(regionKey, batch.Renderable);
-            this.ApplyTerrainMaterial(batch.Renderable);
             this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
             this.TotalVertexCount += batch.VertexCount;
             this.TotalIndexCount += batch.IndexCount;
@@ -895,11 +894,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     }
 
     private void RemoveChunkFromRegion(IChunk chunk) {
-        if (!this._chunkRegions.TryGetValue(chunk, out RegionKey key)) {
+        if (!this._chunkRegions.Remove(chunk, out RegionKey key)) {
             return;
         }
-
-        this._chunkRegions.Remove(chunk);
 
         if (this._regionMembers.TryGetValue(key, out HashSet<IChunk>? members)) {
             members.Remove(chunk);
@@ -1074,57 +1071,28 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         if (!this._regionBatches.Remove(key, out RegionBatch? batch)) {
             return;
         }
-
+        
         this._regionWorldBounds.Remove(key);
         this._regionRenderableTransformVersions.Remove(key);
         batch.Dispose();
     }
 
-    private void ApplyTerrainMaterialToRenderables() {
-        Material material = this.Terrain.Material;
-
-        foreach (Renderable renderable in this._renderables.Values) {
-            if (!ReferenceEquals(renderable.Mesh.Material, material)) {
-                renderable.Mesh.Material = material;
-            }
-            
-            if (!ReferenceEquals(renderable.Material, material)) {
-                renderable.Material = material;
-            }
-        }
-
-        foreach (RegionBatch batch in this._regionBatches.Values) {
-            if (batch.Mesh != null && !ReferenceEquals(batch.Mesh.Material, material)) {
-                batch.Mesh.Material = material;
-            }
-            
-            if (batch.Renderable != null && !ReferenceEquals(batch.Renderable.Material, material)) {
-                batch.Renderable.Material = material;
-            }
-        }
-    }
-
-    private void ApplyTerrainMaterial(Renderable renderable) {
-        Material material = this.Terrain.Material;
-        
-        if (!ReferenceEquals(renderable.Mesh.Material, material)) {
-            renderable.Mesh.Material = material;
-        }
-
-        if (!ReferenceEquals(renderable.Material, material)) {
-            renderable.Material = material;
-        }
-    }
-
     private readonly struct RegionBuildResult {
-        public RegionKey Key { get; }
-        public Vertex3D[]? Vertices { get; }
-        public uint[]? Indices { get; }
-        public BoundingBox LocalBounds { get; }
-        public int VertexCount { get; }
-        public int IndexCount { get; }
-        public bool HasGeometry { get; }
-
+        
+        public readonly RegionKey Key;
+        
+        public readonly Vertex3D[]? Vertices;
+        
+        public readonly uint[]? Indices;
+        
+        public readonly BoundingBox LocalBounds;
+        
+        public readonly int VertexCount;
+        
+        public readonly int IndexCount;
+        
+        public readonly bool HasGeometry;
+        
         private RegionBuildResult(RegionKey key, Vertex3D[]? vertices, uint[]? indices, BoundingBox localBounds, int vertexCount, int indexCount, bool hasGeometry) {
             this.Key = key;
             this.Vertices = vertices;
@@ -1134,57 +1102,71 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.IndexCount = indexCount;
             this.HasGeometry = hasGeometry;
         }
-
-        public static RegionBuildResult Empty(RegionKey key) {
-            return new RegionBuildResult(key, null, null, default, 0, 0, false);
-        }
-
+        
         public static RegionBuildResult Create(RegionKey key, Vertex3D[] vertices, uint[] indices, BoundingBox localBounds, int vertexCount, int indexCount) {
             return new RegionBuildResult(key, vertices, indices, localBounds, vertexCount, indexCount, true);
+        }
+        
+        public static RegionBuildResult Empty(RegionKey key) {
+            return new RegionBuildResult(key, null, null, default, 0, 0, false);
         }
     }
 
     private readonly struct RegionKey : IEquatable<RegionKey> {
-        public int X { get; }
-        public int Z { get; }
-        public int Lod { get; }
-
+        
+        public readonly int X;
+        
+        public readonly int Z;
+        
+        public readonly int Lod;
+        
         public RegionKey(int x, int z, int lod) {
             this.X = x;
             this.Z = z;
             this.Lod = lod;
         }
-
+        
+        public static bool operator ==(RegionKey left, RegionKey right) => left.Equals(right);
+        
+        public static bool operator !=(RegionKey left, RegionKey right) => !left.Equals(right);
+        
         public bool Equals(RegionKey other) {
-            return this.X == other.X && this.Z == other.Z && this.Lod == other.Lod;
+            return this.X.Equals(other.X) && this.Z.Equals(other.Z) && this.Lod.Equals(other.Lod);
         }
-
+        
         public override bool Equals(object? obj) {
             return obj is RegionKey other && this.Equals(other);
         }
-
+        
         public override int GetHashCode() {
-            return HashCode.Combine(this.X, this.Z, this.Lod);
+            return HashCode.Combine(this.X.GetHashCode(), this.Z.GetHashCode(), this.Lod.GetHashCode());
         }
     }
-
+    
     private readonly struct CachedWorldBounds {
-        public BoundingBox Bounds { get; }
-        public int Version { get; }
-
+        
+        public readonly BoundingBox Bounds;
+        
+        public readonly int Version;
+        
         public CachedWorldBounds(BoundingBox bounds, int version) {
             this.Bounds = bounds;
             this.Version = version;
         }
     }
-
-    private sealed class RegionBatch : IDisposable {
+    
+    private class RegionBatch : Disposable {
+        
         public IMesh? Mesh { get; private set; }
+        
         public Renderable? Renderable { get; private set; }
-        public BoundingBox LocalBounds { get; }
-        public int VertexCount { get; }
-        public int IndexCount { get; }
-
+        
+        public BoundingBox LocalBounds { get; private set; }
+        
+        public int VertexCount { get; private set; }
+        
+        public int IndexCount { get; private set; }
+        
         public RegionBatch(IMesh mesh, Renderable renderable, BoundingBox localBounds, int vertexCount, int indexCount) {
             this.Mesh = mesh;
             this.Renderable = renderable;
@@ -1192,12 +1174,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.VertexCount = vertexCount;
             this.IndexCount = indexCount;
         }
-
-        public void Dispose() {
-            this.Renderable?.Dispose();
-            this.Renderable = null;
-            this.Mesh?.Dispose();
-            this.Mesh = null;
+        
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
+                this.Renderable?.Dispose();
+                this.Renderable = null;
+                this.Mesh?.Dispose();
+                this.Mesh = null;
+            }
         }
     }
 }
