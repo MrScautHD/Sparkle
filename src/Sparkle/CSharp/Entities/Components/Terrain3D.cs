@@ -6,10 +6,12 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Geometry.Meshes.Data;
+using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Materials;
+using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
@@ -73,6 +75,23 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     public int MidRingLodUpdateIntervalTicks { get; set; }
 
     public int FarRingLodUpdateIntervalTicks { get; set; }
+
+    public PolygonFillMode FillMode {
+        get => this._fillMode;
+        set {
+            if (this._fillMode == value) {
+                return;
+            }
+
+            this._fillMode = value;
+            this.ApplyTerrainMaterialToRenderables();
+        }
+    }
+
+    public bool Wireframe {
+        get => this.FillMode == PolygonFillMode.Wireframe;
+        set => this.FillMode = value ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
+    }
     
     public int TotalVertexCount { get; private set; }
     
@@ -81,6 +100,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     private readonly ConcurrentQueue<IChunk> _pendingUpload;
     private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
     private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
+    private readonly HashSet<HeightmapChunk> _chunksPendingVertexUpload;
     private readonly ConcurrentQueue<RegionBuildResult> _pendingRegionUploads;
     private readonly ConcurrentDictionary<RegionKey, byte> _regionBuildingSet;
     private readonly Dictionary<IChunk, Renderable> _renderables;
@@ -117,8 +137,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     private int _lodRingTick;
     private bool _hasLastLodCameraPosition;
     private Vector3 _lastLodCameraPosition;
+    private PolygonFillMode _fillMode;
+    private Texture2D? _terrainTexture;
     
-    private static Material? _sharedFarBatchMaterial;
+    private Material? _solidMaterial;
+    private Material? _wireframeMaterial;
+    private Material? _triplanarSolidMaterial;
+    private Material? _triplanarWireframeMaterial;
+    private static Sampler? _sharedTerrainSampler;
     
     public Terrain3D(Func<Task<ITerrain>> terrainFactory, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
         this._terrainFactory = terrainFactory;
@@ -145,11 +171,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.RegionUploadBudgetMilliseconds = 1.0F;
         this.MidRingLodUpdateIntervalTicks = 3;
         this.FarRingLodUpdateIntervalTicks = 10;
+        this._fillMode = PolygonFillMode.Wireframe;
+        this._terrainTexture = null;
         this.DebugDrawChunks = false;
         this._meshChunkList = new List<IChunk>();
         this._pendingUpload = new ConcurrentQueue<IChunk>();
         this._queuedSet = new ConcurrentDictionary<IChunk, byte>();
         this._buildingSet = new ConcurrentDictionary<IChunk, byte>();
+        this._chunksPendingVertexUpload = new HashSet<HeightmapChunk>();
         this._pendingRegionUploads = new ConcurrentQueue<RegionBuildResult>();
         this._regionBuildingSet = new ConcurrentDictionary<RegionKey, byte>();
         this._renderables = new Dictionary<IChunk, Renderable>();
@@ -221,10 +250,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         Vector3 camPos = cam3D?.Position ?? Vector3.Zero;
 
         this._dirtyScheduleBuffer.Clear();
+        this._dirtyScheduleBuffer.AddRange(this.Terrain.GetDirtyChunks());
 
-        foreach (IChunk chunk in this.Terrain.GetDirtyChunks()) {
-            if (this.ShouldSchedule(chunk)) {
-                this._dirtyScheduleBuffer.Add(chunk);
+        for (int i = this._dirtyScheduleBuffer.Count - 1; i >= 0; i--) {
+            if (!this.ShouldSchedule(this._dirtyScheduleBuffer[i])) {
+                this._dirtyScheduleBuffer.RemoveAt(i);
             }
         }
 
@@ -289,8 +319,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
                 continue;
             }
             
-            if (chunk is HeightmapChunk heightmapChunk) {
-                heightmapChunk.FlushDeferredUpload(context.CommandList);
+            if (chunk is HeightmapChunk heightmapChunk && this._chunksPendingVertexUpload.Contains(heightmapChunk)) {
+                heightmapChunk.UpdateGeometry(context.CommandList);
+                this._chunksPendingVertexUpload.Remove(heightmapChunk);
             }
             
             if (chunk.Lod < 0) {
@@ -319,6 +350,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             }
             
             this.ApplyChunkRenderableTransform(chunk, renderable);
+            this.ApplyTerrainMaterial(renderable);
             this.Entity.Scene.Renderer.DrawRenderable(renderable);
             this.TotalVertexCount += (int) chunk.Mesh.VertexCount;
         }
@@ -440,7 +472,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }, chunk => chunk.GenerateGeometry());
         
         foreach (IChunk chunk in chunks) {
-            chunk.UploadGeometry(this.GraphicsDevice);
+            this.ApplyChunkGeometryUpload(chunk, this.GraphicsDevice);
             this.RefreshMeshChunkState(chunk);
         }
 
@@ -590,7 +622,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         
         while (uploads < this.MaxChunkUploadsPerFrame && this._pendingUpload.TryDequeue(out IChunk? chunk)) {
             this._queuedSet.TryRemove(chunk, out _);
-            chunk.UploadGeometry(graphicsDevice);
+            this.ApplyChunkGeometryUpload(chunk, graphicsDevice);
             this.RefreshMeshChunkState(chunk);
             uploads++;
         }
@@ -616,7 +648,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.DisposeRegionBatch(result.Key);
 
             if (result.HasGeometry) {
-                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, GetFarBatchMaterial(), new BasicMeshData(result.Vertices!, result.Indices!));
+                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.GetTerrainMaterial(), new BasicMeshData(result.Vertices!, result.Indices!));
                 RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount);
                 this._regionBatches[result.Key] = batch;
             }
@@ -628,6 +660,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     }
     
     private void RefreshMeshChunkState(IChunk chunk) {
+        if (chunk is HeightmapChunk heightmapChunk && chunk.Mesh == null) {
+            this._chunksPendingVertexUpload.Remove(heightmapChunk);
+        }
+
         if (chunk.Mesh != null) {
             if (!this._meshChunkList.Contains(chunk)) {
                 this._meshChunkList.Add(chunk);
@@ -680,12 +716,43 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this._regionWorldBounds.Clear();
             this._regionRenderableTransformVersions.Clear();
             this._dirtyRegions.Clear();
+            this._chunksPendingVertexUpload.Clear();
+
+            this.InvalidateTerrainMaterials();
             
             while (this._pendingUpload.TryDequeue(out _)) {
             }
 
             while (this._pendingRegionUploads.TryDequeue(out _)) {
             }
+        }
+    }
+
+    private void ApplyChunkGeometryUpload(IChunk chunk, GraphicsDevice graphicsDevice) {
+        if (chunk is not HeightmapChunk heightmapChunk) {
+            chunk.UploadGeometry(graphicsDevice);
+            return;
+        }
+
+        bool hasGeometry = heightmapChunk.PendingVertexCount > 0 && heightmapChunk.PendingIndexCount > 0;
+
+        if (!hasGeometry) {
+            chunk.UploadGeometry(graphicsDevice);
+            this._chunksPendingVertexUpload.Remove(heightmapChunk);
+            return;
+        }
+
+        bool canUpdateInPlace = heightmapChunk.Mesh is Mesh<Vertex3D> existingMesh &&
+                                existingMesh.MeshData is BasicMeshData meshData &&
+                                meshData.Vertices.Length == heightmapChunk.PendingVertexCount &&
+                                meshData.Indices.Length == heightmapChunk.PendingIndexCount;
+
+        if (canUpdateInPlace) {
+            this._chunksPendingVertexUpload.Add(heightmapChunk);
+        }
+        else {
+            chunk.UploadGeometry(graphicsDevice);
+            this._chunksPendingVertexUpload.Remove(heightmapChunk);
         }
     }
 
@@ -707,6 +774,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             }
             
             this.ApplyRegionRenderableTransform(regionKey, batch.Renderable);
+            this.ApplyTerrainMaterial(batch.Renderable);
             this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
             this.TotalVertexCount += batch.VertexCount;
         }
@@ -1043,21 +1111,75 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         batch.Dispose();
     }
 
-    private static Material GetFarBatchMaterial() {
-        if (_sharedFarBatchMaterial != null) {
-            return _sharedFarBatchMaterial;
+    private void ApplyTerrainMaterialToRenderables() {
+        Material material = this.GetTerrainMaterial();
+
+        foreach (Renderable renderable in this._renderables.Values) {
+            if (!ReferenceEquals(renderable.Mesh.Material, material)) {
+                renderable.Mesh.Material = material;
+            }
+            
+            if (!ReferenceEquals(renderable.Material, material)) {
+                renderable.Material = material;
+            }
         }
 
-        RasterizerStateDescription rasterizerState = new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Wireframe, FrontFace.Clockwise, true, false);
+        foreach (RegionBatch batch in this._regionBatches.Values) {
+            if (batch.Mesh != null && !ReferenceEquals(batch.Mesh.Material, material)) {
+                batch.Mesh.Material = material;
+            }
+            
+            if (batch.Renderable != null && !ReferenceEquals(batch.Renderable.Material, material)) {
+                batch.Renderable.Material = material;
+            }
+        }
+    }
+
+    private void ApplyTerrainMaterial(Renderable renderable) {
+        Material material = this.GetTerrainMaterial();
+        
+        if (!ReferenceEquals(renderable.Mesh.Material, material)) {
+            renderable.Mesh.Material = material;
+        }
+
+        if (!ReferenceEquals(renderable.Material, material)) {
+            renderable.Material = material;
+        }
+    }
+
+    private Material GetTerrainMaterial() {
+        if (this.FillMode == PolygonFillMode.Wireframe) {
+            this._wireframeMaterial ??= this.CreateTerrainMaterial(PolygonFillMode.Wireframe, false);
+            return this._wireframeMaterial;
+        }
+
+        this._solidMaterial ??= this.CreateTerrainMaterial(PolygonFillMode.Solid, false);
+        return this._solidMaterial;
+    }
+
+    private Material CreateTerrainMaterial(PolygonFillMode fillMode, bool useTriplanar) {
+        RasterizerStateDescription rasterizerState = new RasterizerStateDescription(FaceCullMode.None, fillMode, FrontFace.Clockwise, true, false);
         Material material = new Material(GlobalResource.DefaultModelEffect, rasterizerState);
 
         material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
+            Sampler = GetTerrainSampler(),
             Color = Color.White
         });
 
-        _sharedFarBatchMaterial = material;
         return material;
+    }
+
+    private static Sampler GetTerrainSampler() {
+        _sharedTerrainSampler ??= GraphicsHelper.GetSampler(GlobalGraphicsAssets.GraphicsDevice, SamplerType.Aniso4XWrap);
+        return _sharedTerrainSampler;
+    }
+
+    private void InvalidateTerrainMaterials() {
+        this._solidMaterial = null;
+        this._wireframeMaterial = null;
+        this._triplanarSolidMaterial = null;
+        this._triplanarWireframeMaterial = null;
     }
 
     private readonly struct RegionBuildResult {

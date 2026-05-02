@@ -1,7 +1,12 @@
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
+using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Logging;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
@@ -9,6 +14,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Heightmap;
+using Veldrid;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 
@@ -32,7 +38,7 @@ public class TerrainScene : Scene {
         // Create camera.
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
         Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F) {
-            MovementSpeed = 250
+            MovementSpeed = 10
         };
         this.AddEntity(camera3D);
         
@@ -42,6 +48,7 @@ public class TerrainScene : Scene {
             DebugDrawEnabled = false,
             DebugDrawChunks = false,
             EnableLod = true,
+            FillMode = PolygonFillMode.Solid,
             LodDistances = [400.0F, 600.0F, 900.0F, 1500.0F, 2500],
             LodHysteresis = 0.2F,
             CullChunksBeyondLastLod = false,
@@ -50,6 +57,15 @@ public class TerrainScene : Scene {
             MaxChunkUploadsPerFrame = 16
         });
         this.AddEntity(terrainEntity);
+    }
+    
+    protected override void Update(double delta) {
+        base.Update(delta);
+        
+        if (Input.IsKeyPressed(KeyboardKey.U)) {
+            Terrain3D? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D>();
+            terrain3D?.Wireframe = !terrain3D.Wireframe;
+        }
     }
     
     protected override void FixedUpdate(double delta) {
@@ -91,8 +107,19 @@ public class TerrainScene : Scene {
         const int chunkSize = 256;
         const int surfaceHeight = 64;
         
+        // Create chunk generator.
         FlatChunkGenerator chunkGenerator = new FlatChunkGenerator(chunkSize, terrainHeight, surfaceHeight);
-        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, terrainWidth, terrainHeight, terrainDepth, chunkSize);
+        
+        // Create material.
+        Material material = new Material(GlobalResource.DefaultModelEffect);
+        
+        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White
+        });
+        
+        // Create/Load terrain.
+        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, material, terrainWidth, terrainHeight, terrainDepth, chunkSize);
         
         this._terrain = terrain;
         return terrain;

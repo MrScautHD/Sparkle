@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Bliss.CSharp.Materials;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -8,6 +9,11 @@ public interface ITerrain {
     /// The generator used to produce density data for each terrain column.
     /// </summary>
     IChunkGenerator ChunkGenerator { get; }
+    
+    /// <summary>
+    /// The material used for rendering the terrain, which defines its visual appearance and surface properties.
+    /// </summary>
+    Material Material { get; }
     
     /// <summary>
     /// The total width of the terrain in voxels.
