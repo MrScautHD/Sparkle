@@ -220,13 +220,7 @@ public class HeightmapChunk : Disposable, IChunk {
         
         // Recreate mesh if it has geometry.
         this.Mesh?.Dispose();
-        this.Mesh = !hasGeometry
-            ? null
-            : new Mesh<Vertex3D>(
-                graphicsDevice,
-                this.Terrain.Material,
-                new BasicMeshData((Vertex3D[]) this._pendingVertices, (uint[]) this._pendingIndices)
-            );
+        this.Mesh = !hasGeometry ? null : new Mesh<Vertex3D>(graphicsDevice, this.Terrain.Material, new BasicMeshData(this._pendingVertices, this._pendingIndices));
         
         // Set current lod and mark this chunk as dirty.
         this.CurrentLod = this.Lod;
