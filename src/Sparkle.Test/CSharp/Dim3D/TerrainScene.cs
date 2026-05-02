@@ -46,9 +46,7 @@ public class TerrainScene : Scene {
         Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
         terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, Vector3.Zero, frustumCulling: true) {
             DebugDrawEnabled = false,
-            DebugDrawChunks = false,
             EnableLod = true,
-            FillMode = PolygonFillMode.Solid,
             LodDistances = [400.0F, 600.0F, 900.0F, 1500.0F, 2500],
             LodHysteresis = 0.2F,
             CullChunksBeyondLastLod = false,
@@ -64,7 +62,12 @@ public class TerrainScene : Scene {
         
         if (Input.IsKeyPressed(KeyboardKey.U)) {
             Terrain3D? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D>();
-            terrain3D?.Wireframe = !terrain3D.Wireframe;
+            
+            if (terrain3D != null) {
+                RasterizerStateDescription rasterizerState = terrain3D.Terrain.Material.RasterizerState;
+                rasterizerState.FillMode = rasterizerState.FillMode == PolygonFillMode.Solid ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
+                terrain3D.Terrain.Material.RasterizerState = rasterizerState;
+            }
         }
     }
     

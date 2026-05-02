@@ -24,11 +24,9 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     
-    public ITerrain Terrain { get; private set; } = null!;
+    public ITerrain Terrain { get; private set; }
     
     public bool DebugDrawEnabled { get; set; }
-    
-    public bool DebugDrawChunks { get; set; }
     
     public bool FrustumCulling;
     
@@ -75,23 +73,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     public int MidRingLodUpdateIntervalTicks { get; set; }
 
     public int FarRingLodUpdateIntervalTicks { get; set; }
-
-    public PolygonFillMode FillMode {
-        get => this._fillMode;
-        set {
-            if (this._fillMode == value) {
-                return;
-            }
-
-            this._fillMode = value;
-            this.ApplyTerrainMaterialToRenderables();
-        }
-    }
-
-    public bool Wireframe {
-        get => this.FillMode == PolygonFillMode.Wireframe;
-        set => this.FillMode = value ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
-    }
     
     public int TotalVertexCount { get; private set; }
     
@@ -137,14 +118,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     private int _lodRingTick;
     private bool _hasLastLodCameraPosition;
     private Vector3 _lastLodCameraPosition;
-    private PolygonFillMode _fillMode;
-    private Texture2D? _terrainTexture;
-    
-    private Material? _solidMaterial;
-    private Material? _wireframeMaterial;
-    private Material? _triplanarSolidMaterial;
-    private Material? _triplanarWireframeMaterial;
-    private static Sampler? _sharedTerrainSampler;
     
     public Terrain3D(Func<Task<ITerrain>> terrainFactory, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
         this._terrainFactory = terrainFactory;
@@ -171,9 +144,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.RegionUploadBudgetMilliseconds = 1.0F;
         this.MidRingLodUpdateIntervalTicks = 3;
         this.FarRingLodUpdateIntervalTicks = 10;
-        this._fillMode = PolygonFillMode.Wireframe;
-        this._terrainTexture = null;
-        this.DebugDrawChunks = false;
         this._meshChunkList = new List<IChunk>();
         this._pendingUpload = new ConcurrentQueue<IChunk>();
         this._queuedSet = new ConcurrentDictionary<IChunk, byte>();
@@ -370,10 +340,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         };
         
         immediateRenderer.DrawBoundingBox(boxTransform, this._terrainBaseBox, Color.Green);
-        
-        if (!this.DebugDrawChunks) {
-            return;
-        }
         
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
@@ -648,7 +614,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this.DisposeRegionBatch(result.Key);
 
             if (result.HasGeometry) {
-                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.GetTerrainMaterial(), new BasicMeshData(result.Vertices!, result.Indices!));
+                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.Terrain.Material, new BasicMeshData(result.Vertices!, result.Indices!));
                 RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform()), result.LocalBounds, result.VertexCount);
                 this._regionBatches[result.Key] = batch;
             }
@@ -717,8 +683,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this._regionRenderableTransformVersions.Clear();
             this._dirtyRegions.Clear();
             this._chunksPendingVertexUpload.Clear();
-
-            this.InvalidateTerrainMaterials();
             
             while (this._pendingUpload.TryDequeue(out _)) {
             }
@@ -1112,7 +1076,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     }
 
     private void ApplyTerrainMaterialToRenderables() {
-        Material material = this.GetTerrainMaterial();
+        Material material = this.Terrain.Material;
 
         foreach (Renderable renderable in this._renderables.Values) {
             if (!ReferenceEquals(renderable.Mesh.Material, material)) {
@@ -1136,7 +1100,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     }
 
     private void ApplyTerrainMaterial(Renderable renderable) {
-        Material material = this.GetTerrainMaterial();
+        Material material = this.Terrain.Material;
         
         if (!ReferenceEquals(renderable.Mesh.Material, material)) {
             renderable.Mesh.Material = material;
@@ -1145,41 +1109,6 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         if (!ReferenceEquals(renderable.Material, material)) {
             renderable.Material = material;
         }
-    }
-
-    private Material GetTerrainMaterial() {
-        if (this.FillMode == PolygonFillMode.Wireframe) {
-            this._wireframeMaterial ??= this.CreateTerrainMaterial(PolygonFillMode.Wireframe, false);
-            return this._wireframeMaterial;
-        }
-
-        this._solidMaterial ??= this.CreateTerrainMaterial(PolygonFillMode.Solid, false);
-        return this._solidMaterial;
-    }
-
-    private Material CreateTerrainMaterial(PolygonFillMode fillMode, bool useTriplanar) {
-        RasterizerStateDescription rasterizerState = new RasterizerStateDescription(FaceCullMode.None, fillMode, FrontFace.Clockwise, true, false);
-        Material material = new Material(GlobalResource.DefaultModelEffect, rasterizerState);
-
-        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
-            Texture = GlobalResource.DefaultModelTexture,
-            Sampler = GetTerrainSampler(),
-            Color = Color.White
-        });
-
-        return material;
-    }
-
-    private static Sampler GetTerrainSampler() {
-        _sharedTerrainSampler ??= GraphicsHelper.GetSampler(GlobalGraphicsAssets.GraphicsDevice, SamplerType.Aniso4XWrap);
-        return _sharedTerrainSampler;
-    }
-
-    private void InvalidateTerrainMaterials() {
-        this._solidMaterial = null;
-        this._wireframeMaterial = null;
-        this._triplanarSolidMaterial = null;
-        this._triplanarWireframeMaterial = null;
     }
 
     private readonly struct RegionBuildResult {

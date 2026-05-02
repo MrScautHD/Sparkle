@@ -182,25 +182,29 @@ public class HeightmapChunk : Disposable, IChunk {
         
         // Create/update triangle indices for the sampled grid.
         int indexCount = (xCount - 1) * (zCount - 1) * 6;
-        uint[] indices = this._pendingIndices.Length == indexCount ? this._pendingIndices : new uint[indexCount];
-        int indexWrite = 0;
+        bool rebuildIndices = this._pendingIndices.Length != indexCount;
+        uint[] indices = rebuildIndices ? new uint[indexCount] : this._pendingIndices;
         
-        for (int zIndex = 0; zIndex < zCount - 1; zIndex++) {
-            int rowOffset = zIndex * xCount;
-            int nextRowOffset = (zIndex + 1) * xCount;
+        if (rebuildIndices) {
+            int indexWrite = 0;
             
-            for (int xIndex = 0; xIndex < xCount - 1; xIndex++) {
-                uint i0 = (uint) (rowOffset + xIndex);
-                uint i1 = i0 + 1;
-                uint i2 = (uint) (nextRowOffset + xIndex);
-                uint i3 = i2 + 1;
+            for (int zIndex = 0; zIndex < zCount - 1; zIndex++) {
+                int rowOffset = zIndex * xCount;
+                int nextRowOffset = (zIndex + 1) * xCount;
                 
-                indices[indexWrite++] = i0;
-                indices[indexWrite++] = i1;
-                indices[indexWrite++] = i2;
-                indices[indexWrite++] = i1;
-                indices[indexWrite++] = i3;
-                indices[indexWrite++] = i2;
+                for (int xIndex = 0; xIndex < xCount - 1; xIndex++) {
+                    uint i0 = (uint) (rowOffset + xIndex);
+                    uint i1 = i0 + 1;
+                    uint i2 = (uint) (nextRowOffset + xIndex);
+                    uint i3 = i2 + 1;
+                    
+                    indices[indexWrite++] = i0;
+                    indices[indexWrite++] = i1;
+                    indices[indexWrite++] = i2;
+                    indices[indexWrite++] = i1;
+                    indices[indexWrite++] = i3;
+                    indices[indexWrite++] = i2;
+                }
             }
         }
         
@@ -216,7 +220,13 @@ public class HeightmapChunk : Disposable, IChunk {
         
         // Recreate mesh if it has geometry.
         this.Mesh?.Dispose();
-        this.Mesh = !hasGeometry ? null : new Mesh<Vertex3D>(graphicsDevice, this.Terrain.Material, new BasicMeshData(this._pendingVertices, this._pendingIndices));
+        this.Mesh = !hasGeometry
+            ? null
+            : new Mesh<Vertex3D>(
+                graphicsDevice,
+                this.Terrain.Material,
+                new BasicMeshData((Vertex3D[]) this._pendingVertices, (uint[]) this._pendingIndices)
+            );
         
         // Set current lod and mark this chunk as dirty.
         this.CurrentLod = this.Lod;
@@ -241,6 +251,10 @@ public class HeightmapChunk : Disposable, IChunk {
         
         // Update vertex buffer.
         mesh.UpdateVertexBuffer(commandList);
+        
+        // Keep state transitions consistent with UploadGeometry.
+        this.CurrentLod = this.Lod;
+        this.IsDirty = this._dirtyVersion != this._generatedVersion;
     }
     
     protected override void Dispose(bool disposing) {

@@ -138,6 +138,10 @@ public class HeightmapTerrain : ITerrain {
         float radiusSquared = radius * radius;
         
         bool changed = false;
+        int changedMinX = int.MaxValue;
+        int changedMaxX = int.MinValue;
+        int changedMinZ = int.MaxValue;
+        int changedMaxZ = int.MinValue;
         
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
@@ -152,6 +156,10 @@ public class HeightmapTerrain : ITerrain {
                 float falloff = 1.0F - MathF.Sqrt(distanceSquared) / radius;
                 this._surfaceHeights[x, z] += strength * falloff;
                 changed = true;
+                changedMinX = Math.Min(changedMinX, x);
+                changedMaxX = Math.Max(changedMaxX, x);
+                changedMinZ = Math.Min(changedMinZ, z);
+                changedMaxZ = Math.Max(changedMaxZ, z);
             }
         }
         
@@ -159,10 +167,10 @@ public class HeightmapTerrain : ITerrain {
             return false;
         }
         
-        int chunkMinX = Math.Clamp(minX / this.ChunkSize, 0, this._chunkCountX - 1);
-        int chunkMaxX = Math.Clamp(maxX / this.ChunkSize, 0, this._chunkCountX - 1);
-        int chunkMinZ = Math.Clamp(minZ / this.ChunkSize, 0, this._chunkCountZ - 1);
-        int chunkMaxZ = Math.Clamp(maxZ / this.ChunkSize, 0, this._chunkCountZ - 1);
+        int chunkMinX = Math.Clamp(changedMinX / this.ChunkSize, 0, this._chunkCountX - 1);
+        int chunkMaxX = Math.Clamp(changedMaxX / this.ChunkSize, 0, this._chunkCountX - 1);
+        int chunkMinZ = Math.Clamp(changedMinZ / this.ChunkSize, 0, this._chunkCountZ - 1);
+        int chunkMaxZ = Math.Clamp(changedMaxZ / this.ChunkSize, 0, this._chunkCountZ - 1);
         
         for (int chunkX = chunkMinX; chunkX <= chunkMaxX; chunkX++) {
             for (int chunkZ = chunkMinZ; chunkZ <= chunkMaxZ; chunkZ++) {
