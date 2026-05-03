@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
+
     <!-- Project -->
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,7 +9,7 @@
         <NoWarn>$(NoWarn);CS8618</NoWarn>
         <LangVersion>14</LangVersion>
     </PropertyGroup>
-    
+
     <!-- Nuget -->
     <PropertyGroup>
         <Title>Sparkle</Title>
@@ -19,13 +19,13 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <Description>A fast, Cross-platform .NET 10 C# 14 game engine.</Description>
-        <PackageProjectUrl>https://sparkle-engine.com/</PackageProjectUrl>
+        <PackageProjectUrl>https://mrscauthd.github.io/Sparkle/</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
         <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-    
+
     <!-- Libraries -->
     <ItemGroup>
         <PackageReference Include="Bliss" Version="1.5.3" />
@@ -33,12 +33,12 @@
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
-    
+
     <!-- Icon -->
     <ItemGroup>
         <None Include="content\sparkle\images\icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
-    
+
     <!-- Content -->
     <ItemGroup>
         <Content Include="content/**/*" Pack="true">
