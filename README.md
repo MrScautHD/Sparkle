@@ -31,7 +31,7 @@ dotnet add package Sparkle --version [VERSION]
 ---
 
 # ⭐ Getting Started
-> Explore our [Documentation](https://mrscauthd.github.io/Bliss/) to kick off smoothly.
+> Explore our [Documentation](https://mrscauthd.github.io/Sparkle/) to kick off smoothly.
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
@@ -39,7 +39,6 @@ dotnet add package Sparkle --version [VERSION]
 - [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`HughPH.Box2D`](https://www.nuget.org/packages/HughPH.Box2D)
-- [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
 # 💻 Supported Platforms
 
