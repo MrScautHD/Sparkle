@@ -84,6 +84,7 @@ public static class GuiManager {
         _activeGui?.Dispose();
         _activeGui = gui;
         gui?.Init();
+        gui?.IsInitialized = true;
     }
     
     /// <summary>
@@ -95,6 +96,7 @@ public static class GuiManager {
         _activeLoadingGui?.Dispose();
         _activeLoadingGui = loadingGui;
         loadingGui?.Init();
+        loadingGui?.IsInitialized = true;
     }
     
     /// <summary>
