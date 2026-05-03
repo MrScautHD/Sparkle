@@ -390,6 +390,37 @@ public class HeightmapTerrain : ITerrain {
     }
     
     /// <summary>
+    /// Gets a neighboring chunk relative to the given chunk using chunk-grid offsets.
+    /// </summary>
+    /// <param name="chunk">The source chunk.</param>
+    /// <param name="offsetX">Neighbor offset in chunk units along X.</param>
+    /// <param name="offsetZ">Neighbor offset in chunk units along Z.</param>
+    /// <returns>The neighboring chunk, or <c>null</c> when outside terrain bounds.</returns>
+    public IChunk? GetNeighborChunk(IChunk chunk, int offsetX, int offsetZ) {
+        int chunkX;
+        int chunkZ;
+        
+        if (chunk is HeightmapChunk heightmapChunk) {
+            chunkX = heightmapChunk.ChunkX;
+            chunkZ = heightmapChunk.ChunkZ;
+        }
+        else {
+            chunkX = (int) chunk.Position.X / this.ChunkSize;
+            chunkZ = (int) chunk.Position.Z / this.ChunkSize;
+        }
+        
+        int neighborChunkX = chunkX + offsetX;
+        int neighborChunkZ = chunkZ + offsetZ;
+        
+        if (neighborChunkX < 0 || neighborChunkX >= this._chunkCountX ||
+            neighborChunkZ < 0 || neighborChunkZ >= this._chunkCountZ) {
+            return null;
+        }
+        
+        return this._chunkGrid[neighborChunkX, neighborChunkZ];
+    }
+    
+    /// <summary>
     /// Marks every terrain chunk as dirty so all chunk meshes will be rebuilt.
     /// </summary>
     public void MarkAllChunksDirty() {
@@ -459,7 +490,7 @@ public class HeightmapTerrain : ITerrain {
                 }
             }
             
-            HeightmapChunk chunk = new HeightmapChunk(this, new Vector3(startX, 0.0F, startZ), chunkWidth, this.Height, chunkDepth);
+            HeightmapChunk chunk = new HeightmapChunk(this, new Vector3(startX, 0.0F, startZ), chunkX, chunkZ, chunkWidth, this.Height, chunkDepth);
             this._chunkGrid[chunkX, chunkZ] = chunk;
             chunks[index] = chunk;
         });

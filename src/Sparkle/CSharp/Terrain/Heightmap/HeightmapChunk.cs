@@ -26,6 +26,16 @@ public class HeightmapChunk : Disposable, IChunk {
     public Vector3 Position { get; private set; }
     
     /// <summary>
+    /// The chunk-grid X index.
+    /// </summary>
+    public int ChunkX { get; private set; }
+    
+    /// <summary>
+    /// The chunk-grid Z index.
+    /// </summary>
+    public int ChunkZ { get; private set; }
+    
+    /// <summary>
     /// The chunk width along the X axis.
     /// </summary>
     public int Width { get; private set; }
@@ -108,6 +118,16 @@ public class HeightmapChunk : Disposable, IChunk {
     private float[] _heightSamples;
     
     /// <summary>
+    /// Cached world-space sample X coordinates reused during geometry generation.
+    /// </summary>
+    private int[] _worldXSamples;
+    
+    /// <summary>
+    /// Cached world-space sample Z coordinates reused during geometry generation.
+    /// </summary>
+    private int[] _worldZSamples;
+    
+    /// <summary>
     /// Incremented every time the chunk is marked dirty.
     /// </summary>
     private int _dirtyVersion;
@@ -122,12 +142,16 @@ public class HeightmapChunk : Disposable, IChunk {
     /// </summary>
     /// <param name="terrain">The heightmap terrain this chunk belongs to.</param>
     /// <param name="position">The terrain-space chunk position.</param>
+    /// <param name="chunkX">The chunk-grid X index.</param>
+    /// <param name="chunkZ">The chunk-grid Z index.</param>
     /// <param name="width">The chunk width along the X axis.</param>
     /// <param name="height">The chunk height along the Y axis.</param>
     /// <param name="depth">The chunk depth along the Z axis.</param>
-    public HeightmapChunk(HeightmapTerrain terrain, Vector3 position, int width, int height, int depth) {
+    public HeightmapChunk(HeightmapTerrain terrain, Vector3 position, int chunkX, int chunkZ, int width, int height, int depth) {
         this.Terrain = terrain;
         this.Position = position;
+        this.ChunkX = chunkX;
+        this.ChunkZ = chunkZ;
         this.Width = width;
         this.Height = height;
         this.Depth = depth;
@@ -137,6 +161,8 @@ public class HeightmapChunk : Disposable, IChunk {
         this._pendingVertices = [];
         this._pendingIndices = [];
         this._heightSamples = [];
+        this._worldXSamples = [];
+        this._worldZSamples = [];
         this._dirtyVersion = 0;
         this._generatedVersion = 0;
     }
@@ -189,19 +215,32 @@ public class HeightmapChunk : Disposable, IChunk {
         int xLastIndex = xCount - 1;
         int zLastIndex = zCount - 1;
         
+        int[] worldXValues = this._worldXSamples.Length == xCount ? this._worldXSamples : new int[xCount];
+        int[] worldZValues = this._worldZSamples.Length == zCount ? this._worldZSamples : new int[zCount];
+        
+        for (int xIndex = 0; xIndex < xCount; xIndex++) {
+            worldXValues[xIndex] = appendWidth && xIndex == xLastIndex ? startX + width : startX + (xIndex * step);
+        }
+        
+        for (int zIndex = 0; zIndex < zCount; zIndex++) {
+            worldZValues[zIndex] = appendDepth && zIndex == zLastIndex ? startZ + depth : startZ + (zIndex * step);
+        }
+        
         // Sample terrain heights for each grid point.
         int heightSampleCount = zCount * xCount;
         float[] heights = this._heightSamples.Length == heightSampleCount ? this._heightSamples : new float[heightSampleCount];
         
         for (int zIndex = 0; zIndex < zCount; zIndex++) {
-            int worldZValue = appendDepth && zIndex == zLastIndex ? startZ + depth : startZ + (zIndex * step);
+            int worldZValue = worldZValues[zIndex];
             int rowOffset = zIndex * xCount;
             
             for (int xIndex = 0; xIndex < xCount; xIndex++) {
-                int worldXValue = appendWidth && xIndex == xLastIndex ? startX + width : startX + (xIndex * step);
+                int worldXValue = worldXValues[xIndex];
                 heights[rowOffset + xIndex] = heightmapTerrain.GetSurfaceHeight(worldXValue, worldZValue);
             }
         }
+        
+        this.StitchLodEdges(heightmapTerrain, heights, worldXValues, worldZValues, xCount);
         
         // Create/update vertex data.
         int vertexCount = xCount * zCount;
@@ -217,9 +256,9 @@ public class HeightmapChunk : Disposable, IChunk {
             
             int rowUpOffset = zUp * xCount;
             
-            int worldZValue = appendDepth && zIndex == zLastIndex ? startZ + depth : startZ + (zIndex * step);
-            int worldZDownValue = appendDepth && zDown == zLastIndex ? startZ + depth : startZ + (zDown * step);
-            int worldZUpValue = appendDepth && zUp == zLastIndex ? startZ + depth : startZ + (zUp * step);
+            int worldZValue = worldZValues[zIndex];
+            int worldZDownValue = worldZValues[zDown];
+            int worldZUpValue = worldZValues[zUp];
             
             for (int xIndex = 0; xIndex < xCount; xIndex++) {
                 int xLeft = xIndex > 0 ? xIndex - 1 : 0;
@@ -227,9 +266,9 @@ public class HeightmapChunk : Disposable, IChunk {
                 
                 int centerIndex = rowOffset + xIndex;
                 
-                int worldXValue = appendWidth && xIndex == xLastIndex ? startX + width : startX + (xIndex * step);
-                int worldXLeftValue = appendWidth && xLeft == xLastIndex ? startX + width : startX + (xLeft * step);
-                int worldXRightValue = appendWidth && xRight == xLastIndex ? startX + width : startX + (xRight * step);
+                int worldXValue = worldXValues[xIndex];
+                int worldXLeftValue = worldXValues[xLeft];
+                int worldXRightValue = worldXValues[xRight];
                 
                 Vector3 tangentX = new Vector3(
                     worldXRightValue - worldXLeftValue,
@@ -290,7 +329,147 @@ public class HeightmapChunk : Disposable, IChunk {
         this._pendingVertices = vertices;
         this._pendingIndices = indices;
         this._heightSamples = heights;
+        this._worldXSamples = worldXValues;
+        this._worldZSamples = worldZValues;
         this._generatedVersion = targetVersion;
+    }
+    
+    /// <summary>
+    /// Adjusts and stitches the Level of Detail (LOD) edges of the current heightmap chunk
+    /// with its neighboring chunks to ensure seamless transitions.
+    /// </summary>
+    /// <param name="terrain">The heightmap terrain containing this chunk and its neighbors.</param>
+    /// <param name="heights">The height values of the current chunk's sampled grid points.</param>
+    /// <param name="worldXValues">The world-space X-coordinate values of the current chunk's sampled grid points.</param>
+    /// <param name="worldZValues">The world-space Z-coordinate values of the current chunk's sampled grid points.</param>
+    /// <param name="xCount">The number of grid points in the X-axis direction for the current chunk.</param>
+    private void StitchLodEdges(HeightmapTerrain terrain, float[] heights, int[] worldXValues, int[] worldZValues, int xCount) {
+        int selfStep = Math.Max(1, 1 << Math.Max(0, this.Lod));
+        
+        this.StitchVerticalEdge(heights, xCount, 0, worldZValues, terrain.GetNeighborChunk(this, -1, 0), selfStep);
+        this.StitchVerticalEdge(heights, xCount, worldXValues.Length - 1, worldZValues, terrain.GetNeighborChunk(this, 1, 0), selfStep);
+        this.StitchHorizontalEdge(heights, xCount, 0, worldXValues, terrain.GetNeighborChunk(this, 0, -1), selfStep);
+        this.StitchHorizontalEdge(heights, xCount, worldZValues.Length - 1, worldXValues, terrain.GetNeighborChunk(this, 0, 1), selfStep);
+    }
+    
+    /// <summary>
+    /// Stitches the vertical edge of the current chunk with the edge of a neighboring chunk to ensure seamless transitions
+    /// between different levels of detail (LOD).
+    /// </summary>
+    /// <param name="heights">The array of height values for the heightmap.</param>
+    /// <param name="xCount">The number of columns in the chunk's heightmap data.</param>
+    /// <param name="columnIndex">The index of the column along the X-axis that represents the edge to be stitched.</param>
+    /// <param name="worldZValues">An array of world-space Z-coordinate values for each row in the chunk.</param>
+    /// <param name="neighborChunk">The neighboring chunk along the vertical axis to stitch with.</param>
+    /// <param name="selfStep">The step size for the current chunk's LOD.</param>
+    private void StitchVerticalEdge(float[] heights, int xCount, int columnIndex, int[] worldZValues, IChunk? neighborChunk, int selfStep) {
+        if (neighborChunk == null || neighborChunk.Lod < 0) {
+            return;
+        }
+        
+        int neighborStep = Math.Max(1, 1 << Math.Max(0, neighborChunk.Lod));
+        
+        if (neighborStep <= selfStep) {
+            return;
+        }
+        
+        int neighborStartZ = (int) neighborChunk.Position.Z;
+        int neighborEndZ = neighborStartZ + neighborChunk.Depth;
+        int firstEdgeIndex = 0;
+        int lastEdgeIndex = worldZValues.Length - 1;
+        int previousAnchor = -1;
+        
+        for (int zIndex = 0; zIndex < worldZValues.Length; zIndex++) {
+            int worldZ = worldZValues[zIndex];
+            
+            if (worldZ < neighborStartZ || worldZ > neighborEndZ) {
+                continue;
+            }
+            
+            bool isEdgeBoundary = zIndex == firstEdgeIndex || zIndex == lastEdgeIndex;
+            int localZ = worldZ - neighborStartZ;
+            
+            if (!isEdgeBoundary && localZ % neighborStep != 0) {
+                continue;
+            }
+            
+            if (previousAnchor >= 0 && zIndex - previousAnchor > 1) {
+                int lowerZ = worldZValues[previousAnchor];
+                int upperZ = worldZ;
+                
+                if (upperZ > lowerZ) {
+                    float lowerHeight = heights[previousAnchor * xCount + columnIndex];
+                    float upperHeight = heights[zIndex * xCount + columnIndex];
+                    
+                    for (int interiorIndex = previousAnchor + 1; interiorIndex < zIndex; interiorIndex++) {
+                        float t = (worldZValues[interiorIndex] - lowerZ) / (float) (upperZ - lowerZ);
+                        heights[interiorIndex * xCount + columnIndex] = float.Lerp(lowerHeight, upperHeight, t);
+                    }
+                }
+            }
+            
+            previousAnchor = zIndex;
+        }
+    }
+    
+    /// <summary>
+    /// Stitches the horizontal edge of the current heightmap chunk with a neighboring chunk
+    /// to ensure continuity and smooth transitions between different levels of detail (LoD).
+    /// </summary>
+    /// <param name="heights">The array of height values for the current heightmap chunk.</param>
+    /// <param name="xCount">The number of columns in the heightmap chunk.</param>
+    /// <param name="rowIndex">The index of the row along the horizontal edge to be stitched.</param>
+    /// <param name="worldXValues">The array of world-space X coordinates for the vertices of the chunk.</param>
+    /// <param name="neighborChunk">The neighboring chunk with which the edge is being stitched.</param>
+    /// <param name="selfStep">The step size for the LoD of the current chunk.</param>
+    private void StitchHorizontalEdge(float[] heights, int xCount, int rowIndex, int[] worldXValues, IChunk? neighborChunk, int selfStep) {
+        if (neighborChunk == null || neighborChunk.Lod < 0) {
+            return;
+        }
+        
+        int neighborStep = Math.Max(1, 1 << Math.Max(0, neighborChunk.Lod));
+        
+        if (neighborStep <= selfStep) {
+            return;
+        }
+        
+        int neighborStartX = (int) neighborChunk.Position.X;
+        int neighborEndX = neighborStartX + neighborChunk.Width;
+        int firstEdgeIndex = 0;
+        int lastEdgeIndex = worldXValues.Length - 1;
+        int previousAnchor = -1;
+        
+        for (int xIndex = 0; xIndex < worldXValues.Length; xIndex++) {
+            int worldX = worldXValues[xIndex];
+            
+            if (worldX < neighborStartX || worldX > neighborEndX) {
+                continue;
+            }
+            
+            bool isEdgeBoundary = xIndex == firstEdgeIndex || xIndex == lastEdgeIndex;
+            int localX = worldX - neighborStartX;
+            
+            if (!isEdgeBoundary && localX % neighborStep != 0) {
+                continue;
+            }
+            
+            if (previousAnchor >= 0 && xIndex - previousAnchor > 1) {
+                int lowerX = worldXValues[previousAnchor];
+                int upperX = worldX;
+                
+                if (upperX > lowerX) {
+                    float lowerHeight = heights[rowIndex * xCount + previousAnchor];
+                    float upperHeight = heights[rowIndex * xCount + xIndex];
+                    
+                    for (int interiorIndex = previousAnchor + 1; interiorIndex < xIndex; interiorIndex++) {
+                        float t = (worldXValues[interiorIndex] - lowerX) / (float) (upperX - lowerX);
+                        heights[rowIndex * xCount + interiorIndex] = float.Lerp(lowerHeight, upperHeight, t);
+                    }
+                }
+            }
+            
+            previousAnchor = xIndex;
+        }
     }
     
     /// <summary>
@@ -345,6 +524,8 @@ public class HeightmapChunk : Disposable, IChunk {
             this._pendingVertices = [];
             this._pendingIndices = [];
             this._heightSamples = [];
+            this._worldXSamples = [];
+            this._worldZSamples = [];
         }
     }
 }

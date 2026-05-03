@@ -117,6 +117,23 @@ public interface ITerrain {
     bool Contains(Vector3 position);
     
     /// <summary>
+    /// Gets the surface height at the specified X and Z coordinates.
+    /// </summary>
+    /// <param name="x">The X coordinate of the terrain.</param>
+    /// <param name="z">The Z coordinate of the terrain.</param>
+    /// <returns>The surface height at the specified coordinates, or -1 if the coordinates are out of terrain bounds.</returns>
+    float GetSurfaceHeight(int x, int z);
+    
+    /// <summary>
+    /// Retrieves a neighboring chunk relative to the given chunk, based on the specified offsets.
+    /// </summary>
+    /// <param name="chunk">The reference chunk from which the neighbor will be determined.</param>
+    /// <param name="offsetX">The horizontal chunk offset along the X axis.</param>
+    /// <param name="offsetZ">The horizontal chunk offset along the Z axis.</param>
+    /// <returns>The neighboring chunk at the specified offset, or null if no such chunk exists.</returns>
+    IChunk? GetNeighborChunk(IChunk chunk, int offsetX, int offsetZ);
+    
+    /// <summary>
     /// Marks every chunk in the terrain as dirty.
     /// </summary>
     void MarkAllChunksDirty();
