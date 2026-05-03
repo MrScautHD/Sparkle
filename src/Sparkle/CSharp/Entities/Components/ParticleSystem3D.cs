@@ -150,7 +150,7 @@ public class ParticleSystem3D : InterpolatedComponent {
     /// </summary>
     /// <param name="count">The number of particles to emit.</param>
     public void Emit(int count) {
-        Vector3 emitterPosition = this.GlobalPosition;
+        Vector3 emitterPosition = this.WorldPosition;
         Quaternion emitterRotation = this.Entity.WorldTransform.Rotation;
         Vector3 emitterScale = this.Entity.WorldTransform.Scale;
         
@@ -181,7 +181,7 @@ public class ParticleSystem3D : InterpolatedComponent {
                 
                 // While the system is active, keep emitting particles over time.
                 if (this._emissionAccumulator >= 1.0F) {
-                    Vector3 emitterPosition = this.GlobalPosition;
+                    Vector3 emitterPosition = this.WorldPosition;
                     Quaternion emitterRotation = this.Entity.WorldTransform.Rotation;
                     Vector3 emitterScale = this.Entity.WorldTransform.Scale;
                     

@@ -77,7 +77,7 @@ public abstract class InterpolatedComponent : Component {
     protected internal override void Init() {
         base.Init();
         this._previousPos = this._currentPos = this.Entity.WorldTransform.Translation;
-        this._previousGlobalPos = this._currentGlobalPos = this.GlobalPosition;
+        this._previousGlobalPos = this._currentGlobalPos = this.WorldPosition;
         this._previousRot = this._currentRot = this.Entity.WorldTransform.Rotation;
         this._previousScale = this._currentScale = this.Entity.WorldTransform.Scale;
     }
@@ -93,7 +93,7 @@ public abstract class InterpolatedComponent : Component {
         this._currentPos = this.Entity.WorldTransform.Translation;
         
         this._previousGlobalPos = this._currentGlobalPos;
-        this._currentGlobalPos = this.GlobalPosition;
+        this._currentGlobalPos = this.WorldPosition;
         
         this._previousRot = this._currentRot;
         this._currentRot = this.Entity.WorldTransform.Rotation;

@@ -85,7 +85,7 @@ public class ParticleSystem2D : InterpolatedComponent {
     /// </summary>
     /// <param name="count">The number of particles to emit.</param>
     public void Emit(int count) {
-        Vector2 emitterPosition = new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y);
+        Vector2 emitterPosition = new Vector2(this.WorldPosition.X, this.WorldPosition.Y);
         float emitterRotation = this.GetEmitterRotation();
         Vector2 emitterScale = new Vector2(this.Entity.WorldTransform.Scale.X, this.Entity.WorldTransform.Scale.Y);
         
@@ -116,7 +116,7 @@ public class ParticleSystem2D : InterpolatedComponent {
                 
                 // While the system is active, keep emitting particles over time.
                 if (this._emissionAccumulator >= 1.0F) {
-                    Vector2 emitterPosition = new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y);
+                    Vector2 emitterPosition = new Vector2(this.WorldPosition.X, this.WorldPosition.Y);
                     float emitterRotation = this.GetEmitterRotation();
                     Vector2 emitterScale = new Vector2(this.Entity.WorldTransform.Scale.X, this.Entity.WorldTransform.Scale.Y);
                     

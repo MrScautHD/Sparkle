@@ -24,9 +24,14 @@ public abstract class Component : Disposable {
     public virtual IReadOnlyList<Type> InCompatibleTypes => [];
     
     /// <summary>
-    /// Gets the global position of the component, calculated as the entity's position plus the offset.
+    /// Gets the world position of the component, calculated from the entity world transform and component offset.
     /// </summary>
-    public Vector3 GlobalPosition => this.Entity.WorldTransform.Translation + Vector3.Transform(this.OffsetPosition, this.Entity.WorldTransform.Rotation);
+    public Vector3 WorldPosition {
+        get {
+            Transform worldTransform = this.Entity.WorldTransform;
+            return worldTransform.Translation + Vector3.Transform(this.OffsetPosition * worldTransform.Scale, worldTransform.Rotation);
+        }
+    }
     
     /// <summary>
     /// The local offset position relative to the entity's transform.
