@@ -55,29 +55,46 @@
             <Nupkg Condition="'$(PackageOutputPath)' == ''">$(OutputPath)$(PackageId).$(PackageVersion).nupkg</Nupkg>
             <Tmp>$(IntermediateOutputPath)package-repack</Tmp>
             <BlissContent>$(PkgBliss)/contentFiles/any/any/content/bliss</BlissContent>
+            <SparkleTargets>$(Tmp)/buildTransitive/Sparkle.targets</SparkleTargets>
         </PropertyGroup>
-
+        
         <RemoveDir Directories="$(Tmp)" />
         <MakeDir Directories="$(Tmp)" />
-
+        
         <Unzip SourceFiles="$(Nupkg)"
                DestinationFolder="$(Tmp)"
                OverwriteReadOnlyFiles="true" />
-
+        
         <ItemGroup>
             <BlissFiles Include="$(BlissContent)/**/*" />
         </ItemGroup>
-
+        
         <Copy SourceFiles="@(BlissFiles)"
-              DestinationFiles="@(BlissFiles->'$(Tmp)/contentFiles/any/any/content/bliss/%(RecursiveDir)%(Filename)%(Extension)')"
-              SkipUnchangedFiles="true" />
-
+              DestinationFiles="@(BlissFiles->'$(Tmp)/contentFiles/any/any/content/bliss/%(RecursiveDir)%(Filename)%(Extension)')" />
+        
+        <MakeDir Directories="$(Tmp)/buildTransitive" />
+        
+        <ItemGroup>
+            <SparkleTargetsLines Include="&lt;Project&gt;" />
+            <SparkleTargetsLines Include="  &lt;Target Name=&quot;SparkleFixBlissContentFiles&quot; BeforeTargets=&quot;CoreCompile&quot;&gt;" />
+            <SparkleTargetsLines Include="    &lt;ItemGroup&gt;" />
+            <SparkleTargetsLines Include="      &lt;Compile Remove=&quot;$(MSBuildThisFileDirectory)..\contentFiles\any\any\content\bliss\**\*&quot; /&gt;" />
+            <SparkleTargetsLines Include="      &lt;None Include=&quot;$(MSBuildThisFileDirectory)..\contentFiles\any\any\content\bliss\**\*&quot; Link=&quot;content\bliss\%(RecursiveDir)%(Filename)%(Extension)&quot; CopyToOutputDirectory=&quot;PreserveNewest&quot; /&gt;" />
+            <SparkleTargetsLines Include="    &lt;/ItemGroup&gt;" />
+            <SparkleTargetsLines Include="  &lt;/Target&gt;" />
+            <SparkleTargetsLines Include="&lt;/Project&gt;" />
+        </ItemGroup>
+        
+        <WriteLinesToFile File="$(SparkleTargets)"
+                          Lines="@(SparkleTargetsLines)"
+                          Overwrite="true" />
+        
         <Delete Files="$(Nupkg)" />
-
+        
         <ZipDirectory SourceDirectory="$(Tmp)"
                       DestinationFile="$(Nupkg)"
                       Overwrite="true" />
-
+        
         <RemoveDir Directories="$(Tmp)" />
     </Target>
 </Project>
