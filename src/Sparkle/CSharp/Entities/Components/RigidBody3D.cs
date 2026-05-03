@@ -308,7 +308,7 @@ public class RigidBody3D : Component {
     /// <param name="delta">The time elapsed since the last update, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-        this.SyncBodyToEntityTransform(this.Entity.GlobalTransform);
+        this.SyncBodyToEntityTransform(this.Entity.WorldTransform);
     }
     
     /// <summary>
@@ -444,8 +444,8 @@ public class RigidBody3D : Component {
         this.MotionType = this._motionType;
         this.Friction = this._friction;
         this.Restitution = this._restitution;
-        this.Position = this.Entity.GlobalTransform.Translation;
-        this.Orientation = this.Entity.GlobalTransform.Rotation;
+        this.Position = this.Entity.WorldTransform.Translation;
+        this.Orientation = this.Entity.WorldTransform.Rotation;
     }
     
     /// <summary>
@@ -456,7 +456,7 @@ public class RigidBody3D : Component {
             if (!this._isSyncing) {
                 this._isSyncing = true;
                 try {
-                    Transform globalTransform = this.Entity.GlobalTransform;
+                    Transform globalTransform = this.Entity.WorldTransform;
                     
                     Vector3 entityPos = globalTransform.Translation;
                     Vector3 bodyPos = body.Position;
@@ -475,7 +475,7 @@ public class RigidBody3D : Component {
                             }
                         }
                         else {
-                            Transform parentGlobal = this.Entity.Parent.GlobalTransform;
+                            Transform parentGlobal = this.Entity.Parent.WorldTransform;
                             Quaternion invParentRot = Quaternion.Inverse(parentGlobal.Rotation);
                             
                             if (bodyPos != entityPos) {
@@ -491,7 +491,7 @@ public class RigidBody3D : Component {
                         IReadOnlyCollection<Entity> children = this.Entity.GetChildren();
                         
                         if (children.Count > 0) {
-                            Transform newGlobalTransform = this.Entity.GlobalTransform;
+                            Transform newGlobalTransform = this.Entity.WorldTransform;
                             Quaternion invNewParentRot = Quaternion.Inverse(newGlobalTransform.Rotation);
                             
                             foreach (Entity child in children) {
@@ -503,7 +503,7 @@ public class RigidBody3D : Component {
                                     isKinematic = childRb.MotionType == MotionType.Kinematic;
                                     
                                     if (isKinematic) {
-                                        childRb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                        childRb.SyncBodyToEntityTransform(child.WorldTransform);
                                     }
                                 }
                                 else if (child.TryGetComponent(out SoftBody3D? childSb)) {
@@ -511,7 +511,7 @@ public class RigidBody3D : Component {
                                     isKinematic = childSb.Center.MotionType == MotionType.Kinematic;
                                     
                                     if (isKinematic) {
-                                        childSb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                        childSb.SyncBodyToEntityTransform(child.WorldTransform);
                                     }
                                 }
                                 

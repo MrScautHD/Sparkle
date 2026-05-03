@@ -117,7 +117,7 @@ public class PlayerMovementScene : Scene {
         
         // Track camera Target to player.
         if (this.GetEntitiesWithTag("player").FirstOrDefault() is Player player) {
-            Vector3 targetPosition = player.GlobalTransform.Translation;
+            Vector3 targetPosition = player.WorldTransform.Translation;
             
             // Fetch the ModelRenderer and use its interpolated global position for smoother tracking.
             if (player.TryGetComponent(out ModelRenderer? renderer)) {

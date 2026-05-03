@@ -151,8 +151,8 @@ public class ParticleSystem3D : InterpolatedComponent {
     /// <param name="count">The number of particles to emit.</param>
     public void Emit(int count) {
         Vector3 emitterPosition = this.GlobalPosition;
-        Quaternion emitterRotation = this.Entity.GlobalTransform.Rotation;
-        Vector3 emitterScale = this.Entity.GlobalTransform.Scale;
+        Quaternion emitterRotation = this.Entity.WorldTransform.Rotation;
+        Vector3 emitterScale = this.Entity.WorldTransform.Scale;
         
         for (int i = 0; i < count && this._particles.Count < this.Definition.MaxParticles; i++) {
             Particle3D particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
@@ -182,8 +182,8 @@ public class ParticleSystem3D : InterpolatedComponent {
                 // While the system is active, keep emitting particles over time.
                 if (this._emissionAccumulator >= 1.0F) {
                     Vector3 emitterPosition = this.GlobalPosition;
-                    Quaternion emitterRotation = this.Entity.GlobalTransform.Rotation;
-                    Vector3 emitterScale = this.Entity.GlobalTransform.Scale;
+                    Quaternion emitterRotation = this.Entity.WorldTransform.Rotation;
+                    Vector3 emitterScale = this.Entity.WorldTransform.Scale;
                     
                     while (this._emissionAccumulator >= 1.0F && this._particles.Count < this.Definition.MaxParticles) {
                         Particle3D particle = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
@@ -305,8 +305,8 @@ public class ParticleSystem3D : InterpolatedComponent {
             if (this.Definition.Billboard && SceneManager.ActiveCam3D != null) {
                 Camera3D camera = SceneManager.ActiveCam3D;
                 
-                Vector3 forward = Vector3.Normalize(camera.GlobalTransform.Translation - (camera.GlobalTransform.Translation + camera.GetForward()));
-                Vector3 up = Vector3.Transform(Vector3.UnitY, camera.GlobalTransform.Rotation);
+                Vector3 forward = Vector3.Normalize(camera.WorldTransform.Translation - (camera.WorldTransform.Translation + camera.GetForward()));
+                Vector3 up = Vector3.Transform(Vector3.UnitY, camera.WorldTransform.Rotation);
                 Vector3 right = Vector3.Normalize(Vector3.Cross(up, forward));
                 
                 up = Vector3.Normalize(Vector3.Cross(forward, right));

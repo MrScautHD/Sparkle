@@ -76,10 +76,10 @@ public abstract class InterpolatedComponent : Component {
     /// </summary>
     protected internal override void Init() {
         base.Init();
-        this._previousPos = this._currentPos = this.Entity.GlobalTransform.Translation;
+        this._previousPos = this._currentPos = this.Entity.WorldTransform.Translation;
         this._previousGlobalPos = this._currentGlobalPos = this.GlobalPosition;
-        this._previousRot = this._currentRot = this.Entity.GlobalTransform.Rotation;
-        this._previousScale = this._currentScale = this.Entity.GlobalTransform.Scale;
+        this._previousRot = this._currentRot = this.Entity.WorldTransform.Rotation;
+        this._previousScale = this._currentScale = this.Entity.WorldTransform.Scale;
     }
 
     /// <summary>
@@ -90,15 +90,15 @@ public abstract class InterpolatedComponent : Component {
     protected internal override void FixedUpdate(double fixedStep) {
         base.FixedUpdate(fixedStep);
         this._previousPos = this._currentPos;
-        this._currentPos = this.Entity.GlobalTransform.Translation;
+        this._currentPos = this.Entity.WorldTransform.Translation;
         
         this._previousGlobalPos = this._currentGlobalPos;
         this._currentGlobalPos = this.GlobalPosition;
         
         this._previousRot = this._currentRot;
-        this._currentRot = this.Entity.GlobalTransform.Rotation;
+        this._currentRot = this.Entity.WorldTransform.Rotation;
         
         this._previousScale = this._currentScale;
-        this._currentScale = this.Entity.GlobalTransform.Scale;
+        this._currentScale = this.Entity.WorldTransform.Scale;
     }
 }

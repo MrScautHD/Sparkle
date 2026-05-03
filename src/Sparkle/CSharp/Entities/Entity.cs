@@ -39,18 +39,37 @@ public class Entity : Disposable {
     /// <summary>
     /// The global transformation of the entity, combining its local transformation with the transformations of all its ancestors in the hierarchy.
     /// </summary>
-    public Transform GlobalTransform { // TODO: Rename it to world makes more sense i guess and also allow to set it.
+    public Transform WorldTransform {
         get {
             if (this.Parent == null) {
                 return this.LocalTransform;
             }
             
-            Transform parentTransform = this.Parent.GlobalTransform;
+            Transform parentTransform = this.Parent.WorldTransform;
             
-            return new Transform() {
+            return new Transform {
                 Translation = parentTransform.Translation + Vector3.Transform(this.LocalTransform.Translation * parentTransform.Scale, parentTransform.Rotation),
                 Rotation = parentTransform.Rotation * this.LocalTransform.Rotation,
                 Scale = parentTransform.Scale * this.LocalTransform.Scale
+            };
+        }
+        set {
+            if (this.Parent == null) {
+                this.LocalTransform = value;
+                return;
+            }
+            
+            Transform parentTransform = this.Parent.WorldTransform;
+            Quaternion inverseParentRotation = Quaternion.Inverse(parentTransform.Rotation);
+            
+            Vector3 localTranslation = Vector3.Transform(value.Translation - parentTransform.Translation, inverseParentRotation) / parentTransform.Scale;
+            Quaternion localRotation = inverseParentRotation * value.Rotation;
+            Vector3 localScale = value.Scale / parentTransform.Scale;
+            
+            this.LocalTransform = new Transform {
+                Translation = localTranslation,
+                Rotation = localRotation,
+                Scale = localScale
             };
         }
     }

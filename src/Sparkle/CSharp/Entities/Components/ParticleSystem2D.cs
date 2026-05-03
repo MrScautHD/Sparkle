@@ -87,7 +87,7 @@ public class ParticleSystem2D : InterpolatedComponent {
     public void Emit(int count) {
         Vector2 emitterPosition = new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y);
         float emitterRotation = this.GetEmitterRotation();
-        Vector2 emitterScale = new Vector2(this.Entity.GlobalTransform.Scale.X, this.Entity.GlobalTransform.Scale.Y);
+        Vector2 emitterScale = new Vector2(this.Entity.WorldTransform.Scale.X, this.Entity.WorldTransform.Scale.Y);
         
         for (int i = 0; i < count && this._particles.Count < this.Definition.MaxParticles; i++) {
             Particle2D particle2D = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
@@ -118,7 +118,7 @@ public class ParticleSystem2D : InterpolatedComponent {
                 if (this._emissionAccumulator >= 1.0F) {
                     Vector2 emitterPosition = new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y);
                     float emitterRotation = this.GetEmitterRotation();
-                    Vector2 emitterScale = new Vector2(this.Entity.GlobalTransform.Scale.X, this.Entity.GlobalTransform.Scale.Y);
+                    Vector2 emitterScale = new Vector2(this.Entity.WorldTransform.Scale.X, this.Entity.WorldTransform.Scale.Y);
                     
                     while (this._emissionAccumulator >= 1.0F && this._particles.Count < this.Definition.MaxParticles) {
                         Particle2D particle2D = this.CreateParticle(emitterPosition, emitterRotation, emitterScale);
@@ -374,7 +374,7 @@ public class ParticleSystem2D : InterpolatedComponent {
     /// </summary>
     /// <returns>The emitter rotation in radians.</returns>
     private float GetEmitterRotation() {
-        Vector3 forward = Vector3.Transform(Vector3.UnitX, this.Entity.GlobalTransform.Rotation);
+        Vector3 forward = Vector3.Transform(Vector3.UnitX, this.Entity.WorldTransform.Rotation);
         return MathF.Atan2(forward.Y, forward.X);
     }
     

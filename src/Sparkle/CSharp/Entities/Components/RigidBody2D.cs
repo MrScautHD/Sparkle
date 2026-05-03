@@ -286,7 +286,7 @@ public class RigidBody2D : Component {
     /// <param name="delta">The time elapsed since the last update, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-        this.SyncBodyToEntityTransform(this.Entity.GlobalTransform);
+        this.SyncBodyToEntityTransform(this.Entity.WorldTransform);
     }
 
     /// <summary>
@@ -479,8 +479,8 @@ public class RigidBody2D : Component {
     private void CreateBody() {
         this._body = this.World.CreateBody(new BodyDef() {
             Type = this._bodyDef.Type,
-            Position = new Vector2(this.Entity.GlobalTransform.Translation.X, this.Entity.GlobalTransform.Translation.Y),
-            Rotation = this.Entity.GlobalTransform.Rotation.ToEuler().Z,
+            Position = new Vector2(this.Entity.WorldTransform.Translation.X, this.Entity.WorldTransform.Translation.Y),
+            Rotation = this.Entity.WorldTransform.Rotation.ToEuler().Z,
             LinearVelocity = this._bodyDef.LinearVelocity,
             AngularVelocity = this._bodyDef.AngularVelocity,
             LinearDamping = this._bodyDef.LinearDamping,
@@ -511,7 +511,7 @@ public class RigidBody2D : Component {
             if (!this._isSyncing) {
                 this._isSyncing = true;
                 try {
-                    Transform globalTransform = this.Entity.GlobalTransform;
+                    Transform globalTransform = this.Entity.WorldTransform;
                     
                     Vector2 entityPos = new Vector2(globalTransform.Translation.X, globalTransform.Translation.Y);
                     Vector2 bodyPos = moveEvent.Body.Position;
@@ -530,7 +530,7 @@ public class RigidBody2D : Component {
                             }
                         }
                         else {
-                            Transform parentGlobal = this.Entity.Parent.GlobalTransform;
+                            Transform parentGlobal = this.Entity.Parent.WorldTransform;
                             Quaternion invParentRot = Quaternion.Inverse(parentGlobal.Rotation);
                             
                             if (bodyPos != entityPos) {
@@ -546,7 +546,7 @@ public class RigidBody2D : Component {
                         IReadOnlyCollection<Entity> children = this.Entity.GetChildren();
                         
                         if (children.Count > 0) {
-                            Transform newGlobalTransform = this.Entity.GlobalTransform;
+                            Transform newGlobalTransform = this.Entity.WorldTransform;
                             Quaternion invNewParentRot = Quaternion.Inverse(newGlobalTransform.Rotation);
                             
                             foreach (Entity child in children) {
@@ -564,7 +564,7 @@ public class RigidBody2D : Component {
                                     else {
                                         
                                         // Immediately sync its physics body so it doesn't fall behind in the physics step!
-                                        childRb.SyncBodyToEntityTransform(child.GlobalTransform);
+                                        childRb.SyncBodyToEntityTransform(child.WorldTransform);
                                     }
                                 }
                             }
