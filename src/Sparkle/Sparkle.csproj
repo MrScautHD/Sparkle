@@ -18,11 +18,11 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
-        <Description>A fast, Cross-platform .NET 9 C# 13 game engine.</Description>
+        <Description>A fast, Cross-platform .NET 10 C# 14 game engine.</Description>
         <PackageProjectUrl>https://sparkle-engine.com/</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
-        <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net9, C#13, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
+        <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     

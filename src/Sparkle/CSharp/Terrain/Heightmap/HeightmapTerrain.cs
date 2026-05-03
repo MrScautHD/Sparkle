@@ -5,30 +5,76 @@ namespace Sparkle.CSharp.Terrain.Heightmap;
 
 public class HeightmapTerrain : ITerrain {
     
+    /// <summary>
+    /// The generator used to create the initial chunk density data.
+    /// </summary>
     public IChunkGenerator ChunkGenerator { get; private set; }
     
+    /// <summary>
+    /// The material used when rendering terrain meshes.
+    /// </summary>
     public Material Material { get; private set; }
-
+    
+    /// <summary>
+    /// The total terrain width along the X axis.
+    /// </summary>
     public int Width { get; private set; }
     
+    /// <summary>
+    /// The total terrain height along the Y axis.
+    /// </summary>
     public int Height { get; private set; }
     
+    /// <summary>
+    /// The total terrain depth along the Z axis.
+    /// </summary>
     public int Depth { get; private set; }
     
+    /// <summary>
+    /// The size of each terrain chunk along the X and Z axes.
+    /// </summary>
     public int ChunkSize { get; private set; }
     
+    /// <summary>
+    /// The density value used as the surface threshold.
+    /// </summary>
     public float IsoLevel { get; private set; }
     
+    /// <summary>
+    /// Stores the surface height for every X/Z terrain coordinate.
+    /// </summary>
     private float[,] _surfaceHeights;
     
+    /// <summary>
+    /// Number of chunks along the X axis.
+    /// </summary>
     private int _chunkCountX;
     
+    /// <summary>
+    /// Number of chunks along the Z axis.
+    /// </summary>
     private int _chunkCountZ;
     
+    /// <summary>
+    /// Flat list containing all terrain chunks.
+    /// </summary>
     private List<IChunk> _chunks;
     
+    /// <summary>
+    /// Grid lookup for terrain chunks by chunk X/Z coordinates.
+    /// </summary>
     private HeightmapChunk[,] _chunkGrid;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HeightmapTerrain"/> class.
+    /// </summary>
+    /// <param name="chunkGenerator">The generator used to create initial chunk density data.</param>
+    /// <param name="material">The material used for terrain rendering.</param>
+    /// <param name="width">The terrain width along the X axis.</param>
+    /// <param name="height">The terrain height along the Y axis.</param>
+    /// <param name="depth">The terrain depth along the Z axis.</param>
+    /// <param name="chunkSize">The size of each chunk along the X and Z axes.</param>
+    /// <param name="isoLevel">The density value used as the surface threshold.</param>
     private HeightmapTerrain(IChunkGenerator chunkGenerator, Material material, int width, int height, int depth, int chunkSize, float isoLevel) {
         this.ChunkGenerator = chunkGenerator;
         this.Material = material;
@@ -46,6 +92,17 @@ public class HeightmapTerrain : ITerrain {
         this._chunkGrid = new HeightmapChunk[this._chunkCountX, this._chunkCountZ];
     }
     
+    /// <summary>
+    /// Creates a heightmap terrain and initializes all chunks asynchronously.
+    /// </summary>
+    /// <param name="chunkGenerator">The generator used to create initial chunk density data.</param>
+    /// <param name="material">The material used for terrain rendering.</param>
+    /// <param name="width">The terrain width along the X axis.</param>
+    /// <param name="height">The terrain height along the Y axis.</param>
+    /// <param name="depth">The terrain depth along the Z axis.</param>
+    /// <param name="chunkSize">The size of each chunk along the X and Z axes.</param>
+    /// <param name="isoLevel">The density value used as the surface threshold.</param>
+    /// <returns>The created and initialized heightmap terrain.</returns>
     public static async Task<HeightmapTerrain> CreateAsync(IChunkGenerator chunkGenerator, Material material, int width, int height, int depth, int chunkSize, float isoLevel = 0.0F) {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
@@ -57,10 +114,16 @@ public class HeightmapTerrain : ITerrain {
         return terrain;
     }
     
+    /// <summary>
+    /// Returns all chunks that make up this terrain.
+    /// </summary>
     public IReadOnlyList<IChunk> GetChunks() {
         return this._chunks;
     }
     
+    /// <summary>
+    /// Returns all chunks that are currently marked dirty and need a mesh rebuild.
+    /// </summary>
     public IEnumerable<IChunk> GetDirtyChunks() {
         foreach (IChunk chunk in this._chunks) {
             if (chunk.IsDirty) {
@@ -69,6 +132,12 @@ public class HeightmapTerrain : ITerrain {
         }
     }
     
+    /// <summary>
+    /// Gets the interpolated density at the given terrain position.
+    /// Positive values are below the surface, negative values are above the surface.
+    /// </summary>
+    /// <param name="position">The terrain-space position to sample.</param>
+    /// <returns>The interpolated density value, or -1 when outside the terrain bounds.</returns>
     public float GetDensityAt(Vector3 position) {
         if (!this.Contains(position)) {
             return -1.0F;
@@ -95,6 +164,13 @@ public class HeightmapTerrain : ITerrain {
         return interpolatedSurfaceHeight - position.Y;
     }
     
+    /// <summary>
+    /// Gets the raw density value at an integer terrain coordinate.
+    /// </summary>
+    /// <param name="x">The X coordinate to sample.</param>
+    /// <param name="y">The Y coordinate to sample.</param>
+    /// <param name="z">The Z coordinate to sample.</param>
+    /// <returns>The raw density value, or -1 when outside the terrain bounds.</returns>
     public float GetRawDensityAt(int x, int y, int z) {
         if (x < 0 || x > this.Width || y < 0 || y > this.Height || z < 0 || z > this.Depth) {
             return -1.0F;
@@ -103,6 +179,10 @@ public class HeightmapTerrain : ITerrain {
         return this._surfaceHeights[x, z] - y;
     }
     
+    /// <summary>
+    /// Fills the whole terrain with a solid or empty density state and marks all chunks dirty.
+    /// </summary>
+    /// <param name="density">The density value used to decide whether the terrain becomes filled or empty.</param>
     public void Fill(float density) {
         float targetHeight = density >= this.IsoLevel ? this.Height : -1.0F;
         
@@ -115,6 +195,10 @@ public class HeightmapTerrain : ITerrain {
         this.MarkAllChunksDirty();
     }
     
+    /// <summary>
+    /// Applies a flat horizontal surface height across the entire terrain and marks all chunks dirty.
+    /// </summary>
+    /// <param name="surfaceHeight">The new surface height.</param>
     public void ApplyFlatSurface(float surfaceHeight) {
         for (int x = 0; x <= this.Width; x++) {
             for (int z = 0; z <= this.Depth; z++) {
@@ -125,6 +209,14 @@ public class HeightmapTerrain : ITerrain {
         this.MarkAllChunksDirty();
     }
     
+    /// <summary>
+    /// Applies a circular height brush to the terrain surface and marks affected chunks dirty.
+    /// Positive strength raises terrain, negative strength lowers terrain.
+    /// </summary>
+    /// <param name="center">The terrain-space brush center.</param>
+    /// <param name="radius">The brush radius.</param>
+    /// <param name="strength">The height delta applied at the brush center.</param>
+    /// <returns><c>true</c> when at least one height value was changed.</returns>
     public bool ApplyBrush(Vector3 center, float radius, float strength) {
         if (radius <= 0.0F || MathF.Abs(strength) <= float.Epsilon) {
             return false;
@@ -181,10 +273,19 @@ public class HeightmapTerrain : ITerrain {
         return true;
     }
     
+    /// <summary>
+    /// Clears the terrain by filling it with the given density value.
+    /// </summary>
+    /// <param name="density">The density value used for clearing. Defaults to empty terrain.</param>
     public void Clear(float density = -1.0F) {
         this.Fill(density);
     }
     
+    /// <summary>
+    /// Calculates an approximate terrain surface normal at the given position.
+    /// </summary>
+    /// <param name="position">The terrain-space position to sample.</param>
+    /// <returns>The normalized surface normal.</returns>
     public Vector3 CalculateNormal(Vector3 position) {
         int sampleX = Math.Clamp((int) MathF.Round(position.X), 0, this.Width);
         int sampleZ = Math.Clamp((int) MathF.Round(position.Z), 0, this.Depth);
@@ -207,6 +308,16 @@ public class HeightmapTerrain : ITerrain {
         return Vector3.Normalize(surfaceNormal);
     }
     
+    /// <summary>
+    /// Raycasts against the heightmap surface and returns the first surface hit.
+    /// </summary>
+    /// <param name="origin">The terrain-space ray origin.</param>
+    /// <param name="direction">The ray direction.</param>
+    /// <param name="maxDistance">The maximum ray distance.</param>
+    /// <param name="stepSize">The distance between density samples.</param>
+    /// <param name="hitPosition">The resulting hit position when the ray hits the surface.</param>
+    /// <param name="hitNormal">The resulting surface normal when the ray hits the surface.</param>
+    /// <returns><c>true</c> when the ray hits the terrain surface.</returns>
     public bool RaycastSurface(Vector3 origin, Vector3 direction, float maxDistance, float stepSize, out Vector3 hitPosition, out Vector3 hitNormal) {
         hitPosition = Vector3.Zero;
         hitNormal = Vector3.UnitY;
@@ -253,12 +364,23 @@ public class HeightmapTerrain : ITerrain {
         return false;
     }
     
+    /// <summary>
+    /// Checks whether the given terrain-space position lies inside the terrain bounds.
+    /// </summary>
+    /// <param name="position">The position to check.</param>
+    /// <returns><c>true</c> when the position is inside the terrain bounds.</returns>
     public bool Contains(Vector3 position) {
         return position.X >= 0.0F && position.X <= this.Width &&
                position.Y >= 0.0F && position.Y <= this.Height &&
                position.Z >= 0.0F && position.Z <= this.Depth;
     }
     
+    /// <summary>
+    /// Gets the stored surface height at the given X/Z coordinate.
+    /// </summary>
+    /// <param name="x">The X coordinate.</param>
+    /// <param name="z">The Z coordinate.</param>
+    /// <returns>The surface height, or -1 when outside the terrain bounds.</returns>
     public float GetSurfaceHeight(int x, int z) {
         if (x < 0 || x > this.Width || z < 0 || z > this.Depth) {
             return -1.0F;
@@ -267,12 +389,18 @@ public class HeightmapTerrain : ITerrain {
         return this._surfaceHeights[x, z];
     }
     
+    /// <summary>
+    /// Marks every terrain chunk as dirty so all chunk meshes will be rebuilt.
+    /// </summary>
     public void MarkAllChunksDirty() {
         foreach (IChunk chunk in this._chunks) {
             chunk.MarkDirty();
         }
     }
     
+    /// <summary>
+    /// Creates all heightmap chunks and initializes the surface height data from generated density volumes.
+    /// </summary>
     private async Task CreateChunks() {
         int totalChunkCount = this._chunkCountX * this._chunkCountZ;
         IChunk[] chunks = new IChunk[totalChunkCount];

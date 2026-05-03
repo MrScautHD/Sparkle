@@ -8,7 +8,6 @@ using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;

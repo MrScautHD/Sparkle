@@ -10,20 +10,45 @@ namespace Sparkle.CSharp.Terrain.Heightmap;
 
 public class HeightmapChunk : Disposable, IChunk {
     
+    /// <summary>
+    /// The terrain this chunk belongs to.
+    /// </summary>
     public ITerrain Terrain { get; private set; }
     
+    /// <summary>
+    /// The uploaded mesh used for rendering this chunk.
+    /// </summary>
     public IMesh? Mesh { get; private set; }
     
+    /// <summary>
+    /// The terrain-space position of this chunk.
+    /// </summary>
     public Vector3 Position { get; private set; }
     
+    /// <summary>
+    /// The chunk width along the X axis.
+    /// </summary>
     public int Width { get; private set; }
     
+    /// <summary>
+    /// The chunk height along the Y axis.
+    /// </summary>
     public int Height { get; private set; }
     
+    /// <summary>
+    /// The chunk depth along the Z axis.
+    /// </summary>
     public int Depth { get; private set; }
     
+    /// <summary>
+    /// Whether this chunk needs its geometry rebuilt.
+    /// </summary>
     public bool IsDirty { get; private set; }
     
+    /// <summary>
+    /// The requested LOD level for this chunk.
+    /// Changing this value marks the chunk dirty.
+    /// </summary>
     public int Lod {
         get => this._lod;
         set {
@@ -36,10 +61,19 @@ public class HeightmapChunk : Disposable, IChunk {
         }
     }
     
+    /// <summary>
+    /// The LOD level currently represented by the uploaded mesh.
+    /// </summary>
     public int CurrentLod { get; private set; }
     
+    /// <summary>
+    /// Whether generated geometry is waiting to be uploaded or applied to the mesh.
+    /// </summary>
     public bool HasPendingGeometry => this._pendingVertices.Length > 0 && this._pendingIndices.Length > 0;
     
+    /// <summary>
+    /// Whether the pending geometry can update the existing mesh buffers without recreating the mesh.
+    /// </summary>
     public bool CanUpdateGeometryInPlace {
         get {
             if (!this.HasPendingGeometry) {
@@ -53,18 +87,44 @@ public class HeightmapChunk : Disposable, IChunk {
         }
     }
     
+    /// <summary>
+    /// The requested LOD level stored by the <see cref="Lod"/> property.
+    /// </summary>
     private int _lod;
     
+    /// <summary>
+    /// Generated vertices waiting to be uploaded or applied to the current mesh.
+    /// </summary>
     private Vertex3D[] _pendingVertices;
     
+    /// <summary>
+    /// Generated indices waiting to be uploaded or applied to the current mesh.
+    /// </summary>
     private uint[] _pendingIndices;
     
+    /// <summary>
+    /// Cached height samples reused during geometry generation.
+    /// </summary>
     private float[] _heightSamples;
     
+    /// <summary>
+    /// Incremented every time the chunk is marked dirty.
+    /// </summary>
     private int _dirtyVersion;
     
+    /// <summary>
+    /// The dirty version that was used for the latest generated geometry.
+    /// </summary>
     private int _generatedVersion;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HeightmapChunk"/> class.
+    /// </summary>
+    /// <param name="terrain">The heightmap terrain this chunk belongs to.</param>
+    /// <param name="position">The terrain-space chunk position.</param>
+    /// <param name="width">The chunk width along the X axis.</param>
+    /// <param name="height">The chunk height along the Y axis.</param>
+    /// <param name="depth">The chunk depth along the Z axis.</param>
     public HeightmapChunk(HeightmapTerrain terrain, Vector3 position, int width, int height, int depth) {
         this.Terrain = terrain;
         this.Position = position;
@@ -81,11 +141,18 @@ public class HeightmapChunk : Disposable, IChunk {
         this._generatedVersion = 0;
     }
     
+    /// <summary>
+    /// Marks this chunk as dirty so its geometry will be regenerated.
+    /// </summary>
     public void MarkDirty() {
         this.IsDirty = true;
         this._dirtyVersion++;
     }
     
+    /// <summary>
+    /// Generates heightmap mesh geometry for the current LOD level.
+    /// The generated data is stored as pending geometry until uploaded or applied.
+    /// </summary>
     public void GenerateGeometry() {
         int targetVersion = this._dirtyVersion;
         
@@ -226,6 +293,10 @@ public class HeightmapChunk : Disposable, IChunk {
         this._generatedVersion = targetVersion;
     }
     
+    /// <summary>
+    /// Uploads the pending geometry by recreating this chunk's mesh.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used to create the mesh.</param>
     public void UploadGeometry(GraphicsDevice graphicsDevice) {
         bool hasGeometry = this.HasPendingGeometry;
         
@@ -238,6 +309,10 @@ public class HeightmapChunk : Disposable, IChunk {
         this.IsDirty = this._dirtyVersion != this._generatedVersion;
     }
     
+    /// <summary>
+    /// Applies pending vertex data to the existing mesh without recreating it.
+    /// </summary>
+    /// <param name="commandList">The command list used for graphics updates.</param>
     public void UpdateGeometry(CommandList commandList) {
         if (this.Mesh is not Mesh<Vertex3D> mesh) {
             throw new InvalidOperationException($"{nameof(UpdateGeometry)} requires a valid {nameof(Mesh<>)} instance.");
