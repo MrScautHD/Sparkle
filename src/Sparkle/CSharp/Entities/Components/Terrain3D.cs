@@ -20,90 +20,224 @@ namespace Sparkle.CSharp.Entities.Components;
 
 public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     
+    /// <summary>
+    /// The terrain data source used by this component.
+    /// </summary>
     public ITerrain Terrain { get; private set; }
     
+    /// <summary>
+    /// Settings controlling terrain LOD, chunk rebuilds, uploads, and far region batching.
+    /// </summary>
     public TerrainSettings TerrainSettings { get; private set; }
     
+    /// <summary>
+    /// Whether debug terrain bounds should be drawn.
+    /// </summary>
     public bool DebugDrawEnabled { get; set; }
     
+    /// <summary>
+    /// Whether terrain chunks and regions should be culled against the active camera frustum.
+    /// </summary>
     public bool FrustumCulling;
     
+    /// <summary>
+    /// Total number of vertices drawn during the last terrain draw pass.
+    /// </summary>
     public int TotalVertexCount { get; private set; }
     
+    /// <summary>
+    /// Total number of indices drawn during the last terrain draw pass.
+    /// </summary>
     public int TotalIndexCount { get; private set; }
     
+    /// <summary>
+    /// Factory used to create or load the terrain instance during initialization.
+    /// </summary>
     private readonly Func<Task<ITerrain>> _terrainFactory;
     
+    /// <summary>
+    /// List of chunks that currently have mesh state and may be rendered.
+    /// </summary>
     private readonly List<IChunk> _meshChunkList;
     
+    /// <summary>
+    /// Queue of chunks waiting for geometry upload or mesh state refresh on the main thread.
+    /// </summary>
     private readonly ConcurrentQueue<IChunk> _pendingUpload;
     
+    /// <summary>
+    /// Tracks chunks that have generated geometry queued for upload.
+    /// </summary>
     private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
     
+    /// <summary>
+    /// Tracks chunks that are currently being rebuilt in the background.
+    /// </summary>
     private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
     
+    /// <summary>
+    /// Tracks chunks whose vertex data can be updated in-place during rendering.
+    /// </summary>
     private readonly HashSet<IChunk> _chunksPendingVertexUpload;
     
+    /// <summary>
+    /// Queue of rebuilt far region batch results waiting for GPU upload.
+    /// </summary>
     private readonly ConcurrentQueue<TerrainRegionBuildResult> _pendingRegionUploads;
     
+    /// <summary>
+    /// Tracks far region batches that are currently being rebuilt in the background.
+    /// </summary>
     private readonly ConcurrentDictionary<TerrainRegionKey, byte> _regionBuildingSet;
     
+    /// <summary>
+    /// Cached renderables for normal, non-batched terrain chunks.
+    /// </summary>
     private readonly Dictionary<IChunk, Renderable> _renderables;
     
+    /// <summary>
+    /// Local-space bounds for each terrain chunk.
+    /// </summary>
     private readonly Dictionary<IChunk, BoundingBox> _chunkLocalBounds;
     
+    /// <summary>
+    /// Local-space center position for each terrain chunk.
+    /// Used for distance sorting and LOD calculations.
+    /// </summary>
     private readonly Dictionary<IChunk, Vector3> _chunkLocalCenters;
     
+    /// <summary>
+    /// Cached world-space bounds for chunks, versioned by the terrain bounds transform cache.
+    /// </summary>
     private readonly Dictionary<IChunk, CachedWorldBounds> _chunkWorldBounds;
     
+    /// <summary>
+    /// Temporary buffer used when collecting and sorting dirty chunks for scheduling.
+    /// </summary>
     private readonly List<IChunk> _dirtyScheduleBuffer;
     
+    /// <summary>
+    /// Maps chunks to the far region batch they currently belong to.
+    /// </summary>
     private readonly Dictionary<IChunk, TerrainRegionKey> _chunkRegions;
     
+    /// <summary>
+    /// Stores all chunk members for each far region batch.
+    /// </summary>
     private readonly Dictionary<TerrainRegionKey, HashSet<IChunk>> _regionMembers;
     
+    /// <summary>
+    /// Active uploaded far region batches.
+    /// </summary>
     private readonly Dictionary<TerrainRegionKey, TerrainRegionBatch> _regionBatches;
     
+    /// <summary>
+    /// Cached world-space bounds for far region batches, versioned by the terrain bounds transform cache.
+    /// </summary>
     private readonly Dictionary<TerrainRegionKey, CachedWorldBounds> _regionWorldBounds;
     
+    /// <summary>
+    /// Set of far regions that need to be rebuilt.
+    /// </summary>
     private readonly HashSet<TerrainRegionKey> _dirtyRegions;
     
+    /// <summary>
+    /// Temporary buffer used when sorting dirty far regions by camera distance.
+    /// </summary>
     private readonly List<TerrainRegionKey> _regionDirtyBuffer;
     
+    /// <summary>
+    /// Terrain bounds in local terrain space.
+    /// </summary>
     private BoundingBox _terrainLocalBounds;
     
+    /// <summary>
+    /// Cached terrain bounds in world space.
+    /// </summary>
     private BoundingBox _cachedTerrainWorldBounds;
     
+    /// <summary>
+    /// Transform version used when the cached terrain world bounds were last calculated.
+    /// </summary>
     private int _cachedTerrainWorldBoundsVersion;
     
+    /// <summary>
+    /// Version incremented whenever the transform used for bounds calculations changes.
+    /// </summary>
     private int _boundsCacheTransformVersion;
     
+    /// <summary>
+    /// Whether a previous bounds transform has been cached.
+    /// </summary>
     private bool _hasCachedBoundsTransform;
     
+    /// <summary>
+    /// Cached terrain position used to detect bounds transform changes.
+    /// </summary>
     private Vector3 _cachedBoundsPosition;
     
+    /// <summary>
+    /// Cached terrain rotation used to detect bounds transform changes.
+    /// </summary>
     private Quaternion _cachedBoundsRotation;
     
+    /// <summary>
+    /// Cached terrain scale used to detect bounds transform changes.
+    /// </summary>
     private Vector3 _cachedBoundsScale;
     
+    /// <summary>
+    /// Whether a previous render transform has been cached.
+    /// </summary>
     private bool _hasCachedRenderTransform;
     
+    /// <summary>
+    /// Cached terrain position used to update renderable transforms.
+    /// </summary>
     private Vector3 _cachedRenderPosition;
     
+    /// <summary>
+    /// Cached terrain rotation used to update renderable transforms.
+    /// </summary>
     private Quaternion _cachedRenderRotation;
     
+    /// <summary>
+    /// Cached terrain scale used to update renderable transforms.
+    /// </summary>
     private Vector3 _cachedRenderScale;
     
+    /// <summary>
+    /// Shared terrain transform applied to chunk and region renderables.
+    /// </summary>
     private Transform _terrainRenderTransform;
     
+    /// <summary>
+    /// Accumulated time since the last terrain LOD update.
+    /// </summary>
     private float _lodUpdateAccumulator;
     
+    /// <summary>
+    /// Incrementing tick used to throttle mid and far LOD ring updates.
+    /// </summary>
     private int _lodRingTick;
     
+    /// <summary>
+    /// Whether the last LOD camera position has been initialized.
+    /// </summary>
     private bool _hasLastLodCameraPosition;
     
+    /// <summary>
+    /// Last camera position used for LOD movement threshold checks.
+    /// </summary>
     private Vector3 _lastLodCameraPosition;
     
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Terrain3D"/> class.
+    /// </summary>
+    /// <param name="terrainFactory">Factory used to create or load the terrain.</param>
+    /// <param name="terrainTerrainSettings">Terrain performance, LOD, and batching settings.</param>
+    /// <param name="offsetPosition">The local offset position of this terrain component.</param>
+    /// <param name="frustumCulling">Whether frustum culling should be enabled.</param>
     public Terrain3D(Func<Task<ITerrain>> terrainFactory, TerrainSettings terrainTerrainSettings, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
         this._terrainFactory = terrainFactory;
         this.TerrainSettings = terrainTerrainSettings;
@@ -136,6 +270,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this._lodRingTick = 0;
     }
     
+    /// <summary>
+    /// Initializes the terrain.
+    /// </summary>
     protected internal override void Init() {
         base.Init();
         
@@ -162,6 +299,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.PreloadAllChunkMeshes();
     }
     
+    /// <summary>
+    /// Updates terrain LOD state, schedules dirty chunk rebuilds, and processes dirty far region rebuild scheduling.
+    /// </summary>
+    /// <param name="delta">Time elapsed since the last update.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
         
@@ -238,6 +379,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Processes pending geometry uploads and draws terrain chunks and far region batches.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering.</param>
+    /// <param name="framebuffer">The target framebuffer.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         
@@ -315,6 +461,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Draws terrain, chunk, and far region debug bounds.
+    /// </summary>
+    /// <param name="immediateRenderer">The immediate renderer used for debug drawing.</param>
     public void DrawDebug(ImmediateRenderer immediateRenderer) {
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
@@ -372,6 +522,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Generates and uploads initial meshes for all chunks that are visible according to the initial LOD state.
+    /// </summary>
     private void PreloadAllChunkMeshes() {
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
@@ -414,6 +567,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.ProcessDirtyRegions(cam3D, true);
     }
     
+    /// <summary>
+    /// Checks whether a dirty chunk can be scheduled for background rebuilding.
+    /// </summary>
+    /// <param name="chunk">The chunk to check.</param>
+    /// <returns><c>true</c> if the chunk can be scheduled.</returns>
     private bool ShouldSchedule(IChunk chunk) {
         
         // Skip chunks that are already queued or currently building.
@@ -429,6 +587,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return true;
     }
     
+    /// <summary>
+    /// Schedules a chunk geometry rebuild on a background task.
+    /// </summary>
+    /// <param name="chunk">The chunk to rebuild.</param>
     private void ScheduleBackground(IChunk chunk) {
         
         // Mark the chunk as building so it cannot be scheduled twice.
@@ -454,6 +616,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         });
     }
     
+    /// <summary>
+    /// Updates terrain chunk LOD levels based on camera distance, movement, and throttled LOD rings.
+    /// </summary>
+    /// <param name="delta">Time elapsed since the last update.</param>
     private void UpdateLodLevels(double delta) {
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
@@ -536,6 +702,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Determines the target LOD for a squared camera distance.
+    /// </summary>
+    /// <param name="distanceSquared">Squared distance from the camera to the chunk.</param>
+    /// <param name="lodDistances">LOD distance thresholds.</param>
+    /// <param name="cullBeyondLastLod">Whether chunks beyond the last LOD should be culled.</param>
+    /// <param name="maxDistanceSquared">Maximum allowed squared LOD distance.</param>
+    /// <returns>The target LOD, or -1 when the chunk should be culled.</returns>
     private int DetermineLod(float distanceSquared, float[] lodDistances, bool cullBeyondLastLod, float maxDistanceSquared) {
         
         // Cull the chunk if it is beyond the maximum allowed LOD distance.
@@ -561,6 +735,13 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return cullBeyondLastLod ? -1 : lodDistances.Length - 1;
     }
     
+    /// <summary>
+    /// Checks whether the current LOD should be held temporarily to avoid flickering near LOD thresholds.
+    /// </summary>
+    /// <param name="currentLod">The chunk's current requested LOD.</param>
+    /// <param name="targetLod">The newly calculated target LOD.</param>
+    /// <param name="distanceSquared">Squared camera distance to the chunk.</param>
+    /// <returns><c>true</c> if the current LOD should be kept.</returns>
     private bool ShouldHoldCurrentLod(int currentLod, int targetLod, float distanceSquared) {
         TerrainSettings settings = this.TerrainSettings;
         float[] lodDistances = settings.LodDistances;
@@ -595,6 +776,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return distanceSquared >= lowerThresholdSquared;
     }
     
+    /// <summary>
+    /// Calculates squared distance from the camera to the chunk center.
+    /// </summary>
+    /// <param name="cameraPosition">The world-space camera position.</param>
+    /// <param name="chunk">The chunk to measure.</param>
+    /// <returns>The squared distance to the chunk center.</returns>
     private float GetChunkDistanceSquared(Vector3 cameraPosition, IChunk chunk) {
         
         // Get or calculate the chunk center in terrain local space.
@@ -610,6 +797,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return Vector3.DistanceSquared(cameraPosition, chunkWorldCenter);
     }
     
+    /// <summary>
+    /// Uploads pending chunk geometry to the GPU within the configured per-frame upload budget.
+    /// </summary>
     private void ProcessPendingChunkUploads() {
         int uploadBudget = Math.Max(0, this.TerrainSettings.MaxChunkUploadsPerFrame);
         
@@ -628,6 +818,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Uploads pending far region batch meshes to the GPU within the configured count and time budgets.
+    /// </summary>
     private void ProcessPendingRegionUploads() {
         TerrainSettings settings = this.TerrainSettings;
         
@@ -666,6 +859,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Refreshes render state, render lists, bounds caches, and region membership for a chunk after geometry changes.
+    /// </summary>
+    /// <param name="chunk">The chunk whose mesh state should be refreshed.</param>
     private void RefreshMeshChunkState(IChunk chunk) {
         bool hasMesh = chunk.Mesh != null;
         
@@ -697,6 +894,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Uploads or defers pending chunk geometry depending on whether the existing mesh can be updated in-place.
+    /// </summary>
+    /// <param name="chunk">The chunk whose pending geometry should be handled.</param>
     private void UploadChunkGeometry(IChunk chunk) {
         
         // Upload immediately when there is no pending geometry or in-place update is not possible.
@@ -710,6 +911,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this._chunksPendingVertexUpload.Add(chunk);
     }
     
+    /// <summary>
+    /// Draws all active far region batches.
+    /// </summary>
+    /// <param name="cam3D">The active 3D camera.</param>
     private void DrawFarRegionBatches(Camera3D cam3D) {
         foreach ((TerrainRegionKey regionKey, TerrainRegionBatch batch) in this._regionBatches) {
             Renderable? renderable = batch.Renderable;
@@ -740,6 +945,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Gets an existing chunk renderable or creates a new one when the chunk mesh changed.
+    /// </summary>
+    /// <param name="chunk">The chunk that needs a renderable.</param>
+    /// <returns>The renderable for the chunk.</returns>
     private Renderable GetOrCreateChunkRenderable(IChunk chunk) {
         if (chunk.Mesh == null) {
             throw new InvalidOperationException("Cannot create a renderable for a chunk without a mesh.");
@@ -756,6 +966,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return newRenderable;
     }
     
+    /// <summary>
+    /// Refreshes the bounds transform version when the terrain transform changed.
+    /// </summary>
     private void RefreshBoundsTransformVersion() {
         if (!this._hasCachedBoundsTransform ||
             this._cachedBoundsPosition != this.LerpedGlobalPosition ||
@@ -770,6 +983,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Refreshes the shared terrain render transform when the terrain transform changed.
+    /// </summary>
     private void RefreshRenderTransformVersion() {
         if (!this._hasCachedRenderTransform ||
             this._cachedRenderPosition != this.LerpedGlobalPosition ||
@@ -787,6 +1003,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Gets the cached terrain world bounds or recalculates them when the bounds transform changed.
+    /// </summary>
+    /// <returns>The terrain bounds in world space.</returns>
     private BoundingBox GetTerrainWorldBounds() {
         int currentVersion = this._boundsCacheTransformVersion;
         
@@ -802,6 +1022,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return this._cachedTerrainWorldBounds;
     }
     
+    /// <summary>
+    /// Gets cached chunk world bounds or recalculates them when the bounds transform changed.
+    /// </summary>
+    /// <param name="chunk">The chunk owning the local bounds.</param>
+    /// <param name="localBounds">The chunk bounds in terrain local space.</param>
+    /// <returns>The chunk bounds in world space.</returns>
     private BoundingBox GetChunkWorldBounds(IChunk chunk, BoundingBox localBounds) {
         int currentVersion = this._boundsCacheTransformVersion;
         
@@ -817,6 +1043,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return worldBounds;
     }
     
+    /// <summary>
+    /// Gets cached region world bounds or recalculates them when the bounds transform changed.
+    /// </summary>
+    /// <param name="key">The region key owning the local bounds.</param>
+    /// <param name="localBounds">The region bounds in terrain local space.</param>
+    /// <returns>The region bounds in world space.</returns>
     private BoundingBox GetRegionWorldBounds(TerrainRegionKey key, BoundingBox localBounds) {
         int currentVersion = this._boundsCacheTransformVersion;
         
@@ -832,6 +1064,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return worldBounds;
     }
     
+    /// <summary>
+    /// Computes a world-space axis-aligned bounding box from a local-space bounding box.
+    /// </summary>
+    /// <param name="localBox">The local-space bounds.</param>
+    /// <returns>The transformed world-space axis-aligned bounds.</returns>
     private BoundingBox ComputeWorldAabb(BoundingBox localBox) {
         Vector3 localMin = localBox.Min;
         Vector3 localMax = localBox.Max;
@@ -855,6 +1092,14 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         };
     }
     
+    /// <summary>
+    /// Transforms a local point into world space and expands the current world bounds to include it.
+    /// </summary>
+    /// <param name="x">The local X coordinate.</param>
+    /// <param name="y">The local Y coordinate.</param>
+    /// <param name="z">The local Z coordinate.</param>
+    /// <param name="worldMin">The current world bounds minimum.</param>
+    /// <param name="worldMax">The current world bounds maximum.</param>
     private void ExpandWorldAabb(float x, float y, float z, ref Vector3 worldMin, ref Vector3 worldMax) {
         Vector3 localPoint = new Vector3(x, y, z);
         Vector3 scaledPoint = localPoint * this.LerpedScale;
@@ -865,6 +1110,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         worldMax = Vector3.Max(worldMax, worldPoint);
     }
     
+    /// <summary>
+    /// Refreshes far region membership for all chunks or clears region state when batching is disabled.
+    /// </summary>
     private void UpdateFarChunkMembership() {
         TerrainSettings settings = this.TerrainSettings;
         bool batchingEnabled = settings.EnableFarChunkBatching && settings.FarChunkBatchRegionSizeInChunks > 0;
@@ -881,6 +1129,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Updates which far region batch a chunk belongs to.
+    /// </summary>
+    /// <param name="chunk">The chunk whose region membership should be updated.</param>
     private void UpdateChunkRegionMembership(IChunk chunk) {
         
         // Remove chunks that should not be included in far region batching.
@@ -911,6 +1163,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this._dirtyRegions.Add(targetKey);
     }
     
+    /// <summary>
+    /// Removes a chunk from its current far region batch membership.
+    /// </summary>
+    /// <param name="chunk">The chunk to remove.</param>
     private void RemoveChunkFromRegion(IChunk chunk) {
         
         // Stop if the chunk is not assigned to any region.
@@ -931,6 +1187,9 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this._dirtyRegions.Add(regionKey);
     }
     
+    /// <summary>
+    /// Disposes all region batches and clears all far region batching state.
+    /// </summary>
     private void ClearAllChunkRegions() {
         
         // Dispose all existing region batches.
@@ -946,6 +1205,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this._dirtyRegions.Clear();
     }
     
+    /// <summary>
+    /// Checks whether a chunk should be included in far region batching.
+    /// </summary>
+    /// <param name="chunk">The chunk to check.</param>
+    /// <returns><c>true</c> if the chunk should be region batched.</returns>
     private bool ShouldBatchChunk(IChunk chunk) {
         int minBatchLod = this.TerrainSettings.FarChunkBatchMinLod;
         
@@ -954,6 +1218,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
                chunk.CurrentLod >= minBatchLod;
     }
     
+    /// <summary>
+    /// Calculates the far region key for a chunk based on chunk grid position and current LOD.
+    /// </summary>
+    /// <param name="chunk">The chunk to calculate a region key for.</param>
+    /// <returns>The region key for the chunk.</returns>
     private TerrainRegionKey GetRegionKey(IChunk chunk) {
         int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
         int regionSizeInChunks = Math.Max(1, this.TerrainSettings.FarChunkBatchRegionSizeInChunks);
@@ -969,6 +1238,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return new TerrainRegionKey(regionX, regionZ, chunk.CurrentLod);
     }
     
+    /// <summary>
+    /// Schedules dirty far regions for background rebuilds within the configured count and time budgets.
+    /// </summary>
+    /// <param name="camera">The active camera used for distance sorting.</param>
+    /// <param name="forceAll">Whether all dirty regions should be processed without normal budgets.</param>
     private void ProcessDirtyRegions(Camera3D camera, bool forceAll) {
         if (this._dirtyRegions.Count == 0) {
             return;
@@ -1013,6 +1287,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
+    /// <summary>
+    /// Calculates squared distance from the camera to the center of a far region.
+    /// </summary>
+    /// <param name="cameraPosition">The world-space camera position.</param>
+    /// <param name="key">The region key to measure.</param>
+    /// <returns>The squared distance to the region center.</returns>
     private float GetRegionDistanceSquared(Vector3 cameraPosition, TerrainRegionKey key) {
         int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
         int regionSizeInChunks = Math.Max(1, this.TerrainSettings.FarChunkBatchRegionSizeInChunks);
@@ -1033,6 +1313,11 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return Vector3.DistanceSquared(cameraPosition, regionWorldCenter);
     }
     
+    /// <summary>
+    /// Schedules a far region batch rebuild on a background task.
+    /// </summary>
+    /// <param name="regionKey">The region to rebuild.</param>
+    /// <returns><c>true</c> if the region build was scheduled.</returns>
     private bool ScheduleRegionBuild(TerrainRegionKey regionKey) {
         
         // Mark the region as building so it cannot be scheduled twice.
@@ -1059,6 +1344,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return true;
     }
     
+    /// <summary>
+    /// Builds merged mesh data for a far region from its member chunks.
+    /// </summary>
+    /// <param name="regionKey">The region being built.</param>
+    /// <param name="members">Snapshot of chunks currently belonging to the region.</param>
+    /// <returns>The build result containing merged geometry or an empty result.</returns>
     private TerrainRegionBuildResult BuildRegionGeometry(TerrainRegionKey regionKey, IChunk[] members) {
         int totalVertexCount = 0;
         int totalIndexCount = 0;
@@ -1132,6 +1423,10 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         );
     }
     
+    /// <summary>
+    /// Disposes and removes an uploaded far region batch.
+    /// </summary>
+    /// <param name="regionKey">The region batch to dispose.</param>
     private void DisposeRegionBatch(TerrainRegionKey regionKey) {
         if (!this._regionBatches.Remove(regionKey, out TerrainRegionBatch? batch)) {
             return;
@@ -1142,12 +1437,26 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         batch.Dispose();
     }
     
+    /// <summary>
+    /// Stores cached world bounds together with the transform version they were calculated for.
+    /// </summary>
     private readonly struct CachedWorldBounds {
         
+        /// <summary>
+        /// The cached world-space bounds.
+        /// </summary>
         public readonly BoundingBox Bounds;
         
+        /// <summary>
+        /// The bounds transform version used to calculate the cached bounds.
+        /// </summary>
         public readonly int Version;
         
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CachedWorldBounds"/> struct.
+        /// </summary>
+        /// <param name="bounds">The cached world-space bounds.</param>
+        /// <param name="version">The transform version used to calculate the bounds.</param>
         public CachedWorldBounds(BoundingBox bounds, int version) {
             this.Bounds = bounds;
             this.Version = version;
