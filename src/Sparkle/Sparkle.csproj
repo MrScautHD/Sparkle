@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    
+
     <!-- Project -->
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,7 +9,7 @@
         <NoWarn>$(NoWarn);CS8618</NoWarn>
         <LangVersion>14</LangVersion>
     </PropertyGroup>
-    
+
     <!-- Nuget -->
     <PropertyGroup>
         <Title>Sparkle</Title>
@@ -25,7 +25,7 @@
         <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-    
+
     <!-- Libraries -->
     <ItemGroup>
         <PackageReference Include="Bliss" Version="1.5.3" GeneratePathProperty="true" />
@@ -33,52 +33,41 @@
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
-    
+
     <!-- Icon -->
     <ItemGroup>
-        <None Include="content\sparkle\images\icon.png" Pack="true" PackagePath="" />
+        <None Include="content\sparkle\images\icon.png"
+              Pack="true"
+              PackagePath="" />
     </ItemGroup>
-    
+
     <!-- Sparkle Content -->
     <ItemGroup>
-        <Content Include="content/**/*" Pack="true">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
+        <Content Include="content\**\*"
+                 Pack="true"
+                 PackagePath="contentFiles\any\any\content\%(RecursiveDir)%(Filename)%(Extension)"
+                 PackageCopyToOutput="true"
+                 CopyToOutputDirectory="PreserveNewest"
+                 BuildAction="None" />
     </ItemGroup>
-    
-    <!-- Inject Bliss content into the generated Sparkle .nupkg -->
-    <Target Name="InjectBlissContentIntoPackage" AfterTargets="Pack">
-        <PropertyGroup>
-            <Nupkg Condition="'$(PackageOutputPath)' != ''">$(PackageOutputPath)/$(PackageId).$(PackageVersion).nupkg</Nupkg>
-            <Nupkg Condition="'$(PackageOutputPath)' == ''">$(OutputPath)$(PackageId).$(PackageVersion).nupkg</Nupkg>
-            <Tmp>$(IntermediateOutputPath)package-repack</Tmp>
-            <BlissContent>$(PkgBliss)/content/content/bliss</BlissContent>
-            <TargetsFile>$(Tmp)/buildTransitive/Sparkle.targets</TargetsFile>
-        </PropertyGroup>
-        
-        <RemoveDir Directories="$(Tmp)" />
-        <MakeDir Directories="$(Tmp)" />
-        <Unzip SourceFiles="$(Nupkg)" DestinationFolder="$(Tmp)" OverwriteReadOnlyFiles="true" />
-        
-        <ItemGroup>
-            <BlissFiles Include="$(BlissContent)/**/*" />
-            <TargetLines Include="&lt;Project&gt;" />
-            <TargetLines Include="  &lt;ItemGroup&gt;&lt;SparkleBlissContent Include=&quot;%24(MSBuildThisFileDirectory)..\content\bliss\**\*&quot; /&gt;&lt;/ItemGroup&gt;" />
-            <TargetLines Include="  &lt;Target Name=&quot;CopySparkleBlissContent&quot; AfterTargets=&quot;Build&quot;&gt;" />
-            <TargetLines Include="    &lt;Copy SourceFiles=&quot;%40(SparkleBlissContent)&quot; DestinationFiles=&quot;%40(SparkleBlissContent-&gt;'%24(TargetDir)content\bliss\%25(RecursiveDir)%25(Filename)%25(Extension)')&quot; SkipUnchangedFiles=&quot;true&quot; /&gt;" />
-            <TargetLines Include="  &lt;/Target&gt;" />
-            <TargetLines Include="&lt;/Project&gt;" />
-        </ItemGroup>
-        
-        <Copy SourceFiles="@(BlissFiles)"
-              DestinationFiles="@(BlissFiles->'$(Tmp)/content/content/bliss/%(RecursiveDir)%(Filename)%(Extension)')" />
-        
-        <MakeDir Directories="$(Tmp)/buildTransitive" />
-        <WriteLinesToFile File="$(TargetsFile)" Lines="@(TargetLines)" Overwrite="true" />
-        
-        <Delete Files="$(Nupkg)" />
-        <ZipDirectory SourceDirectory="$(Tmp)" DestinationFile="$(Nupkg)" Overwrite="true" />
-        <RemoveDir Directories="$(Tmp)" />
+
+    <!-- Bliss Content -->
+    <ItemGroup>
+        <Content Include="$(PkgBliss)\content\content\bliss\**\*"
+                 Pack="true"
+                 PackagePath="contentFiles\any\any\content\bliss\%(RecursiveDir)%(Filename)%(Extension)"
+                 PackageCopyToOutput="true"
+                 CopyToOutputDirectory="PreserveNewest"
+                 BuildAction="None"
+                 Visible="false" />
+    </ItemGroup>
+
+    <!-- Validate Bliss content path -->
+    <Target Name="ValidateBlissContent" BeforeTargets="Pack">
+        <Error Condition="'$(PkgBliss)' == ''"
+               Text="PkgBliss is empty. Keep GeneratePathProperty='true' on the Bliss PackageReference and run dotnet restore." />
+
+        <Error Condition="!Exists('$(PkgBliss)\content\content\bliss')"
+               Text="Bliss content folder not found: $(PkgBliss)\content\content\bliss" />
     </Target>
 </Project>
