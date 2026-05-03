@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
     <!-- Project -->
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,7 +9,7 @@
         <NoWarn>$(NoWarn);CS8618</NoWarn>
         <LangVersion>14</LangVersion>
     </PropertyGroup>
-
+    
     <!-- Nuget -->
     <PropertyGroup>
         <Title>Sparkle</Title>
@@ -25,21 +25,21 @@
         <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-
+    
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.5.4" />
+        <PackageReference Include="Bliss" Version="1.5.6" GeneratePathProperty="true" />
         <PackageReference Include="HughPH.Box2D" Version="2026.4.30.141" />
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
-
+    
     <!-- Icon -->
     <ItemGroup>
         <None Include="content\sparkle\images\icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
-
-    <!-- Content -->
+    
+    <!-- Sparkle Content -->
     <ItemGroup>
         <Content Include="content\**\*"
                  Pack="true"
@@ -47,4 +47,25 @@
                  PackageCopyToOutput="true"
                  CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
+    
+    <!-- Force-inject Bliss content into the generated Sparkle .nupkg -->
+    <Target Name="InjectBlissContentIntoPackage" AfterTargets="Pack">
+        <PropertyGroup>
+            <Nupkg Condition="'$(PackageOutputPath)' != ''">$(PackageOutputPath)\$(PackageId).$(PackageVersion).nupkg</Nupkg>
+            <Nupkg Condition="'$(PackageOutputPath)' == ''">$(OutputPath)$(PackageId).$(PackageVersion).nupkg</Nupkg>
+            <Zip>$(IntermediateOutputPath)$(PackageId).$(PackageVersion).zip</Zip>
+            <Tmp>$(IntermediateOutputPath)package-repack</Tmp>
+            <BlissContent>$(PkgBliss)\contentFiles\any\any\content\bliss</BlissContent>
+        </PropertyGroup>
+        
+        <RemoveDir Directories="$(Tmp)" />
+        <Delete Files="$(Zip)" />
+        <Copy SourceFiles="$(Nupkg)" DestinationFiles="$(Zip)" />
+        
+        <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive '$(Zip)' '$(Tmp)' -Force; Copy-Item '$(BlissContent)' '$(Tmp)\contentFiles\any\any\content' -Recurse -Force; Remove-Item '$(Nupkg)','$(Zip)' -Force; Compress-Archive '$(Tmp)\*' '$(Zip)' -Force&quot;" />
+        
+        <Copy SourceFiles="$(Zip)" DestinationFiles="$(Nupkg)" />
+        <Delete Files="$(Zip)" />
+        <RemoveDir Directories="$(Tmp)" />
+    </Target>
 </Project>
