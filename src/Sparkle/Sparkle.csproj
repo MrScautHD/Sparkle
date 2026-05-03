@@ -28,7 +28,7 @@
 
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.5.3" />
+        <PackageReference Include="Bliss" Version="1.5.4" />
         <PackageReference Include="HughPH.Box2D" Version="2026.4.30.141" />
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
@@ -41,9 +41,10 @@
 
     <!-- Content -->
     <ItemGroup>
-        <Content Include="content/**/*" Pack="true">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <PackageCopyToOutput>true</PackageCopyToOutput>
-        </Content>
+        <Content Include="content\**\*"
+                 Pack="true"
+                 PackagePath="contentFiles\any\any\content\%(RecursiveDir)%(Filename)%(Extension)"
+                 PackageCopyToOutput="true"
+                 CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 </Project>
