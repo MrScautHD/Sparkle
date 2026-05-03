@@ -459,7 +459,7 @@ public class Entity : Disposable {
     /// <typeparam name="T">The type of component to remove.</typeparam>
     /// <returns>True if the component was removed, otherwise false.</returns>
     public bool TryRemoveComponent<T>() where T : Component {
-        if (!this.Components.Remove(typeof(T), out Component? component)) {
+        if (!this.Components.Remove(typeof(T))) {
             return false;
         }
         
