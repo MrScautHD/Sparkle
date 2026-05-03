@@ -10,9 +10,6 @@
 
 __Sparkle__ is a modern, high-performance, low-level, cross-platform game engine built on .NET 10 and C# 14.
 
-> [!CAUTION]
-> This repository is still a work in progress.
-
 # ✨ Features ✨
 - 🎬 Scene system for seamless transitions and organization
 - 🏗️ Entity system for flexible game object management
