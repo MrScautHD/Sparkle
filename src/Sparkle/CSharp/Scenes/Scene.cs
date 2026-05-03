@@ -1,10 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
-using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
-using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Entities;
@@ -47,6 +45,9 @@ public abstract class Scene : Disposable {
     /// </summary>
     public IRenderer Renderer { get; private set; }
     
+    /// <summary>
+    /// Gets the immediate renderer used for rendering operations within the scene.
+    /// </summary>
     public ImmediateRenderer ImmediateRenderer { get; private set; }
     
     /// <summary>

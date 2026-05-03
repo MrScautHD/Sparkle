@@ -15,6 +15,11 @@ public abstract class Gui : Disposable {
     public readonly string Name;
     
     /// <summary>
+    /// Indicates whether the GUI has been successfully initialized.
+    /// </summary>
+    public bool IsInitialized { get; internal set; }
+    
+    /// <summary>
     /// The dimensions of the GUI.
     /// </summary>
     public readonly (int Width, int Height) Size;
@@ -30,6 +35,16 @@ public abstract class Gui : Disposable {
     private Dictionary<string, GuiElement> _elements;
     
     /// <summary>
+    /// Stores elements that will be added to the gui during the next update pass.
+    /// </summary>
+    private List<GuiElement> _elementsToAdd;
+    
+    /// <summary>
+    /// Stores the names of elements scheduled for removal during the next update pass.
+    /// </summary>
+    private List<string> _elementsToRemove;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="Gui"/> class.
     /// </summary>
     /// <param name="name">The name of the GUI.</param>
@@ -38,6 +53,8 @@ public abstract class Gui : Disposable {
         this.Name = name;
         this.Size = size ?? (1280, 720);
         this._elements = new Dictionary<string, GuiElement>();
+        this._elementsToAdd = new List<GuiElement>();
+        this._elementsToRemove = new List<string>();
     }
     
     /// <summary>
@@ -52,6 +69,21 @@ public abstract class Gui : Disposable {
     protected internal virtual void Update(double delta) {
         bool interactionHandled = false;
         
+        // Handle adding elements.
+        foreach (GuiElement element in this._elementsToAdd) {
+            this._elements.Add(element.Name, element);
+        }
+        
+        this._elementsToAdd.Clear();
+        
+        // Handle removing elements.
+        foreach (string name in this._elementsToRemove) {
+            this._elements.Remove(name);
+        }
+        
+        this._elementsToRemove.Clear();
+        
+        // Update elements.
         foreach (GuiElement element in this._elements.Values.Reverse()) {
             if (element.Enabled) {
                 element.Update(delta, ref interactionHandled);
@@ -169,6 +201,10 @@ public abstract class Gui : Disposable {
             return false;
         }
         
+        if (this._elementsToAdd.Contains(element)) {
+            return false;
+        }
+        
         if (this._elements.ContainsKey(name)) {
             return false;
         }
@@ -182,8 +218,14 @@ public abstract class Gui : Disposable {
         
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
         element.UpdatePosAndSize();
+
+        if (!this.IsInitialized) {
+            this._elements.Add(name, element);
+        }
+        else {
+            this._elementsToAdd.Add(element);
+        }
         
-        this._elements.Add(name, element);
         return true;
     }
     
@@ -204,10 +246,19 @@ public abstract class Gui : Disposable {
     /// <param name="element">The <see cref="GuiElement"/> instance to be removed.</param>
     /// <returns><c>true</c> if the element was successfully removed; otherwise, <c>false</c>.</returns>
     public bool TryRemoveElement(GuiElement element) {
-        if (!this._elements.Remove(element.Name)) {
+        if (element.Name == string.Empty) {
             return false;
         }
         
+        if (!this._elements.ContainsKey(element.Name)) {
+            return false;
+        }
+        
+        if (this._elementsToRemove.Contains(element.Name)) {
+            return false;
+        }
+        
+        this._elementsToRemove.Add(element.Name);
         return true;
     }
     
@@ -228,10 +279,19 @@ public abstract class Gui : Disposable {
     /// <param name="name">The name of the GUI element to remove.</param>
     /// <returns><c>true</c> if the element is successfully removed; otherwise, <c>false</c>.</returns>
     public bool TryRemoveElement(string name) {
-        if (!this._elements.Remove(name)) {
+        if (name == string.Empty) {
             return false;
         }
         
+        if (!this._elements.ContainsKey(name)) {
+            return false;
+        }
+        
+        if (this._elementsToRemove.Contains(name)) {
+            return false;
+        }
+        
+        this._elementsToRemove.Add(name);
         return true;
     }
 }
