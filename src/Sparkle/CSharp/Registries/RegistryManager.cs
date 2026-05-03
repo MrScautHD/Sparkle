@@ -28,7 +28,7 @@ public static class RegistryManager {
             }
         }
     }
-
+    
     /// <summary>
     /// Initializes all active registries.
     /// </summary>
@@ -39,7 +39,7 @@ public static class RegistryManager {
             }
         }
     }
-
+    
     /// <summary>
     /// Retrieves an enumerable collection of all active registry instances managed by the registry manager.
     /// </summary>
@@ -47,7 +47,7 @@ public static class RegistryManager {
     public static IEnumerable<Registry> GetRegistries() {
         return Registries.Values;
     }
-
+    
     /// <summary>
     /// Determines whether a registry of the specified type exists in the registry manager.
     /// </summary>
@@ -56,7 +56,7 @@ public static class RegistryManager {
     public static bool HasRegistry<T>() where T : Registry {
         return Registries.ContainsKey(typeof(T));
     }
-
+    
     /// <summary>
     /// Retrieves a registry of the specified type from the registry manager.
     /// </summary>
@@ -69,7 +69,7 @@ public static class RegistryManager {
         
         return result;
     }
-
+    
     /// <summary>
     /// Attempts to retrieve a registry of the specified type from the registry manager.
     /// </summary>
@@ -85,7 +85,7 @@ public static class RegistryManager {
         registry = (T) result;
         return true;
     }
-
+    
     /// <summary>
     /// Adds a registry to the registry manager.
     /// </summary>
@@ -95,7 +95,7 @@ public static class RegistryManager {
             throw new Exception($"The registry type: [{nameof(registry)}] is already present in the RegistryManager!");
         }
     }
-
+    
     /// <summary>
     /// Attempts to add a new registry to the registry manager.
     /// </summary>
@@ -109,7 +109,7 @@ public static class RegistryManager {
         Registries.Add(registry.GetType(), registry);
         return true;
     }
-
+    
     /// <summary>
     /// Removes a specified registry from the list of managed registries.
     /// </summary>

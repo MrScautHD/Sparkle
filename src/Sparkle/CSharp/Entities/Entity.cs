@@ -80,6 +80,16 @@ public class Entity : Disposable {
     internal Dictionary<Type, Component> Components;
     
     /// <summary>
+    /// Stores components that will be added to the entity during the next update pass.
+    /// </summary>
+    private List<Component> _componentsToAdd;
+    
+    /// <summary>
+    /// Stores the Types of components scheduled for removal during the next update pass.
+    /// </summary>
+    private List<Type> _componentsToRemove;
+    
+    /// <summary>
     /// A list of children attached to this entity.
     /// </summary>
     private Dictionary<uint, Entity> _children;
@@ -93,6 +103,8 @@ public class Entity : Disposable {
         this.LocalTransform = transform;
         this.Tag = tag ?? string.Empty;
         this.Components = new Dictionary<Type, Component>();
+        this._componentsToAdd = new List<Component>();
+        this._componentsToRemove = new List<Type>();
         this._children = new Dictionary<uint, Entity>();
     }
     
@@ -104,12 +116,30 @@ public class Entity : Disposable {
             component.Init();
         }
     }
-
+    
     /// <summary>
     /// Called every tick to update the entity's logic.  
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) {
+        
+        // Handle adding entities.
+        foreach (Component component in this._componentsToAdd) {
+            this.Components.Add(component.GetType(), component);
+        }
+        
+        this._componentsToAdd.Clear();
+        
+        // Handle removing entities.
+        foreach (Type type in this._componentsToRemove) {
+            if (this.Components.Remove(type, out Component? component)) {
+                component.Dispose();
+            }
+        }
+        
+        this._componentsToRemove.Clear();
+        
+        // Update components.
         foreach (Component component in this.Components.Values) {
             component.Update(delta);
         }
@@ -338,27 +368,41 @@ public class Entity : Disposable {
     /// <param name="component">The component to add.</param>
     /// <returns>True if the component was added, otherwise false.</returns>
     public bool TryAddComponent(Component component) {
-        if (this.Components.ContainsKey(component.GetType())) {
-            return false;
-        }
-
-        foreach (Component comp in this.Components.Values) {
-            if (component.ConflictsWith(comp)) {
-                return false;
-            }
-        }
-
+        Type componentType = component.GetType();
+        
         if (component.Entity != null!) {
             return false;
         }
-
+        
+        if (this.Components.ContainsKey(componentType)) {
+            return false;
+        }
+        
+        if (this._componentsToAdd.Any(pendingComponent => pendingComponent.GetType() == componentType)) {
+            return false;
+        }
+        
+        foreach (Component existingComponent in this.Components.Values) {
+            if (component.ConflictsWith(existingComponent)) {
+                return false;
+            }
+        }
+        
+        foreach (Component pendingComponent in this._componentsToAdd) {
+            if (component.ConflictsWith(pendingComponent)) {
+                return false;
+            }
+        }
+        
         component.Entity = this;
         
-        if (this.Id != 0) {
-            component.Init();
+        if (this.Id == 0) {
+            this.Components.Add(componentType, component);
+            return true;
         }
-
-        this.Components.Add(component.GetType(), component);
+        
+        component.Init();
+        this._componentsToAdd.Add(component);
         return true;
     }
 
@@ -383,7 +427,11 @@ public class Entity : Disposable {
             return false;
         }
         
-        component.Dispose();
+        if (this._componentsToRemove.Contains(component.GetType())) {
+            return false;
+        }
+        
+        this._componentsToRemove.Add(component.GetType());
         return true;
     }
     
@@ -408,7 +456,11 @@ public class Entity : Disposable {
             return false;
         }
         
-        component.Dispose();
+        if (this._componentsToRemove.Contains(typeof(T))) {
+            return false;
+        }
+        
+        this._componentsToRemove.Add(typeof(T));
         return true;
     }
     
