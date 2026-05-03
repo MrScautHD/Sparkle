@@ -154,7 +154,7 @@ public class Entity : Disposable {
             component.AfterUpdate(delta);
         }
     }
-
+    
     /// <summary>
     /// Updates the entity and its components at fixed time intervals.
     /// </summary>
@@ -164,7 +164,7 @@ public class Entity : Disposable {
             component.FixedUpdate(fixedStep);
         }
     }
-
+    
     /// <summary>
     /// Renders the entity and its components using the provided graphics context and framebuffer.
     /// </summary>
@@ -175,7 +175,7 @@ public class Entity : Disposable {
             component.Draw(context, framebuffer);
         }
     }
-
+    
     /// <summary>
     /// Called when the screen or viewport size changes.  
     /// </summary>
