@@ -64,6 +64,7 @@ public class Player : Entity {
     /// setting up rendering, animations, physics, and player-specific configurations.
     /// </summary>
     protected override void Init() {
+        base.Init();
         
         // Renderer.
         this._modelRenderer = new ModelRenderer(ContentRegistry.PlayerModel, -Vector3.UnitY, boxColor: Color.Magenta) {

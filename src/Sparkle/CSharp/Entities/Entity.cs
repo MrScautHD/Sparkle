@@ -118,7 +118,7 @@ public class Entity : Disposable {
     }
     
     /// <summary>
-    /// Called every tick to update the entity's logic.  
+    /// Called every tick to update the entity's logic.
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) {
@@ -146,7 +146,7 @@ public class Entity : Disposable {
     }
     
     /// <summary>
-    /// Called after the main update phase.  
+    /// Called after the main update phase.
     /// </summary>
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) {
@@ -177,7 +177,7 @@ public class Entity : Disposable {
     }
     
     /// <summary>
-    /// Called when the screen or viewport size changes.  
+    /// Called when the screen or viewport size changes.
     /// </summary>
     /// <param name="rectangle">The new screen or viewport dimensions.</param>
     protected internal virtual void Resize(Rectangle rectangle) {
@@ -312,14 +312,14 @@ public class Entity : Disposable {
     public IReadOnlyCollection<Component> GetComponents() {
         return this.Components.Values;
     }
-
+    
     /// <summary>
     /// Checks if the entity has a specific type of component.
     /// </summary>
     /// <typeparam name="T">The type of component to check for.</typeparam>
     /// <returns>True if the entity has the component, otherwise false.</returns>
     public bool HasComponent<T>() where T : Component {
-        return this.Components.ContainsKey(typeof(T));
+        return this.Components.ContainsKey(typeof(T)) || this._componentsToAdd.Any(component => component.GetType() == typeof(T));
     }
     
     /// <summary>
@@ -331,7 +331,7 @@ public class Entity : Disposable {
         if (!this.TryGetComponent(out T? result)) {
             return null;
         }
-        
+
         return result;
     }
     
@@ -342,15 +342,22 @@ public class Entity : Disposable {
     /// <param name="component">The retrieved component if found.</param>
     /// <returns>True if the component was found, otherwise false.</returns>
     public bool TryGetComponent<T>([NotNullWhen(true)] out T? component) where T : Component {
-        if (!this.Components.TryGetValue(typeof(T), out Component? result)) {
-            component = null;
-            return false;
+        if (this.Components.TryGetValue(typeof(T), out Component? result)) {
+            component = (T) result;
+            return true;
         }
-
-        component = (T) result;
-        return true;
+        
+        foreach (Component pendingComponent in this._componentsToAdd) {
+            if (pendingComponent.GetType() == typeof(T)) {
+                component = (T) pendingComponent;
+                return true;
+            }
+        }
+        
+        component = null;
+        return false;
     }
-
+    
     /// <summary>
     /// Adds a component to this entity.
     /// </summary>
@@ -405,7 +412,7 @@ public class Entity : Disposable {
         this._componentsToAdd.Add(component);
         return true;
     }
-
+    
     /// <summary>
     /// Removes a component from this entity.
     /// </summary>
@@ -416,7 +423,7 @@ public class Entity : Disposable {
             throw new Exception($"Failed to Remove/Dispose the component type: [{nameof(component)}] from the entity: [{this.Id}].");
         }
     }
-
+    
     /// <summary>
     /// Attempts to remove a component from this entity.
     /// </summary>
