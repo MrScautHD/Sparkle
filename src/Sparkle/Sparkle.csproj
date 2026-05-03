@@ -46,7 +46,4 @@
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="CSharp\Terrain\Regions\" />
-    </ItemGroup>
 </Project>
