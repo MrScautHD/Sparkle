@@ -334,6 +334,24 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         // Draw terrain base box.
         immediateRenderer.DrawBoundingBox(transform, this._terrainLocalBounds, Color.Green);
         
+        // Draw far region boxes.
+        foreach (KeyValuePair<TerrainRegionKey, TerrainRegionBatch> pair in this._regionBatches) {
+            TerrainRegionKey regionKey = pair.Key;
+            TerrainRegionBatch batch = pair.Value;
+            
+            if (batch.Mesh == null || batch.Renderable == null) {
+                continue;
+            }
+            
+            Color regionColor = Color.Blue;
+            
+            if (this.FrustumCulling && !cam3D.GetFrustum().ContainsBox(this.GetRegionWorldBounds(regionKey, batch.LocalBounds))) {
+                regionColor = Color.DarkBlue;
+            }
+            
+            immediateRenderer.DrawBoundingBox(transform, batch.LocalBounds, regionColor);
+        }
+        
         // Draw chunk boxes.
         foreach (IChunk chunk in this.Terrain.GetChunks()) {
             if (!this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBox)) {

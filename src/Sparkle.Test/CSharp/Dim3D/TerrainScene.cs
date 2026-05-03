@@ -56,9 +56,7 @@ public class TerrainScene : Scene {
         };
         
         Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
-        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true) {
-            DebugDrawEnabled = false,
-        });
+        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
         this.AddEntity(terrainEntity);
     }
     
@@ -69,6 +67,11 @@ public class TerrainScene : Scene {
             Terrain3D? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D>();
             
             if (terrain3D != null) {
+                
+                // Toggle debug drawing.
+                terrain3D.DebugDrawEnabled = !terrain3D.DebugDrawEnabled;
+                
+                // Toggle wireframe.
                 if (GlobalGraphicsAssets.GraphicsDevice.Features.FillModeWireframe) {
                     RasterizerStateDescription rasterizerState = terrain3D.Terrain.Material.RasterizerState;
                     rasterizerState.FillMode = rasterizerState.FillMode == PolygonFillMode.Solid ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
