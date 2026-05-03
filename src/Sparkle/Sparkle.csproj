@@ -28,7 +28,7 @@
     
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.5.6" GeneratePathProperty="true" />
+        <PackageReference Include="Bliss" Version="1.5.3" GeneratePathProperty="true" />
         <PackageReference Include="HughPH.Box2D" Version="2026.4.30.141" />
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
@@ -41,60 +41,65 @@
     
     <!-- Sparkle Content -->
     <ItemGroup>
-        <Content Include="content\**\*"
-                 Pack="true"
-                 PackagePath="contentFiles\any\any\content\%(RecursiveDir)%(Filename)%(Extension)"
-                 PackageCopyToOutput="true"
-                 CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="content/**/*" Pack="true">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
     </ItemGroup>
-    
-    <!-- Force-inject Bliss content into the generated Sparkle .nupkg -->
+
+    <!-- Inject Bliss content into the generated Sparkle .nupkg -->
     <Target Name="InjectBlissContentIntoPackage" AfterTargets="Pack">
         <PropertyGroup>
             <Nupkg Condition="'$(PackageOutputPath)' != ''">$(PackageOutputPath)/$(PackageId).$(PackageVersion).nupkg</Nupkg>
             <Nupkg Condition="'$(PackageOutputPath)' == ''">$(OutputPath)$(PackageId).$(PackageVersion).nupkg</Nupkg>
             <Tmp>$(IntermediateOutputPath)package-repack</Tmp>
-            <BlissContent>$(PkgBliss)/contentFiles/any/any/content/bliss</BlissContent>
+            <BlissContent>$(PkgBliss)/content/content/bliss</BlissContent>
             <SparkleTargets>$(Tmp)/buildTransitive/Sparkle.targets</SparkleTargets>
         </PropertyGroup>
-        
+
+        <Error Condition="'$(PkgBliss)' == ''"
+               Text="PkgBliss is empty. Keep GeneratePathProperty='true' on the Bliss PackageReference and run dotnet restore." />
+
+        <Error Condition="!Exists('$(BlissContent)')"
+               Text="Bliss content folder not found: $(BlissContent)" />
+
         <RemoveDir Directories="$(Tmp)" />
         <MakeDir Directories="$(Tmp)" />
-        
+
         <Unzip SourceFiles="$(Nupkg)"
                DestinationFolder="$(Tmp)"
                OverwriteReadOnlyFiles="true" />
-        
+
         <ItemGroup>
             <BlissFiles Include="$(BlissContent)/**/*" />
         </ItemGroup>
-        
+
         <Copy SourceFiles="@(BlissFiles)"
-              DestinationFiles="@(BlissFiles->'$(Tmp)/contentFiles/any/any/content/bliss/%(RecursiveDir)%(Filename)%(Extension)')" />
-        
+              DestinationFiles="@(BlissFiles->'$(Tmp)/content/content/bliss/%(RecursiveDir)%(Filename)%(Extension)')" />
+
         <MakeDir Directories="$(Tmp)/buildTransitive" />
-        
+
         <ItemGroup>
             <SparkleTargetsLines Include="&lt;Project&gt;" />
-            <SparkleTargetsLines Include="  &lt;Target Name=&quot;SparkleFixBlissContentFiles&quot; BeforeTargets=&quot;CoreCompile&quot;&gt;" />
-            <SparkleTargetsLines Include="    &lt;ItemGroup&gt;" />
-            <SparkleTargetsLines Include="      &lt;Compile Remove=&quot;$(MSBuildThisFileDirectory)..\contentFiles\any\any\content\bliss\**\*&quot; /&gt;" />
-            <SparkleTargetsLines Include="      &lt;None Include=&quot;$(MSBuildThisFileDirectory)..\contentFiles\any\any\content\bliss\**\*&quot; Link=&quot;content\bliss\%(RecursiveDir)%(Filename)%(Extension)&quot; CopyToOutputDirectory=&quot;PreserveNewest&quot; /&gt;" />
-            <SparkleTargetsLines Include="    &lt;/ItemGroup&gt;" />
+            <SparkleTargetsLines Include="  &lt;ItemGroup&gt;" />
+            <SparkleTargetsLines Include="    &lt;SparkleBlissContent Include=&quot;%24(MSBuildThisFileDirectory)..\content\bliss\**\*&quot; /&gt;" />
+            <SparkleTargetsLines Include="  &lt;/ItemGroup&gt;" />
+            <SparkleTargetsLines Include="  &lt;Target Name=&quot;CopySparkleBlissContent&quot; AfterTargets=&quot;Build&quot;&gt;" />
+            <SparkleTargetsLines Include="    &lt;Copy SourceFiles=&quot;%40(SparkleBlissContent)&quot; DestinationFiles=&quot;%40(SparkleBlissContent-&gt;'%24(TargetDir)content\bliss\%25(RecursiveDir)%25(Filename)%25(Extension)')&quot; SkipUnchangedFiles=&quot;true&quot; /&gt;" />
             <SparkleTargetsLines Include="  &lt;/Target&gt;" />
             <SparkleTargetsLines Include="&lt;/Project&gt;" />
         </ItemGroup>
-        
+
         <WriteLinesToFile File="$(SparkleTargets)"
                           Lines="@(SparkleTargetsLines)"
                           Overwrite="true" />
-        
+
         <Delete Files="$(Nupkg)" />
-        
+
         <ZipDirectory SourceDirectory="$(Tmp)"
                       DestinationFile="$(Nupkg)"
                       Overwrite="true" />
-        
+
         <RemoveDir Directories="$(Tmp)" />
     </Target>
 </Project>
