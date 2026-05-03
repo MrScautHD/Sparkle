@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
     <!-- Project -->
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,12 +9,12 @@
         <NoWarn>$(NoWarn);CS8618</NoWarn>
         <LangVersion>14</LangVersion>
     </PropertyGroup>
-
+    
     <!-- Nuget -->
     <PropertyGroup>
         <Title>Sparkle</Title>
         <Authors>MrScautHD</Authors>
-        <Version>5.0.2</Version>
+        <Version>5.0.6</Version>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
@@ -25,7 +25,7 @@
         <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
-
+    
     <!-- Libraries -->
     <ItemGroup>
         <PackageReference Include="Bliss" Version="1.5.3" GeneratePathProperty="true" />
@@ -33,15 +33,13 @@
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
-
+    
     <!-- Icon -->
     <ItemGroup>
-        <None Include="content\sparkle\images\icon.png"
-              Pack="true"
-              PackagePath="" />
+        <None Include="content\sparkle\images\icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
-
-    <!-- Sparkle Content -->
+    
+    <!-- Pack Sparkle Content -->
     <ItemGroup>
         <Content Include="content\**\*"
                  Pack="true"
@@ -50,8 +48,8 @@
                  CopyToOutputDirectory="PreserveNewest"
                  BuildAction="None" />
     </ItemGroup>
-
-    <!-- Bliss Content -->
+    
+    <!-- Pack Bliss Content -->
     <ItemGroup>
         <Content Include="$(PkgBliss)\content\content\bliss\**\*"
                  Pack="true"
@@ -61,13 +59,4 @@
                  BuildAction="None"
                  Visible="false" />
     </ItemGroup>
-
-    <!-- Validate Bliss content path -->
-    <Target Name="ValidateBlissContent" BeforeTargets="Pack">
-        <Error Condition="'$(PkgBliss)' == ''"
-               Text="PkgBliss is empty. Keep GeneratePathProperty='true' on the Bliss PackageReference and run dotnet restore." />
-
-        <Error Condition="!Exists('$(PkgBliss)\content\content\bliss')"
-               Text="Bliss content folder not found: $(PkgBliss)\content\content\bliss" />
-    </Target>
 </Project>
