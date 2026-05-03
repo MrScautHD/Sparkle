@@ -10,9 +10,6 @@
 
 __Sparkle__ is a modern, high-performance, low-level, cross-platform game engine built on .NET 10 and C# 14.
 
-> [!CAUTION]
-> This repository is still a work in progress.
-
 # ✨ Features ✨
 - 🎬 Scene system for seamless transitions and organization
 - 🏗️ Entity system for flexible game object management
@@ -34,7 +31,7 @@ dotnet add package Sparkle --version [VERSION]
 ---
 
 # ⭐ Getting Started
-> Explore our [Documentation](https://mrscauthd.github.io/Bliss/) to kick off smoothly.
+> Explore our [Documentation](https://mrscauthd.github.io/Sparkle/) to kick off smoothly.
 
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
@@ -42,17 +39,16 @@ dotnet add package Sparkle --version [VERSION]
 - [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`HughPH.Box2D`](https://www.nuget.org/packages/HughPH.Box2D)
-- [`LibNoise`](https://www.nuget.org/packages/LibNoise)
 
 # 💻 Supported Platforms
 
 |      | DX11  | Vulkan | OpenGL | OpenGL-ES | Metal |
 | :--- | :---: | :----: | :----: | :-------: | :---: |
-| [<img src="https://github.com/user-attachments/assets/f8b66880-9037-4ba8-acc4-6ea390e1dde9" alt="Windows" width="54" height="54" align="center">](https://www.microsoft.com/de-at/windows)  Windows   | ✔️ | ✔️ | ✔️ | ✔️ | ❌ |
-| [<img src="https://github.com/user-attachments/assets/814ce8c3-5242-47f4-a51b-b185680d38ff" alt="Linux" width="54" height="54" align="center">](https://www.ubuntu.com/)                    Linux     | ⚠️ | ✔️ | ✔️ | ✔️ | ❌ |
-| [<img src="https://github.com/user-attachments/assets/99605868-0590-42ce-a72a-f6feb1cabf6e" alt="MacOS" width="54" height="54" align="center">](https://www.apple.com/at/macos/)            MacOS     | ❌ | ⚠️ | ✔️ | ❌ | ✔️ |
-| [<img src="https://github.com/user-attachments/assets/8ec16850-3a1e-42e1-b35e-cf3d3ea32d46" alt="Android" width="54" height="54" align="center">](https://www.android.com/)                 Android   | ❌ | 🔜 | 🔜 | ❌ | 🔜 |
-| [<img src="https://github.com/user-attachments/assets/a0f33f2f-bd7c-4049-a207-85d3a67bef78" alt="IOS" width="54" height="54" align="center">](https://www.apple.com/at/ios/)                IOS       | ❌ | 🔜 | ❌ | 🔜 | 🔜 |
+| [<img src="https://github.com/user-attachments/assets/f8b66880-9037-4ba8-acc4-6ea390e1dde9" alt="Windows" width="54" height="54" align="center">](https://www.microsoft.com/de-at/windows)  | ✔️ | ✔️ | ✔️ | ✔️ | ❌ |
+| [<img src="https://github.com/user-attachments/assets/814ce8c3-5242-47f4-a51b-b185680d38ff" alt="Linux" width="54" height="54" align="center">](https://www.ubuntu.com/)                    | ⚠️ | ✔️ | ✔️ | ✔️ | ❌ |
+| [<img src="https://github.com/user-attachments/assets/99605868-0590-42ce-a72a-f6feb1cabf6e" alt="MacOS" width="54" height="54" align="center">](https://www.apple.com/at/macos/)            | ❌ | ⚠️ | ✔️ | ❌ | ✔️ |
+| [<img src="https://github.com/user-attachments/assets/8ec16850-3a1e-42e1-b35e-cf3d3ea32d46" alt="Android" width="54" height="54" align="center">](https://www.android.com/)                 | ❌ | 🔜 | 🔜 | ❌ | 🔜 |
+| [<img src="https://github.com/user-attachments/assets/a0f33f2f-bd7c-4049-a207-85d3a67bef78" alt="IOS" width="54" height="54" align="center">](https://www.apple.com/at/ios/)                | ❌ | 🔜 | ❌ | 🔜 | 🔜 |
 
 ⚠️ - Requires a translation layer like [DXVK](https://github.com/doitsujin/dxvk) or [MoltenVK](https://github.com/KhronosGroup/MoltenVK).
 
