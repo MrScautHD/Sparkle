@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Numerics;
-using Bliss.CSharp;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Meshes;
@@ -9,13 +8,12 @@ using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Graphics.VertexTypes;
-using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
-using Sparkle.CSharp.Terrain.Heightmap;
+using Sparkle.CSharp.Terrain.Regions;
 using Veldrid;
 
 namespace Sparkle.CSharp.Entities.Components;
@@ -24,153 +22,116 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     
     public ITerrain Terrain { get; private set; }
     
+    public TerrainSettings TerrainSettings { get; private set; }
+    
     public bool DebugDrawEnabled { get; set; }
     
     public bool FrustumCulling;
-    
-    public int MaxChunkUploadsPerFrame { get; set; }
-    
-    public int MaxChunkBuildsPerFrame { get; set; }
-    
-    public float ChunkBuildScheduleBudgetMilliseconds { get; set; }
-    
-    public int MaxConcurrentChunkBuilds { get; set; }
-    
-    public float[] LodDistances { get; set; }
-    
-    public bool EnableLod { get; set; }
-    
-    public float LodHysteresis { get; set; }
-    
-    public bool CullChunksBeyondLastLod { get; set; }
-    
-    public bool UseCameraFarPlaneForLodRange { get; set; }
-    
-    public bool PreloadChunksOnInit { get; set; }
-    
-    public bool PauseTerrainWorkWhenOutOfView { get; set; }
-    
-    public float LodUpdateIntervalSeconds { get; set; }
-    
-    public float LodUpdateCameraMoveThreshold { get; set; }
-    
-    public bool EnableFarChunkBatching { get; set; }
-    
-    public int FarChunkBatchMinLod { get; set; }
-    
-    public int FarChunkBatchRegionSizeInChunks { get; set; }
-    
-    public int MaxRegionRebuildsPerFrame { get; set; }
-    
-    public int MaxRegionUploadsPerFrame { get; set; }
-    
-    public float RegionScheduleBudgetMilliseconds { get; set; }
-    
-    public float RegionUploadBudgetMilliseconds { get; set; }
-    
-    public int MidRingLodUpdateIntervalTicks { get; set; }
-    
-    public int FarRingLodUpdateIntervalTicks { get; set; }
     
     public int TotalVertexCount { get; private set; }
     
     public int TotalIndexCount { get; private set; }
     
     private readonly Func<Task<ITerrain>> _terrainFactory;
-    private readonly List<IChunk> _meshChunkList;
-    private readonly ConcurrentQueue<IChunk> _pendingUpload;
-    private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
-    private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
-    private readonly HashSet<HeightmapChunk> _chunksPendingVertexUpload;
-    private readonly ConcurrentQueue<RegionBuildResult> _pendingRegionUploads;
-    private readonly ConcurrentDictionary<RegionKey, byte> _regionBuildingSet;
-    private readonly Dictionary<IChunk, Renderable> _renderables;
-    private readonly Dictionary<IChunk, BoundingBox> _chunkLocalBounds;
-    private readonly Dictionary<IChunk, Vector3> _chunkLocalCenters;
-    private readonly Dictionary<IChunk, CachedWorldBounds> _chunkWorldBounds;
-    private readonly Dictionary<IChunk, int> _chunkRenderableTransformVersions;
-    private readonly List<IChunk> _dirtyScheduleBuffer;
-    private readonly Dictionary<IChunk, RegionKey> _chunkRegions;
-    private readonly Dictionary<RegionKey, HashSet<IChunk>> _regionMembers;
-    private readonly Dictionary<RegionKey, RegionBatch> _regionBatches;
-    private readonly Dictionary<RegionKey, CachedWorldBounds> _regionWorldBounds;
-    private readonly Dictionary<RegionKey, int> _regionRenderableTransformVersions;
-    private readonly HashSet<RegionKey> _dirtyRegions;
-    private readonly List<RegionKey> _regionDirtyBuffer;
     
-    private Task<ITerrain>? _terrainTask;
-    private bool _initializedTerrain;
-    private BoundingBox _terrainBaseBox;
-    private BoundingBox _terrainWorldBounds;
-    private int _terrainWorldBoundsVersion;
-    private int _boundsTransformVersion;
-    private bool _hasBoundsTransformCache;
-    private Vector3 _boundsTransformPosition;
-    private Quaternion _boundsTransformRotation;
-    private Vector3 _boundsTransformScale;
-    private int _renderTransformVersion;
-    private bool _hasRenderTransformCache;
-    private Vector3 _renderTransformPosition;
-    private Quaternion _renderTransformRotation;
-    private Vector3 _renderTransformScale;
-    private Transform _sharedRenderTransform;
+    private readonly List<IChunk> _meshChunkList;
+    
+    private readonly ConcurrentQueue<IChunk> _pendingUpload;
+    
+    private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
+    
+    private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
+    
+    private readonly HashSet<IChunk> _chunksPendingVertexUpload;
+    
+    private readonly ConcurrentQueue<TerrainRegionBuildResult> _pendingRegionUploads;
+    
+    private readonly ConcurrentDictionary<TerrainRegionKey, byte> _regionBuildingSet;
+    
+    private readonly Dictionary<IChunk, Renderable> _renderables;
+    
+    private readonly Dictionary<IChunk, BoundingBox> _chunkLocalBounds;
+    
+    private readonly Dictionary<IChunk, Vector3> _chunkLocalCenters;
+    
+    private readonly Dictionary<IChunk, CachedWorldBounds> _chunkWorldBounds;
+    
+    private readonly List<IChunk> _dirtyScheduleBuffer;
+    
+    private readonly Dictionary<IChunk, TerrainRegionKey> _chunkRegions;
+    
+    private readonly Dictionary<TerrainRegionKey, HashSet<IChunk>> _regionMembers;
+    
+    private readonly Dictionary<TerrainRegionKey, TerrainRegionBatch> _regionBatches;
+    
+    private readonly Dictionary<TerrainRegionKey, CachedWorldBounds> _regionWorldBounds;
+    
+    private readonly HashSet<TerrainRegionKey> _dirtyRegions;
+    
+    private readonly List<TerrainRegionKey> _regionDirtyBuffer;
+    
+    private BoundingBox _terrainLocalBounds;
+    
+    private BoundingBox _cachedTerrainWorldBounds;
+    
+    private int _cachedTerrainWorldBoundsVersion;
+    
+    private int _boundsCacheTransformVersion;
+    
+    private bool _hasCachedBoundsTransform;
+    
+    private Vector3 _cachedBoundsPosition;
+    
+    private Quaternion _cachedBoundsRotation;
+    
+    private Vector3 _cachedBoundsScale;
+    
+    private bool _hasCachedRenderTransform;
+    
+    private Vector3 _cachedRenderPosition;
+    
+    private Quaternion _cachedRenderRotation;
+    
+    private Vector3 _cachedRenderScale;
+    
+    private Transform _terrainRenderTransform;
+    
     private float _lodUpdateAccumulator;
+    
     private int _lodRingTick;
+    
     private bool _hasLastLodCameraPosition;
+    
     private Vector3 _lastLodCameraPosition;
     
-    public Terrain3D(Func<Task<ITerrain>> terrainFactory, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
+    public Terrain3D(Func<Task<ITerrain>> terrainFactory, TerrainSettings terrainTerrainSettings, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
         this._terrainFactory = terrainFactory;
+        this.TerrainSettings = terrainTerrainSettings;
         this.FrustumCulling = frustumCulling;
-        this.MaxChunkUploadsPerFrame = 6;
-        this.MaxChunkBuildsPerFrame = 8;
-        this.ChunkBuildScheduleBudgetMilliseconds = 1.5F;
-        this.MaxConcurrentChunkBuilds = Math.Max(1, Environment.ProcessorCount - 1);
-        this.LodDistances = [200.0F, 400.0F, 800.0F];
-        this.EnableLod = true;
-        this.LodHysteresis = 0.15F;
-        this.CullChunksBeyondLastLod = false;
-        this.UseCameraFarPlaneForLodRange = true;
-        this.PreloadChunksOnInit = true;
-        this.PauseTerrainWorkWhenOutOfView = true;
-        this.LodUpdateIntervalSeconds = 0.08F;
-        this.LodUpdateCameraMoveThreshold = 16.0F;
-        this.EnableFarChunkBatching = true;
-        this.FarChunkBatchMinLod = 2;
-        this.FarChunkBatchRegionSizeInChunks = 4;
-        this.MaxRegionRebuildsPerFrame = 1;
-        this.MaxRegionUploadsPerFrame = 1;
-        this.RegionScheduleBudgetMilliseconds = 1.0F;
-        this.RegionUploadBudgetMilliseconds = 1.0F;
-        this.MidRingLodUpdateIntervalTicks = 3;
-        this.FarRingLodUpdateIntervalTicks = 10;
         this._meshChunkList = new List<IChunk>();
         this._pendingUpload = new ConcurrentQueue<IChunk>();
         this._queuedSet = new ConcurrentDictionary<IChunk, byte>();
         this._buildingSet = new ConcurrentDictionary<IChunk, byte>();
-        this._chunksPendingVertexUpload = new HashSet<HeightmapChunk>();
-        this._pendingRegionUploads = new ConcurrentQueue<RegionBuildResult>();
-        this._regionBuildingSet = new ConcurrentDictionary<RegionKey, byte>();
+        this._chunksPendingVertexUpload = new HashSet<IChunk>();
+        this._pendingRegionUploads = new ConcurrentQueue<TerrainRegionBuildResult>();
+        this._regionBuildingSet = new ConcurrentDictionary<TerrainRegionKey, byte>();
         this._renderables = new Dictionary<IChunk, Renderable>();
         this._chunkLocalBounds = new Dictionary<IChunk, BoundingBox>();
         this._chunkLocalCenters = new Dictionary<IChunk, Vector3>();
         this._chunkWorldBounds = new Dictionary<IChunk, CachedWorldBounds>();
-        this._chunkRenderableTransformVersions = new Dictionary<IChunk, int>();
         this._dirtyScheduleBuffer = new List<IChunk>();
-        this._chunkRegions = new Dictionary<IChunk, RegionKey>();
-        this._regionMembers = new Dictionary<RegionKey, HashSet<IChunk>>();
-        this._regionBatches = new Dictionary<RegionKey, RegionBatch>();
-        this._regionWorldBounds = new Dictionary<RegionKey, CachedWorldBounds>();
-        this._regionRenderableTransformVersions = new Dictionary<RegionKey, int>();
-        this._dirtyRegions = new HashSet<RegionKey>();
-        this._regionDirtyBuffer = new List<RegionKey>();
-        this._terrainBaseBox = new BoundingBox();
-        this._terrainWorldBoundsVersion = -1;
-        this._boundsTransformVersion = 0;
-        this._hasBoundsTransformCache = false;
-        this._renderTransformVersion = 0;
-        this._hasRenderTransformCache = false;
-        this._sharedRenderTransform = new Transform();
+        this._chunkRegions = new Dictionary<IChunk, TerrainRegionKey>();
+        this._regionMembers = new Dictionary<TerrainRegionKey, HashSet<IChunk>>();
+        this._regionBatches = new Dictionary<TerrainRegionKey, TerrainRegionBatch>();
+        this._regionWorldBounds = new Dictionary<TerrainRegionKey, CachedWorldBounds>();
+        this._dirtyRegions = new HashSet<TerrainRegionKey>();
+        this._regionDirtyBuffer = new List<TerrainRegionKey>();
+        this._terrainLocalBounds = new BoundingBox();
+        this._cachedTerrainWorldBoundsVersion = -1;
+        this._boundsCacheTransformVersion = 0;
+        this._hasCachedBoundsTransform = false;
+        this._hasCachedRenderTransform = false;
+        this._terrainRenderTransform = new Transform();
         this._lodUpdateAccumulator = float.PositiveInfinity;
         this._lodRingTick = 0;
     }
@@ -178,79 +139,99 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     protected internal override void Init() {
         base.Init();
         
-        if (this.PreloadChunksOnInit) {
-            ITerrain terrain = this._terrainFactory().GetAwaiter().GetResult();
-            this.InitializeTerrain(terrain);
-            this.PreloadAllChunkMeshes();
-            return;
+        // Generate terrain.
+        this.Terrain = this._terrainFactory().GetAwaiter().GetResult();
+        
+        // Create terrain base box.
+        this._terrainLocalBounds = new BoundingBox {
+            Min = new Vector3(0.0F, -this.Terrain.Height, 0.0F),
+            Max = new Vector3(this.Terrain.Width, this.Terrain.Height, this.Terrain.Depth)
+        };
+        
+        // Create chunk local boxes.
+        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            this._chunkLocalBounds[chunk] = new BoundingBox {
+                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
+                Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
+            };
+            
+            this._chunkLocalCenters[chunk] = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
         }
         
-        this._terrainTask = this._terrainFactory();
+        // Preload all chunk meshes.
+        this.PreloadAllChunkMeshes();
     }
     
     protected internal override void Update(double delta) {
         base.Update(delta);
         
-        if (!this.EnsureTerrainReady()) {
-            return;
-        }
-
-        this.RefreshBoundsTransformVersion();
-
         Camera3D? cam3D = SceneManager.ActiveCam3D;
-
-        if (this.PauseTerrainWorkWhenOutOfView &&
-            this.FrustumCulling &&
-            cam3D != null &&
-            !cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds())) {
+        
+        if (cam3D == null) {
             return;
         }
         
-        this._lodUpdateAccumulator += (float) delta;
-        this.UpdateLodLevels();
-        this.ProcessDirtyRegions(false);
+        // Refresh bounds transform version.
+        this.RefreshBoundsTransformVersion();
         
-        int buildBudget = Math.Min(this.MaxChunkBuildsPerFrame, Math.Max(0, this.MaxConcurrentChunkBuilds - this._buildingSet.Count));
-
+        // Pause terrain work when the terrain is outside the camera view.
+        if (this.TerrainSettings.PauseTerrainWorkWhenOutOfView && this.FrustumCulling && !cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds())) {
+            return;
+        }
+        
+        // Update terrain LOD levels.
+        this.UpdateLodLevels(delta);
+        
+        // Process dirty far terrain regions.
+        this.ProcessDirtyRegions(cam3D, false);
+        
+        // Calculate how many chunk builds can be scheduled this frame.
+        int buildBudget = Math.Min(this.TerrainSettings.MaxChunkBuildsPerFrame, Math.Max(0, this.TerrainSettings.MaxConcurrentChunkBuilds - this._buildingSet.Count));
+        
         if (buildBudget <= 0) {
             return;
         }
         
-        int scheduled = 0;
-        Vector3 camPos = cam3D?.Position ?? Vector3.Zero;
-
+        // Fill the schedule buffer with dirty chunks.
         this._dirtyScheduleBuffer.Clear();
         this._dirtyScheduleBuffer.AddRange(this.Terrain.GetDirtyChunks());
-
+        
+        // Remove chunks that are already queued, building, or should not be scheduled.
         for (int i = this._dirtyScheduleBuffer.Count - 1; i >= 0; i--) {
             if (!this.ShouldSchedule(this._dirtyScheduleBuffer[i])) {
                 this._dirtyScheduleBuffer.RemoveAt(i);
             }
         }
-
-        if (cam3D != null) {
-            this._dirtyScheduleBuffer.Sort((a, b) => {
-                int lodCompare = Math.Max(0, a.Lod).CompareTo(Math.Max(0, b.Lod));
-                
-                if (lodCompare != 0) {
-                    return lodCompare;
-                }
-                
-                return this.GetChunkDistanceSquared(camPos, a).CompareTo(this.GetChunkDistanceSquared(camPos, b));
-            });
-        }
-
+        
+        // Sort chunks by LOD first, then by camera distance.
+        this._dirtyScheduleBuffer.Sort((chunkA, chunkB) => {
+            int lodCompare = Math.Max(0, chunkA.Lod).CompareTo(Math.Max(0, chunkB.Lod));
+            
+            if (lodCompare != 0) {
+                return lodCompare;
+            }
+            
+            return this.GetChunkDistanceSquared(cam3D.Position, chunkA).CompareTo(this.GetChunkDistanceSquared(cam3D.Position, chunkB));
+        });
+        
+        // Start measuring how long scheduling takes this frame.
         Stopwatch scheduleStopwatch = Stopwatch.StartNew();
-        double scheduleBudgetMs = Math.Max(0.0F, this.ChunkBuildScheduleBudgetMilliseconds);
-
+        double scheduleBudgetMs = Math.Max(0.0F, this.TerrainSettings.ChunkBuildScheduleBudgetMilliseconds);
+        int scheduled = 0;
+        
+        // Schedule chunk builds until the count or time budget is reached.
         foreach (IChunk chunk in this._dirtyScheduleBuffer) {
+            
+            // Stop if the scheduling time budget has been used.
             if (scheduleBudgetMs > 0.0 && scheduled > 0 && scheduleStopwatch.Elapsed.TotalMilliseconds >= scheduleBudgetMs) {
                 break;
             }
-
+            
+            // Schedule the chunk for background rebuilding.
             this.ScheduleBackground(chunk);
             scheduled++;
             
+            // Stop if the per-frame build count budget has been reached.
             if (scheduled >= buildBudget) {
                 break;
             }
@@ -260,52 +241,60 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         base.Draw(context, framebuffer);
         
-        if (!this.EnsureTerrainReady()) {
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D == null) {
             return;
         }
-
+        
+        // Refresh transform versions.
         this.RefreshBoundsTransformVersion();
         this.RefreshRenderTransformVersion();
         
-        this.ProcessPendingUploads(this.GraphicsDevice);
+        // Process pending chunk/region uploads.
+        this.ProcessPendingChunkUploads();
         this.ProcessPendingRegionUploads();
         
-        Camera3D? cam3D = SceneManager.ActiveCam3D;
-        
-        if (cam3D != null && this.FrustumCulling) {
-            bool visible = cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds());
+        // Check if the whole terrain is visible, if not, the draw method gets canceled.
+        if (this.FrustumCulling) {
+            bool terrainVisible = cam3D.GetFrustum().ContainsBox(this.GetTerrainWorldBounds());
             
-            if (!visible) {
+            if (!terrainVisible) {
                 return;
             }
         }
         
+        // Reset indexer.
         this.TotalVertexCount = 0;
         this.TotalIndexCount = 0;
-
-        this.DrawFarBatches(cam3D);
         
+        // Draw far region batches.
+        this.DrawFarRegionBatches(cam3D);
+        
+        // Draw normal/non-batched terrain chunks.
         foreach (IChunk chunk in this._meshChunkList) {
             if (chunk.Mesh == null) {
                 continue;
             }
             
-            if (chunk is HeightmapChunk heightmapChunk && this._chunksPendingVertexUpload.Contains(heightmapChunk)) {
-                heightmapChunk.UpdateGeometry(context.CommandList);
-                this._chunksPendingVertexUpload.Remove(heightmapChunk);
+            // Apply pending in-place mesh updates before visibility/Lod checks.
+            if (this._chunksPendingVertexUpload.Contains(chunk)) {
+                chunk.UpdateGeometry(context.CommandList);
+                this._chunksPendingVertexUpload.Remove(chunk);
             }
             
+            // Skip chunks that LOD currently culls.
             if (chunk.Lod < 0) {
                 continue;
             }
-
-            if (this._chunkRegions.TryGetValue(chunk, out RegionKey regionKey) &&
-                this._regionBatches.TryGetValue(regionKey, out RegionBatch? regionBatch) &&
-                regionBatch.Mesh != null) {
+            
+            // Skip this chunk if it is already included inside a far region batch.
+            if (this._chunkRegions.TryGetValue(chunk, out TerrainRegionKey regionKey) && this._regionBatches.TryGetValue(regionKey, out TerrainRegionBatch? regionBatch) && regionBatch.Mesh != null) {
                 continue;
             }
             
-            if (cam3D != null && this.FrustumCulling && this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBounds)) {
+            // If frustum culling is enabled, skip chunks outside the camera view.
+            if (this.FrustumCulling && this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBounds)) {
                 bool chunkVisible = cam3D.GetFrustum().ContainsBox(this.GetChunkWorldBounds(chunk, chunkBounds));
                 
                 if (!chunkVisible) {
@@ -313,166 +302,108 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
                 }
             }
             
-            if (!this._renderables.TryGetValue(chunk, out Renderable? renderable) || !ReferenceEquals(renderable.Mesh, chunk.Mesh)) {
-                renderable?.Dispose();
-                renderable = new Renderable(chunk.Mesh, new Transform(), this.Terrain.Material);
-                this._renderables[chunk] = renderable;
-                this._chunkRenderableTransformVersions.Remove(chunk);
-            }
+            // Get or create the renderable for this chunk.
+            Renderable renderable = this.GetOrCreateChunkRenderable(chunk);
+            renderable.SetTransform(0, this._terrainRenderTransform);
             
-            this.ApplyChunkRenderableTransform(chunk, renderable);
+            // Draw renderable.
             this.Entity.Scene.Renderer.DrawRenderable(renderable);
+            
+            // Add vertex/index count.
             this.TotalVertexCount += (int) chunk.Mesh.VertexCount;
-
-            if (chunk.Mesh is Mesh<Vertex3D> mesh && mesh.MeshData is BasicMeshData meshData) {
-                this.TotalIndexCount += meshData.Indices.Length;
-            }
+            this.TotalIndexCount += (int) chunk.Mesh.IndexCount;
         }
     }
     
     public void DrawDebug(ImmediateRenderer immediateRenderer) {
-        if (!this._initializedTerrain) {
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D == null) {
             return;
         }
-
+        
+        // Refresh bounds transform version.
         this.RefreshBoundsTransformVersion();
         
-        Transform boxTransform = new Transform {
+        Transform transform = new Transform {
             Translation = this.LerpedGlobalPosition,
             Rotation = this.LerpedRotation,
             Scale = this.LerpedScale
         };
         
-        immediateRenderer.DrawBoundingBox(boxTransform, this._terrainBaseBox, Color.Green);
+        // Draw terrain base box.
+        immediateRenderer.DrawBoundingBox(transform, this._terrainLocalBounds, Color.Green);
         
-        Camera3D? cam3D = SceneManager.ActiveCam3D;
-        
+        // Draw chunk boxes.
         foreach (IChunk chunk in this.Terrain.GetChunks()) {
-            Color chunkColor;
-            bool hasMeshColor;
-            
-            if (this._buildingSet.ContainsKey(chunk) || this._queuedSet.ContainsKey(chunk) || chunk.IsDirty) {
-                chunkColor = Color.White;
-                hasMeshColor = false;
-            }
-            else if (chunk.Mesh != null) {
-                chunkColor = Color.LightGray;
-                hasMeshColor = true;
-            }
-            else {
-                chunkColor = Color.DarkGray;
-                hasMeshColor = false;
+            if (!this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBox)) {
+                continue;
             }
             
-            if (cam3D != null && this.FrustumCulling && this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox frustumBounds)) {
-                bool chunkVisible = cam3D.GetFrustum().ContainsBox(this.GetChunkWorldBounds(chunk, frustumBounds));
-                
-                if (!chunkVisible && hasMeshColor) {
-                    chunkColor = Color.Gray;
-                }
+            bool isPending = this._buildingSet.ContainsKey(chunk) || this._queuedSet.ContainsKey(chunk) || chunk.IsDirty;
+            bool hasMesh = chunk.Mesh != null;
+            
+            Color chunkColor = isPending ? Color.White : hasMesh ? Color.LightGray : Color.DarkGray;
+            
+            if (this.FrustumCulling && hasMesh && !cam3D.GetFrustum().ContainsBox(this.GetChunkWorldBounds(chunk, chunkBox))) {
+                chunkColor = Color.Gray;
             }
             
-            BoundingBox chunkBox = new BoundingBox {
-                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
-                Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
-            };
-            
-            immediateRenderer.DrawBoundingBox(boxTransform, chunkBox, chunkColor);
+            // Draw chunk box.
+            immediateRenderer.DrawBoundingBox(transform, chunkBox, chunkColor);
         }
-    }
-    
-    private bool EnsureTerrainReady() {
-        if (this._initializedTerrain) {
-            return true;
-        }
-        
-        if (this._terrainTask == null || !this._terrainTask.IsCompletedSuccessfully) {
-            return false;
-        }
-        
-        this.InitializeTerrain(this._terrainTask.Result);
-        return true;
-    }
-    
-    private void InitializeTerrain(ITerrain terrain) {
-        this.Terrain = terrain;
-        this._initializedTerrain = true;
-        
-        this._terrainBaseBox = new BoundingBox {
-            Min = new Vector3(0.0F, -this.Terrain.Height, 0.0F),
-            Max = new Vector3(this.Terrain.Width, this.Terrain.Height, this.Terrain.Depth)
-        };
-        
-        this._chunkLocalBounds.Clear();
-        this._chunkLocalCenters.Clear();
-        this._chunkWorldBounds.Clear();
-        this._terrainWorldBoundsVersion = -1;
-        
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
-            this._chunkLocalBounds[chunk] = new BoundingBox {
-                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
-                Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
-            };
-            this._chunkLocalCenters[chunk] = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
-        }
-
-        this._lodUpdateAccumulator = float.PositiveInfinity;
-        this._hasLastLodCameraPosition = false;
     }
     
     private void PreloadAllChunkMeshes() {
-        Camera3D? camera = (Camera3D?) this.Entity.Scene.GetEntitiesWithTag("camera3D").FirstOrDefault();
-        Vector3 cameraPosition = camera?.Position ?? Vector3.Zero;
-        float maxLodDistance = this.UseCameraFarPlaneForLodRange && camera != null ? camera.FarPlane : float.PositiveInfinity;
+        Camera3D? cam3D = SceneManager.ActiveCam3D;
+        
+        if (cam3D == null) {
+            return;
+        }
+        
+        // Calculate the maximum LOD distance.
+        float maxLodDistance = this.TerrainSettings.UseCameraFarPlaneForLodRange ? cam3D.FarPlane : float.PositiveInfinity;
         float maxLodDistanceSquared = maxLodDistance * maxLodDistance;
         
+        // Set the initial LOD for every terrain chunk.
         foreach (IChunk chunk in this.Terrain.GetChunks()) {
-            float distanceSquared = this.GetChunkDistanceSquared(cameraPosition, chunk);
-            int targetLod = this.EnableLod ? DetermineLod(distanceSquared, this.LodDistances, this.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
+            float distanceSquared = this.GetChunkDistanceSquared(cam3D.Position, chunk);
+            int targetLod = this.TerrainSettings.EnableLod ? this.DetermineLod(distanceSquared, this.TerrainSettings.LodDistances, this.TerrainSettings.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
             
             if (chunk.Lod != targetLod) {
                 chunk.Lod = targetLod;
             }
         }
         
+        // Get all chunks that should be visible.
         IChunk[] chunks = this.Terrain.GetChunks().Where(chunk => chunk.Lod >= 0).ToArray();
         
-        Parallel.ForEach(chunks, new ParallelOptions {
-            MaxDegreeOfParallelism = Math.Max(1, this.MaxConcurrentChunkBuilds)
+        // Generate all visible chunk meshes in parallel.
+        Parallel.ForEach(chunks, new ParallelOptions() {
+            MaxDegreeOfParallelism = Math.Max(1, this.TerrainSettings.MaxConcurrentChunkBuilds)
         }, chunk => chunk.GenerateGeometry());
         
+        // Upload generated chunk meshes and refresh their render state.
         foreach (IChunk chunk in chunks) {
-            this.ApplyChunkGeometryUpload(chunk, this.GraphicsDevice);
+            this.UploadChunkGeometry(chunk);
             this.RefreshMeshChunkState(chunk);
         }
-
-        this.UpdateFarChunkMembership();
-        this.ProcessDirtyRegions(true);
-    }
-    
-    private void ScheduleBackground(IChunk chunk) {
-        if (!this._buildingSet.TryAdd(chunk, 0)) {
-            return;
-        }
         
-        _ = Task.Run(() => {
-            try {
-                chunk.GenerateGeometry();
-                if (this._queuedSet.TryAdd(chunk, 0)) {
-                    this._pendingUpload.Enqueue(chunk);
-                }
-            }
-            finally {
-                this._buildingSet.TryRemove(chunk, out _);
-            }
-        });
+        // Update far chunk batching membership.
+        this.UpdateFarChunkMembership();
+        
+        // Force process all dirty far terrain regions.
+        this.ProcessDirtyRegions(cam3D, true);
     }
     
     private bool ShouldSchedule(IChunk chunk) {
+        
+        // Skip chunks that are already queued or currently building.
         if (this._queuedSet.ContainsKey(chunk) || this._buildingSet.ContainsKey(chunk)) {
             return false;
         }
         
+        // Skip culled chunks that do not have an existing mesh.
         if (chunk.Lod < 0 && chunk.Mesh == null) {
             return false;
         }
@@ -480,667 +411,717 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         return true;
     }
     
-    private void UpdateLodLevels() {
+    private void ScheduleBackground(IChunk chunk) {
+        
+        // Mark the chunk as building so it cannot be scheduled twice.
+        if (!this._buildingSet.TryAdd(chunk, 0)) {
+            return;
+        }
+        
+        // Generate the chunk geometry in the background.
+        _ = Task.Run(() => {
+            try {
+                chunk.GenerateGeometry();
+                
+                // Queue the chunk for GPU upload after the geometry was generated.
+                if (this._queuedSet.TryAdd(chunk, 0)) {
+                    this._pendingUpload.Enqueue(chunk);
+                }
+            }
+            finally {
+                
+                // Remove the chunk from the building set once the background work is done.
+                this._buildingSet.TryRemove(chunk, out _);
+            }
+        });
+    }
+    
+    private void UpdateLodLevels(double delta) {
         Camera3D? cam3D = SceneManager.ActiveCam3D;
         
         if (cam3D == null) {
             return;
         }
-
-        float interval = Math.Max(0.0F, this.LodUpdateIntervalSeconds);
-        float moveThreshold = Math.Max(0.0F, this.LodUpdateCameraMoveThreshold);
-        bool movedEnough = !this._hasLastLodCameraPosition ||
-                           Vector3.DistanceSquared(this._lastLodCameraPosition, cam3D.Position) >= (moveThreshold * moveThreshold);
-
-        if (!movedEnough && this._lodUpdateAccumulator < interval) {
+        
+        TerrainSettings settings = this.TerrainSettings;
+        
+        // Accumulate time since the last LOD update.
+        this._lodUpdateAccumulator += (float) delta;
+        
+        // Calculate LOD update timing and movement thresholds.
+        float updateInterval = Math.Max(0.0F, settings.LodUpdateIntervalSeconds);
+        float moveThreshold = Math.Max(0.0F, settings.LodUpdateCameraMoveThreshold);
+        float moveThresholdSquared = moveThreshold * moveThreshold;
+        
+        // Check if the camera moved far enough to force a LOD update.
+        bool movedEnough = !this._hasLastLodCameraPosition || Vector3.DistanceSquared(this._lastLodCameraPosition, cam3D.Position) >= moveThresholdSquared;
+        
+        // Check if enough time has passed since the last LOD update.
+        bool waitedEnough = this._lodUpdateAccumulator >= updateInterval;
+        
+        if (!movedEnough && !waitedEnough) {
             return;
         }
-
+        
+        // Reset LOD update state.
         this._lodUpdateAccumulator = 0.0F;
         this._hasLastLodCameraPosition = true;
         this._lastLodCameraPosition = cam3D.Position;
         this._lodRingTick++;
         
-        float maxLodDistance = this.UseCameraFarPlaneForLodRange ? cam3D.FarPlane : float.PositiveInfinity;
+        // Calculate the maximum allowed LOD distance.
+        float maxLodDistance = settings.UseCameraFarPlaneForLodRange ? cam3D.FarPlane : float.PositiveInfinity;
         float maxLodDistanceSquared = maxLodDistance * maxLodDistance;
-
-        float nearRingDistance = this.LodDistances.Length == 0 ? float.PositiveInfinity : this.LodDistances[Math.Min(1, this.LodDistances.Length - 1)];
-        float midRingDistance = this.LodDistances.Length == 0 ? float.PositiveInfinity : this.LodDistances[Math.Min(2, this.LodDistances.Length - 1)];
+        
+        // Calculate near and mid-ring distances.
+        float nearRingDistance = settings.LodDistances.Length == 0 ? float.PositiveInfinity : settings.LodDistances[Math.Min(1, settings.LodDistances.Length - 1)];
+        float midRingDistance = settings.LodDistances.Length == 0 ? float.PositiveInfinity : settings.LodDistances[Math.Min(2, settings.LodDistances.Length - 1)];
+        
         float nearRingDistanceSquared = nearRingDistance * nearRingDistance;
         float midRingDistanceSquared = midRingDistance * midRingDistance;
-        int midInterval = Math.Max(1, this.MidRingLodUpdateIntervalTicks);
-        int farInterval = Math.Max(1, this.FarRingLodUpdateIntervalTicks);
+        
+        // Calculate how often mid and far ring chunks are updated.
+        int midRingInterval = Math.Max(1, settings.MidRingLodUpdateIntervalTicks);
+        int farRingInterval = Math.Max(1, settings.FarRingLodUpdateIntervalTicks);
+        
+        bool updateMidRing = this._lodRingTick % midRingInterval == 0;
+        bool updateFarRing = this._lodRingTick % farRingInterval == 0;
         
         foreach (IChunk chunk in this.Terrain.GetChunks()) {
             float distanceSquared = this.GetChunkDistanceSquared(cam3D.Position, chunk);
-
-            bool updateThisChunk = distanceSquared <= nearRingDistanceSquared ||
-                                   (distanceSquared <= midRingDistanceSquared && (this._lodRingTick % midInterval == 0)) ||
-                                   (distanceSquared > midRingDistanceSquared && (this._lodRingTick % farInterval == 0));
-
-            if (!updateThisChunk) {
+            
+            // Check which LOD update ring this chunk belongs to.
+            bool inNearRing = distanceSquared <= nearRingDistanceSquared;
+            bool inMidRing = distanceSquared <= midRingDistanceSquared;
+            
+            // Only update far chunks on slower intervals.
+            bool shouldUpdateChunk = inNearRing || (inMidRing && updateMidRing) || (!inMidRing && updateFarRing);
+            
+            if (!shouldUpdateChunk) {
                 continue;
             }
-
-            int targetLod = this.EnableLod ? DetermineLod(distanceSquared, this.LodDistances, this.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
+            
+            // Determine the target LOD for this chunk.
+            int targetLod = settings.EnableLod ? this.DetermineLod(distanceSquared, settings.LodDistances, settings.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
             
             if (this.ShouldHoldCurrentLod(chunk.Lod, targetLod, distanceSquared)) {
                 continue;
             }
             
-            if (chunk.Lod != targetLod) {
-                chunk.Lod = targetLod;
-                this.UpdateChunkRegionMembership(chunk);
+            if (chunk.Lod == targetLod) {
+                continue;
             }
+            
+            // Apply the new LOD and update far batching membership.
+            chunk.Lod = targetLod;
+            this.UpdateChunkRegionMembership(chunk);
         }
     }
     
-    private static int DetermineLod(float distanceSquared, float[] lodDistances, bool cullBeyondLastLod, float maxDistanceSquared) {
+    private int DetermineLod(float distanceSquared, float[] lodDistances, bool cullBeyondLastLod, float maxDistanceSquared) {
+        
+        // Cull the chunk if it is beyond the maximum allowed LOD distance.
         if (distanceSquared > maxDistanceSquared) {
             return -1;
         }
         
+        // Use the highest detail LOD when no LOD distances are defined.
         if (lodDistances.Length == 0) {
             return 0;
         }
         
+        // Find the first LOD distance that contains this chunk.
         for (int i = 0; i < lodDistances.Length; i++) {
             float lodDistance = lodDistances[i];
-
+            
             if (distanceSquared <= lodDistance * lodDistance) {
                 return i;
             }
         }
         
+        // Cull chunks beyond the last LOD or keep them at the lowest detail LOD.
         return cullBeyondLastLod ? -1 : lodDistances.Length - 1;
     }
     
     private bool ShouldHoldCurrentLod(int currentLod, int targetLod, float distanceSquared) {
-        if (currentLod < 0 || targetLod == currentLod || this.LodDistances.Length == 0 || this.LodHysteresis <= 0.0F) {
+        TerrainSettings settings = this.TerrainSettings;
+        float[] lodDistances = settings.LodDistances;
+        float hysteresis = settings.LodHysteresis;
+        
+        // Do not apply hysteresis when LOD is invalid, unchanged, or disabled.
+        if (currentLod < 0 || targetLod == currentLod || lodDistances.Length == 0 || hysteresis <= 0.0F) {
             return false;
         }
         
+        // Hold the current higher-detail LOD a bit longer before switching to lower detail.
         if (targetLod > currentLod) {
-            if (currentLod >= this.LodDistances.Length) {
+            if (currentLod >= lodDistances.Length) {
                 return false;
             }
             
-            float threshold = this.LodDistances[currentLod] * (1.0F + this.LodHysteresis);
-            return distanceSquared <= threshold * threshold;
+            float upperThreshold = lodDistances[currentLod] * (1.0F + hysteresis);
+            float upperThresholdSquared = upperThreshold * upperThreshold;
+            
+            return distanceSquared <= upperThresholdSquared;
         }
         
-        if (targetLod < 0 || targetLod >= this.LodDistances.Length) {
+        // Do not hold when the target LOD is culled or outside the distance table.
+        if (targetLod < 0 || targetLod >= lodDistances.Length) {
             return false;
         }
         
-        float lowerThreshold = this.LodDistances[targetLod] * (1.0F - this.LodHysteresis);
-        return distanceSquared >= lowerThreshold * lowerThreshold;
+        // Hold the current lower-detail LOD a bit longer before switching to higher detail.
+        float lowerThreshold = lodDistances[targetLod] * (1.0F - hysteresis);
+        float lowerThresholdSquared = lowerThreshold * lowerThreshold;
+        
+        return distanceSquared >= lowerThresholdSquared;
     }
     
     private float GetChunkDistanceSquared(Vector3 cameraPosition, IChunk chunk) {
-        if (!this._chunkLocalCenters.TryGetValue(chunk, out Vector3 chunkCenter)) {
-            chunkCenter = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
-            this._chunkLocalCenters[chunk] = chunkCenter;
+        
+        // Get or calculate the chunk center in terrain local space.
+        if (!this._chunkLocalCenters.TryGetValue(chunk, out Vector3 chunkLocalCenter)) {
+            chunkLocalCenter = chunk.Position + new Vector3(chunk.Width * 0.5F, chunk.Height * 0.5F, chunk.Depth * 0.5F);
+            this._chunkLocalCenters[chunk] = chunkLocalCenter;
         }
-
-        Vector3 chunkWorldCenter = this.LerpedGlobalPosition + chunkCenter;
+        
+        // Convert the local chunk center to world space.
+        Vector3 chunkWorldCenter = this.LerpedGlobalPosition + chunkLocalCenter;
+        
+        // Return squared distance to avoid a square root.
         return Vector3.DistanceSquared(cameraPosition, chunkWorldCenter);
     }
     
-    private void ProcessPendingUploads(GraphicsDevice graphicsDevice) {
+    private void ProcessPendingChunkUploads() {
+        int uploadBudget = Math.Max(0, this.TerrainSettings.MaxChunkUploadsPerFrame);
+        
+        if (uploadBudget == 0) {
+            return;
+        }
+        
         int uploads = 0;
         
-        while (uploads < this.MaxChunkUploadsPerFrame && this._pendingUpload.TryDequeue(out IChunk? chunk)) {
+        // Upload pending chunk meshes until the per-frame budget is reached.
+        while (uploads < uploadBudget && this._pendingUpload.TryDequeue(out IChunk? chunk)) {
             this._queuedSet.TryRemove(chunk, out _);
-            this.ApplyChunkGeometryUpload(chunk, graphicsDevice);
+            this.UploadChunkGeometry(chunk);
             this.RefreshMeshChunkState(chunk);
             uploads++;
         }
     }
-
+    
     private void ProcessPendingRegionUploads() {
-        int uploads = 0;
-        int uploadBudget = Math.Max(0, this.MaxRegionUploadsPerFrame);
-
+        TerrainSettings settings = this.TerrainSettings;
+        
+        int uploadBudget = Math.Max(0, settings.MaxRegionUploadsPerFrame);
+        
         if (uploadBudget == 0) {
             return;
         }
-
+        
+        double uploadBudgetMs = Math.Max(0.0F, settings.RegionUploadBudgetMilliseconds);
         Stopwatch uploadStopwatch = Stopwatch.StartNew();
-        double uploadBudgetMs = Math.Max(0.0F, this.RegionUploadBudgetMilliseconds);
-
-        while (uploads < uploadBudget && this._pendingRegionUploads.TryDequeue(out RegionBuildResult result)) {
+        int uploads = 0;
+        
+        // Upload pending region meshes until the count or time budget is reached.
+        while (uploads < uploadBudget && this._pendingRegionUploads.TryDequeue(out TerrainRegionBuildResult buildResult)) {
             if (uploadBudgetMs > 0.0 && uploads > 0 && uploadStopwatch.Elapsed.TotalMilliseconds >= uploadBudgetMs) {
-                this._pendingRegionUploads.Enqueue(result);
+                this._pendingRegionUploads.Enqueue(buildResult);
                 break;
             }
-
-            this.DisposeRegionBatch(result.Key);
-
-            if (result.HasGeometry) {
-                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.Terrain.Material, new BasicMeshData(result.Vertices!, result.Indices!));
-                RegionBatch batch = new RegionBatch(regionMesh, new Renderable(regionMesh, new Transform(), this.Terrain.Material), result.LocalBounds, result.VertexCount, result.IndexCount);
-                this._regionBatches[result.Key] = batch;
+            
+            // Replace the old region batch with the newly built result.
+            this.DisposeRegionBatch(buildResult.Key);
+            
+            if (buildResult.HasGeometry) {
+                BasicMeshData meshData = new BasicMeshData(buildResult.Vertices!, buildResult.Indices!);
+                Mesh<Vertex3D> regionMesh = new Mesh<Vertex3D>(this.GraphicsDevice, this.Terrain.Material, meshData);
+                Renderable renderable = new Renderable(regionMesh, new Transform(), this.Terrain.Material);
+                
+                this._regionBatches[buildResult.Key] = new TerrainRegionBatch(regionMesh, renderable, buildResult.LocalBounds, buildResult.VertexCount, buildResult.IndexCount);
             }
-
-            this._regionWorldBounds.Remove(result.Key);
-            this._regionRenderableTransformVersions.Remove(result.Key);
+            
+            // Clear cached render/bounds data for the replaced region.
+            this._regionWorldBounds.Remove(buildResult.Key);
+            
             uploads++;
         }
     }
     
     private void RefreshMeshChunkState(IChunk chunk) {
-        if (chunk is HeightmapChunk heightmapChunk && chunk.Mesh == null) {
-            this._chunksPendingVertexUpload.Remove(heightmapChunk);
+        bool hasMesh = chunk.Mesh != null;
+        
+        // Clear pending vertex upload state when the chunk no longer has a mesh.
+        if (!hasMesh) {
+            this._chunksPendingVertexUpload.Remove(chunk);
         }
-
-        if (chunk.Mesh != null) {
+        
+        if (hasMesh) {
+            
+            // Add the chunk to the render list if it is not already tracked.
             if (!this._meshChunkList.Contains(chunk)) {
                 this._meshChunkList.Add(chunk);
             }
-
+            
+            // Update far batching membership for the refreshed chunk.
             this.UpdateChunkRegionMembership(chunk);
             return;
         }
         
+        // Remove all render state for chunks without geometry.
         this._meshChunkList.Remove(chunk);
         this.RemoveChunkFromRegion(chunk);
         this._chunkWorldBounds.Remove(chunk);
-        this._chunkRenderableTransformVersions.Remove(chunk);
         
+        // Dispose the old renderable if the chunk had one.
         if (this._renderables.Remove(chunk, out Renderable? renderable)) {
             renderable.Dispose();
         }
     }
     
-    protected override void Dispose(bool disposing) {
-        if (disposing) {
-            foreach (Renderable renderable in this._renderables.Values) {
-                renderable.Dispose();
-            }
-            
-            this._renderables.Clear();
-            
-            foreach (RegionBatch batch in this._regionBatches.Values) {
-                batch.Dispose();
-            }
-            
-            this._regionBatches.Clear();
-            
-            if (this._initializedTerrain) {
-                foreach (IChunk chunk in this.Terrain.GetChunks()) {
-                    chunk.Dispose();
-                }
-            }
-            
-            this._meshChunkList.Clear();
-            this._buildingSet.Clear();
-            this._queuedSet.Clear();
-            this._regionBuildingSet.Clear();
-            this._chunkLocalBounds.Clear();
-            this._chunkLocalCenters.Clear();
-            this._chunkWorldBounds.Clear();
-            this._chunkRenderableTransformVersions.Clear();
-            this._chunkRegions.Clear();
-            this._regionMembers.Clear();
-            this._regionWorldBounds.Clear();
-            this._regionRenderableTransformVersions.Clear();
-            this._dirtyRegions.Clear();
-            this._chunksPendingVertexUpload.Clear();
-            
-            while (this._pendingUpload.TryDequeue(out _)) {
-            }
-
-            while (this._pendingRegionUploads.TryDequeue(out _)) {
-            }
-        }
-    }
-
-    private void ApplyChunkGeometryUpload(IChunk chunk, GraphicsDevice graphicsDevice) {
-        if (chunk is not HeightmapChunk heightmapChunk) {
-            chunk.UploadGeometry(graphicsDevice);
+    private void UploadChunkGeometry(IChunk chunk) {
+        
+        // Upload immediately when there is no pending geometry or in-place update is not possible.
+        if (!chunk.HasPendingGeometry || !chunk.CanUpdateGeometryInPlace) {
+            chunk.UploadGeometry(this.GraphicsDevice);
+            this._chunksPendingVertexUpload.Remove(chunk);
             return;
         }
-
-        bool hasGeometry = heightmapChunk.PendingVertexCount > 0 && heightmapChunk.PendingIndexCount > 0;
-
-        if (!hasGeometry) {
-            chunk.UploadGeometry(graphicsDevice);
-            this._chunksPendingVertexUpload.Remove(heightmapChunk);
-            return;
-        }
-
-        bool canUpdateInPlace = heightmapChunk.Mesh is Mesh<Vertex3D> existingMesh &&
-                                existingMesh.MeshData is BasicMeshData meshData &&
-                                meshData.Vertices.Length == heightmapChunk.PendingVertexCount &&
-                                meshData.Indices.Length == heightmapChunk.PendingIndexCount;
-
-        if (canUpdateInPlace) {
-            this._chunksPendingVertexUpload.Add(heightmapChunk);
-        }
-        else {
-            chunk.UploadGeometry(graphicsDevice);
-            this._chunksPendingVertexUpload.Remove(heightmapChunk);
-        }
+        
+        // Defer the vertex update so it can be applied during rendering.
+        this._chunksPendingVertexUpload.Add(chunk);
     }
-
-    private void DrawFarBatches(Camera3D? cam3D) {
-        foreach (KeyValuePair<RegionKey, RegionBatch> pair in this._regionBatches) {
-            RegionKey regionKey = pair.Key;
-            RegionBatch batch = pair.Value;
-
-            if (batch.Mesh == null || batch.Renderable == null) {
+    
+    private void DrawFarRegionBatches(Camera3D cam3D) {
+        foreach ((TerrainRegionKey regionKey, TerrainRegionBatch batch) in this._regionBatches) {
+            Renderable? renderable = batch.Renderable;
+            
+            // Skip empty or disposed region batches.
+            if (batch.Mesh == null || renderable == null) {
                 continue;
             }
-
-            if (cam3D != null && this.FrustumCulling) {
+            
+            // Skip region batches outside the camera view.
+            if (this.FrustumCulling) {
                 bool visible = cam3D.GetFrustum().ContainsBox(this.GetRegionWorldBounds(regionKey, batch.LocalBounds));
-
+                
                 if (!visible) {
                     continue;
                 }
             }
             
-            this.ApplyRegionRenderableTransform(regionKey, batch.Renderable);
-            this.Entity.Scene.Renderer.DrawRenderable(batch.Renderable);
+            // Apply the current terrain transform to the region renderable.
+            renderable.SetTransform(0, this._terrainRenderTransform);
+            
+            // Draw the region batch.
+            this.Entity.Scene.Renderer.DrawRenderable(renderable);
+            
+            // Add region batch geometry to the debug counters.
             this.TotalVertexCount += batch.VertexCount;
             this.TotalIndexCount += batch.IndexCount;
         }
     }
-
+    
+    private Renderable GetOrCreateChunkRenderable(IChunk chunk) {
+        if (chunk.Mesh == null) {
+            throw new InvalidOperationException("Cannot create a renderable for a chunk without a mesh.");
+        }
+        
+        // Reuse the existing renderable when it already uses the current chunk mesh.
+        if (this._renderables.TryGetValue(chunk, out Renderable? renderable) && ReferenceEquals(renderable.Mesh, chunk.Mesh)) {
+            return renderable;
+        }
+        
+        renderable?.Dispose();
+        Renderable newRenderable = new Renderable(chunk.Mesh, new Transform(), this.Terrain.Material);
+        this._renderables[chunk] = newRenderable;
+        return newRenderable;
+    }
+    
     private void RefreshBoundsTransformVersion() {
-        if (!this._hasBoundsTransformCache ||
-            this._boundsTransformPosition != this.LerpedGlobalPosition ||
-            this._boundsTransformRotation != this.LerpedRotation ||
-            this._boundsTransformScale != this.LerpedScale) {
-            this._hasBoundsTransformCache = true;
-            this._boundsTransformPosition = this.LerpedGlobalPosition;
-            this._boundsTransformRotation = this.LerpedRotation;
-            this._boundsTransformScale = this.LerpedScale;
-            this._boundsTransformVersion++;
+        if (!this._hasCachedBoundsTransform ||
+            this._cachedBoundsPosition != this.LerpedGlobalPosition ||
+            this._cachedBoundsRotation != this.LerpedRotation ||
+            this._cachedBoundsScale != this.LerpedScale) {
+            
+            this._hasCachedBoundsTransform = true;
+            this._cachedBoundsPosition = this.LerpedGlobalPosition;
+            this._cachedBoundsRotation = this.LerpedRotation;
+            this._cachedBoundsScale = this.LerpedScale;
+            this._boundsCacheTransformVersion++;
         }
     }
-
+    
     private void RefreshRenderTransformVersion() {
-        if (!this._hasRenderTransformCache ||
-            this._renderTransformPosition != this.LerpedGlobalPosition ||
-            this._renderTransformRotation != this.LerpedRotation ||
-            this._renderTransformScale != this.LerpedScale) {
-            this._hasRenderTransformCache = true;
-            this._renderTransformPosition = this.LerpedGlobalPosition;
-            this._renderTransformRotation = this.LerpedRotation;
-            this._renderTransformScale = this.LerpedScale;
-            this._renderTransformVersion++;
-
-            this._sharedRenderTransform.Translation = this.LerpedGlobalPosition;
-            this._sharedRenderTransform.Rotation = this.LerpedRotation;
-            this._sharedRenderTransform.Scale = this.LerpedScale;
+        if (!this._hasCachedRenderTransform ||
+            this._cachedRenderPosition != this.LerpedGlobalPosition ||
+            this._cachedRenderRotation != this.LerpedRotation ||
+            this._cachedRenderScale != this.LerpedScale) {
+            
+            this._hasCachedRenderTransform = true;
+            this._cachedRenderPosition = this.LerpedGlobalPosition;
+            this._cachedRenderRotation = this.LerpedRotation;
+            this._cachedRenderScale = this.LerpedScale;
+            
+            this._terrainRenderTransform.Translation = this.LerpedGlobalPosition;
+            this._terrainRenderTransform.Rotation = this.LerpedRotation;
+            this._terrainRenderTransform.Scale = this.LerpedScale;
         }
     }
-
-    private void ApplyChunkRenderableTransform(IChunk chunk, Renderable renderable) {
-        if (this._chunkRenderableTransformVersions.TryGetValue(chunk, out int version) && version == this._renderTransformVersion) {
-            return;
-        }
-
-        renderable.SetTransform(0, this._sharedRenderTransform);
-        this._chunkRenderableTransformVersions[chunk] = this._renderTransformVersion;
-    }
-
-    private void ApplyRegionRenderableTransform(RegionKey key, Renderable renderable) {
-        if (this._regionRenderableTransformVersions.TryGetValue(key, out int version) && version == this._renderTransformVersion) {
-            return;
-        }
-
-        renderable.SetTransform(0, this._sharedRenderTransform);
-        this._regionRenderableTransformVersions[key] = this._renderTransformVersion;
-    }
-
+    
     private BoundingBox GetTerrainWorldBounds() {
-        if (this._terrainWorldBoundsVersion == this._boundsTransformVersion) {
-            return this._terrainWorldBounds;
+        int currentVersion = this._boundsCacheTransformVersion;
+        
+        // Return the cached terrain bounds if the transform has not changed.
+        if (this._cachedTerrainWorldBoundsVersion == currentVersion) {
+            return this._cachedTerrainWorldBounds;
         }
-
-        this._terrainWorldBounds = this.ComputeWorldAabb(this._terrainBaseBox);
-        this._terrainWorldBoundsVersion = this._boundsTransformVersion;
-        return this._terrainWorldBounds;
+        
+        // Recalculate and cache the terrain world bounds.
+        this._cachedTerrainWorldBounds = this.ComputeWorldAabb(this._terrainLocalBounds);
+        this._cachedTerrainWorldBoundsVersion = currentVersion;
+        
+        return this._cachedTerrainWorldBounds;
     }
-
+    
     private BoundingBox GetChunkWorldBounds(IChunk chunk, BoundingBox localBounds) {
-        if (this._chunkWorldBounds.TryGetValue(chunk, out CachedWorldBounds cached) &&
-            cached.Version == this._boundsTransformVersion) {
+        int currentVersion = this._boundsCacheTransformVersion;
+        
+        // Return the cached chunk bounds if the transform has not changed.
+        if (this._chunkWorldBounds.TryGetValue(chunk, out CachedWorldBounds cached) && cached.Version == currentVersion) {
             return cached.Bounds;
         }
-
+        
+        // Recalculate and cache the chunk world bounds.
         BoundingBox worldBounds = this.ComputeWorldAabb(localBounds);
-        this._chunkWorldBounds[chunk] = new CachedWorldBounds(worldBounds, this._boundsTransformVersion);
+        this._chunkWorldBounds[chunk] = new CachedWorldBounds(worldBounds, currentVersion);
+        
         return worldBounds;
     }
-
-    private BoundingBox GetRegionWorldBounds(RegionKey key, BoundingBox localBounds) {
-        if (this._regionWorldBounds.TryGetValue(key, out CachedWorldBounds cached) &&
-            cached.Version == this._boundsTransformVersion) {
+    
+    private BoundingBox GetRegionWorldBounds(TerrainRegionKey key, BoundingBox localBounds) {
+        int currentVersion = this._boundsCacheTransformVersion;
+        
+        // Return the cached region bounds if the transform has not changed.
+        if (this._regionWorldBounds.TryGetValue(key, out CachedWorldBounds cached) && cached.Version == currentVersion) {
             return cached.Bounds;
         }
-
+        
+        // Recalculate and cache the region world bounds.
         BoundingBox worldBounds = this.ComputeWorldAabb(localBounds);
-        this._regionWorldBounds[key] = new CachedWorldBounds(worldBounds, this._boundsTransformVersion);
+        this._regionWorldBounds[key] = new CachedWorldBounds(worldBounds, currentVersion);
+        
         return worldBounds;
     }
-
+    
     private BoundingBox ComputeWorldAabb(BoundingBox localBox) {
-        Vector3 worldMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-        Vector3 worldMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-        this.ExpandWorldBounds(localBox.Min.X, localBox.Min.Y, localBox.Min.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Max.X, localBox.Min.Y, localBox.Min.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Min.X, localBox.Max.Y, localBox.Min.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Max.X, localBox.Max.Y, localBox.Min.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Min.X, localBox.Min.Y, localBox.Max.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Max.X, localBox.Min.Y, localBox.Max.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Min.X, localBox.Max.Y, localBox.Max.Z, ref worldMin, ref worldMax);
-        this.ExpandWorldBounds(localBox.Max.X, localBox.Max.Y, localBox.Max.Z, ref worldMin, ref worldMax);
-
+        Vector3 localMin = localBox.Min;
+        Vector3 localMax = localBox.Max;
+        
+        Vector3 worldMin = new Vector3(float.MaxValue);
+        Vector3 worldMax = new Vector3(float.MinValue);
+        
+        // Transform all local bounds corners and expand the world AABB around them.
+        this.ExpandWorldAabb(localMin.X, localMin.Y, localMin.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMax.X, localMin.Y, localMin.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMin.X, localMax.Y, localMin.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMax.X, localMax.Y, localMin.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMin.X, localMin.Y, localMax.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMax.X, localMin.Y, localMax.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMin.X, localMax.Y, localMax.Z, ref worldMin, ref worldMax);
+        this.ExpandWorldAabb(localMax.X, localMax.Y, localMax.Z, ref worldMin, ref worldMax);
+        
         return new BoundingBox {
             Min = worldMin,
             Max = worldMax
         };
     }
-
-    private void ExpandWorldBounds(float x, float y, float z, ref Vector3 worldMin, ref Vector3 worldMax) {
-        Vector3 local = new Vector3(x, y, z);
-        Vector3 scaled = local * this.LerpedScale;
-        Vector3 rotated = Vector3.Transform(scaled, this.LerpedRotation);
-        Vector3 world = rotated + this.LerpedGlobalPosition;
-        worldMin = Vector3.Min(worldMin, world);
-        worldMax = Vector3.Max(worldMax, world);
+    
+    private void ExpandWorldAabb(float x, float y, float z, ref Vector3 worldMin, ref Vector3 worldMax) {
+        Vector3 localPoint = new Vector3(x, y, z);
+        Vector3 scaledPoint = localPoint * this.LerpedScale;
+        Vector3 rotatedPoint = Vector3.Transform(scaledPoint, this.LerpedRotation);
+        Vector3 worldPoint = rotatedPoint + this.LerpedGlobalPosition;
+        
+        worldMin = Vector3.Min(worldMin, worldPoint);
+        worldMax = Vector3.Max(worldMax, worldPoint);
     }
-
+    
     private void UpdateFarChunkMembership() {
-        if (!this.EnableFarChunkBatching || this.FarChunkBatchRegionSizeInChunks <= 0) {
+        TerrainSettings settings = this.TerrainSettings;
+        bool batchingEnabled = settings.EnableFarChunkBatching && settings.FarChunkBatchRegionSizeInChunks > 0;
+        
+        // Clear all region batching state when far chunk batching is disabled.
+        if (!batchingEnabled) {
             this.ClearAllChunkRegions();
             return;
         }
-
+        
+        // Refresh region membership for every terrain chunk.
         foreach (IChunk chunk in this.Terrain.GetChunks()) {
             this.UpdateChunkRegionMembership(chunk);
         }
     }
-
+    
     private void UpdateChunkRegionMembership(IChunk chunk) {
-        bool shouldBatch = this.ShouldBatchChunk(chunk);
-
-        if (!shouldBatch) {
+        
+        // Remove chunks that should not be included in far region batching.
+        if (!this.ShouldBatchChunk(chunk)) {
             this.RemoveChunkFromRegion(chunk);
             return;
         }
-
-        RegionKey newKey = this.GetRegionKey(chunk);
-
-        if (this._chunkRegions.TryGetValue(chunk, out RegionKey currentKey) && currentKey.Equals(newKey)) {
+        
+        TerrainRegionKey targetKey = this.GetRegionKey(chunk);
+        
+        // Keep the current membership if the chunk is already in the correct region.
+        if (this._chunkRegions.TryGetValue(chunk, out TerrainRegionKey currentKey) && currentKey == targetKey) {
             return;
         }
-
+        
+        // Move the chunk from its old region into the target region.
         this.RemoveChunkFromRegion(chunk);
-        this._chunkRegions[chunk] = newKey;
-
-        if (!this._regionMembers.TryGetValue(newKey, out HashSet<IChunk>? members)) {
+        this._chunkRegions[chunk] = targetKey;
+        
+        if (!this._regionMembers.TryGetValue(targetKey, out HashSet<IChunk>? members)) {
             members = new HashSet<IChunk>();
-            this._regionMembers[newKey] = members;
+            this._regionMembers[targetKey] = members;
         }
-
+        
         members.Add(chunk);
-        this._dirtyRegions.Add(newKey);
+        
+        // Mark the target region dirty so its batch can be rebuilt.
+        this._dirtyRegions.Add(targetKey);
     }
-
+    
     private void RemoveChunkFromRegion(IChunk chunk) {
-        if (!this._chunkRegions.Remove(chunk, out RegionKey key)) {
+        
+        // Stop if the chunk is not assigned to any region.
+        if (!this._chunkRegions.Remove(chunk, out TerrainRegionKey regionKey)) {
             return;
         }
-
-        if (this._regionMembers.TryGetValue(key, out HashSet<IChunk>? members)) {
+        
+        // Remove the chunk from its region member list.
+        if (this._regionMembers.TryGetValue(regionKey, out HashSet<IChunk>? members)) {
             members.Remove(chunk);
-
+            
             if (members.Count == 0) {
-                this._regionMembers.Remove(key);
+                this._regionMembers.Remove(regionKey);
             }
         }
-
-        this._dirtyRegions.Add(key);
+        
+        // Mark the old region dirty so its batch can be rebuilt.
+        this._dirtyRegions.Add(regionKey);
     }
-
+    
     private void ClearAllChunkRegions() {
-        foreach (RegionBatch batch in this._regionBatches.Values) {
+        
+        // Dispose all existing region batches.
+        foreach (TerrainRegionBatch batch in this._regionBatches.Values) {
             batch.Dispose();
         }
-
+        
+        // Clear all region batching state.
+        this._regionBatches.Clear();
         this._chunkRegions.Clear();
         this._regionMembers.Clear();
-        this._regionBatches.Clear();
         this._regionWorldBounds.Clear();
-        this._regionRenderableTransformVersions.Clear();
         this._dirtyRegions.Clear();
     }
-
+    
     private bool ShouldBatchChunk(IChunk chunk) {
-        if (chunk.Mesh == null || chunk.Lod < 0 || chunk.CurrentLod < 0) {
-            return false;
-        }
-
-        if (chunk.Lod < this.FarChunkBatchMinLod || chunk.CurrentLod < this.FarChunkBatchMinLod) {
-            return false;
-        }
-
-        return true;
+        int minBatchLod = this.TerrainSettings.FarChunkBatchMinLod;
+        
+        return chunk.Mesh != null &&
+               chunk.Lod >= minBatchLod &&
+               chunk.CurrentLod >= minBatchLod;
     }
-
-    private RegionKey GetRegionKey(IChunk chunk) {
+    
+    private TerrainRegionKey GetRegionKey(IChunk chunk) {
         int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
-        int regionChunkSize = Math.Max(1, this.FarChunkBatchRegionSizeInChunks);
+        int regionSizeInChunks = Math.Max(1, this.TerrainSettings.FarChunkBatchRegionSizeInChunks);
+        
+        // Convert world chunk position to chunk grid coordinates.
         int chunkX = Math.Max(0, (int) chunk.Position.X / chunkSize);
         int chunkZ = Math.Max(0, (int) chunk.Position.Z / chunkSize);
-
-        return new RegionKey(chunkX / regionChunkSize, chunkZ / regionChunkSize, chunk.CurrentLod);
+        
+        // Convert chunk grid coordinates to region grid coordinates.
+        int regionX = chunkX / regionSizeInChunks;
+        int regionZ = chunkZ / regionSizeInChunks;
+        
+        return new TerrainRegionKey(regionX, regionZ, chunk.CurrentLod);
     }
-
-    private void ProcessDirtyRegions(bool forceAll) {
+    
+    private void ProcessDirtyRegions(Camera3D camera, bool forceAll) {
         if (this._dirtyRegions.Count == 0) {
             return;
         }
-
+        
+        TerrainSettings settings = this.TerrainSettings;
+        Vector3 cameraPosition = camera.Position;
+        
+        // Copy dirty regions into a buffer so the set can be modified while scheduling.
         this._regionDirtyBuffer.Clear();
         this._regionDirtyBuffer.AddRange(this._dirtyRegions);
-
-        Camera3D? cam3D = SceneManager.ActiveCam3D;
-
-        if (cam3D != null) {
-            this._regionDirtyBuffer.Sort((a, b) => {
-                float da = this.GetRegionDistanceSquared(cam3D.Position, a);
-                float db = this.GetRegionDistanceSquared(cam3D.Position, b);
-                return da.CompareTo(db);
-            });
-        }
-
-        int budget = forceAll ? int.MaxValue : Math.Max(0, this.MaxRegionRebuildsPerFrame);
-        int scheduled = 0;
+        
+        // Prioritize regions closest to the camera.
+        this._regionDirtyBuffer.Sort((a, b) => {
+            float distanceA = this.GetRegionDistanceSquared(cameraPosition, a);
+            float distanceB = this.GetRegionDistanceSquared(cameraPosition, b);
+            return distanceA.CompareTo(distanceB);
+        });
+        
+        int rebuildBudget = forceAll ? int.MaxValue : Math.Max(0, settings.MaxRegionRebuildsPerFrame);
+        double scheduleBudgetMs = forceAll ? double.PositiveInfinity : Math.Max(0.0F, settings.RegionScheduleBudgetMilliseconds);
+        
         Stopwatch scheduleStopwatch = Stopwatch.StartNew();
-        double scheduleBudgetMs = forceAll ? double.PositiveInfinity : Math.Max(0.0F, this.RegionScheduleBudgetMilliseconds);
-
-        foreach (RegionKey key in this._regionDirtyBuffer) {
-            if (scheduled >= budget) {
+        int scheduled = 0;
+        
+        // Schedule region rebuilds until the count or time budget is reached.
+        foreach (TerrainRegionKey regionKey in this._regionDirtyBuffer) {
+            if (scheduled >= rebuildBudget) {
                 break;
             }
-
+            
             if (scheduleBudgetMs > 0.0 && scheduled > 0 && scheduleStopwatch.Elapsed.TotalMilliseconds >= scheduleBudgetMs) {
                 break;
             }
-
-            if (this.ScheduleRegionBuild(key)) {
-                this._dirtyRegions.Remove(key);
-                scheduled++;
-            }
-        }
-    }
-
-    private float GetRegionDistanceSquared(Vector3 cameraPosition, RegionKey key) {
-        int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
-        int regionChunkSize = Math.Max(1, this.FarChunkBatchRegionSizeInChunks);
-        float regionWorldSize = chunkSize * regionChunkSize;
-        float centerX = ((key.X + 0.5F) * regionWorldSize);
-        float centerZ = ((key.Z + 0.5F) * regionWorldSize);
-        float centerY = this.Terrain.Height * 0.5F;
-        Vector3 worldCenter = this.LerpedGlobalPosition + new Vector3(centerX, centerY, centerZ);
-        return Vector3.DistanceSquared(cameraPosition, worldCenter);
-    }
-
-    private bool ScheduleRegionBuild(RegionKey key) {
-        if (!this._regionBuildingSet.TryAdd(key, 0)) {
-            return false;
-        }
-
-        IChunk[] memberSnapshot = this._regionMembers.TryGetValue(key, out HashSet<IChunk>? members) ? members.ToArray() : [];
-
-        _ = Task.Run(() => {
-            try {
-                RegionBuildResult result = BuildRegionGeometry(key, memberSnapshot);
-                this._pendingRegionUploads.Enqueue(result);
-            }
-            finally {
-                this._regionBuildingSet.TryRemove(key, out _);
-            }
-        });
-
-        return true;
-    }
-
-    private RegionBuildResult BuildRegionGeometry(RegionKey key, IChunk[] members) {
-        int totalVertexCount = 0;
-        int totalIndexCount = 0;
-        bool hasBounds = false;
-        BoundingBox bounds = default;
-        List<BasicMeshData> sourceData = new List<BasicMeshData>(members.Length);
-
-        foreach (IChunk chunk in members) {
-            if (chunk.Mesh is not Mesh<Vertex3D> mesh || mesh.MeshData is not BasicMeshData meshData || meshData.Vertices.Length == 0 || meshData.Indices.Length == 0) {
+            
+            if (!this.ScheduleRegionBuild(regionKey)) {
                 continue;
             }
-
-            sourceData.Add(meshData);
+            
+            this._dirtyRegions.Remove(regionKey);
+            scheduled++;
+        }
+    }
+    
+    private float GetRegionDistanceSquared(Vector3 cameraPosition, TerrainRegionKey key) {
+        int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
+        int regionSizeInChunks = Math.Max(1, this.TerrainSettings.FarChunkBatchRegionSizeInChunks);
+        
+        float regionSize = chunkSize * regionSizeInChunks;
+        
+        // Calculate the region center in terrain local space.
+        Vector3 regionLocalCenter = new Vector3(
+            (key.X + 0.5F) * regionSize,
+            this.Terrain.Height * 0.5F,
+            (key.Z + 0.5F) * regionSize
+        );
+        
+        // Convert the region center to world space.
+        Vector3 regionWorldCenter = this.LerpedGlobalPosition + regionLocalCenter;
+        
+        // Return squared distance to avoid a square root.
+        return Vector3.DistanceSquared(cameraPosition, regionWorldCenter);
+    }
+    
+    private bool ScheduleRegionBuild(TerrainRegionKey regionKey) {
+        
+        // Mark the region as building so it cannot be scheduled twice.
+        if (!this._regionBuildingSet.TryAdd(regionKey, 0)) {
+            return false;
+        }
+        
+        // Copy the current region members so the background build has a stable snapshot.
+        IChunk[] memberSnapshot = this._regionMembers.TryGetValue(regionKey, out HashSet<IChunk>? members) ? members.ToArray() : [];
+        
+        // Build the region geometry in the background.
+        _ = Task.Run(() => {
+            try {
+                TerrainRegionBuildResult buildResult = BuildRegionGeometry(regionKey, memberSnapshot);
+                this._pendingRegionUploads.Enqueue(buildResult);
+            }
+            finally {
+                
+                // Remove the region from the building set once the background work is done.
+                this._regionBuildingSet.TryRemove(regionKey, out _);
+            }
+        });
+        
+        return true;
+    }
+    
+    private TerrainRegionBuildResult BuildRegionGeometry(TerrainRegionKey regionKey, IChunk[] members) {
+        int totalVertexCount = 0;
+        int totalIndexCount = 0;
+        
+        bool hasBounds = false;
+        BoundingBox regionBounds = default;
+        
+        List<BasicMeshData> meshDataList = new List<BasicMeshData>(members.Length);
+        
+        // Collect valid chunk mesh data and calculate the final buffer sizes.
+        foreach (IChunk chunk in members) {
+            if (chunk.Mesh is not Mesh<Vertex3D> mesh ||
+                mesh.MeshData is not BasicMeshData meshData ||
+                meshData.Vertices.Length == 0 ||
+                meshData.Indices.Length == 0) {
+                continue;
+            }
+            
+            meshDataList.Add(meshData);
             totalVertexCount += meshData.Vertices.Length;
             totalIndexCount += meshData.Indices.Length;
-
+            
+            // Expand the region bounds to include this chunk.
             if (this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBounds)) {
                 if (!hasBounds) {
-                    bounds = chunkBounds;
+                    regionBounds = chunkBounds;
                     hasBounds = true;
                 }
                 else {
-                    bounds = new BoundingBox {
-                        Min = Vector3.Min(bounds.Min, chunkBounds.Min),
-                        Max = Vector3.Max(bounds.Max, chunkBounds.Max)
+                    regionBounds = new BoundingBox {
+                        Min = Vector3.Min(regionBounds.Min, chunkBounds.Min),
+                        Max = Vector3.Max(regionBounds.Max, chunkBounds.Max)
                     };
                 }
             }
         }
-
+        
+        // Return an empty result when no valid geometry was found.
         if (totalVertexCount == 0 || totalIndexCount == 0 || !hasBounds) {
-            return RegionBuildResult.Empty(key);
+            return TerrainRegionBuildResult.Empty(regionKey);
         }
-
+        
         Vertex3D[] mergedVertices = new Vertex3D[totalVertexCount];
         uint[] mergedIndices = new uint[totalIndexCount];
-
+        
         int vertexOffset = 0;
         int indexOffset = 0;
-
-        foreach (BasicMeshData meshData in sourceData) {
-            Array.Copy(meshData.Vertices, 0, mergedVertices, vertexOffset, meshData.Vertices.Length);
-
-            for (int i = 0; i < meshData.Indices.Length; i++) {
-                mergedIndices[indexOffset + i] = meshData.Indices[i] + (uint) vertexOffset;
+        
+        // Merge all chunk meshes into one region mesh.
+        foreach (BasicMeshData meshData in meshDataList) {
+            Vertex3D[] vertices = meshData.Vertices;
+            uint[] indices = meshData.Indices;
+            
+            Array.Copy(vertices, 0, mergedVertices, vertexOffset, vertices.Length);
+            
+            for (int i = 0; i < indices.Length; i++) {
+                mergedIndices[indexOffset + i] = indices[i] + (uint) vertexOffset;
             }
-
-            vertexOffset += meshData.Vertices.Length;
-            indexOffset += meshData.Indices.Length;
+            
+            vertexOffset += vertices.Length;
+            indexOffset += indices.Length;
         }
-
-        return RegionBuildResult.Create(key, mergedVertices, mergedIndices, bounds, totalVertexCount, totalIndexCount);
+        
+        return TerrainRegionBuildResult.Create(
+            regionKey,
+            mergedVertices,
+            mergedIndices,
+            regionBounds,
+            totalVertexCount,
+            totalIndexCount
+        );
     }
-
-    private void DisposeRegionBatch(RegionKey key) {
-        if (!this._regionBatches.Remove(key, out RegionBatch? batch)) {
+    
+    private void DisposeRegionBatch(TerrainRegionKey regionKey) {
+        if (!this._regionBatches.Remove(regionKey, out TerrainRegionBatch? batch)) {
             return;
         }
         
-        this._regionWorldBounds.Remove(key);
-        this._regionRenderableTransformVersions.Remove(key);
+        // Clear cached bounds for the disposed region.
+        this._regionWorldBounds.Remove(regionKey);
         batch.Dispose();
-    }
-
-    private readonly struct RegionBuildResult {
-        
-        public readonly RegionKey Key;
-        
-        public readonly Vertex3D[]? Vertices;
-        
-        public readonly uint[]? Indices;
-        
-        public readonly BoundingBox LocalBounds;
-        
-        public readonly int VertexCount;
-        
-        public readonly int IndexCount;
-        
-        public readonly bool HasGeometry;
-        
-        private RegionBuildResult(RegionKey key, Vertex3D[]? vertices, uint[]? indices, BoundingBox localBounds, int vertexCount, int indexCount, bool hasGeometry) {
-            this.Key = key;
-            this.Vertices = vertices;
-            this.Indices = indices;
-            this.LocalBounds = localBounds;
-            this.VertexCount = vertexCount;
-            this.IndexCount = indexCount;
-            this.HasGeometry = hasGeometry;
-        }
-        
-        public static RegionBuildResult Create(RegionKey key, Vertex3D[] vertices, uint[] indices, BoundingBox localBounds, int vertexCount, int indexCount) {
-            return new RegionBuildResult(key, vertices, indices, localBounds, vertexCount, indexCount, true);
-        }
-        
-        public static RegionBuildResult Empty(RegionKey key) {
-            return new RegionBuildResult(key, null, null, default, 0, 0, false);
-        }
-    }
-
-    private readonly struct RegionKey : IEquatable<RegionKey> {
-        
-        public readonly int X;
-        
-        public readonly int Z;
-        
-        public readonly int Lod;
-        
-        public RegionKey(int x, int z, int lod) {
-            this.X = x;
-            this.Z = z;
-            this.Lod = lod;
-        }
-        
-        public static bool operator ==(RegionKey left, RegionKey right) => left.Equals(right);
-        
-        public static bool operator !=(RegionKey left, RegionKey right) => !left.Equals(right);
-        
-        public bool Equals(RegionKey other) {
-            return this.X.Equals(other.X) && this.Z.Equals(other.Z) && this.Lod.Equals(other.Lod);
-        }
-        
-        public override bool Equals(object? obj) {
-            return obj is RegionKey other && this.Equals(other);
-        }
-        
-        public override int GetHashCode() {
-            return HashCode.Combine(this.X.GetHashCode(), this.Z.GetHashCode(), this.Lod.GetHashCode());
-        }
     }
     
     private readonly struct CachedWorldBounds {
@@ -1155,33 +1136,46 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
     }
     
-    private class RegionBatch : Disposable {
-        
-        public IMesh? Mesh { get; private set; }
-        
-        public Renderable? Renderable { get; private set; }
-        
-        public BoundingBox LocalBounds { get; private set; }
-        
-        public int VertexCount { get; private set; }
-        
-        public int IndexCount { get; private set; }
-        
-        public RegionBatch(IMesh mesh, Renderable renderable, BoundingBox localBounds, int vertexCount, int indexCount) {
-            this.Mesh = mesh;
-            this.Renderable = renderable;
-            this.LocalBounds = localBounds;
-            this.VertexCount = vertexCount;
-            this.IndexCount = indexCount;
-        }
-        
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                this.Renderable?.Dispose();
-                this.Renderable = null;
-                this.Mesh?.Dispose();
-                this.Mesh = null;
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            // Dispose chunk renderables.
+            foreach (Renderable renderable in this._renderables.Values) {
+                renderable.Dispose();
             }
+            
+            this._renderables.Clear();
+            
+            // Dispose region batches.
+            foreach (TerrainRegionBatch batch in this._regionBatches.Values) {
+                batch.Dispose();
+            }
+            
+            this._regionBatches.Clear();
+            
+            // Dispose terrain chunks.
+            foreach (IChunk chunk in this.Terrain.GetChunks()) {
+                chunk.Dispose();
+            }
+            
+            // Clear chunk state.
+            this._meshChunkList.Clear();
+            this._pendingUpload.Clear();
+            this._queuedSet.Clear();
+            this._buildingSet.Clear();
+            this._chunksPendingVertexUpload.Clear();
+            
+            // Clear chunk caches.
+            this._chunkLocalBounds.Clear();
+            this._chunkLocalCenters.Clear();
+            this._chunkWorldBounds.Clear();
+            
+            // Clear region state.
+            this._pendingRegionUploads.Clear();
+            this._regionBuildingSet.Clear();
+            this._chunkRegions.Clear();
+            this._regionMembers.Clear();
+            this._regionWorldBounds.Clear();
+            this._dirtyRegions.Clear();
         }
     }
 }

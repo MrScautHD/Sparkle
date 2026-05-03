@@ -38,9 +38,20 @@ public class HeightmapChunk : Disposable, IChunk {
     
     public int CurrentLod { get; private set; }
     
-    public int PendingVertexCount => this._pendingVertices.Length;
+    public bool HasPendingGeometry => this._pendingVertices.Length > 0 && this._pendingIndices.Length > 0;
     
-    public int PendingIndexCount => this._pendingIndices.Length;
+    public bool CanUpdateGeometryInPlace {
+        get {
+            if (!this.HasPendingGeometry) {
+                return false;
+            }
+            
+            return this.Mesh is Mesh<Vertex3D> existingMesh &&
+                   existingMesh.MeshData is BasicMeshData meshData &&
+                   meshData.Vertices.Length == this._pendingVertices.Length &&
+                   meshData.Indices.Length == this._pendingIndices.Length;
+        }
+    }
     
     private int _lod;
     
@@ -216,7 +227,7 @@ public class HeightmapChunk : Disposable, IChunk {
     }
     
     public void UploadGeometry(GraphicsDevice graphicsDevice) {
-        bool hasGeometry = this._pendingVertices.Length > 0 && this._pendingIndices.Length > 0;
+        bool hasGeometry = this.HasPendingGeometry;
         
         // Recreate mesh if it has geometry.
         this.Mesh?.Dispose();

@@ -52,6 +52,16 @@ public interface IChunk : IDisposable {
     int CurrentLod { get; }
     
     /// <summary>
+    /// Gets whether this chunk currently has generated geometry waiting for upload/update.
+    /// </summary>
+    bool HasPendingGeometry { get; }
+    
+    /// <summary>
+    /// Gets whether pending geometry can be applied in place via <see cref="UpdateGeometry"/>.
+    /// </summary>
+    bool CanUpdateGeometryInPlace { get; }
+    
+    /// <summary>
     /// Marks this chunk as needing a mesh rebuild.
     /// </summary>
     void MarkDirty();

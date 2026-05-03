@@ -5,8 +5,10 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
@@ -43,9 +45,7 @@ public class TerrainScene : Scene {
         this.AddEntity(camera3D);
         
         // Create terrain.
-        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
-        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, Vector3.Zero, frustumCulling: true) {
-            DebugDrawEnabled = false,
+        TerrainSettings terrainSettings = new TerrainSettings() {
             EnableLod = true,
             LodDistances = [400.0F, 600.0F, 900.0F, 1500.0F, 2500],
             LodHysteresis = 0.2F,
@@ -53,6 +53,11 @@ public class TerrainScene : Scene {
             MaxChunkBuildsPerFrame = 24,
             MaxConcurrentChunkBuilds = 12,
             MaxChunkUploadsPerFrame = 16
+        };
+        
+        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
+        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true) {
+            DebugDrawEnabled = false,
         });
         this.AddEntity(terrainEntity);
     }
@@ -64,9 +69,14 @@ public class TerrainScene : Scene {
             Terrain3D? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D>();
             
             if (terrain3D != null) {
-                RasterizerStateDescription rasterizerState = terrain3D.Terrain.Material.RasterizerState;
-                rasterizerState.FillMode = rasterizerState.FillMode == PolygonFillMode.Solid ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
-                terrain3D.Terrain.Material.RasterizerState = rasterizerState;
+                if (GlobalGraphicsAssets.GraphicsDevice.Features.FillModeWireframe) {
+                    RasterizerStateDescription rasterizerState = terrain3D.Terrain.Material.RasterizerState;
+                    rasterizerState.FillMode = rasterizerState.FillMode == PolygonFillMode.Solid ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
+                    terrain3D.Terrain.Material.RasterizerState = rasterizerState;
+                }
+                else {
+                    Logger.Warn("This backend to not support fill mode [Wireframe]");
+                }
             }
         }
     }
