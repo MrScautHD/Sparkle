@@ -10,7 +10,6 @@ using Jitter2;
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Graphics.VertexTypes;
 using Veldrid;
-using Logger = Bliss.CSharp.Logging.Logger;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 
