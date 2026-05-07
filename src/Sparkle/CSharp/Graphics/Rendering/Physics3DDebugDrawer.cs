@@ -205,8 +205,8 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._begun = false;
         this.Flush();
+        this._begun = false;
     }
     
     /// <summary>
@@ -546,7 +546,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <summary>
     /// Flushes the current batch of vertices to the GPU for rendering.
     /// </summary>
-    private void Flush() {
+    public void Flush() {
+        if (!this._begun) {
+            throw new Exception("You must begin the batch before flushing!");
+        }
+        
         if (this._vertexCount == 0) {
             return;
         }
