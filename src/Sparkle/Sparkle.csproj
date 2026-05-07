@@ -28,7 +28,7 @@
     
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.5.8" GeneratePathProperty="true" />
+        <PackageReference Include="Bliss" Version="1.5.9" GeneratePathProperty="true" />
         <PackageReference Include="HughPH.Box2D" Version="2026.5.5.222" />
         <PackageReference Include="Jitter2" Version="2.8.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />

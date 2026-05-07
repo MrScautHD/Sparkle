@@ -53,7 +53,6 @@ public class BloomEffect : Effect {
         // Create the params buffer.
         this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
-        this.MarkStateDirty();
         
         // Add resize event.
         GlobalGraphicsAssets.Window.Resized += this.Resize;
@@ -67,7 +66,6 @@ public class BloomEffect : Effect {
         set {
             this._parameters.Samples = value;
             this._isDirty = true;
-            this.MarkStateDirty();
         }
     }
     
@@ -79,7 +77,6 @@ public class BloomEffect : Effect {
         set {
             this._parameters.Quality = value;
             this._isDirty = true;
-            this.MarkStateDirty();
         }
     }
     
@@ -106,7 +103,6 @@ public class BloomEffect : Effect {
     protected virtual void Resize() {
         this._parameters.Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight());
         this._isDirty = true;
-        this.MarkStateDirty();
     }
     
     /// <summary>

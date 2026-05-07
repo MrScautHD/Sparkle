@@ -55,7 +55,6 @@ public class FxaaEffect : Effect {
         // Create the params buffer.
         this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
         this._isDirty = true;
-        this.MarkStateDirty();
         
         // Add resize event.
         GlobalGraphicsAssets.Window.Resized += this.Resize;
@@ -69,7 +68,6 @@ public class FxaaEffect : Effect {
         set {
             this._parameters.ReduceMin = value;
             this._isDirty = true;
-            this.MarkStateDirty();
         }
     }
     
@@ -81,7 +79,6 @@ public class FxaaEffect : Effect {
         set {
             this._parameters.ReduceMul = value;
             this._isDirty = true;
-            this.MarkStateDirty();
         }
     }
     
@@ -93,7 +90,6 @@ public class FxaaEffect : Effect {
         set {
             this._parameters.SpanMax = value;
             this._isDirty = true;
-            this.MarkStateDirty();
         }
     }
     
@@ -120,7 +116,6 @@ public class FxaaEffect : Effect {
     protected virtual void Resize() {
         this._parameters.Resolution = new Vector2(GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight());
         this._isDirty = true;
-        this.MarkStateDirty();
     }
     
     /// <summary>
@@ -136,7 +131,7 @@ public class FxaaEffect : Effect {
     
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
-
+        
         if (disposing) {
             this._parameterBuffer.Dispose();
             GlobalGraphicsAssets.Window.Resized -= this.Resize;
