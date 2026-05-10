@@ -58,7 +58,10 @@ public class LogoLoadingGui : LoadingGui {
         base.Init();
         this.Logo = Game.Instance?.Content.Load(new TextureContent(this._logoPath))!;
         
-        ImageData imageData = new ImageData(this.Logo);
+        ImageData imageData = new ImageData(this.Logo) {
+            Color = new Color(255, 255, 255, 0),
+            HoverColor = new Color(255, 255, 255, 0)
+        };
         this.AddElement("logo", new ImageElement(imageData, Anchor.Center, Vector2.Zero, scale: new Vector2(5, 5)));
     }
     
@@ -77,6 +80,7 @@ public class LogoLoadingGui : LoadingGui {
         if (this.TryGetElement("logo", out GuiElement? element)) {
             if (element is ImageElement imageElement) {
                 imageElement.Data.Color = new Color(255, 255, 255, alphaByte);
+                imageElement.Data.HoverColor = new Color(255, 255, 255, alphaByte);
             }
         }
     }
