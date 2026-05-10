@@ -1,3 +1,4 @@
+using System.Reflection;
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
@@ -29,7 +30,7 @@ public class Game : Disposable {
     /// <summary>
     /// The version of the game engine (Sparkle).
     /// </summary>
-    public static readonly Version Version = new Version(5, 0, 10);
+    public static readonly Version Version = Version.TryParse(typeof(Game).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0], out Version? version) ? version : new Version(0, 0, 0);
     
     /// <summary>
     /// The singleton instance of the game.
