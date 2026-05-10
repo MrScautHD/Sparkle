@@ -231,7 +231,7 @@ public class Game : Disposable {
         // Called before loading starts.
         this.OnRun();
         
-        // Prepares content before loading (Usefully for loading screens).
+        Logger.Info("Preload content...");
         this.PreLoad(this.Content);
         
         bool isLoaded = false;
