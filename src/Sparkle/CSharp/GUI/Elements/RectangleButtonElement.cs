@@ -23,11 +23,16 @@ public class RectangleButtonElement : GuiElement {
     /// The alignment of text within a GUI element.
     /// </summary>
     public TextAlignment TextAlignment;
-
+    
     /// <summary>
     /// The offset of the text relative to its position.
     /// </summary>
     public Vector2 TextOffset;
+    
+    /// <summary>
+    /// The scaling factor applied to text rendering within the GUI element.
+    /// </summary>
+    public Vector2 TextScale;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RectangleButtonElement"/> class.
@@ -40,14 +45,16 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="scale">The scale applied to the button.</param>
     /// <param name="textAlignment">The alignment of text within a GUI element.</param>
     /// <param name="textOffset">The offset of the text relative to its position.</param>
+    /// <param name="textScale">The scale of the text. Defaults to (1, 1).</param>
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
     /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
-    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? textScale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
         this.TextOffset = textOffset ?? Vector2.Zero;
+        this.TextScale = textScale ?? Vector2.One;
     }
     
     /// <summary>
@@ -86,9 +93,9 @@ public class RectangleButtonElement : GuiElement {
             Vector2 textPos = this.Position + (this.TextOffset * this.Scale * this.Gui.ScaleFactor);
             Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
             Vector2 textOrigin = this.TextAlignment switch {
-                TextAlignment.Left => new Vector2(this.Size.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
-                TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), this.LabelData.Size / 2.0F) - (this.Size / 2.0F - this.Origin),
-                TextAlignment.Center => new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin),
+                TextAlignment.Left => new Vector2(this.Size.X / this.TextScale.X, this.LabelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / (this.TextScale)),
+                TextAlignment.Right => new Vector2((-this.Size.X / 2.0F) / this.TextScale.X + textSize.X - 2.0F, this.LabelData.Size / 2.0F) - ((this.Size / 2.0F - this.Origin) / this.TextScale),
+                TextAlignment.Center => new Vector2(textSize.X, this.LabelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale),
                 _ => Vector2.Zero
             };
             
@@ -99,7 +106,7 @@ public class RectangleButtonElement : GuiElement {
             }
             
             context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler);
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
             context.SpriteBatch.End();
         }
     }

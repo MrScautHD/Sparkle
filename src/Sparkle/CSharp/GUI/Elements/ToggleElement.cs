@@ -27,6 +27,11 @@ public class ToggleElement : GuiElement {
     public float BoxTextSpacing { get; private set; }
     
     /// <summary>
+    /// The scaling factor applied to text rendering within the GUI element.
+    /// </summary>
+    public Vector2 TextScale;
+    
+    /// <summary>
     /// Indicates whether the toggle is currently in the 'off' or 'on' state.
     /// </summary>
     public bool ToggleState;
@@ -44,15 +49,17 @@ public class ToggleElement : GuiElement {
     /// <param name="anchor">Anchor position of the element.</param>
     /// <param name="offset">Offset from the anchor.</param>
     /// <param name="boxTextSpacing">Spacing between the toggle box and the label text.</param>
+    /// <param name="textScale">The scale of the text. Defaults to (1, 1).</param>
     /// <param name="toggleState">Initial toggle state.</param>
     /// <param name="scale">The scale applied to the toggle element.</param>
     /// <param name="origin">Optional custom origin.</param>
     /// <param name="rotation">Optional rotation angle.</param>
     /// <param name="clickFunc">Optional function determining click behavior.</param>
-    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, Vector2? textScale = null, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.ToggleData = toggleData;
         this.LabelData = labelData;
         this.BoxTextSpacing = boxTextSpacing;
+        this.TextScale = textScale ?? Vector2.One;
         this.ToggleState = toggleState;
     }
     
@@ -150,7 +157,7 @@ public class ToggleElement : GuiElement {
         
         Vector2 textPos = this.Position;
         Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
-        Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) - new Vector2(this.ToggleData.CheckboxSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F;
+        Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) / this.TextScale - new Vector2(this.ToggleData.CheckboxSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F / this.TextScale;
         
         Color color = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
         
@@ -159,7 +166,7 @@ public class ToggleElement : GuiElement {
         }
         
         if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
         if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
     }
     
@@ -172,7 +179,7 @@ public class ToggleElement : GuiElement {
     /// <returns>The calculated size of the element as a <see cref="Vector2"/>.</returns>
     private Vector2 CalculateSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
         Vector2 toggleSize = new Vector2(toggleData.CheckboxSourceRect.Width, toggleData.CheckboxSourceRect.Height);
-        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));
     }
 }

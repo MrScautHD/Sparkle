@@ -54,6 +54,16 @@ public class RectangleDropDownElement : GuiElement {
     public Vector2 MenuTextOffset;
     
     /// <summary>
+    /// The scale applied to the text displayed in the dropdown field, determining its size and proportions.
+    /// </summary>
+    public Vector2 FieldTextScale;
+    
+    /// <summary>
+    /// The scale applied to the text displayed in the dropdown menu items.
+    /// </summary>
+    public Vector2 MenuTextScale;
+    
+    /// <summary>
     /// The offset applied to the dropdown arrow indicator.
     /// </summary>
     public Vector2 ArrowOffset;
@@ -117,6 +127,8 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="menuTextAlignment">Alignment of menu option text.</param>
     /// <param name="fieldTextOffset">Offset applied to field text.</param>
     /// <param name="menuTextOffset">Offset applied to menu text.</param>
+    /// <param name="fieldTextScale">Scaling factor applied to the text within the dropdown field.</param>
+    /// <param name="menuTextScale">Scaling factor applied to the text within the dropdown menu options.</param>
     /// <param name="arrowOffset">Offset applied to the dropdown arrow.</param>
     /// <param name="scrollSensitivity">Mouse wheel scroll sensitivity.</param>
     /// <param name="scrollLerpSpeed">Smooth scroll interpolation speed.</param>
@@ -135,6 +147,8 @@ public class RectangleDropDownElement : GuiElement {
         TextAlignment menuTextAlignment = TextAlignment.Left,
         Vector2? fieldTextOffset = null,
         Vector2? menuTextOffset = null,
+        Vector2? fieldTextScale = null,
+        Vector2? menuTextScale = null,
         Vector2? arrowOffset = null,
         float scrollSensitivity = 0.1F,
         float scrollLerpSpeed = 10.0F,
@@ -149,6 +163,8 @@ public class RectangleDropDownElement : GuiElement {
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
         this.MenuTextOffset = menuTextOffset ?? Vector2.Zero;
+        this.FieldTextScale = fieldTextScale ?? Vector2.One;
+        this.MenuTextScale = menuTextScale ?? Vector2.One;
         this.ArrowOffset = arrowOffset ?? new Vector2(10.0F, 0.0F);
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
@@ -198,7 +214,7 @@ public class RectangleDropDownElement : GuiElement {
             float scrollBarHeight = fieldSize.Y * this.MaxVisibleOptions;
             
             // Simple local hit-testing.
-            RectangleF localMenuRect = new RectangleF(0, fieldSize.Y, fieldSize.X, scrollBarHeight);
+            RectangleF localMenuRect = new RectangleF(0.0F, fieldSize.Y, fieldSize.X, scrollBarHeight);
             RectangleF localTrackRect = new RectangleF(fieldSize.X - scrollBarWidth, fieldSize.Y, scrollBarWidth, scrollBarHeight);
             
             // Handle mouse wheel.
@@ -380,7 +396,7 @@ public class RectangleDropDownElement : GuiElement {
         
         // Draw field text.
         if (this.SelectedOption != null) {
-            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset);
+            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
         }
         
         context.SpriteBatch.End();
@@ -625,7 +641,7 @@ public class RectangleDropDownElement : GuiElement {
                 }
             }
             
-            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset);
+            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale);
         }
         
         spriteBatch.PopDepthStencilState();
@@ -937,7 +953,8 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="labelData">The <see cref="LabelData"/> containing font, text, and styling information.</param>
     /// <param name="textAlignment">The <see cref="TextAlignment"/> specifying the alignment of the text (Left, Center, or Right).</param>
     /// <param name="textOffset">The offset for the text position relative to the element.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset) {
+    /// <param name="textScale">The scale applied to the rendered text.</param>
+    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale) {
         if (labelData.Text == string.Empty) {
             return;
         }
@@ -946,9 +963,9 @@ public class RectangleDropDownElement : GuiElement {
         Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         Vector2 textOrigin = textAlignment switch {
-            TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
-            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - (this.Origin - textOffset)),
+            TextAlignment.Left => new Vector2(this.Size.X / textScale.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
+            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
+            TextAlignment.Right => new Vector2((-this.Size.X / 2.0F) / textScale.X + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
             _ => Vector2.Zero
         };
         
@@ -959,7 +976,7 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
 }

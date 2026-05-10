@@ -60,6 +60,16 @@ public class TextureDropDownElement : GuiElement {
     public Vector2 SliderOffset;
     
     /// <summary>
+    /// The scale applied to the text displayed in the dropdown field, determining its size and proportions.
+    /// </summary>
+    public Vector2 FieldTextScale;
+    
+    /// <summary>
+    /// The scale applied to the text displayed in the dropdown menu items.
+    /// </summary>
+    public Vector2 MenuTextScale;
+    
+    /// <summary>
     /// The offset applied to the dropdown arrow indicator.
     /// </summary>
     public Vector2 ArrowOffset;
@@ -126,6 +136,8 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="menuTextAlignment">The text alignment used for options displayed in the dropdown menu.</param>
     /// <param name="fieldTextOffset">The offset applied to the field text.</param>
     /// <param name="menuTextOffset">The offset applied to the menu option text.</param>
+    /// <param name="fieldTextScale">Scaling factor applied to the text within the dropdown field.</param>
+    /// <param name="menuTextScale">Scaling factor applied to the text within the dropdown menu options.</param>
     /// <param name="sliderOffset">An optional offset applied to the position of the slider within the dropdown menu.</param>
     /// <param name="arrowOffset">The offset applied to the dropdown arrow indicator.</param>
     /// <param name="scrollMaskInsets">Defines top and bottom padding for the scroll text clipping mask.</param>
@@ -146,6 +158,8 @@ public class TextureDropDownElement : GuiElement {
         TextAlignment menuTextAlignment = TextAlignment.Left,
         Vector2? fieldTextOffset = null,
         Vector2? menuTextOffset = null,
+        Vector2? fieldTextScale = null,
+        Vector2? menuTextScale = null,
         Vector2? sliderOffset = null,
         Vector2? arrowOffset = null,
         (float Top, float Bottom)? scrollMaskInsets = null,
@@ -164,6 +178,8 @@ public class TextureDropDownElement : GuiElement {
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
         this.MenuTextOffset = menuTextOffset ?? Vector2.Zero;
+        this.FieldTextScale = fieldTextScale ?? Vector2.One;
+        this.MenuTextScale = menuTextScale ?? Vector2.One;
         this.SliderOffset = sliderOffset ?? Vector2.Zero;
         this.ArrowOffset = arrowOffset ?? new Vector2(10.0F, 0.0F);
         this.ScrollMaskInsets = scrollMaskInsets ?? (0.0F, 0.0F);
@@ -216,7 +232,7 @@ public class TextureDropDownElement : GuiElement {
             float scrollBarHeight = fieldSize.Y * this.MaxVisibleOptions;
             
             // Simple local hit-testing.
-            RectangleF localMenuRect = new RectangleF(0, fieldSize.Y, fieldSize.X, scrollBarHeight);
+            RectangleF localMenuRect = new RectangleF(0.0F, fieldSize.Y, fieldSize.X, scrollBarHeight);
             RectangleF localTrackRect = new RectangleF(fieldSize.X - scrollBarWidth, fieldSize.Y, scrollBarWidth, scrollBarHeight);
             
             // Handle mouse wheel.
@@ -363,7 +379,7 @@ public class TextureDropDownElement : GuiElement {
         
         // Draw field text.
         if (this.SelectedOption != null) {
-            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset);
+            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
         }
         
         if (this.IsMenuOpen) {
@@ -775,7 +791,7 @@ public class TextureDropDownElement : GuiElement {
                 }
             }
             
-            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset);
+            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale);
         }
         
         spriteBatch.PopDepthStencilState();
@@ -1010,7 +1026,8 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="labelData">The data containing font, text, size, style, and other text attributes.</param>
     /// <param name="textAlignment">The alignment of the text (Left, Center, or Right).</param>
     /// <param name="textOffset">The offset added to the text's position for rendering.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset) {
+    /// <param name="textScale">The scale applied to the rendered text.</param>
+    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale) {
         if (labelData.Text == string.Empty) {
             return;
         }
@@ -1019,9 +1036,9 @@ public class TextureDropDownElement : GuiElement {
         Vector2 textSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         
         Vector2 textOrigin = textAlignment switch {
-            TextAlignment.Left => new Vector2(this.Size.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
-            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)),
-            TextAlignment.Right => new Vector2(-this.Size.X / 2.0F + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - (this.Origin - textOffset)),
+            TextAlignment.Left => new Vector2(this.Size.X / textScale.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
+            TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
+            TextAlignment.Right => new Vector2((-this.Size.X / 2.0F) / textScale.X + (textSize.X - 2.0F), labelData.Size / 2.0F) - (this.Size / 2.0F - (this.Origin - textOffset)) / textScale,
             _ => Vector2.Zero
         };
         
@@ -1032,7 +1049,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
 }

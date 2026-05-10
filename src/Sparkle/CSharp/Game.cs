@@ -29,8 +29,8 @@ public class Game : Disposable {
     /// <summary>
     /// The version of the game engine (Sparkle).
     /// </summary>
-    public static readonly Version Version = new Version(5, 0, 8);
-
+    public static readonly Version Version = new Version(5, 0, 10);
+    
     /// <summary>
     /// The singleton instance of the game.
     /// </summary>
