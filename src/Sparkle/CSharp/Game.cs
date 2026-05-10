@@ -228,7 +228,11 @@ public class Game : Disposable {
         Logger.Info("Initialize scene manager...");
         SceneManager.Init(graphicsDevice, this.MainWindow, scene, this.Settings.SampleCount);
         
+        // Called before loading starts.
         this.OnRun();
+        
+        // Prepares content before loading (Usefully for loading screens).
+        this.PreLoad(this.Content);
         
         bool isLoaded = false;
         
@@ -361,7 +365,15 @@ public class Game : Disposable {
     /// Virtual method for additional setup when the game starts.
     /// </summary>
     protected virtual void OnRun() { }
-
+    
+    /// <summary>
+    /// Executes pre-loading operations for the game and initializes content using the specified content manager.
+    /// </summary>
+    /// <param name="content">The content manager responsible for managing game content.</param>
+    protected virtual void PreLoad(ContentManager content) {
+        RegistryManager.OnPreLoad(content);
+    }
+    
     /// <summary>
     /// Loads the content for the game using the specified content manager and content key.
     /// </summary>
@@ -503,7 +515,7 @@ public class Game : Disposable {
             
             this.GraphicsDevice.Dispose();
             this.MainWindow.Dispose();
-
+            
             JLogger.Listener -= this._logJitter.Log;
             Logger.Message -= this._logFileWriter.WriteFileMsg;
         }

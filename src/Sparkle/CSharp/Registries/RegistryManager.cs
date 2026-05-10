@@ -18,6 +18,18 @@ public static class RegistryManager {
     }
     
     /// <summary>
+    /// Pre-loads content for all active registries using the provided <see cref="ContentManager"/>.
+    /// </summary>
+    /// <param name="content">The content manager used to pre-load assets.</param>
+    internal static void OnPreLoad(ContentManager content) {
+        foreach (Registry registry in Registries.Values) {
+            if (!registry.HasDisposed) {
+                registry.PreLoad(content);
+            }
+        }
+    }
+    
+    /// <summary>
     /// Loads content for all active registries using the given <see cref="ContentManager"/>.
     /// </summary>
     /// <param name="content">The content manager used to load assets.</param>
