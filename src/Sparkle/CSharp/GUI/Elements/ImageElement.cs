@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
+using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -73,7 +74,7 @@ public class ImageElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale, this.Origin, pixelSnap, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -90,19 +91,21 @@ public class ImageElement : GuiElement {
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
-        Vector2 origin = this.Origin;
-        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
+        Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
+        Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
+        Vector2 scale = pixelSnap ? Vector2.Max(Vector2.One, Vector2.Floor(this.Scale)) * this.Gui.ScaleFactor : this.Scale * this.Gui.ScaleFactor;
         
         // Calculate sizes and clamp to a minimum to prevent overlap.
         float minW = borderInsets.Left + borderInsets.Right;
         float minH = borderInsets.Top + borderInsets.Bottom;
         
-        Vector2 visualSize = new Vector2(MathF.Max(this.Size.X, minW), MathF.Max(this.Size.Y, minH));
+        Vector2 visualSize = new Vector2(MathF.Max(size.X, minW), MathF.Max(size.Y, minH));
         Vector2 finalSize = visualSize * scale;
         
         // Centering logic for buttons smaller than their borders.
-        float diffX = (this.Size.X < minW) ? (minW - this.Size.X) * scale.X : 0.0F;
-        float diffY = (this.Size.Y < minH) ? (minH - this.Size.Y) * scale.Y : 0.0F;
+        float diffX = (size.X < minW) ? (minW - size.X) * scale.X : 0.0F;
+        float diffY = (size.Y < minH) ? (minH - size.Y) * scale.Y : 0.0F;
         Vector2 pivot = (origin * scale) + new Vector2(diffX, diffY) * 0.5F;
         
         // Calculate edge dimensions.
@@ -148,10 +151,10 @@ public class ImageElement : GuiElement {
         if (sampler != null) spriteBatch.PushSampler(sampler);
         
         // Draw Corners.
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopLeft, scale, pivot / scale, pixelSnap, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, pixelSnap, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, pixelSnap, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, pixelSnap, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
         
         // Draw Edges.
         if (innerH > 0.0F) {
@@ -161,14 +164,14 @@ public class ImageElement : GuiElement {
                     float drawH = MathF.Min(tileH, innerH - y);
                     Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
                     Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, pixelSnap, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, pixelSnap, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
                 Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, pixelSnap, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, pixelSnap, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
             }
         }
         
@@ -179,8 +182,8 @@ public class ImageElement : GuiElement {
                     float drawW = MathF.Min(tileW, innerW - x);
                     Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
                     Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, pixelSnap, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, pixelSnap, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
@@ -188,8 +191,8 @@ public class ImageElement : GuiElement {
                 Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
                 Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
                 Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, pixelSnap, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, pixelSnap, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
             }
         }
         
@@ -204,7 +207,7 @@ public class ImageElement : GuiElement {
                     for (float x = 0.0F; x < innerW; x += tileW) {
                         float drawW = MathF.Min(tileW, innerW - x);
                         Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
-                        spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, pixelSnap, this.Rotation, color, flip);
+                        spriteBatch.DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
                     }
                 }
             }
@@ -212,7 +215,7 @@ public class ImageElement : GuiElement {
                 int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
                 Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
                 Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, pixelSnap, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
             }
         }
         
