@@ -470,11 +470,7 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         Vector2 finalPos = pos + (this.Offset * scaleFactor) + this.Origin;
-        
-        return new Vector2(
-            MathF.Floor(finalPos.X / scaleFactor) * scaleFactor,
-            MathF.Floor(finalPos.Y / scaleFactor) * scaleFactor
-        );
+        return finalPos / scaleFactor * scaleFactor;
     }
     
     /// <summary>
@@ -976,7 +972,7 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
 }

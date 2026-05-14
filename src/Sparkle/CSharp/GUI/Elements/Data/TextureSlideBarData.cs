@@ -134,6 +134,21 @@ public class TextureSlideBarData {
     public SpriteFlip SliderFlip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the bar texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool BarPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the filled bar texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool FilledBarPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the slider handle texture to whole pixels using floor.
+    /// </summary>
+    public bool SliderPixelSnap;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureSlideBarData"/> class.
     /// </summary>
     /// <param name="barTexture">The texture used to render the slide bar background.</param>
@@ -161,6 +176,9 @@ public class TextureSlideBarData {
     /// <param name="barFlip">The flip mode applied to the bar texture.</param>
     /// <param name="filledBarFlip">The flip mode applied to the filled bar texture.</param>
     /// <param name="sliderFlip">The flip mode applied to the slider texture.</param>
+    /// <param name="barPixelSnap">When <c>true</c>, snaps the bar texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="filledBarPixelSnap">When <c>true</c>, snaps the filled bar texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="sliderPixelSnap">When <c>true</c>, snaps the slider handle texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     public TextureSlideBarData(
         Texture2D barTexture,
         Texture2D? filledBarTexture,
@@ -186,7 +204,10 @@ public class TextureSlideBarData {
         Color? disabledSliderColor = null,
         SpriteFlip barFlip = SpriteFlip.None,
         SpriteFlip filledBarFlip = SpriteFlip.None,
-        SpriteFlip sliderFlip = SpriteFlip.None
+        SpriteFlip sliderFlip = SpriteFlip.None,
+        bool barPixelSnap = false,
+        bool filledBarPixelSnap = false,
+        bool sliderPixelSnap = false
     ) {
         this.BarTexture = barTexture;
         this.FilledBarTexture = filledBarTexture;
@@ -213,5 +234,8 @@ public class TextureSlideBarData {
         this.BarFlip = barFlip;
         this.FilledBarFlip = filledBarFlip;
         this.SliderFlip = sliderFlip;
+        this.BarPixelSnap = barPixelSnap;
+        this.FilledBarPixelSnap = filledBarPixelSnap;
+        this.SliderPixelSnap = sliderPixelSnap;
     }
 }

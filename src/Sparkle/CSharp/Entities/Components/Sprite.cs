@@ -48,6 +48,11 @@ public class Sprite : InterpolatedComponent {
     public SpriteFlip Flip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
+    
+    /// <summary>
     /// Optional custom shader effect to apply during rendering.
     /// </summary>
     public Effect? Effect;
@@ -83,12 +88,13 @@ public class Sprite : InterpolatedComponent {
     /// <param name="layerDepth">The depth layer of the sprite (used for Z-ordering). Lower values are drawn in front.</param>
     /// <param name="color">Optional color tint. Defaults to white if null.</param>
     /// <param name="flip">The flip mode for rendering. Defaults to <see cref="SpriteFlip.None"/>.</param>
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="effect">Optional effect (shader) to apply to this sprite.</param>
     /// <param name="blendState">Optional blend state override.</param>
     /// <param name="depthStencilState">Optional depth-stencil state override.</param>
     /// <param name="rasterizerState">Optional rasterizer state override.</param>
     /// <param name="scissorRect">The rectangle used to define the scissor test area.</param>
-    public Sprite(Texture2D texture, Vector2 offsetPos, Sampler? sampler = null, Rectangle? sourceRect = null, Vector2? size = null, float layerDepth = 0.5F, Color? color = null, SpriteFlip flip = SpriteFlip.None, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Rectangle? scissorRect = null) : base(new Vector3(offsetPos, 0)) {
+    public Sprite(Texture2D texture, Vector2 offsetPos, Sampler? sampler = null, Rectangle? sourceRect = null, Vector2? size = null, float layerDepth = 0.5F, Color? color = null, SpriteFlip flip = SpriteFlip.None, bool pixelSnap = false, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Rectangle? scissorRect = null) : base(new Vector3(offsetPos, 0)) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect;
@@ -96,6 +102,7 @@ public class Sprite : InterpolatedComponent {
         this.LayerDepth = layerDepth;
         this.Color = color ?? Color.White;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
         this.Effect = effect;
         this.BlendState = blendState;
         this.DepthStencilState = depthStencilState;
@@ -117,7 +124,7 @@ public class Sprite : InterpolatedComponent {
         float rotation = float.RadiansToDegrees(this.LerpedRotation.ToEuler().Z);
         
         // Draw sprite.
-        this.Entity.Scene.SpriteRenderer.DrawSprite(this.Texture, this.Sampler, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), this.LayerDepth, source, scale, origin, rotation, this.Color, this.Flip, this.Effect, this.BlendState, this.DepthStencilState, this.RasterizerState, this.ScissorRect);
+        this.Entity.Scene.SpriteRenderer.DrawSprite(this.Texture, this.Sampler, new Vector2(this.LerpedGlobalPosition.X, this.LerpedGlobalPosition.Y), this.LayerDepth, source, scale, origin, rotation, this.Color, this.Flip, this.PixelSnap, this.Effect, this.BlendState, this.DepthStencilState, this.RasterizerState, this.ScissorRect);
     }
     
     protected override void Dispose(bool disposing) { }

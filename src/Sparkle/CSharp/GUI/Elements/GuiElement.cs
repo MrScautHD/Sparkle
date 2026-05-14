@@ -122,8 +122,9 @@ public abstract class GuiElement {
         this.UpdatePosAndSize();
         
         RectangleF rectangle = new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y);
+        Vector2 origin = this.Origin * this.Scale * this.Gui.ScaleFactor;
         
-        if (!interactionHandled && rectangle.Contains(Input.GetMousePosition(), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation)) {
+        if (!interactionHandled && rectangle.Contains(Input.GetMousePosition(), origin, this.Rotation)) {
             this.IsHovered = true;
             interactionHandled = true;
             
@@ -229,11 +230,7 @@ public abstract class GuiElement {
         }
         
         Vector2 finalPos = pos + (this.Offset * scaleFactor) + this.Origin;
-        
-        return new Vector2(
-            MathF.Floor(finalPos.X / scaleFactor) * scaleFactor,
-            MathF.Floor(finalPos.Y / scaleFactor) * scaleFactor
-        );
+        return finalPos / scaleFactor * scaleFactor;
     }
     
     /// <summary>

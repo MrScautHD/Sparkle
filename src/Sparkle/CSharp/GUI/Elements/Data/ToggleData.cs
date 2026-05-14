@@ -74,6 +74,16 @@ public class ToggleData {
     public SpriteFlip CheckmarkFlip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the checkbox texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool CheckboxPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the checkmark texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool CheckmarkPixelSnap;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="ToggleData"/> class with optional customization.
     /// </summary>
     /// <param name="checkboxTexture">The texture for the toggle Checkbox.</param>
@@ -89,7 +99,9 @@ public class ToggleData {
     /// <param name="disabledColor">Optional color for the toggle when disabled. Defaults to gray.</param>
     /// <param name="checkboxFlip">Optional flip setting for the Checkbox texture. Defaults to none.</param>
     /// <param name="checkmarkFlip">Optional flip setting for the checkmark texture. Defaults to none.</param>
-    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, Color? disabledColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None) {
+    /// <param name="checkboxPixelSnap">When <c>true</c>, snaps the checkbox texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="checkmarkPixelSnap">When <c>true</c>, snaps the checkmark texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, Color? disabledColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None, bool checkboxPixelSnap = false, bool checkmarkPixelSnap = false) {
         this.CheckboxTexture = checkboxTexture;
         this.CheckmarkTexture = checkmarkTexture;
         this.CheckboxSampler = checkboxSampler;
@@ -103,5 +115,7 @@ public class ToggleData {
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.CheckboxFlip = checkboxFlip;
         this.CheckmarkFlip = checkmarkFlip;
+        this.CheckboxPixelSnap = checkboxPixelSnap;
+        this.CheckmarkPixelSnap = checkmarkPixelSnap;
     }
 }

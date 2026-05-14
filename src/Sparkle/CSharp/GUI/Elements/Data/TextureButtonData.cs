@@ -52,6 +52,11 @@ public class TextureButtonData {
     /// The flip mode for the texture (none, horizontal, vertical, both).
     /// </summary>
     public SpriteFlip Flip;
+    
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureButtonData"/> class.
@@ -65,7 +70,8 @@ public class TextureButtonData {
     /// <param name="hoverColor">The color gets applied when the mouse is hover over.</param>
     /// <param name="disabledColor">The color of the button when it is disabled. Defaults to gray if not specified.</param>
     /// <param name="flip">The flip mode for the texture (none, horizontal, vertical, both).</param>
-    public TextureButtonData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None) {
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    public TextureButtonData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None, bool pixelSnap = false) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
@@ -75,5 +81,6 @@ public class TextureButtonData {
         this.HoverColor = hoverColor ?? this.Color;
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
     }
 }

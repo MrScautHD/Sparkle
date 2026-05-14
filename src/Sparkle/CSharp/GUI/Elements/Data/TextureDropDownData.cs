@@ -219,6 +219,31 @@ public class TextureDropDownData {
     public SpriteFlip ArrowFlip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the field texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool FieldPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the menu texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool MenuPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the slider bar texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool SliderBarPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the slider handle texture to whole pixels using floor.
+    /// </summary>
+    public bool SliderPixelSnap;
+
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin of the arrow texture to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool ArrowPixelSnap;
+    
+    /// <summary>
     /// The width of the scrollbar rendered inside the dropdown menu.
     /// </summary>
     public int SliderBarWidth;
@@ -268,6 +293,11 @@ public class TextureDropDownData {
     /// <param name="sliderBarFlip">Flip mode applied to the slider bar texture.</param>
     /// <param name="sliderFlip">Flip mode applied to the slider texture.</param>
     /// <param name="arrowFlip">Flip mode applied to the arrow texture.</param>
+    /// <param name="fieldPixelSnap">When <c>true</c>, snaps the field texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="menuPixelSnap">When <c>true</c>, snaps the menu texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="sliderBarPixelSnap">When <c>true</c>, snaps the slider bar texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="sliderPixelSnap">When <c>true</c>, snaps the slider handle texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="arrowPixelSnap">When <c>true</c>, snaps the arrow texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="sliderBarWidth">The width of the scrollbar in the dropdown menu.</param>
     public TextureDropDownData(
         Texture2D fieldTexture,
@@ -312,6 +342,11 @@ public class TextureDropDownData {
         SpriteFlip sliderBarFlip = SpriteFlip.None,
         SpriteFlip sliderFlip = SpriteFlip.None,
         SpriteFlip arrowFlip = SpriteFlip.None,
+        bool fieldPixelSnap = false,
+        bool menuPixelSnap = false,
+        bool sliderBarPixelSnap = false,
+        bool sliderPixelSnap = false,
+        bool arrowPixelSnap = false,
         int sliderBarWidth = 16
     ) {
         this.FieldTexture = fieldTexture;
@@ -354,8 +389,14 @@ public class TextureDropDownData {
         this.FieldFlip = fieldFlip;
         this.MenuFlip = menuFlip;
         this.SliderBarFlip = sliderBarFlip;
-        this.SliderFlip = sliderFlip; 
-        this.ArrowFlip = arrowFlip; 
-        this.SliderBarWidth = sliderBarWidth; 
+        this.SliderFlip = sliderFlip;
+        this.ArrowFlip = arrowFlip;
+        this.SliderBarWidth = sliderBarWidth;
+        this.FieldPixelSnap = fieldPixelSnap;
+        this.MenuPixelSnap = menuPixelSnap;
+        this.SliderBarPixelSnap = sliderBarPixelSnap;
+        this.SliderPixelSnap = sliderPixelSnap;
+        this.ArrowPixelSnap = arrowPixelSnap;
+        this.SliderBarWidth = sliderBarWidth;
     }
 }

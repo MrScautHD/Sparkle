@@ -59,6 +59,11 @@ public class TextureTextBoxData {
     public SpriteFlip Flip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureTextBoxData"/> class.
     /// </summary>
     /// <param name="texture">The texture used for the text box.</param>
@@ -71,7 +76,8 @@ public class TextureTextBoxData {
     /// <param name="highlightColor">The color for the highlight.</param>
     /// <param name="disabledColor">The color displayed when the text box is disabled.</param>
     /// <param name="flip">The flip mode for the texture (none, horizontal, vertical, both).</param>
-    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? highlightColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None) {
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    public TextureTextBoxData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? highlightColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None, bool pixelSnap = false) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
@@ -82,5 +88,6 @@ public class TextureTextBoxData {
         this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
     }
 }

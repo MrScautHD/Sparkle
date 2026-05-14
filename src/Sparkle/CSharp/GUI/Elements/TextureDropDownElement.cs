@@ -3,6 +3,7 @@ using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -365,12 +366,12 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.FieldResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, buttonColor, this.DropDownData.FieldFlip);
+                this.DrawNormal(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, this.DropDownData.FieldBorderInsets, this.DropDownData.FieldResizeMode == ResizeMode.TileCenter, buttonColor, this.DropDownData.FieldFlip);
+                this.DrawNineSlice(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, this.DropDownData.FieldBorderInsets, this.DropDownData.FieldResizeMode == ResizeMode.TileCenter, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap);
                 break;
         }
         
@@ -474,11 +475,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         Vector2 finalPos = pos + (this.Offset * scaleFactor) + this.Origin;
-        
-        return new Vector2(
-            MathF.Floor(finalPos.X / scaleFactor) * scaleFactor,
-            MathF.Floor(finalPos.Y / scaleFactor) * scaleFactor
-        );
+        return finalPos / scaleFactor * scaleFactor;
     }
     
     /// <summary>
@@ -507,43 +504,48 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
     /// <param name="color">The color tint to apply to the texture during rendering.</param>
     /// <param name="flip">Specifies the sprite flipping options for the texture.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
+    /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
+    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
     
     /// <summary>
-    /// Renders a nine-slice element with specified texture, border insets, and optional tiling for the center region.
+    /// Draws a nine-slice sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for drawing the nine-slice element.</param>
-    /// <param name="texture">The texture to be rendered in the nine-slice layout.</param>
-    /// <param name="sampler">Optional sampler state specifying the sampling behavior for texture rendering.</param>
-    /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
-    /// <param name="borderInsets">The insets defining the borders of the nine-slice layout.</param>
-    /// <param name="tileCenter">Indicates whether the center region of the nine-slice is tiled.</param>
-    /// <param name="color">The color tint to apply to the texture during rendering.</param>
-    /// <param name="flip">Specifies the sprite flipping options for the nine-slice element.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip) {
-        Vector2 baseScale = this.Scale * this.Gui.ScaleFactor;
+    /// <param name="spriteBatch">The sprite batch used to render the sprite.</param>
+    /// <param name="texture">The texture containing the nine-slice source image.</param>
+    /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to use for the nine-slice rendering.</param>
+    /// <param name="borderInsets">The insets defining the border areas of the nine-slice sprite.</param>
+    /// <param name="tileCenter">A boolean indicating whether the central area of the nine-slice sprite should be tiled.</param>
+    /// <param name="color">The color mask applied to the rendered sprite.</param>
+    /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
+    /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
+        Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
+        Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
+        Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
+        Vector2 scale = pixelSnap ? Vector2.Max(Vector2.One, Vector2.Floor(this.Scale)) * this.Gui.ScaleFactor : this.Scale * this.Gui.ScaleFactor;
         
         // Calculate sizes and clamp to a minimum to prevent overlap.
         float minW = borderInsets.Left + borderInsets.Right;
         float minH = borderInsets.Top + borderInsets.Bottom;
         
-        Vector2 visualSize = new Vector2(MathF.Max(this.Size.X, minW), MathF.Max(this.Size.Y, minH));
-        Vector2 finalSize = visualSize * baseScale;
+        Vector2 visualSize = new Vector2(MathF.Max(size.X, minW), MathF.Max(size.Y, minH));
+        Vector2 finalSize = visualSize * scale;
         
         // Centering logic for buttons smaller than their borders.
-        float diffX = (this.Size.X < minW) ? (minW - this.Size.X) * baseScale.X : 0.0F;
-        float diffY = (this.Size.Y < minH) ? (minH - this.Size.Y) * baseScale.Y : 0.0F;
-        Vector2 pivot = (this.Origin * baseScale) + new Vector2(diffX, diffY) * 0.5F;
+        float diffX = (size.X < minW) ? (minW - size.X) * scale.X : 0.0F;
+        float diffY = (size.Y < minH) ? (minH - size.Y) * scale.Y : 0.0F;
+        Vector2 pivot = (origin * scale) + new Vector2(diffX, diffY) * 0.5F;
         
         // Calculate edge dimensions.
-        float leftW = borderInsets.Left * baseScale.X;
-        float rightW = borderInsets.Right * baseScale.X;
-        float topH = borderInsets.Top * baseScale.Y;
-        float bottomH = borderInsets.Bottom * baseScale.Y;
+        float leftW = borderInsets.Left * scale.X;
+        float rightW = borderInsets.Right * scale.X;
+        float topH = borderInsets.Top * scale.Y;
+        float bottomH = borderInsets.Bottom * scale.Y;
         float innerW = finalSize.X - leftW - rightW;
         float innerH = finalSize.Y - topH - bottomH;
         
@@ -582,71 +584,71 @@ public class TextureDropDownElement : GuiElement {
         if (sampler != null) spriteBatch.PushSampler(sampler);
         
         // Draw Corners.
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopLeft, baseScale, pivot / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceTopRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomLeft, baseScale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceBottomRight, baseScale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
         
         // Draw Edges.
         if (innerH > 0.0F) {
             if (tileCenter) {
-                float tileH = sourceLeft.Height * baseScale.Y;
+                float tileH = sourceLeft.Height * scale.Y;
                 for (float y = 0.0F; y < innerH; y += tileH) {
                     float drawH = MathF.Min(tileH, innerH - y);
-                    Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / baseScale.Y));
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cL, baseScale, (pivot - new Vector2(0.0F, topH + y)) / baseScale, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cR, baseScale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / baseScale, this.Rotation, color, flip);
+                    Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
+                    Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
-                Vector2 sV = new Vector2(baseScale.X, innerH / sourceLeft.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, this.Rotation, color, flip);
+                Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
+                spriteBatch.DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
             }
         }
         
         if (innerW > 0.0F) {
             if (tileCenter) {
-                float tileW = sourceTop.Width * baseScale.X;
+                float tileW = sourceTop.Width * scale.X;
                 for (float x = 0.0F; x < innerW; x += tileW) {
                     float drawW = MathF.Min(tileW, innerW - x);
-                    Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), sourceTop.Height);
-                    Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / baseScale.X)), sourceBottom.Height);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, baseScale, (pivot - new Vector2(leftW + x, 0.0F)) / baseScale, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, baseScale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / baseScale, this.Rotation, color, flip);
+                    Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
+                    Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
+                    spriteBatch.DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
-                int clipW = Math.Min(sourceTop.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+                int clipW = Math.Min(sourceTop.Width, (int) MathF.Ceiling(innerW / scale.X));
                 Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
                 Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
-                Vector2 sH = (innerW > sourceTop.Width * baseScale.X) ? new Vector2(innerW / sourceTop.Width, baseScale.Y) : baseScale;
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, this.Rotation, color, flip);
+                Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
+                spriteBatch.DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
+                spriteBatch.DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
             }
         }
         
         // Draw Center.
         if (innerW > 0.0F && innerH > 0.0F) {
             if (tileCenter) {
-                float tileW = sourceCenter.Width * baseScale.X;
-                float tileH = sourceCenter.Height * baseScale.Y;
+                float tileW = sourceCenter.Width * scale.X;
+                float tileH = sourceCenter.Height * scale.Y;
                 
                 for (float y = 0.0F; y < innerH; y += tileH) {
                     float drawH = MathF.Min(tileH, innerH - y);
                     for (float x = 0.0F; x < innerW; x += tileW) {
                         float drawW = MathF.Min(tileW, innerW - x);
-                        Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / baseScale.X), (int) MathF.Ceiling(drawH / baseScale.Y));
-                        spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, baseScale, (pivot - new Vector2(leftW + x, topH + y)) / baseScale, this.Rotation, color, flip);
+                        Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
+                        spriteBatch.DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
                     }
                 }
             }
             else {
-                int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / baseScale.X));
+                int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
                 Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
-                Vector2 sC = (innerW > sourceCenter.Width * baseScale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(baseScale.X, innerH / sourceCenter.Height);
-                spriteBatch.DrawTexture(texture, this.Position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, this.Rotation, color, flip);
+                Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
+                spriteBatch.DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
             }
         }
         
@@ -682,12 +684,12 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.MenuResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, color, this.DropDownData.MenuFlip);
+                this.DrawNormal(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, this.DropDownData.MenuBorderInsets, this.DropDownData.MenuResizeMode == ResizeMode.TileCenter, color, this.DropDownData.MenuFlip);
+                this.DrawNineSlice(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, this.DropDownData.MenuBorderInsets, this.DropDownData.MenuResizeMode == ResizeMode.TileCenter, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap);
                 break;
         }
         
@@ -947,12 +949,12 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.FieldResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip);
+                this.DrawNormal(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip);
+                this.DrawNineSlice(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap);
                 break;
         }
         
@@ -985,7 +987,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         if (this.DropDownData.SliderSampler != null) spriteBatch.PushSampler(this.DropDownData.SliderSampler);
-        spriteBatch.DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, this.DropDownData.SliderFlip);
+        spriteBatch.DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.DropDownData.SliderPixelSnap, this.Rotation, color, this.DropDownData.SliderFlip);
         if (this.DropDownData.SliderSampler != null) spriteBatch.PopSampler();
     }
     
@@ -1015,7 +1017,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         if (this.DropDownData.ArrowSampler != null) spriteBatch.PushSampler(this.DropDownData.ArrowSampler);
-        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
+        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.DropDownData.ArrowPixelSnap, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
         if (this.DropDownData.ArrowSampler != null) spriteBatch.PopSampler();
     }
     
@@ -1049,7 +1051,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
 }

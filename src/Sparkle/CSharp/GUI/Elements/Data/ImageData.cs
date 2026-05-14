@@ -54,6 +54,11 @@ public class ImageData {
     public SpriteFlip Flip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="ImageData"/> class.
     /// </summary>
     /// <param name="texture">The texture used for rendering.</param>
@@ -65,7 +70,8 @@ public class ImageData {
     /// <param name="hoverColor">Optional hover tint color. If <c>null</c>, the primary color is used.</param>
     /// <param name="disabledColor">Optional disabled tint color. If <c>null</c>, <see cref="Color.Gray"/> is used.</param>
     /// <param name="flip">The flip mode applied to the texture.</param>
-    public ImageData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None) {
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    public ImageData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None, bool pixelSnap = false) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
@@ -75,5 +81,6 @@ public class ImageData {
         this.HoverColor = hoverColor ?? this.Color;
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
     }
 }

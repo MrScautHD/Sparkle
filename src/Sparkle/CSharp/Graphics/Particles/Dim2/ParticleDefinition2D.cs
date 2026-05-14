@@ -52,6 +52,12 @@ public class ParticleDefinition2D {
     public SpriteFlip Flip;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// Disable to keep particle motion smooth.
+    /// </summary>
+    public bool PixelSnap;
+    
+    /// <summary>
     /// The optional rendering effect applied to the particles.
     /// </summary>
     public Effect? Effect;
@@ -262,6 +268,7 @@ public class ParticleDefinition2D {
     /// <param name="endColor">The color of particles at the end of their lifetime.</param>
     /// <param name="layerDepth">The layer depth used for sprite sorting during rendering.</param>
     /// <param name="flip">The sprite flip mode applied when rendering particles.</param>
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Disable to keep particle motion smooth. Default is <c>false</c>.</param>
     /// <param name="effect">The optional rendering effect applied to the particles.</param>
     /// <param name="blendState">The optional blend state used when rendering particles.</param>
     /// <param name="depthStencilState">The optional depth-stencil state used when rendering particles.</param>
@@ -311,6 +318,7 @@ public class ParticleDefinition2D {
         Color? endColor = null,
         float layerDepth = 0.0F,
         SpriteFlip flip = SpriteFlip.None,
+        bool pixelSnap = false,
         Effect? effect = null,
         BlendStateDescription? blendState = null,
         DepthStencilStateDescription? depthStencilState = null,
@@ -360,6 +368,7 @@ public class ParticleDefinition2D {
         this.EndColor = endColor ?? Color.White;
         this.LayerDepth = layerDepth;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
         this.Effect = effect;
         this.BlendState = blendState;
         this.DepthStencilState = depthStencilState;

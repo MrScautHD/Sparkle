@@ -236,6 +236,7 @@ public class ParticleSystem2D : InterpolatedComponent {
                 finalRotation,
                 this.GetParticleColor(life),
                 this.Definition.Flip,
+                this.Definition.PixelSnap,
                 this.Definition.Effect,
                 this.Definition.BlendState,
                 this.Definition.DepthStencilState,

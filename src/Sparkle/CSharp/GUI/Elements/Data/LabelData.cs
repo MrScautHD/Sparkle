@@ -68,6 +68,11 @@ public class LabelData {
     public Sampler? Sampler;
     
     /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
+    
+    /// <summary>
     /// Constructs a new instance of <see cref="LabelData"/> with full customization for rendering text.
     /// </summary>
     /// <param name="font">The font to use for rendering the text.</param>
@@ -82,7 +87,8 @@ public class LabelData {
     /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
     /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
     /// <param name="sampler">The texture sampler used for rendering operations in the label.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null) {
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null, bool pixelSnap = false) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
@@ -95,5 +101,6 @@ public class LabelData {
         this.Effect = effect;
         this.EffectAmount = effectAmount;
         this.Sampler = sampler;
+        this.PixelSnap = pixelSnap;
     }
 }

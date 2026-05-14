@@ -84,7 +84,12 @@ public struct SpriteData {
     /// The sprite flip mode.
     /// </summary>
     public SpriteFlip Flip;
-
+    
+    /// <summary>
+    /// When <c>true</c>, snaps the position and origin to whole pixels using floor, preventing sub-pixel blurriness.
+    /// </summary>
+    public bool PixelSnap;
+    
     /// <summary>
     /// Initializes a new <see cref="SpriteData"/> instance with the specified rendering configuration.
     /// </summary>
@@ -98,12 +103,13 @@ public struct SpriteData {
     /// <param name="rotation">The rotation angle in radians.</param>
     /// <param name="color">A color tint to blend with the sprite texture.</param>
     /// <param name="flip">The flip mode to apply when rendering the sprite.</param>
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness.</param>
     /// <param name="effect">Optional rendering effect (shader).</param>
     /// <param name="blendState">Optional custom blend state.</param>
     /// <param name="depthStencilState">Optional depth-stencil state.</param>
     /// <param name="rasterizerState">Optional rasterizer state.</param>
     /// <param name="scissorRect">Optional scissor rectangle to define a restricted rendering area.</param>
-    public SpriteData(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
+    public SpriteData(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.Position = position;
@@ -114,6 +120,7 @@ public struct SpriteData {
         this.Rotation = rotation;
         this.Color = color;
         this.Flip = flip;
+        this.PixelSnap = pixelSnap;
         this.Effect = effect;
         this.BlendState = blendState;
         this.DepthStencilState = depthStencilState;

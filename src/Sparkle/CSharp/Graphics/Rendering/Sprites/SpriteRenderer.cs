@@ -37,13 +37,14 @@ public class SpriteRenderer {
     /// <param name="rotation">The rotation angle in radians applied to the sprite.</param>
     /// <param name="color">The color applied to blend with the sprite texture.</param>
     /// <param name="flip">The sprite flipping mode indicating horizontal or vertical flipping.</param>
+    /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness.</param>
     /// <param name="effect">The effect to be applied to the sprite during rendering, if any.</param>
     /// <param name="blendState">The blend state to be used for rendering, or null for the default state.</param>
     /// <param name="depthStencilState">The depth-stencil state to be used for rendering, or null for the default state.</param>
     /// <param name="rasterizerState">The rasterizer state to be used for rendering, or null for the default state.</param>
     /// <param name="scissorRect">The rectangle used to define the scissor test area for rendering, or null for none.</param>
-    public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
-        this._sprites.Add(new SpriteData(texture, sampler, position, layerDepth, sourceRect, scale, origin, rotation, color, flip, effect, blendState, depthStencilState, rasterizerState, scissorRect));
+    public void DrawSprite(Texture2D texture, Sampler? sampler, Vector2 position, float layerDepth, Rectangle sourceRect, Vector2 scale, Vector2 origin, float rotation, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState, DepthStencilStateDescription? depthStencilState, RasterizerStateDescription? rasterizerState, Rectangle? scissorRect) {
+        this._sprites.Add(new SpriteData(texture, sampler, position, layerDepth, sourceRect, scale, origin, rotation, color, flip, pixelSnap, effect, blendState, depthStencilState, rasterizerState, scissorRect));
     }
     
     /// <summary>
@@ -73,7 +74,7 @@ public class SpriteRenderer {
                 if (sprite.Sampler != null) context.SpriteBatch.PushSampler(sprite.Sampler);
                 if (sprite.ScissorRect != null) context.SpriteBatch.PushScissorRect(sprite.ScissorRect);
                 
-                context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.Rotation, sprite.Color, sprite.Flip);
+                context.SpriteBatch.DrawTexture(sprite.Texture, sprite.Position, 0.5F, sprite.SourceRect, sprite.Scale, sprite.Origin, sprite.PixelSnap, sprite.Rotation, sprite.Color, sprite.Flip);
                 
                 if (sprite.Effect != null) context.SpriteBatch.PopEffect();
                 if (sprite.BlendState != null) context.SpriteBatch.PopBlendState();

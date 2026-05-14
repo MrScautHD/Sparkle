@@ -95,7 +95,7 @@ public class ToggleElement : GuiElement {
             checkboxColor = this.ToggleData.DisabledColor;
         }
         
-        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip);
+        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip, this.ToggleData.CheckboxPixelSnap);
         
         // Draw checkmark texture.
         if (this.ToggleState) {
@@ -105,7 +105,7 @@ public class ToggleElement : GuiElement {
                 checkmarkColor = this.ToggleData.DisabledColor;
             }
             
-            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip);
+            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip, this.ToggleData.CheckmarkPixelSnap);
         }
         
         // Draw text.
@@ -122,10 +122,11 @@ public class ToggleElement : GuiElement {
     /// <param name="sampler">The optional sampler to apply for texture sampling.</param>
     /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
     /// <param name="color">The color modulator applied to the checkbox.</param>
-    /// <param name="flip">The flip mode applied to the texture.</param>
-    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
+    /// <param name="flip">Specifies the flipping behavior for the checkbox texture.</param>
+    /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
+    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -138,11 +139,12 @@ public class ToggleElement : GuiElement {
     /// <param name="sourceRect">The source rectangle defining the portion of the texture to draw.</param>
     /// <param name="color">The color to apply to the checkmark texture.</param>
     /// <param name="flip">Specifies the flipping behavior for the checkmark texture.</param>
-    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip) {
+    /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
+    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
         Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
         if (sampler != null) spriteBatch.PushSampler(sampler);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Rotation, color, flip);
+        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -166,7 +168,7 @@ public class ToggleElement : GuiElement {
         }
         
         if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
         if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
     }
     
