@@ -425,7 +425,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             
             // Apply pending in-place mesh updates before visibility/Lod checks.
             if (this._chunksPendingVertexUpload.Contains(chunk)) {
-                chunk.UpdateGeometry(context.CommandList);
+                chunk.UpdateGeometry();
                 this._chunksPendingVertexUpload.Remove(chunk);
             }
             

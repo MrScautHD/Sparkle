@@ -77,10 +77,9 @@ public interface IChunk : IDisposable {
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create GPU buffers.</param>
     void UploadGeometry(GraphicsDevice graphicsDevice);
-
+    
     /// <summary>
-    /// Updates the geometry of the chunk by issuing the required rendering commands.
+    /// Updates the geometry of the chunk.
     /// </summary>
-    /// <param name="commandList">The command list used to submit rendering and resource update commands to the GPU.</param>
-    void UpdateGeometry(CommandList commandList);
+    void UpdateGeometry();
 }

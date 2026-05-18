@@ -491,8 +491,7 @@ public class HeightmapChunk : Disposable, IChunk {
     /// <summary>
     /// Applies pending vertex data to the existing mesh without recreating it.
     /// </summary>
-    /// <param name="commandList">The command list used for graphics updates.</param>
-    public void UpdateGeometry(CommandList commandList) {
+    public void UpdateGeometry() {
         if (this.Mesh is not Mesh<Vertex3D> mesh) {
             throw new InvalidOperationException($"{nameof(UpdateGeometry)} requires a valid {nameof(Mesh<>)} instance.");
         }
@@ -509,7 +508,6 @@ public class HeightmapChunk : Disposable, IChunk {
         Array.Copy(this._pendingVertices, meshData.Vertices, this._pendingVertices.Length);
         
         // Update vertex buffer.
-        //mesh.UpdateVertexBuffer(commandList); // TODO: Add this back when fixed: https://github.com/jhm-ciberman/neo-veldrid/issues/33
         mesh.UpdateVertexBufferImmediate();
         
         // Keep state transitions consistent with UploadGeometry.
