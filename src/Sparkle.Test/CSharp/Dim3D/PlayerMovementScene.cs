@@ -71,7 +71,7 @@ public class PlayerMovementScene : Scene {
         
         // Create ground.
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
-        ground.AddComponent(new RigidBody3D(new BoxShape(32, 1, 32), true, MotionType.Static) {
+        ground.AddComponent(new RigidBody3D(new BoxShape(32, 1, 32), MassInertiaUpdateMode.Update, MotionType.Static) {
             DrawDebug = true,
             DebugDrawColor = Color.Green
         });

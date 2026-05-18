@@ -174,7 +174,7 @@ public class TestScene3D : Scene {
         
         // GROUND
         Entity ground = new Entity(new Transform() { Translation = new Vector3(0, -0.5F, 0) });
-        ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), true, MotionType.Static) {
+        ground.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), MassInertiaUpdateMode.Update, MotionType.Static) {
             DrawDebug = false,
             DebugDrawColor = Color.Green
         });

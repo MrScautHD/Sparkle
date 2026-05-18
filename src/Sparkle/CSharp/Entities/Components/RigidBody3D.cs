@@ -113,7 +113,7 @@ public class RigidBody3D : Component {
     /// <summary>
     /// Determines whether mass and inertia should be set automatically when shapes are added.
     /// </summary>
-    private bool _setMassInertia;
+    private MassInertiaUpdateMode _massInertiaUpdateMode;
     
     /// <summary>
     /// The motion type of the rigid body, determining whether it is static, dynamic, or kinematic.
@@ -139,25 +139,25 @@ public class RigidBody3D : Component {
     /// Initializes a new instance of the <see cref="RigidBody3D"/> class with a single collision shape.
     /// </summary>
     /// <param name="shape">The collision shape to attach to the rigid body.</param>
-    /// <param name="setMassInertia">Determines whether to automatically calculate mass and inertia from the shape.</param>
+    /// <param name="massInertiaUpdateMode">Determines how mass and inertia should be updated after adding the shape.</param>
     /// <param name="motionType">Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</param>
     /// <param name="friction">The friction coefficient of the rigid body.</param>
     /// <param name="restitution">The restitution (bounciness) of the rigid body.</param>
     /// <param name="drawDebug">Indicates whether debug visualization for the rigid body should be enabled.</param>
-    public RigidBody3D(RigidBodyShape shape, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : this([shape], setMassInertia, motionType, friction, restitution, drawDebug) { }
+    public RigidBody3D(RigidBodyShape shape, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : this([shape], massInertiaUpdateMode, motionType, friction, restitution, drawDebug) { }
     
     /// <summary>
     /// Initializes a new instance of the <see cref="RigidBody3D"/> class with a collection of collision shapes.
     /// </summary>
     /// <param name="shapes">The list of collision shapes to attach to the rigid body.</param>
-    /// <param name="setMassInertia">Determines whether to automatically calculate mass and inertia from the shapes.</param>
+    /// <param name="massInertiaUpdateMode">Determines how mass and inertia should be updated after adding the shape.</param>
     /// <param name="motionType">Specifies whether the rigid body should be dynamic, static, or kinematic in the simulation.</param>
     /// <param name="friction">The friction coefficient of the rigid body.</param>
     /// <param name="restitution">The restitution (bounciness) of the rigid body.</param>
     /// <param name="drawDebug">Indicates whether debug visualization for the rigid body should be enabled.</param>
-    public RigidBody3D(List<RigidBodyShape> shapes, bool setMassInertia = true, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : base(Vector3.Zero) {
+    public RigidBody3D(List<RigidBodyShape> shapes, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update, MotionType motionType = MotionType.Dynamic, float friction = 0.2F, float restitution = 0, bool drawDebug = false) : base(Vector3.Zero) {
         this._shapes = new ReadOnlyList<RigidBodyShape>(shapes);
-        this._setMassInertia = setMassInertia;
+        this._massInertiaUpdateMode = massInertiaUpdateMode;
         this._motionType = motionType;
         this._friction = friction;
         this._restitution = restitution;
@@ -318,59 +318,58 @@ public class RigidBody3D : Component {
     public void SetActivationState(bool active) {
         this.Body.SetActivationState(active);
     }
-
+    
     /// <summary>
     /// Adds a new collision shape to the rigid body.
     /// </summary>
     /// <param name="shape">The specific collision shape to be added.</param>
-    /// <param name="setMassInertia">Indicates whether the mass and inertia should be recalculated after adding the shape.</param>
-    public void AddShape(RigidBodyShape shape, bool setMassInertia = true) {
-        this.Body.AddShape(shape, setMassInertia);
+    /// <param name="massInertiaUpdateMode">Specifies whether and how the mass and inertia of the rigid body should be updated after adding the shape.</param>
+    public void AddShape(RigidBodyShape shape, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update) {
+        this.Body.AddShape(shape, massInertiaUpdateMode);
     }
-
+    
     /// <summary>
     /// Adds a collision shape to the rigid body.
     /// </summary>
     /// <param name="shapes">The collection of shapes to add.</param>
-    /// <param name="setMassInertia">Determines whether to automatically calculate mass and inertia after adding the shape.</param>
-    public void AddShape(IEnumerable<RigidBodyShape> shapes, bool setMassInertia = true) {
-        this.Body.AddShape(shapes, setMassInertia);
+    /// <param name="massInertiaUpdateMode">Specifies whether and how the mass and inertia of the rigid body should be updated after adding the shape.</param>
+    public void AddShapes(IEnumerable<RigidBodyShape> shapes, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update) {
+        this.Body.AddShapes(shapes, massInertiaUpdateMode);
     }
-
+    
     /// <summary>
     /// Removes a collision shape from the rigid body.
     /// </summary>
     /// <param name="shape">The collision shape to be removed from the rigid body.</param>
-    /// <param name="setMassInertia">Determines whether to recalculate mass and inertia after removing the shape.</param>
-    public void RemoveShape(RigidBodyShape shape, bool setMassInertia = true) {
-        this.Body.RemoveShape(shape, setMassInertia);
+    /// <param name="massInertiaUpdateMode">Specifies whether and how the mass and inertia of the rigid body should be updated after adding the shape.</param>
+    public void RemoveShape(RigidBodyShape shape, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update) {
+        this.Body.RemoveShape(shape, massInertiaUpdateMode);
     }
-
+    
     /// <summary>
     /// Removes the specified collision shape from the rigid body.
     /// </summary>
     /// <param name="shapes">The collection of shapes to remove.</param>
-    /// <param name="setMassInertia">Determines whether to automatically recalculate mass and inertia after removing the shape.</param>
-    public void RemoveShape(IEnumerable<RigidBodyShape> shapes, bool setMassInertia = true) {
-        this.Body.RemoveShape(shapes, setMassInertia);
+    /// <param name="massInertiaUpdateMode">Specifies whether and how the mass and inertia of the rigid body should be updated after adding the shape.</param>
+    public void RemoveShape(IEnumerable<RigidBodyShape> shapes, MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update) {
+        this.Body.RemoveShapes(shapes, massInertiaUpdateMode);
     }
-
+    
     /// <summary>
     /// Clears all collision shapes attached to the rigid body.
     /// </summary>
-    /// <param name="setMassInertia">Determines whether to recalculate mass and inertia after clearing the shapes.</param>
-    [Obsolete($"{nameof(ClearShapes)} is deprecated, please use {nameof(RemoveShape)} instead.")]
-    public void ClearShapes(bool setMassInertia = true) {
-        this.Body.ClearShapes(setMassInertia);
+    /// <param name="massInertiaUpdateMode">Specifies whether and how the mass and inertia of the rigid body should be updated after adding the shape.</param>
+    public void ClearShapes(MassInertiaUpdateMode massInertiaUpdateMode = MassInertiaUpdateMode.Update) {
+        this.Body.ClearShapes(massInertiaUpdateMode);
     }
-
+    
     /// <summary>
     /// Updates the mass and inertia of the rigid body based on its current shapes and associated properties.
     /// </summary>
     public void SetMassInertia() {
         this.Body.SetMassInertia();
     }
-
+    
     /// <summary>
     /// Sets the mass and automatically recalculates the inertia of the rigid body.
     /// </summary>
@@ -378,7 +377,7 @@ public class RigidBody3D : Component {
     public void SetMassInertia(float mass) {
         this.Body.SetMassInertia(mass);
     }
-
+    
     /// <summary>
     /// Sets the mass and inertia of the rigid body.
     /// </summary>
@@ -440,7 +439,7 @@ public class RigidBody3D : Component {
     /// </summary>
     private void CreateBody() {
         this.Body = this.World.CreateRigidBody();
-        this.AddShape(this._shapes, this._setMassInertia);
+        this.AddShapes(this._shapes, this._massInertiaUpdateMode);
         this.MotionType = this._motionType;
         this.Friction = this._friction;
         this.Restitution = this._restitution;

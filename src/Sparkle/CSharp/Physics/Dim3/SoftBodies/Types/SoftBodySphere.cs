@@ -53,11 +53,13 @@ public class SoftBodySphere : SimpleSoftBody {
     public SoftBodySphere(GraphicsDevice graphicsDevice, World world, Vector3 position, Quaternion rotation, Vector3 size, Vector3 scale, int subdivisions = 4, float vertexMass = 200.0F, float centerMass = 1.0F, float centerInertia = 0.05F, float softness = 0.75F) : base(graphicsDevice, world) {
         this._boneIndices = new Dictionary<RigidBody, int>();
         
-        List<JTriangle> triangles = ShapeHelper.MakeHull(new UnitSphere(), subdivisions)
+        Vector3 halfSize = size / 2 * scale;
+        
+        List<JTriangle> triangles = ShapeHelper.Tessellate(new UnitSphere(), subdivisions)
             .Select(t => new JTriangle(
-                Vector3.Transform(t.V0, rotation) * (size / 2 * scale),
-                Vector3.Transform(t.V1, rotation) * (size / 2 * scale),
-                Vector3.Transform(t.V2, rotation) * (size / 2 * scale))
+                Vector3.Transform(t.V0, rotation) * halfSize,
+                Vector3.Transform(t.V1, rotation) * halfSize,
+                Vector3.Transform(t.V2, rotation) * halfSize)
             ).ToList();
         
         // Process triangles.
