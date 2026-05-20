@@ -4,8 +4,8 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
-using Veldrid.SPIRV;
+using Veldrith;
+using Veldrith.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Posts;
 
@@ -127,6 +127,7 @@ public class FxaaEffect : Effect {
         public float ReduceMin;
         public float ReduceMul;
         public float SpanMax;
+        private Vector3 _padding;
     }
     
     protected override void Dispose(bool disposing) {

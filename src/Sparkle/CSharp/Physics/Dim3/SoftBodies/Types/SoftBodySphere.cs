@@ -12,8 +12,7 @@ using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
 using Jitter2.SoftBodies;
 using Sparkle.CSharp.Physics.Dim3.Mappables;
-using Veldrid;
-using Logger = Bliss.CSharp.Logging.Logger;
+using Veldrith;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 

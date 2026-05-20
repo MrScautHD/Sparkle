@@ -2,7 +2,7 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 

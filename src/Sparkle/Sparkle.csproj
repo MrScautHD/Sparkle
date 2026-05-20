@@ -14,7 +14,7 @@
     <PropertyGroup>
         <Title>Sparkle</Title>
         <Authors>MrScautHD</Authors>
-        <Version>5.0.13</Version>
+        <Version>5.1.0</Version>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
@@ -22,13 +22,13 @@
         <PackageProjectUrl>https://mrscauthd.github.io/Sparkle/</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/MrScautHD/Sparkle/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/MrScautHD/Sparkle</RepositoryUrl>
-        <PackageTags>Renderer, Game-Engine, Direct3D, Vulkan, Metal, OpenGL, OpenGL-ES, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
+        <PackageTags>Renderer, Game-Engine, Direct3D12, Vulkan, Metal, Net10, C#14, 2D, 3D, Fast, Physics, XNA, Cross-platform, Audio</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
     </PropertyGroup>
     
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.5.12" GeneratePathProperty="true" />
+        <PackageReference Include="Bliss" Version="1.6.4" GeneratePathProperty="true" />
         <PackageReference Include="HughPH.Box2D" Version="2026.5.5.222" />
         <PackageReference Include="Jitter2" Version="2.8.7" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />

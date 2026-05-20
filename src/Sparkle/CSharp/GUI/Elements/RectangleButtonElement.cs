@@ -3,7 +3,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 

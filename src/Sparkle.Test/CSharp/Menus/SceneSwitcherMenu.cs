@@ -9,7 +9,7 @@ using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.Scenes;
 using Sparkle.Test.CSharp.Dim2D;
 using Sparkle.Test.CSharp.Dim3D;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp.Menus;
 

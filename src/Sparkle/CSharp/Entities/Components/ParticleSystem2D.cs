@@ -5,7 +5,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Particles.Dim2;
 using Sparkle.CSharp.Graphics.Particles.Dim2.Collisions;
 using Sparkle.CSharp.Graphics.Particles.Dim2.Collisions.Providers;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 

@@ -2,7 +2,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.VertexTypes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.VertexTypes;
 

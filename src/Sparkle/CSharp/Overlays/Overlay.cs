@@ -1,6 +1,6 @@
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Overlays;
 

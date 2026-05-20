@@ -4,7 +4,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.VertexTypes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Terrain.Heightmap;
 

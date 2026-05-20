@@ -6,7 +6,7 @@ using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Rendering.Sprites;
 

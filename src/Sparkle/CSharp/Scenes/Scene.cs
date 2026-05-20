@@ -14,7 +14,7 @@ using Sparkle.CSharp.Graphics.Rendering.Sprites;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Physics.Dim2;
 using Sparkle.CSharp.Physics.Dim3;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Scenes;
 

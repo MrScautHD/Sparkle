@@ -5,7 +5,7 @@ using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics.Particles.Dim2.Collisions.Providers;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Particles.Dim2;
 

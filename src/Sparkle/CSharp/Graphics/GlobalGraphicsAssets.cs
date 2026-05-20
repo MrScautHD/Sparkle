@@ -4,8 +4,8 @@ using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Effects.Posts;
-using Veldrid;
-using Veldrid.SPIRV;
+using Veldrith;
+using Veldrith.SPIRV;
 
 namespace Sparkle.CSharp.Graphics;
 

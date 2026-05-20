@@ -8,7 +8,7 @@ using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrid;
+using Veldrith;
 using Color = Bliss.CSharp.Colors.Color;
 
 namespace Sparkle.CSharp.GUI.Elements;

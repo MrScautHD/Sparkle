@@ -9,7 +9,7 @@ using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 

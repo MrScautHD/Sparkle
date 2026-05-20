@@ -4,7 +4,7 @@ using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 

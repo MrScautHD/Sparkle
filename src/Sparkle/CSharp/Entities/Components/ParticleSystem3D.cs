@@ -9,7 +9,7 @@ using Sparkle.CSharp.Graphics.Particles.Dim3;
 using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions;
 using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 

@@ -9,7 +9,7 @@ using Bliss.CSharp.Windowing;
 using Jitter2;
 using Jitter2.LinearMath;
 using Sparkle.CSharp.Graphics.VertexTypes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 

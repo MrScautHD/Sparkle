@@ -13,7 +13,7 @@ using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 

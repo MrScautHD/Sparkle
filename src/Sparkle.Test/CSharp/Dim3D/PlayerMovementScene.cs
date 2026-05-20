@@ -22,8 +22,7 @@ using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Scenes;
-using Sparkle.CSharp.Terrain;
-using Veldrid;
+using Veldrith;
 using Scene = Sparkle.CSharp.Scenes.Scene;
 
 namespace Sparkle.Test.CSharp.Dim3D;

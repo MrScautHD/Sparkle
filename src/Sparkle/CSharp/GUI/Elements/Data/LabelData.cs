@@ -1,7 +1,7 @@
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Fonts;
 using FontStashSharp;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 

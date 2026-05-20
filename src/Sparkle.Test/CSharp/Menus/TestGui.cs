@@ -1,16 +1,13 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
-using Bliss.CSharp.Interact;
-using Bliss.CSharp.Interact.Mice.Cursors;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp.Menus;
 

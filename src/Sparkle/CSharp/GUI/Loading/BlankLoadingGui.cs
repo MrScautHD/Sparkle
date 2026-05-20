@@ -1,6 +1,6 @@
 ﻿using Bliss.CSharp.Colors;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Loading;
 

@@ -4,7 +4,7 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp;
 

@@ -15,7 +15,7 @@ using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Generators;
 using Sparkle.CSharp.Terrain.Heightmap;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 

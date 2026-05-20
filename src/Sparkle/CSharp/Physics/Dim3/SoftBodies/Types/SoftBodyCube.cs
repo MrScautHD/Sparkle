@@ -10,7 +10,7 @@ using Jitter2.Dynamics;
 using Jitter2.Dynamics.Constraints;
 using Jitter2.LinearMath;
 using Jitter2.SoftBodies;
-using Veldrid;
+using Veldrith;
 using Material = Bliss.CSharp.Materials.Material;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;

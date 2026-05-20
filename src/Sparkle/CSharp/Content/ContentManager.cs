@@ -8,7 +8,7 @@ using Bliss.CSharp.Textures.Cubemaps;
 using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content.Processors;
 using Sparkle.CSharp.Content.Types;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Content;
 

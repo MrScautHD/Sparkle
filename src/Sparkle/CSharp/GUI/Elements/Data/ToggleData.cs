@@ -2,7 +2,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 

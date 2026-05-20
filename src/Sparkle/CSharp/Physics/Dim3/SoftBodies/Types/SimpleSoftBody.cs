@@ -5,7 +5,7 @@ using Bliss.CSharp.Transformations;
 using Jitter2;
 using Jitter2.Dynamics;
 using Jitter2.SoftBodies;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Physics.Dim3.SoftBodies.Types;
 

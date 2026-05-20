@@ -12,7 +12,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Loading;
 using Sparkle.CSharp.Physics;
 using Sparkle.CSharp.Utils.Async;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Scenes;
 

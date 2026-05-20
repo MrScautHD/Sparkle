@@ -14,7 +14,7 @@ using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Regions;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 

@@ -4,7 +4,7 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Rendering.Sprites;
 

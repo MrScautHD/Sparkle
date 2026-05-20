@@ -4,8 +4,8 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
-using Veldrid.SPIRV;
+using Veldrith;
+using Veldrith.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Filters;
 
@@ -85,6 +85,7 @@ public class PredatorEffect : Effect {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     private struct Parameters {
         public Vector2 Resolution;
+        private Vector2 _padding;
     }
     
     protected override void Dispose(bool disposing) {

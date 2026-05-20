@@ -4,8 +4,8 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
-using Veldrid.SPIRV;
+using Veldrith;
+using Veldrith.SPIRV;
 
 namespace Sparkle.CSharp.Effects.Filters;
 

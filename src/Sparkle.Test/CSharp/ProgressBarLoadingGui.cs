@@ -5,7 +5,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Elements;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Sparkle.CSharp.GUI.Loading;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp;
 

@@ -4,7 +4,7 @@ using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Veldrid;
+using Veldrith;
 using Vortice.Mathematics;
 using Color = Bliss.CSharp.Colors.Color;
 

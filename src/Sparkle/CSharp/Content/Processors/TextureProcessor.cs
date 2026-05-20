@@ -1,6 +1,6 @@
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Content.Types;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Content.Processors;
 

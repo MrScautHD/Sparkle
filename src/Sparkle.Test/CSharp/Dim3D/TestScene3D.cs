@@ -28,7 +28,7 @@ using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.Physics.Dim3.SoftBodies.Factories;
 using Sparkle.CSharp.Scenes;
 using Sparkle.Test.CSharp.Menus;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 

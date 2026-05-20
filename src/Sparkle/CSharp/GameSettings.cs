@@ -1,6 +1,6 @@
 using System.Reflection;
 using Bliss.CSharp.Windowing;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp;
 
@@ -57,6 +57,11 @@ public struct GameSettings {
     public bool VSync { get; init; }
     
     /// <summary>
+    /// Indicates whether the graphics device should allow frames to be displayed as fast as possible even if tearing.
+    /// </summary>
+    public bool AllowTearing { get; init; }
+    
+    /// <summary>
     /// The sample count for anti-aliasing. Higher values result in smoother edges but increase performance cost.
     /// </summary>
     public TextureSampleCount SampleCount { get; init; }
@@ -75,6 +80,7 @@ public struct GameSettings {
         this.WindowFlags = WindowState.Resizable;
         this.Backend = Window.GetPlatformDefaultBackend();
         this.VSync = true;
+        this.AllowTearing = false;
         this.SampleCount = TextureSampleCount.Count1;
     }
 }

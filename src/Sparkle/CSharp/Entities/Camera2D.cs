@@ -1,7 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Camera.Dim2;
 using Bliss.CSharp.Transformations;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Entities;
 

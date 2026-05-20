@@ -20,7 +20,7 @@ using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.CSharp.Scenes;
-using Veldrid;
+using Veldrith;
 using JLogger = Jitter2.Logger;
 
 namespace Sparkle.CSharp;
@@ -159,6 +159,7 @@ public class Game : Disposable {
         this.MainWindow.SetMinimumSize(this.Settings.MinSize.Width, this.Settings.MinSize.Height);
         this.MainWindow.Resized += () => this.OnResize(new Rectangle(this.MainWindow.GetX(), this.MainWindow.GetY(), this.MainWindow.GetWidth(), this.MainWindow.GetHeight()));
         this.GraphicsDevice = graphicsDevice;
+        this.GraphicsDevice.AllowTearing = this.Settings.AllowTearing;
         
         Logger.Info("\t> Window Info:");
         Logger.Info($"\t \t> Window type: {WindowType.Sdl3}");

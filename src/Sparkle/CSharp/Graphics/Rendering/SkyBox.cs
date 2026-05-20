@@ -8,7 +8,7 @@ using Bliss.CSharp.Graphics;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Textures.Cubemaps;
-using Veldrid;
+using Veldrith;
 
 namespace Sparkle.CSharp.Graphics.Rendering;
 
