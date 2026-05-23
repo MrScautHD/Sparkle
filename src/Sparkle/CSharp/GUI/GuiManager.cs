@@ -40,7 +40,9 @@ public static class GuiManager {
     /// </summary>
     /// <param name="delta">The time, in seconds, since the last update.</param>
     internal static void OnUpdate(double delta) {
-        ActiveGui?.Update(delta);
+        if (ActiveGui != null && ActiveGui.IsInitialized) {
+            ActiveGui.Update(delta);
+        }
     }
     
     /// <summary>
@@ -48,7 +50,9 @@ public static class GuiManager {
     /// </summary>
     /// <param name="delta">The time, in seconds, since the last update.</param>
     internal static void OnAfterUpdate(double delta) {
-        ActiveGui?.AfterUpdate(delta);
+        if (ActiveGui != null && ActiveGui.IsInitialized) {
+            ActiveGui.AfterUpdate(delta);
+        }
     }
     
     /// <summary>
@@ -56,7 +60,9 @@ public static class GuiManager {
     /// </summary>
     /// <param name="fixedStep">The fixed time step interval, in seconds, for performing updates.</param>
     internal static void OnFixedUpdate(double fixedStep) {
-        ActiveGui?.FixedUpdate(fixedStep);
+        if (ActiveGui != null && ActiveGui.IsInitialized) {
+            ActiveGui.FixedUpdate(fixedStep);
+        }
     }
     
     /// <summary>
@@ -65,7 +71,9 @@ public static class GuiManager {
     /// <param name="context">The graphics context used for rendering operations.</param>
     /// <param name="framebuffer">The framebuffer where the GUI will be drawn.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
-        ActiveGui?.Draw(context, framebuffer);
+        if (ActiveGui != null && ActiveGui.IsInitialized) {
+            ActiveGui.Draw(context, framebuffer);
+        }
     }
     
     /// <summary>
@@ -73,7 +81,9 @@ public static class GuiManager {
     /// </summary>
     /// <param name="rectangle">The new dimensions and position to which the GUI should be resized.</param>
     internal static void OnResize(Rectangle rectangle) {
-        ActiveGui?.Resize(rectangle);
+        if (ActiveGui != null && ActiveGui.IsInitialized) {
+            ActiveGui.Resize(rectangle);
+        }
     }
     
     /// <summary>
