@@ -101,7 +101,7 @@ public abstract class Gui : Disposable {
     /// <param name="delta">Elapsed time since the last frame in seconds.</param>
     protected internal virtual void Update(double delta) {
         bool interactionHandled = false;
-        GuiManager.SetScale(5);
+        
         // Handle adding elements.
         foreach (GuiElement element in this._elementsToAdd) {
             this._elements.Add(element.Name, element);
