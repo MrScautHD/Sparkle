@@ -20,7 +20,7 @@ public static class GuiManager {
     /// <summary>
     /// The selected GUI scale.
     /// 0 means automatic scaling.
-    /// 1 to 5 are relative scale steps around the automatic scale.
+    /// 1 to <see cref="MaxAllowedScaleFactor"/> are relative scale steps around the automatic scale.
     /// </summary>
     public static int Scale { get; private set; }
     
