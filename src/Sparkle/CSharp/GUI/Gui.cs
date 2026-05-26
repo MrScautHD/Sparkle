@@ -25,9 +25,42 @@ public abstract class Gui : Disposable {
     public readonly (int Width, int Height) Size;
     
     /// <summary>
+    /// The maximum scaling factor that can fit on the current screen.
+    /// </summary>
+    public int MaxScaleFactor => this.CalculateMaxScaleFactor();
+
+    /// <summary>
     /// The scaling factor applied to the GUI.
     /// </summary>
-    public int ScaleFactor => (int) Math.Max(1, Math.Floor(GuiManager.Scale * ((float) GlobalGraphicsAssets.Window.GetHeight() / (float) this.Size.Height)));
+    public int ScaleFactor {
+        get {
+            int autoScaleFactor = this.AutoScaleFactor;
+            
+            if (GuiManager.Scale <= 0) {
+                return autoScaleFactor;
+            }
+            
+            int selectedScale = Math.Clamp(GuiManager.Scale, 1, GuiManager.MaxAllowedScaleFactor);
+            int offset = selectedScale - 3;
+            int finalScale = autoScaleFactor + offset;
+            
+            return Math.Clamp(finalScale, 1, this.MaxScaleFactor);
+        }
+    }
+    
+    /// <summary>
+    /// The automatically calculated GUI scale factor based on the current window size.
+    /// </summary>
+    public int AutoScaleFactor {
+        get {
+            double scaleX = (double) GlobalGraphicsAssets.Window.GetWidth() / this.Size.Width;
+            double scaleY = (double) GlobalGraphicsAssets.Window.GetHeight() / this.Size.Height;
+            
+            double resolutionScale = Math.Min(scaleX, scaleY);
+            
+            return Math.Max(1, (int) Math.Floor(resolutionScale + 0.5));
+        }
+    }
     
     /// <summary>
     /// Internal dictionary storing GUI elements by name.
@@ -68,7 +101,7 @@ public abstract class Gui : Disposable {
     /// <param name="delta">Elapsed time since the last frame in seconds.</param>
     protected internal virtual void Update(double delta) {
         bool interactionHandled = false;
-        
+        GuiManager.SetScale(5);
         // Handle adding elements.
         foreach (GuiElement element in this._elementsToAdd) {
             this._elements.Add(element.Name, element);
@@ -293,5 +326,35 @@ public abstract class Gui : Disposable {
         
         this._elementsToRemove.Add(name);
         return true;
+    }
+    
+    /// <summary>
+    /// Calculates the maximum GUI scale factor that can fit on the current screen.
+    /// </summary>
+    /// <returns>The maximum scale factor that fits on the current screen.</returns>
+    private int CalculateMaxScaleFactor() {
+        int windowWidth = GlobalGraphicsAssets.Window.GetWidth();
+        int windowHeight = GlobalGraphicsAssets.Window.GetHeight();
+        
+        int minGuiWidth = this.Size.Width / 4;
+        int minGuiHeight = this.Size.Height / 3;
+        
+        int scaleFactor = 1;
+        
+        while (scaleFactor < GuiManager.MaxAllowedScaleFactor && windowWidth / (scaleFactor + 1) >= minGuiWidth && windowHeight / (scaleFactor + 1) >= minGuiHeight) {
+            scaleFactor++;
+        }
+        
+        return scaleFactor;
+    }
+    
+    /// <summary>
+    /// Gets all GUI scale factors that are available on the current screen.
+    /// </summary>
+    /// <returns>An enumerable collection of available scale factors.</returns>
+    public IEnumerable<int> GetAvailableScaleFactors() {
+        for (int scale = 1; scale <= this.MaxScaleFactor; scale++) {
+            yield return scale;
+        }
     }
 }

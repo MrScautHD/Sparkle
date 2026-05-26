@@ -11,11 +11,28 @@ public static class GuiManager {
     /// The currently active GUI.
     /// </summary>
     public static Gui? ActiveGui => _activeLoadingGui ?? _activeGui;
+
+    /// <summary>
+    /// The highest GUI scale step the game allows.
+    /// </summary>
+    public static int MaxAllowedScaleFactor;
     
     /// <summary>
-    /// A scaling factor applied to the GUI.
+    /// The selected GUI scale.
+    /// 0 means automatic scaling.
+    /// 1 to 5 are relative scale steps around the automatic scale.
     /// </summary>
-    public static float Scale;
+    public static int Scale { get; private set; }
+    
+    /// <summary>
+    /// The maximum GUI scale factor that fits on the current screen for the active GUI.
+    /// </summary>
+    public static int MaxScaleFactor => ActiveGui?.MaxScaleFactor ?? 1;
+    
+    /// <summary>
+    /// The final GUI scale factor currently used by the active GUI.
+    /// </summary>
+    public static int ScaleFactor => ActiveGui?.ScaleFactor ?? 1;
     
     /// <summary>
     /// The primary GUI instance currently active.
@@ -32,7 +49,8 @@ public static class GuiManager {
     /// Initializes the GUI manager.
     /// </summary>
     internal static void Init() {
-        Scale = 1.0F;
+        MaxAllowedScaleFactor = 4;
+        Scale = 0;
     }
     
     /// <summary>
@@ -83,6 +101,29 @@ public static class GuiManager {
     internal static void OnResize(Rectangle rectangle) {
         if (ActiveGui != null && ActiveGui.IsInitialized) {
             ActiveGui.Resize(rectangle);
+        }
+    }
+    
+    /// <summary>
+    /// Sets the selected GUI scale step.
+    /// </summary>
+    /// <param name="scale">The selected scale step. Use 0 for automatic scaling.</param>
+    public static void SetScale(int scale) {
+        if (scale <= 0) {
+            Scale = 0;
+            return;
+        }
+        
+        Scale = Math.Clamp(scale, 1, MaxAllowedScaleFactor);
+    }
+    
+    /// <summary>
+    /// Gets all selectable GUI scale steps.
+    /// </summary>
+    /// <returns>An enumerable collection of selectable scale steps.</returns>
+    public static IEnumerable<int> GetSelectableScaleSteps() {
+        for (int scale = 1; scale <= MaxAllowedScaleFactor; scale++) {
+            yield return scale;
         }
     }
     
