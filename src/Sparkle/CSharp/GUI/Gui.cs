@@ -34,17 +34,18 @@ public abstract class Gui : Disposable {
     /// </summary>
     public int ScaleFactor {
         get {
-            int autoScaleFactor = Math.Clamp(this.AutoScaleFactor, 1, this.MaxScaleFactor);
+            int autoScaleFactor = this.AutoScaleFactor;
+            int maxScaleFactor = this.MaxScaleFactor;
             
             if (GuiManager.Scale <= 0) {
-                return autoScaleFactor;
+                return Math.Clamp(autoScaleFactor, 1, maxScaleFactor);
             }
             
-            int selectedScale = Math.Clamp(GuiManager.Scale, 1, GuiManager.MaxAllowedScaleFactor);
+            int selectedScale = Math.Clamp(GuiManager.Scale, 1, maxScaleFactor);
             int offset = selectedScale - 3;
             int finalScale = autoScaleFactor + offset;
             
-            return Math.Clamp(finalScale, 1, this.MaxScaleFactor);
+            return Math.Clamp(finalScale, 1, maxScaleFactor);
         }
     }
     
