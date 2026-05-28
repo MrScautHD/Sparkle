@@ -34,7 +34,7 @@ public abstract class Gui : Disposable {
     /// </summary>
     public int ScaleFactor {
         get {
-            int autoScaleFactor = this.AutoScaleFactor;
+            int autoScaleFactor = Math.Clamp(this.AutoScaleFactor, 1, this.MaxScaleFactor);
             
             if (GuiManager.Scale <= 0) {
                 return autoScaleFactor;

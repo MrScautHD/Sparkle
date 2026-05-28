@@ -49,7 +49,7 @@ public static class GuiManager {
     /// Initializes the GUI manager.
     /// </summary>
     internal static void Init() {
-        MaxAllowedScaleFactor = 4;
+        MaxAllowedScaleFactor = 5;
         Scale = 0;
     }
     
