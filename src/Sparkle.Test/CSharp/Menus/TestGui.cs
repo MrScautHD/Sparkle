@@ -145,7 +145,7 @@ public class TestGui : Gui {
             new Vector2(40, 0),
             size: new Vector2(140F, 30),
             rotation: 0,
-            scale: new Vector2(2, 2),
+            scale: new Vector2(1, 1),
             fieldTextOffset: new Vector2(10, 1),
             menuTextOffset: new Vector2(10, 1),
             menuTextAlignment: TextAlignment.Left,
@@ -168,10 +168,11 @@ public class TestGui : Gui {
         
         // Rectangle drop down element.
         RectangleDropDownData rectangleDropDownData = new RectangleDropDownData() {
-            FieldOutlineThickness = 4,
-            MenuOutlineThickness = 4,
-            SliderOutlineThickness = 4,
-            SliderSize = new Vector2(18, 18)
+            FieldOutlineThickness = 2,
+            MenuOutlineThickness = 2,
+            SliderOutlineThickness = 2,
+            SliderSize = new Vector2(18, 18),
+            ArrowSize = new Vector2(7, 5)
         };
         
         List<LabelData> rectOptions = [
@@ -193,7 +194,7 @@ public class TestGui : Gui {
             Anchor.CenterLeft,
             new Vector2(40, -80),
             new Vector2(140, 30),
-            new Vector2(2, 2),
+            new Vector2(1, 1),
             rotation: 0,
             fieldTextOffset: new Vector2(10, 0),
             menuTextOffset: new Vector2(10, 0)

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using Bliss.CSharp.Logging;
 using Sparkle.CSharp;
 using Sparkle.CSharp.GUI.Loading;
@@ -15,7 +16,7 @@ GameSettings settings = new GameSettings() {
 TestGame game = new TestGame(settings);
 
 try {
-    game.Run(new TestScene3D(), new LogoLoadingGui("Loading", "content/sparkle/images/logo.png"));
+    game.Run(new TestScene3D(), new LogoLoadingGui("Loading", "content/sparkle/images/logo.png", logoScale: new Vector2(3, 3)));
 }
 catch (Exception ex) {
     StackFrame? frame = new StackTrace(ex, true).GetFrame(0);

@@ -35,6 +35,13 @@ public class LogoLoadingGui : LoadingGui {
     /// The duration, in seconds, of the background fade-in animation.
     /// </summary>
     private float _bgFadeInTime;
+
+    /// <summary>
+    /// Represents the scale factor applied to the logo and other visual elements
+    /// in the loading GUI. This determines how much the elements are scaled relative
+    /// to their original size.
+    /// </summary>
+    private Vector2 _logoScale;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="LogoLoadingGui"/> class.
@@ -45,10 +52,12 @@ public class LogoLoadingGui : LoadingGui {
     /// <param name="bgFadeInTime">The duration, in seconds, of the background fade-in animation.</param>
     /// <param name="minTime">The minimum amount of time, in seconds, that the loading screen should remain visible.</param>
     /// <param name="size">Optional size of the GUI in pixels as a tuple (width, height). If <c>null</c>, a default size is used.</param>
-    public LogoLoadingGui(string name, string logoPath, float logoFadeInTime = 2.0F, float bgFadeInTime = 1.5F, float minTime = 2.5F, (int, int)? size = null) : base(name, minTime, size) {
+    /// <param name="logoScale">Optional scaling factor as a <see cref="Vector2"/>. If <c>null</c>, the default scaling of <c>Vector2.One</c> is used.</param>
+    public LogoLoadingGui(string name, string logoPath, float logoFadeInTime = 2.0F, float bgFadeInTime = 1.5F, float minTime = 2.5F, (int, int)? size = null, Vector2? logoScale = null) : base(name, minTime, size) {
         this._logoPath = logoPath;
         this._logoFadeInTime = logoFadeInTime;
         this._bgFadeInTime = bgFadeInTime;
+        this._logoScale = logoScale ?? Vector2.One;
     }
     
     /// <summary>
@@ -62,7 +71,7 @@ public class LogoLoadingGui : LoadingGui {
             Color = new Color(255, 255, 255, 0),
             HoverColor = new Color(255, 255, 255, 0)
         };
-        this.AddElement("logo", new ImageElement(imageData, Anchor.Center, Vector2.Zero, scale: new Vector2(5, 5)));
+        this.AddElement("logo", new ImageElement(imageData, Anchor.Center, Vector2.Zero, scale: this._logoScale));
     }
     
     /// <summary>

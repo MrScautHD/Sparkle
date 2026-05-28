@@ -18,6 +18,11 @@ public static class GuiManager {
     public static int MaxAllowedScaleFactor;
     
     /// <summary>
+    /// Extra scale added to the automatically calculated GUI scale factor.
+    /// </summary>
+    public static int AutoScaleOffset;
+    
+    /// <summary>
     /// The selected GUI scale.
     /// 0 means automatic scaling.
     /// 1 to <see cref="MaxAllowedScaleFactor"/> are relative scale steps around the automatic scale.
@@ -50,6 +55,7 @@ public static class GuiManager {
     /// </summary>
     internal static void Init() {
         MaxAllowedScaleFactor = 5;
+        AutoScaleOffset = 1;
         Scale = 0;
     }
     

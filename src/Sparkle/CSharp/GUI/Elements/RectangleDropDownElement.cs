@@ -833,66 +833,69 @@ public class RectangleDropDownElement : GuiElement {
     /// Draws the slider for the dropdown menu, visually representing the scroll position.
     /// </summary>
     /// <param name="primitiveBatch">The primitive batch used for rendering graphical elements.</param>
-    private void DrawSlider(PrimitiveBatch primitiveBatch) {
-        if (this.Options.Count <= this.MaxVisibleOptions) {
-            return;
-        }
-        
-        float scaleFactor = this.Gui.ScaleFactor;
-        Vector2 scale = this.Scale * scaleFactor;
-        
-        // Calculate the total track height.
-        float trackHeight = (this.Size.Y * this.MaxVisibleOptions) - this.DropDownData.MenuOutlineThickness / 2.0F;
-        float sliderHeight = this.DropDownData.SliderSize.Y;
-        float usableTrackHeight = trackHeight - sliderHeight;
-        
-        // Calculate the Y offset of the slider within the track based on scroll percentage.
-        float sliderYOffset = this.Size.Y + (this._scrollPercent * usableTrackHeight);
-        
-        // The slider is horizontally centered in the SliderBarWidth area, plus the SliderOffset.X.
-        float sliderXOffset = this.Size.X - this.DropDownData.SliderBarWidth + (this.DropDownData.SliderBarWidth - this.DropDownData.SliderSize.X) / 2.0F - this.DropDownData.MenuOutlineThickness / 4.0F;
-        
-        Vector2 sliderSize = this.DropDownData.SliderSize * scale;
-        Vector2 sliderOrigin = (this.Origin - new Vector2(sliderXOffset, sliderYOffset)) * scale;
-        
-        // Slider color.
-        Color sliderColor = this.IsHovered ? this.DropDownData.SliderHoverColor : this.DropDownData.SliderColor;
-        
-        if (!this.Interactable) {
-            sliderColor = this.DropDownData.DisabledSliderColor;
-        }
-        
-        // Draw slider rectangle.
-        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), sliderOrigin, this.Rotation, 0.5F, sliderColor);
-        
-        // Draw slider outline.
-        if (this.DropDownData.SliderOutlineThickness > 0.0F) {
-            float thickness = this.DropDownData.SliderOutlineThickness * scaleFactor;
-            Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation), this.Position);
-            
-            // Calculate corners.
-            Vector2 p1 = Vector2.Transform(this.Position - sliderOrigin, rotationMatrix);
-            Vector2 p2 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y) - sliderOrigin, rotationMatrix);
-            Vector2 p3 = Vector2.Transform(new Vector2(this.Position.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
-            Vector2 p4 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
-            
-            // Normals for thickness offset.
-            Vector2 hNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (thickness / 2.0F);
-            Vector2 vNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (thickness / 2.0F);
-            
-            Color outlineColor = this.IsHovered ? this.DropDownData.SliderOutlineHoverColor : this.DropDownData.SliderOutlineColor;
-            
-            if (!this.Interactable) {
-                outlineColor = this.DropDownData.DisabledSliderOutlineColor;
-            }
-            
-            // Draw outline segments.
-            primitiveBatch.DrawLine(p1 + hNormal, p2 + hNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p1 - vNormal, p3 - vNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, thickness, 0.5F, outlineColor); 
-        }
+private void DrawSlider(PrimitiveBatch primitiveBatch) {
+    if (this.Options.Count <= this.MaxVisibleOptions) {
+        return;
     }
+
+    float scaleFactor = this.Gui.ScaleFactor;
+    Vector2 scale = this.Scale * scaleFactor;
+
+    // Calculate the total track height.
+    float trackHeight = (this.Size.Y * this.MaxVisibleOptions) - this.DropDownData.MenuOutlineThickness / 2.0F;
+    float sliderHeight = this.DropDownData.SliderSize.Y;
+    float usableTrackHeight = trackHeight - sliderHeight;
+
+    // Calculate the Y offset of the slider within the track based on scroll percentage.
+    float sliderYOffset = this.Size.Y + (this._scrollPercent * usableTrackHeight);
+
+    // Center the slider inside the visible scrollbar area.
+    // The scrollbar has a visible right outline, so compensate by moving the center left a bit.
+    float trackLeft = this.Size.X - this.DropDownData.SliderBarWidth;
+    float visibleTrackWidth = this.DropDownData.SliderBarWidth - this.DropDownData.MenuOutlineThickness;
+    float sliderXOffset = trackLeft + (visibleTrackWidth - this.DropDownData.SliderSize.X) / 2.0F;
+
+    Vector2 sliderSize = this.DropDownData.SliderSize * scale;
+    Vector2 sliderOrigin = (this.Origin - new Vector2(sliderXOffset, sliderYOffset)) * scale;
+
+    // Slider color.
+    Color sliderColor = this.IsHovered ? this.DropDownData.SliderHoverColor : this.DropDownData.SliderColor;
+
+    if (!this.Interactable) {
+        sliderColor = this.DropDownData.DisabledSliderColor;
+    }
+
+    // Draw slider rectangle.
+    primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), sliderOrigin, this.Rotation, 0.5F, sliderColor);
+
+    // Draw slider outline.
+    if (this.DropDownData.SliderOutlineThickness > 0.0F) {
+        float thickness = this.DropDownData.SliderOutlineThickness * scaleFactor;
+        Matrix3x2 rotationMatrix = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation), this.Position);
+
+        // Calculate corners.
+        Vector2 p1 = Vector2.Transform(this.Position - sliderOrigin, rotationMatrix);
+        Vector2 p2 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y) - sliderOrigin, rotationMatrix);
+        Vector2 p3 = Vector2.Transform(new Vector2(this.Position.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
+        Vector2 p4 = Vector2.Transform(new Vector2(this.Position.X + sliderSize.X, this.Position.Y + sliderSize.Y) - sliderOrigin, rotationMatrix);
+
+        // Normals for thickness offset.
+        Vector2 hNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (thickness / 2.0F);
+        Vector2 vNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (thickness / 2.0F);
+
+        Color outlineColor = this.IsHovered ? this.DropDownData.SliderOutlineHoverColor : this.DropDownData.SliderOutlineColor;
+
+        if (!this.Interactable) {
+            outlineColor = this.DropDownData.DisabledSliderOutlineColor;
+        }
+
+        // Draw outline segments.
+        primitiveBatch.DrawLine(p1 + hNormal, p2 + hNormal, thickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, thickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p1 - vNormal, p3 - vNormal, thickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, thickness, 0.5F, outlineColor);
+    }
+}
     
     /// <summary>
     /// Draws the arrow for the dropdown element using the specified primitive batch.

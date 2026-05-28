@@ -56,10 +56,11 @@ public abstract class Gui : Disposable {
         get {
             double scaleX = (double) GlobalGraphicsAssets.Window.GetWidth() / this.Size.Width;
             double scaleY = (double) GlobalGraphicsAssets.Window.GetHeight() / this.Size.Height;
-            
+    
             double resolutionScale = Math.Min(scaleX, scaleY);
-            
-            return Math.Max(1, (int) Math.Floor(resolutionScale + 0.5));
+            int scaleFactor = Math.Max(1, (int) Math.Floor(resolutionScale + 0.5)) + GuiManager.AutoScaleOffset;
+    
+            return Math.Clamp(scaleFactor, 1, this.MaxScaleFactor);
         }
     }
     

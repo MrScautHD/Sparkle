@@ -19,7 +19,12 @@ public class TextLoadingScreen : LoadingGui {
     /// The font size used to render the loading text.
     /// </summary>
     private float _fontSize;
-    
+
+    /// <summary>
+    /// The scaling factor applied to the loading text.
+    /// </summary>
+    private Vector2 _textScale;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TextLoadingScreen"/> class.
     /// </summary>
@@ -28,11 +33,13 @@ public class TextLoadingScreen : LoadingGui {
     /// <param name="fontSize">The size of the loading text.</param>
     /// <param name="minTime">The minimum amount of time, in seconds, that the loading screen should remain visible.</param>
     /// <param name="size">Optional size of the GUI in pixels as a tuple (width, height). If <c>null</c>, a default size is used.</param>
-    public TextLoadingScreen(string name, Font font, float fontSize, float minTime = 0.5F, (int, int)? size = null) : base(name, minTime, size) {
+    /// <param name="textScale">Optional scaling factor of the loading text. Defaults to a unit scale (1, 1) if not provided.</param>
+    public TextLoadingScreen(string name, Font font, float fontSize, float minTime = 0.5F, (int, int)? size = null, Vector2? textScale = null) : base(name, minTime, size) {
         this._font = font;
         this._fontSize = fontSize;
+        this._textScale = textScale ?? Vector2.One;
     }
-    
+
     /// <summary>
     /// Initializes the loading GUI and creates the centered loading label.
     /// </summary>
@@ -40,7 +47,7 @@ public class TextLoadingScreen : LoadingGui {
         base.Init();
         
         LabelData labelData = new LabelData(this._font, "Loading", this._fontSize);
-        this.AddElement("loading_label", new LabelElement(labelData, Anchor.Center, Vector2.Zero, new Vector2(5, 5)));
+        this.AddElement("loading_label", new LabelElement(labelData, Anchor.Center, Vector2.Zero, this._textScale));
     }
     
     /// <summary>
