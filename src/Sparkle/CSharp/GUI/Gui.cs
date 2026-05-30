@@ -37,6 +37,12 @@ public abstract class Gui : Disposable {
             int autoScaleFactor = this.AutoScaleFactor;
             int maxScaleFactor = this.MaxScaleFactor;
             
+            bool isBelowBaseSize = GlobalGraphicsAssets.Window.GetWidth() < this.Size.Width || GlobalGraphicsAssets.Window.GetHeight() < this.Size.Height;
+            
+            if (isBelowBaseSize) {
+                return 1;
+            }
+            
             if (GuiManager.Scale <= 0) {
                 return Math.Clamp(autoScaleFactor, 1, maxScaleFactor);
             }
@@ -54,12 +60,12 @@ public abstract class Gui : Disposable {
     /// </summary>
     public int AutoScaleFactor {
         get {
-            double scaleX = (double) GlobalGraphicsAssets.Window.GetWidth() / this.Size.Width;
-            double scaleY = (double) GlobalGraphicsAssets.Window.GetHeight() / this.Size.Height;
-    
-            double resolutionScale = Math.Min(scaleX, scaleY);
-            int scaleFactor = Math.Max(1, (int) Math.Floor(resolutionScale + 0.5)) + GuiManager.AutoScaleOffset;
-    
+            float scaleX = (float) GlobalGraphicsAssets.Window.GetWidth() / this.Size.Width;
+            float scaleY = (float) GlobalGraphicsAssets.Window.GetHeight() / this.Size.Height;
+            
+            float resolutionScale = Math.Min(scaleX, scaleY);
+            int scaleFactor = Math.Max(1, (int) Math.Floor(resolutionScale)) + GuiManager.AutoScaleOffset;
+            
             return Math.Clamp(scaleFactor, 1, this.MaxScaleFactor);
         }
     }
