@@ -105,6 +105,8 @@ public abstract class Gui : Disposable {
         bool interactionHandled = false;
         
         // Handle adding elements.
+        this._elementsToAdd.Reverse();
+        
         foreach (GuiElement element in this._elementsToAdd) {
             this._elements.Add(element.Name, element);
         }
@@ -112,6 +114,8 @@ public abstract class Gui : Disposable {
         this._elementsToAdd.Clear();
         
         // Handle removing elements.
+        this._elementsToRemove.Reverse();
+        
         foreach (string name in this._elementsToRemove) {
             this._elements.Remove(name);
         }
