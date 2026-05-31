@@ -15,17 +15,24 @@ public static class GuiManager {
     /// <summary>
     /// The highest GUI scale step the game allows.
     /// </summary>
-    public static int MaxAllowedScaleFactor;
+    public static int MaxAllowedScaleFactor { get; private set; }
     
     /// <summary>
     /// Extra scale added to the automatically calculated GUI scale factor.
     /// </summary>
-    public static int AutoScaleOffset;
+    public static int AutoScaleOffset { get; private set; }
+    
+    /// <summary>
+    /// A tolerance factor used when checking whether a GUI scale factor fits into the current window.
+    /// Values below 1.0 allow slightly larger scale factors for windowed mode.
+    /// </summary>
+    public static float ScaleFitTolerance { get; private set; }
     
     /// <summary>
     /// The selected GUI scale.
     /// 0 means automatic scaling.
     /// 1 to <see cref="MaxAllowedScaleFactor"/> are relative scale steps around the automatic scale.
+    /// The final scale may still be capped by the active GUI and current window size.
     /// </summary>
     public static int Scale { get; private set; }
     
@@ -33,6 +40,11 @@ public static class GuiManager {
     /// The maximum GUI scale factor that fits on the current screen for the active GUI.
     /// </summary>
     public static int MaxScaleFactor => ActiveGui?.MaxScaleFactor ?? 1;
+    
+    /// <summary>
+    /// The automatically calculated GUI scale factor currently used by the active GUI.
+    /// </summary>
+    public static int AutoScaleFactor => ActiveGui?.AutoScaleFactor ?? 1;
     
     /// <summary>
     /// The final GUI scale factor currently used by the active GUI.
@@ -56,6 +68,7 @@ public static class GuiManager {
     internal static void Init() {
         MaxAllowedScaleFactor = 5;
         AutoScaleOffset = 1;
+        ScaleFitTolerance = 0.95F;
         Scale = 0;
     }
     
@@ -108,6 +121,32 @@ public static class GuiManager {
         if (ActiveGui != null && ActiveGui.IsInitialized) {
             ActiveGui.Resize(rectangle);
         }
+    }
+    
+    /// <summary>
+    /// Sets the highest GUI scale step the game allows.
+    /// </summary>
+    /// <param name="maxAllowedScaleFactor">The highest allowed GUI scale factor.</param>
+    public static void SetMaxAllowedScaleFactor(int maxAllowedScaleFactor) {
+        MaxAllowedScaleFactor = Math.Max(1, maxAllowedScaleFactor);
+    }
+    
+    /// <summary>
+    /// Sets the extra scale added to the automatically calculated GUI scale factor.
+    /// Only affects automatic scaling.
+    /// </summary>
+    /// <param name="offset">The auto scale offset. Positive values make automatic scaling larger; negative values make it smaller.</param>
+    public static void SetAutoScaleOffset(int offset) {
+        AutoScaleOffset = Math.Clamp(offset, -MaxAllowedScaleFactor, MaxAllowedScaleFactor);
+    }
+    
+    /// <summary>
+    /// Sets the tolerance factor used when checking whether a GUI scale factor fits into the current window.
+    /// Values below 1.0 allow slightly larger scale factors for windowed mode.
+    /// </summary>
+    /// <param name="tolerance">The scale fit tolerance. Recommended values are between 0.9 and 1.0.</param>
+    public static void SetScaleFitTolerance(float tolerance) {
+        ScaleFitTolerance = Math.Clamp(tolerance, 0.8F, 1.0F);
     }
     
     /// <summary>

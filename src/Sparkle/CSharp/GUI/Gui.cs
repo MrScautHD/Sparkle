@@ -25,48 +25,40 @@ public abstract class Gui : Disposable {
     public readonly (int Width, int Height) Size;
     
     /// <summary>
+    /// The minimum virtual GUI resolution that must remain after applying the GUI scale factor.
+    /// </summary>
+    public readonly (int Width, int Height) MinVirtualSize;
+    
+    /// <summary>
     /// The maximum scaling factor that can fit on the current screen.
     /// </summary>
     public int MaxScaleFactor => this.CalculateMaxScaleFactor();
-
+    
     /// <summary>
     /// The scaling factor applied to the GUI.
     /// </summary>
     public int ScaleFactor {
         get {
-            int autoScaleFactor = this.AutoScaleFactor;
             int maxScaleFactor = this.MaxScaleFactor;
             
-            bool isBelowBaseSize = GlobalGraphicsAssets.Window.GetWidth() < this.Size.Width || GlobalGraphicsAssets.Window.GetHeight() < this.Size.Height;
-            
-            if (isBelowBaseSize) {
-                return 1;
-            }
-            
             if (GuiManager.Scale <= 0) {
-                return Math.Clamp(autoScaleFactor, 1, maxScaleFactor);
+                return this.AutoScaleFactor;
             }
             
-            int selectedScale = Math.Clamp(GuiManager.Scale, 1, maxScaleFactor);
-            int offset = selectedScale - 3;
-            int finalScale = autoScaleFactor + offset;
-            
-            return Math.Clamp(finalScale, 1, maxScaleFactor);
+            return Math.Clamp(GuiManager.Scale, 1, maxScaleFactor);
         }
     }
     
     /// <summary>
-    /// The automatically calculated GUI scale factor based on the current window size.
+    /// The automatically selected GUI scale factor based on the current maximum available scale.
+    /// Automatic scaling picks a middle scale and rounds upward when between two scale factors.
     /// </summary>
     public int AutoScaleFactor {
         get {
-            float scaleX = (float) GlobalGraphicsAssets.Window.GetWidth() / this.Size.Width;
-            float scaleY = (float) GlobalGraphicsAssets.Window.GetHeight() / this.Size.Height;
+            int maxScaleFactor = this.MaxScaleFactor;
+            int scaleFactor = (int) Math.Ceiling((1.0F + maxScaleFactor) / 2.0F) + GuiManager.AutoScaleOffset;
             
-            float resolutionScale = Math.Min(scaleX, scaleY);
-            int scaleFactor = Math.Max(1, (int) Math.Floor(resolutionScale)) + GuiManager.AutoScaleOffset;
-            
-            return Math.Clamp(scaleFactor, 1, this.MaxScaleFactor);
+            return Math.Clamp(scaleFactor, 1, maxScaleFactor);
         }
     }
     
@@ -90,9 +82,11 @@ public abstract class Gui : Disposable {
     /// </summary>
     /// <param name="name">The name of the GUI.</param>
     /// <param name="size">The width and height of the GUI.</param>
-    protected Gui(string name, (int, int)? size = null) {
+    /// <param name="minVirtualSize">The minimum virtual GUI resolution that must remain after applying the GUI scale factor.</param>
+    protected Gui(string name, (int, int)? size = null, (int, int)? minVirtualSize = null) {
         this.Name = name;
         this.Size = size ?? (1280, 720);
+        this.MinVirtualSize = minVirtualSize ?? (640, 360);
         this._elements = new Dictionary<string, GuiElement>();
         this._elementsToAdd = new List<GuiElement>();
         this._elementsToRemove = new List<string>();
@@ -337,19 +331,26 @@ public abstract class Gui : Disposable {
     }
     
     /// <summary>
-    /// Calculates the maximum GUI scale factor that can fit on the current screen.
+    /// Calculates the maximum GUI scale factor allowed by the current window size.
+    /// The scale is increased while the remaining virtual resolution stays at least <see cref="MinVirtualSize"/>.
     /// </summary>
-    /// <returns>The maximum scale factor that fits on the current screen.</returns>
+    /// <returns>The maximum GUI scale factor allowed by the current window size.</returns>
     private int CalculateMaxScaleFactor() {
         int windowWidth = GlobalGraphicsAssets.Window.GetWidth();
         int windowHeight = GlobalGraphicsAssets.Window.GetHeight();
         
-        int minGuiWidth = this.Size.Width / 4;
-        int minGuiHeight = this.Size.Height / 3;
-        
         int scaleFactor = 1;
         
-        while (scaleFactor < GuiManager.MaxAllowedScaleFactor && windowWidth / (scaleFactor + 1) >= minGuiWidth && windowHeight / (scaleFactor + 1) >= minGuiHeight) {
+        while (scaleFactor < GuiManager.MaxAllowedScaleFactor) {
+            int nextScaleFactor = scaleFactor + 1;
+            
+            float requiredWidth = this.MinVirtualSize.Width * nextScaleFactor * GuiManager.ScaleFitTolerance;
+            float requiredHeight = this.MinVirtualSize.Height * nextScaleFactor * GuiManager.ScaleFitTolerance;
+            
+            if (windowWidth < requiredWidth || windowHeight < requiredHeight) {
+                break;
+            }
+            
             scaleFactor++;
         }
         
