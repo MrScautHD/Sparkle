@@ -146,13 +146,6 @@ public abstract class Scene : Disposable {
     /// <param name="delta">The time elapsed since the last update.</param>
     protected internal virtual void Update(double delta) {
         
-        // Handle adding entities.
-        foreach (Entity entity in this._entitiesToAdd) {
-            this.Entities.Add(entity.Id, entity);
-        }
-        
-        this._entitiesToAdd.Clear();
-        
         // Handle removing entities.
         foreach (uint id in this._entitiesToRemove) {
             if (this.Entities.Remove(id, out Entity? entity)) {
@@ -161,6 +154,13 @@ public abstract class Scene : Disposable {
         }
         
         this._entitiesToRemove.Clear();
+        
+        // Handle adding entities.
+        foreach (Entity entity in this._entitiesToAdd) {
+            this.Entities.Add(entity.Id, entity);
+        }
+        
+        this._entitiesToAdd.Clear();
         
         // Update entities.
         foreach (Entity entity in this.Entities.Values) {

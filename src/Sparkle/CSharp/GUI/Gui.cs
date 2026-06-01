@@ -104,23 +104,19 @@ public abstract class Gui : Disposable {
     protected internal virtual void Update(double delta) {
         bool interactionHandled = false;
         
-        // Handle adding elements.
-        this._elementsToAdd.Reverse();
-        
-        foreach (GuiElement element in this._elementsToAdd) {
-            this._elements.Add(element.Name, element);
-        }
-        
-        this._elementsToAdd.Clear();
-        
         // Handle removing elements.
-        this._elementsToRemove.Reverse();
-        
         foreach (string name in this._elementsToRemove) {
             this._elements.Remove(name);
         }
         
         this._elementsToRemove.Clear();
+        
+        // Handle adding elements.
+        foreach (GuiElement element in this._elementsToAdd) {
+            this._elements.Add(element.Name, element);
+        }
+        
+        this._elementsToAdd.Clear();
         
         // Update elements.
         foreach (GuiElement element in this._elements.Values.Reverse()) {

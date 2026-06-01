@@ -36,19 +36,19 @@ public static class OverlayManager {
     /// <param name="delta">The time delta since the last update.</param>
     internal static void OnUpdate(double delta) {
         
-        // Handle adding overlays.
-        foreach (Overlay overlay in _overlaysToAdd) {
-            _overlays.Add(overlay);
-        }
-        
-        _overlaysToAdd.Clear();
-        
         // Handle removing overlays.
         foreach (Overlay overlay in _overlaysToRemove) {
             _overlays.Remove(overlay);
         }
         
         _overlaysToRemove.Clear();
+        
+        // Handle adding overlays.
+        foreach (Overlay overlay in _overlaysToAdd) {
+            _overlays.Add(overlay);
+        }
+        
+        _overlaysToAdd.Clear();
         
         // Update overlays.
         foreach (Overlay overlay in _overlays) {

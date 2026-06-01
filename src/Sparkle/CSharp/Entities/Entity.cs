@@ -123,13 +123,6 @@ public class Entity : Disposable {
     /// <param name="delta">The time delta since the last update.</param>
     protected internal virtual void Update(double delta) {
         
-        // Handle adding entities.
-        foreach (Component component in this._componentsToAdd) {
-            this.Components.Add(component.GetType(), component);
-        }
-        
-        this._componentsToAdd.Clear();
-        
         // Handle removing entities.
         foreach (Type type in this._componentsToRemove) {
             if (this.Components.Remove(type, out Component? component)) {
@@ -138,6 +131,13 @@ public class Entity : Disposable {
         }
         
         this._componentsToRemove.Clear();
+        
+        // Handle adding entities.
+        foreach (Component component in this._componentsToAdd) {
+            this.Components.Add(component.GetType(), component);
+        }
+        
+        this._componentsToAdd.Clear();
         
         // Update components.
         foreach (Component component in this.Components.Values) {
