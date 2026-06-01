@@ -65,7 +65,7 @@ public abstract class Gui : Disposable {
     /// <summary>
     /// Internal dictionary storing GUI elements by name.
     /// </summary>
-    private Dictionary<string, GuiElement> _elements;
+    private OrderedDictionary<string, GuiElement> _elements;
     
     /// <summary>
     /// Stores elements that will be added to the gui during the next update pass.
@@ -87,7 +87,7 @@ public abstract class Gui : Disposable {
         this.Name = name;
         this.Size = size ?? (1280, 720);
         this.MinVirtualSize = minVirtualSize ?? (640, 360);
-        this._elements = new Dictionary<string, GuiElement>();
+        this._elements = new OrderedDictionary<string, GuiElement>();
         this._elementsToAdd = new List<GuiElement>();
         this._elementsToRemove = new List<string>();
     }
