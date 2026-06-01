@@ -73,17 +73,19 @@ public class SceneSwitcherMenu : Gui {
             menuTextOffset: new Vector2(10, 1),
             menuTextAlignment: TextAlignment.Left,
             sliderOffset: new Vector2(-1F, 0),
-            scrollMaskInsets: (3, 3)
+            menuContentInsets: (5, 5, 3, 3)
         );
         
         chooserDownElement.MenuToggled += (isMenuOpen) => {
             if (isMenuOpen) {
                 if (chooserDownElement.Options.Count > chooserDownElement.MaxVisibleOptions) {
                     chooserDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+                    chooserDownElement.MenuContentInsets.Right = 3;
                 }
             }
             else {
                 chooserDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+                chooserDownElement.MenuContentInsets.Right = 5;
             }
         };
         

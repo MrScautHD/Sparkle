@@ -76,9 +76,9 @@ public class TextureDropDownElement : GuiElement {
     public Vector2 ArrowOffset;
     
     /// <summary>
-    /// The insets applied to the scroll mask for controlling the visible region of the dropdown menu's scrollable content.
+    /// The insets applied to the dropdown menu content mask, used to keep option text and hover highlights away from the menu outline.
     /// </summary>
-    public (float Top, float Bottom) ScrollMaskInsets;
+    public (float Left, float Right, float Top, float Bottom) MenuContentInsets;
     
     /// <summary>
     /// The sensitivity of the dropdown scroll when navigating through options.
@@ -141,7 +141,7 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="menuTextScale">Scaling factor applied to the text within the dropdown menu options.</param>
     /// <param name="sliderOffset">An optional offset applied to the position of the slider within the dropdown menu.</param>
     /// <param name="arrowOffset">The offset applied to the dropdown arrow indicator.</param>
-    /// <param name="scrollMaskInsets">Defines top and bottom padding for the scroll text clipping mask.</param>
+    /// <param name="menuContentInsets">Defines the padding used to clip menu option text and hover highlights away from the menu outline.</param>
     /// <param name="scrollSensitivity">Indicates how sensitive the dropdown menu scrolling is to user input.</param>
     /// <param name="scrollLerpSpeed">Specifies the speed at which the dropdown menu's scroll position interpolates to the target position.</param>
     /// <param name="size">The size of the dropdown element.</param>
@@ -163,7 +163,7 @@ public class TextureDropDownElement : GuiElement {
         Vector2? menuTextScale = null,
         Vector2? sliderOffset = null,
         Vector2? arrowOffset = null,
-        (float Top, float Bottom)? scrollMaskInsets = null,
+        (float Left, float Right, float Top, float Bottom)? menuContentInsets = null,
         float scrollSensitivity = 0.1F,
         float scrollLerpSpeed = 10.0F,
         Vector2? size = null,
@@ -183,7 +183,7 @@ public class TextureDropDownElement : GuiElement {
         this.MenuTextScale = menuTextScale ?? Vector2.One;
         this.SliderOffset = sliderOffset ?? Vector2.Zero;
         this.ArrowOffset = arrowOffset ?? new Vector2(10.0F, 0.0F);
-        this.ScrollMaskInsets = scrollMaskInsets ?? (0.0F, 0.0F);
+        this.MenuContentInsets = menuContentInsets ?? (0.0F, 0.0F, 0.0F, 0.0F);
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
         this.Size = size ?? new Vector2(dropDownData.FieldSourceRect.Width, dropDownData.FieldSourceRect.Height);
@@ -707,10 +707,10 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="primitiveBatch">The primitive batch renderer used for drawing the stencil mask for scrolling.</param>
     private void DrawOptionsText(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
         int visibleOptions = this.Options.Count;
-        float currentScrollIndex = 0;
+        float currentScrollIndex = 0.0F;
         
         if (this.Options.Count > this.MaxVisibleOptions) {
-            currentScrollIndex = Math.Clamp(this._scrollPercent * (this.Options.Count - this.MaxVisibleOptions), 0, this.Options.Count - 1);
+            currentScrollIndex = Math.Clamp(this._scrollPercent * (this.Options.Count - this.MaxVisibleOptions), 0.0F, this.Options.Count - 1.0F);
             visibleOptions = this.MaxVisibleOptions + 1;
         }
         
@@ -728,13 +728,16 @@ public class TextureDropDownElement : GuiElement {
             maskWidth -= this.DropDownData.SliderBarWidth * scale.X;
         }
         
-        float maskHeight = fieldSize.Y * this.MaxVisibleOptions - (this.ScrollMaskInsets.Top + this.ScrollMaskInsets.Bottom) * scale.Y;
+        Vector2 contentInsetTopLeft = new Vector2(this.MenuContentInsets.Left * scale.X, this.MenuContentInsets.Top * scale.Y);
         
-        // Define the clipping mask area (the visible part of the dropdown list).
-        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, maskWidth, maskHeight);
-        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y) - new Vector2(0.0F, this.ScrollMaskInsets.Top * scale.Y);
+        float contentMaskWidth = MathF.Max(0.0F, maskWidth - (this.MenuContentInsets.Left + this.MenuContentInsets.Right) * scale.X);
+        float contentMaskHeight = MathF.Max(0.0F, fieldSize.Y * this.MaxVisibleOptions - (this.MenuContentInsets.Top + this.MenuContentInsets.Bottom) * scale.Y);
         
-        DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription {
+        // Define the clipping mask area for the menu content.
+        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, contentMaskWidth, contentMaskHeight);
+        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y) - contentInsetTopLeft;
+        
+        DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription() {
             StencilTestEnabled = true,
             StencilWriteMask = 0xFF,
             StencilReference = 2,
@@ -748,7 +751,7 @@ public class TextureDropDownElement : GuiElement {
             }
         };
         
-        // Write to the stencil buffer to mark the scroll mask area.
+        // Write to the stencil buffer to mark the menu content mask area.
         primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
         primitiveBatch.PushDepthStencilState(stencilWrite);
         primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
@@ -769,7 +772,7 @@ public class TextureDropDownElement : GuiElement {
             }
         };
         
-        // Draw each option label, clipped by the stencil mask.
+        // Draw each option label, clipped by the menu content mask.
         spriteBatch.Begin(commandList, framebuffer.OutputDescription);
         spriteBatch.PushDepthStencilState(stencilTest);
         
@@ -812,7 +815,7 @@ public class TextureDropDownElement : GuiElement {
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         
         int visibleOptions = this.Options.Count;
-        float currentScrollIndex = 0;
+        float currentScrollIndex = 0.0F;
         
         // Calculate visible options and adjust field size if the scrollbar is active.
         if (this.Options.Count > this.MaxVisibleOptions) {
@@ -825,35 +828,44 @@ public class TextureDropDownElement : GuiElement {
         int startIndex = (int) Math.Floor(currentScrollIndex);
         float scrollOffset = currentScrollIndex - startIndex;
         
-        float maskHeight = fieldSize.Y * this.MaxVisibleOptions;
+        float menuMaskHeight = fieldSize.Y * this.MaxVisibleOptions;
         
-        // Define the mask rectangle for the visible portion of the dropdown list.
-        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, maskHeight);
-        Vector2 maskOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y);
+        // Keep the full menu area for mouse hit-testing.
+        RectangleF menuHitRect = new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, menuMaskHeight);
+        Vector2 menuHitOrigin = this.Origin * scale - new Vector2(0.0F, fieldSize.Y);
         
-        // Check if the mouse is even within the visible menu area first.
-        if (!maskRect.Contains(Input.GetMousePosition(), maskOrigin, this.Rotation)) {
+        // Check if the mouse is inside the visible menu area first.
+        if (!menuHitRect.Contains(Input.GetMousePosition(), menuHitOrigin, this.Rotation)) {
             return;
         }
         
-        DepthStencilStateDescription stencilMask = new DepthStencilStateDescription {
+        // Create a smaller highlight mask so the highlight does not cover the menu outline.
+        Vector2 highlightInsetTopLeft = new Vector2(this.MenuContentInsets.Left * scale.X, this.MenuContentInsets.Top * scale.Y);
+        
+        float highlightMaskWidth = MathF.Max(0.0F, fieldSize.X - (this.MenuContentInsets.Left + this.MenuContentInsets.Right) * scale.X);
+        float highlightMaskHeight = MathF.Max(0.0F, menuMaskHeight - (this.MenuContentInsets.Top + this.MenuContentInsets.Bottom) * scale.Y);
+        
+        RectangleF highlightMaskRect = new RectangleF(this.Position.X, this.Position.Y, highlightMaskWidth, highlightMaskHeight);
+        Vector2 highlightMaskOrigin = menuHitOrigin - highlightInsetTopLeft;
+        
+        DepthStencilStateDescription stencilMask = new DepthStencilStateDescription() {
             StencilTestEnabled = true,
             StencilWriteMask = 1,
             StencilReference = 1,
-            StencilFront = new StencilBehaviorDescription {
+            StencilFront = new StencilBehaviorDescription() {
                 Comparison = ComparisonKind.Always,
                 Pass = StencilOperation.Replace
             },
-            StencilBack = new StencilBehaviorDescription {
+            StencilBack = new StencilBehaviorDescription() {
                 Comparison = ComparisonKind.Always,
                 Pass = StencilOperation.Replace
             }
         };
         
-        // Draw the mask rectangle into the stencil buffer.
+        // Draw the smaller highlight mask rectangle into the stencil buffer.
         primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
         primitiveBatch.PushDepthStencilState(stencilMask);
-        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        primitiveBatch.DrawFilledRectangle(highlightMaskRect, highlightMaskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         primitiveBatch.PopDepthStencilState();
         primitiveBatch.End();
         
@@ -889,7 +901,8 @@ public class TextureDropDownElement : GuiElement {
                     }
                 };
                 
-                // Draw the item's rectangle into the stencil buffer (setting bit 2).
+                // Draw the hovered item rectangle into the stencil buffer.
+                // Because stencilReadMask is 1, only the part inside highlightMaskRect can be written.
                 primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
                 primitiveBatch.PushDepthStencilState(stencilItem);
                 primitiveBatch.DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));

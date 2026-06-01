@@ -150,17 +150,19 @@ public class TestGui : Gui {
             menuTextOffset: new Vector2(10, 1),
             menuTextAlignment: TextAlignment.Left,
             sliderOffset: new Vector2(-1F, 0),
-            scrollMaskInsets: (3, 3)
+            menuContentInsets: (5, 3, 3, 3)
         );
         
         dropDownElement.MenuToggled += (isMenuOpen) => {
             if (isMenuOpen) {
                 if (dropDownElement.Options.Count > dropDownElement.MaxVisibleOptions) {
                     dropDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+                    dropDownElement.MenuContentInsets.Right = 3;
                 }
             }
             else {
                 dropDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
+                dropDownElement.MenuContentInsets.Right = 5;
             }
         };
         
