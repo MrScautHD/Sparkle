@@ -17,6 +17,8 @@ public class TextureScrollViewElement : GuiElement {
     
     public TextureScrollViewData Data { get; private set; }
     
+    public (float Left, float Right, float Top, float Bottom) MenuContentInsets;
+    
     public float ScrollSensitivity;
     
     public float ScrollLerpSpeed;
@@ -56,6 +58,7 @@ public class TextureScrollViewElement : GuiElement {
         Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.MenuSourceRect.Width, data.MenuSourceRect.Height);
+        this.MenuContentInsets = menuContentInsets ?? (0.0F, 0.0F, 0.0F, 0.0F);
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
         
