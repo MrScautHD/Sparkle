@@ -193,8 +193,8 @@ public class TestGui : Gui {
             rectangleDropDownData,
             rectOptions,
             4,
-            Anchor.TopLeft,
-            new Vector2(0, 80),
+            Anchor.CenterLeft,
+            new Vector2(190, 0),
             new Vector2(140, 30),
             new Vector2(1, 1),
             rotation: 0,
@@ -202,7 +202,7 @@ public class TestGui : Gui {
             menuTextOffset: new Vector2(10, 0)
         );
         
-        //this.AddElement("Rectangle-Drop-Down", rectangleDropDownElement);
+        this.AddElement("Rectangle-Drop-Down", rectangleDropDownElement);
         
         // Texture ScrollView element.
         TextureScrollViewData textureScrollViewData = new TextureScrollViewData(
@@ -219,16 +219,14 @@ public class TestGui : Gui {
         
         List<KeyValuePair<string, GuiElement>> content = [];
         
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
                 Logger.Error("CLICKED");
                 return true;
             })));
         }
         
-        content.Add(new KeyValuePair<string, GuiElement>("Rectangle-Drop-Down", rectangleDropDownElement));
-        
-        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), size: new Vector2(300, 180));
+        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), size: new Vector2(200, 180));
         this.AddElement("Texture-Scroll-View", textureScrollView);
     }
 
