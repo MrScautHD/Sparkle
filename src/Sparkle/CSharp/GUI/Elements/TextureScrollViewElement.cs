@@ -17,34 +17,91 @@ namespace Sparkle.CSharp.GUI.Elements;
 
 public class TextureScrollViewElement : GuiElement {
     
+    /// <summary>
+    /// The visual and rendering configuration used for the scroll view, including textures, colors, and slider settings.
+    /// </summary>
     public TextureScrollViewData Data { get; private set; }
     
+    /// <summary>
+    /// Insets applied to the content area, controlling padding inside the scroll view.
+    /// </summary>
     public (float Left, float Right, float Top, float Bottom) MenuContentInsets;
     
+    /// <summary>
+    /// Controls how sensitive mouse wheel scrolling is.
+    /// </summary>
     public float ScrollSensitivity;
     
+    /// <summary>
+    /// Controls how quickly the scroll position interpolates toward the target value.
+    /// </summary>
     public float ScrollLerpSpeed;
     
+    /// <summary>
+    /// All active child GUI elements contained inside this scroll view.
+    /// </summary>
     private OrderedDictionary<string, GuiElement> _content;
     
+    /// <summary>
+    /// Queue of elements that will be added on the next update tick.
+    /// </summary>
     private List<GuiElement> _contentToAdd;
     
+    /// <summary>
+    /// Queue of content names scheduled for removal.
+    /// </summary>
     private List<string> _contentToRemove;
     
+    /// <summary>
+    /// Stores original offsets of content elements for stable scrolling calculations.
+    /// </summary>
     private Dictionary<GuiElement, Vector2> _contentOffsets;
     
+    /// <summary>
+    /// Initial content provided during construction, applied during Init.
+    /// </summary>
     private List<KeyValuePair<string, GuiElement>> _initialContent;
     
+    /// <summary>
+    /// Offscreen render target used to draw scrollable content.
+    /// </summary>
     private RenderTexture2D? _contentRenderTarget;
     
+    /// <summary>
+    /// Final resolved texture containing rendered scroll content.
+    /// </summary>
     private Texture2D? _contentResult;
     
+    /// <summary>
+    /// Current scroll percentage (0 = top, 1 = bottom).
+    /// </summary>
     private float _scrollPercent;
     
+    /// <summary>
+    /// Target scroll percentage used for smooth interpolation.
+    /// </summary>
     private float _targetScrollPercent;
     
+    /// <summary>
+    /// True when the user is dragging the scrollbar slider.
+    /// </summary>
     private bool _isDraggingSlider;
     
+    /// <summary>
+    /// Represents a scrollable GUI element that displays a texture-based menu or content with the ability to scroll.
+    /// </summary>
+    /// <param name="data">The data object containing texture and layout information for the scroll view.</param>
+    /// <param name="content">An optional collection of key-value pairs where each key is a unique identifier and each value is a GUI element to be displayed in the scroll view.</param>
+    /// <param name="anchor">Specifies the anchor position that determines the alignment of the scroll view within its parent element.</param>
+    /// <param name="offset">Defines the offset position of the scroll view relative to its anchor.</param>
+    /// <param name="menuContentInsets">Optional insets defining padding or margins around the scrollable content in the form of left, right, top, and bottom offsets.</param>
+    /// <param name="scrollSensitivity">Indicates the sensitivity of the scroll mechanics, influencing the movement per scroll input.</param>
+    /// <param name="scrollLerpSpeed">Defines the speed of the scrolling animation, affecting how smoothly the content scrolls.</param>
+    /// <param name="size">Optional size of the scroll view. Default value is derived from the menu source rectangle dimensions in the <paramref name="data"/> parameter.</param>
+    /// <param name="scale">Optional scaling factor applied to the scroll view, modifying its rendered size proportionally.</param>
+    /// <param name="origin">Optional origin point for transformations like rotation and scaling, specified in normalized coordinates.</param>
+    /// <param name="rotation">The rotation angle in radians applied to the scroll view.</param>
+    /// <param name="clickFunc">Optional callback function invoked when the scroll view detects a click interaction. This function receives the clicked <see cref="GuiElement"/> as a parameter and returns a boolean indicating success.</param>
     public TextureScrollViewElement(
         TextureScrollViewData data,
         IEnumerable<KeyValuePair<string, GuiElement>>? content,
@@ -77,6 +134,9 @@ public class TextureScrollViewElement : GuiElement {
         }
     }
     
+    /// <summary>
+    /// Initializes the scroll view and applies any initial content.
+    /// </summary>
     protected internal override void Init() {
         base.Init();
         
@@ -91,6 +151,11 @@ public class TextureScrollViewElement : GuiElement {
         this.EnsureContentRenderTarget();
     }
     
+    /// <summary>
+    /// Updates scroll input, slider interaction, and all child content elements.
+    /// </summary>
+    /// <param name="delta">The elapsed time in seconds since the previous update.</param>
+    /// <param name="interactionHandled">A reference flag indicating whether an interaction has already been consumed this tick.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
         
         // Handle removing content.
@@ -181,6 +246,10 @@ public class TextureScrollViewElement : GuiElement {
         }
     }
     
+    /// <summary>
+    /// Runs the post-update pass on the scroll view and propagates it to all content elements.
+    /// </summary>
+    /// <param name="delta">The elapsed time in seconds since the previous update.</param>
     protected internal override void AfterUpdate(double delta) {
         base.AfterUpdate(delta);
         
@@ -189,6 +258,10 @@ public class TextureScrollViewElement : GuiElement {
         }
     }
     
+    /// <summary>
+    /// Runs the fixed-timestep update on the scroll view and propagates it to all content elements.
+    /// </summary>
+    /// <param name="fixedStep">The fixed time step in seconds.</param>
     protected internal override void FixedUpdate(double fixedStep) {
         base.FixedUpdate(fixedStep);
         
@@ -197,6 +270,11 @@ public class TextureScrollViewElement : GuiElement {
         }
     }
     
+    /// <summary>
+    /// Draws the scroll view, including the menu background, the slider bar and handle, and the masked scrollable content.
+    /// </summary>
+    /// <param name="context">The graphics context providing the batches used for rendering.</param>
+    /// <param name="framebuffer">The target framebuffer the scroll view is drawn into.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
@@ -238,6 +316,10 @@ public class TextureScrollViewElement : GuiElement {
         this.DrawContent(context, framebuffer);
     }
     
+    /// <summary>
+    /// Handles a layout/window resize by forwarding it to all content elements and recreating the content render target.
+    /// </summary>
+    /// <param name="rectangle">The new bounding rectangle to resize against.</param>
     protected internal override void Resize(Rectangle rectangle) {
         base.Resize(rectangle);
         
@@ -397,7 +479,7 @@ public class TextureScrollViewElement : GuiElement {
         return true;
     }
     
-        /// <summary>
+    /// <summary>
     /// Draws a texture at the specified position with optional scaling, rotation, and flipping.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used for drawing the texture.</param>
@@ -622,6 +704,11 @@ public class TextureScrollViewElement : GuiElement {
         if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
     }
     
+    /// <summary>
+    /// Renders all content elements into the offscreen target and composites the result into the visible content area, clipped by a stencil mask.
+    /// </summary>
+    /// <param name="context">The graphics context providing the command list and batches.</param>
+    /// <param name="framebuffer">The destination framebuffer to composite the content into.</param>
     private void DrawContent(GraphicsContext context, Framebuffer framebuffer) {
         if (this._content.Count <= 0) {
             return;
@@ -648,6 +735,12 @@ public class TextureScrollViewElement : GuiElement {
         this.DrawContentResult(context.CommandList, framebuffer, context.SpriteBatch);
     }
     
+    /// <summary>
+    /// Writes a stencil mask covering the visible content area so that the composited content is clipped to the view bounds.
+    /// </summary>
+    /// <param name="commandList">The command list used to record the mask draw.</param>
+    /// <param name="framebuffer">The framebuffer the mask is written into.</param>
+    /// <param name="primitiveBatch">The primitive batch used to draw the masking rectangle.</param>
     private void DrawContentMask(CommandList commandList, Framebuffer framebuffer, PrimitiveBatch primitiveBatch) {
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
@@ -677,6 +770,12 @@ public class TextureScrollViewElement : GuiElement {
         primitiveBatch.End();
     }
     
+    /// <summary>
+    /// Draws the rendered content texture into the framebuffer, clipped to the stencil mask written by <see cref="DrawContentMask"/>.
+    /// </summary>
+    /// <param name="commandList">The command list used to record the draw.</param>
+    /// <param name="framebuffer">The destination framebuffer.</param>
+    /// <param name="spriteBatch">The sprite batch used to draw the content result texture.</param>
     private void DrawContentResult(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch) {
         if (this._contentResult == null) {
             return;
@@ -705,10 +804,17 @@ public class TextureScrollViewElement : GuiElement {
         spriteBatch.End();
     }
     
+    /// <summary>
+    /// Draws a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering.</param>
+    /// <param name="framebuffer">The framebuffer the element is drawn into.</param>
+    /// <param name="element">The content element to draw.</param>
     private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
+        bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
         Vector2 viewTopLeft = this.GetViewTopLeft();
@@ -716,19 +822,28 @@ public class TextureScrollViewElement : GuiElement {
         element.AnchorPoint = Anchor.TopLeft;
         element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
         element.Scale = originalScale * this.Scale;
+        element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
         element.Draw(context, framebuffer);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
         element.Scale = originalScale;
+        element.Interactable = originalInteractable;
         element.UpdatePosAndSize();
     }
     
+    /// <summary>
+    /// Updates a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
+    /// </summary>
+    /// <param name="element">The content element to update.</param>
+    /// <param name="delta">The elapsed time in seconds since the previous update.</param>
+    /// <param name="interactionHandled">A reference flag indicating whether an interaction has already been consumed this tick.</param>
     private void UpdateContentElement(GuiElement element, double delta, ref bool interactionHandled) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
+        bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
         Vector2 viewTopLeft = this.GetViewTopLeft();
@@ -736,14 +851,21 @@ public class TextureScrollViewElement : GuiElement {
         element.AnchorPoint = Anchor.TopLeft;
         element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
         element.Scale = originalScale * this.Scale;
+        element.Interactable = originalInteractable && this.Interactable;
         element.Update(delta, ref interactionHandled);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
         element.Scale = originalScale;
+        element.Interactable = originalInteractable;
         element.UpdatePosAndSize();
     }
     
+    /// <summary>
+    /// Gets the size of the content area, optionally reserving horizontal space for the scrollbar when content is scrollable.
+    /// </summary>
+    /// <param name="reserveScrollbar">Whether to subtract the slider bar width from the available width.</param>
+    /// <returns>The content area size in unscaled units.</returns>
     private Vector2 GetContentAreaSize(bool reserveScrollbar = true) {
         float width = this.Size.X;
         
@@ -754,6 +876,11 @@ public class TextureScrollViewElement : GuiElement {
         return new Vector2(width, this.Size.Y);
     }
     
+    /// <summary>
+    /// Gets the visible content size after subtracting the menu content insets from the content area.
+    /// </summary>
+    /// <param name="reserveScrollbar">Whether to reserve horizontal space for the scrollbar.</param>
+    /// <returns>The visible content size in unscaled units.</returns>
     private Vector2 GetVisibleContentSize(bool reserveScrollbar = true) {
         Vector2 contentAreaSize = this.GetContentAreaSize(reserveScrollbar);
         
@@ -763,10 +890,18 @@ public class TextureScrollViewElement : GuiElement {
         return new Vector2(width, height);
     }
     
+    /// <summary>
+    /// Gets the top-left content inset (left and top padding) as a vector.
+    /// </summary>
+    /// <returns>The top-left inset.</returns>
     private Vector2 GetContentInsetTopLeft() {
         return new Vector2(this.MenuContentInsets.Left, this.MenuContentInsets.Top);
     }
     
+    /// <summary>
+    /// Computes the minimum and maximum vertical extents spanned by all content elements.
+    /// </summary>
+    /// <returns>A tuple containing the minimum and maximum Y bounds. Returns (0, 0) when empty.</returns>
     private (float MinY, float MaxY) GetContentBoundsY() {
         if (this._content.Count <= 0) {
             return (0.0F, 0.0F);
@@ -784,26 +919,51 @@ public class TextureScrollViewElement : GuiElement {
         return (minY, maxY);
     }
     
+    /// <summary>
+    /// Gets the total content height, derived from the bottom-most extent of all content elements.
+    /// </summary>
+    /// <returns>The content height.</returns>
     private float GetContentHeight() {
         return this.GetContentBoundsY().MaxY;
     }
     
+    /// <summary>
+    /// Determines whether the content exceeds the visible area and can therefore be scrolled.
+    /// </summary>
+    /// <returns><c>true</c> if there is scrollable content; otherwise, <c>false</c>.</returns>
     private bool HasScrollableContent() {
         return this.GetScrollableHeight() > 0.0F;
     }
     
+    /// <summary>
+    /// Gets the current vertical scroll offset in pixels, derived from the scrollable height and the current scroll percentage.
+    /// </summary>
+    /// <returns>The scroll offset in pixels.</returns>
     private float GetScrollOffset() {
         return this.GetScrollableHeight() * this._scrollPercent;
     }
     
+    /// <summary>
+    /// Gets the total scrollable height: the content height (plus trailing spacing) minus the visible content height.
+    /// </summary>
+    /// <returns>The scrollable height, clamped to be non-negative.</returns>
     private float GetScrollableHeight() {
         return MathF.Max(0.0F, this.GetContentHeight() + this.GetTrailingContentSpacing() - this.GetVisibleContentSize(false).Y);
     }
     
+    /// <summary>
+    /// Gets additional trailing spacing derived from a positive top offset of the content, used to keep scroll bounds consistent.
+    /// </summary>
+    /// <returns>The trailing content spacing, clamped to be non-negative.</returns>
     private float GetTrailingContentSpacing() {
         return MathF.Max(0.0F, this.GetContentBoundsY().MinY);
     }
     
+    /// <summary>
+    /// Gets the cached original offset of a content element, caching the element's current offset on first access.
+    /// </summary>
+    /// <param name="element">The content element.</param>
+    /// <returns>The stored original offset.</returns>
     private Vector2 GetContentOffset(GuiElement element) {
         if (this._contentOffsets.TryGetValue(element, out Vector2 offset)) {
             return offset;
@@ -813,10 +973,18 @@ public class TextureScrollViewElement : GuiElement {
         return element.Offset;
     }
     
+    /// <summary>
+    /// Gets the top-left corner of the view in unscaled GUI coordinates.
+    /// </summary>
+    /// <returns>The top-left position of the view.</returns>
     private Vector2 GetViewTopLeft() {
         return (this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor) / this.Gui.ScaleFactor;
     }
     
+    /// <summary>
+    /// Ensures the offscreen render target and result texture exist and match the current window size, recreating or resizing them if needed.
+    /// </summary>
+    /// <param name="forceResize">When <c>true</c>, forces the targets to be resized even if the window size is unchanged.</param>
     private void EnsureContentRenderTarget(bool forceResize = false) {
         uint width = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetWidth());
         uint height = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetHeight());
