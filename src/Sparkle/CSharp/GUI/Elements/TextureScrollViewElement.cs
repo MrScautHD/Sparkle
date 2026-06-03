@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Mathematics;
@@ -85,7 +87,8 @@ public class TextureScrollViewElement : GuiElement {
         
         this._initialContent.Clear();
         
-        // TODO: CREATE RENDERTARGET HERE USE GLOBALGRAPTICSASSETS FOR GRAPTICSDEVICE.
+        // Create render target.
+        this.EnsureContentRenderTarget();
     }
     
     protected internal override void Update(double delta, ref bool interactionHandled) {
@@ -93,6 +96,7 @@ public class TextureScrollViewElement : GuiElement {
         // Handle removing content.
         foreach (string name in this._contentToRemove) {
             if (this._content.Remove(name, out GuiElement? element)) {
+                this._contentOffsets.Remove(element);
                 element.Dispose();
             }
         }
@@ -105,6 +109,8 @@ public class TextureScrollViewElement : GuiElement {
         }
         
         this._contentToAdd.Clear();
+        
+        bool interactionHandledBeforeBaseUpdate = interactionHandled;
         
         // Update base element.
         base.Update(delta, ref interactionHandled);
@@ -119,13 +125,14 @@ public class TextureScrollViewElement : GuiElement {
         
         Vector2 localMouse = Vector2.Transform(mousePos, transform);
         
+        bool hasScrollableContent = this.HasScrollableContent();
         float sliderBarWidth = this.Data.SliderBarWidth * scale.X;
         float sliderBarHeight = viewSize.Y;
         
         RectangleF localViewRect = new RectangleF(0.0F, 0.0F, viewSize.X, viewSize.Y);
         RectangleF localSliderBarRect = new RectangleF(viewSize.X - sliderBarWidth, 0.0F, sliderBarWidth, sliderBarHeight);
         
-        if (this.Interactable) {
+        if (this.Interactable && hasScrollableContent) {
             if (!this._isDraggingSlider && localViewRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
                     this._targetScrollPercent = Math.Clamp(this._targetScrollPercent - wheelDelta.Y * this.ScrollSensitivity, 0.0F, 1.0F);
@@ -158,12 +165,19 @@ public class TextureScrollViewElement : GuiElement {
             }
         }
         else {
+            this._scrollPercent = 0.0F;
+            this._targetScrollPercent = 0.0F;
             this._isDraggingSlider = false;
         }
         
         // Update content elements.
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
+        Vector2 visibleContentSize = this.GetVisibleContentSize() * scale;
+        RectangleF localContentRect = new RectangleF(contentInsetTopLeft.X, contentInsetTopLeft.Y, visibleContentSize.X, visibleContentSize.Y);
+        bool contentInteractionHandled = interactionHandledBeforeBaseUpdate || !this.Interactable || !localContentRect.Contains(localMouse);
+        
         foreach (GuiElement element in this._content.Values) {
-            element.AfterUpdate(delta);
+            this.UpdateContentElement(element, delta, ref contentInteractionHandled);
         }
     }
     
@@ -194,8 +208,11 @@ public class TextureScrollViewElement : GuiElement {
         
         Vector2 originalSize = this.Size;
         
-        // Draw the menu smaller, leaving space on the right side for the slider bar.
-        this.Size = new Vector2(MathF.Max(0.0F, originalSize.X - this.Data.SliderBarWidth), originalSize.Y);
+        if (this.HasScrollableContent()) {
+            
+            // Draw the menu smaller, leaving space on the right side for the slider bar.
+            this.Size = new Vector2(MathF.Max(0.0F, originalSize.X - this.Data.SliderBarWidth), originalSize.Y);
+        }
         
         switch (this.Data.MenuResizeMode) {
             case ResizeMode.None:
@@ -218,7 +235,7 @@ public class TextureScrollViewElement : GuiElement {
         
         context.SpriteBatch.End();
         
-        // TODO: ADD METHOD CALLED DrawContent that handles the content drawing with the rendertarget (every content element gets drawed on this rendertarget)
+        this.DrawContent(context, framebuffer);
     }
     
     protected internal override void Resize(Rectangle rectangle) {
@@ -228,7 +245,7 @@ public class TextureScrollViewElement : GuiElement {
             element.Resize(rectangle);
         }
         
-        // TODO: RESIZE RENDERTARGET HERE.
+        this.EnsureContentRenderTarget(true);
     }
     
     /// <summary>
@@ -304,6 +321,7 @@ public class TextureScrollViewElement : GuiElement {
 
         element.Gui = this.Gui;
         element.Name = name;
+        this._contentOffsets[element] = element.Offset;
         element.Init();
         
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
@@ -545,6 +563,10 @@ public class TextureScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to render the slider bar.</param>
     private void DrawSliderBar(SpriteBatch spriteBatch) {
+        if (!this.HasScrollableContent()) {
+            return;
+        }
+        
         Vector2 originalSize = this.Size;
         Vector2 originalOrigin = this.Origin;
         
@@ -577,6 +599,10 @@ public class TextureScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to render the slider.</param>
     private void DrawSlider(SpriteBatch spriteBatch) {
+        if (!this.HasScrollableContent()) {
+            return;
+        }
+        
         float sliderBarHeight = this.Size.Y;
         float sliderHeight = this.Data.SliderSourceRect.Height;
         float sliderRange = MathF.Max(0.0F, sliderBarHeight - sliderHeight);
@@ -597,12 +623,239 @@ public class TextureScrollViewElement : GuiElement {
     }
     
     private void DrawContent(GraphicsContext context, Framebuffer framebuffer) {
+        if (this._content.Count <= 0) {
+            return;
+        }
         
+        this.EnsureContentRenderTarget();
+        
+        if (this._contentRenderTarget == null || this._contentResult == null) {
+            return;
+        }
+        
+        context.CommandList.SetFramebuffer(this._contentRenderTarget.Framebuffer);
+        context.CommandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
+        context.CommandList.ClearDepthStencil(1.0F);
+        
+        foreach (GuiElement element in this._content.Values) {
+            this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element);
+        }
+        
+        context.CommandList.CopyTexture(this._contentRenderTarget.ColorTexture, this._contentResult.DeviceTexture);
+        context.CommandList.SetFramebuffer(framebuffer);
+        
+        this.DrawContentMask(context.CommandList, framebuffer, context.PrimitiveBatch);
+        this.DrawContentResult(context.CommandList, framebuffer, context.SpriteBatch);
+    }
+    
+    private void DrawContentMask(CommandList commandList, Framebuffer framebuffer, PrimitiveBatch primitiveBatch) {
+        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
+        Vector2 visibleContentSize = this.GetVisibleContentSize() * scale;
+        
+        RectangleF maskRect = new RectangleF(this.Position.X, this.Position.Y, visibleContentSize.X, visibleContentSize.Y);
+        Vector2 maskOrigin = this.Origin * scale - contentInsetTopLeft;
+        
+        DepthStencilStateDescription stencilWrite = new DepthStencilStateDescription() {
+            StencilTestEnabled = true,
+            StencilWriteMask = 0xFF,
+            StencilReference = 4,
+            StencilFront = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            },
+            StencilBack = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Always,
+                Pass = StencilOperation.Replace
+            }
+        };
+        
+        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+        primitiveBatch.PushDepthStencilState(stencilWrite);
+        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        primitiveBatch.PopDepthStencilState();
+        primitiveBatch.End();
+    }
+    
+    private void DrawContentResult(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch) {
+        if (this._contentResult == null) {
+            return;
+        }
+        
+        DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
+            StencilTestEnabled = true,
+            StencilReadMask = 0xFF,
+            StencilReference = 4,
+            StencilFront = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            },
+            StencilBack = new StencilBehaviorDescription() {
+                Comparison = ComparisonKind.Equal,
+                Pass = StencilOperation.Keep
+            }
+        };
+        
+        Rectangle sourceRect = new Rectangle(0, 0, (int) this._contentResult.Width, (int) this._contentResult.Height);
+        
+        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
+        spriteBatch.PushDepthStencilState(stencilTest);
+        spriteBatch.DrawTexture(this._contentResult, Vector2.Zero, 0.5F, sourceRect, Vector2.One, Vector2.Zero, false, 0.0F, Color.White, SpriteFlip.None);
+        spriteBatch.PopDepthStencilState();
+        spriteBatch.End();
+    }
+    
+    private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element) {
+        Anchor originalAnchor = element.AnchorPoint;
+        Vector2 originalOffset = element.Offset;
+        Vector2 originalScale = element.Scale;
+        Vector2 localOffset = this.GetContentOffset(element);
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
+        Vector2 viewTopLeft = this.GetViewTopLeft();
+        
+        element.AnchorPoint = Anchor.TopLeft;
+        element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
+        element.Scale = originalScale * this.Scale;
+        element.UpdatePosAndSize();
+        element.Draw(context, framebuffer);
+        
+        element.AnchorPoint = originalAnchor;
+        element.Offset = originalOffset;
+        element.Scale = originalScale;
+        element.UpdatePosAndSize();
+    }
+    
+    private void UpdateContentElement(GuiElement element, double delta, ref bool interactionHandled) {
+        Anchor originalAnchor = element.AnchorPoint;
+        Vector2 originalOffset = element.Offset;
+        Vector2 originalScale = element.Scale;
+        Vector2 localOffset = this.GetContentOffset(element);
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
+        Vector2 viewTopLeft = this.GetViewTopLeft();
+        
+        element.AnchorPoint = Anchor.TopLeft;
+        element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
+        element.Scale = originalScale * this.Scale;
+        element.Update(delta, ref interactionHandled);
+        
+        element.AnchorPoint = originalAnchor;
+        element.Offset = originalOffset;
+        element.Scale = originalScale;
+        element.UpdatePosAndSize();
+    }
+    
+    private Vector2 GetContentAreaSize(bool reserveScrollbar = true) {
+        float width = this.Size.X;
+        
+        if (reserveScrollbar && this.HasScrollableContent()) {
+            width = MathF.Max(0.0F, width - this.Data.SliderBarWidth);
+        }
+        
+        return new Vector2(width, this.Size.Y);
+    }
+    
+    private Vector2 GetVisibleContentSize(bool reserveScrollbar = true) {
+        Vector2 contentAreaSize = this.GetContentAreaSize(reserveScrollbar);
+        
+        float width = MathF.Max(0.0F, contentAreaSize.X - this.MenuContentInsets.Left - this.MenuContentInsets.Right);
+        float height = MathF.Max(0.0F, contentAreaSize.Y - this.MenuContentInsets.Top - this.MenuContentInsets.Bottom);
+        
+        return new Vector2(width, height);
+    }
+    
+    private Vector2 GetContentInsetTopLeft() {
+        return new Vector2(this.MenuContentInsets.Left, this.MenuContentInsets.Top);
+    }
+    
+    private (float MinY, float MaxY) GetContentBoundsY() {
+        if (this._content.Count <= 0) {
+            return (0.0F, 0.0F);
+        }
+        
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
+        
+        foreach (GuiElement element in this._content.Values) {
+            Vector2 offset = this.GetContentOffset(element);
+            minY = MathF.Min(minY, offset.Y);
+            maxY = MathF.Max(maxY, offset.Y + element.Size.Y * element.Scale.Y);
+        }
+        
+        return (minY, maxY);
+    }
+    
+    private float GetContentHeight() {
+        return this.GetContentBoundsY().MaxY;
+    }
+    
+    private bool HasScrollableContent() {
+        return this.GetScrollableHeight() > 0.0F;
+    }
+    
+    private float GetScrollOffset() {
+        return this.GetScrollableHeight() * this._scrollPercent;
+    }
+    
+    private float GetScrollableHeight() {
+        return MathF.Max(0.0F, this.GetContentHeight() + this.GetTrailingContentSpacing() - this.GetVisibleContentSize(false).Y);
+    }
+    
+    private float GetTrailingContentSpacing() {
+        return MathF.Max(0.0F, this.GetContentBoundsY().MinY);
+    }
+    
+    private Vector2 GetContentOffset(GuiElement element) {
+        if (this._contentOffsets.TryGetValue(element, out Vector2 offset)) {
+            return offset;
+        }
+        
+        this._contentOffsets[element] = element.Offset;
+        return element.Offset;
+    }
+    
+    private Vector2 GetViewTopLeft() {
+        return (this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor) / this.Gui.ScaleFactor;
+    }
+    
+    private void EnsureContentRenderTarget(bool forceResize = false) {
+        uint width = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetWidth());
+        uint height = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetHeight());
+        
+        if (this._contentRenderTarget == null || this._contentResult == null) {
+            this._contentRenderTarget = new RenderTexture2D(GlobalGraphicsAssets.GraphicsDevice, width, height);
+            this._contentResult = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
+            return;
+        }
+        
+        if (forceResize || this._contentRenderTarget.Width != width || this._contentRenderTarget.Height != height) {
+            this._contentRenderTarget.Resize(width, height);
+            this._contentResult.Dispose();
+            this._contentResult = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
+        }
     }
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            HashSet<GuiElement> disposedElements = new HashSet<GuiElement>();
             
+            foreach (GuiElement element in this._content.Values) {
+                if (disposedElements.Add(element)) {
+                    element.Dispose();
+                }
+            }
+            
+            foreach (GuiElement element in this._contentToAdd) {
+                if (disposedElements.Add(element)) {
+                    element.Dispose();
+                }
+            }
+            
+            this._content.Clear();
+            this._contentToAdd.Clear();
+            this._contentToRemove.Clear();
+            
+            this._contentRenderTarget?.Dispose();
+            this._contentResult?.Dispose();
         }
     }
 }
