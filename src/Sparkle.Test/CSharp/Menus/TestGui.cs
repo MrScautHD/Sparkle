@@ -209,10 +209,13 @@ public class TestGui : Gui {
             ContentRegistry.UiBannerEdgeLessTexture,
             ContentRegistry.UiBannerEdgeLessTexture,
             ContentRegistry.UiSliderTexture,
+            backgroundSourceRect: new Rectangle(2, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 4, (int) ContentRegistry.UiBannerEdgeLessTexture.Height),
+            sliderBarSourceRect: new Rectangle(2, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 4, (int) ContentRegistry.UiBannerEdgeLessTexture.Height),
             backgroundResizeMode: ResizeMode.NineSlice,
             sliderBarResizeMode: ResizeMode.NineSlice,
-            backgroundBorderInsets: new BorderInsets(12),
-            sliderBarBorderInsets: new BorderInsets(5)
+            backgroundBorderInsets: new BorderInsets(5),
+            sliderBarBorderInsets: new BorderInsets(5),
+            backgroundHoverColor: Color.Gray
         );
         
         List<KeyValuePair<string, GuiElement>> content = [];

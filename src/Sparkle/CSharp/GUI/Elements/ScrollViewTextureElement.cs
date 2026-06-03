@@ -51,6 +51,11 @@ public class ScrollViewTextureElement : GuiElement {
     private Dictionary<GuiElement, Vector2> _contentOffsets;
     
     /// <summary>
+    /// Stores content passed in through the constructor until the scroll view has a valid GUI instance.
+    /// </summary>
+    private List<KeyValuePair<string, GuiElement>> _initialContent;
+    
+    /// <summary>
     /// The render target used to draw clipped scroll view content.
     /// </summary>
     private RenderTexture2D? _contentRenderTarget;
@@ -96,10 +101,11 @@ public class ScrollViewTextureElement : GuiElement {
         this._contentToAdd = new List<GuiElement>();
         this._contentToRemove = new List<string>();
         this._contentOffsets = new Dictionary<GuiElement, Vector2>();
+        this._initialContent = new List<KeyValuePair<string, GuiElement>>();
         
         if (content != null) {
             foreach ((string name, GuiElement element) in content) {
-                this.AddContent(name, element);
+                this._initialContent.Add(new KeyValuePair<string, GuiElement>(name, element));
             }
         }
     }
@@ -107,6 +113,14 @@ public class ScrollViewTextureElement : GuiElement {
     protected internal override void Init() {
         base.Init();
         
+        // Add content elements to the Scroll view element.
+        foreach ((string name, GuiElement element) in this._initialContent) {
+            this.AddContent(name, element);
+        }
+        
+        this._initialContent.Clear();
+        
+        // TODO: CREATE RENDERTARGET HERE USE GLOBALGRAPTICSASSETS FOR GRAPTICSDEVICE.
     }
     
     /// <summary>
@@ -186,6 +200,27 @@ public class ScrollViewTextureElement : GuiElement {
         else {
             this._isDraggingSlider = false;
         }
+        
+        // Update content elements.
+        foreach (GuiElement element in this._content.Values) {
+            element.AfterUpdate(delta);
+        }
+    }
+    
+    protected internal override void AfterUpdate(double delta) {
+        base.AfterUpdate(delta);
+        
+        foreach (GuiElement element in this._content.Values) {
+            element.AfterUpdate(delta);
+        }
+    }
+    
+    protected internal override void FixedUpdate(double fixedStep) {
+        base.FixedUpdate(fixedStep);
+        
+        foreach (GuiElement element in this._content.Values) {
+            element.FixedUpdate(fixedStep);
+        }
     }
     
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
@@ -222,6 +257,18 @@ public class ScrollViewTextureElement : GuiElement {
         this.DrawSlider(context.SpriteBatch);
         
         context.SpriteBatch.End();
+        
+        // TODO: ADD METHOD CALLED DrawContent that handles the content drawing with the rendertarget (every content element gets drawed on this rendertarget)
+    }
+    
+    protected internal override void Resize(Rectangle rectangle) {
+        base.Resize(rectangle);
+        
+        foreach (GuiElement element in this._content.Values) {
+            element.Resize(rectangle);
+        }
+        
+        // TODO: RESIZE RENDERTARGET HERE.
     }
     
     /// <summary>
@@ -372,63 +419,7 @@ public class ScrollViewTextureElement : GuiElement {
         return true;
     }
     
-    /// <summary>
-    /// Draws the slider bar track on the right side of the scroll view.
-    /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the slider bar.</param>
-    private void DrawSliderBar(SpriteBatch spriteBatch) {
-        Vector2 originalSize = this.Size;
-        Vector2 originalOrigin = this.Origin;
-        
-        this.Size = new Vector2(this.Data.SliderBarWidth, originalSize.Y);
-        this.Origin = originalOrigin - new Vector2(originalSize.X - this.Data.SliderBarWidth, 0.0F);
-        
-        Color color = this.IsHovered ? this.Data.SliderBarHoverColor : this.Data.SliderBarColor;
-        
-        if (!this.Interactable) {
-            color = this.Data.DisabledSliderBarColor;
-        }
-        
-        switch (this.Data.SliderBarResizeMode) {
-            case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap);
-                break;
-            
-            case ResizeMode.NineSlice:
-            case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, this.Data.SliderBarBorderInsets, this.Data.SliderBarResizeMode == ResizeMode.TileCenter, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap);
-                break;
-        }
-        
-        this.Size = originalSize;
-        this.Origin = originalOrigin;
-    }
-    
-    /// <summary>
-    /// Draws the slider handle inside the slider bar.
-    /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the slider.</param>
-    private void DrawSlider(SpriteBatch spriteBatch) {
-        float sliderBarHeight = this.Size.Y;
-        float sliderHeight = this.Data.SliderSourceRect.Height;
-        float sliderRange = MathF.Max(0.0F, sliderBarHeight - sliderHeight);
-
-        float xOffset = this.Size.X - this.Data.SliderBarWidth + (this.Data.SliderBarWidth - this.Data.SliderSourceRect.Width) / 2.0F;
-        float yOffset = sliderRange * this._scrollPercent;
-        Vector2 origin = this.Origin - new Vector2(xOffset, yOffset);
-
-        Color color = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
-
-        if (!this.Interactable) {
-            color = this.Data.DisabledSliderColor;
-        }
-
-        if (this.Data.SliderSampler != null) spriteBatch.PushSampler(this.Data.SliderSampler);
-        spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
-        if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
-    }
-    
-    /// <summary>
+        /// <summary>
     /// Draws a texture at the specified position with optional scaling, rotation, and flipping.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used for drawing the texture.</param>
@@ -588,7 +579,67 @@ public class ScrollViewTextureElement : GuiElement {
         // Pop sampler.
         if (sampler != null) spriteBatch.PopSampler();
     }
+    
+    /// <summary>
+    /// Draws the slider bar track on the right side of the scroll view.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to render the slider bar.</param>
+    private void DrawSliderBar(SpriteBatch spriteBatch) {
+        Vector2 originalSize = this.Size;
+        Vector2 originalOrigin = this.Origin;
+        
+        this.Size = new Vector2(this.Data.SliderBarWidth, originalSize.Y);
+        this.Origin = originalOrigin - new Vector2(originalSize.X - this.Data.SliderBarWidth, 0.0F);
+        
+        Color color = this.IsHovered ? this.Data.SliderBarHoverColor : this.Data.SliderBarColor;
+        
+        if (!this.Interactable) {
+            color = this.Data.DisabledSliderBarColor;
+        }
+        
+        switch (this.Data.SliderBarResizeMode) {
+            case ResizeMode.None:
+                this.DrawNormal(spriteBatch, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap);
+                break;
+            
+            case ResizeMode.NineSlice:
+            case ResizeMode.TileCenter:
+                this.DrawNineSlice(spriteBatch, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, this.Data.SliderBarBorderInsets, this.Data.SliderBarResizeMode == ResizeMode.TileCenter, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap);
+                break;
+        }
+        
+        this.Size = originalSize;
+        this.Origin = originalOrigin;
+    }
+    
+    /// <summary>
+    /// Draws the slider handle inside the slider bar.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to render the slider.</param>
+    private void DrawSlider(SpriteBatch spriteBatch) {
+        float sliderBarHeight = this.Size.Y;
+        float sliderHeight = this.Data.SliderSourceRect.Height;
+        float sliderRange = MathF.Max(0.0F, sliderBarHeight - sliderHeight);
 
+        float xOffset = this.Size.X - this.Data.SliderBarWidth + (this.Data.SliderBarWidth - this.Data.SliderSourceRect.Width) / 2.0F;
+        float yOffset = sliderRange * this._scrollPercent;
+        Vector2 origin = this.Origin - new Vector2(xOffset, yOffset);
+
+        Color color = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
+
+        if (!this.Interactable) {
+            color = this.Data.DisabledSliderColor;
+        }
+
+        if (this.Data.SliderSampler != null) spriteBatch.PushSampler(this.Data.SliderSampler);
+        spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
+        if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
+    }
+    
+    private void DrawContent(GraphicsContext context, Framebuffer framebuffer) {
+        
+    }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             
