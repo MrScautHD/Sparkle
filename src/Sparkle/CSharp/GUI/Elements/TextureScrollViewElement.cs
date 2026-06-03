@@ -13,78 +13,40 @@ using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
-public class ScrollViewTextureElement : GuiElement {
+public class TextureScrollViewElement : GuiElement {
     
-    /// <summary>
-    /// The data used to render the scroll view.
-    /// </summary>
     public TextureScrollViewData Data { get; private set; }
     
-    /// <summary>
-    /// The sensitivity of the dropdown scroll when navigating through options.
-    /// </summary>
     public float ScrollSensitivity;
     
-    /// <summary>
-    /// The interpolation speed at which the menu scrolls to a target position.
-    /// </summary>
     public float ScrollLerpSpeed;
     
-    /// <summary>
-    /// The GUI elements owned by this scroll view.
-    /// </summary>
     private OrderedDictionary<string, GuiElement> _content;
     
-    /// <summary>
-    /// Stores elements that will be added to the gui element during the next update pass.
-    /// </summary>
     private List<GuiElement> _contentToAdd;
     
-    /// <summary>
-    /// Stores the names of elements scheduled for removal during the next update pass.
-    /// </summary>
     private List<string> _contentToRemove;
     
-    /// <summary>
-    /// Stores the original local offsets of all content elements.
-    /// </summary>
     private Dictionary<GuiElement, Vector2> _contentOffsets;
     
-    /// <summary>
-    /// Stores content passed in through the constructor until the scroll view has a valid GUI instance.
-    /// </summary>
     private List<KeyValuePair<string, GuiElement>> _initialContent;
     
-    /// <summary>
-    /// The render target used to draw clipped scroll view content.
-    /// </summary>
     private RenderTexture2D? _contentRenderTarget;
     
-    /// <summary>
-    /// The resolved/copy texture used to draw the content render target back to the main framebuffer.
-    /// </summary>
     private Texture2D? _contentResult;
     
-    /// <summary>
-    /// The current scroll offset for the dropdown menu.
-    /// </summary>
     private float _scrollPercent;
     
-    /// <summary>
-    /// The target scroll offset for smooth scrolling.
-    /// </summary>
     private float _targetScrollPercent;
     
-    /// <summary>
-    /// Indicates if the scroller is currently being dragged.
-    /// </summary>
     private bool _isDraggingSlider;
     
-    public ScrollViewTextureElement(
+    public TextureScrollViewElement(
         TextureScrollViewData data,
         IEnumerable<KeyValuePair<string, GuiElement>>? content,
         Anchor anchor,
         Vector2 offset,
+        (float Left, float Right, float Top, float Bottom)? menuContentInsets = null,
         float scrollSensitivity = 0.1F,
         float scrollLerpSpeed = 10.0F,
         Vector2? size = null,
@@ -93,7 +55,7 @@ public class ScrollViewTextureElement : GuiElement {
         float rotation = 0,
         Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
-        this.Size = size ?? new Vector2(data.BackgroundSourceRect.Width, data.BackgroundSourceRect.Height);
+        this.Size = size ?? new Vector2(data.MenuSourceRect.Width, data.MenuSourceRect.Height);
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
         
@@ -123,11 +85,6 @@ public class ScrollViewTextureElement : GuiElement {
         // TODO: CREATE RENDERTARGET HERE USE GLOBALGRAPTICSASSETS FOR GRAPTICSDEVICE.
     }
     
-    /// <summary>
-    /// Updates the scroll view interaction, including mouse wheel scrolling and dragging the slider.
-    /// </summary>
-    /// <param name="delta">The time elapsed since the last update.</param>
-    /// <param name="interactionHandled">Whether interaction has already been handled by another element.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
         
         // Handle removing content.
@@ -226,25 +183,25 @@ public class ScrollViewTextureElement : GuiElement {
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
-        Color backgroundColor = this.IsHovered ? this.Data.BackgroundHoverColor : this.Data.BackgroundColor;
+        Color menuColor = this.IsHovered ? this.Data.MenuHoverColor : this.Data.MenuColor;
         
         if (!this.Interactable) {
-            backgroundColor = this.Data.DisabledBackgroundColor;
+            menuColor = this.Data.DisabledMenuColor;
         }
         
         Vector2 originalSize = this.Size;
         
-        // Draw the background smaller, leaving space on the right side for the slider bar.
+        // Draw the menu smaller, leaving space on the right side for the slider bar.
         this.Size = new Vector2(MathF.Max(0.0F, originalSize.X - this.Data.SliderBarWidth), originalSize.Y);
         
-        switch (this.Data.BackgroundResizeMode) {
+        switch (this.Data.MenuResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.Data.BackgroundTexture, this.Data.BackgroundSampler, this.Data.BackgroundSourceRect, backgroundColor, this.Data.BackgroundFlip, this.Data.BackgroundPixelSnap);
+                this.DrawNormal(context.SpriteBatch, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.Data.BackgroundTexture, this.Data.BackgroundSampler, this.Data.BackgroundSourceRect, this.Data.BackgroundBorderInsets, this.Data.BackgroundResizeMode == ResizeMode.TileCenter, backgroundColor, this.Data.BackgroundFlip, this.Data.BackgroundPixelSnap);
+                this.DrawNineSlice(context.SpriteBatch, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, this.Data.MenuBorderInsets, this.Data.MenuResizeMode == ResizeMode.TileCenter, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap);
                 break;
         }
         

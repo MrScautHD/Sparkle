@@ -209,13 +209,13 @@ public class TestGui : Gui {
             ContentRegistry.UiBannerEdgeLessTexture,
             ContentRegistry.UiBannerEdgeLessTexture,
             ContentRegistry.UiSliderTexture,
-            backgroundSourceRect: new Rectangle(2, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 4, (int) ContentRegistry.UiBannerEdgeLessTexture.Height),
+            menuSourceRect: new Rectangle(2, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 4, (int) ContentRegistry.UiBannerEdgeLessTexture.Height),
             sliderBarSourceRect: new Rectangle(2, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 4, (int) ContentRegistry.UiBannerEdgeLessTexture.Height),
-            backgroundResizeMode: ResizeMode.NineSlice,
+            menuResizeMode: ResizeMode.NineSlice,
             sliderBarResizeMode: ResizeMode.NineSlice,
-            backgroundBorderInsets: new BorderInsets(5),
+            menuBorderInsets: new BorderInsets(5),
             sliderBarBorderInsets: new BorderInsets(5),
-            backgroundHoverColor: Color.Gray
+            menuHoverColor: Color.Gray
         );
         
         List<KeyValuePair<string, GuiElement>> content = [];
@@ -224,8 +224,8 @@ public class TestGui : Gui {
             content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18), Anchor.TopLeft, new Vector2(8, 8 + i * 28))));
         }
         
-        ScrollViewTextureElement scrollView = new ScrollViewTextureElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), size: new Vector2(300, 180));
-        this.AddElement("Texture-Scroll-View", scrollView);
+        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), size: new Vector2(300, 180));
+        this.AddElement("Texture-Scroll-View", textureScrollView);
     }
 
     protected override void Update(double delta) {
