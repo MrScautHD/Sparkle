@@ -18,7 +18,7 @@ public class SkyBox : Disposable {
     /// The graphics device used for rendering.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
-
+    
     /// <summary>
     /// The cubemap texture used for the skybox.
     /// </summary>
@@ -28,7 +28,7 @@ public class SkyBox : Disposable {
     /// The sampler used for texture sampling.
     /// </summary>
     public Sampler Sampler;
-
+    
     /// <summary>
     /// The color tint applied to the skybox.
     /// </summary>
@@ -38,7 +38,7 @@ public class SkyBox : Disposable {
             if (field == value) {
                 return;
             }
-
+            
             field = value;
             this._isDirty = true;
         }
@@ -53,7 +53,7 @@ public class SkyBox : Disposable {
     /// The effect used for rendering the skybox.
     /// </summary>
     private Effect _effect;
-
+    
     /// <summary>
     /// The vertex data for the skybox.
     /// </summary>

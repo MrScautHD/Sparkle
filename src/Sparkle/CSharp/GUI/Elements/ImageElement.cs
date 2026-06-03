@@ -222,4 +222,6 @@ public class ImageElement : GuiElement {
         // Pop sampler.
         if (sampler != null) spriteBatch.PopSampler();
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

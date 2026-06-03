@@ -438,16 +438,30 @@ public abstract class Scene : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            HashSet<Entity> disposedEntities = new HashSet<Entity>();
+            
             foreach (Entity entity in this.Entities.Values) {
-                entity.Dispose();
+                if (disposedEntities.Add(entity)) {
+                    entity.Dispose();
+                }
+            }
+            
+            foreach (Entity entity in this._entitiesToAdd) {
+                if (disposedEntities.Add(entity)) {
+                    entity.Dispose();
+                }
             }
             
             this.Entities.Clear();
+            this._entitiesToAdd.Clear();
+            this._entitiesToRemove.Clear();
             this._entityIds = 0;
 
             foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
                 multiInstanceRenderer.Dispose();
             }
+            
+            this._multiInstanceRenderers.Clear();
             
             this.Simulation.Dispose();
             this.Renderer.Dispose();

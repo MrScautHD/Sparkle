@@ -58,4 +58,6 @@ public class LabelElement : GuiElement {
         context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

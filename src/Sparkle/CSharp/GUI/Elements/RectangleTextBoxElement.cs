@@ -828,4 +828,6 @@ public class RectangleTextBoxElement : GuiElement {
         
         return visibleText;
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

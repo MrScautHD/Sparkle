@@ -203,6 +203,26 @@ public class TestGui : Gui {
         );
         
         this.AddElement("Rectangle-Drop-Down", rectangleDropDownElement);
+        
+        // Texture ScrollView element.
+        TextureScrollViewData textureScrollViewData = new TextureScrollViewData(
+            ContentRegistry.UiBannerEdgeLessTexture,
+            ContentRegistry.UiBannerEdgeLessTexture,
+            ContentRegistry.UiSliderTexture,
+            backgroundResizeMode: ResizeMode.NineSlice,
+            sliderBarResizeMode: ResizeMode.NineSlice,
+            backgroundBorderInsets: new BorderInsets(12),
+            sliderBarBorderInsets: new BorderInsets(5)
+        );
+        
+        List<KeyValuePair<string, GuiElement>> content = [];
+        
+        for (int i = 0; i < 20; i++) {
+            content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18), Anchor.TopLeft, new Vector2(8, 8 + i * 28))));
+        }
+        
+        ScrollViewTextureElement scrollView = new ScrollViewTextureElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), size: new Vector2(300, 180));
+        this.AddElement("Texture-Scroll-View", scrollView);
     }
 
     protected override void Update(double delta) {
@@ -241,6 +261,4 @@ public class TestGui : Gui {
         // Draw elements.
         base.Draw(context, framebuffer);
     }
-
-    protected override void Dispose(bool disposing) { }
 }

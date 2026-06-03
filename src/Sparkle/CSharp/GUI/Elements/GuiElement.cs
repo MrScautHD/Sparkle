@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bliss.CSharp;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
@@ -8,7 +9,7 @@ using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
-public abstract class GuiElement {
+public abstract class GuiElement : Disposable {
     
     /// <summary>
     /// The GUI instance to which this element belongs.
@@ -112,6 +113,11 @@ public abstract class GuiElement {
         this.Rotation = rotation;
         this._clickFunc = clickFunc;
     }
+    
+    /// <summary>
+    /// Called when the GUI Element is initialized.
+    /// </summary>
+    protected internal virtual void Init() { }
     
     /// <summary>
     /// Updates the state of the GuiElement during each frame with the given time delta.

@@ -184,4 +184,6 @@ public class ToggleElement : GuiElement {
         Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

@@ -106,7 +106,9 @@ public abstract class Gui : Disposable {
         
         // Handle removing elements.
         foreach (string name in this._elementsToRemove) {
-            this._elements.Remove(name);
+            if (this._elements.Remove(name, out GuiElement? element)) {
+                element.Dispose();
+            }
         }
         
         this._elementsToRemove.Clear();
@@ -177,7 +179,7 @@ public abstract class Gui : Disposable {
     /// Retrieves all GUI elements associated with the current GUI instance.
     /// </summary>
     /// <returns>An enumerable collection of <see cref="GuiElement"/> objects belonging to this GUI.</returns>
-    public IEnumerable<GuiElement> GetElements() {
+    public OrderedDictionary<string, GuiElement>.ValueCollection GetElements() {
         return this._elements.Values;
     }
     
@@ -250,10 +252,11 @@ public abstract class Gui : Disposable {
         
         element.Gui = this;
         element.Name = name;
+        element.Init();
         
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
         element.UpdatePosAndSize();
-
+        
         if (!this.IsInitialized) {
             this._elements.Add(name, element);
         }
@@ -364,6 +367,28 @@ public abstract class Gui : Disposable {
     public IEnumerable<int> GetAvailableScaleFactors() {
         for (int scale = 1; scale <= this.MaxScaleFactor; scale++) {
             yield return scale;
+        }
+    }
+
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            HashSet<GuiElement> disposedElements = new HashSet<GuiElement>();
+            
+            foreach (GuiElement element in this._elements.Values) {
+                if (disposedElements.Add(element)) {
+                    element.Dispose();
+                }
+            }
+            
+            foreach (GuiElement element in this._elementsToAdd) {
+                if (disposedElements.Add(element)) {
+                    element.Dispose();
+                }
+            }
+            
+            this._elements.Clear();
+            this._elementsToAdd.Clear();
+            this._elementsToRemove.Clear();
         }
     }
 }

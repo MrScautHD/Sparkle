@@ -482,11 +482,23 @@ public class Entity : Disposable {
             this._children.Clear();
             
             // Dispose components.
+            HashSet<Component> disposedComponents = new HashSet<Component>();
+            
             foreach (Component component in this.Components.Values) {
-                component.Dispose();
+                if (disposedComponents.Add(component)) {
+                    component.Dispose();
+                }
+            }
+            
+            foreach (Component component in this._componentsToAdd) {
+                if (disposedComponents.Add(component)) {
+                    component.Dispose();
+                }
             }
             
             this.Components.Clear();
+            this._componentsToAdd.Clear();
+            this._componentsToRemove.Clear();
         }
     }
 }

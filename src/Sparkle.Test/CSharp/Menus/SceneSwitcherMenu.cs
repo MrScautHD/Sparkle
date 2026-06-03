@@ -127,7 +127,10 @@ public class SceneSwitcherMenu : Gui {
     }
     
     protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+        
         if (disposing) {
+            
             // Relative mouse mode.
             Input.EnableRelativeMouseMode();
         }

@@ -226,6 +226,7 @@ public class TextureDropDownElement : GuiElement {
             Matrix3x2 transform = Matrix3x2.CreateTranslation(-this.Position) *
                                   Matrix3x2.CreateRotation(-float.DegreesToRadians(this.Rotation)) *
                                   Matrix3x2.CreateTranslation(this.Origin * scale);
+            
             Vector2 localMouse = Vector2.Transform(mousePos, transform);
             
             // Define scrollbar track rectangle.
@@ -1067,4 +1068,6 @@ public class TextureDropDownElement : GuiElement {
         spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.Effect, labelData.EffectAmount);
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

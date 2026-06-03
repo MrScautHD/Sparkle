@@ -110,4 +110,6 @@ public class RectangleButtonElement : GuiElement {
             context.SpriteBatch.End();
         }
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

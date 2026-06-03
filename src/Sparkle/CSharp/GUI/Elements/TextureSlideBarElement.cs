@@ -444,4 +444,6 @@ public class TextureSlideBarElement : GuiElement {
         spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
         if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
     }
+        
+    protected override void Dispose(bool disposing) { }
 }

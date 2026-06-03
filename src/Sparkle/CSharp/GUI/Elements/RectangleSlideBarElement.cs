@@ -262,4 +262,6 @@ public class RectangleSlideBarElement : GuiElement {
             primitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderWidth * this.Scale.X * this.Gui.ScaleFactor, sliderHeight * this.Scale.Y * this.Gui.ScaleFactor), outlineThickness, origin, this.Rotation, 0.5F, outlineColor);
         }
     }
+        
+    protected override void Dispose(bool disposing) { }
 }
