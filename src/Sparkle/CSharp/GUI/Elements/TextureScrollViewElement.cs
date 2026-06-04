@@ -403,7 +403,10 @@ public class TextureScrollViewElement : GuiElement {
 
         element.Gui = this.Gui;
         element.Name = name;
+        
         this._contentOffsets[element] = element.Offset;
+        
+        // Init the element.
         element.Init();
         
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
@@ -817,7 +820,9 @@ public class TextureScrollViewElement : GuiElement {
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(localOffset);
+        Vector2 panelSize = this.GetVisibleContentSize();
+        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
         float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
@@ -849,7 +854,9 @@ public class TextureScrollViewElement : GuiElement {
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(localOffset);
+        Vector2 panelSize = this.GetVisibleContentSize();
+        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
         float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
@@ -915,11 +922,13 @@ public class TextureScrollViewElement : GuiElement {
         
         float minY = float.MaxValue;
         float maxY = float.MinValue;
+        Vector2 panelSize = this.GetVisibleContentSize(false);
         
         foreach (GuiElement element in this._content.Values) {
             Vector2 offset = this.GetContentOffset(element);
-            minY = MathF.Min(minY, offset.Y);
-            maxY = MathF.Max(maxY, offset.Y + element.Size.Y * element.Scale.Y);
+            Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, element.AnchorPoint, offset, panelSize);
+            minY = MathF.Min(minY, anchoredLocalTopLeft.Y);
+            maxY = MathF.Max(maxY, anchoredLocalTopLeft.Y + element.Size.Y * element.Scale.Y);
         }
         
         return (minY, maxY);
@@ -987,10 +996,72 @@ public class TextureScrollViewElement : GuiElement {
         return this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor;
     }
     
-    private Vector2 GetContentElementTopLeftWorld(Vector2 localOffset) {
+    /// <summary>
+    /// Calculates the local top-left position of an anchored GUI element relative to its parent container.
+    /// </summary>
+    /// <param name="element">The GUI element whose position is being calculated. Its size and scale are used in the calculation.</param>
+    /// <param name="anchor">Specifies the anchor point that defines the alignment of the element within the parent container.</param>
+    /// <param name="offset">A vector representing additional offset applied to the calculated position.</param>
+    /// <param name="panelSize">The size of the parent container, used to determine the element's position based on the anchor settings.</param>
+    /// <returns>The local top-left position of the GUI element, adjusted for the provided anchor, offset, and parent container size.</returns>
+    private Vector2 GetAnchoredContentLocalTopLeft(GuiElement element, Anchor anchor, Vector2 offset, Vector2 panelSize) {
+        Vector2 elementSize = element.Size * element.Scale;
+        Vector2 anchoredPos = Vector2.Zero;
+        
+        switch (anchor) {
+            case Anchor.TopLeft:
+                break;
+            
+            case Anchor.TopCenter:
+                anchoredPos.X = panelSize.X / 2.0F - elementSize.X / 2.0F;
+                break;
+            
+            case Anchor.TopRight:
+                anchoredPos.X = panelSize.X - elementSize.X;
+                break;
+            
+            case Anchor.CenterLeft:
+                anchoredPos.Y = panelSize.Y / 2.0F - elementSize.Y / 2.0F;
+                break;
+            
+            case Anchor.Center:
+                anchoredPos.X = panelSize.X / 2.0F - elementSize.X / 2.0F;
+                anchoredPos.Y = panelSize.Y / 2.0F - elementSize.Y / 2.0F;
+                break;
+            
+            case Anchor.CenterRight:
+                anchoredPos.X = panelSize.X - elementSize.X;
+                anchoredPos.Y = panelSize.Y / 2.0F - elementSize.Y / 2.0F;
+                break;
+            
+            case Anchor.BottomLeft:
+                anchoredPos.Y = panelSize.Y - elementSize.Y;
+                break;
+            
+            case Anchor.BottomCenter:
+                anchoredPos.X = panelSize.X / 2.0F - elementSize.X / 2.0F;
+                anchoredPos.Y = panelSize.Y - elementSize.Y;
+                break;
+            
+            case Anchor.BottomRight:
+                anchoredPos.X = panelSize.X - elementSize.X;
+                anchoredPos.Y = panelSize.Y - elementSize.Y;
+                break;
+        }
+        
+        return anchoredPos + offset;
+    }
+    
+    /// <summary>
+    /// Calculates the top-left corner position of a content element in world coordinates, taking into account the local position,
+    /// scaling, rotation, and any scrolling or insets applied to the parent scroll view.
+    /// </summary>
+    /// <param name="localTopLeft">The local top-left position of the content element relative to the scroll view's internal coordinate system.</param>
+    /// <returns>The calculated top-left position of the content element in world coordinates.</returns>
+    private Vector2 GetContentElementTopLeftWorld(Vector2 localTopLeft) {
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
-        Vector2 localPoint = contentInsetTopLeft + localOffset * scale - new Vector2(0.0F, this.GetScrollOffset() * scale.Y);
+        Vector2 localPoint = contentInsetTopLeft + localTopLeft * scale - new Vector2(0.0F, this.GetScrollOffset() * scale.Y);
         
         Vector2 parentOrigin = this.Origin * scale;
         Vector2 viewTopLeftWorld = this.GetViewTopLeftWorld();

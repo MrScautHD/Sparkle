@@ -220,7 +220,7 @@ public class TestGui : Gui {
         List<KeyValuePair<string, GuiElement>> content = [];
         
         for (int i = 0; i < 20; i++) {
-            content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopCenter, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
+            content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
                 Logger.Error("CLICKED");
                 return true;
             })));
