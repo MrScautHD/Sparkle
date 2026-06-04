@@ -814,14 +814,16 @@ public class TextureScrollViewElement : GuiElement {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
+        float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
-        Vector2 viewTopLeft = this.GetViewTopLeft();
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(localOffset);
+        float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
+        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
         element.Scale = originalScale * this.Scale;
+        element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
         element.Draw(context, framebuffer);
@@ -829,6 +831,7 @@ public class TextureScrollViewElement : GuiElement {
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
         element.Scale = originalScale;
+        element.Rotation = originalRotation;
         element.Interactable = originalInteractable;
         element.UpdatePosAndSize();
     }
@@ -843,20 +846,23 @@ public class TextureScrollViewElement : GuiElement {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
+        float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft();
-        Vector2 viewTopLeft = this.GetViewTopLeft();
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(localOffset);
+        float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = viewTopLeft + (contentInsetTopLeft + localOffset - new Vector2(0.0F, this.GetScrollOffset())) * this.Scale;
+        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
         element.Scale = originalScale * this.Scale;
+        element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.Update(delta, ref interactionHandled);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
         element.Scale = originalScale;
+        element.Rotation = originalRotation;
         element.Interactable = originalInteractable;
         element.UpdatePosAndSize();
     }
@@ -977,8 +983,21 @@ public class TextureScrollViewElement : GuiElement {
     /// Gets the top-left corner of the view in unscaled GUI coordinates.
     /// </summary>
     /// <returns>The top-left position of the view.</returns>
-    private Vector2 GetViewTopLeft() {
-        return (this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor) / this.Gui.ScaleFactor;
+    private Vector2 GetViewTopLeftWorld() {
+        return this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor;
+    }
+    
+    private Vector2 GetContentElementTopLeftWorld(Vector2 localOffset) {
+        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
+        Vector2 localPoint = contentInsetTopLeft + localOffset * scale - new Vector2(0.0F, this.GetScrollOffset() * scale.Y);
+        
+        Vector2 parentOrigin = this.Origin * scale;
+        Vector2 viewTopLeftWorld = this.GetViewTopLeftWorld();
+        Vector2 pointRelativeToOrigin = localPoint - parentOrigin;
+        Vector2 rotatedPoint = Vector2.Transform(pointRelativeToOrigin, Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation)));
+        
+        return viewTopLeftWorld + parentOrigin + rotatedPoint;
     }
     
     /// <summary>
