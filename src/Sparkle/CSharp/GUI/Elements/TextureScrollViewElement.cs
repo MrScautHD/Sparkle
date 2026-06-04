@@ -286,9 +286,8 @@ public class TextureScrollViewElement : GuiElement {
         
         Vector2 originalSize = this.Size;
         
+        // Draw the menu smaller, leaving space on the right side for the slider bar.
         if (this.HasScrollableContent()) {
-            
-            // Draw the menu smaller, leaving space on the right side for the slider bar.
             this.Size = new Vector2(MathF.Max(0.0F, originalSize.X - this.Data.SliderBarWidth), originalSize.Y);
         }
         
@@ -313,6 +312,7 @@ public class TextureScrollViewElement : GuiElement {
         
         context.SpriteBatch.End();
         
+        // Draw content elements.
         this.DrawContent(context, framebuffer);
     }
     
@@ -802,7 +802,7 @@ public class TextureScrollViewElement : GuiElement {
         
         spriteBatch.Begin(commandList, framebuffer.OutputDescription);
         spriteBatch.PushDepthStencilState(stencilTest);
-        spriteBatch.DrawTexture(this._contentResult, Vector2.Zero, 0.5F, sourceRect, Vector2.One, Vector2.Zero, false, 0.0F, Color.White, SpriteFlip.None);
+        spriteBatch.DrawTexture(this._contentResult, Vector2.Zero, 0.5F, sourceRect, Vector2.One, Vector2.Zero, false, 0.0F, Color.White);
         spriteBatch.PopDepthStencilState();
         spriteBatch.End();
     }
