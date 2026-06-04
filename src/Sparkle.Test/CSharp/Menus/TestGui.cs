@@ -217,17 +217,45 @@ public class TestGui : Gui {
             sliderBarBorderInsets: new BorderInsets(5)
         );
         
-        List<KeyValuePair<string, GuiElement>> content = [];
+        List<KeyValuePair<string, GuiElement>> texContent = [];
         
         for (int i = 0; i < 20; i++) {
-            content.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
-                Logger.Error("CLICKED");
+            texContent.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
+                Logger.Error("TEX CLICKED");
                 return true;
             })));
         }
         
-        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, content, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), rotation: 0, size: new Vector2(200, 180));
+        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, texContent, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), rotation: 0, size: new Vector2(200, 180));
         this.AddElement("Texture-Scroll-View", textureScrollView);
+        
+        // Rectangle ScrollView element.
+        RectangleScrollViewData rectangleScrollViewData = new RectangleScrollViewData(
+            menuOutlineThickness: 2,
+            sliderBarOutlineThickness: 2,
+            sliderOutlineThickness: 2,
+            sliderSize: new Vector2(12, 24)
+        );
+        
+        List<KeyValuePair<string, GuiElement>> rectContent = [];
+        
+        for (int i = 0; i < 20; i++) {
+            rectContent.Add(new KeyValuePair<string, GuiElement>($"Rect-Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Green), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
+                Logger.Error("RECT CLICKED");
+                return true;
+            })));
+        }
+        
+        RectangleScrollViewElement rectangleScrollView = new RectangleScrollViewElement(
+            rectangleScrollViewData,
+            rectContent,
+            Anchor.TopRight,
+            new Vector2(-20, 20),
+            new Vector2(200, 180),
+            rotation: 0
+        );
+        
+        this.AddElement("Rectangle-Scroll-View", rectangleScrollView);
     }
 
     protected override void Update(double delta) {
