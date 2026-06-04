@@ -234,7 +234,7 @@ public class TestGui : Gui {
             menuOutlineThickness: 2,
             sliderBarOutlineThickness: 2,
             sliderOutlineThickness: 2,
-            sliderSize: new Vector2(12, 24)
+            sliderSize: new Vector2(16, 24)
         );
         
         List<KeyValuePair<string, GuiElement>> rectContent = [];
