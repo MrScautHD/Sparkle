@@ -240,7 +240,14 @@ public class TextureDropDownElement : GuiElement {
             // Handle mouse wheel.
             if (!this._isDraggingSlider && localMenuRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
-                    this._targetScrollPercent = Math.Clamp(this._targetScrollPercent - wheelDelta.Y * this.ScrollSensitivity, 0.0F, 1.0F);
+                    float scrollableHeight = fieldSize.Y * MathF.Max(0, this.Options.Count - this.MaxVisibleOptions);
+                    
+                    if (scrollableHeight > 0.0F) {
+                        float currentOffset = this._targetScrollPercent * scrollableHeight;
+                        float wheelStep = MathF.Max(1.0F, (fieldSize.Y * this.MaxVisibleOptions) * this.ScrollSensitivity);
+                        currentOffset = Math.Clamp(currentOffset - wheelDelta.Y * wheelStep, 0.0F, scrollableHeight);
+                        this._targetScrollPercent = currentOffset / scrollableHeight;
+                    }
                 }
             }
             

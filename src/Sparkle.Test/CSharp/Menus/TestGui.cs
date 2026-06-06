@@ -188,7 +188,7 @@ public class TestGui : Gui {
             new LabelData(ContentRegistry.Fontoe, "Option 8", 18),
             new LabelData(ContentRegistry.Fontoe, "Option 9", 18)
         ];
-
+        
         RectangleDropDownElement rectangleDropDownElement = new RectangleDropDownElement(
             rectangleDropDownData,
             rectOptions,

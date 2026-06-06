@@ -247,28 +247,28 @@ public static class SceneManager {
     public static void LoadScene(Scene? scene) {
         lock (LoadLock) {
             if (IsLoading) {
-                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name}");
+                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name ?? "NULL"}");
                 return;
             }
             
             IsLoading = true;
         }
         
-        Logger.Info($"Setting active scene to: {scene?.Name}");
+        Logger.Info($"Setting active scene to: {scene?.Name ?? "NULL"}");
         
         ActiveScene?.Dispose();
         ActiveScene = scene;
         
         Logger.Info("Load active scene content...");
         if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
-        Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+        Logger.Info($"Scene {scene?.Name ?? "NULL"} content loaded successfully.");
         
         Logger.Info("Initialize active scene...");
         ActiveScene?.Init();
         ActiveScene?.IsInitialized = true;
         ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
         ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-        Logger.Info($"Scene {scene?.Name} initialized successfully.");
+        Logger.Info($"Scene {scene?.Name ?? "NULL"} initialized successfully.");
         
         IsLoading = false;
     }
@@ -282,7 +282,7 @@ public static class SceneManager {
     public static AsyncOperation LoadSceneAsync(Scene? scene, LoadingGui? loadingGui = null) {
         lock (LoadLock) {
             if (IsLoading) {
-                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name}");
+                Logger.Warn($"A scene is already being loaded. Ignoring request to load: {scene?.Name ?? "NULL"}");
                 
                 return new AsyncOperation(new AsyncState {
                     Progress = 1.0F
@@ -304,7 +304,7 @@ public static class SceneManager {
                 DateTime startTime = DateTime.Now;
                 state.Progress = 0.0F;
                 loadingGui?.Progress = 0.0F;
-                Logger.Info($"Setting active scene to: {scene?.Name}");
+                Logger.Info($"Setting active scene to: {scene?.Name ?? "NULL"}");
                 
                 ActiveScene?.Dispose();
                 ActiveScene = scene;
@@ -315,7 +315,7 @@ public static class SceneManager {
                 if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
                 state.Progress = 0.7F;
                 loadingGui?.Progress = 0.7F;
-                Logger.Info($"Scene {scene?.Name} content loaded successfully.");
+                Logger.Info($"Scene {scene?.Name ?? "NULL"} content loaded successfully.");
                 
                 Logger.Info("Initialize active scene...");
                 ActiveScene?.Init();
@@ -337,7 +337,7 @@ public static class SceneManager {
                 
                 state.Progress = 1.0F;
                 loadingGui?.Progress = 1.0F;
-                Logger.Info($"Scene {scene?.Name} initialized successfully.");
+                Logger.Info($"Scene {scene?.Name ?? "NULL"} initialized successfully.");
             }
             finally {
                 if (loadingGui != null) {

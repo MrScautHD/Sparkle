@@ -191,7 +191,14 @@ public class RectangleScrollViewElement : GuiElement {
         if (this.Interactable && hasScrollableContent) {
             if (!this._isDraggingSlider && localViewRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
-                    this._targetScrollPercent = Math.Clamp(this._targetScrollPercent - wheelDelta.Y * this.ScrollSensitivity, 0.0F, 1.0F);
+                    float scrollableHeight = this.GetScrollableHeight();
+                    
+                    if (scrollableHeight > 0.0F) {
+                        float currentOffset = this._targetScrollPercent * scrollableHeight;
+                        float wheelStep = MathF.Max(1.0F, this.GetVisibleContentSize(false).Y * this.ScrollSensitivity);
+                        currentOffset = Math.Clamp(currentOffset - wheelDelta.Y * wheelStep, 0.0F, scrollableHeight);
+                        this._targetScrollPercent = currentOffset / scrollableHeight;
+                    }
                 }
             }
             
