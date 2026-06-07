@@ -50,6 +50,11 @@ public class RectangleTextBoxElement : GuiElement {
     public Vector2 TextScale;
     
     /// <summary>
+    /// Defines the width of the caret used for text input in the textbox element.
+    /// </summary>
+    public float CaretWidth;
+    
+    /// <summary>
     /// The horizontal offsets to be applied to the text edges within the textbox.
     /// </summary>
     public (float Left, float Right) TextEdgeOffset;
@@ -104,10 +109,11 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="textEdgeOffset">Optional offsets for the left and right edges of the text. Default is (0.0F, 0.0F).</param>
     /// <param name="textOffset">The offset of the text relative to its position.</param>
     /// <param name="textScale">The scale of the text. Defaults to (1, 1).</param>
+    /// <param name="caretWidth">Specifies the width of the caret used for text input. Default is 2.0.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Left, Vector2? textOffset = null, Vector2? textScale = null, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Left, Vector2? textOffset = null, Vector2? textScale = null, float caretWidth = 2.0F, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
@@ -115,6 +121,7 @@ public class RectangleTextBoxElement : GuiElement {
         this.TextAlignment = textAlignment;
         this.TextOffset = textOffset ?? Vector2.Zero;
         this.TextScale = textScale ?? Vector2.One;
+        this.CaretWidth = caretWidth;
         this.TextEdgeOffset = textEdgeOffset ?? (0.0F, 0.0F);
     }
     
@@ -552,7 +559,7 @@ public class RectangleTextBoxElement : GuiElement {
         caretOrigin -= this.TextOffset;
         
         // Draw caret rectangle.
-        RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, 2.0F * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.TextScale.Y * this.Scale.Y * this.Gui.ScaleFactor);
+        RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, this.CaretWidth * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.TextScale.Y * this.Scale.Y * this.Gui.ScaleFactor);
         primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Scale.X * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
     }
     

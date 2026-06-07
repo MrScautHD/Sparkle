@@ -132,7 +132,10 @@ public abstract class GuiElement : Disposable {
         
         if (!interactionHandled && rectangle.Contains(Input.GetMousePosition(), origin, this.Rotation)) {
             this.IsHovered = true;
-            interactionHandled = true;
+            
+            if (this.Interactable) {
+                interactionHandled = true;
+            }
             
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Interactable) {
                 if (this._clickFunc?.Invoke(this) ?? true) {
