@@ -6,7 +6,7 @@ using Veldrith;
 namespace Sparkle.CSharp.Graphics;
 
 public class GraphicsContext {
-
+    
     /// <summary>
     /// The graphics device used for rendering.
     /// </summary>
@@ -16,7 +16,7 @@ public class GraphicsContext {
     /// The command list for submitting rendering commands.
     /// </summary>
     public CommandList CommandList { get; private set; }
-
+    
     /// <summary>
     /// The full-screen render pass used for post-processing.
     /// </summary>
@@ -31,7 +31,7 @@ public class GraphicsContext {
     /// The primitive batch for rendering basic geometric shapes.
     /// </summary>
     public PrimitiveBatch PrimitiveBatch { get; private set; }
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
