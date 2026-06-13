@@ -56,11 +56,56 @@ public class SpriteRenderer {
         Camera2D? cam2D = SceneManager.ActiveCam2D;
         
         if (cam2D == null) {
+            this._sprites.Clear();
             return;
         }
         
         // Sort sprites.
-        this._sprites.Sort((sprite1, sprite2) => sprite1.LayerDepth.CompareTo(sprite2.LayerDepth));
+        this._sprites.Sort((sprite1, sprite2) => {
+            int result = sprite1.LayerDepth.CompareTo(sprite2.LayerDepth);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.Effect?.GetHashCode() ?? 0).CompareTo(sprite2.Effect?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.BlendState?.GetHashCode() ?? 0).CompareTo(sprite2.BlendState?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.DepthStencilState?.GetHashCode() ?? 0).CompareTo(sprite2.DepthStencilState?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.RasterizerState?.GetHashCode() ?? 0).CompareTo(sprite2.RasterizerState?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.Sampler?.GetHashCode() ?? 0).CompareTo(sprite2.Sampler?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            result = (sprite1.ScissorRect?.GetHashCode() ?? 0).CompareTo(sprite2.ScissorRect?.GetHashCode() ?? 0);
+            
+            if (result != 0) {
+                return result;
+            }
+            
+            return sprite1.Texture.GetHashCode().CompareTo(sprite2.Texture.GetHashCode());
+        });
         
         context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
         
@@ -90,7 +135,7 @@ public class SpriteRenderer {
         // Clear sprites.
         this._sprites.Clear();
     }
-
+    
     /// <summary>
     /// Determines whether the specified sprite is visible within the camera's view.
     /// </summary>
