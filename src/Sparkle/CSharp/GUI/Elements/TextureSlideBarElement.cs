@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
@@ -144,7 +145,7 @@ public class TextureSlideBarElement : GuiElement {
             barColor = this.Data.DisabledBarColor;
         }
         
-        this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, barColor, this.Data.BarFlip, this.Data.BarPixelSnap);
+        this.DrawBar(context.SpriteBatch, this.Data.BarTexture, this.Data.BarSampler, this.Data.BarSourceRect, this.Data.BarResizeMode, this.Data.BarBorderInsets, barColor, this.Data.BarFlip, this.Data.BarPixelSnap, this.Data.Effect, this.Data.BlendState);
         
         context.SpriteBatch.End();
         
@@ -211,7 +212,7 @@ public class TextureSlideBarElement : GuiElement {
                 filledBarColor = this.Data.DisabledFilledBarColor;
             }
             
-            this.DrawBar(context.SpriteBatch, this.Data.FilledBarTexture, this.Data.FilledBarSampler, this.Data.FilledBarSourceRect, this.Data.FilledBarResizeMode, this.Data.FilledBarBorderInsets, filledBarColor, this.Data.FilledBarFlip, this.Data.FilledBarPixelSnap);
+            this.DrawBar(context.SpriteBatch, this.Data.FilledBarTexture, this.Data.FilledBarSampler, this.Data.FilledBarSourceRect, this.Data.FilledBarResizeMode, this.Data.FilledBarBorderInsets, filledBarColor, this.Data.FilledBarFlip, this.Data.FilledBarPixelSnap, this.Data.Effect, this.Data.BlendState);
             
             context.SpriteBatch.PopDepthStencilState();
             context.SpriteBatch.End();
@@ -237,32 +238,40 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="color">The color tint to apply to the bar texture during rendering.</param>
     /// <param name="flip">Specifies how the texture should be flipped (horizontally, vertically, or both) during rendering.</param>
     /// <param name="pixelSnap">Indicates whether the texture rendering should align to pixel boundaries for improved visual clarity.</param>
-    private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawBar(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, ResizeMode resizeMode, BorderInsets borderInsets, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         switch (resizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, texture, sampler, sourceRect, color, flip, pixelSnap);
+                this.DrawNormal(spriteBatch, texture, sampler, sourceRect, color, flip, pixelSnap, effect, blendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, texture, sampler, sourceRect, borderInsets, resizeMode == ResizeMode.TileCenter, color, flip, pixelSnap);
+                this.DrawNineSlice(spriteBatch, texture, sampler, sourceRect, borderInsets, resizeMode == ResizeMode.TileCenter, color, flip, pixelSnap, effect, blendState);
                 break;
         }
     }
     
     /// <summary>
-    /// Renders the slider bar texture onto the screen using the specified parameters.
+    /// Draws a texture onto the screen using the specified sprite batch, texture, and rendering parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for batch rendering of textures.</param>
-    /// <param name="texture">The texture of the slider bar to be drawn.</param>
-    /// <param name="sampler">The sampler state to apply when rendering the texture. Can be null.</param>
-    /// <param name="sourceRect">The source rectangle defining the area of the texture to render.</param>
-    /// <param name="color">The color to tint the rendered texture.</param>
-    /// <param name="flip">The flip mode to apply when rendering the texture.</param>
+    /// <param name="spriteBatch">The sprite batch used for rendering the texture.</param>
+    /// <param name="texture">The texture to be drawn.</param>
+    /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to be rendered.</param>
+    /// <param name="color">The color tint applied to the rendered texture.</param>
+    /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -278,7 +287,9 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -335,8 +346,10 @@ public class TextureSlideBarElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler.
+        // Push sampler, effect and blend state.
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         
         // Draw Corners.
         spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -407,10 +420,12 @@ public class TextureSlideBarElement : GuiElement {
             }
         }
         
-        // Pop sampler.
+        // Pop sampler, effect and blend state.
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
-
+    
     /// <summary>
     /// Draws the slider for the texture slider bar element at its calculated position within the parent bar.
     /// </summary>
@@ -441,9 +456,13 @@ public class TextureSlideBarElement : GuiElement {
         
         // Draw.
         if (this.Data.SliderSampler != null) spriteBatch.PushSampler(this.Data.SliderSampler);
+        if (this.Data.Effect != null) spriteBatch.PushEffect(this.Data.Effect);
+        if (this.Data.BlendState != null) spriteBatch.PushBlendState(this.Data.BlendState.Value);
         spriteBatch.DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
+        if (this.Data.BlendState != null) spriteBatch.PopBlendState();
+        if (this.Data.Effect != null) spriteBatch.PopEffect();
         if (this.Data.SliderSampler != null) spriteBatch.PopSampler();
     }
-        
+    
     protected override void Dispose(bool disposing) { }
 }

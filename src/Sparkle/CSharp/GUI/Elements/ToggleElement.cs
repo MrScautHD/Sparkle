@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -95,7 +96,7 @@ public class ToggleElement : GuiElement {
             checkboxColor = this.ToggleData.DisabledColor;
         }
         
-        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip, this.ToggleData.CheckboxPixelSnap);
+        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip, this.ToggleData.CheckboxPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
         
         // Draw checkmark texture.
         if (this.ToggleState) {
@@ -105,7 +106,7 @@ public class ToggleElement : GuiElement {
                 checkmarkColor = this.ToggleData.DisabledColor;
             }
             
-            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip, this.ToggleData.CheckmarkPixelSnap);
+            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip, this.ToggleData.CheckmarkPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
         }
         
         // Draw text.
@@ -124,9 +125,15 @@ public class ToggleElement : GuiElement {
     /// <param name="color">The color modulator applied to the checkbox.</param>
     /// <param name="flip">Specifies the flipping behavior for the checkbox texture.</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -140,11 +147,17 @@ public class ToggleElement : GuiElement {
     /// <param name="color">The color to apply to the checkmark texture.</param>
     /// <param name="flip">Specifies the flipping behavior for the checkmark texture.</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -158,7 +171,7 @@ public class ToggleElement : GuiElement {
         }
         
         Vector2 textPos = this.Position;
-        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
         Vector2 textOrigin = new Vector2(textSize.X, this.LabelData.Size) / 2.0F - (this.Size / 2.0F - this.Origin) / this.TextScale - new Vector2(this.ToggleData.CheckboxSourceRect.Width + this.BoxTextSpacing, 0.0F) / 2.0F / this.TextScale;
         
         Color color = this.IsHovered ? this.LabelData.HoverColor : this.LabelData.Color;
@@ -168,7 +181,11 @@ public class ToggleElement : GuiElement {
         }
         
         if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        if (this.LabelData.Effect != null) spriteBatch.PushEffect(this.LabelData.Effect);
+        if (this.LabelData.BlendState != null) spriteBatch.PushBlendState(this.LabelData.BlendState.Value);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
+        if (this.LabelData.BlendState != null) spriteBatch.PopBlendState();
+        if (this.LabelData.Effect != null) spriteBatch.PopEffect();
         if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
     }
     
@@ -181,7 +198,7 @@ public class ToggleElement : GuiElement {
     /// <returns>The calculated size of the element as a <see cref="Vector2"/>.</returns>
     private Vector2 CalculateSize(ToggleData toggleData, LabelData labelData, float boxTextSpacing) {
         Vector2 toggleSize = new Vector2(toggleData.CheckboxSourceRect.Width, toggleData.CheckboxSourceRect.Height);
-        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 labelSize = labelData.Font.MeasureText(labelData.Text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         return new Vector2(toggleSize.X + labelSize.X + boxTextSpacing, MathF.Max(toggleSize.Y, labelSize.Y));
     }
         

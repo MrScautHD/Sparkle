@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
@@ -78,12 +79,12 @@ public class TextureButtonElement : GuiElement {
         
         switch (this.ButtonData.ResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, buttonColor, this.ButtonData.Flip, this.ButtonData.PixelSnap);
+                this.DrawNormal(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, buttonColor, this.ButtonData.Flip, this.ButtonData.PixelSnap, this.ButtonData.Effect, this.ButtonData.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, this.ButtonData.BorderInsets, this.ButtonData.ResizeMode == ResizeMode.TileCenter, buttonColor, this.ButtonData.Flip, this.ButtonData.PixelSnap);
+                this.DrawNineSlice(context.SpriteBatch, this.ButtonData.Texture, this.ButtonData.Sampler, this.ButtonData.SourceRect, this.ButtonData.BorderInsets, this.ButtonData.ResizeMode == ResizeMode.TileCenter, buttonColor, this.ButtonData.Flip, this.ButtonData.PixelSnap, this.ButtonData.Effect, this.ButtonData.BlendState);
                 break;
         }
         
@@ -94,18 +95,24 @@ public class TextureButtonElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the texture of the button in its normal state without any size or layout modifications.
+    /// Draws a texture onto the screen using the specified sprite batch, texture, and rendering parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch instance used to render the texture.</param>
-    /// <param name="texture">The texture to be drawn on the button.</param>
-    /// <param name="sampler">The optional sampler to configure texture sampling behavior. Can be null.</param>
-    /// <param name="sourceRect">The source rectangle within the texture to be drawn.</param>
-    /// <param name="color">The color tint to be applied to the texture during rendering.</param>
-    /// <param name="flip">The sprite flipping mode to apply during rendering.</param>
+    /// <param name="spriteBatch">The sprite batch used for rendering the texture.</param>
+    /// <param name="texture">The texture to be drawn.</param>
+    /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to be rendered.</param>
+    /// <param name="color">The color tint applied to the rendered texture.</param>
+    /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -121,7 +128,9 @@ public class TextureButtonElement : GuiElement {
     /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -178,8 +187,10 @@ public class TextureButtonElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler.
+        // Push sampler, effect and blend state.
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         
         // Draw Corners.
         spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -250,7 +261,9 @@ public class TextureButtonElement : GuiElement {
             }
         }
         
-        // Pop sampler.
+        // Pop sampler, effect and blend state.
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -264,7 +277,7 @@ public class TextureButtonElement : GuiElement {
         }
         
         Vector2 textPos = this.Position + (this.TextOffset * this.Scale * this.Gui.ScaleFactor);
-        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+        Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / this.TextScale.X, this.LabelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale),
             TextAlignment.Right => new Vector2((-this.Size.X / 2.0F) / this.TextScale.X + textSize.X - 2.0F, this.LabelData.Size / 2.0F) - ((this.Size / 2.0F - this.Origin) / this.TextScale),
@@ -279,7 +292,11 @@ public class TextureButtonElement : GuiElement {
         }
         
         if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+        if (this.LabelData.Effect != null) spriteBatch.PushEffect(this.LabelData.Effect);
+        if (this.LabelData.BlendState != null) spriteBatch.PushBlendState(this.LabelData.BlendState.Value);
+        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
+        if (this.LabelData.BlendState != null) spriteBatch.PopBlendState();
+        if (this.LabelData.Effect != null) spriteBatch.PopEffect();
         if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
     }
         

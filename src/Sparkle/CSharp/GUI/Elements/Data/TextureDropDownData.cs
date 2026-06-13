@@ -1,4 +1,5 @@
 ﻿using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -249,6 +250,16 @@ public class TextureDropDownData {
     public int SliderBarWidth;
     
     /// <summary>
+    /// The effect used when rendering the button. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the button. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureDropDownData"/> class, defining all visual, layout, and interaction states for a texture-based dropdown.
     /// </summary>
     /// <param name="fieldTexture">The texture used to render the dropdown field in its collapsed state.</param>
@@ -299,6 +310,8 @@ public class TextureDropDownData {
     /// <param name="sliderPixelSnap">When <c>true</c>, snaps the slider handle texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="arrowPixelSnap">When <c>true</c>, snaps the arrow texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="sliderBarWidth">The width of the scrollbar in the dropdown menu.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public TextureDropDownData(
         Texture2D fieldTexture,
         Texture2D menuTexture,
@@ -347,7 +360,9 @@ public class TextureDropDownData {
         bool sliderBarPixelSnap = false,
         bool sliderPixelSnap = false,
         bool arrowPixelSnap = false,
-        int sliderBarWidth = 16
+        int sliderBarWidth = 16,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.FieldTexture = fieldTexture;
         this.MenuTexture = menuTexture;
@@ -398,5 +413,7 @@ public class TextureDropDownData {
         this.SliderPixelSnap = sliderPixelSnap;
         this.ArrowPixelSnap = arrowPixelSnap;
         this.SliderBarWidth = sliderBarWidth;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

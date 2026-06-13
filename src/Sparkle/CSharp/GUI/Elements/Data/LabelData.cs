@@ -1,4 +1,5 @@
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Fonts;
 using FontStashSharp;
 using Veldrith;
@@ -55,7 +56,7 @@ public class LabelData {
     /// <summary>
     /// The special visual effect applied to the font (e.g., shadow, outline).
     /// </summary>
-    public FontSystemEffect Effect;
+    public FontSystemEffect FontSystemEffect;
     
     /// <summary>
     /// The intensity or size of the font effect.
@@ -73,6 +74,16 @@ public class LabelData {
     public bool PixelSnap;
     
     /// <summary>
+    /// The effect used when rendering the font. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the font. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Constructs a new instance of <see cref="LabelData"/> with full customization for rendering text.
     /// </summary>
     /// <param name="font">The font to use for rendering the text.</param>
@@ -84,11 +95,29 @@ public class LabelData {
     /// <param name="hoverColor">Optional color of the text. Defaults the same as the color parameter.</param>
     /// <param name="disabledColor">The color of the text when the label is in a disabled state. Defaults to gray if not specified.</param>
     /// <param name="style">The style of the text. Default is <c>TextStyle.None</c>.</param>
-    /// <param name="effect">The font effect applied. Default is <c>FontSystemEffect.None</c>.</param>
-    /// <param name="effectAmount">The intensity of the font effect. Default is 0.</param>
+    /// <param name="fontSystemEffect">The font fontSystemEffect applied. Default is <c>FontSystemEffect.None</c>.</param>
+    /// <param name="effectAmount">The intensity of the font fontSystemEffect. Default is 0.</param>
     /// <param name="sampler">The texture sampler used for rendering operations in the label.</param>
     /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
-    public LabelData(Font font, string text, float size, float characterSpacing = 0.0F, float lineSpacing = 0.0F, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, TextStyle style = TextStyle.None, FontSystemEffect effect = FontSystemEffect.None, int effectAmount = 0, Sampler? sampler = null, bool pixelSnap = false) {
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    public LabelData(
+        Font font,
+        string text,
+        float size,
+        float characterSpacing = 0.0F,
+        float lineSpacing = 0.0F,
+        Color? color = null,
+        Color? hoverColor = null,
+        Color? disabledColor = null,
+        TextStyle style = TextStyle.None,
+        FontSystemEffect fontSystemEffect = FontSystemEffect.None,
+        int effectAmount = 0,
+        Sampler? sampler = null,
+        bool pixelSnap = false,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
+    ) {
         this.Font = font;
         this.Text = text;
         this.Size = size;
@@ -98,9 +127,11 @@ public class LabelData {
         this.HoverColor = hoverColor ?? this.Color;
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.Style = style;
-        this.Effect = effect;
+        this.FontSystemEffect = fontSystemEffect;
         this.EffectAmount = effectAmount;
         this.Sampler = sampler;
         this.PixelSnap = pixelSnap;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -59,6 +60,16 @@ public class ImageData {
     public bool PixelSnap;
     
     /// <summary>
+    /// The effect used when rendering the image. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the image. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="ImageData"/> class.
     /// </summary>
     /// <param name="texture">The texture used for rendering.</param>
@@ -71,7 +82,22 @@ public class ImageData {
     /// <param name="disabledColor">Optional disabled tint color. If <c>null</c>, <see cref="Color.Gray"/> is used.</param>
     /// <param name="flip">The flip mode applied to the texture.</param>
     /// <param name="pixelSnap">When <c>true</c>, snaps position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
-    public ImageData(Texture2D texture, Sampler? sampler = null, Rectangle? sourceRect = null, ResizeMode resizeMode = ResizeMode.None, BorderInsets? borderInsets = null, Color? color = null, Color? hoverColor = null, Color? disabledColor = null, SpriteFlip flip = SpriteFlip.None, bool pixelSnap = false) {
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    public ImageData(
+        Texture2D texture,
+        Sampler? sampler = null,
+        Rectangle? sourceRect = null,
+        ResizeMode resizeMode = ResizeMode.None,
+        BorderInsets? borderInsets = null,
+        Color? color = null,
+        Color? hoverColor = null,
+        Color? disabledColor = null,
+        SpriteFlip flip = SpriteFlip.None,
+        bool pixelSnap = false,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
+    ) {
         this.Texture = texture;
         this.Sampler = sampler;
         this.SourceRect = sourceRect ?? new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
@@ -82,5 +108,7 @@ public class ImageData {
         this.DisabledColor = disabledColor ?? Color.Gray;
         this.Flip = flip;
         this.PixelSnap = pixelSnap;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -116,6 +118,16 @@ public class RectangleSlideBarData {
     public Color DisabledSliderOutlineColor;
     
     /// <summary>
+    /// The effect used when rendering the slide Bar. When <c>null</c>, the default effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the slide Bar. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleSlideBarData"/> class.
     /// </summary>
     /// <param name="barColor">The base color used to render the slide bar background.</param>
@@ -139,6 +151,8 @@ public class RectangleSlideBarData {
     /// <param name="sliderOutlineColor">The color of the slider handle outline.</param>
     /// <param name="sliderOutlineHoverColor">The color of the slider handle outline when hovered.</param>
     /// <param name="disabledSliderOutlineColor">The color of the slider handle outline when disabled.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public RectangleSlideBarData(
         Color? barColor = null,
         Color? barHoverColor = null,
@@ -160,7 +174,9 @@ public class RectangleSlideBarData {
         float sliderOutlineThickness = 0.0F,
         Color? sliderOutlineColor = null,
         Color? sliderOutlineHoverColor = null,
-        Color? disabledSliderOutlineColor = null
+        Color? disabledSliderOutlineColor = null,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.BarColor = barColor ?? Color.Gray;
         this.BarHoverColor = barHoverColor ?? this.BarColor;
@@ -185,5 +201,8 @@ public class RectangleSlideBarData {
         this.SliderOutlineColor = sliderOutlineColor ?? Color.DarkGray;
         this.SliderOutlineHoverColor = sliderOutlineHoverColor ?? this.SliderOutlineColor;
         this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? Color.DarkGray;
+        
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

@@ -447,7 +447,7 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="context">The graphics context used for rendering.</param>
     /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.TextBoxData.Effect, this.TextBoxData.BlendState);
         
         // Draw a filled rectangle.
         Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
@@ -486,7 +486,7 @@ public class RectangleTextBoxElement : GuiElement {
         
         context.SpriteBatch.End();
         
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.TextBoxData.Effect, this.TextBoxData.BlendState);
         
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
@@ -507,7 +507,7 @@ public class RectangleTextBoxElement : GuiElement {
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
-        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / this.TextScale.X, labelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale) - new Vector2(this.TextEdgeOffset.Left / this.TextScale.X, 0.0F),
             TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale),
@@ -524,7 +524,11 @@ public class RectangleTextBoxElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
+        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
+        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
+        if (labelData.BlendState != null) spriteBatch.PopBlendState();
+        if (labelData.Effect != null) spriteBatch.PopEffect();
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
     
@@ -542,12 +546,12 @@ public class RectangleTextBoxElement : GuiElement {
         
         for (int i = 0; i < caretVisibleIndex && (this._textScrollOffset + i) < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(this._textScrollOffset + i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             caretOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size * this.TextScale.Y / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -587,7 +591,7 @@ public class RectangleTextBoxElement : GuiElement {
         // Calculate the width of the highlighted text.
         for (int i = startIndex; i < endIndex && i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
     
             if (i >= this._textScrollOffset) {
                 highlightWidth += charSize.X;
@@ -599,13 +603,13 @@ public class RectangleTextBoxElement : GuiElement {
         
         for (int i = this._textScrollOffset; i < visibleStartIndex; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             highlightOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         Vector2 highlightOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - highlightOffsetX, labelData.Size * this.TextScale.Y / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -633,7 +637,7 @@ public class RectangleTextBoxElement : GuiElement {
         // Get visible text based on the current scroll.
         for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             if (width + charSize.X > visibleWidth) {
                 break;
@@ -653,7 +657,7 @@ public class RectangleTextBoxElement : GuiElement {
             // Pixel-precise check for caret going beyond the visible width.
             for (int i = this._textScrollOffset; i <= this._caretIndex && i < labelData.Text.Length; i++) {
                 string character = labelData.Text.Substring(i, 1);
-                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                 
                 caretX += charSize.X;
             }
@@ -662,7 +666,7 @@ public class RectangleTextBoxElement : GuiElement {
             if (caretX > visibleWidth) {
                 while (caretX > visibleWidth && this._textScrollOffset < this._caretIndex) {
                     string firstChar = labelData.Text.Substring(this._textScrollOffset, 1);
-                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                     
                     caretX -= firstSize.X;
                     this._textScrollOffset++;
@@ -681,7 +685,7 @@ public class RectangleTextBoxElement : GuiElement {
             
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                 
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -702,7 +706,7 @@ public class RectangleTextBoxElement : GuiElement {
                 
                 for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
                     string character = labelData.Text.Substring(i, 1);
-                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                     
                     if (totalWidth + charSize.X > visibleWidth) {
                         break;
@@ -714,7 +718,7 @@ public class RectangleTextBoxElement : GuiElement {
                 // Check if there is enough space to reduce the scroll offset.
                 if (totalWidth < visibleWidth && this._textScrollOffset > 0) {
                     string previousCharacter = labelData.Text.Substring(this._textScrollOffset - 1, 1);
-                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
     
                     // Reduce the offset only if the previous character can fully fit.
                     if (previousCharSize.X <= visibleWidth - totalWidth) {
@@ -733,7 +737,7 @@ public class RectangleTextBoxElement : GuiElement {
                     // Calculate chars from right until they are saw able.
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -768,7 +772,7 @@ public class RectangleTextBoxElement : GuiElement {
         localClickPosition -= this.TextOffset * this.Scale * this.Gui.ScaleFactor;
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.TextScale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.TextScale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         // Determine the starting position of the text in the textbox based on the text alignment.
         Vector2 textStartPos = this.TextAlignment switch {
@@ -822,7 +826,7 @@ public class RectangleTextBoxElement : GuiElement {
         
         for (int i = startIndex; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             // Only add if it fits.
             if (totalWidth + charSize.X > this.Size.X - (this.TextEdgeOffset.Left + this.TextEdgeOffset.Right)) {

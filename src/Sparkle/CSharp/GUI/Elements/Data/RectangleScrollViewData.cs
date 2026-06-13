@@ -1,5 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -121,6 +123,16 @@ public class RectangleScrollViewData {
     public Color DisabledSliderOutlineColor;
     
     /// <summary>
+    /// The effect used when rendering the scroll view. When <c>null</c>, the default effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the scroll view. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleScrollViewData"/> class.
     /// </summary>
     /// <param name="menuColor">The base color used to render the scroll view menu.</param>
@@ -146,6 +158,8 @@ public class RectangleScrollViewData {
     /// <param name="sliderOutlineColor">The color of the slider outline.</param>
     /// <param name="sliderOutlineHoverColor">The color of the slider outline when hovered.</param>
     /// <param name="disabledSliderOutlineColor">The color of the slider outline when disabled.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public RectangleScrollViewData(
         Color? menuColor = null,
         Color? menuHoverColor = null,
@@ -169,7 +183,9 @@ public class RectangleScrollViewData {
         float sliderOutlineThickness = 0.0F,
         Color? sliderOutlineColor = null,
         Color? sliderOutlineHoverColor = null,
-        Color? disabledSliderOutlineColor = null
+        Color? disabledSliderOutlineColor = null,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.MenuColor = menuColor ?? Color.Gray;
         this.MenuHoverColor = menuHoverColor ?? this.MenuColor;
@@ -196,5 +212,8 @@ public class RectangleScrollViewData {
         this.SliderOutlineColor = sliderOutlineColor ?? Color.DarkGray;
         this.SliderOutlineHoverColor = sliderOutlineHoverColor ?? this.SliderOutlineColor;
         this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? Color.DarkGray;
+        
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

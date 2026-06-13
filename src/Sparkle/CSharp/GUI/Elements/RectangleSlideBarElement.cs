@@ -130,7 +130,7 @@ public class RectangleSlideBarElement : GuiElement {
     /// <param name="context">The graphics context used for rendering operations, including primitive drawing.</param>
     /// <param name="framebuffer">The framebuffer target where the slide bar will be rendered.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Effect, this.Data.BlendState);
 
         Vector2 scaledOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor;
         

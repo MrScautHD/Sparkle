@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
@@ -50,12 +51,12 @@ public class ImageElement : GuiElement {
         
         switch (this.Data.ResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.Data.Texture, this.Data.Sampler, this.Data.SourceRect, color, this.Data.Flip, this.Data.PixelSnap);
+                this.DrawNormal(context.SpriteBatch, this.Data.Texture, this.Data.Sampler, this.Data.SourceRect, color, this.Data.Flip, this.Data.PixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.Data.Texture, this.Data.Sampler, this.Data.SourceRect, this.Data.BorderInsets, this.Data.ResizeMode == ResizeMode.TileCenter, color, this.Data.Flip, this.Data.PixelSnap);
+                this.DrawNineSlice(context.SpriteBatch, this.Data.Texture, this.Data.Sampler, this.Data.SourceRect, this.Data.BorderInsets, this.Data.ResizeMode == ResizeMode.TileCenter, color, this.Data.Flip, this.Data.PixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
         }
         
@@ -72,9 +73,15 @@ public class ImageElement : GuiElement {
     /// <param name="color">The color tint applied to the rendered texture.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -90,7 +97,9 @@ public class ImageElement : GuiElement {
     /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -147,8 +156,10 @@ public class ImageElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler.
+        // Push sampler, effect and blend state.
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         
         // Draw Corners.
         spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -219,7 +230,9 @@ public class ImageElement : GuiElement {
             }
         }
         
-        // Pop sampler.
+        // Pop sampler, effect and blend state.
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     

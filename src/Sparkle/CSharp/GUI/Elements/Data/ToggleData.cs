@@ -1,4 +1,5 @@
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -84,6 +85,16 @@ public class ToggleData {
     public bool CheckmarkPixelSnap;
     
     /// <summary>
+    /// The effect used when rendering the button. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the button. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="ToggleData"/> class with optional customization.
     /// </summary>
     /// <param name="checkboxTexture">The texture for the toggle Checkbox.</param>
@@ -101,7 +112,27 @@ public class ToggleData {
     /// <param name="checkmarkFlip">Optional flip setting for the checkmark texture. Defaults to none.</param>
     /// <param name="checkboxPixelSnap">When <c>true</c>, snaps the checkbox texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="checkmarkPixelSnap">When <c>true</c>, snaps the checkmark texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
-    public ToggleData(Texture2D checkboxTexture, Texture2D checkmarkTexture, Sampler? checkboxSampler = null, Sampler? checkmarkSampler = null, Rectangle? checkboxSourceRect = null, Rectangle? checkmarkSourceRect = null, Color? checkboxColor = null, Color? checkmarkColor = null, Color? checkboxHoverColor = null, Color? checkmarkHoverColor = null, Color? disabledColor = null, SpriteFlip checkboxFlip = SpriteFlip.None, SpriteFlip checkmarkFlip = SpriteFlip.None, bool checkboxPixelSnap = false, bool checkmarkPixelSnap = false) {
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    public ToggleData(
+        Texture2D checkboxTexture,
+        Texture2D checkmarkTexture,
+        Sampler? checkboxSampler = null,
+        Sampler? checkmarkSampler = null,
+        Rectangle? checkboxSourceRect = null,
+        Rectangle? checkmarkSourceRect = null,
+        Color? checkboxColor = null,
+        Color? checkmarkColor = null,
+        Color? checkboxHoverColor = null,
+        Color? checkmarkHoverColor = null,
+        Color? disabledColor = null,
+        SpriteFlip checkboxFlip = SpriteFlip.None,
+        SpriteFlip checkmarkFlip = SpriteFlip.None,
+        bool checkboxPixelSnap = false,
+        bool checkmarkPixelSnap = false,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
+    ) {
         this.CheckboxTexture = checkboxTexture;
         this.CheckmarkTexture = checkmarkTexture;
         this.CheckboxSampler = checkboxSampler;
@@ -117,5 +148,7 @@ public class ToggleData {
         this.CheckmarkFlip = checkmarkFlip;
         this.CheckboxPixelSnap = checkboxPixelSnap;
         this.CheckmarkPixelSnap = checkmarkPixelSnap;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

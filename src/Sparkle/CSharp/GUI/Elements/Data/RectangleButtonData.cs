@@ -1,4 +1,6 @@
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -40,6 +42,16 @@ public class RectangleButtonData {
     public Color DisabledOutlineColor;
     
     /// <summary>
+    /// The effect used when rendering the button. When <c>null</c>, the default effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the button. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleButtonData"/> class.
     /// </summary>
     /// <param name="color">The base fill color of the button. Defaults to white.</param>
@@ -49,7 +61,9 @@ public class RectangleButtonData {
     /// <param name="outlineColor">The color of the outline. Defaults to white.</param>
     /// <param name="outlineHoverColor">The outline color when hovered. Defaults to the regular outline color.</param>
     /// <param name="disabledOutlineColor">The outline color when the button is disabled. Defaults to dark gray.</param>
-    public RectangleButtonData(Color? color = null, Color? hoverColor = null, Color? disabledColor = null, float outlineThickness = 0.0F, Color? outlineColor = null, Color? outlineHoverColor = null, Color? disabledOutlineColor = null) {
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    public RectangleButtonData(Color? color = null,Color? hoverColor = null, Color? disabledColor = null, float outlineThickness = 0.0F, Color? outlineColor = null, Color? outlineHoverColor = null, Color? disabledOutlineColor = null, Effect? effect = null, BlendStateDescription? blendState = null) {
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
         this.DisabledColor = disabledColor ?? Color.Gray;
@@ -57,5 +71,7 @@ public class RectangleButtonData {
         this.OutlineColor = outlineColor ?? Color.White;
         this.OutlineHoverColor = outlineHoverColor ?? this.OutlineColor;
         this.DisabledOutlineColor = disabledOutlineColor ?? Color.DarkGray;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

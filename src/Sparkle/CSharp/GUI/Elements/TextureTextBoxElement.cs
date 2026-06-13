@@ -1,5 +1,6 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
@@ -461,12 +462,12 @@ public class TextureTextBoxElement : GuiElement {
         
         switch (this.TextBoxData.ResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap);
+                this.DrawNormal(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap);
+                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
                 break;
         }
         
@@ -496,18 +497,24 @@ public class TextureTextBoxElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the texture in its normal state without any modifications such as resizing or slicing.
+    /// Draws a texture onto the screen using the specified sprite batch, texture, and rendering parameters.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used for rendering the texture.</param>
     /// <param name="texture">The texture to be drawn.</param>
-    /// <param name="sampler">Optional sampler to apply during rendering. If null, the default sampler is used.</param>
-    /// <param name="sourceRect">The source rectangle defining the portion of the texture to be rendered.</param>
-    /// <param name="color">The color mask to apply to the texture.</param>
-    /// <param name="flip">The flip mode for the texture, specifying horizontal or vertical flipping.</param>
+    /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to be rendered.</param>
+    /// <param name="color">The color tint applied to the rendered texture.</param>
+    /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -523,7 +530,9 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap) {
+    /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
+    /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
+    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -580,8 +589,10 @@ public class TextureTextBoxElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler.
+        // Push sampler, effect and blend state.
         if (sampler != null) spriteBatch.PushSampler(sampler);
+        if (effect != null) spriteBatch.PushEffect(effect);
+        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
         
         // Draw Corners.
         spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -652,7 +663,9 @@ public class TextureTextBoxElement : GuiElement {
             }
         }
         
-        // Pop sampler.
+        // Pop sampler, effect and blend state.
+        if (blendState != null) spriteBatch.PopBlendState();
+        if (effect != null) spriteBatch.PopEffect();
         if (sampler != null) spriteBatch.PopSampler();
     }
     
@@ -664,7 +677,7 @@ public class TextureTextBoxElement : GuiElement {
     private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
-        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         Vector2 textOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / this.TextScale.X, labelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale) - new Vector2(this.TextEdgeOffset.Left / this.TextScale.X, 0.0F),
             TextAlignment.Center => new Vector2(textSize.X, labelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / this.TextScale),
@@ -681,7 +694,11 @@ public class TextureTextBoxElement : GuiElement {
         }
         
         if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.Effect, labelData.EffectAmount);
+        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
+        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
+        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
+        if (labelData.BlendState != null) spriteBatch.PopBlendState();
+        if (labelData.Effect != null) spriteBatch.PopEffect();
         if (labelData.Sampler != null) spriteBatch.PopSampler();
     }
     
@@ -699,12 +716,12 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = 0; i < caretVisibleIndex && (this._textScrollOffset + i) < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(this._textScrollOffset + i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             caretOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         Vector2 caretOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - caretOffsetX, labelData.Size * this.TextScale.Y / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -744,7 +761,7 @@ public class TextureTextBoxElement : GuiElement {
         // Calculate the width of the highlighted text.
         for (int i = startIndex; i < endIndex && i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
     
             if (i >= this._textScrollOffset) {
                 highlightWidth += charSize.X;
@@ -756,13 +773,13 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = this._textScrollOffset; i < visibleStartIndex; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             highlightOffsetX += charSize.X;
         }
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(text, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         Vector2 highlightOrigin = this.TextAlignment switch {
             TextAlignment.Left => new Vector2(this.Size.X / 2.0F - highlightOffsetX, labelData.Size * this.TextScale.Y / 2.0F) - (this.Size / 2.0F - this.Origin) - new Vector2(this.TextEdgeOffset.Left, 0.0F),
@@ -790,7 +807,7 @@ public class TextureTextBoxElement : GuiElement {
         // Get visible text based on the current scroll.
         for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             if (width + charSize.X > visibleWidth) {
                 break;
@@ -810,7 +827,7 @@ public class TextureTextBoxElement : GuiElement {
             // Pixel-precise check for caret going beyond the visible width.
             for (int i = this._textScrollOffset; i <= this._caretIndex && i < labelData.Text.Length; i++) {
                 string character = labelData.Text.Substring(i, 1);
-                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                 
                 caretX += charSize.X;
             }
@@ -819,7 +836,7 @@ public class TextureTextBoxElement : GuiElement {
             if (caretX > visibleWidth) {
                 while (caretX > visibleWidth && this._textScrollOffset < this._caretIndex) {
                     string firstChar = labelData.Text.Substring(this._textScrollOffset, 1);
-                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 firstSize = labelData.Font.MeasureText(firstChar, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                     
                     caretX -= firstSize.X;
                     this._textScrollOffset++;
@@ -838,7 +855,7 @@ public class TextureTextBoxElement : GuiElement {
                     
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                         
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -859,7 +876,7 @@ public class TextureTextBoxElement : GuiElement {
                 
                 for (int i = this._textScrollOffset; i < labelData.Text.Length; i++) {
                     string character = labelData.Text.Substring(i, 1);
-                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
                     
                     if (totalWidth + charSize.X > visibleWidth) {
                         break;
@@ -871,7 +888,7 @@ public class TextureTextBoxElement : GuiElement {
                 // Check if there is enough space to reduce the scroll offset.
                 if (totalWidth < visibleWidth && this._textScrollOffset > 0) {
                     string previousCharacter = labelData.Text.Substring(this._textScrollOffset - 1, 1);
-                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                    Vector2 previousCharSize = labelData.Font.MeasureText(previousCharacter, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
     
                     // Reduce the offset only if the previous character can fully fit.
                     if (previousCharSize.X <= visibleWidth - totalWidth) {
@@ -890,7 +907,7 @@ public class TextureTextBoxElement : GuiElement {
                     // Calculate chars from right until they are saw able.
                     for (int i = labelData.Text.Length - 1; i >= 0; i--) {
                         string character = labelData.Text.Substring(i, 1);
-                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+                        Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
                         if (totalWidth + charSize.X > visibleWidth) {
                             break;
@@ -925,7 +942,7 @@ public class TextureTextBoxElement : GuiElement {
         localClickPosition -= this.TextOffset * this.Scale * this.Gui.ScaleFactor;
         
         // Calculate visible text size, used for text alignment.
-        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.TextScale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+        Vector2 visibleTextSize = labelData.Font.MeasureText(this.GetVisibleText(labelData), labelData.Size, this.Scale * this.TextScale * this.Gui.ScaleFactor, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
         
         // Determine the starting position of the text in the textbox based on the text alignment.
         Vector2 textStartPos = this.TextAlignment switch {
@@ -979,7 +996,7 @@ public class TextureTextBoxElement : GuiElement {
         
         for (int i = startIndex; i < labelData.Text.Length; i++) {
             string character = labelData.Text.Substring(i, 1);
-            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.Effect, labelData.EffectAmount);
+            Vector2 charSize = labelData.Font.MeasureText(character, labelData.Size, this.TextScale, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
             
             // Only add if it fits.
             if (totalWidth + charSize.X > this.Size.X - (this.TextEdgeOffset.Left + this.TextEdgeOffset.Right)) {

@@ -274,7 +274,7 @@ public class RectangleScrollViewElement : GuiElement {
     /// <param name="context">The graphics context providing the batches used for rendering.</param>
     /// <param name="framebuffer">The target framebuffer the scroll view is drawn into.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Effect, this.Data.BlendState);
         
         Vector2 menuSize = this.Size;
         

@@ -33,7 +33,7 @@ public class LabelElement : GuiElement {
     /// <param name="delta">The time elapsed between the current and the previous frame, in seconds.</param>
     /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
-        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, Vector2.One, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.Effect, this.Data.EffectAmount);
+        this.Size = this.Data.Font.MeasureText(this.Data.Text, this.Data.Size, Vector2.One, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Data.FontSystemEffect, this.Data.EffectAmount);
         base.Update(delta, ref interactionHandled);
     }
     
@@ -54,8 +54,8 @@ public class LabelElement : GuiElement {
         }
         
         // Draw text.
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Sampler);
-        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.Effect, this.Data.EffectAmount);
+        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
+        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.FontSystemEffect, this.Data.EffectAmount);
         context.SpriteBatch.End();
     }
         

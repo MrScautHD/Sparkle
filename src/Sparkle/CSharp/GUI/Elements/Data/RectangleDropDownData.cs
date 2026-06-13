@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements.Data;
 
@@ -161,6 +163,16 @@ public class RectangleDropDownData {
     public Color HighlightColor;
     
     /// <summary>
+    /// The effect used when rendering the dropdown. When <c>null</c>, the default effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the dropdown. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="RectangleDropDownData"/> class,
     /// defining all visual styles for a rectangle-based dropdown element.
     /// </summary>
@@ -195,6 +207,8 @@ public class RectangleDropDownData {
     /// <param name="arrowHoverColor">Color applied to the arrow when hovered.</param>
     /// <param name="disabledArrowColor">Color applied to the arrow when disabled.</param>
     /// <param name="highlightColor">Highlight color for hovered or selected menu items.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public RectangleDropDownData(
         Color? fieldColor = null,
         Color? fieldHoverColor = null,
@@ -226,7 +240,9 @@ public class RectangleDropDownData {
         Color? arrowColor = null,
         Color? arrowHoverColor = null,
         Color? disabledArrowColor = null,
-        Color? highlightColor = null
+        Color? highlightColor = null,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.FieldColor = fieldColor ?? Color.Gray;
         this.FieldHoverColor = fieldHoverColor ?? this.FieldColor;
@@ -264,5 +280,7 @@ public class RectangleDropDownData {
         this.DisabledArrowColor = disabledArrowColor ?? Color.Gray;
         
         this.HighlightColor = highlightColor ?? new Color(100, 100, 100, 255);
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

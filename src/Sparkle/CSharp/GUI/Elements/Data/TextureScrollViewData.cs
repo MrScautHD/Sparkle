@@ -1,4 +1,5 @@
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -152,7 +153,17 @@ public class TextureScrollViewData {
     /// The width of the slider bar.
     /// </summary>
     public int SliderBarWidth;
-
+    
+    /// <summary>
+    /// The effect used when rendering the button. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the button. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="TextureScrollViewData"/> class.
     /// </summary>
@@ -185,6 +196,8 @@ public class TextureScrollViewData {
     /// <param name="sliderBarPixelSnap">When <c>true</c>, snaps the slider bar texture position and origin to whole pixels. Defaults to <c>false</c>.</param>
     /// <param name="sliderPixelSnap">When <c>true</c>, snaps the slider texture position and origin to whole pixels. Defaults to <c>false</c>.</param>
     /// <param name="sliderBarWidth">The width of the slider bar in pixels. Defaults to <c>16</c>.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public TextureScrollViewData(
         Texture2D menuTexture,
         Texture2D sliderBarTexture,
@@ -214,7 +227,9 @@ public class TextureScrollViewData {
         bool menuPixelSnap = false,
         bool sliderBarPixelSnap = false,
         bool sliderPixelSnap = false,
-        int sliderBarWidth = 16
+        int sliderBarWidth = 16,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.MenuTexture = menuTexture;
         this.SliderBarTexture = sliderBarTexture;
@@ -245,5 +260,7 @@ public class TextureScrollViewData {
         this.SliderBarPixelSnap = sliderBarPixelSnap;
         this.SliderPixelSnap = sliderPixelSnap;
         this.SliderBarWidth = sliderBarWidth;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }

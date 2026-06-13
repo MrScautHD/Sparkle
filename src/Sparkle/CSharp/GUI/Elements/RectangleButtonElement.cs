@@ -63,7 +63,7 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="context">The graphics context used for rendering primitives and text.</param>
     /// <param name="framebuffer">The framebuffer target for rendering.</param>
     protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.ButtonData.Effect, this.ButtonData.BlendState);
         
         // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
@@ -91,7 +91,7 @@ public class RectangleButtonElement : GuiElement {
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
             Vector2 textPos = this.Position + (this.TextOffset * this.Scale * this.Gui.ScaleFactor);
-            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.Effect, this.LabelData.EffectAmount);
+            Vector2 textSize = this.LabelData.Font.MeasureText(this.LabelData.Text, this.LabelData.Size, Vector2.One, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
             Vector2 textOrigin = this.TextAlignment switch {
                 TextAlignment.Left => new Vector2(this.Size.X / this.TextScale.X, this.LabelData.Size) / 2.0F - ((this.Size / 2.0F - this.Origin) / (this.TextScale)),
                 TextAlignment.Right => new Vector2((-this.Size.X / 2.0F) / this.TextScale.X + textSize.X - 2.0F, this.LabelData.Size / 2.0F) - ((this.Size / 2.0F - this.Origin) / this.TextScale),
@@ -105,8 +105,8 @@ public class RectangleButtonElement : GuiElement {
                 textColor = this.LabelData.DisabledColor;
             }
             
-            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler);
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.Effect, this.LabelData.EffectAmount);
+            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
             context.SpriteBatch.End();
         }
     }

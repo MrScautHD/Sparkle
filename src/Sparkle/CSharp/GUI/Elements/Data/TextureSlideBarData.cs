@@ -1,4 +1,5 @@
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -149,6 +150,16 @@ public class TextureSlideBarData {
     public bool SliderPixelSnap;
     
     /// <summary>
+    /// The effect used when rendering the button. When <c>null</c>, the default sprite effect is used.
+    /// </summary>
+    public Effect? Effect;
+    
+    /// <summary>
+    /// The blend state used when rendering the button. When <c>null</c>, the batch's current blend state is used.
+    /// </summary>
+    public BlendStateDescription? BlendState;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextureSlideBarData"/> class.
     /// </summary>
     /// <param name="barTexture">The texture used to render the slide bar background.</param>
@@ -179,6 +190,8 @@ public class TextureSlideBarData {
     /// <param name="barPixelSnap">When <c>true</c>, snaps the bar texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="filledBarPixelSnap">When <c>true</c>, snaps the filled bar texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
     /// <param name="sliderPixelSnap">When <c>true</c>, snaps the slider handle texture position and origin to whole pixels using floor, preventing sub-pixel blurriness. Default is <c>false</c>.</param>
+    /// <param name="effect">Optional effect used when rendering. If <c>null</c>, the default sprite effect is used.</param>
+    /// <param name="blendState">Optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     public TextureSlideBarData(
         Texture2D barTexture,
         Texture2D? filledBarTexture,
@@ -207,7 +220,9 @@ public class TextureSlideBarData {
         SpriteFlip sliderFlip = SpriteFlip.None,
         bool barPixelSnap = false,
         bool filledBarPixelSnap = false,
-        bool sliderPixelSnap = false
+        bool sliderPixelSnap = false,
+        Effect? effect = null,
+        BlendStateDescription? blendState = null
     ) {
         this.BarTexture = barTexture;
         this.FilledBarTexture = filledBarTexture;
@@ -237,5 +252,7 @@ public class TextureSlideBarData {
         this.BarPixelSnap = barPixelSnap;
         this.FilledBarPixelSnap = filledBarPixelSnap;
         this.SliderPixelSnap = sliderPixelSnap;
+        this.Effect = effect;
+        this.BlendState = blendState;
     }
 }
