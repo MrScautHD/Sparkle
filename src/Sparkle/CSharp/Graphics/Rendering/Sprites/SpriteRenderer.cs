@@ -23,7 +23,7 @@ public class SpriteRenderer {
     public SpriteRenderer() {
         this._sprites = new List<SpriteData>();
     }
-
+    
     /// <summary>
     /// Queues a sprite for rendering with specified properties.
     /// </summary>

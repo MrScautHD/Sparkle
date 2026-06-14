@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Bliss.CSharp;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
@@ -236,6 +237,7 @@ public class Game : Disposable {
         this.PreLoad(this.Content);
         
         bool isLoaded = false;
+        ExceptionDispatchInfo? loadException = null;
         
         if (loadingGui == null) {
             Logger.Info("Load global graphics assets...");
@@ -269,7 +271,7 @@ public class Game : Disposable {
                     this.Init();
                     loadingGui.Progress = 0.9F;
                     
-                    float elapsed = (float) (DateTime.Now - startTime).TotalSeconds;
+                    float elapsed = (float)(DateTime.Now - startTime).TotalSeconds;
                     float remaining = Math.Max(0, loadingGui.MinTime - elapsed);
                     
                     if (remaining > 0.0F) {
@@ -277,6 +279,9 @@ public class Game : Disposable {
                     }
                     
                     loadingGui.Progress = 1.0F;
+                }
+                catch (Exception ex) {
+                    loadException = ExceptionDispatchInfo.Capture(ex);
                 }
                 finally {
                     GuiManager.SetLoadingGui(null);
@@ -287,6 +292,10 @@ public class Game : Disposable {
         
         // Game loop.
         while (true) {
+            
+            // Throw exception when something happens while loading.
+            loadException?.Throw();
+            
             if (!this.Settings.VSync && this.GetTargetFps() != 0 && Time.DeltaTimer.Elapsed.TotalSeconds <= this._fixedFrameRate) {
                 continue;
             }

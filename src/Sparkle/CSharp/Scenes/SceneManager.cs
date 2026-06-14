@@ -1,3 +1,4 @@
+using System.Runtime.ExceptionServices;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Images;
@@ -79,6 +80,11 @@ public static class SceneManager {
     public static Simulation? Simulation => ActiveScene?.Simulation;
     
     /// <summary>
+    /// Captures and stores an exception that occurs during the scene loading process for later rethrow or analysis.
+    /// </summary>
+    private static ExceptionDispatchInfo? _loadException;
+    
+    /// <summary>
     /// Initializes the SceneManager with the specified parameters.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
@@ -128,6 +134,10 @@ public static class SceneManager {
     /// </summary>
     /// <param name="delta">The time elapsed since the last update.</param>
     internal static void OnUpdate(double delta) {
+        
+        // Throw exception when something happens while loading.
+        _loadException?.Throw();
+        
         lock (LoadLock) {
             if (GuiManager.ActiveGui is LoadingGui || IsLoading) {
                 return;
@@ -305,39 +315,42 @@ public static class SceneManager {
                 state.Progress = 0.0F;
                 loadingGui?.Progress = 0.0F;
                 Logger.Info($"Setting active scene to: {scene?.Name ?? "NULL"}");
-                
+
                 ActiveScene?.Dispose();
                 ActiveScene = scene;
                 state.Progress = 0.2F;
                 loadingGui?.Progress = 0.2F;
-                
+
                 Logger.Info("Load active scene content...");
                 if (Game.Instance?.Content != null) ActiveScene?.Load(Game.Instance.Content);
                 state.Progress = 0.7F;
                 loadingGui?.Progress = 0.7F;
                 Logger.Info($"Scene {scene?.Name ?? "NULL"} content loaded successfully.");
-                
+
                 Logger.Info("Initialize active scene...");
                 ActiveScene?.Init();
                 ActiveScene?.IsInitialized = true;
                 state.Progress = 0.9F;
                 loadingGui?.Progress = 0.9F;
-                
+
                 if (loadingGui != null) {
                     float elapsed = (float)(DateTime.Now - startTime).TotalSeconds;
                     float remaining = Math.Max(0.0F, loadingGui.MinTime - elapsed);
 
                     if (remaining > 0.0F) {
-                        Thread.Sleep((int) (remaining * 1000.0F));
+                        Thread.Sleep((int)(remaining * 1000.0F));
                     }
                 }
-                
+
                 ActiveCam2D = (Camera2D) ActiveScene?.GetEntitiesWithTag("camera2D").FirstOrDefault()!;
                 ActiveCam3D = (Camera3D) ActiveScene?.GetEntitiesWithTag("camera3D").FirstOrDefault()!;
-                
+
                 state.Progress = 1.0F;
                 loadingGui?.Progress = 1.0F;
                 Logger.Info($"Scene {scene?.Name ?? "NULL"} initialized successfully.");
+            }
+            catch (Exception ex) {
+                _loadException = ExceptionDispatchInfo.Capture(ex);
             }
             finally {
                 if (loadingGui != null) {

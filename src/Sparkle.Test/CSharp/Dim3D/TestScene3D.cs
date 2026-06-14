@@ -70,13 +70,13 @@ public class TestScene3D : Scene {
         }), false);
         
         // Multi instance renderers:
-        InstancedPlayer = content.Load(new ModelContent("content/model.glb").Do(model => {
+        this.InstancedPlayer = content.Load(new ModelContent("content/model.glb").Do(model => {
             foreach (IMesh mesh in model.Meshes) {
                 mesh.Material.RenderMode = RenderMode.Cutout;
             }
         }), false);
         
-        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(InstancedPlayer);
+        this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(this.InstancedPlayer);
         
         foreach (IMesh playerMesh in this.PlayerMultiInstanceRenderer.Meshes) {
             this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(playerMesh).Effect = GlobalResource.DefaultModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;

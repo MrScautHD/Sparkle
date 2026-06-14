@@ -5,11 +5,9 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.GUI.Loading;
 using Sparkle.Test.CSharp;
 using Sparkle.Test.CSharp.Dim3D;
-using Veldrith;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]",
-    Backend = GraphicsBackend.Direct3D12,
     VSync = false // For some reason on 240+ Hz monitors on Windows, it starts stuttering (Solutions: 1. Move to Linux, 2. Set the Hz in your windows settings down for the monitor, 3. Just don't use vsync).
 };
 
@@ -18,13 +16,7 @@ TestGame game = new TestGame(settings);
 try {
     game.Run(new TestScene3D(), new LogoLoadingGui("Loading", "content/sparkle/images/logo.png", logoScale: new Vector2(3, 3)));
 }
-catch (Exception ex) {
-    StackFrame? frame = new StackTrace(ex, true).GetFrame(0);
-    string sourceFile = frame?.GetFileName() ?? "Unknown";
-    string member = frame?.GetMethod()?.Name ?? "Unknown";
-    int line = frame?.GetFileLineNumber() ?? 0;
-    
-    Logger.Error(ex.ToString(), sourceFile, member, line);
+catch (Exception ex) when (LogCrash(ex)) {
     Environment.Exit(1);
 }
 finally {
@@ -34,4 +26,14 @@ finally {
     catch {
         // Suppress Dispose() exceptions so the original isn't masked.
     }
+}
+
+static bool LogCrash(Exception ex) {
+    StackFrame? frame = new StackTrace(ex, true).GetFrame(0);
+    string sourceFile = frame?.GetFileName() ?? "Unknown";
+    string member = frame?.GetMethod()?.Name ?? "Unknown";
+    int line = frame?.GetFileLineNumber() ?? 0;
+    
+    Logger.Error(ex.ToString(), sourceFile, member, line);
+    return !Debugger.IsAttached;
 }
