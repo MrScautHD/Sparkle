@@ -12,11 +12,13 @@ using Bliss.CSharp.Logging;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.CSharp.Windowing;
+using Bliss.ImGUI.CSharp;
 using MiniAudioEx.Core.StandardAPI;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.GUI.Loading;
+using Sparkle.CSharp.ImGUI;
 using Sparkle.CSharp.Logging;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
@@ -57,21 +59,26 @@ public class Game : Disposable {
     /// The command list used for rendering commands.
     /// </summary>
     public CommandList CommandList { get; private set; }
-
+    
     /// <summary>
     /// Represents the fullscreen render pass used during the rendering process.
     /// </summary>
     public FullScreenRenderer FullScreenRenderPass { get; private set; }
-
+    
     /// <summary>
     /// The default (global) sprite batch used for rendering 2D sprites.
     /// </summary>
     public SpriteBatch GlobalSpriteBatch { get; private set; }
-
+    
     /// <summary>
     /// The default (global) primitive batch used for rendering 2D geometric primitives.
     /// </summary>
     public PrimitiveBatch GlobalPrimitiveBatch { get; private set; }
+    
+    /// <summary>
+    /// The default (global) ImGUI controller used for rendering 2D immediate guis.
+    /// </summary>
+    public ImGuiController ImGuiController { get; private set; }
 
     /// <summary>
     /// An instance encapsulating core graphics rendering components associated with the game.
@@ -212,8 +219,11 @@ public class Game : Disposable {
         Logger.Info("Initialize global primitive batch...");
         this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow);
         
+        Logger.Info("Initialize global ImGUI controller...");
+        this.ImGuiController = new ImGuiController(graphicsDevice, this.MainWindow);
+        
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.ImGuiController);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -223,6 +233,9 @@ public class Game : Disposable {
         
         Logger.Info("Initialize GUI manager...");
         GuiManager.Init();
+        
+        Logger.Info("Initialize ImGUI overlay manager...");
+        ImGuiOverlayManager.Init();
         
         Logger.Info("Initialize registry manager...");
         RegistryManager.Init();
@@ -304,6 +317,9 @@ public class Game : Disposable {
             
             // Process window events.
             this.MainWindow.PumpEvents();
+            
+            // Update ImGUI controller.
+            this.ImGuiController.Update(Time.Delta);
             
             // Handle shutdown (Do not allow shutting down the game while it is in a loading GUI).
             if ((this.ShouldClose || !this.MainWindow.Exists) && GuiManager.ActiveGui is not LoadingGui) {
@@ -409,6 +425,7 @@ public class Game : Disposable {
         SceneManager.OnUpdate(delta);
         OverlayManager.OnUpdate(delta);
         GuiManager.OnUpdate(delta);
+        ImGuiOverlayManager.OnUpdate(delta);
     }
     
     /// <summary>
@@ -419,6 +436,7 @@ public class Game : Disposable {
         SceneManager.OnAfterUpdate(delta);
         OverlayManager.OnAfterUpdate(delta);
         GuiManager.OnAfterUpdate(delta);
+        ImGuiOverlayManager.OnAfterUpdate(delta);
     }
     
     /// <summary>
@@ -429,6 +447,7 @@ public class Game : Disposable {
         SceneManager.OnFixedUpdate(fixedStep);
         OverlayManager.OnFixedUpdate(fixedStep);
         GuiManager.OnFixedUpdate(fixedStep);
+        ImGuiOverlayManager.OnFixedUpdate(fixedStep);
     }
     
     /// <summary>
@@ -438,6 +457,7 @@ public class Game : Disposable {
         SceneManager.OnDraw(context, framebuffer);
         OverlayManager.OnDraw(context, framebuffer);
         GuiManager.OnDraw(context, framebuffer);
+        ImGuiOverlayManager.OnDraw(context, framebuffer);
     }
     
     /// <summary>
@@ -461,6 +481,9 @@ public class Game : Disposable {
         
         // Resize gui manager.
         GuiManager.OnResize(rectangle);
+        
+        // Resize ImGUI overlay manager.
+        ImGuiOverlayManager.OnResize(rectangle);
     }
     
     /// <summary>
@@ -505,6 +528,7 @@ public class Game : Disposable {
             SceneManager.Destroy();
             OverlayManager.Destroy();
             GuiManager.Destroy();
+            ImGuiOverlayManager.Destroy();
             RegistryManager.Destroy();
             
             this.Content.Dispose();

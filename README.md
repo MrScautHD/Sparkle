@@ -36,6 +36,7 @@ dotnet add package Sparkle --version [VERSION]
 📚 Libraries - [Nuget](https://www.nuget.org/packages)
 ======================================================
 - [`Bliss`](https://www.nuget.org/packages/Bliss)
+- [`Bliss.ImGUI`](https://www.nuget.org/packages/Bliss.ImGUI)
 - [`Newtonsoft.Json`](https://www.nuget.org/packages/Newtonsoft.Json)
 - [`Jitter2`](https://www.nuget.org/packages/Jitter2)
 - [`HughPH.Box2D`](https://www.nuget.org/packages/HughPH.Box2D)

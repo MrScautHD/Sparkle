@@ -747,7 +747,7 @@ public class TextureTextBoxElement : GuiElement {
             return;
         }
         
-        // Visible text.
+        // Enabled text.
         string text = this.GetVisibleText(labelData);
         
         // Start/End index.

@@ -2,6 +2,7 @@ using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Sparkle.CSharp;
 using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.ImGUI;
 using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Registries;
 using Sparkle.Test.CSharp.Menus;
@@ -22,6 +23,9 @@ public class TestGame : Game {
         
         TestOverlay overlay = new TestOverlay("TEST", true);
         OverlayManager.AddOverlay(overlay);
+
+        TestImGuiOverlay testImGuiOverlay = new TestImGuiOverlay("Test-ImGUI-Overlay", true);
+        ImGuiOverlayManager.AddOverlay(testImGuiOverlay);
     }
 
     protected override void Update(double delta) {

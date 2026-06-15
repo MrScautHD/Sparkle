@@ -577,7 +577,7 @@ public class RectangleTextBoxElement : GuiElement {
             return;
         }
         
-        // Visible text.
+        // Enabled text.
         string text = this.GetVisibleText(labelData);
         
         // Start/End index.
