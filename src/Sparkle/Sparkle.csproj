@@ -29,7 +29,7 @@
     <!-- Libraries -->
     <ItemGroup>
         <PackageReference Include="Bliss" Version="1.6.11" GeneratePathProperty="true" />
-        <PackageReference Include="Bliss.ImGUI" Version="1.6.11" />
+        <PackageReference Include="Bliss.ImGUI" Version="1.6.11" GeneratePathProperty="true" />
         <PackageReference Include="HughPH.Box2D" Version="2026.5.5.222" />
         <PackageReference Include="Jitter2" Version="2.8.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
@@ -63,7 +63,7 @@
     
     <!-- Pack Bliss.ImGUI Content -->
     <ItemGroup>
-        <Content Include="$(PkgBliss)\content\content\imgui\**\*"
+        <Content Include="$(PkgBliss_ImGUI)\content\content\imgui\**\*"
                  Pack="true"
                  PackagePath="contentFiles\any\any\content\imgui\%(RecursiveDir)%(Filename)%(Extension)"
                  PackageCopyToOutput="true"
