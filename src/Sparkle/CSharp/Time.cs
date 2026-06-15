@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Bliss.CSharp.Logging;
 
 namespace Sparkle.CSharp;
 
@@ -23,7 +22,12 @@ public static class Time {
     /// <summary>
     /// Gets the total elapsed time since the start of the application.
     /// </summary>
-    public static double Total => _totalTimeWatch.Elapsed.TotalSeconds;
+    public static double Total { get; private set; }
+    
+    /// <summary>
+    /// Gets the number of frames elapsed since the start of the application.
+    /// </summary>
+    public static ulong Frame { get; private set; }
     
     /// <summary>
     /// A static stopwatch used for measuring elapsed time. This is intended for internal use only.
@@ -41,6 +45,8 @@ public static class Time {
     internal static void Init() {
         Delta = 0.0;
         FixedAccumulator = 0.0;
+        Total = 0.0;
+        Frame = 0;
         DeltaTimer = Stopwatch.StartNew();
         _totalTimeWatch = Stopwatch.StartNew();
     }
@@ -49,10 +55,14 @@ public static class Time {
     /// Updates the Time class by calculating the time delta and restarting the timer.
     /// </summary>
     internal static void Update() {
+        Frame++;
         
         // Calculate delta time.
         Delta = DeltaTimer.Elapsed.TotalSeconds;
         DeltaTimer.Restart();
+        
+        // Calculate total time.
+        Total = _totalTimeWatch.Elapsed.TotalSeconds;
         
         // Calculate fixed accumulator.
         FixedAccumulator += Delta;
