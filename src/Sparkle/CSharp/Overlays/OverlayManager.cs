@@ -38,7 +38,9 @@ public static class OverlayManager {
         
         // Handle removing overlays.
         foreach (Overlay overlay in _overlaysToRemove) {
-            _overlays.Remove(overlay);
+            if (_overlays.Remove(overlay)) {
+                overlay.Dispose();
+            }
         }
         
         _overlaysToRemove.Clear();
@@ -179,6 +181,22 @@ public static class OverlayManager {
     /// Clears all overlays from the manager.
     /// </summary>
     internal static void Destroy() {
+        HashSet<Overlay> disposedOverlays = new HashSet<Overlay>();
+        
+        foreach (Overlay overlay in _overlays) {
+            if (disposedOverlays.Add(overlay)) {
+                overlay.Dispose();
+            }
+        }
+        
+        foreach (Overlay overlay in _overlaysToAdd) {
+            if (disposedOverlays.Add(overlay)) {
+                overlay.Dispose();
+            }
+        }
+        
         _overlays.Clear();
+        _overlaysToAdd.Clear();
+        _overlaysToRemove.Clear();
     }
 }

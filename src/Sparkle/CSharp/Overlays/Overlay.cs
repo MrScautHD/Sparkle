@@ -1,10 +1,11 @@
+using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrith;
 
 namespace Sparkle.CSharp.Overlays;
 
-public abstract class Overlay {
+public abstract class Overlay : Disposable {
     
     /// <summary>
     /// Gets the name of the overlay.

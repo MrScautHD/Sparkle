@@ -37,4 +37,6 @@ public class TestOverlay : Overlay {
         
         context.SpriteBatch.End();
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

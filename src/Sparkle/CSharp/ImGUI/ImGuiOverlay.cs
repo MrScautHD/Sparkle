@@ -1,9 +1,10 @@
-﻿using Bliss.CSharp.Transformations;
+﻿using Bliss.CSharp;
+using Bliss.CSharp.Transformations;
 using Bliss.ImGUI.CSharp;
 
 namespace Sparkle.CSharp.ImGUI;
 
-public abstract class ImGuiOverlay {
+public abstract class ImGuiOverlay : Disposable {
     
     /// <summary>
     /// The unique name used to register, look up and remove this overlay.

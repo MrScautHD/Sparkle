@@ -68,4 +68,6 @@ public class TestImGuiOverlay : ImGuiOverlay {
         
         this._appliedScale = scale;
     }
+    
+    protected override void Dispose(bool disposing) { }
 }

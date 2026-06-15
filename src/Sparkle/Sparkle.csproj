@@ -60,4 +60,15 @@
                  BuildAction="None"
                  Visible="false" />
     </ItemGroup>
+    
+    <!-- Pack Bliss.ImGUI Content -->
+    <ItemGroup>
+        <Content Include="$(PkgBliss)\content\content\imgui\**\*"
+                 Pack="true"
+                 PackagePath="contentFiles\any\any\content\imgui\%(RecursiveDir)%(Filename)%(Extension)"
+                 PackageCopyToOutput="true"
+                 CopyToOutputDirectory="PreserveNewest"
+                 BuildAction="None"
+                 Visible="false" />
+    </ItemGroup>
 </Project>

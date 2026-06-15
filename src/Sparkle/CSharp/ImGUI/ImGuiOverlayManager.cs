@@ -38,7 +38,9 @@ public static class ImGuiOverlayManager {
         
         // Handle removing overlays.
         foreach (ImGuiOverlay overlay in _overlaysToRemove) {
-            _overlays.Remove(overlay);
+            if (_overlays.Remove(overlay)) {
+                overlay.Dispose();
+            }
         }
         
         _overlaysToRemove.Clear();
@@ -183,6 +185,22 @@ public static class ImGuiOverlayManager {
     /// Clears all overlays from the manager.
     /// </summary>
     internal static void Destroy() {
+        HashSet<ImGuiOverlay> disposedOverlays = new HashSet<ImGuiOverlay>();
+        
+        foreach (ImGuiOverlay overlay in _overlays) {
+            if (disposedOverlays.Add(overlay)) {
+                overlay.Dispose();
+            }
+        }
+        
+        foreach (ImGuiOverlay overlay in _overlaysToAdd) {
+            if (disposedOverlays.Add(overlay)) {
+                overlay.Dispose();
+            }
+        }
+        
         _overlays.Clear();
+        _overlaysToAdd.Clear();
+        _overlaysToRemove.Clear();
     }
 }
