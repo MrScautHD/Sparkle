@@ -14,7 +14,7 @@
     <PropertyGroup>
         <Title>Sparkle</Title>
         <Authors>MrScautHD</Authors>
-        <Version>5.2.8</Version>
+        <Version>5.2.9</Version>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
@@ -28,9 +28,9 @@
     
     <!-- Libraries -->
     <ItemGroup>
-        <PackageReference Include="Bliss" Version="1.6.11" GeneratePathProperty="true" />
-        <PackageReference Include="Bliss.ImGUI" Version="1.6.11" GeneratePathProperty="true" />
-        <PackageReference Include="HughPH.Box2D" Version="2026.5.5.222" />
+        <PackageReference Include="Bliss" Version="1.6.14" GeneratePathProperty="true" />
+        <PackageReference Include="Bliss.ImGUI" Version="1.6.14" GeneratePathProperty="true" />
+        <PackageReference Include="HughPH.Box2D" Version="2026.6.22.136" />
         <PackageReference Include="Jitter2" Version="2.8.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     </ItemGroup>
