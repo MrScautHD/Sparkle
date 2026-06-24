@@ -5,6 +5,7 @@ using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -125,20 +126,24 @@ public class RectangleSlideBarElement : GuiElement {
     }
     
     /// <summary>
-    /// Renders the rectangle slide bar element onto the specified framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering operations, including primitive drawing.</param>
-    /// <param name="framebuffer">The framebuffer target where the slide bar will be rendered.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Effect, this.Data.BlendState);
-
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
+        
+        GuiRenderState renderState = new GuiRenderState(effect: this.Data.Effect, blendState: this.Data.BlendState);
+        
         Vector2 scaledOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor;
         
         // Draw bar.
         Color barColor = this.IsHovered ? this.Data.BarHoverColor : this.Data.BarColor;
-        if (!this.Interactable) barColor = this.Data.DisabledBarColor;
         
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), scaledOrigin, this.Rotation, 0.5F, barColor);
+        if (!this.Interactable) {
+            barColor = this.Data.DisabledBarColor;
+        }
+        
+        renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), scaledOrigin, this.Rotation, 0.5F, barColor);
         
         // Draw bar outline.
         if (this.Data.BarOutlineThickness > 0.0F) {
@@ -149,7 +154,7 @@ public class RectangleSlideBarElement : GuiElement {
             }
             
             float outlineThickness = this.Data.BarOutlineThickness * this.Gui.ScaleFactor;
-            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, scaledOrigin, this.Rotation, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(renderState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, scaledOrigin, this.Rotation, 0.5F, outlineColor);
         }
         
         // Calculate progress.
@@ -189,19 +194,19 @@ public class RectangleSlideBarElement : GuiElement {
                 }
                 
                 // Draw the top line.
-                context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin, this.Rotation, 0.5F, outlineColor);
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin, this.Rotation, 0.5F, outlineColor);
                 
                 // Draw the bottom line.
-                context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin - new Vector2(0, this.ScaledSize.Y - thickness), this.Rotation, 0.5F, outlineColor);
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin - new Vector2(0, this.ScaledSize.Y - thickness), this.Rotation, 0.5F, outlineColor);
                 
                 // Draw the left line.
                 float leftWidth = Math.Min(scaledFillWidth, thickness);
-                context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, leftWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(0, thickness), this.Rotation, 0.5F, outlineColor);
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, leftWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(0, thickness), this.Rotation, 0.5F, outlineColor);
                 
                 // Right Line
                 if (scaledFillWidth > totalWidth - thickness) {
                     float rightWidth = scaledFillWidth - (totalWidth - thickness);
-                    context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, rightWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(totalWidth - thickness, thickness), this.Rotation, 0.5F, outlineColor);
+                    renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, rightWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(totalWidth - thickness, thickness), this.Rotation, 0.5F, outlineColor);
                 }
             }
             
@@ -210,13 +215,11 @@ public class RectangleSlideBarElement : GuiElement {
             float rightOffset = Math.Max(0, scaledFillWidth - (totalWidth - thickness));
             float innerFillWidth = Math.Max(0, scaledFillWidth - leftOffset - rightOffset);
             
-            context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, innerFillWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(leftOffset, thickness), this.Rotation, 0.5F, progressBarColor);
+            renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, innerFillWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(leftOffset, thickness), this.Rotation, 0.5F, progressBarColor);
         }
         
         // Draw slider.
-        this.DrawSlider(context.PrimitiveBatch);
-        
-        context.PrimitiveBatch.End();
+        this.DrawSlider(renderQueue.UsePrimitive(renderState));
     }
     
     /// <summary>

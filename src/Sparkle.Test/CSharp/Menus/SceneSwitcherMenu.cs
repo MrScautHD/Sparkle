@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Interact;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
@@ -124,6 +125,8 @@ public class SceneSwitcherMenu : Gui {
         context.PrimitiveBatch.End();
         
         base.Draw(context, framebuffer);
+        
+        //Logger.Error($"BatchChanged: {this.BatchChangesCount}, DrawCallCount: {this.BatchDrawCallCount}");
     }
     
     protected override void Dispose(bool disposing) {

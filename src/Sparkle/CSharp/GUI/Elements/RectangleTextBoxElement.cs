@@ -7,6 +7,7 @@ using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -442,12 +443,13 @@ public class RectangleTextBoxElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the GUI element on the specified framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.TextBoxData.Effect, this.TextBoxData.BlendState);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
+        
+        GuiRenderState primitiveState = new GuiRenderState(effect: this.TextBoxData.Effect, blendState: this.TextBoxData.BlendState);
         
         // Draw a filled rectangle.
         Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
@@ -456,7 +458,7 @@ public class RectangleTextBoxElement : GuiElement {
             boxColor = this.TextBoxData.DisabledColor;
         }
         
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, boxColor);
+        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, boxColor);
         
         // Draw an empty rectangle.
         if (this.TextBoxData.OutlineThickness > 0.0F) {
@@ -467,44 +469,35 @@ public class RectangleTextBoxElement : GuiElement {
             }
             
             float outlineThickness = this.TextBoxData.OutlineThickness * this.Gui.ScaleFactor;
-            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
         
-        context.PrimitiveBatch.End();
-        
         // Draw text.
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        
         if (this.LabelData.Text != string.Empty) {
-            this.DrawText(context.SpriteBatch, this.LabelData);
+            this.DrawText(renderQueue, this.LabelData);
         }
         else {
             if (this.HintLabelData.Text != string.Empty) {
-                this.DrawText(context.SpriteBatch, this.HintLabelData);
+                this.DrawText(renderQueue, this.HintLabelData);
             }
         }
         
-        context.SpriteBatch.End();
-        
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.TextBoxData.Effect, this.TextBoxData.BlendState);
-        
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
-            this.DrawCaret(context.PrimitiveBatch, this.LabelData);
+            GuiRenderState caretRenderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            this.DrawCaret(renderQueue.UsePrimitive(caretRenderState), this.LabelData);
         }
         
         // Draw highlight.
-        this.DrawHighlight(context.PrimitiveBatch, this.LabelData);
-        
-        context.PrimitiveBatch.End();
+        this.DrawHighlight(renderQueue.UsePrimitive(GuiRenderState.Default), this.LabelData);
     }
     
     /// <summary>
     /// Draws the text for the given label data onto the specified sprite batch.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the text.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="labelData">The label data containing text properties such as font, color, size, and effects.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
+    private void DrawText(GuiRenderQueue renderQueue, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
         Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
@@ -523,13 +516,8 @@ public class RectangleTextBoxElement : GuiElement {
             textColor = labelData.DisabledColor;
         }
         
-        if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
-        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
-        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
-        if (labelData.BlendState != null) spriteBatch.PopBlendState();
-        if (labelData.Effect != null) spriteBatch.PopEffect();
-        if (labelData.Sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
+        renderQueue.UseSprite(renderState).DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     
     /// <summary>

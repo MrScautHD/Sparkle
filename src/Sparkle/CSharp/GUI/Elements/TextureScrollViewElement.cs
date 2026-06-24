@@ -11,6 +11,7 @@ using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -37,6 +38,21 @@ public class TextureScrollViewElement : GuiElement {
     /// Controls how quickly the scroll position interpolates toward the target value.
     /// </summary>
     public float ScrollLerpSpeed;
+    
+    /// <summary>
+    /// The total number of GPU draw calls issued by the content render queue during the last draw pass.
+    /// </summary>
+    public int ContentDrawCallCount => this._renderQueue.DrawCallCount;
+    
+    /// <summary>
+    /// The number of batch state changes that occurred in the content render queue during the last draw pass.
+    /// </summary>
+    public int ContentBatchChangesCount => this._renderQueue.BatchChangesCount;
+    
+    /// <summary>
+    /// The render queue used to collect and batch content draw commands.
+    /// </summary>
+    private GuiRenderQueue _renderQueue;
     
     /// <summary>
     /// All active child GUI elements contained inside this scroll view.
@@ -114,7 +130,7 @@ public class TextureScrollViewElement : GuiElement {
         Vector2? size = null,
         Vector2? scale = null,
         Vector2? origin = null,
-        float rotation = 0,
+        float rotation = 0.0F,
         Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.MenuSourceRect.Width, data.MenuSourceRect.Height);
@@ -122,6 +138,7 @@ public class TextureScrollViewElement : GuiElement {
         this.ScrollSensitivity = scrollSensitivity;
         this.ScrollLerpSpeed = scrollLerpSpeed;
         
+        this._renderQueue = new GuiRenderQueue();
         this._content = new OrderedDictionary<string, GuiElement>();
         this._contentToAdd = new List<GuiElement>();
         this._contentToRemove = new List<string>();
@@ -751,9 +768,23 @@ public class TextureScrollViewElement : GuiElement {
         context.CommandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
         
+        // Draw content elements.
         foreach (GuiElement element in this._content.Values) {
-            this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element);
+            if (element.Enabled) {
+                this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element);
+            }
         }
+        
+        // Draw submitted content element draw commands.
+        this._renderQueue.Begin(context, framebuffer);
+        
+        foreach (GuiElement element in this._content.Values) {
+            if (element.Enabled) {
+                this.SubmitElementDrawCommands(element, this._renderQueue);
+            }
+        }
+        
+        this._renderQueue.End();
         
         context.CommandList.CopyTexture(this._contentRenderTarget.ColorTexture, this._contentResult.DeviceTexture);
         context.CommandList.SetFramebuffer(framebuffer);
@@ -856,6 +887,39 @@ public class TextureScrollViewElement : GuiElement {
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
         element.Draw(context, framebuffer);
+        
+        element.AnchorPoint = originalAnchor;
+        element.Offset = originalOffset;
+        element.Scale = originalScale;
+        element.Rotation = originalRotation;
+        element.Interactable = originalInteractable;
+        element.UpdatePosAndSize();
+    }
+    
+    /// <summary>
+    /// Submits the batched draw commands for a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
+    /// </summary>
+    /// <param name="element">The content element whose draw commands are submitted.</param>
+    /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
+    private void SubmitElementDrawCommands(GuiElement element, GuiRenderQueue renderQueue) {
+        Anchor originalAnchor = element.AnchorPoint;
+        Vector2 originalOffset = element.Offset;
+        Vector2 originalScale = element.Scale;
+        float originalRotation = element.Rotation;
+        bool originalInteractable = element.Interactable;
+        Vector2 localOffset = this.GetContentOffset(element);
+        Vector2 panelSize = this.GetVisibleContentSize();
+        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
+        float guiScaleFactor = this.Gui.ScaleFactor;
+        
+        element.AnchorPoint = Anchor.TopLeft;
+        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
+        element.Scale = originalScale * this.Scale;
+        element.Rotation = originalRotation + this.Rotation;
+        element.Interactable = originalInteractable && this.Interactable;
+        element.UpdatePosAndSize();
+        element.SubmitDrawCommands(renderQueue);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;

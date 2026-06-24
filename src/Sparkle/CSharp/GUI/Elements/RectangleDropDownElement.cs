@@ -6,6 +6,7 @@ using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -338,12 +339,13 @@ public class RectangleDropDownElement : GuiElement {
     }
     
     /// <summary>
-    /// Renders the <see cref="RectangleDropDownElement"/> and its associated visual components.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering operations.</param>
-    /// <param name="framebuffer">The framebuffer to which the rendering output should be drawn.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.DropDownData.Effect, this.DropDownData.BlendState);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
+        
+        GuiRenderState primitiveState = new GuiRenderState(effect: this.DropDownData.Effect, blendState: this.DropDownData.BlendState);
         
         // Draw the filled field rectangle.
         Color fieldColor = this.IsHovered ? this.DropDownData.FieldHoverColor : this.DropDownData.FieldColor;
@@ -353,7 +355,7 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldColor);
+        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldColor);
         
         // Draw the empty field rectangle.
         if (this.DropDownData.FieldOutlineThickness > 0.0F) {
@@ -365,11 +367,11 @@ public class RectangleDropDownElement : GuiElement {
             
             Vector2 fieldOutlineSize = this.Size * this.Scale * this.Gui.ScaleFactor;
             float outlineThickness = this.DropDownData.FieldOutlineThickness * this.Gui.ScaleFactor;
-            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldOutlineSize.X, fieldOutlineSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldOutlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldOutlineSize.X, fieldOutlineSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldOutlineColor);
         }
         
         // Draw arrow.
-        this.DrawArrow(context.PrimitiveBatch);
+        this.DrawArrow(renderQueue.UsePrimitive(primitiveState));
         
         if (this.IsMenuOpen) {
             
@@ -388,33 +390,27 @@ public class RectangleDropDownElement : GuiElement {
             }
             
             // Draw menu rectangle.
-            this.DrawMenu(context.PrimitiveBatch, menuColor, menuOutlineColor);
+            this.DrawMenu(renderQueue, menuColor, menuOutlineColor);
             
             // Draw the scroll bar.
-            this.DrawScrollBar(context.PrimitiveBatch);
+            this.DrawScrollBar(renderQueue.UsePrimitive(primitiveState));
             
             // Draw the slider.
-            this.DrawSlider(context.PrimitiveBatch);
+            this.DrawSlider(renderQueue.UsePrimitive(primitiveState));
         }
-        
-        context.PrimitiveBatch.End();
-        
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
         
         // Draw field text.
         if (this.SelectedOption != null) {
-            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
+            this.DrawText(renderQueue, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
         }
-        
-        context.SpriteBatch.End();
         
         if (this.IsMenuOpen) {
             
             // Draw highlight.
-            this.DrawHighlight(context.CommandList, framebuffer, context.PrimitiveBatch);
+            this.DrawHighlight(renderQueue);
             
             // Draw options text.
-            this.DrawOptionsText(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+            this.DrawOptionsText(renderQueue);
         }
     }
 
@@ -500,10 +496,11 @@ public class RectangleDropDownElement : GuiElement {
     /// <summary>
     /// Draws the dropdown menu, including its background and outline.
     /// </summary>
-    /// <param name="primitiveBatch">The primitive batch for rendering graphical primitives.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="color">The fill color of the menu background.</param>
     /// <param name="outlineColor">The color of the menu's outline.</param>
-    private void DrawMenu(PrimitiveBatch primitiveBatch, Color color, Color outlineColor) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawMenu(GuiRenderQueue renderQueue, Color color, Color outlineColor, DepthStencilStateDescription? depthStencilState = null) {
         int visibleOptions = Math.Min(this.Options.Count, this.MaxVisibleOptions);
         float scaleFactor = this.Gui.ScaleFactor;
         Vector2 scale = this.Scale * scaleFactor;
@@ -519,9 +516,11 @@ public class RectangleDropDownElement : GuiElement {
         Vector2 menuOrigin = (this.Origin - new Vector2(0.0F, this.Size.Y)) * scale;
         Vector2 scaledMenuSize = menuSize * scale;
         
+        GuiRenderState primitiveState = new GuiRenderState(effect: this.DropDownData.Effect, blendState: this.DropDownData.BlendState, depthStencilState: depthStencilState);
+        
         // Draw the filled menu rectangle
-        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), menuOrigin, this.Rotation, 0.5F, color);
-
+        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), menuOrigin, this.Rotation, 0.5F, color);
+        
         // Draw the empty menu rectangle
         if (this.DropDownData.MenuOutlineThickness > 0.0F) {
             float outlineThickness = this.DropDownData.MenuOutlineThickness * scaleFactor;
@@ -538,24 +537,21 @@ public class RectangleDropDownElement : GuiElement {
             Vector2 verticalNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (outlineThickness / 2f);
             
             // Left line.
-            primitiveBatch.DrawLine(p1 - verticalNormal, p3 - verticalNormal, outlineThickness, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawLine(p1 - verticalNormal, p3 - verticalNormal, outlineThickness, 0.5F, outlineColor);
             
             // Bottom line.
-            primitiveBatch.DrawLine(p3 - horizontalNormal, p4 - horizontalNormal, outlineThickness, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawLine(p3 - horizontalNormal, p4 - horizontalNormal, outlineThickness, 0.5F, outlineColor);
             
             // Right line.
-            primitiveBatch.DrawLine(p2 + verticalNormal, p4 + verticalNormal, outlineThickness, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawLine(p2 + verticalNormal, p4 + verticalNormal, outlineThickness, 0.5F, outlineColor);
         }
     }
     
     /// <summary>
     /// Renders the dropdown menu's selectable options text, applying clipping and scrolling as needed.
     /// </summary>
-    /// <param name="commandList">The command list used to issue rendering commands.</param>
-    /// <param name="framebuffer">The framebuffer to which the options text is rendered.</param>
-    /// <param name="spriteBatch">The sprite batch used for rendering text and graphical elements.</param>
-    /// <param name="primitiveBatch">The primitive batch used to draw stencil masks for clipping.</param>
-    private void DrawOptionsText(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawOptionsText(GuiRenderQueue renderQueue) {
         int visibleOptions = this.Options.Count;
         float currentScrollIndex = 0;
         
@@ -600,11 +596,8 @@ public class RectangleDropDownElement : GuiElement {
         };
         
         // Write to the stencil buffer to mark the scroll mask area.
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-        primitiveBatch.PushDepthStencilState(stencilWrite);
-        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-        primitiveBatch.PopDepthStencilState();
-        primitiveBatch.End();
+        GuiRenderState primitiveRenderState = new GuiRenderState(depthStencilState: stencilWrite);
+        renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
             StencilTestEnabled = true,
@@ -621,9 +614,6 @@ public class RectangleDropDownElement : GuiElement {
         };
         
         // Draw each option label, clipped by the stencil mask.
-        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
-        spriteBatch.PushDepthStencilState(stencilTest);
-        
         for (int i = 0; i < visibleOptions; i++) {
             int optionIndex = startIndex + i;
             
@@ -644,20 +634,15 @@ public class RectangleDropDownElement : GuiElement {
                 }
             }
             
-            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale);
+            this.DrawText(renderQueue, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale, stencilTest);
         }
-        
-        spriteBatch.PopDepthStencilState();
-        spriteBatch.End();
     }
     
     /// <summary>
     /// Renders a visual highlight for the dropdown menu, including the visible options and hover effects.
     /// </summary>
-    /// <param name="commandList">The command list used for drawing commands.</param>
-    /// <param name="framebuffer">The framebuffer where the highlight will be rendered.</param>
-    /// <param name="primitiveBatch">The primitive batch for rendering geometric shapes.</param>
-    private void DrawHighlight(CommandList commandList, Framebuffer framebuffer, PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawHighlight(GuiRenderQueue renderQueue) {
         Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         
@@ -701,11 +686,8 @@ public class RectangleDropDownElement : GuiElement {
         };
         
         // Draw the mask rectangle into the stencil buffer.
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-        primitiveBatch.PushDepthStencilState(stencilMask);
-        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-        primitiveBatch.PopDepthStencilState();
-        primitiveBatch.End();
+        GuiRenderState primitiveReadMask0RenderState = new GuiRenderState(depthStencilState: stencilMask);
+        renderQueue.UsePrimitive(primitiveReadMask0RenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         bool itemHovered = false;
         
@@ -740,11 +722,8 @@ public class RectangleDropDownElement : GuiElement {
                 };
                 
                 // Draw the item's rectangle into the stencil buffer (setting bit 2).
-                primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-                primitiveBatch.PushDepthStencilState(stencilItem);
-                primitiveBatch.DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-                primitiveBatch.PopDepthStencilState();
-                primitiveBatch.End();
+                GuiRenderState primitiveReadMask1RenderState = new GuiRenderState(depthStencilState: stencilItem);
+                renderQueue.UsePrimitive(primitiveReadMask1RenderState).DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
                 break;
             }
         }
@@ -775,11 +754,7 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         // Draw the actual highlight.
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-        primitiveBatch.PushDepthStencilState(stencilTest);
-        this.DrawMenu(primitiveBatch, this.DropDownData.HighlightColor, menuOutlineColor);
-        primitiveBatch.PopDepthStencilState();
-        primitiveBatch.End();
+        this.DrawMenu(renderQueue, this.DropDownData.HighlightColor, menuOutlineColor, stencilTest);
     }
     
     /// <summary>
@@ -955,12 +930,13 @@ public class RectangleDropDownElement : GuiElement {
     /// <summary>
     /// Renders text on the GUI element using the specified parameters.
     /// </summary>
-    /// <param name="spriteBatch">The <see cref="SpriteBatch"/> used to render the text.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="labelData">The <see cref="LabelData"/> containing font, text, and styling information.</param>
     /// <param name="textAlignment">The <see cref="TextAlignment"/> specifying the alignment of the text (Left, Center, or Right).</param>
     /// <param name="textOffset">The offset for the text position relative to the element.</param>
     /// <param name="textScale">The scale applied to the rendered text.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawText(GuiRenderQueue renderQueue, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale, DepthStencilStateDescription? depthStencilState = null) {
         if (labelData.Text == string.Empty) {
             return;
         }
@@ -981,13 +957,8 @@ public class RectangleDropDownElement : GuiElement {
             color = labelData.DisabledColor;
         }
         
-        if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
-        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
-        if (labelData.BlendState != null) spriteBatch.PopBlendState();
-        if (labelData.Effect != null) spriteBatch.PopEffect();
-        if (labelData.Sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
+        renderQueue.UseSprite(renderState).DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     
     protected override void Dispose(bool disposing) { }

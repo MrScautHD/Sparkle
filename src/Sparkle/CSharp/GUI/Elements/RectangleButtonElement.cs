@@ -2,6 +2,7 @@ using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -58,12 +59,13 @@ public class RectangleButtonElement : GuiElement {
     }
     
     /// <summary>
-    /// Renders the rectangle button element on the given framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering primitives and text.</param>
-    /// <param name="framebuffer">The framebuffer target for rendering.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.ButtonData.Effect, this.ButtonData.BlendState);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
+        
+        GuiRenderState primitiveState = new GuiRenderState(effect: this.ButtonData.Effect, blendState: this.ButtonData.BlendState);
         
         // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
@@ -72,7 +74,7 @@ public class RectangleButtonElement : GuiElement {
             buttonColor = this.ButtonData.DisabledColor;
         }
         
-        context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
+        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
         
         // Draw an empty rectangle.
         if (this.ButtonData.OutlineThickness > 0.0F) {
@@ -83,10 +85,8 @@ public class RectangleButtonElement : GuiElement {
             }
             
             float outlineThickness = this.ButtonData.OutlineThickness * this.Gui.ScaleFactor;
-            context.PrimitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
+            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
-        
-        context.PrimitiveBatch.End();
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
@@ -105,11 +105,10 @@ public class RectangleButtonElement : GuiElement {
                 textColor = this.LabelData.DisabledColor;
             }
             
-            context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
-            context.SpriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
-            context.SpriteBatch.End();
+            GuiRenderState spriteState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            renderQueue.UseSprite(spriteState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
         }
     }
-        
+    
     protected override void Dispose(bool disposing) { }
 }

@@ -1,8 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
-using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -38,11 +37,12 @@ public class LabelElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the LabelElement on the specified framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering the LabelElement.</param>
-    /// <param name="framebuffer">The framebuffer in which the LabelElement will be drawn.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
+        
         if (this.Data.Text == string.Empty) {
             return;
         }
@@ -54,10 +54,9 @@ public class LabelElement : GuiElement {
         }
         
         // Draw text.
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
-        context.SpriteBatch.DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.FontSystemEffect, this.Data.EffectAmount);
-        context.SpriteBatch.End();
+        GuiRenderState state = new GuiRenderState(this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
+        renderQueue.UseSprite(state).DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.FontSystemEffect, this.Data.EffectAmount);
     }
-        
+    
     protected override void Dispose(bool disposing) { }
 }

@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements;
 using Veldrith;
 
@@ -63,6 +64,22 @@ public abstract class Gui : Disposable {
     }
     
     /// <summary>
+    /// The total number of GPU draw calls issued by the render queue during the last draw pass.
+    /// </summary>
+    public int BatchDrawCallCount => this._renderQueue.DrawCallCount;
+    
+    /// <summary>
+    /// The number of batch state changes that occurred during the last draw pass.
+    /// A high value relative to element count indicates poor render state locality.
+    /// </summary>
+    public int BatchChangesCount => this._renderQueue.BatchChangesCount;
+    
+    /// <summary>
+    /// The render queue used to collect and batch GUI draw commands.
+    /// </summary>
+    private GuiRenderQueue _renderQueue;
+    
+    /// <summary>
     /// Internal dictionary storing GUI elements by name.
     /// </summary>
     private OrderedDictionary<string, GuiElement> _elements;
@@ -87,6 +104,7 @@ public abstract class Gui : Disposable {
         this.Name = name;
         this.Size = size ?? (1280, 720);
         this.MinVirtualSize = minVirtualSize ?? (640, 360);
+        this._renderQueue = new GuiRenderQueue();
         this._elements = new OrderedDictionary<string, GuiElement>();
         this._elementsToAdd = new List<GuiElement>();
         this._elementsToRemove = new List<string>();
@@ -158,11 +176,24 @@ public abstract class Gui : Disposable {
     /// <param name="context">The rendering context.</param>
     /// <param name="framebuffer">The framebuffer to draw into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        
+        // Draw gui.
         foreach (GuiElement element in this._elements.Values) {
             if (element.Enabled) {
                 element.Draw(context, framebuffer);
             }
         }
+        
+        // Draw submitted draw commands.
+        this._renderQueue.Begin(context, framebuffer);
+        
+        foreach (GuiElement element in this._elements.Values) {
+            if (element.Enabled) {
+                element.SubmitDrawCommands(this._renderQueue);
+            }
+        }
+        
+        this._renderQueue.End();
     }
     
     /// <summary>

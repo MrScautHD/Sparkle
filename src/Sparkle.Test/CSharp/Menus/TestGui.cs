@@ -293,5 +293,22 @@ public class TestGui : Gui {
         
         // Draw elements.
         base.Draw(context, framebuffer);
+        
+        // Debug DrawCallCount/BatchChangedCount.
+        //int batchDrawCallCount = 0;
+        //int batchChangesCount = 0;
+        //
+        //foreach (GuiElement element in this.GetElements()) {
+        //    if (element is TextureScrollViewElement textureScrollViewElement) {
+        //        batchDrawCallCount += textureScrollViewElement.ContentDrawCallCount;
+        //        batchChangesCount += textureScrollViewElement.ContentBatchChangesCount;
+        //    }
+        //    if (element is RectangleScrollViewElement rectangleScrollViewElement) {
+        //        batchDrawCallCount += rectangleScrollViewElement.ContentDrawCallCount;
+        //        batchChangesCount += rectangleScrollViewElement.ContentBatchChangesCount;
+        //    }
+        //}
+        //
+        //Logger.Error($"DrawCallCount: {batchDrawCallCount + this.BatchDrawCallCount}, BatchChangedCount: {batchChangesCount + this.BatchChangesCount}");
     }
 }

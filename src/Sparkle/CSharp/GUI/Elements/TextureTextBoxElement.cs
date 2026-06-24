@@ -10,6 +10,7 @@ using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -446,12 +447,11 @@ public class TextureTextBoxElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the GUI element on the specified framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
         
         // Draw box.
         Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
@@ -462,66 +462,57 @@ public class TextureTextBoxElement : GuiElement {
         
         switch (this.TextBoxData.ResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
+                this.DrawNormal(renderQueue, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
+                this.DrawNineSlice(renderQueue, this.TextBoxData.Texture, this.TextBoxData.Sampler, this.TextBoxData.SourceRect, this.TextBoxData.BorderInsets, this.TextBoxData.ResizeMode == ResizeMode.TileCenter, boxColor, this.TextBoxData.Flip, this.TextBoxData.PixelSnap, this.TextBoxData.Effect, this.TextBoxData.BlendState);
                 break;
         }
         
         // Draw text.
         if (this.LabelData.Text != string.Empty) {
-            this.DrawText(context.SpriteBatch, this.LabelData);
+            this.DrawText(renderQueue, this.LabelData);
         }
         else {
             if (this.HintLabelData.Text != string.Empty) {
-                this.DrawText(context.SpriteBatch, this.HintLabelData);
+                this.DrawText(renderQueue, this.HintLabelData);
             }
         }
         
-        context.SpriteBatch.End();
-        
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
-        
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
-            this.DrawCaret(context.PrimitiveBatch, this.LabelData);
+            GuiRenderState caretRenderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            this.DrawCaret(renderQueue.UsePrimitive(caretRenderState), this.LabelData);
         }
         
         // Draw highlight.
-        this.DrawHighlight(context.PrimitiveBatch, this.LabelData);
-        
-        context.PrimitiveBatch.End();
+        this.DrawHighlight(renderQueue.UsePrimitive(GuiRenderState.Default), this.LabelData);
     }
     
     /// <summary>
-    /// Draws a texture onto the screen using the specified sprite batch, texture, and rendering parameters.
+    /// Draws a sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the texture.</param>
-    /// <param name="texture">The texture to be drawn.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    /// <param name="texture">The texture to draw.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
-    /// <param name="sourceRect">The rectangle defining the portion of the texture to be rendered.</param>
-    /// <param name="color">The color tint applied to the rendered texture.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to draw.</param>
+    /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
     /// <summary>
     /// Draws a nine-slice sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the sprite.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="texture">The texture containing the nine-slice source image.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
     /// <param name="sourceRect">The rectangle defining the portion of the texture to use for the nine-slice rendering.</param>
@@ -532,7 +523,8 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawNineSlice(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -589,16 +581,15 @@ public class TextureTextBoxElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler, effect and blend state.
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
+        // Create render state.
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
         
         // Draw Corners.
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
         
         // Draw Edges.
         if (innerH > 0.0F) {
@@ -608,14 +599,14 @@ public class TextureTextBoxElement : GuiElement {
                     float drawH = MathF.Min(tileH, innerH - y);
                     Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
                     Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
                 Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
-                spriteBatch.DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
             }
         }
         
@@ -626,8 +617,8 @@ public class TextureTextBoxElement : GuiElement {
                     float drawW = MathF.Min(tileW, innerW - x);
                     Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
                     Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
@@ -635,8 +626,8 @@ public class TextureTextBoxElement : GuiElement {
                 Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
                 Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
                 Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
-                spriteBatch.DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
             }
         }
         
@@ -651,7 +642,7 @@ public class TextureTextBoxElement : GuiElement {
                     for (float x = 0.0F; x < innerW; x += tileW) {
                         float drawW = MathF.Min(tileW, innerW - x);
                         Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
-                        spriteBatch.DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
+                        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
                     }
                 }
             }
@@ -659,22 +650,17 @@ public class TextureTextBoxElement : GuiElement {
                 int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
                 Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
                 Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
-                spriteBatch.DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
             }
         }
-        
-        // Pop sampler, effect and blend state.
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
     }
     
     /// <summary>
     /// Draws the text for the given label data onto the specified sprite batch.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the text.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="labelData">The label data containing text properties such as font, color, size, and effects.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData) {
+    private void DrawText(GuiRenderQueue renderQueue, LabelData labelData) {
         string text = this.GetVisibleText(labelData);
         Vector2 textPos = this.Position;
         Vector2 textSize = labelData.Font.MeasureText(text, labelData.Size, Vector2.One, labelData.CharacterSpacing, labelData.LineSpacing, labelData.FontSystemEffect, labelData.EffectAmount);
@@ -693,13 +679,8 @@ public class TextureTextBoxElement : GuiElement {
             textColor = labelData.DisabledColor;
         }
         
-        if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
-        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
-        spriteBatch.DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
-        if (labelData.BlendState != null) spriteBatch.PopBlendState();
-        if (labelData.Effect != null) spriteBatch.PopEffect();
-        if (labelData.Sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
+        renderQueue.UseSprite(renderState).DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     
     /// <summary>

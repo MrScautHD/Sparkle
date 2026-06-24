@@ -8,6 +8,7 @@ using Bliss.CSharp.Mathematics;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 using Color = Bliss.CSharp.Colors.Color;
@@ -171,7 +172,8 @@ public class TextureDropDownElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc
+    ) {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
@@ -359,12 +361,11 @@ public class TextureDropDownElement : GuiElement {
     }
     
     /// <summary>
-    /// Renders the texture-based dropdown element, including its field, menu, arrow, and text components, based on the current state and interaction details.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering operations, including sprite batching.</param>
-    /// <param name="framebuffer">The target framebuffer where the dropdown element will be drawn.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
         
         // Draw field texture.
         Color buttonColor = this.IsHovered ? this.DropDownData.FieldHoverColor : this.DropDownData.FieldColor;
@@ -375,21 +376,21 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.FieldResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNormal(renderQueue, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, this.DropDownData.FieldBorderInsets, this.DropDownData.FieldResizeMode == ResizeMode.TileCenter, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNineSlice(renderQueue, this.DropDownData.FieldTexture, this.DropDownData.FieldSampler, this.DropDownData.FieldSourceRect, this.DropDownData.FieldBorderInsets, this.DropDownData.FieldResizeMode == ResizeMode.TileCenter, buttonColor, this.DropDownData.FieldFlip, this.DropDownData.FieldPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
                 break;
         }
         
         // Draw arrow texture.
-        this.DrawArrow(context.SpriteBatch);
+        this.DrawArrow(renderQueue);
         
         // Draw field text.
         if (this.SelectedOption != null) {
-            this.DrawText(context.SpriteBatch, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
+            this.DrawText(renderQueue, this.SelectedOption, this.FieldTextAlignment, this.FieldTextOffset, this.FieldTextScale);
         }
         
         if (this.IsMenuOpen) {
@@ -401,24 +402,22 @@ public class TextureDropDownElement : GuiElement {
                 menuColor = this.DropDownData.DisabledMenuColor;
             }
             
-            this.DrawMenu(context.SpriteBatch, menuColor);
+            this.DrawMenu(renderQueue, menuColor);
             
             // Draw the scroll bar.
-            this.DrawSliderBar(context.SpriteBatch);
+            this.DrawSliderBar(renderQueue);
             
             // Draw the slider.
-            this.DrawSlider(context.SpriteBatch);
+            this.DrawSlider(renderQueue);
         }
-        
-        context.SpriteBatch.End();
         
         if (this.IsMenuOpen) {
             
             // Draw highlight.
-            this.DrawHighlight(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+            this.DrawHighlight(renderQueue);
             
             // Draw options text.
-            this.DrawOptionsText(context.CommandList, framebuffer, context.SpriteBatch, context.PrimitiveBatch);
+            this.DrawOptionsText(renderQueue);
         }
     }
     
@@ -505,31 +504,27 @@ public class TextureDropDownElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws a texture onto the screen using the specified sprite batch, texture, and rendering parameters.
+    /// Draws a sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the texture.</param>
-    /// <param name="texture">The texture to be drawn.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    /// <param name="texture">The texture to draw.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
-    /// <param name="sourceRect">The rectangle defining the portion of the texture to be rendered.</param>
-    /// <param name="color">The color tint applied to the rendered texture.</param>
+    /// <param name="sourceRect">The rectangle defining the portion of the texture to draw.</param>
+    /// <param name="color">The color mask applied to the rendered sprite.</param>
     /// <param name="flip">The sprite flipping mode (horizontal, vertical, or none).</param>
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNormal(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
     /// <summary>
     /// Draws a nine-slice sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the sprite.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="texture">The texture containing the nine-slice source image.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
     /// <param name="sourceRect">The rectangle defining the portion of the texture to use for the nine-slice rendering.</param>
@@ -540,7 +535,8 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNineSlice(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawNineSlice(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
         Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
         Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
         Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
@@ -597,16 +593,15 @@ public class TextureDropDownElement : GuiElement {
             (topH, bottomH) = (bottomH, topH);
         }
         
-        // Push sampler, effect and blend state.
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
+        // Create render state.
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
         
         // Draw Corners.
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
-        spriteBatch.DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
         
         // Draw Edges.
         if (innerH > 0.0F) {
@@ -616,14 +611,14 @@ public class TextureDropDownElement : GuiElement {
                     float drawH = MathF.Min(tileH, innerH - y);
                     Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
                     Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
                 Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
-                spriteBatch.DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
             }
         }
         
@@ -634,8 +629,8 @@ public class TextureDropDownElement : GuiElement {
                     float drawW = MathF.Min(tileW, innerW - x);
                     Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
                     Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
-                    spriteBatch.DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
+                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
                 }
             }
             else {
@@ -643,8 +638,8 @@ public class TextureDropDownElement : GuiElement {
                 Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
                 Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
                 Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
-                spriteBatch.DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
-                spriteBatch.DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
             }
         }
         
@@ -659,7 +654,7 @@ public class TextureDropDownElement : GuiElement {
                     for (float x = 0.0F; x < innerW; x += tileW) {
                         float drawW = MathF.Min(tileW, innerW - x);
                         Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
-                        spriteBatch.DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
+                        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
                     }
                 }
             }
@@ -667,22 +662,18 @@ public class TextureDropDownElement : GuiElement {
                 int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
                 Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
                 Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
-                spriteBatch.DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
+                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
             }
         }
-        
-        // Pop sampler, effect and blend state.
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
     }
     
     /// <summary>
     /// Draws the dropdown menu, including its background, resizing behavior, and the labels of its options, using the specified sprite batch and menu color.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the dropdown menu and its components.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="color">The color applied to the menu background during rendering.</param>
-    private void DrawMenu(SpriteBatch spriteBatch, Color color) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawMenu(GuiRenderQueue renderQueue, Color color, DepthStencilStateDescription? depthStencilState = null) {
         Vector2 originalSize = this.Size;
         Vector2 originalOrigin = this.Origin;
         
@@ -705,12 +696,12 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.MenuResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNormal(renderQueue, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState, depthStencilState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, this.DropDownData.MenuBorderInsets, this.DropDownData.MenuResizeMode == ResizeMode.TileCenter, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNineSlice(renderQueue, this.DropDownData.MenuTexture, this.DropDownData.MenuSampler, this.DropDownData.MenuSourceRect, this.DropDownData.MenuBorderInsets, this.DropDownData.MenuResizeMode == ResizeMode.TileCenter, color, this.DropDownData.MenuFlip, this.DropDownData.MenuPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState, depthStencilState);
                 break;
         }
         
@@ -722,11 +713,8 @@ public class TextureDropDownElement : GuiElement {
     /// <summary>
     /// Renders the text of the dropdown menu options onto the screen, managing visible options and applying a clipping mask for scrolling.
     /// </summary>
-    /// <param name="commandList">The command list used for issuing rendering commands.</param>
-    /// <param name="framebuffer">The framebuffer used as the rendering target.</param>
-    /// <param name="spriteBatch">The sprite batch renderer used for drawing the option text.</param>
-    /// <param name="primitiveBatch">The primitive batch renderer used for drawing the stencil mask for scrolling.</param>
-    private void DrawOptionsText(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawOptionsText(GuiRenderQueue renderQueue) {
         int visibleOptions = this.Options.Count;
         float currentScrollIndex = 0.0F;
         
@@ -773,11 +761,8 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Write to the stencil buffer to mark the menu content mask area.
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-        primitiveBatch.PushDepthStencilState(stencilWrite);
-        primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-        primitiveBatch.PopDepthStencilState();
-        primitiveBatch.End();
+        GuiRenderState primitiveRenderState = new GuiRenderState(depthStencilState: stencilWrite);
+        renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
             StencilTestEnabled = true,
@@ -794,9 +779,6 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Draw each option label, clipped by the menu content mask.
-        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
-        spriteBatch.PushDepthStencilState(stencilTest);
-        
         for (int i = 0; i < visibleOptions; i++) {
             int optionIndex = startIndex + i;
             
@@ -817,21 +799,15 @@ public class TextureDropDownElement : GuiElement {
                 }
             }
             
-            this.DrawText(spriteBatch, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale);
+            this.DrawText(renderQueue, this.Options[optionIndex], this.MenuTextAlignment, itemOffset, this.MenuTextScale, stencilTest);
         }
-        
-        spriteBatch.PopDepthStencilState();
-        spriteBatch.End();
     }
     
     /// <summary>
     /// Renders a visual highlight for the dropdown menu, including the visible options and hover effects.
     /// </summary>
-    /// <param name="commandList">The command list used for drawing commands.</param>
-    /// <param name="framebuffer">The framebuffer where the highlight will be rendered.</param>
-    /// <param name="spriteBatch">The sprite batch for rendering textured elements.</param>
-    /// <param name="primitiveBatch">The primitive batch for rendering geometric shapes.</param>
-    private void DrawHighlight(CommandList commandList, Framebuffer framebuffer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawHighlight(GuiRenderQueue renderQueue) {
         Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
         
@@ -884,11 +860,8 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Draw the smaller highlight mask rectangle into the stencil buffer.
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-        primitiveBatch.PushDepthStencilState(stencilMask);
-        primitiveBatch.DrawFilledRectangle(highlightMaskRect, highlightMaskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-        primitiveBatch.PopDepthStencilState();
-        primitiveBatch.End();
+        GuiRenderState primitiveReadMask0RenderState = new GuiRenderState(depthStencilState: stencilMask);
+        renderQueue.UsePrimitive(primitiveReadMask0RenderState).DrawFilledRectangle(highlightMaskRect, highlightMaskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         bool itemHovered = false;
         
@@ -924,11 +897,8 @@ public class TextureDropDownElement : GuiElement {
                 
                 // Draw the hovered item rectangle into the stencil buffer.
                 // Because stencilReadMask is 1, only the part inside highlightMaskRect can be written.
-                primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
-                primitiveBatch.PushDepthStencilState(stencilItem);
-                primitiveBatch.DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
-                primitiveBatch.PopDepthStencilState();
-                primitiveBatch.End();
+                GuiRenderState primitiveReadMask1RenderState = new GuiRenderState(depthStencilState: stencilItem);
+                renderQueue.UsePrimitive(primitiveReadMask1RenderState).DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
                 break;
             }
         }
@@ -952,18 +922,14 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Draw the actual highlight.
-        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
-        spriteBatch.PushDepthStencilState(stencilTest);
-        this.DrawMenu(spriteBatch, this.DropDownData.HighlightColor);
-        spriteBatch.PopDepthStencilState();
-        spriteBatch.End();
+        this.DrawMenu(renderQueue, this.DropDownData.HighlightColor, stencilTest);
     }
     
     /// <summary>
     /// Draws the scrollbar for the dropdown menu based on the current number of options and visual properties.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the scrollbar.</param>
-    private void DrawSliderBar(SpriteBatch spriteBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawSliderBar(GuiRenderQueue renderQueue) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
@@ -983,12 +949,12 @@ public class TextureDropDownElement : GuiElement {
         
         switch (this.DropDownData.FieldResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNormal(renderQueue, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(spriteBatch, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
+                this.DrawNineSlice(renderQueue, this.DropDownData.SliderBarTexture, this.DropDownData.SliderBarSampler, this.DropDownData.SliderBarSourceRect, this.DropDownData.SliderBarBorderInsets, this.DropDownData.SliderBarResizeMode == ResizeMode.TileCenter, color, this.DropDownData.SliderBarFlip, this.DropDownData.SliderBarPixelSnap, this.DropDownData.Effect, this.DropDownData.BlendState);
                 break;
         }
         
@@ -1000,8 +966,8 @@ public class TextureDropDownElement : GuiElement {
     /// <summary>
     /// Draws the slider within the dropdown menu based on the current scroll position and visual configuration.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the slider component.</param>
-    private void DrawSlider(SpriteBatch spriteBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawSlider(GuiRenderQueue renderQueue) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
@@ -1020,20 +986,15 @@ public class TextureDropDownElement : GuiElement {
             color = this.DropDownData.DisabledSliderColor;
         }
         
-        if (this.DropDownData.SliderSampler != null) spriteBatch.PushSampler(this.DropDownData.SliderSampler);
-        if (this.DropDownData.Effect != null) spriteBatch.PushEffect(this.DropDownData.Effect);
-        if (this.DropDownData.BlendState != null) spriteBatch.PushBlendState(this.DropDownData.BlendState.Value);
-        spriteBatch.DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.DropDownData.SliderPixelSnap, this.Rotation, color, this.DropDownData.SliderFlip);
-        if (this.DropDownData.BlendState != null) spriteBatch.PopBlendState();
-        if (this.DropDownData.Effect != null) spriteBatch.PopEffect();
-        if (this.DropDownData.SliderSampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(this.DropDownData.SliderSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
+        renderQueue.UseSprite(renderState).DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.DropDownData.SliderPixelSnap, this.Rotation, color, this.DropDownData.SliderFlip);
     }
     
     /// <summary>
     /// Draws the arrow texture on the screen, with its size, position, offset, and visual properties determined by the dropdown's data.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to render the arrow texture.</param>
-    private void DrawArrow(SpriteBatch spriteBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawArrow(GuiRenderQueue renderQueue) {
         if (this.DropDownData.ArrowTexture == null) {
             return;
         }
@@ -1054,24 +1015,20 @@ public class TextureDropDownElement : GuiElement {
             color = this.DropDownData.DisabledArrowColor;
         }
         
-        if (this.DropDownData.ArrowSampler != null) spriteBatch.PushSampler(this.DropDownData.ArrowSampler);
-        if (this.DropDownData.Effect != null) spriteBatch.PushEffect(this.DropDownData.Effect);
-        if (this.DropDownData.BlendState != null) spriteBatch.PushBlendState(this.DropDownData.BlendState.Value);
-        spriteBatch.DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.DropDownData.ArrowPixelSnap, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
-        if (this.DropDownData.BlendState != null) spriteBatch.PopBlendState();
-        if (this.DropDownData.Effect != null) spriteBatch.PopEffect();
-        if (this.DropDownData.ArrowSampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(this.DropDownData.ArrowSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
+        renderQueue.UseSprite(renderState).DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.DropDownData.ArrowPixelSnap, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
     }
     
     /// <summary>
     /// Draws the specified text on the screen with alignment, offset, and style settings.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering the text.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="labelData">The data containing font, text, size, style, and other text attributes.</param>
     /// <param name="textAlignment">The alignment of the text (Left, Center, or Right).</param>
     /// <param name="textOffset">The offset added to the text's position for rendering.</param>
     /// <param name="textScale">The scale applied to the rendered text.</param>
-    private void DrawText(SpriteBatch spriteBatch, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale) {
+    /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
+    private void DrawText(GuiRenderQueue renderQueue, LabelData labelData, TextAlignment textAlignment, Vector2 textOffset, Vector2 textScale, DepthStencilStateDescription? depthStencilState = null) {
         if (labelData.Text == string.Empty) {
             return;
         }
@@ -1092,14 +1049,9 @@ public class TextureDropDownElement : GuiElement {
             color = labelData.DisabledColor;
         }
         
-        if (labelData.Sampler != null) spriteBatch.PushSampler(labelData.Sampler);
-        if (labelData.Effect != null) spriteBatch.PushEffect(labelData.Effect);
-        if (labelData.BlendState != null) spriteBatch.PushBlendState(labelData.BlendState.Value);
-        spriteBatch.DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
-        if (labelData.BlendState != null) spriteBatch.PopBlendState();
-        if (labelData.Effect != null) spriteBatch.PopEffect();
-        if (labelData.Sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
+        renderQueue.UseSprite(renderState).DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
-        
+    
     protected override void Dispose(bool disposing) { }
 }

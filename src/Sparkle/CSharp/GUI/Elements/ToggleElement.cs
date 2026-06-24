@@ -4,7 +4,7 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
 using Veldrith;
 
@@ -41,7 +41,7 @@ public class ToggleElement : GuiElement {
     /// Event invoked when the toggle state changes.
     /// </summary>
     public event Action<bool>? Toggled;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleElement"/> class.
     /// </summary>
@@ -82,12 +82,11 @@ public class ToggleElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the GUI element on the specified framebuffer using the provided graphics context.
+    /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer to which the element is rendered.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+    /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
+    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
+        base.SubmitDrawCommands(renderQueue);
         
         // Draw checkbox texture.
         Color checkboxColor = this.IsHovered ? this.ToggleData.CheckboxHoverColor : this.ToggleData.CheckboxColor;
@@ -96,7 +95,7 @@ public class ToggleElement : GuiElement {
             checkboxColor = this.ToggleData.DisabledColor;
         }
         
-        this.DrawCheckbox(context.SpriteBatch, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip, this.ToggleData.CheckboxPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
+        this.DrawCheckbox(renderQueue, this.ToggleData.CheckboxTexture, this.ToggleData.CheckboxSampler, this.ToggleData.CheckboxSourceRect, checkboxColor, this.ToggleData.CheckboxFlip, this.ToggleData.CheckboxPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
         
         // Draw checkmark texture.
         if (this.ToggleState) {
@@ -106,19 +105,17 @@ public class ToggleElement : GuiElement {
                 checkmarkColor = this.ToggleData.DisabledColor;
             }
             
-            this.DrawCheckmark(context.SpriteBatch, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip, this.ToggleData.CheckmarkPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
+            this.DrawCheckmark(renderQueue, this.ToggleData.CheckmarkTexture, this.ToggleData.CheckmarkSampler, this.ToggleData.CheckmarkSourceRect, checkmarkColor, this.ToggleData.CheckmarkFlip, this.ToggleData.CheckmarkPixelSnap, this.ToggleData.Effect, this.ToggleData.BlendState);
         }
         
         // Draw text.
-        this.DrawText(context.SpriteBatch);
-        
-        context.SpriteBatch.End();
+        this.DrawText(renderQueue);
     }
     
     /// <summary>
     /// Draws the checkbox portion of the toggle element on the screen.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering textures.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="texture">The texture of the checkbox to be drawn.</param>
     /// <param name="sampler">The optional sampler to apply for texture sampling.</param>
     /// <param name="sourceRect">The source rectangle defining the region of the texture to draw.</param>
@@ -127,20 +124,15 @@ public class ToggleElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawCheckbox(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
+    private void DrawCheckbox(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
     /// <summary>
     /// Draws the checkmark texture for the toggle element.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering textures.</param>
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
     /// <param name="texture">The texture of the checkmark to be drawn.</param>
     /// <param name="sampler">An optional sampler to control texture sampling behavior.</param>
     /// <param name="sourceRect">The source rectangle defining the portion of the texture to draw.</param>
@@ -149,23 +141,18 @@ public class ToggleElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawCheckmark(SpriteBatch spriteBatch, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
+    private void DrawCheckmark(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
-        if (sampler != null) spriteBatch.PushSampler(sampler);
-        if (effect != null) spriteBatch.PushEffect(effect);
-        if (blendState != null) spriteBatch.PushBlendState(blendState.Value);
-        spriteBatch.DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
-        if (blendState != null) spriteBatch.PopBlendState();
-        if (effect != null) spriteBatch.PopEffect();
-        if (sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
     }
     
     /// <summary>
     /// Renders the text associated with the current GUI element.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used for rendering text.</param>
-    private void DrawText(SpriteBatch spriteBatch) {
+    /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    private void DrawText(GuiRenderQueue renderQueue) {
         if (this.LabelData.Text == string.Empty) {
             return;
         }
@@ -180,13 +167,8 @@ public class ToggleElement : GuiElement {
             color = this.LabelData.DisabledColor;
         }
         
-        if (this.LabelData.Sampler != null) spriteBatch.PushSampler(this.LabelData.Sampler);
-        if (this.LabelData.Effect != null) spriteBatch.PushEffect(this.LabelData.Effect);
-        if (this.LabelData.BlendState != null) spriteBatch.PushBlendState(this.LabelData.BlendState.Value);
-        spriteBatch.DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
-        if (this.LabelData.BlendState != null) spriteBatch.PopBlendState();
-        if (this.LabelData.Effect != null) spriteBatch.PopEffect();
-        if (this.LabelData.Sampler != null) spriteBatch.PopSampler();
+        GuiRenderState renderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+        renderQueue.UseSprite(renderState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
     }
     
     /// <summary>
