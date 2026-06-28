@@ -38,11 +38,6 @@ public class RectangleScrollViewElement : GuiElement {
     public int ContentDrawCallCount => this._renderQueue.DrawCallCount;
     
     /// <summary>
-    /// The number of batch state changes that occurred in the content render queue during the last draw pass.
-    /// </summary>
-    public int ContentBatchChangesCount => this._renderQueue.BatchChangesCount;
-    
-    /// <summary>
     /// The render queue used to collect and batch content draw commands.
     /// </summary>
     private GuiRenderQueue _renderQueue;

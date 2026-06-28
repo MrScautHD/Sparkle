@@ -517,7 +517,7 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
     private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -594,7 +594,7 @@ public class TextureDropDownElement : GuiElement {
         }
         
         // Create render state.
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         
         // Draw Corners.
         renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -761,7 +761,7 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Write to the stencil buffer to mark the menu content mask area.
-        GuiRenderState primitiveRenderState = new GuiRenderState(depthStencilState: stencilWrite);
+        PrimitiveGuiRenderState primitiveRenderState = new PrimitiveGuiRenderState(depthStencilState: stencilWrite);
         renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
@@ -860,7 +860,7 @@ public class TextureDropDownElement : GuiElement {
         };
         
         // Draw the smaller highlight mask rectangle into the stencil buffer.
-        GuiRenderState primitiveReadMask0RenderState = new GuiRenderState(depthStencilState: stencilMask);
+        PrimitiveGuiRenderState primitiveReadMask0RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilMask);
         renderQueue.UsePrimitive(primitiveReadMask0RenderState).DrawFilledRectangle(highlightMaskRect, highlightMaskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         bool itemHovered = false;
@@ -897,7 +897,7 @@ public class TextureDropDownElement : GuiElement {
                 
                 // Draw the hovered item rectangle into the stencil buffer.
                 // Because stencilReadMask is 1, only the part inside highlightMaskRect can be written.
-                GuiRenderState primitiveReadMask1RenderState = new GuiRenderState(depthStencilState: stencilItem);
+                PrimitiveGuiRenderState primitiveReadMask1RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilItem);
                 renderQueue.UsePrimitive(primitiveReadMask1RenderState).DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
                 break;
             }
@@ -986,7 +986,7 @@ public class TextureDropDownElement : GuiElement {
             color = this.DropDownData.DisabledSliderColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(this.DropDownData.SliderSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.DropDownData.SliderSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
         renderQueue.UseSprite(renderState).DrawTexture(this.DropDownData.SliderTexture, this.Position, 0.5F, this.DropDownData.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.DropDownData.SliderPixelSnap, this.Rotation, color, this.DropDownData.SliderFlip);
     }
     
@@ -1015,7 +1015,7 @@ public class TextureDropDownElement : GuiElement {
             color = this.DropDownData.DisabledArrowColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(this.DropDownData.ArrowSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.DropDownData.ArrowSampler, this.DropDownData.Effect, this.DropDownData.BlendState);
         renderQueue.UseSprite(renderState).DrawTexture(this.DropDownData.ArrowTexture, arrowWorldCenter, 0.5F, this.DropDownData.ArrowSourceRect, this.Scale * this.Gui.ScaleFactor, arrowCenter, this.DropDownData.ArrowPixelSnap, this.Rotation + float.RadiansToDegrees(this._arrowRotation), color, this.DropDownData.ArrowFlip);
     }
     
@@ -1049,7 +1049,7 @@ public class TextureDropDownElement : GuiElement {
             color = labelData.DisabledColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
         renderQueue.UseSprite(renderState).DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     

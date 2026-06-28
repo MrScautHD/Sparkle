@@ -178,7 +178,7 @@ public class TextureSlideBarElement : GuiElement {
             
             RectangleF progressArea = new RectangleF(this.Position.X, this.Position.Y, fillWidth * this.Scale.X * this.Gui.ScaleFactor, this.ScaledSize.Y);
             
-            GuiRenderState primitiveRenderState = new GuiRenderState(depthStencilState: stencilWrite);
+            PrimitiveGuiRenderState primitiveRenderState = new PrimitiveGuiRenderState(depthStencilState: stencilWrite);
             renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(progressArea, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
             
             DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
@@ -250,7 +250,7 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
     private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -327,7 +327,7 @@ public class TextureSlideBarElement : GuiElement {
         }
         
         // Create render state.
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         
         // Draw Corners.
         renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -429,7 +429,7 @@ public class TextureSlideBarElement : GuiElement {
         Vector2 origin = new Vector2(this.Data.SliderTexture.Width / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
         
         // Draw.
-        GuiRenderState renderState = new GuiRenderState(this.Data.SliderSampler, this.Data.Effect, this.Data.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.Data.SliderSampler, this.Data.Effect, this.Data.BlendState);
         renderQueue.UseSprite(renderState).DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
     }
     

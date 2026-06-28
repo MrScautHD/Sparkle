@@ -65,7 +65,7 @@ public class RectangleButtonElement : GuiElement {
     protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
         base.SubmitDrawCommands(renderQueue);
         
-        GuiRenderState primitiveState = new GuiRenderState(effect: this.ButtonData.Effect, blendState: this.ButtonData.BlendState);
+        PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.ButtonData.Effect, this.ButtonData.BlendState);
         
         // Draw a filled rectangle.
         Color buttonColor = this.IsHovered ? this.ButtonData.HoverColor : this.ButtonData.Color;
@@ -105,7 +105,7 @@ public class RectangleButtonElement : GuiElement {
                 textColor = this.LabelData.DisabledColor;
             }
             
-            GuiRenderState spriteState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            SpriteGuiRenderState spriteState = new SpriteGuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
             renderQueue.UseSprite(spriteState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
         }
     }

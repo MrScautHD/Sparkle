@@ -125,7 +125,7 @@ public class ToggleElement : GuiElement {
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     private void DrawCheckbox(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -144,7 +144,7 @@ public class ToggleElement : GuiElement {
     private void DrawCheckmark(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -167,7 +167,7 @@ public class ToggleElement : GuiElement {
             color = this.LabelData.DisabledColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
         renderQueue.UseSprite(renderState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
     }
     

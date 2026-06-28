@@ -483,12 +483,12 @@ public class TextureTextBoxElement : GuiElement {
         
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
-            GuiRenderState caretRenderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            PrimitiveGuiRenderState caretRenderState = new PrimitiveGuiRenderState(this.LabelData.Effect, this.LabelData.BlendState);
             this.DrawCaret(renderQueue.UsePrimitive(caretRenderState), this.LabelData);
         }
         
         // Draw highlight.
-        this.DrawHighlight(renderQueue.UsePrimitive(GuiRenderState.Default), this.LabelData);
+        this.DrawHighlight(renderQueue.UsePrimitive(PrimitiveGuiRenderState.Default), this.LabelData);
     }
     
     /// <summary>
@@ -505,7 +505,7 @@ public class TextureTextBoxElement : GuiElement {
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     /// <param name="depthStencilState">Optional depth-stencil state used for depth testing and stencil operations during rendering. If <c>null</c>, the default state is used.</param>
     private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null) {
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -582,7 +582,7 @@ public class TextureTextBoxElement : GuiElement {
         }
         
         // Create render state.
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState, depthStencilState);
         
         // Draw Corners.
         renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
@@ -679,7 +679,7 @@ public class TextureTextBoxElement : GuiElement {
             textColor = labelData.DisabledColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
         renderQueue.UseSprite(renderState).DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     

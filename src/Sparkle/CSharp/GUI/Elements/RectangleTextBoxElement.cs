@@ -449,7 +449,7 @@ public class RectangleTextBoxElement : GuiElement {
     protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
         base.SubmitDrawCommands(renderQueue);
         
-        GuiRenderState primitiveState = new GuiRenderState(effect: this.TextBoxData.Effect, blendState: this.TextBoxData.BlendState);
+        PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.TextBoxData.Effect, this.TextBoxData.BlendState);
         
         // Draw a filled rectangle.
         Color boxColor = this.IsHovered ? this.TextBoxData.HoverColor : this.TextBoxData.Color;
@@ -484,12 +484,12 @@ public class RectangleTextBoxElement : GuiElement {
         
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
-            GuiRenderState caretRenderState = new GuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
+            PrimitiveGuiRenderState caretRenderState = new PrimitiveGuiRenderState(this.LabelData.Effect, this.LabelData.BlendState);
             this.DrawCaret(renderQueue.UsePrimitive(caretRenderState), this.LabelData);
         }
         
         // Draw highlight.
-        this.DrawHighlight(renderQueue.UsePrimitive(GuiRenderState.Default), this.LabelData);
+        this.DrawHighlight(renderQueue.UsePrimitive(PrimitiveGuiRenderState.Default), this.LabelData);
     }
     
     /// <summary>
@@ -516,7 +516,7 @@ public class RectangleTextBoxElement : GuiElement {
             textColor = labelData.DisabledColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
         renderQueue.UseSprite(renderState).DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     

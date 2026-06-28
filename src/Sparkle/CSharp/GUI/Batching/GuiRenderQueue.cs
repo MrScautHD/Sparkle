@@ -8,244 +8,251 @@ namespace Sparkle.CSharp.GUI.Batching;
 public class GuiRenderQueue {
     
     /// <summary>
-    /// The total number of draw calls (GPU submissions) issued since the last <see cref="Begin"/> call.
-    /// Each <see cref="Flush"/> that had an active batch increments this by one.
+    /// The total number of draw calls issued since the last <see cref="Begin"/>.
     /// </summary>
     public int DrawCallCount { get; private set; }
     
     /// <summary>
-    /// The number of times the active batch type or render state changed since the last <see cref="Begin"/> call.
-    /// A high value relative to element count indicates poor state locality.
-    /// </summary>
-    public int BatchChangesCount { get; private set; }
-    
-    /// <summary>
-    /// Indicates whether a batch operation has begun.
+    /// Indicates whether the <see cref="GuiRenderQueue"/> is currently in an active render pass.
     /// </summary>
     private bool _begun;
     
-    private GraphicsContext? _context;
-    private Framebuffer? _framebuffer;
+    /// <summary>
+    /// The <see cref="GraphicsContext"/> used for rendering.
+    /// </summary>
+    private GraphicsContext _context;
     
-    private GuiBatchType _activeBatch;
-    private GuiRenderState _activeState;
+    /// <summary>
+    /// The target <see cref="Framebuffer"/> rendered into during the active render pass.
+    /// </summary>
+    private Framebuffer _framebuffer;
     
-    private GuiRenderState _lastSpriteState;
-    private GuiRenderState _lastPrimitiveState;
+    /// <summary>
+    /// The currently active batch type, used to determine when a flush is required on batch switches.
+    /// </summary>
+    private GuiBatchType _guiBatchType;
     
-    private bool _pushedSpriteDepthStencil;
-    private bool _pushedSpriteRasterizer;
-    private bool _pushedSpriteScissor;
+    /// <summary>
+    /// The <see cref="SpriteGuiRenderState"/> currently applied to the <see cref="SpriteBatch"/>.
+    /// Reset to <see cref="SpriteGuiRenderState.Default"/> whenever the active batch switches away from sprite.
+    /// </summary>
+    private SpriteGuiRenderState _currentSpriteRenderState;
     
-    private bool _pushedPrimitiveDepthStencil;
-    private bool _pushedPrimitiveRasterizer;
-    private bool _pushedPrimitiveScissor;
+    /// <summary>
+    /// The <see cref="PrimitiveGuiRenderState"/> currently applied to the <see cref="PrimitiveBatch"/>.
+    /// Reset to <see cref="PrimitiveGuiRenderState.Default"/> whenever the active batch switches away from primitive.
+    /// </summary>
+    private PrimitiveGuiRenderState _currentPrimitiveRenderState;
     
+    /// <summary>
+    /// Begins a new GUI render pass, initializing both the <see cref="SpriteBatch"/> and <see cref="PrimitiveBatch"/> and resetting all render state to their defaults.
+    /// </summary>
+    /// <param name="context">The <see cref="GraphicsContext"/> used for rendering.</param>
+    /// <param name="framebuffer">The target <see cref="Framebuffer"/> to render into.</param>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has already begun.</exception>
     public void Begin(GraphicsContext context, Framebuffer framebuffer) {
         if (this._begun) {
-            throw new Exception("The Batch has already begun!");
+            throw new InvalidOperationException("The GuiRenderQueue has already begun.");
         }
         
         this._begun = true;
-        
         this._context = context;
         this._framebuffer = framebuffer;
-
-        this._activeBatch = GuiBatchType.None;
-        this._activeState = default;
-
-        this._lastSpriteState = default;
-        this._lastPrimitiveState = default;
+        this._guiBatchType = GuiBatchType.None;
+        this._currentSpriteRenderState = SpriteGuiRenderState.Default;
+        this._currentPrimitiveRenderState = PrimitiveGuiRenderState.Default;
         
         this.DrawCallCount = 0;
-        this.BatchChangesCount = 0;
-
-        this.ResetPushFlags();
+        
+        // Begin sprite/primitive batch.
+        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
+        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
     }
-
+    
+    /// <summary>
+    /// Ends the current GUI render pass, flushing and finalizing both the <see cref="SpriteBatch"/> and <see cref="PrimitiveBatch"/> and accumulating their draw call counts into <see cref="DrawCallCount"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
     public void End() {
         if (!this._begun) {
-            throw new Exception("The SpriteBatch has not begun yet!");
+            throw new InvalidOperationException("The GuiRenderQueue has not begun.");
         }
         
-        this.Flush();
+        // End sprite batch.
+        this._context.SpriteBatch.End();
+        this.DrawCallCount += this._context.SpriteBatch.DrawCallCount;
+        
+        // End primitive batch.
+        this._context.PrimitiveBatch.End();
+        this.DrawCallCount += this._context.PrimitiveBatch.DrawCallCount;
+        
         this._begun = false;
-
-        this._context = null;
-        this._framebuffer = null;
-
-        this._lastSpriteState = default;
-        this._lastPrimitiveState = default;
     }
     
-    public void SetSpriteState(GuiRenderState state) {
-        this._lastSpriteState = state;
+    /// <summary>
+    /// Switches the active batch to <see cref="SpriteBatch"/>, flushing the <see cref="PrimitiveBatch"/> if it
+    /// was previously active, and applies the resolved <see cref="SpriteGuiRenderState"/> via Push/Pop.
+    /// When <paramref name="state"/> is non-<c>null</c> it fully overrides the current state; when <c>null</c>
+    /// the last active <see cref="SpriteGuiRenderState"/> is reused, or <see cref="SpriteGuiRenderState.Default"/>
+    /// if the batch type has just switched.
+    /// </summary>
+    /// <param name="state">
+    /// An optional <see cref="SpriteGuiRenderState"/> override, or <c>null</c> to retain the current state.
+    /// </param>
+    /// <returns>The <see cref="SpriteBatch"/> with the resolved state applied, ready to receive draw calls.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
+    public SpriteBatch UseSprite(SpriteGuiRenderState? state = null) {
+        if (!this._begun) {
+            throw new InvalidOperationException("The GuiRenderQueue has not begun.");
+        }
+        
+        // Flush primitive batch.
+        if (this._guiBatchType == GuiBatchType.Primitive) {
+            this._context.PrimitiveBatch.Flush();
+        }
+        
+        // Reset render state to default when a different batch type was used before.
+        if (this._guiBatchType != GuiBatchType.Sprite) {
+            this._currentSpriteRenderState = SpriteGuiRenderState.Default;
+        }
+        
+        // Set sprite batch.
+        this._guiBatchType = GuiBatchType.Sprite;
+        
+        // Apply render state.
+        this.ApplySpriteState(state ?? this._currentSpriteRenderState);
+        
+        return this._context.SpriteBatch;
     }
     
-    public void SetPrimitiveState(GuiRenderState state) {
-        this._lastPrimitiveState = state;
+    /// <summary>
+    /// Switches the active batch to <see cref="PrimitiveBatch"/>, flushing the <see cref="SpriteBatch"/> if it
+    /// was previously active, and applies the resolved <see cref="PrimitiveGuiRenderState"/> via Push/Pop.
+    /// When <paramref name="state"/> is non-<c>null</c> it fully overrides the current state; when <c>null</c>
+    /// the last active <see cref="PrimitiveGuiRenderState"/> is reused, or <see cref="PrimitiveGuiRenderState.Default"/>
+    /// if the batch type has just switched.
+    /// </summary>
+    /// <param name="state">
+    /// An optional <see cref="PrimitiveGuiRenderState"/> override, or <c>null</c> to retain the current state.
+    /// </param>
+    /// <returns>The <see cref="PrimitiveBatch"/> with the resolved state applied, ready to receive draw calls.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
+    public PrimitiveBatch UsePrimitive(PrimitiveGuiRenderState? state = null) {
+        if (!this._begun) {
+            throw new InvalidOperationException("The GuiRenderQueue has not begun.");
+        }
+        
+        // Flush sprite batch.
+        if (this._guiBatchType == GuiBatchType.Sprite) {
+            this._context.SpriteBatch.Flush();
+        }
+        
+        // Reset render state to default when a different batch type was used before.
+        if (this._guiBatchType != GuiBatchType.Primitive) {
+            this._currentPrimitiveRenderState = PrimitiveGuiRenderState.Default;
+        }
+        
+        // Set primitive batch.
+        this._guiBatchType = GuiBatchType.Primitive;
+        
+        // Apply render state.
+        this.ApplyPrimitiveState(state ?? this._currentPrimitiveRenderState);
+        
+        return this._context.PrimitiveBatch;
     }
     
-    public SpriteBatch UseSprite() {
-        return this.UseSprite(this._lastSpriteState);
-    }
-
-    public SpriteBatch UseSprite(GuiRenderState state) {
-        this._lastSpriteState = state;
-        this.EnsureSprite(state);
-        return this._context!.SpriteBatch;
-    }
-
-    public PrimitiveBatch UsePrimitive() {
-        return this.UsePrimitive(this._lastPrimitiveState);
-    }
-
-    public PrimitiveBatch UsePrimitive(GuiRenderState state) {
-        this._lastPrimitiveState = state;
-        this.EnsurePrimitive(state);
-        return this._context!.PrimitiveBatch;
-    }
-
-    public void Flush() {
-        if (this._context == null) {
-            return;
+    /// <summary>
+    /// Applies the given <see cref="SpriteGuiRenderState"/> to the <see cref="SpriteBatch"/> using its Push/Pop API.
+    /// Each field is pushed when a non-<c>null</c> value is present, or popped back to the batch default otherwise.
+    /// </summary>
+    /// <param name="state">The <see cref="SpriteGuiRenderState"/> to apply.</param>
+    private void ApplySpriteState(SpriteGuiRenderState state) {
+        SpriteBatch batch = this._context.SpriteBatch;
+        
+        if (state.Sampler != null) {
+            batch.PushSampler(state.Sampler);
         }
-
-        switch (this._activeBatch) {
-            case GuiBatchType.Sprite:
-                this.PopSpriteStates();
-                this._context.SpriteBatch.End();
-                this.DrawCallCount += this._context.SpriteBatch.DrawCallCount;
-                break;
-
-            case GuiBatchType.Primitive:
-                this.PopPrimitiveStates();
-                this._context.PrimitiveBatch.End();
-                this.DrawCallCount += this._context.PrimitiveBatch.DrawCallCount;
-                break;
+        else {
+            batch.PopSampler();
         }
-
-        this._activeBatch = GuiBatchType.None;
-        this._activeState = default;
-    }
-
-    private void EnsureSprite(GuiRenderState state) {
-        this.EnsureStarted();
-
-        if (this._activeBatch == GuiBatchType.Sprite && this._activeState == state) {
-            return;
+        
+        if (state.Effect != null) {
+            batch.PushEffect(state.Effect);
         }
-
-        this.Flush();
-        this.BatchChangesCount++;
-
-        this._context!.SpriteBatch.Begin(this._context.CommandList, this._framebuffer!.OutputDescription, state.Sampler, state.Effect, state.BlendState);
-
+        else {
+            batch.PopEffect();
+        }
+        
+        if (state.BlendState.HasValue) {
+            batch.PushBlendState(state.BlendState.Value);
+        }
+        else {
+            batch.PopBlendState();
+        }
+        
         if (state.DepthStencilState.HasValue) {
-            this._context.SpriteBatch.PushDepthStencilState(state.DepthStencilState.Value);
-            this._pushedSpriteDepthStencil = true;
+            batch.PushDepthStencilState(state.DepthStencilState.Value);
         }
-
+        else {
+            batch.PopDepthStencilState();
+        }
+        
         if (state.RasterizerState.HasValue) {
-            this._context.SpriteBatch.PushRasterizerState(state.RasterizerState.Value);
-            this._pushedSpriteRasterizer = true;
+            batch.PushRasterizerState(state.RasterizerState.Value);
         }
-
+        else {
+            batch.PopRasterizerState();
+        }
+        
         if (state.ScissorRect.HasValue) {
-            this._context.SpriteBatch.PushScissorRect(state.ScissorRect.Value);
-            this._pushedSpriteScissor = true;
+            batch.PushScissorRect(state.ScissorRect.Value);
         }
-
-        this._activeBatch = GuiBatchType.Sprite;
-        this._activeState = state;
+        else {
+            batch.PopScissorRect();
+        }
     }
-
-    private void EnsurePrimitive(GuiRenderState state) {
-        this.EnsureStarted();
-
-        if (this._activeBatch == GuiBatchType.Primitive && this._activeState == state) {
-            return;
+    
+    /// <summary>
+    /// Applies the given <see cref="PrimitiveGuiRenderState"/> to the <see cref="PrimitiveBatch"/> using its Push/Pop API.
+    /// Each field is pushed when a non-<c>null</c> value is present, or popped back to the batch default otherwise.
+    /// </summary>
+    /// <param name="state">The <see cref="PrimitiveGuiRenderState"/> to apply.</param>
+    private void ApplyPrimitiveState(PrimitiveGuiRenderState state) {
+        PrimitiveBatch batch = this._context.PrimitiveBatch;
+        
+        if (state.Effect != null) {
+            batch.PushEffect(state.Effect);
         }
-
-        this.Flush();
-        this.BatchChangesCount++;
-
-        this._context!.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer!.OutputDescription, state.Effect, state.BlendState);
-
+        else {
+            batch.PopEffect();
+        }
+        
+        if (state.BlendState.HasValue) {
+            batch.PushBlendState(state.BlendState.Value);
+        }
+        else {
+            batch.PopBlendState();
+        }
+        
         if (state.DepthStencilState.HasValue) {
-            this._context.PrimitiveBatch.PushDepthStencilState(state.DepthStencilState.Value);
-            this._pushedPrimitiveDepthStencil = true;
+            batch.PushDepthStencilState(state.DepthStencilState.Value);
         }
-
+        else {
+            batch.PopDepthStencilState();
+        }
+        
         if (state.RasterizerState.HasValue) {
-            this._context.PrimitiveBatch.PushRasterizerState(state.RasterizerState.Value);
-            this._pushedPrimitiveRasterizer = true;
+            batch.PushRasterizerState(state.RasterizerState.Value);
         }
-
+        else {
+            batch.PopRasterizerState();
+        }
+        
         if (state.ScissorRect.HasValue) {
-            this._context.PrimitiveBatch.PushScissorRect(state.ScissorRect.Value);
-            this._pushedPrimitiveScissor = true;
+            batch.PushScissorRect(state.ScissorRect.Value);
         }
-
-        this._activeBatch = GuiBatchType.Primitive;
-        this._activeState = state;
-    }
-
-    private void PopSpriteStates() {
-        if (this._context == null) {
-            return;
-        }
-
-        if (this._pushedSpriteScissor) {
-            this._context.SpriteBatch.PopScissorRect();
-            this._pushedSpriteScissor = false;
-        }
-
-        if (this._pushedSpriteRasterizer) {
-            this._context.SpriteBatch.PopRasterizerState();
-            this._pushedSpriteRasterizer = false;
-        }
-
-        if (this._pushedSpriteDepthStencil) {
-            this._context.SpriteBatch.PopDepthStencilState();
-            this._pushedSpriteDepthStencil = false;
-        }
-    }
-
-    private void PopPrimitiveStates() {
-        if (this._context == null) {
-            return;
-        }
-
-        if (this._pushedPrimitiveScissor) {
-            this._context.PrimitiveBatch.PopScissorRect();
-            this._pushedPrimitiveScissor = false;
-        }
-
-        if (this._pushedPrimitiveRasterizer) {
-            this._context.PrimitiveBatch.PopRasterizerState();
-            this._pushedPrimitiveRasterizer = false;
-        }
-
-        if (this._pushedPrimitiveDepthStencil) {
-            this._context.PrimitiveBatch.PopDepthStencilState();
-            this._pushedPrimitiveDepthStencil = false;
-        }
-    }
-
-    private void ResetPushFlags() {
-        this._pushedSpriteDepthStencil = false;
-        this._pushedSpriteRasterizer = false;
-        this._pushedSpriteScissor = false;
-
-        this._pushedPrimitiveDepthStencil = false;
-        this._pushedPrimitiveRasterizer = false;
-        this._pushedPrimitiveScissor = false;
-    }
-
-    private void EnsureStarted() {
-        if (this._context == null || this._framebuffer == null) {
-            throw new InvalidOperationException("GuiRenderQueue.Begin must be called before drawing.");
+        else {
+            batch.PopScissorRect();
         }
     }
 }

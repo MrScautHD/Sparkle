@@ -69,12 +69,6 @@ public abstract class Gui : Disposable {
     public int BatchDrawCallCount => this._renderQueue.DrawCallCount;
     
     /// <summary>
-    /// The number of batch state changes that occurred during the last draw pass.
-    /// A high value relative to element count indicates poor render state locality.
-    /// </summary>
-    public int BatchChangesCount => this._renderQueue.BatchChangesCount;
-    
-    /// <summary>
     /// The render queue used to collect and batch GUI draw commands.
     /// </summary>
     private GuiRenderQueue _renderQueue;

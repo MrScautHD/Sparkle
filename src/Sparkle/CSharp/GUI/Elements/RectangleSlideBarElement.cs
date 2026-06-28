@@ -132,7 +132,7 @@ public class RectangleSlideBarElement : GuiElement {
     protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
         base.SubmitDrawCommands(renderQueue);
         
-        GuiRenderState renderState = new GuiRenderState(effect: this.Data.Effect, blendState: this.Data.BlendState);
+        PrimitiveGuiRenderState renderState = new PrimitiveGuiRenderState(this.Data.Effect, this.Data.BlendState);
         
         Vector2 scaledOrigin = this.Origin * this.Scale * this.Gui.ScaleFactor;
         

@@ -54,7 +54,7 @@ public class LabelElement : GuiElement {
         }
         
         // Draw text.
-        GuiRenderState state = new GuiRenderState(this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
+        SpriteGuiRenderState state = new SpriteGuiRenderState(this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
         renderQueue.UseSprite(state).DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.FontSystemEffect, this.Data.EffectAmount);
     }
     

@@ -73,7 +73,7 @@ public class ImageElement : GuiElement {
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null) {
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
         renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
     }
     
@@ -149,7 +149,7 @@ public class ImageElement : GuiElement {
         }
         
         // Create render state.
-        GuiRenderState renderState = new GuiRenderState(sampler, effect, blendState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
         
         // Draw Corners.
         renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);

@@ -345,7 +345,7 @@ public class RectangleDropDownElement : GuiElement {
     protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
         base.SubmitDrawCommands(renderQueue);
         
-        GuiRenderState primitiveState = new GuiRenderState(effect: this.DropDownData.Effect, blendState: this.DropDownData.BlendState);
+        PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(effect: this.DropDownData.Effect, blendState: this.DropDownData.BlendState);
         
         // Draw the filled field rectangle.
         Color fieldColor = this.IsHovered ? this.DropDownData.FieldHoverColor : this.DropDownData.FieldColor;
@@ -516,7 +516,7 @@ public class RectangleDropDownElement : GuiElement {
         Vector2 menuOrigin = (this.Origin - new Vector2(0.0F, this.Size.Y)) * scale;
         Vector2 scaledMenuSize = menuSize * scale;
         
-        GuiRenderState primitiveState = new GuiRenderState(effect: this.DropDownData.Effect, blendState: this.DropDownData.BlendState, depthStencilState: depthStencilState);
+        PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.DropDownData.Effect, this.DropDownData.BlendState, depthStencilState);
         
         // Draw the filled menu rectangle
         renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), menuOrigin, this.Rotation, 0.5F, color);
@@ -596,7 +596,7 @@ public class RectangleDropDownElement : GuiElement {
         };
         
         // Write to the stencil buffer to mark the scroll mask area.
-        GuiRenderState primitiveRenderState = new GuiRenderState(depthStencilState: stencilWrite);
+        PrimitiveGuiRenderState primitiveRenderState = new PrimitiveGuiRenderState(depthStencilState: stencilWrite);
         renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
@@ -686,7 +686,7 @@ public class RectangleDropDownElement : GuiElement {
         };
         
         // Draw the mask rectangle into the stencil buffer.
-        GuiRenderState primitiveReadMask0RenderState = new GuiRenderState(depthStencilState: stencilMask);
+        PrimitiveGuiRenderState primitiveReadMask0RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilMask);
         renderQueue.UsePrimitive(primitiveReadMask0RenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         
         bool itemHovered = false;
@@ -722,7 +722,7 @@ public class RectangleDropDownElement : GuiElement {
                 };
                 
                 // Draw the item's rectangle into the stencil buffer (setting bit 2).
-                GuiRenderState primitiveReadMask1RenderState = new GuiRenderState(depthStencilState: stencilItem);
+                PrimitiveGuiRenderState primitiveReadMask1RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilItem);
                 renderQueue.UsePrimitive(primitiveReadMask1RenderState).DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
                 break;
             }
@@ -957,7 +957,7 @@ public class RectangleDropDownElement : GuiElement {
             color = labelData.DisabledColor;
         }
         
-        GuiRenderState renderState = new GuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
         renderQueue.UseSprite(renderState).DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     
