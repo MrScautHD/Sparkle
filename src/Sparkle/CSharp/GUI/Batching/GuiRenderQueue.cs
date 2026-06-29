@@ -90,15 +90,47 @@ public class GuiRenderQueue {
     }
     
     /// <summary>
+    /// Ends both the <see cref="SpriteBatch"/> and <see cref="PrimitiveBatch"/>, executes the given draw action
+    /// immediately, then restarts both batches — preserving render order between batched and direct draw calls.
+    /// The <paramref name="state"/> parameter is passed through to <paramref name="draw"/> without allocation, avoiding closure captures.
+    /// </summary>
+    /// <typeparam name="TState">The type of the caller-supplied state passed to <paramref name="draw"/>.</typeparam>
+    /// <param name="draw"> A static delegate that performs the direct draw call. Must not capture any variables — pass all required state via <paramref name="state"/> to avoid heap allocation.</param>
+    /// <param name="state">The state value forwarded to <paramref name="draw"/>.</param>
+    /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
+    public void SubmitDirect<TState>(Action<GraphicsContext, Framebuffer, TState> draw, TState state) {
+        if (!this._begun) {
+            throw new InvalidOperationException("The GuiRenderQueue has not begun.");
+        }
+        
+        // End sprite batch.
+        this._context.SpriteBatch.End();
+        this.DrawCallCount += this._context.SpriteBatch.DrawCallCount;
+        
+        // End primitive batch.
+        this._context.PrimitiveBatch.End();
+        this.DrawCallCount += this._context.PrimitiveBatch.DrawCallCount;
+        
+        // Reset GUI batch type.
+        this._guiBatchType = GuiBatchType.None;
+        this._currentSpriteRenderState = SpriteGuiRenderState.Default;
+        this._currentPrimitiveRenderState = PrimitiveGuiRenderState.Default;
+        
+        // Execute the direct draw call.
+        draw(this._context, this._framebuffer, state);
+        
+        // Begin sprite/primitive batch.
+        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
+        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
+    }
+    
+    /// <summary>
     /// Switches the active batch to <see cref="SpriteBatch"/>, flushing the <see cref="PrimitiveBatch"/> if it
     /// was previously active, and applies the resolved <see cref="SpriteGuiRenderState"/> via Push/Pop.
     /// When <paramref name="state"/> is non-<c>null</c> it fully overrides the current state; when <c>null</c>
-    /// the last active <see cref="SpriteGuiRenderState"/> is reused, or <see cref="SpriteGuiRenderState.Default"/>
-    /// if the batch type has just switched.
+    /// the last active <see cref="SpriteGuiRenderState"/> is reused, or <see cref="SpriteGuiRenderState.Default"/> if the batch type has just switched.
     /// </summary>
-    /// <param name="state">
-    /// An optional <see cref="SpriteGuiRenderState"/> override, or <c>null</c> to retain the current state.
-    /// </param>
+    /// <param name="state"> An optional <see cref="SpriteGuiRenderState"/> override, or <c>null</c> to retain the current state. </param>
     /// <returns>The <see cref="SpriteBatch"/> with the resolved state applied, ready to receive draw calls.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
     public SpriteBatch UseSprite(SpriteGuiRenderState? state = null) {
@@ -129,12 +161,9 @@ public class GuiRenderQueue {
     /// Switches the active batch to <see cref="PrimitiveBatch"/>, flushing the <see cref="SpriteBatch"/> if it
     /// was previously active, and applies the resolved <see cref="PrimitiveGuiRenderState"/> via Push/Pop.
     /// When <paramref name="state"/> is non-<c>null</c> it fully overrides the current state; when <c>null</c>
-    /// the last active <see cref="PrimitiveGuiRenderState"/> is reused, or <see cref="PrimitiveGuiRenderState.Default"/>
-    /// if the batch type has just switched.
+    /// the last active <see cref="PrimitiveGuiRenderState"/> is reused, or <see cref="PrimitiveGuiRenderState.Default"/>if the batch type has just switched.
     /// </summary>
-    /// <param name="state">
-    /// An optional <see cref="PrimitiveGuiRenderState"/> override, or <c>null</c> to retain the current state.
-    /// </param>
+    /// <param name="state"> An optional <see cref="PrimitiveGuiRenderState"/> override, or <c>null</c> to retain the current state.</param>
     /// <returns>The <see cref="PrimitiveBatch"/> with the resolved state applied, ready to receive draw calls.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the <see cref="GuiRenderQueue"/> has not begun.</exception>
     public PrimitiveBatch UsePrimitive(PrimitiveGuiRenderState? state = null) {

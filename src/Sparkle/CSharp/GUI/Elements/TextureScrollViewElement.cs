@@ -291,12 +291,11 @@ public class TextureScrollViewElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the scroll view, including the menu background, the slider bar and handle, and the masked scrollable content.
+    /// Submits draw commands for this GUI element to the render queue for later batched rendering.
     /// </summary>
-    /// <param name="context">The graphics context providing the batches used for rendering.</param>
-    /// <param name="framebuffer">The target framebuffer the scroll view is drawn into.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+    /// <param name="renderQueue">The queue that collects draw commands for deferred execution.</param>
+    protected internal override void Draw(GuiRenderQueue renderQueue) {
+        base.Draw(renderQueue);
         
         Color menuColor = this.IsHovered ? this.Data.MenuHoverColor : this.Data.MenuColor;
         
@@ -313,27 +312,25 @@ public class TextureScrollViewElement : GuiElement {
         
         switch (this.Data.MenuResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(context.SpriteBatch, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNormal(renderQueue.UseSprite(), this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(context.SpriteBatch, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, this.Data.MenuBorderInsets, this.Data.MenuResizeMode == ResizeMode.TileCenter, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNineSlice(renderQueue.UseSprite(), this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, this.Data.MenuBorderInsets, this.Data.MenuResizeMode == ResizeMode.TileCenter, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
         }
         
         this.Size = originalSize;
         
-        // Draw slider bar.
-        this.DrawSliderBar(context.SpriteBatch);
+        // Draw slider bar and slider.
+        this.DrawSliderBar(renderQueue.UseSprite());
+        this.DrawSlider(renderQueue.UseSprite());
         
-        // Draw slider.
-        this.DrawSlider(context.SpriteBatch);
-        
-        context.SpriteBatch.End();
-        
-        // Draw content elements.
-        this.DrawContent(context, framebuffer);
+        // Draw content elements via direct GPU call.
+        renderQueue.SubmitDirect(static (context, framebuffer, self) => {
+            self.DrawContent(context, framebuffer);
+        }, this);
     }
     
     /// <summary>
@@ -764,18 +761,11 @@ public class TextureScrollViewElement : GuiElement {
         context.CommandList.ClearDepthStencil(1.0F);
         
         // Draw content elements.
-        foreach (GuiElement element in this._content.Values) {
-            if (element.Enabled) {
-                this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element);
-            }
-        }
-        
-        // Draw submitted content element draw commands.
         this._renderQueue.Begin(context, framebuffer);
         
         foreach (GuiElement element in this._content.Values) {
             if (element.Enabled) {
-                this.SubmitElementDrawCommands(element, this._renderQueue);
+                this.DrawContentElement(element, this._renderQueue);
             }
         }
         
@@ -858,45 +848,11 @@ public class TextureScrollViewElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
-    /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer the element is drawn into.</param>
-    /// <param name="element">The content element to draw.</param>
-    private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element) {
-        Anchor originalAnchor = element.AnchorPoint;
-        Vector2 originalOffset = element.Offset;
-        Vector2 originalScale = element.Scale;
-        float originalRotation = element.Rotation;
-        bool originalInteractable = element.Interactable;
-        Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 panelSize = this.GetVisibleContentSize();
-        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
-        float guiScaleFactor = this.Gui.ScaleFactor;
-        
-        element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
-        element.Scale = originalScale * this.Scale;
-        element.Rotation = originalRotation + this.Rotation;
-        element.Interactable = originalInteractable && this.Interactable;
-        element.UpdatePosAndSize();
-        element.Draw(context, framebuffer);
-        
-        element.AnchorPoint = originalAnchor;
-        element.Offset = originalOffset;
-        element.Scale = originalScale;
-        element.Rotation = originalRotation;
-        element.Interactable = originalInteractable;
-        element.UpdatePosAndSize();
-    }
-    
-    /// <summary>
     /// Submits the batched draw commands for a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
     /// </summary>
     /// <param name="element">The content element whose draw commands are submitted.</param>
     /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
-    private void SubmitElementDrawCommands(GuiElement element, GuiRenderQueue renderQueue) {
+    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
@@ -914,7 +870,7 @@ public class TextureScrollViewElement : GuiElement {
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
-        element.SubmitDrawCommands(renderQueue);
+        element.Draw(renderQueue);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;

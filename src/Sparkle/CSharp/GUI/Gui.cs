@@ -170,20 +170,11 @@ public abstract class Gui : Disposable {
     /// <param name="context">The rendering context.</param>
     /// <param name="framebuffer">The framebuffer to draw into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        
-        // Draw gui.
-        foreach (GuiElement element in this._elements.Values) {
-            if (element.Enabled) {
-                element.Draw(context, framebuffer);
-            }
-        }
-        
-        // Draw submitted draw commands.
         this._renderQueue.Begin(context, framebuffer);
         
         foreach (GuiElement element in this._elements.Values) {
             if (element.Enabled) {
-                element.SubmitDrawCommands(this._renderQueue);
+                element.Draw(this._renderQueue);
             }
         }
         

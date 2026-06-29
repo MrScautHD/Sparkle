@@ -281,12 +281,11 @@ public class RectangleScrollViewElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws the scroll view, including menu background, slider bar, slider, and masked content.
+    /// Submits draw commands for this GUI element to the render queue for later batched rendering.
     /// </summary>
-    /// <param name="context">The graphics context providing the batches used for rendering.</param>
-    /// <param name="framebuffer">The target framebuffer the scroll view is drawn into.</param>
-    protected internal override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, this.Data.Effect, this.Data.BlendState);
+    /// <param name="renderQueue">The queue that collects draw commands for deferred execution.</param>
+    protected internal override void Draw(GuiRenderQueue renderQueue) {
+        base.Draw(renderQueue);
         
         Vector2 menuSize = this.Size;
         
@@ -307,19 +306,21 @@ public class RectangleScrollViewElement : GuiElement {
             menuOutlineColor = this.Data.DisabledMenuOutlineColor;
         }
         
+        PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.Data.Effect, this.Data.BlendState);
+        
         // Draw menu.
-        this.DrawMenu(context.PrimitiveBatch, menuSize, this.Origin * this.Scale * this.Gui.ScaleFactor, menuColor, menuOutlineColor);
+        this.DrawMenu(renderQueue.UsePrimitive(primitiveState), menuSize, this.Origin * this.Scale * this.Gui.ScaleFactor, menuColor, menuOutlineColor);
         
         // Draw slider bar.
-        this.DrawSliderBar(context.PrimitiveBatch);
+        this.DrawSliderBar(renderQueue.UsePrimitive());
         
         // Draw slider.
-        this.DrawSlider(context.PrimitiveBatch);
+        this.DrawSlider(renderQueue.UsePrimitive());
         
-        context.PrimitiveBatch.End();
-        
-        // Draw content elements.
-        this.DrawContent(context, framebuffer);
+        // Draw content elements via direct GPU call.
+        renderQueue.SubmitDirect(static (context, framebuffer, self) => {
+            self.DrawContent(context, framebuffer);
+        }, this);
     }
     
     /// <summary>
@@ -645,18 +646,11 @@ public class RectangleScrollViewElement : GuiElement {
         context.CommandList.ClearDepthStencil(1.0F);
         
         // Draw content elements.
-        foreach (GuiElement element in this._content.Values) {
-            if (element.Enabled) {
-                this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element);
-            }
-        }
-        
-        // Draw submitted content element draw commands.
         this._renderQueue.Begin(context, framebuffer);
         
         foreach (GuiElement element in this._content.Values) {
             if (element.Enabled) {
-                this.SubmitElementDrawCommands(element, this._renderQueue);
+                this.DrawContentElement(element, this._renderQueue);
             }
         }
         
@@ -739,45 +733,11 @@ public class RectangleScrollViewElement : GuiElement {
     }
     
     /// <summary>
-    /// Draws a single content element, temporarily reanchoring and offsetting it to account for the current scroll position, then restores its original transform.
-    /// </summary>
-    /// <param name="context">The graphics context used for rendering.</param>
-    /// <param name="framebuffer">The framebuffer the element is drawn into.</param>
-    /// <param name="element">The content element to draw.</param>
-    private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element) {
-        Anchor originalAnchor = element.AnchorPoint;
-        Vector2 originalOffset = element.Offset;
-        Vector2 originalScale = element.Scale;
-        float originalRotation = element.Rotation;
-        bool originalInteractable = element.Interactable;
-        Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 panelSize = this.GetVisibleContentSize();
-        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
-        float guiScaleFactor = this.Gui.ScaleFactor;
-        
-        element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
-        element.Scale = originalScale * this.Scale;
-        element.Rotation = originalRotation + this.Rotation;
-        element.Interactable = originalInteractable && this.Interactable;
-        element.UpdatePosAndSize();
-        element.Draw(context, framebuffer);
-        
-        element.AnchorPoint = originalAnchor;
-        element.Offset = originalOffset;
-        element.Scale = originalScale;
-        element.Rotation = originalRotation;
-        element.Interactable = originalInteractable;
-        element.UpdatePosAndSize();
-    }
-    
-    /// <summary>
     /// Submits the batched draw commands for a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
     /// </summary>
     /// <param name="element">The content element whose draw commands are submitted.</param>
     /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
-    private void SubmitElementDrawCommands(GuiElement element, GuiRenderQueue renderQueue) {
+    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
@@ -795,7 +755,7 @@ public class RectangleScrollViewElement : GuiElement {
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
-        element.SubmitDrawCommands(renderQueue);
+        element.Draw(renderQueue);
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;

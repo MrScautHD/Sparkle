@@ -446,8 +446,8 @@ public class RectangleTextBoxElement : GuiElement {
     /// Submits the draw commands required to render the GUI element using the appropriate visual state and rendering mode.
     /// </summary>
     /// <param name="renderQueue">The render queue that collects and batches draw commands for later execution.</param>
-    protected internal override void SubmitDrawCommands(GuiRenderQueue renderQueue) {
-        base.SubmitDrawCommands(renderQueue);
+    protected internal override void Draw(GuiRenderQueue renderQueue) {
+        base.Draw(renderQueue);
         
         PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.TextBoxData.Effect, this.TextBoxData.BlendState);
         

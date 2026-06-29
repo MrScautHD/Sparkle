@@ -175,17 +175,10 @@ public abstract class GuiElement : Disposable {
     protected internal virtual void FixedUpdate(double fixedStep) { }
     
     /// <summary>
-    /// Renders the graphical representation of the GUI element to the specified framebuffer.
-    /// </summary>
-    /// <param name="context">The graphics context used for rendering the element.</param>
-    /// <param name="framebuffer">The framebuffer where the element will be drawn.</param>
-    protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) { }
-    
-    /// <summary>
     /// Submits draw commands for this GUI element to the render queue for later batched rendering.
     /// </summary>
     /// <param name="renderQueue">The queue that collects draw commands for deferred execution.</param>
-    protected internal virtual void SubmitDrawCommands(GuiRenderQueue renderQueue) { }
+    protected internal virtual void Draw(GuiRenderQueue renderQueue) { }
     
     /// <summary>
     /// Optional method for responding to window or viewport resize events.
