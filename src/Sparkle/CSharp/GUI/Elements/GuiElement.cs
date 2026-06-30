@@ -6,7 +6,6 @@ using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Batching;
-using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -63,6 +62,12 @@ public abstract class GuiElement : Disposable {
     public float Rotation;
     
     /// <summary>
+    /// Determines the rendering priority of this GUI element.
+    /// Elements with lower RenderOrder values are drawn first, while elements with higher values are drawn on top of them.
+    /// </summary>
+    public int RenderOrder;
+    
+    /// <summary>
     /// Indicates whether the mouse is currently hovering over this element.
     /// </summary>
     public bool IsHovered { get; private set; }
@@ -102,8 +107,9 @@ public abstract class GuiElement : Disposable {
     /// <param name="scale">Optional scaling factor for the element. Defaults to (1, 1).</param>
     /// <param name="origin">Optional origin point for rotation/scaling. Defaults to (0, 0).</param>
     /// <param name="rotation">Optional rotation in radians. Defaults to 0.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function that determines what happens on click. Should return true if handled.</param>
-    public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) {
+    public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, int renderOrder = 0, Func<GuiElement, bool>? clickFunc = null) {
         this.Enabled = true;
         this.Interactable = true;
         this.AnchorPoint = anchor;
@@ -112,6 +118,7 @@ public abstract class GuiElement : Disposable {
         this.Scale = scale ?? Vector2.One;
         this.Origin = origin ?? Vector2.Zero;
         this.Rotation = rotation;
+        this.RenderOrder = renderOrder;
         this._clickFunc = clickFunc;
     }
     

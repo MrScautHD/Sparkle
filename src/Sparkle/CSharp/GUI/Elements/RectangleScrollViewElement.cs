@@ -105,6 +105,7 @@ public class RectangleScrollViewElement : GuiElement {
     /// <param name="scale">Optional scaling factor applied to the scroll view.</param>
     /// <param name="origin">Optional origin point for transformations like rotation and scaling.</param>
     /// <param name="rotation">The rotation angle in degrees applied to the scroll view.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional callback invoked when the element is clicked.</param>
     public RectangleScrollViewElement(
         RectangleScrollViewData data,
@@ -117,7 +118,8 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.Size = size;
         this.ScrollSensitivity = scrollSensitivity;

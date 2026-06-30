@@ -113,8 +113,26 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="caretWidth">Specifies the width of the caret used for text input. Default is 2.0.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
-    public RectangleTextBoxElement(RectangleTextBoxData textBoxData, LabelData labelData, LabelData hintLabelData, Anchor anchor, Vector2 offset, Vector2 size, int maxTextLength, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Left, Vector2? textOffset = null, Vector2? textScale = null, float caretWidth = 2.0F, (float Left, float Right)? textEdgeOffset = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleTextBoxElement(
+        RectangleTextBoxData textBoxData,
+        LabelData labelData,
+        LabelData hintLabelData,
+        Anchor anchor,
+        Vector2 offset,
+        Vector2 size,
+        int maxTextLength,
+        Vector2? scale = null,
+        TextAlignment textAlignment = TextAlignment.Left,
+        Vector2? textOffset = null,
+        Vector2? textScale = null,
+        float caretWidth = 2.0F,
+        (float Left, float Right)? textEdgeOffset = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;

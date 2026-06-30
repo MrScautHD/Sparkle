@@ -150,6 +150,7 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="scale">Optional scale applied to the dropdown element.</param>
     /// <param name="origin">Optional origin point used for rotation and alignment.</param>
     /// <param name="rotation">The rotation of the dropdown element in radians.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function invoked when the dropdown field is clicked.</param>
     public TextureDropDownElement(
         TextureDropDownData dropDownData,
@@ -172,8 +173,8 @@ public class TextureDropDownElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc
-    ) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);

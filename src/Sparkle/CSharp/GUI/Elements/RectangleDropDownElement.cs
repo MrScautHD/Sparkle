@@ -135,6 +135,7 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="scrollLerpSpeed">Smooth scroll interpolation speed.</param>
     /// <param name="origin">Origin point for rotation and scaling.</param>
     /// <param name="rotation">Initial rotation in degrees.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional custom click handler.</param>
     public RectangleDropDownElement(
         RectangleDropDownData dropDownData,
@@ -155,7 +156,8 @@ public class RectangleDropDownElement : GuiElement {
         float scrollLerpSpeed = 10.0F,
         Vector2? origin = null,
         float rotation = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);

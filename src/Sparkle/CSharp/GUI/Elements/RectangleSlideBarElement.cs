@@ -70,8 +70,22 @@ public class RectangleSlideBarElement : GuiElement {
     /// <param name="scale">Optional scale applied to the element.</param>
     /// <param name="origin">Optional origin point used for rotation and alignment.</param>
     /// <param name="rotation">The rotation of the element in degrees.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function invoked when the element is clicked.</param>
-    public RectangleSlideBarElement(RectangleSlideBarData data, Anchor anchor, Vector2 offset, Vector2 size, float minValue, float maxValue, float value = 0.0F, bool wholeNumbers = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleSlideBarElement(
+        RectangleSlideBarData data,
+        Anchor anchor,
+        Vector2 offset,
+        Vector2 size,
+        float minValue,
+        float maxValue,
+        float value = 0.0F,
+        bool wholeNumbers = false,
+        Vector2? scale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.MinValue = minValue;
         this.MaxValue = maxValue;

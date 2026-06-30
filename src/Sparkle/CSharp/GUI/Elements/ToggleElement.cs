@@ -55,8 +55,21 @@ public class ToggleElement : GuiElement {
     /// <param name="scale">The scale applied to the toggle element.</param>
     /// <param name="origin">Optional custom origin.</param>
     /// <param name="rotation">Optional rotation angle.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function determining click behavior.</param>
-    public ToggleElement(ToggleData toggleData, LabelData labelData, Anchor anchor, Vector2 offset, float boxTextSpacing, Vector2? textScale = null, bool toggleState = false, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public ToggleElement(
+        ToggleData toggleData,
+        LabelData labelData,
+        Anchor anchor,
+        Vector2 offset,
+        float boxTextSpacing,
+        Vector2? textScale = null,
+        bool toggleState = false,
+        Vector2? scale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.ToggleData = toggleData;
         this.LabelData = labelData;
         this.BoxTextSpacing = boxTextSpacing;

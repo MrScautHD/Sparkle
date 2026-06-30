@@ -72,8 +72,22 @@ public class TextureSlideBarElement : GuiElement {
     /// <param name="scale">Specifies the scale factor for the slider bar's dimensions.</param>
     /// <param name="origin">Defines the origin point for transformations applied to the slider bar.</param>
     /// <param name="rotation">The rotation angle (in degrees) to apply to the slider bar.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">A function that is invoked when the slider bar is clicked, returning a boolean to indicate success or state change.</param>
-    public TextureSlideBarElement(TextureSlideBarData data, Anchor anchor, Vector2 offset, float minValue, float maxValue, float value = 0.0F, bool wholeNumbers = false, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public TextureSlideBarElement(
+        TextureSlideBarData data,
+        Anchor anchor,
+        Vector2 offset,
+        float minValue,
+        float maxValue,
+        float value = 0.0F,
+        bool wholeNumbers = false,
+        Vector2? size = null,
+        Vector2? scale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.BarSourceRect.Width, data.BarSourceRect.Height);
         this.MinValue = minValue;

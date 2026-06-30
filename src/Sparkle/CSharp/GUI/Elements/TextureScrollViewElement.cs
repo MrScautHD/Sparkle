@@ -113,6 +113,7 @@ public class TextureScrollViewElement : GuiElement {
     /// <param name="scale">Optional scaling factor applied to the scroll view, modifying its rendered size proportionally.</param>
     /// <param name="origin">Optional origin point for transformations like rotation and scaling, specified in normalized coordinates.</param>
     /// <param name="rotation">The rotation angle in radians applied to the scroll view.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional callback function invoked when the scroll view detects a click interaction. This function receives the clicked <see cref="GuiElement"/> as a parameter and returns a boolean indicating success.</param>
     public TextureScrollViewElement(
         TextureScrollViewData data,
@@ -126,7 +127,8 @@ public class TextureScrollViewElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.MenuSourceRect.Width, data.MenuSourceRect.Height);
         this.MenuContentInsets = menuContentInsets ?? (0.0F, 0.0F, 0.0F, 0.0F);

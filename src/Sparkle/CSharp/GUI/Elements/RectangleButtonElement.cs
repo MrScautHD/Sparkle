@@ -49,8 +49,22 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="textScale">The scale of the text. Defaults to (1, 1).</param>
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
-    public RectangleButtonElement(RectangleButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? textScale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, clickFunc) {
+    public RectangleButtonElement(
+        RectangleButtonData buttonData,
+        LabelData labelData,
+        Anchor anchor,
+        Vector2 offset,
+        Vector2 size,
+        Vector2? scale = null,
+        TextAlignment textAlignment = TextAlignment.Center,
+        Vector2? textOffset = null,
+        Vector2? textScale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;

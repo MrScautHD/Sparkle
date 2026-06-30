@@ -21,8 +21,17 @@ public class LabelElement : GuiElement {
     /// <param name="scale">Optional scaling factor for the element. Defaults to (1, 1).</param>
     /// <param name="origin">Optional origin point used for rotation and scaling (default is null).</param>
     /// <param name="rotation">The rotation of the label in radians (default is 0).</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function to be called when the label is clicked (default is null).</param>
-    public LabelElement(LabelData data, Anchor anchor, Vector2 offset, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public LabelElement(
+        LabelData data,
+        Anchor anchor,
+        Vector2 offset,
+        Vector2? scale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
     }
     

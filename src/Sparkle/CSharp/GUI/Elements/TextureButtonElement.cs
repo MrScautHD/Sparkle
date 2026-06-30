@@ -53,8 +53,22 @@ public class TextureButtonElement : GuiElement {
     /// <param name="size">Optional override for the size. If not provided, defaults to the texture size.</param>
     /// <param name="origin">Optional origin point for transformations like rotation and scaling.</param>
     /// <param name="rotation">Optional rotation angle in radians.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function to execute when the button is clicked. Should return true if handled.</param>
-    public TextureButtonElement(TextureButtonData buttonData, LabelData labelData, Anchor anchor, Vector2 offset, TextAlignment textAlignment = TextAlignment.Center, Vector2? textOffset = null, Vector2? textScale = null, Vector2? size = null, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+    public TextureButtonElement(
+        TextureButtonData buttonData,
+        LabelData labelData,
+        Anchor anchor,
+        Vector2 offset,
+        TextAlignment textAlignment = TextAlignment.Center,
+        Vector2? textOffset = null,
+        Vector2? textScale = null,
+        Vector2? size = null,
+        Vector2? scale = null,
+        Vector2? origin = null,
+        float rotation = 0.0F,
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
