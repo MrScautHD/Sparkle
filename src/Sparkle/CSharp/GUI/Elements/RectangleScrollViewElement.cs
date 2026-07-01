@@ -43,6 +43,11 @@ public class RectangleScrollViewElement : GuiElement {
     private GuiRenderQueue _renderQueue;
     
     /// <summary>
+    /// A list of content elements that need to be rendered during the draw phase of the content lifecycle.
+    /// </summary>
+    private List<GuiElement> _contentToDraw;
+    
+    /// <summary>
     /// All active child GUI elements contained inside this scroll view.
     /// </summary>
     private OrderedDictionary<string, GuiElement> _content;
@@ -126,6 +131,7 @@ public class RectangleScrollViewElement : GuiElement {
         this.ScrollLerpSpeed = scrollLerpSpeed;
         
         this._renderQueue = new GuiRenderQueue();
+        this._contentToDraw = new List<GuiElement>();
         this._content = new OrderedDictionary<string, GuiElement>();
         this._contentToAdd = new List<GuiElement>();
         this._contentToRemove = new List<string>();
@@ -650,7 +656,18 @@ public class RectangleScrollViewElement : GuiElement {
         // Draw content elements.
         this._renderQueue.Begin(context, framebuffer);
         
-        foreach (GuiElement element in this._content.Values) {
+        // Add content to draw.
+        this._contentToDraw.Clear();
+        this._contentToDraw.AddRange(this._content.Values);
+        
+        // Order content.
+        this._contentToDraw.Sort((a, b) => {
+            int result = a.RenderOrder.CompareTo(b.RenderOrder);
+            return result != 0 ? result : this._content.IndexOf(a.Name).CompareTo(this._content.IndexOf(b.Name));
+        });
+        
+        // Draw content.
+        foreach (GuiElement element in this._contentToDraw) {
             if (element.Enabled) {
                 this.DrawContentElement(element, this._renderQueue);
             }
