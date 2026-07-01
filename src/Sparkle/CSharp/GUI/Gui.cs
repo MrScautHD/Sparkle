@@ -183,7 +183,10 @@ public abstract class Gui : Disposable {
         this._elementsToDraw.AddRange(this._elements.Values);
         
         // Order elements.
-        this._elementsToDraw.Sort(static (a, b) => a.RenderOrder.CompareTo(b.RenderOrder));
+        this._elementsToDraw.Sort((a, b) => {
+            int result = a.RenderOrder.CompareTo(b.RenderOrder);
+            return result != 0 ? result : this._elements.IndexOf(a.Name).CompareTo(this._elements.IndexOf(b.Name));
+        });
         
         // Draw elements.
         foreach (GuiElement element in this._elementsToDraw) {
