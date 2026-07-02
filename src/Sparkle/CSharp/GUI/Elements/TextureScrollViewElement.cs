@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
@@ -109,6 +109,7 @@ public class TextureScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="data">The data object containing texture and layout information for the scroll view.</param>
     /// <param name="content">An optional collection of key-value pairs where each key is a unique identifier and each value is a GUI element to be displayed in the scroll view.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">Specifies the anchor position that determines the alignment of the scroll view within its parent element.</param>
     /// <param name="offset">Defines the offset position of the scroll view relative to its anchor.</param>
     /// <param name="menuContentInsets">Optional insets defining padding or margins around the scrollable content in the form of left, right, top, and bottom offsets.</param>
@@ -118,11 +119,11 @@ public class TextureScrollViewElement : GuiElement {
     /// <param name="scale">Optional scaling factor applied to the scroll view, modifying its rendered size proportionally.</param>
     /// <param name="origin">Optional origin point for transformations like rotation and scaling, specified in normalized coordinates.</param>
     /// <param name="rotation">The rotation angle in radians applied to the scroll view.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional callback function invoked when the scroll view detects a click interaction. This function receives the clicked <see cref="GuiElement"/> as a parameter and returns a boolean indicating success.</param>
     public TextureScrollViewElement(
         TextureScrollViewData data,
         IEnumerable<KeyValuePair<string, GuiElement>>? content,
+        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         (float Left, float Right, float Top, float Bottom)? menuContentInsets = null,
@@ -132,8 +133,7 @@ public class TextureScrollViewElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        int renderOrder = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
         this.Size = size ?? new Vector2(data.MenuSourceRect.Width, data.MenuSourceRect.Height);
         this.MenuContentInsets = menuContentInsets ?? (0.0F, 0.0F, 0.0F, 0.0F);
@@ -320,12 +320,12 @@ public class TextureScrollViewElement : GuiElement {
         
         switch (this.Data.MenuResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(renderQueue, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNormal(renderQueue, 0, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(renderQueue, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, this.Data.MenuBorderInsets, this.Data.MenuResizeMode == ResizeMode.TileCenter, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNineSlice(renderQueue, 0, this.Data.MenuTexture, this.Data.MenuSampler, this.Data.MenuSourceRect, this.Data.MenuBorderInsets, this.Data.MenuResizeMode == ResizeMode.TileCenter, menuColor, this.Data.MenuFlip, this.Data.MenuPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
         }
         
@@ -511,6 +511,7 @@ public class TextureScrollViewElement : GuiElement {
     /// Draws a sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
     /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    /// <param name="localOrder">The local render order used for this sprite draw.</param>
     /// <param name="texture">The texture to draw.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
     /// <param name="sourceRect">The rectangle defining the portion of the texture to draw.</param>
@@ -519,15 +520,19 @@ public class TextureScrollViewElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNormal(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null) {
+    private void DrawNormal(GuiRenderQueue renderQueue, int localOrder, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null) {
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        
+        renderQueue.SubmitSprite(localOrder, static (batch, state) => {
+            batch.DrawTexture(state.Texture, state.Position, 0.5F, state.SourceRect, state.Scale, state.Origin, state.PixelSnap, state.Rotation, state.Color, state.Flip);
+        }, (Texture: texture, Position: this.Position, SourceRect: sourceRect, Scale: this.Scale * this.Gui.ScaleFactor, Origin: this.Origin, PixelSnap: pixelSnap, Rotation: this.Rotation, Color: color, Flip: flip), renderState);
     }
     
     /// <summary>
     /// Draws a nine-slice sprite to the screen using the specified texture, source rectangle, and other parameters.
     /// </summary>
     /// <param name="renderQueue">The render queue used to render the sprite.</param>
+    /// <param name="localOrder">The local render order used for this nine-slice draw.</param>
     /// <param name="texture">The texture containing the nine-slice source image.</param>
     /// <param name="sampler">The optional sampler state used for texture sampling. Default is null.</param>
     /// <param name="sourceRect">The rectangle defining the portion of the texture to use for the nine-slice rendering.</param>
@@ -538,134 +543,143 @@ public class TextureScrollViewElement : GuiElement {
     /// <param name="pixelSnap">A boolean specifying whether to align the texture to pixel boundaries.</param>
     /// <param name="effect">The optional effect used when rendering. If <c>null</c>, the batch's current effect is used.</param>
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
-    private void DrawNineSlice(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null) {
-        Vector2 position = pixelSnap ? Vector2.Floor(this.Position) : this.Position;
-        Vector2 origin = pixelSnap ? Vector2.Floor(this.Origin) : this.Origin;
-        Vector2 size = pixelSnap ? Vector2.Floor(this.Size) : this.Size;
-        Vector2 scale = pixelSnap ? Vector2.Max(Vector2.One, Vector2.Floor(this.Scale)) * this.Gui.ScaleFactor : this.Scale * this.Gui.ScaleFactor;
-        
-        // Calculate sizes and clamp to a minimum to prevent overlap.
-        float minW = borderInsets.Left + borderInsets.Right;
-        float minH = borderInsets.Top + borderInsets.Bottom;
-        
-        Vector2 visualSize = new Vector2(MathF.Max(size.X, minW), MathF.Max(size.Y, minH));
-        Vector2 finalSize = visualSize * scale;
-        
-        // Centering logic for buttons smaller than their borders.
-        float diffX = (size.X < minW) ? (minW - size.X) * scale.X : 0.0F;
-        float diffY = (size.Y < minH) ? (minH - size.Y) * scale.Y : 0.0F;
-        Vector2 pivot = (origin * scale) + new Vector2(diffX, diffY) * 0.5F;
-        
-        // Calculate edge dimensions.
-        float leftW = borderInsets.Left * scale.X;
-        float rightW = borderInsets.Right * scale.X;
-        float topH = borderInsets.Top * scale.Y;
-        float bottomH = borderInsets.Bottom * scale.Y;
-        float innerW = finalSize.X - leftW - rightW;
-        float innerH = finalSize.Y - topH - bottomH;
-        
-        // Define source rectangles for all 9 segments.
-        int right = sourceRect.X + sourceRect.Width;
-        int bottom = sourceRect.Y + sourceRect.Height;
-        
-        Rectangle sourceTopLeft = new Rectangle(sourceRect.X, sourceRect.Y, borderInsets.Left, borderInsets.Top);
-        Rectangle sourceTopRight = new Rectangle(right - borderInsets.Right, sourceRect.Y, borderInsets.Right, borderInsets.Top);
-        Rectangle sourceBottomLeft = new Rectangle(sourceRect.X, bottom - borderInsets.Bottom, borderInsets.Left, borderInsets.Bottom);
-        Rectangle sourceBottomRight = new Rectangle(right - borderInsets.Right, bottom - borderInsets.Bottom, borderInsets.Right, borderInsets.Bottom);
-        
-        Rectangle sourceTop = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
-        Rectangle sourceBottom = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
-        Rectangle sourceLeft = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle sourceRight = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        Rectangle sourceCenter = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
-        
-        // Adjust for Horizontal Flip.
-        if (flip.HasFlag(SpriteFlip.Horizontal)) {
-            (sourceTopLeft, sourceTopRight) = (sourceTopRight, sourceTopLeft);
-            (sourceBottomLeft, sourceBottomRight) = (sourceBottomRight, sourceBottomLeft);
-            (sourceLeft, sourceRight) = (sourceRight, sourceLeft);
-            (leftW, rightW) = (rightW, leftW);
-        }
-        
-        // Adjust for Vertical Flip.
-        if (flip.HasFlag(SpriteFlip.Vertical)) {
-            (sourceTopLeft, sourceBottomLeft) = (sourceBottomLeft, sourceTopLeft);
-            (sourceTopRight, sourceBottomRight) = (sourceBottomRight, sourceTopRight);
-            (sourceTop, sourceBottom) = (sourceBottom, sourceTop);
-            (topH, bottomH) = (bottomH, topH);
-        }
-        
-        // Create render state.
+    private void DrawNineSlice(GuiRenderQueue renderQueue, int localOrder, Texture2D texture, Sampler? sampler, Rectangle sourceRect, BorderInsets borderInsets, bool tileCenter, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect = null, BlendStateDescription? blendState = null) {
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
         
-        // Draw Corners.
-        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, this.Rotation, color, flip);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, this.Rotation, color, flip);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
-        
-        // Draw Edges.
-        if (innerH > 0.0F) {
-            if (tileCenter) {
-                float tileH = sourceLeft.Height * scale.Y;
-                for (float y = 0.0F; y < innerH; y += tileH) {
-                    float drawH = MathF.Min(tileH, innerH - y);
-                    Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
-                    Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
-                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, this.Rotation, color, flip);
-                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, this.Rotation, color, flip);
-                }
+        renderQueue.SubmitSprite(localOrder, static (batch, state) => {
+            Rectangle sourceRect = state.SourceRect;
+            BorderInsets borderInsets = state.BorderInsets;
+            bool tileCenter = state.TileCenter;
+            Color color = state.Color;
+            SpriteFlip flip = state.Flip;
+            bool pixelSnap = state.PixelSnap;
+            Texture2D texture = state.Texture;
+            
+            Vector2 position = pixelSnap ? Vector2.Floor(state.Position) : state.Position;
+            Vector2 origin = pixelSnap ? Vector2.Floor(state.Origin) : state.Origin;
+            Vector2 size = pixelSnap ? Vector2.Floor(state.Size) : state.Size;
+            Vector2 scale = pixelSnap ? Vector2.Max(Vector2.One, Vector2.Floor(state.Scale)) * state.GuiScaleFactor : state.Scale * state.GuiScaleFactor;
+            
+            // Calculate sizes and clamp to a minimum to prevent overlap.
+            float minW = borderInsets.Left + borderInsets.Right;
+            float minH = borderInsets.Top + borderInsets.Bottom;
+            
+            Vector2 visualSize = new Vector2(MathF.Max(size.X, minW), MathF.Max(size.Y, minH));
+            Vector2 finalSize = visualSize * scale;
+            
+            // Centering logic for buttons smaller than their borders.
+            float diffX = (size.X < minW) ? (minW - size.X) * scale.X : 0.0F;
+            float diffY = (size.Y < minH) ? (minH - size.Y) * scale.Y : 0.0F;
+            Vector2 pivot = (origin * scale) + new Vector2(diffX, diffY) * 0.5F;
+            
+            // Calculate edge dimensions.
+            float leftW = borderInsets.Left * scale.X;
+            float rightW = borderInsets.Right * scale.X;
+            float topH = borderInsets.Top * scale.Y;
+            float bottomH = borderInsets.Bottom * scale.Y;
+            float innerW = finalSize.X - leftW - rightW;
+            float innerH = finalSize.Y - topH - bottomH;
+            
+            // Define source rectangles for all 9 segments.
+            int right = sourceRect.X + sourceRect.Width;
+            int bottom = sourceRect.Y + sourceRect.Height;
+            
+            Rectangle sourceTopLeft = new Rectangle(sourceRect.X, sourceRect.Y, borderInsets.Left, borderInsets.Top);
+            Rectangle sourceTopRight = new Rectangle(right - borderInsets.Right, sourceRect.Y, borderInsets.Right, borderInsets.Top);
+            Rectangle sourceBottomLeft = new Rectangle(sourceRect.X, bottom - borderInsets.Bottom, borderInsets.Left, borderInsets.Bottom);
+            Rectangle sourceBottomRight = new Rectangle(right - borderInsets.Right, bottom - borderInsets.Bottom, borderInsets.Right, borderInsets.Bottom);
+            
+            Rectangle sourceTop = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Top);
+            Rectangle sourceBottom = new Rectangle(sourceRect.X + borderInsets.Left, bottom - borderInsets.Bottom, sourceRect.Width - borderInsets.Left - borderInsets.Right, borderInsets.Bottom);
+            Rectangle sourceLeft = new Rectangle(sourceRect.X, sourceRect.Y + borderInsets.Top, borderInsets.Left, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+            Rectangle sourceRight = new Rectangle(right - borderInsets.Right, sourceRect.Y + borderInsets.Top, borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+            Rectangle sourceCenter = new Rectangle(sourceRect.X + borderInsets.Left, sourceRect.Y + borderInsets.Top, sourceRect.Width - borderInsets.Left - borderInsets.Right, sourceRect.Height - borderInsets.Top - borderInsets.Bottom);
+            
+            // Adjust for Horizontal Flip.
+            if (flip.HasFlag(SpriteFlip.Horizontal)) {
+                (sourceTopLeft, sourceTopRight) = (sourceTopRight, sourceTopLeft);
+                (sourceBottomLeft, sourceBottomRight) = (sourceBottomRight, sourceBottomLeft);
+                (sourceLeft, sourceRight) = (sourceRight, sourceLeft);
+                (leftW, rightW) = (rightW, leftW);
             }
-            else {
-                Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
-                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, this.Rotation, color, flip);
-                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, this.Rotation, color, flip);
+            
+            // Adjust for Vertical Flip.
+            if (flip.HasFlag(SpriteFlip.Vertical)) {
+                (sourceTopLeft, sourceBottomLeft) = (sourceBottomLeft, sourceTopLeft);
+                (sourceTopRight, sourceBottomRight) = (sourceBottomRight, sourceTopRight);
+                (sourceTop, sourceBottom) = (sourceBottom, sourceTop);
+                (topH, bottomH) = (bottomH, topH);
             }
-        }
-        
-        if (innerW > 0.0F) {
-            if (tileCenter) {
-                float tileW = sourceTop.Width * scale.X;
-                for (float x = 0.0F; x < innerW; x += tileW) {
-                    float drawW = MathF.Min(tileW, innerW - x);
-                    Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
-                    Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
-                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, this.Rotation, color, flip);
-                    renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, this.Rotation, color, flip);
-                }
-            }
-            else {
-                int clipW = Math.Min(sourceTop.Width, (int) MathF.Ceiling(innerW / scale.X));
-                Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
-                Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
-                Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
-                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, this.Rotation, color, flip);
-                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, this.Rotation, color, flip);
-            }
-        }
-        
-        // Draw Center.
-        if (innerW > 0.0F && innerH > 0.0F) {
-            if (tileCenter) {
-                float tileW = sourceCenter.Width * scale.X;
-                float tileH = sourceCenter.Height * scale.Y;
-                
-                for (float y = 0.0F; y < innerH; y += tileH) {
-                    float drawH = MathF.Min(tileH, innerH - y);
-                    for (float x = 0.0F; x < innerW; x += tileW) {
-                        float drawW = MathF.Min(tileW, innerW - x);
-                        Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
-                        renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, this.Rotation, color, flip);
+            
+            // Draw Corners.
+            batch.DrawTexture(texture, position, 0.5F, sourceTopLeft, scale, pivot / scale, false, state.Rotation, color, flip);
+            batch.DrawTexture(texture, position, 0.5F, sourceTopRight, scale, (pivot - new Vector2(finalSize.X - rightW, 0.0F)) / scale, false, state.Rotation, color, flip);
+            batch.DrawTexture(texture, position, 0.5F, sourceBottomLeft, scale, (pivot - new Vector2(0.0F, finalSize.Y - bottomH)) / scale, false, state.Rotation, color, flip);
+            batch.DrawTexture(texture, position, 0.5F, sourceBottomRight, scale, (pivot - new Vector2(finalSize.X - rightW, finalSize.Y - bottomH)) / scale, false, state.Rotation, color, flip);
+            
+            // Draw Edges.
+            if (innerH > 0.0F) {
+                if (tileCenter) {
+                    float tileH = sourceLeft.Height * scale.Y;
+                    for (float y = 0.0F; y < innerH; y += tileH) {
+                        float drawH = MathF.Min(tileH, innerH - y);
+                        Rectangle cL = new Rectangle(sourceLeft.X, sourceLeft.Y, sourceLeft.Width, (int) MathF.Ceiling(drawH / scale.Y));
+                        Rectangle cR = new Rectangle(sourceRight.X, sourceRight.Y, sourceRight.Width, (int) MathF.Ceiling(drawH / scale.Y));
+                        batch.DrawTexture(texture, position, 0.5F, cL, scale, (pivot - new Vector2(0.0F, topH + y)) / scale, false, state.Rotation, color, flip);
+                        batch.DrawTexture(texture, position, 0.5F, cR, scale, (pivot - new Vector2(finalSize.X - rightW, topH + y)) / scale, false, state.Rotation, color, flip);
                     }
                 }
+                else {
+                    Vector2 sV = new Vector2(scale.X, innerH / sourceLeft.Height);
+                    batch.DrawTexture(texture, position, 0.5F, sourceLeft, sV, (pivot - new Vector2(0.0F, topH)) / sV, false, state.Rotation, color, flip);
+                    batch.DrawTexture(texture, position, 0.5F, sourceRight, sV, (pivot - new Vector2(finalSize.X - rightW, topH)) / sV, false, state.Rotation, color, flip);
+                }
             }
-            else {
-                int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
-                Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
-                Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
-                renderQueue.UseSprite(renderState).DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, this.Rotation, color, flip);
+            
+            if (innerW > 0.0F) {
+                if (tileCenter) {
+                    float tileW = sourceTop.Width * scale.X;
+                    for (float x = 0.0F; x < innerW; x += tileW) {
+                        float drawW = MathF.Min(tileW, innerW - x);
+                        Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceTop.Height);
+                        Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, (int) MathF.Max(1.0F, MathF.Round(drawW / scale.X)), sourceBottom.Height);
+                        batch.DrawTexture(texture, position, 0.5F, cT, scale, (pivot - new Vector2(leftW + x, 0.0F)) / scale, false, state.Rotation, color, flip);
+                        batch.DrawTexture(texture, position, 0.5F, cB, scale, (pivot - new Vector2(leftW + x, finalSize.Y - bottomH)) / scale, false, state.Rotation, color, flip);
+                    }
+                }
+                else {
+                    int clipW = Math.Min(sourceTop.Width, (int) MathF.Ceiling(innerW / scale.X));
+                    Rectangle cT = new Rectangle(sourceTop.X, sourceTop.Y, clipW, sourceTop.Height);
+                    Rectangle cB = new Rectangle(sourceBottom.X, sourceBottom.Y, clipW, sourceBottom.Height);
+                    Vector2 sH = (innerW > sourceTop.Width * scale.X) ? new Vector2(innerW / sourceTop.Width, scale.Y) : scale;
+                    batch.DrawTexture(texture, position, 0.5F, cT, sH, (pivot - new Vector2(leftW, 0.0F)) / sH, false, state.Rotation, color, flip);
+                    batch.DrawTexture(texture, position, 0.5F, cB, sH, (pivot - new Vector2(leftW, finalSize.Y - bottomH)) / sH, false, state.Rotation, color, flip);
+                }
             }
-        }
+            
+            // Draw Center.
+            if (innerW > 0.0F && innerH > 0.0F) {
+                if (tileCenter) {
+                    float tileW = sourceCenter.Width * scale.X;
+                    float tileH = sourceCenter.Height * scale.Y;
+                    
+                    for (float y = 0.0F; y < innerH; y += tileH) {
+                        float drawH = MathF.Min(tileH, innerH - y);
+                        for (float x = 0.0F; x < innerW; x += tileW) {
+                            float drawW = MathF.Min(tileW, innerW - x);
+                            Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, (int) MathF.Ceiling(drawW / scale.X), (int) MathF.Ceiling(drawH / scale.Y));
+                            batch.DrawTexture(texture, position, 0.5F, cC, scale, (pivot - new Vector2(leftW + x, topH + y)) / scale, false, state.Rotation, color, flip);
+                        }
+                    }
+                }
+                else {
+                    int clipW = Math.Min(sourceCenter.Width, (int) MathF.Ceiling(innerW / scale.X));
+                    Rectangle cC = new Rectangle(sourceCenter.X, sourceCenter.Y, clipW, sourceCenter.Height);
+                    Vector2 sC = (innerW > sourceCenter.Width * scale.X) ? new Vector2(innerW / sourceCenter.Width, innerH / sourceCenter.Height) : new Vector2(scale.X, innerH / sourceCenter.Height);
+                    batch.DrawTexture(texture, position, 0.5F, cC, sC, (pivot - new Vector2(leftW, topH)) / sC, false, state.Rotation, color, flip);
+                }
+            }
+        }, (Texture: texture, Position: this.Position, Origin: this.Origin, Size: this.Size, Scale: this.Scale, GuiScaleFactor: this.Gui.ScaleFactor, Rotation: this.Rotation, SourceRect: sourceRect, BorderInsets: borderInsets, TileCenter: tileCenter, Color: color, Flip: flip, PixelSnap: pixelSnap), renderState);
     }
     
     /// <summary>
@@ -691,12 +705,12 @@ public class TextureScrollViewElement : GuiElement {
         
         switch (this.Data.SliderBarResizeMode) {
             case ResizeMode.None:
-                this.DrawNormal(renderQueue, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNormal(renderQueue, 1, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
             
             case ResizeMode.NineSlice:
             case ResizeMode.TileCenter:
-                this.DrawNineSlice(renderQueue, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, this.Data.SliderBarBorderInsets, this.Data.SliderBarResizeMode == ResizeMode.TileCenter, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap, this.Data.Effect, this.Data.BlendState);
+                this.DrawNineSlice(renderQueue, 1, this.Data.SliderBarTexture, this.Data.SliderBarSampler, this.Data.SliderBarSourceRect, this.Data.SliderBarBorderInsets, this.Data.SliderBarResizeMode == ResizeMode.TileCenter, color, this.Data.SliderBarFlip, this.Data.SliderBarPixelSnap, this.Data.Effect, this.Data.BlendState);
                 break;
         }
         
@@ -728,7 +742,9 @@ public class TextureScrollViewElement : GuiElement {
         }
         
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.Data.SliderSampler, this.Data.Effect, this.Data.BlendState);
-        renderQueue.UseSprite(renderState).DrawTexture(this.Data.SliderTexture, this.Position, 0.5F, this.Data.SliderSourceRect, this.Scale * this.Gui.ScaleFactor, origin, this.Data.SliderPixelSnap, this.Rotation, color, this.Data.SliderFlip);
+        renderQueue.SubmitSprite(2, static (batch, state) => {
+            batch.DrawTexture(state.Texture, state.Position, state.Depth, state.SourceRect, state.Scale, state.Origin, state.PixelSnap, state.Rotation, state.Color, state.Flip);
+        }, (Texture: this.Data.SliderTexture, Position: this.Position, Depth: 0.5F, SourceRect: this.Data.SliderSourceRect, Scale: this.Scale * this.Gui.ScaleFactor, Origin: origin, PixelSnap: this.Data.SliderPixelSnap, Rotation: this.Rotation, Color: color, Flip: this.Data.SliderFlip), renderState);
     }
     
     /// <summary>
@@ -751,9 +767,6 @@ public class TextureScrollViewElement : GuiElement {
         context.CommandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
         
-        // Draw content elements.
-        this._renderQueue.Begin(context, framebuffer);
-        
         // Add content to draw.
         this._contentToDraw.Clear();
         this._contentToDraw.AddRange(this._content.Values);
@@ -767,11 +780,9 @@ public class TextureScrollViewElement : GuiElement {
         // Draw content.
         foreach (GuiElement element in this._contentToDraw) {
             if (element.Enabled) {
-                this.DrawContentElement(element, this._renderQueue);
+                this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element, this._renderQueue);
             }
         }
-        
-        this._renderQueue.End();
         
         context.CommandList.CopyTexture(this._contentRenderTarget.ColorTexture, this._contentResult.DeviceTexture);
         context.CommandList.SetFramebuffer(framebuffer);
@@ -852,9 +863,11 @@ public class TextureScrollViewElement : GuiElement {
     /// <summary>
     /// Submits the batched draw commands for a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
     /// </summary>
+    /// <param name="context">The graphics context used to flush the content element draw commands.</param>
+    /// <param name="framebuffer">The framebuffer the content element is rendered into.</param>
     /// <param name="element">The content element whose draw commands are submitted.</param>
     /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
-    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue) {
+    private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element, GuiRenderQueue renderQueue) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
@@ -872,7 +885,11 @@ public class TextureScrollViewElement : GuiElement {
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
+        
+        renderQueue.Begin(context, framebuffer);
+        renderQueue.SetCurrentElementRenderOrder(element.RenderOrder);
         element.Draw(renderQueue);
+        renderQueue.End();
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;

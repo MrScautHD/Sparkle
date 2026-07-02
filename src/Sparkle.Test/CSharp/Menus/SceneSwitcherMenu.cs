@@ -65,6 +65,7 @@ public class SceneSwitcherMenu : Gui {
             chooserDropDownData,
             options,
             4,
+            0,
             Anchor.Center,
             new Vector2(0, 0),
             size: new Vector2(150, 30),

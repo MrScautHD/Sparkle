@@ -40,6 +40,7 @@ public class RectangleButtonElement : GuiElement {
     /// </summary>
     /// <param name="buttonData">The visual configuration of the rectangle button.</param>
     /// <param name="labelData">The text label data displayed on the button.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">The anchor point for positioning the element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
     /// <param name="size">The size of the button.</param>
@@ -49,11 +50,11 @@ public class RectangleButtonElement : GuiElement {
     /// <param name="textScale">The scale of the text. Defaults to (1, 1).</param>
     /// <param name="origin">The origin point for rotation and alignment. Defaults to (0, 0).</param>
     /// <param name="rotation">The rotation of the button in radians. Defaults to 0.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function to invoke when the button is clicked. Returns true if handled.</param>
     public RectangleButtonElement(
         RectangleButtonData buttonData,
         LabelData labelData,
+        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -63,8 +64,7 @@ public class RectangleButtonElement : GuiElement {
         Vector2? textScale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        int renderOrder = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.ButtonData = buttonData;
         this.LabelData = labelData;
         this.TextAlignment = textAlignment;
@@ -88,7 +88,9 @@ public class RectangleButtonElement : GuiElement {
             buttonColor = this.ButtonData.DisabledColor;
         }
         
-        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, buttonColor);
+        renderQueue.SubmitPrimitive(0, static (batch, state) => {
+            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: buttonColor), primitiveState);
         
         // Draw an empty rectangle.
         if (this.ButtonData.OutlineThickness > 0.0F) {
@@ -99,7 +101,10 @@ public class RectangleButtonElement : GuiElement {
             }
             
             float outlineThickness = this.ButtonData.OutlineThickness * this.Gui.ScaleFactor;
-            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
+            
+            renderQueue.SubmitPrimitive(0, static (batch, state) => {
+                batch.DrawEmptyRectangle(state.Rectangle, state.Thickness, state.Origin, state.Rotation, 0.5F, state.Color);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Thickness: outlineThickness, Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: outlineColor), primitiveState);
         }
         
         // Draw text.
@@ -120,7 +125,24 @@ public class RectangleButtonElement : GuiElement {
             }
             
             SpriteGuiRenderState spriteState = new SpriteGuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
-            renderQueue.UseSprite(spriteState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, textColor, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
+            renderQueue.SubmitSprite(1, static (batch, state) => {
+                batch.DrawText(
+                    state.Self.LabelData.Font,
+                    state.Self.LabelData.Text,
+                    state.TextPos,
+                    state.Self.LabelData.Size,
+                    state.Self.LabelData.CharacterSpacing,
+                    state.Self.LabelData.LineSpacing,
+                    state.Self.Scale * state.Self.TextScale * state.Self.Gui.ScaleFactor,
+                    0.5F,
+                    state.TextOrigin,
+                    state.Self.LabelData.PixelSnap,
+                    state.Self.Rotation,
+                    state.TextColor,
+                    state.Self.LabelData.Style,
+                    state.Self.LabelData.FontSystemEffect,
+                    state.Self.LabelData.EffectAmount);
+            }, (Self: this, TextPos: textPos, TextOrigin: textOrigin, TextColor: textColor), spriteState);
         }
     }
     

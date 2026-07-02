@@ -120,6 +120,7 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="dropDownData">Visual styling data for the dropdown.</param>
     /// <param name="options">List of selectable options.</param>
     /// <param name="maxVisibleOptions">Maximum number of visible menu items.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">Anchor point of the element.</param>
     /// <param name="offset">Offset from the anchor.</param>
     /// <param name="size">Size of the dropdown field.</param>
@@ -135,12 +136,12 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="scrollLerpSpeed">Smooth scroll interpolation speed.</param>
     /// <param name="origin">Origin point for rotation and scaling.</param>
     /// <param name="rotation">Initial rotation in degrees.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional custom click handler.</param>
     public RectangleDropDownElement(
         RectangleDropDownData dropDownData,
         List<LabelData> options,
         int maxVisibleOptions,
+        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -156,8 +157,7 @@ public class RectangleDropDownElement : GuiElement {
         float scrollLerpSpeed = 10.0F,
         Vector2? origin = null,
         float rotation = 0,
-        int renderOrder = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, size, scale, origin, rotation, clickFunc) {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
@@ -357,7 +357,10 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         Vector2 fieldSize = this.Size * this.Scale * this.Gui.ScaleFactor;
-        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldColor);
+        
+        renderQueue.SubmitPrimitive(0, static (batch, state) => {
+            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, fieldSize.X, fieldSize.Y), Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: fieldColor), primitiveState);
         
         // Draw the empty field rectangle.
         if (this.DropDownData.FieldOutlineThickness > 0.0F) {
@@ -369,11 +372,14 @@ public class RectangleDropDownElement : GuiElement {
             
             Vector2 fieldOutlineSize = this.Size * this.Scale * this.Gui.ScaleFactor;
             float outlineThickness = this.DropDownData.FieldOutlineThickness * this.Gui.ScaleFactor;
-            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, fieldOutlineSize.X, fieldOutlineSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, fieldOutlineColor);
+            
+            renderQueue.SubmitPrimitive(1, static (batch, state) => {
+                batch.DrawEmptyRectangle(state.Rectangle, state.Thickness, state.Origin, state.Rotation, 0.5F, state.Color);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, fieldOutlineSize.X, fieldOutlineSize.Y), Thickness: outlineThickness, Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: fieldOutlineColor), primitiveState);
         }
         
         // Draw arrow.
-        this.DrawArrow(renderQueue.UsePrimitive(primitiveState));
+        this.DrawArrow(renderQueue, primitiveState);
         
         if (this.IsMenuOpen) {
             
@@ -395,10 +401,10 @@ public class RectangleDropDownElement : GuiElement {
             this.DrawMenu(renderQueue, menuColor, menuOutlineColor);
             
             // Draw the scroll bar.
-            this.DrawScrollBar(renderQueue.UsePrimitive(primitiveState));
+            this.DrawScrollBar(renderQueue, primitiveState);
             
             // Draw the slider.
-            this.DrawSlider(renderQueue.UsePrimitive(primitiveState));
+            this.DrawSlider(renderQueue, primitiveState);
         }
         
         // Draw field text.
@@ -520,8 +526,7 @@ public class RectangleDropDownElement : GuiElement {
         
         PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.DropDownData.Effect, this.DropDownData.BlendState, depthStencilState);
         
-        // Draw the filled menu rectangle
-        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), menuOrigin, this.Rotation, 0.5F, color);
+        int localOrder = depthStencilState.HasValue ? 10 : 3;
         
         // Draw the empty menu rectangle
         if (this.DropDownData.MenuOutlineThickness > 0.0F) {
@@ -538,14 +543,27 @@ public class RectangleDropDownElement : GuiElement {
             Vector2 horizontalNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (outlineThickness / 2f);
             Vector2 verticalNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (outlineThickness / 2f);
             
-            // Left line.
-            renderQueue.UsePrimitive(primitiveState).DrawLine(p1 - verticalNormal, p3 - verticalNormal, outlineThickness, 0.5F, outlineColor);
+            renderQueue.SubmitPrimitive(localOrder, static (batch, state) => {
+                
+                // Filled rectangle.
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+                
+                // Left line.
+                batch.DrawLine(state.LeftP1, state.LeftP2, state.Thickness, 0.5F, state.OutlineColor);
+                
+                // Bottom line.
+                batch.DrawLine(state.BottomP1, state.BottomP2, state.Thickness, 0.5F, state.OutlineColor);
+                
+                // Right line.
+                batch.DrawLine(state.RightP1, state.RightP2, state.Thickness, 0.5F, state.OutlineColor);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), Origin: menuOrigin, Rotation: this.Rotation, Color: color, LeftP1: p1 - verticalNormal, LeftP2: p3 - verticalNormal, BottomP1: p3 - horizontalNormal, BottomP2: p4 - horizontalNormal, RightP1: p2 + verticalNormal, RightP2: p4 + verticalNormal, Thickness: outlineThickness, OutlineColor: outlineColor), primitiveState);
+        }
+        else {
             
-            // Bottom line.
-            renderQueue.UsePrimitive(primitiveState).DrawLine(p3 - horizontalNormal, p4 - horizontalNormal, outlineThickness, 0.5F, outlineColor);
-            
-            // Right line.
-            renderQueue.UsePrimitive(primitiveState).DrawLine(p2 + verticalNormal, p4 + verticalNormal, outlineThickness, 0.5F, outlineColor);
+            // Draw the filled menu rectangle
+            renderQueue.SubmitPrimitive(localOrder, static (batch, state) => {
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledMenuSize.X, scaledMenuSize.Y), Origin: menuOrigin, Rotation: this.Rotation, Color: color), primitiveState);
         }
     }
     
@@ -599,7 +617,9 @@ public class RectangleDropDownElement : GuiElement {
         
         // Write to the stencil buffer to mark the scroll mask area.
         PrimitiveGuiRenderState primitiveRenderState = new PrimitiveGuiRenderState(depthStencilState: stencilWrite);
-        renderQueue.UsePrimitive(primitiveRenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        renderQueue.SubmitPrimitive(12, static (batch, state) => {
+            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+        }, (Rectangle: maskRect, Origin: maskOrigin, Rotation: this.Rotation, Color: new Color(255, 255, 255, 0)), primitiveRenderState);
         
         DepthStencilStateDescription stencilTest = new DepthStencilStateDescription() {
             StencilTestEnabled = true,
@@ -689,7 +709,9 @@ public class RectangleDropDownElement : GuiElement {
         
         // Draw the mask rectangle into the stencil buffer.
         PrimitiveGuiRenderState primitiveReadMask0RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilMask);
-        renderQueue.UsePrimitive(primitiveReadMask0RenderState).DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+        renderQueue.SubmitPrimitive(8, static (batch, state) => {
+            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+        }, (Rectangle: maskRect, Origin: maskOrigin, Rotation: this.Rotation, Color: new Color(255, 255, 255, 0)), primitiveReadMask0RenderState);
         
         bool itemHovered = false;
         
@@ -725,7 +747,9 @@ public class RectangleDropDownElement : GuiElement {
                 
                 // Draw the item's rectangle into the stencil buffer (setting bit 2).
                 PrimitiveGuiRenderState primitiveReadMask1RenderState = new PrimitiveGuiRenderState(depthStencilState: stencilItem);
-                renderQueue.UsePrimitive(primitiveReadMask1RenderState).DrawFilledRectangle(itemRect, itemOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
+                renderQueue.SubmitPrimitive(9, static (batch, state) => {
+                    batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+                }, (Rectangle: itemRect, Origin: itemOrigin, Rotation: this.Rotation, Color: new Color(255, 255, 255, 0)), primitiveReadMask1RenderState);
                 break;
             }
         }
@@ -762,8 +786,9 @@ public class RectangleDropDownElement : GuiElement {
     /// <summary>
     /// Renders the scrollbar for the dropdown menu if the total number of options exceeds the maximum visible options.
     /// </summary>
-    /// <param name="primitiveBatch">The rendering batch used to draw primitive shapes.</param>
-    private void DrawScrollBar(PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render primitive shapes.</param>
+    /// <param name="renderState">The primitive render state applied to the scrollbar.</param>
+    private void DrawScrollBar(GuiRenderQueue renderQueue, PrimitiveGuiRenderState renderState) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
@@ -781,9 +806,6 @@ public class RectangleDropDownElement : GuiElement {
         if (!this.Interactable) {
             color = this.DropDownData.DisabledSliderBarColor;
         }
-        
-        // Draw track background.
-        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, trackSize.X, trackSize.Y), trackOrigin, this.Rotation, 0.5F, color);
         
         // Draw track outline.
         if (this.DropDownData.MenuOutlineThickness > 0.0F) {
@@ -807,17 +829,31 @@ public class RectangleDropDownElement : GuiElement {
                 outlineColor = this.DropDownData.DisabledMenuOutlineColor;
             }
             
-            // Draw outline segments.
-            primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, outlineThickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, outlineThickness, 0.5F, outlineColor);
+            renderQueue.SubmitPrimitive(5, static (batch, state) => {
+                
+                // Draw track background.
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+                
+                // Draw outline segments.
+                batch.DrawLine(state.BottomP1, state.BottomP2, state.Thickness, 0.5F, state.OutlineColor);
+                batch.DrawLine(state.RightP1, state.RightP2, state.Thickness, 0.5F, state.OutlineColor);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, trackSize.X, trackSize.Y), Origin: trackOrigin, Rotation: this.Rotation, Color: color, BottomP1: p3 - hNormal, BottomP2: p4 - hNormal, RightP1: p2 + vNormal, RightP2: p4 + vNormal, Thickness: outlineThickness, OutlineColor: outlineColor), renderState);
+        }
+        else {
+            
+            // Draw track background.
+            renderQueue.SubmitPrimitive(5, static (batch, state) => {
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, trackSize.X, trackSize.Y), Origin: trackOrigin, Rotation: this.Rotation, Color: color), renderState);
         }
     }
     
     /// <summary>
     /// Draws the slider for the dropdown menu, visually representing the scroll position.
     /// </summary>
-    /// <param name="primitiveBatch">The primitive batch used for rendering graphical elements.</param>
-    private void DrawSlider(PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render primitive shapes.</param>
+    /// <param name="renderState">The primitive render state applied to the slider.</param>
+    private void DrawSlider(GuiRenderQueue renderQueue, PrimitiveGuiRenderState renderState) {
         if (this.Options.Count <= this.MaxVisibleOptions) {
             return;
         }
@@ -849,9 +885,6 @@ public class RectangleDropDownElement : GuiElement {
             sliderColor = this.DropDownData.DisabledSliderColor;
         }
         
-        // Draw slider rectangle.
-        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), sliderOrigin, this.Rotation, 0.5F, sliderColor);
-        
         // Draw slider outline.
         if (this.DropDownData.SliderOutlineThickness > 0.0F) {
             float thickness = this.DropDownData.SliderOutlineThickness * scaleFactor;
@@ -873,19 +906,33 @@ public class RectangleDropDownElement : GuiElement {
                 outlineColor = this.DropDownData.DisabledSliderOutlineColor;
             }
             
-            // Draw outline segments.
-            primitiveBatch.DrawLine(p1 + hNormal, p2 + hNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p3 - hNormal, p4 - hNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p1 - vNormal, p3 - vNormal, thickness, 0.5F, outlineColor);
-            primitiveBatch.DrawLine(p2 + vNormal, p4 + vNormal, thickness, 0.5F, outlineColor);
+            renderQueue.SubmitPrimitive(6, static (batch, state) => {
+                
+                // Draw slider rectangle.
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+                
+                // Draw outline segments.
+                batch.DrawLine(state.TopP1, state.TopP2, state.Thickness, 0.5F, state.OutlineColor);
+                batch.DrawLine(state.BottomP1, state.BottomP2, state.Thickness, 0.5F, state.OutlineColor);
+                batch.DrawLine(state.LeftP1, state.LeftP2, state.Thickness, 0.5F, state.OutlineColor);
+                batch.DrawLine(state.RightP1, state.RightP2, state.Thickness, 0.5F, state.OutlineColor);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), Origin: sliderOrigin, Rotation: this.Rotation, Color: sliderColor, TopP1: p1 + hNormal, TopP2: p2 + hNormal, BottomP1: p3 - hNormal, BottomP2: p4 - hNormal, LeftP1: p1 - vNormal, LeftP2: p3 - vNormal, RightP1: p2 + vNormal, RightP2: p4 + vNormal, Thickness: thickness, OutlineColor: outlineColor), renderState);
+        }
+        else {
+            
+            // Draw slider rectangle.
+            renderQueue.SubmitPrimitive(6, static (batch, state) => {
+                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
+            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, sliderSize.X, sliderSize.Y), Origin: sliderOrigin, Rotation: this.Rotation, Color: sliderColor), renderState);
         }
     }
     
     /// <summary>
     /// Draws the arrow for the dropdown element using the specified primitive batch.
     /// </summary>
-    /// <param name="primitiveBatch">The primitive batch used for rendering the arrow shape.</param>
-    private void DrawArrow(PrimitiveBatch primitiveBatch) {
+    /// <param name="renderQueue">The render queue used to render the arrow shape.</param>
+    /// <param name="renderState">The primitive render state applied to the arrow.</param>
+    private void DrawArrow(GuiRenderQueue renderQueue, PrimitiveGuiRenderState renderState) {
         if (!this.DropDownData.ArrowSize.HasValue) {
             return;
         }
@@ -926,7 +973,9 @@ public class RectangleDropDownElement : GuiElement {
             color = this.DropDownData.DisabledArrowColor;
         }
         
-        primitiveBatch.DrawFilledTriangle(p1, p2, p3, 0.5F, color);
+        renderQueue.SubmitPrimitive(2, static (batch, state) => {
+            batch.DrawFilledTriangle(state.P1, state.P2, state.P3, 0.5F, state.Color);
+        }, (P1: p1, P2: p2, P3: p3, Color: color), renderState);
     }
     
     /// <summary>
@@ -960,7 +1009,25 @@ public class RectangleDropDownElement : GuiElement {
         }
         
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState, depthStencilState);
-        renderQueue.UseSprite(renderState).DrawText(labelData.Font, labelData.Text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * textScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, color, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
+        
+        renderQueue.SubmitSprite(depthStencilState.HasValue ? 13 : 7, static (batch, state) => {
+            batch.DrawText(
+                state.LabelData.Font,
+                state.LabelData.Text,
+                state.TextPos,
+                state.LabelData.Size,
+                state.LabelData.CharacterSpacing,
+                state.LabelData.LineSpacing,
+                state.Self.Scale * state.TextScale * state.Self.Gui.ScaleFactor,
+                0.5F,
+                state.TextOrigin,
+                state.LabelData.PixelSnap,
+                state.Self.Rotation,
+                state.Color,
+                state.LabelData.Style,
+                state.LabelData.FontSystemEffect,
+                state.LabelData.EffectAmount);
+        }, (Self: this, LabelData: labelData, TextPos: textPos, TextScale: textScale, TextOrigin: textOrigin, Color: color), renderState);
     }
     
     protected override void Dispose(bool disposing) { }

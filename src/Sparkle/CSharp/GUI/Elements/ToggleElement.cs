@@ -47,6 +47,7 @@ public class ToggleElement : GuiElement {
     /// </summary>
     /// <param name="toggleData">The toggle rendering data.</param>
     /// <param name="labelData">The label rendering data.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">Anchor position of the element.</param>
     /// <param name="offset">Offset from the anchor.</param>
     /// <param name="boxTextSpacing">Spacing between the toggle box and the label text.</param>
@@ -55,11 +56,11 @@ public class ToggleElement : GuiElement {
     /// <param name="scale">The scale applied to the toggle element.</param>
     /// <param name="origin">Optional custom origin.</param>
     /// <param name="rotation">Optional rotation angle.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function determining click behavior.</param>
     public ToggleElement(
         ToggleData toggleData,
         LabelData labelData,
+        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         float boxTextSpacing,
@@ -68,8 +69,7 @@ public class ToggleElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        int renderOrder = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.ToggleData = toggleData;
         this.LabelData = labelData;
         this.BoxTextSpacing = boxTextSpacing;
@@ -139,7 +139,10 @@ public class ToggleElement : GuiElement {
     /// <param name="blendState">The optional blend state used when rendering. If <c>null</c>, the batch's current blend state is used.</param>
     private void DrawCheckbox(GuiRenderQueue renderQueue, Texture2D texture, Sampler? sampler, Rectangle sourceRect, Color color, SpriteFlip flip, bool pixelSnap, Effect? effect, BlendStateDescription? blendState) {
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, this.Origin, pixelSnap, this.Rotation, color, flip);
+        
+        renderQueue.SubmitSprite(0, static (batch, state) => {
+            batch.DrawTexture(state.Texture, state.Self.Position, 0.5F, state.SourceRect, state.Self.Scale * state.Self.Gui.ScaleFactor, state.Self.Origin, state.PixelSnap, state.Self.Rotation, state.Color, state.Flip);
+        }, (Self: this, Texture: texture, SourceRect: sourceRect, Color: color, Flip: flip, PixelSnap: pixelSnap), renderState);
     }
     
     /// <summary>
@@ -158,7 +161,10 @@ public class ToggleElement : GuiElement {
         Vector2 origin = new Vector2(sourceRect.Width, sourceRect.Height) / 2.0F - (new Vector2(this.ToggleData.CheckboxSourceRect.Width, this.ToggleData.CheckboxSourceRect.Height) / 2.0F - this.Origin);
         
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(sampler, effect, blendState);
-        renderQueue.UseSprite(renderState).DrawTexture(texture, this.Position, 0.5F, sourceRect, this.Scale * this.Gui.ScaleFactor, origin, pixelSnap, this.Rotation, color, flip);
+        
+        renderQueue.SubmitSprite(0, static (batch, state) => {
+            batch.DrawTexture(state.Texture, state.Self.Position, 0.5F, state.SourceRect, state.Self.Scale * state.Self.Gui.ScaleFactor, state.Origin, state.PixelSnap, state.Self.Rotation, state.Color, state.Flip);
+        }, (Self: this, Texture: texture, SourceRect: sourceRect, Origin: origin, Color: color, Flip: flip, PixelSnap: pixelSnap), renderState);
     }
     
     /// <summary>
@@ -181,7 +187,25 @@ public class ToggleElement : GuiElement {
         }
         
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.LabelData.Sampler, this.LabelData.Effect, this.LabelData.BlendState);
-        renderQueue.UseSprite(renderState).DrawText(this.LabelData.Font, this.LabelData.Text, textPos, this.LabelData.Size, this.LabelData.CharacterSpacing, this.LabelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, this.LabelData.PixelSnap, this.Rotation, color, this.LabelData.Style, this.LabelData.FontSystemEffect, this.LabelData.EffectAmount);
+        
+        renderQueue.SubmitSprite(1, static (batch, state) => {
+            batch.DrawText(
+                state.Self.LabelData.Font,
+                state.Self.LabelData.Text,
+                state.TextPos,
+                state.Self.LabelData.Size,
+                state.Self.LabelData.CharacterSpacing,
+                state.Self.LabelData.LineSpacing,
+                state.Self.Scale * state.Self.TextScale * state.Self.Gui.ScaleFactor,
+                0.5F,
+                state.TextOrigin,
+                state.Self.LabelData.PixelSnap,
+                state.Self.Rotation,
+                state.Color,
+                state.Self.LabelData.Style,
+                state.Self.LabelData.FontSystemEffect,
+                state.Self.LabelData.EffectAmount);
+        }, (Self: this, TextPos: textPos, TextOrigin: textOrigin, Color: color), renderState);
     }
     
     /// <summary>
