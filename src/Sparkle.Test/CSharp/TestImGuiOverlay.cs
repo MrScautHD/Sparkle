@@ -17,8 +17,8 @@ public class TestImGuiOverlay : ImGuiOverlay {
     public TestImGuiOverlay(string name, bool enabled = false) : base(name, enabled) {
         this._pickedColor = new Vector4(0.0F, 130.0F, 255.0F, 255.0F) / 255.0F;
     }
-    
-    public override void Draw(ImGuiController controller) {
+
+    protected override void Draw(ImGuiController controller) {
         this.UpdateScale(controller);
         
         //ImGui.SetNextWindowPos(new Vector2(5.0F, 5.0F));

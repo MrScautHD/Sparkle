@@ -48,7 +48,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// Emits the ImGui draw commands for this overlay. Called between <c>ImGui.NewFrame</c> and <c>ImGui.Render</c>.
     /// </summary>
     /// <param name="controller">The controller driving this overlay, for access to IO, style and texture bindings.</param>
-    public abstract void Draw(ImGuiController controller);
+    protected internal abstract void Draw(ImGuiController controller);
     
     /// <summary>
     /// Executes when the window is resized.
