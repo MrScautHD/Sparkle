@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
@@ -190,7 +191,7 @@ public abstract class Gui : Disposable {
         
         // Draw elements.
         foreach (GuiElement element in this._elementsToDraw) {
-            if (element.Enabled) {
+            if (element.Enabled && this.IsElementVisible(element)) {
                 element.Draw(this._renderQueue);
             }
         }
@@ -402,7 +403,55 @@ public abstract class Gui : Disposable {
             yield return scale;
         }
     }
-
+    
+    /// <summary>
+    /// Determines whether the specified GUI element overlaps the current window area.
+    /// </summary>
+    /// <param name="element">The GUI element to test.</param>
+    /// <returns><c>true</c> if the element is at least partially visible; otherwise, <c>false</c>.</returns>
+    private bool IsElementVisible(GuiElement element) {
+        if (element.ScaledSize.X <= 0.0F || element.ScaledSize.Y <= 0.0F) {
+            return false;
+        }
+        
+        Vector2 scaledOrigin = element.Origin * element.Scale * this.ScaleFactor;
+        
+        Vector2 corner1 = new Vector2(element.Position.X, element.Position.Y) - scaledOrigin;
+        Vector2 corner2 = new Vector2(element.Position.X + element.ScaledSize.X, element.Position.Y) - scaledOrigin;
+        Vector2 corner3 = new Vector2(element.Position.X, element.Position.Y + element.ScaledSize.Y) - scaledOrigin;
+        Vector2 corner4 = new Vector2(element.Position.X + element.ScaledSize.X, element.Position.Y + element.ScaledSize.Y) - scaledOrigin;
+        
+        Matrix3x2 transform = Matrix3x2.CreateTranslation(-element.Position) *
+                              Matrix3x2.CreateRotation(float.DegreesToRadians(element.Rotation)) *
+                              Matrix3x2.CreateTranslation(element.Position);
+        
+        corner1 = Vector2.Transform(corner1, transform);
+        corner2 = Vector2.Transform(corner2, transform);
+        corner3 = Vector2.Transform(corner3, transform);
+        corner4 = Vector2.Transform(corner4, transform);
+        
+        RectangleF screenBounds = new RectangleF(0.0F, 0.0F, GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight());
+        
+        if (screenBounds.Contains(corner1) ||
+            screenBounds.Contains(corner2) ||
+            screenBounds.Contains(corner3) ||
+            screenBounds.Contains(corner4)) {
+            return true;
+        }
+        
+        float minX = MathF.Min(MathF.Min(corner1.X, corner2.X), MathF.Min(corner3.X, corner4.X));
+        float minY = MathF.Min(MathF.Min(corner1.Y, corner2.Y), MathF.Min(corner3.Y, corner4.Y));
+        float maxX = MathF.Max(MathF.Max(corner1.X, corner2.X), MathF.Max(corner3.X, corner4.X));
+        float maxY = MathF.Max(MathF.Max(corner1.Y, corner2.Y), MathF.Max(corner3.Y, corner4.Y));
+        
+        RectangleF elementBounds = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        
+        return elementBounds.X < screenBounds.X + screenBounds.Width &&
+               elementBounds.X + elementBounds.Width > screenBounds.X &&
+               elementBounds.Y < screenBounds.Y + screenBounds.Height &&
+               elementBounds.Y + elementBounds.Height > screenBounds.Y;
+    }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             HashSet<GuiElement> disposedElements = new HashSet<GuiElement>();

@@ -19,12 +19,12 @@ public class TextLoadingScreen : LoadingGui {
     /// The font size used to render the loading text.
     /// </summary>
     private float _fontSize;
-
+    
     /// <summary>
     /// The scaling factor applied to the loading text.
     /// </summary>
     private Vector2 _textScale;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="TextLoadingScreen"/> class.
     /// </summary>
@@ -39,7 +39,7 @@ public class TextLoadingScreen : LoadingGui {
         this._fontSize = fontSize;
         this._textScale = textScale ?? Vector2.One;
     }
-
+    
     /// <summary>
     /// Initializes the loading GUI and creates the centered loading label.
     /// </summary>

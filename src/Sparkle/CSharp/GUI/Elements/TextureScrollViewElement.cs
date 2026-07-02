@@ -872,7 +872,10 @@ public class TextureScrollViewElement : GuiElement {
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
-        element.Draw(renderQueue);
+        
+        if (this.IsContentElementVisible(element)) {
+            element.Draw(renderQueue);
+        }
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
@@ -1131,6 +1134,60 @@ public class TextureScrollViewElement : GuiElement {
             this._contentResult.Dispose();
             this._contentResult = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
         }
+    }
+    
+    /// <summary>
+    /// Determines whether a transformed content element overlaps the visible content area of this scroll view.
+    /// </summary>
+    /// <param name="element">The already transformed content element to test.</param>
+    /// <returns><c>true</c> if the content element is at least partially visible inside the scroll view; otherwise, <c>false</c>.</returns>
+    private bool IsContentElementVisible(GuiElement element) {
+        if (element.ScaledSize.X <= 0.0F || element.ScaledSize.Y <= 0.0F) {
+            return false;
+        }
+        
+        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
+        Vector2 visibleContentSize = this.GetVisibleContentSize() * scale;
+        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
+        Vector2 viewTopLeft = this.GetViewTopLeftWorld();
+        Vector2 contentTopLeft = viewTopLeft + contentInsetTopLeft;
+        
+        RectangleF contentBounds = new RectangleF(contentTopLeft.X, contentTopLeft.Y, visibleContentSize.X, visibleContentSize.Y);
+        
+        Vector2 scaledOrigin = element.Origin * element.Scale * this.Gui.ScaleFactor;
+        
+        Vector2 corner1 = new Vector2(element.Position.X, element.Position.Y) - scaledOrigin;
+        Vector2 corner2 = new Vector2(element.Position.X + element.ScaledSize.X, element.Position.Y) - scaledOrigin;
+        Vector2 corner3 = new Vector2(element.Position.X, element.Position.Y + element.ScaledSize.Y) - scaledOrigin;
+        Vector2 corner4 = new Vector2(element.Position.X + element.ScaledSize.X, element.Position.Y + element.ScaledSize.Y) - scaledOrigin;
+        
+        Matrix3x2 transform = Matrix3x2.CreateTranslation(-element.Position) *
+                              Matrix3x2.CreateRotation(float.DegreesToRadians(element.Rotation)) *
+                              Matrix3x2.CreateTranslation(element.Position);
+        
+        corner1 = Vector2.Transform(corner1, transform);
+        corner2 = Vector2.Transform(corner2, transform);
+        corner3 = Vector2.Transform(corner3, transform);
+        corner4 = Vector2.Transform(corner4, transform);
+        
+        if (contentBounds.Contains(corner1) ||
+            contentBounds.Contains(corner2) ||
+            contentBounds.Contains(corner3) ||
+            contentBounds.Contains(corner4)) {
+            return true;
+        }
+        
+        float minX = MathF.Min(MathF.Min(corner1.X, corner2.X), MathF.Min(corner3.X, corner4.X));
+        float minY = MathF.Min(MathF.Min(corner1.Y, corner2.Y), MathF.Min(corner3.Y, corner4.Y));
+        float maxX = MathF.Max(MathF.Max(corner1.X, corner2.X), MathF.Max(corner3.X, corner4.X));
+        float maxY = MathF.Max(MathF.Max(corner1.Y, corner2.Y), MathF.Max(corner3.Y, corner4.Y));
+        
+        RectangleF elementBounds = new RectangleF(minX, minY, maxX - minX, maxY - minY);
+        
+        return elementBounds.X < contentBounds.X + contentBounds.Width &&
+               elementBounds.X + elementBounds.Width > contentBounds.X &&
+               elementBounds.Y < contentBounds.Y + contentBounds.Height &&
+               elementBounds.Y + elementBounds.Height > contentBounds.Y;
     }
     
     protected override void Dispose(bool disposing) {
