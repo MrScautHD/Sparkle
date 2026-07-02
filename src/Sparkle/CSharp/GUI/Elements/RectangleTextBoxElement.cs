@@ -1,5 +1,7 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
@@ -99,7 +101,6 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="textBoxData">Configuration for the rectangle and visual appearance of the textbox.</param>
     /// <param name="labelData">Configuration for the primary text label.</param>
     /// <param name="hintLabelData">Configuration for the hint text label.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">Defines the anchor point for positioning the element.</param>
     /// <param name="offset">Position offset relative to the anchor.</param>
     /// <param name="size">Size of the textbox.</param>
@@ -112,12 +113,12 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="caretWidth">Specifies the width of the caret used for text input. Default is 2.0.</param>
     /// <param name="origin">Optional origin point for rotation and scaling. Default is the center.</param>
     /// <param name="rotation">Optional rotation angle (in radians). Default is 0.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional custom function to execute on click. Returns true if the event is consumed.</param>
     public RectangleTextBoxElement(
         RectangleTextBoxData textBoxData,
         LabelData labelData,
         LabelData hintLabelData,
-        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -130,7 +131,8 @@ public class RectangleTextBoxElement : GuiElement {
         (float Left, float Right)? textEdgeOffset = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, size, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.TextBoxData = textBoxData;
         this.LabelData = labelData;
         this.HintLabelData = hintLabelData;
@@ -474,9 +476,7 @@ public class RectangleTextBoxElement : GuiElement {
             boxColor = this.TextBoxData.DisabledColor;
         }
         
-        renderQueue.SubmitPrimitive(0, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: boxColor), primitiveState);
+        renderQueue.UsePrimitive(primitiveState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, boxColor);
         
         // Draw an empty rectangle.
         if (this.TextBoxData.OutlineThickness > 0.0F) {
@@ -487,9 +487,7 @@ public class RectangleTextBoxElement : GuiElement {
             }
             
             float outlineThickness = this.TextBoxData.OutlineThickness * this.Gui.ScaleFactor;
-            renderQueue.SubmitPrimitive(1, static (batch, state) => {
-                batch.DrawEmptyRectangle(state.Rectangle, state.Thickness, state.Origin, state.Rotation, 0.5F, state.Color);
-            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Thickness: outlineThickness, Origin: this.Origin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: outlineColor), primitiveState);
+            renderQueue.UsePrimitive(primitiveState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, this.Origin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, outlineColor);
         }
         
         // Draw text.
@@ -505,11 +503,11 @@ public class RectangleTextBoxElement : GuiElement {
         // Draw caret.
         if (this._isCaretVisible && this._highlightRange.Start == this._highlightRange.End) {
             PrimitiveGuiRenderState caretRenderState = new PrimitiveGuiRenderState(this.LabelData.Effect, this.LabelData.BlendState);
-            this.DrawCaret(renderQueue, this.LabelData, caretRenderState);
+            this.DrawCaret(renderQueue.UsePrimitive(caretRenderState), this.LabelData);
         }
         
         // Draw highlight.
-        this.DrawHighlight(renderQueue, this.LabelData);
+        this.DrawHighlight(renderQueue.UsePrimitive(PrimitiveGuiRenderState.Default), this.LabelData);
     }
     
     /// <summary>
@@ -537,34 +535,15 @@ public class RectangleTextBoxElement : GuiElement {
         }
         
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(labelData.Sampler, labelData.Effect, labelData.BlendState);
-        
-        renderQueue.SubmitSprite(2, static (batch, state) => {
-            batch.DrawText(
-                state.LabelData.Font,
-                state.Text,
-                state.TextPos,
-                state.LabelData.Size,
-                state.LabelData.CharacterSpacing,
-                state.LabelData.LineSpacing,
-                state.Self.Scale * state.Self.TextScale * state.Self.Gui.ScaleFactor,
-                0.5F,
-                state.TextOrigin,
-                state.LabelData.PixelSnap,
-                state.Self.Rotation,
-                state.TextColor,
-                state.LabelData.Style,
-                state.LabelData.FontSystemEffect,
-                state.LabelData.EffectAmount);
-        }, (Self: this, LabelData: labelData, Text: text, TextPos: textPos, TextOrigin: textOrigin, TextColor: textColor), renderState);
+        renderQueue.UseSprite(renderState).DrawText(labelData.Font, text, textPos, labelData.Size, labelData.CharacterSpacing, labelData.LineSpacing, this.Scale * this.TextScale * this.Gui.ScaleFactor, 0.5F, textOrigin, labelData.PixelSnap, this.Rotation, textColor, labelData.Style, labelData.FontSystemEffect, labelData.EffectAmount);
     }
     
     /// <summary>
     /// Draws the caret for the textbox based on the current caret index, scroll offset, and alignment.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the caret.</param>
+    /// <param name="primitiveBatch">The primitive rendering batch used to draw the caret.</param>
     /// <param name="labelData">The label data containing font information, text, and visual configurations.</param>
-    /// <param name="renderState">The primitive render state applied to the caret.</param>
-    private void DrawCaret(GuiRenderQueue renderQueue, LabelData labelData, PrimitiveGuiRenderState renderState) {
+    private void DrawCaret(PrimitiveBatch primitiveBatch, LabelData labelData) {
         Vector2 caretPos = this.Position;
         
         // Calculate horizontal offset from visible text start to caret.
@@ -591,17 +570,15 @@ public class RectangleTextBoxElement : GuiElement {
         
         // Draw caret rectangle.
         RectangleF rectangle = new RectangleF(caretPos.X, caretPos.Y, this.CaretWidth * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.TextScale.Y * this.Scale.Y * this.Gui.ScaleFactor);
-        renderQueue.SubmitPrimitive(3, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: rectangle, Origin: caretOrigin * this.Scale.X * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: labelData.Color), renderState);
+        primitiveBatch.DrawFilledRectangle(rectangle, caretOrigin * this.Scale.X * this.Gui.ScaleFactor, this.Rotation, 0.5F, labelData.Color);
     }
     
     /// <summary>
     /// Draws the highlight for text selection within the textbox.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the highlight.</param>
+    /// <param name="primitiveBatch">The batch used for rendering primitive shapes.</param>
     /// <param name="labelData">Data defining the attributes and configuration of the text label.</param>
-    private void DrawHighlight(GuiRenderQueue renderQueue, LabelData labelData) {
+    private void DrawHighlight(PrimitiveBatch primitiveBatch, LabelData labelData) {
         if (this._highlightRange.Start == this._highlightRange.End) {
             return;
         }
@@ -651,9 +628,7 @@ public class RectangleTextBoxElement : GuiElement {
         
         // Draw the highlight rectangle.
         RectangleF highlightRectangle = new(highlightPos.X, highlightPos.Y, highlightWidth * this.Scale.X * this.Gui.ScaleFactor, labelData.Size * this.TextScale.Y * this.Scale.Y * this.Gui.ScaleFactor);
-        renderQueue.SubmitPrimitive(4, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: highlightRectangle, Origin: highlightOrigin * this.Scale * this.Gui.ScaleFactor, Rotation: this.Rotation, Color: this.TextBoxData.HighlightColor));
+        primitiveBatch.DrawFilledRectangle(highlightRectangle, highlightOrigin * this.Scale * this.Gui.ScaleFactor, this.Rotation, 0.5F, this.TextBoxData.HighlightColor);
     }
     
     /// <summary>

@@ -102,7 +102,6 @@ public class RectangleScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="data">The visual data object containing colors, outline styles, and slider settings.</param>
     /// <param name="content">Optional initial content mapped by unique names.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">Specifies the anchor position that determines the alignment of the scroll view within its parent element.</param>
     /// <param name="offset">Defines the offset position of the scroll view relative to its anchor.</param>
     /// <param name="size">The size of the scroll view in unscaled GUI units.</param>
@@ -111,11 +110,11 @@ public class RectangleScrollViewElement : GuiElement {
     /// <param name="scale">Optional scaling factor applied to the scroll view.</param>
     /// <param name="origin">Optional origin point for transformations like rotation and scaling.</param>
     /// <param name="rotation">The rotation angle in degrees applied to the scroll view.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional callback invoked when the element is clicked.</param>
     public RectangleScrollViewElement(
         RectangleScrollViewData data,
         IEnumerable<KeyValuePair<string, GuiElement>>? content,
-        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -124,7 +123,8 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.Size = size;
         this.ScrollSensitivity = scrollSensitivity;
@@ -317,13 +317,13 @@ public class RectangleScrollViewElement : GuiElement {
         PrimitiveGuiRenderState primitiveState = new PrimitiveGuiRenderState(this.Data.Effect, this.Data.BlendState);
         
         // Draw menu.
-        this.DrawMenu(renderQueue, primitiveState, menuSize, this.Origin * this.Scale * this.Gui.ScaleFactor, menuColor, menuOutlineColor);
+        this.DrawMenu(renderQueue.UsePrimitive(primitiveState), menuSize, this.Origin * this.Scale * this.Gui.ScaleFactor, menuColor, menuOutlineColor);
         
         // Draw slider bar.
-        this.DrawSliderBar(renderQueue);
+        this.DrawSliderBar(renderQueue.UsePrimitive());
         
         // Draw slider.
-        this.DrawSlider(renderQueue);
+        this.DrawSlider(renderQueue.UsePrimitive());
         
         // Draw content elements via direct GPU call.
         renderQueue.SubmitDirect(static (context, framebuffer, self) => {
@@ -500,17 +500,14 @@ public class RectangleScrollViewElement : GuiElement {
     /// <summary>
     /// Draws the menu rectangle and its outline in a single pass.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the menu.</param>
-    /// <param name="renderState">The primitive render state applied to the menu.</param>
+    /// <param name="primitiveBatch">The primitive batch used to render the menu.</param>
     /// <param name="size">The unscaled menu size.</param>
     /// <param name="origin">The transformed origin used for drawing.</param>
     /// <param name="color">The fill color of the menu.</param>
     /// <param name="outlineColor">The outline color of the menu.</param>
-    private void DrawMenu(GuiRenderQueue renderQueue, PrimitiveGuiRenderState renderState, Vector2 size, Vector2 origin, Color color, Color outlineColor) {
+    private void DrawMenu(PrimitiveBatch primitiveBatch, Vector2 size, Vector2 origin, Color color, Color outlineColor) {
         Vector2 scaledSize = size * this.Scale * this.Gui.ScaleFactor;
-        renderQueue.SubmitPrimitive(0, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledSize.X, scaledSize.Y), Origin: origin, Rotation: this.Rotation, Color: color), renderState);
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledSize.X, scaledSize.Y), origin, this.Rotation, 0.5F, color);
         
         if (this.Data.MenuOutlineThickness <= 0.0F) {
             return;
@@ -526,25 +523,17 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 horizontalNormal = Vector2.Normalize(new Vector2(-(p2 - p1).Y, (p2 - p1).X)) * (scaledThickness / 2.0F);
         Vector2 verticalNormal = Vector2.Normalize(new Vector2(-(p3 - p1).Y, (p3 - p1).X)) * (scaledThickness / 2.0F);
         
-        renderQueue.SubmitPrimitive(1, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: p1 + horizontalNormal, P2: p2 + horizontalNormal, Thickness: scaledThickness, Color: outlineColor), renderState);
-        renderQueue.SubmitPrimitive(1, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: p3 - horizontalNormal, P2: p4 - horizontalNormal, Thickness: scaledThickness, Color: outlineColor), renderState);
-        renderQueue.SubmitPrimitive(1, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: p1 - verticalNormal, P2: p3 - verticalNormal, Thickness: scaledThickness, Color: outlineColor), renderState);
-        renderQueue.SubmitPrimitive(1, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: p2 + verticalNormal, P2: p4 + verticalNormal, Thickness: scaledThickness, Color: outlineColor), renderState);
+        primitiveBatch.DrawLine(p1 + horizontalNormal, p2 + horizontalNormal, scaledThickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p3 - horizontalNormal, p4 - horizontalNormal, scaledThickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p1 - verticalNormal, p3 - verticalNormal, scaledThickness, 0.5F, outlineColor);
+        primitiveBatch.DrawLine(p2 + verticalNormal, p4 + verticalNormal, scaledThickness, 0.5F, outlineColor);
     }
     
     /// <summary>
     /// Draws the slider bar track on the right side of the scroll view.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the slider bar.</param>
-    private void DrawSliderBar(GuiRenderQueue renderQueue) {
+    /// <param name="primitiveBatch">The primitive batch used to render the slider bar.</param>
+    private void DrawSliderBar(PrimitiveBatch primitiveBatch) {
         if (!this.HasScrollableContent()) {
             return;
         }
@@ -559,9 +548,7 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 barOrigin = (this.Origin - new Vector2(this.Size.X - this.Data.SliderBarWidth, 0.0F)) * this.Scale * this.Gui.ScaleFactor;
         
         Vector2 scaledBarSize = barSize * this.Scale * this.Gui.ScaleFactor;
-        renderQueue.SubmitPrimitive(2, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledBarSize.X, scaledBarSize.Y), Origin: barOrigin, Rotation: this.Rotation, Color: barColor), PrimitiveGuiRenderState.Default);
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledBarSize.X, scaledBarSize.Y), barOrigin, this.Rotation, 0.5F, barColor);
         
         Color barOutlineColor = this.IsHovered ? this.Data.SliderBarOutlineHoverColor : this.Data.SliderBarOutlineColor;
         
@@ -584,22 +571,16 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 barHorizontalNormal = Vector2.Normalize(new Vector2(-(bp2 - bp1).Y, (bp2 - bp1).X)) * (scaledBarOutlineThickness / 2.0F);
         Vector2 barVerticalNormal = Vector2.Normalize(new Vector2(-(bp3 - bp1).Y, (bp3 - bp1).X)) * (scaledBarOutlineThickness / 2.0F);
         
-        renderQueue.SubmitPrimitive(3, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: bp1 + barHorizontalNormal, P2: bp2 + barHorizontalNormal, Thickness: scaledBarOutlineThickness, Color: barOutlineColor), PrimitiveGuiRenderState.Default);
-        renderQueue.SubmitPrimitive(3, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: bp3 - barHorizontalNormal, P2: bp4 - barHorizontalNormal, Thickness: scaledBarOutlineThickness, Color: barOutlineColor), PrimitiveGuiRenderState.Default);
-        renderQueue.SubmitPrimitive(3, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: bp2 + barVerticalNormal, P2: bp4 + barVerticalNormal, Thickness: scaledBarOutlineThickness, Color: barOutlineColor), PrimitiveGuiRenderState.Default);
+        primitiveBatch.DrawLine(bp1 + barHorizontalNormal, bp2 + barHorizontalNormal, scaledBarOutlineThickness, 0.5F, barOutlineColor);
+        primitiveBatch.DrawLine(bp3 - barHorizontalNormal, bp4 - barHorizontalNormal, scaledBarOutlineThickness, 0.5F, barOutlineColor);
+        primitiveBatch.DrawLine(bp2 + barVerticalNormal, bp4 + barVerticalNormal, scaledBarOutlineThickness, 0.5F, barOutlineColor);
     }
     
     /// <summary>
     /// Draws the slider handle inside the slider bar.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the slider.</param>
-    private void DrawSlider(GuiRenderQueue renderQueue) {
+    /// <param name="primitiveBatch">The primitive batch used to render the slider.</param>
+    private void DrawSlider(PrimitiveBatch primitiveBatch) {
         if (!this.HasScrollableContent()) {
             return;
         }
@@ -623,9 +604,7 @@ public class RectangleScrollViewElement : GuiElement {
         }
         
         Vector2 scaledSliderSize = sliderSize * this.Scale * this.Gui.ScaleFactor;
-        renderQueue.SubmitPrimitive(4, static (batch, state) => {
-            batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-        }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledSliderSize.X, scaledSliderSize.Y), Origin: sliderOrigin, Rotation: this.Rotation, Color: sliderColor), PrimitiveGuiRenderState.Default);
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledSliderSize.X, scaledSliderSize.Y), sliderOrigin, this.Rotation, 0.5F, sliderColor);
         
         Color sliderOutlineColor = this.IsHovered ? this.Data.SliderOutlineHoverColor : this.Data.SliderOutlineColor;
         
@@ -648,18 +627,10 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 sliderHorizontalNormal = Vector2.Normalize(new Vector2(-(sp2 - sp1).Y, (sp2 - sp1).X)) * (scaledSliderOutlineThickness / 2.0F);
         Vector2 sliderVerticalNormal = Vector2.Normalize(new Vector2(-(sp3 - sp1).Y, (sp3 - sp1).X)) * (scaledSliderOutlineThickness / 2.0F);
         
-        renderQueue.SubmitPrimitive(5, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: sp1 + sliderHorizontalNormal, P2: sp2 + sliderHorizontalNormal, Thickness: scaledSliderOutlineThickness, Color: sliderOutlineColor), PrimitiveGuiRenderState.Default);
-        renderQueue.SubmitPrimitive(5, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: sp3 - sliderHorizontalNormal, P2: sp4 - sliderHorizontalNormal, Thickness: scaledSliderOutlineThickness, Color: sliderOutlineColor), PrimitiveGuiRenderState.Default);
-        renderQueue.SubmitPrimitive(5, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: sp1 - sliderVerticalNormal, P2: sp3 - sliderVerticalNormal, Thickness: scaledSliderOutlineThickness, Color: sliderOutlineColor), PrimitiveGuiRenderState.Default);
-        renderQueue.SubmitPrimitive(5, static (batch, state) => {
-            batch.DrawLine(state.P1, state.P2, state.Thickness, 0.5F, state.Color);
-        }, (P1: sp2 + sliderVerticalNormal, P2: sp4 + sliderVerticalNormal, Thickness: scaledSliderOutlineThickness, Color: sliderOutlineColor), PrimitiveGuiRenderState.Default);
+        primitiveBatch.DrawLine(sp1 + sliderHorizontalNormal, sp2 + sliderHorizontalNormal, scaledSliderOutlineThickness, 0.5F, sliderOutlineColor);
+        primitiveBatch.DrawLine(sp3 - sliderHorizontalNormal, sp4 - sliderHorizontalNormal, scaledSliderOutlineThickness, 0.5F, sliderOutlineColor);
+        primitiveBatch.DrawLine(sp1 - sliderVerticalNormal, sp3 - sliderVerticalNormal, scaledSliderOutlineThickness, 0.5F, sliderOutlineColor);
+        primitiveBatch.DrawLine(sp2 + sliderVerticalNormal, sp4 + sliderVerticalNormal, scaledSliderOutlineThickness, 0.5F, sliderOutlineColor);
     }
     
     /// <summary>
@@ -682,6 +653,9 @@ public class RectangleScrollViewElement : GuiElement {
         context.CommandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
         
+        // Draw content elements.
+        this._renderQueue.Begin(context, framebuffer);
+        
         // Add content to draw.
         this._contentToDraw.Clear();
         this._contentToDraw.AddRange(this._content.Values);
@@ -695,10 +669,12 @@ public class RectangleScrollViewElement : GuiElement {
         // Draw content.
         foreach (GuiElement element in this._contentToDraw) {
             if (element.Enabled) {
-                this.DrawContentElement(context, this._contentRenderTarget.Framebuffer, element, this._renderQueue);
+                this.DrawContentElement(element, this._renderQueue);
             }
         }
-
+        
+        this._renderQueue.End();
+        
         context.CommandList.CopyTexture(this._contentRenderTarget.ColorTexture, this._contentResult.DeviceTexture);
         context.CommandList.SetFramebuffer(framebuffer);
         
@@ -778,11 +754,9 @@ public class RectangleScrollViewElement : GuiElement {
     /// <summary>
     /// Submits the batched draw commands for a single content element, temporarily reanchoring and offsetting it to account for the current scroll position and content insets, then restores its original transform.
     /// </summary>
-    /// <param name="context">The graphics context providing the command list and batches.</param>
-    /// <param name="framebuffer">The framebuffer the content element is drawn into.</param>
     /// <param name="element">The content element whose draw commands are submitted.</param>
     /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
-    private void DrawContentElement(GraphicsContext context, Framebuffer framebuffer, GuiElement element, GuiRenderQueue renderQueue) {
+    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
@@ -800,11 +774,7 @@ public class RectangleScrollViewElement : GuiElement {
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
-
-        renderQueue.Begin(context, framebuffer);
-        renderQueue.SetCurrentElementRenderOrder(element.RenderOrder);
         element.Draw(renderQueue);
-        renderQueue.End();
         
         element.AnchorPoint = originalAnchor;
         element.Offset = originalOffset;
@@ -1073,8 +1043,6 @@ public class RectangleScrollViewElement : GuiElement {
             this._contentResult = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
         }
     }
-    
-    
     
     protected override void Dispose(bool disposing) {
         if (disposing) {

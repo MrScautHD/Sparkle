@@ -71,7 +71,7 @@ public class LogoLoadingGui : LoadingGui {
             Color = new Color(255, 255, 255, 0),
             HoverColor = new Color(255, 255, 255, 0)
         };
-        this.AddElement("logo", new ImageElement(imageData, 0, Anchor.Center, Vector2.Zero, scale: this._logoScale));
+        this.AddElement("logo", new ImageElement(imageData, Anchor.Center, Vector2.Zero, scale: this._logoScale));
     }
     
     /// <summary>

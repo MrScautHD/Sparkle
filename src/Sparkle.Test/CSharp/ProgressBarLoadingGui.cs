@@ -17,7 +17,7 @@ public class ProgressBarLoadingGui : LoadingGui {
         base.Init();
         
         LabelData labelData = new LabelData(ContentRegistry.Fontoe, "Loading", 18);
-        this.AddElement("loading_label", new LabelElement(labelData, 0, Anchor.Center, Vector2.Zero, new Vector2(3, 3)));
+        this.AddElement("loading_label", new LabelElement(labelData, Anchor.Center, Vector2.Zero, new Vector2(3, 3)));
         
         TextureSlideBarData textureSlideBarData = new TextureSlideBarData(
             ContentRegistry.SlideBar,
@@ -30,7 +30,7 @@ public class ProgressBarLoadingGui : LoadingGui {
             disabledBarColor: Color.White,
             disabledFilledBarColor: Color.White);
         
-        TextureSlideBarElement slideBarElement = new TextureSlideBarElement(textureSlideBarData, 0, Anchor.Center, new Vector2(0, 80), 0, 1, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(3, 3)) {
+        TextureSlideBarElement slideBarElement = new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 80), 0, 1, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(3, 3)) {
             Interactable = false
         };
         this.AddElement("progress_bar", slideBarElement);

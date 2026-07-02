@@ -1,10 +1,13 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
+using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -57,7 +60,6 @@ public class RectangleSlideBarElement : GuiElement {
     /// Initializes a new instance of the <see cref="RectangleSlideBarElement"/> class.
     /// </summary>
     /// <param name="data">The visual and styling data used to render the slide bar.</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">The anchor point used to position the element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
     /// <param name="size">The size of the slide bar.</param>
@@ -68,10 +70,10 @@ public class RectangleSlideBarElement : GuiElement {
     /// <param name="scale">Optional scale applied to the element.</param>
     /// <param name="origin">Optional origin point used for rotation and alignment.</param>
     /// <param name="rotation">The rotation of the element in degrees.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function invoked when the element is clicked.</param>
     public RectangleSlideBarElement(
         RectangleSlideBarData data,
-        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -82,7 +84,8 @@ public class RectangleSlideBarElement : GuiElement {
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, size, scale, origin, rotation, clickFunc) {
+        int renderOrder = 0,
+        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, size, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
         this.MinValue = minValue;
         this.MaxValue = maxValue;
@@ -154,6 +157,8 @@ public class RectangleSlideBarElement : GuiElement {
             barColor = this.Data.DisabledBarColor;
         }
         
+        renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), scaledOrigin, this.Rotation, 0.5F, barColor);
+        
         // Draw bar outline.
         if (this.Data.BarOutlineThickness > 0.0F) {
             Color outlineColor = this.IsHovered ? this.Data.BarOutlineHoverColor : this.Data.BarOutlineColor;
@@ -163,20 +168,7 @@ public class RectangleSlideBarElement : GuiElement {
             }
             
             float outlineThickness = this.Data.BarOutlineThickness * this.Gui.ScaleFactor;
-            
-            renderQueue.SubmitPrimitive(0, static (batch, state) => {
-                
-                // Draw bar.
-                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-                
-                // Draw bar outline.
-                batch.DrawEmptyRectangle(state.Rectangle, state.Thickness, state.Origin, state.Rotation, 0.5F, state.OutlineColor);
-            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Thickness: outlineThickness, Origin: scaledOrigin, Rotation: this.Rotation, Color: barColor, OutlineColor: outlineColor), renderState);
-        }
-        else {
-            renderQueue.SubmitPrimitive(0, static (batch, state) => {
-                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), Origin: scaledOrigin, Rotation: this.Rotation, Color: barColor), renderState);
+            renderQueue.UsePrimitive(renderState).DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, this.ScaledSize.X, this.ScaledSize.Y), outlineThickness, scaledOrigin, this.Rotation, 0.5F, outlineColor);
         }
         
         // Calculate progress.
@@ -215,58 +207,40 @@ public class RectangleSlideBarElement : GuiElement {
                     outlineColor = this.Data.DisabledFilledBarOutlineColor;
                 }
                 
+                // Draw the top line.
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin, this.Rotation, 0.5F, outlineColor);
+                
+                // Draw the bottom line.
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), scaledOrigin - new Vector2(0, this.ScaledSize.Y - thickness), this.Rotation, 0.5F, outlineColor);
+                
+                // Draw the left line.
                 float leftWidth = Math.Min(scaledFillWidth, thickness);
+                renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, leftWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(0, thickness), this.Rotation, 0.5F, outlineColor);
                 
                 // Right Line
-                float rightWidth = 0.0F;
                 if (scaledFillWidth > totalWidth - thickness) {
-                    rightWidth = scaledFillWidth - (totalWidth - thickness);
+                    float rightWidth = scaledFillWidth - (totalWidth - thickness);
+                    renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, rightWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(totalWidth - thickness, thickness), this.Rotation, 0.5F, outlineColor);
                 }
-                
-                // Draw the inner of the progress bar.
-                float leftOffset = thickness;
-                float rightOffset = Math.Max(0, scaledFillWidth - (totalWidth - thickness));
-                float innerFillWidth = Math.Max(0, scaledFillWidth - leftOffset - rightOffset);
-                
-                renderQueue.SubmitPrimitive(1, static (batch, state) => {
-                    
-                    // Draw the top line.
-                    batch.DrawFilledRectangle(state.TopRectangle, state.TopOrigin, state.Rotation, 0.5F, state.OutlineColor);
-                    
-                    // Draw the bottom line.
-                    batch.DrawFilledRectangle(state.BottomRectangle, state.BottomOrigin, state.Rotation, 0.5F, state.OutlineColor);
-                    
-                    // Draw the left line.
-                    batch.DrawFilledRectangle(state.LeftRectangle, state.LeftOrigin, state.Rotation, 0.5F, state.OutlineColor);
-                    
-                    // Right Line
-                    if (state.RightRectangle.Width > 0.0F) {
-                        batch.DrawFilledRectangle(state.RightRectangle, state.RightOrigin, state.Rotation, 0.5F, state.OutlineColor);
-                    }
-                    
-                    // Draw the inner of the progress bar.
-                    batch.DrawFilledRectangle(state.InnerRectangle, state.InnerOrigin, state.Rotation, 0.5F, state.Color);
-                }, (TopRectangle: new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), TopOrigin: scaledOrigin, BottomRectangle: new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, thickness), BottomOrigin: scaledOrigin - new Vector2(0, this.ScaledSize.Y - thickness), LeftRectangle: new RectangleF(this.Position.X, this.Position.Y, leftWidth, this.ScaledSize.Y - thickness * 2.0F), LeftOrigin: scaledOrigin - new Vector2(0, thickness), RightRectangle: new RectangleF(this.Position.X, this.Position.Y, rightWidth, this.ScaledSize.Y - thickness * 2.0F), RightOrigin: scaledOrigin - new Vector2(totalWidth - thickness, thickness), InnerRectangle: new RectangleF(this.Position.X, this.Position.Y, innerFillWidth, this.ScaledSize.Y - thickness * 2.0F), InnerOrigin: scaledOrigin - new Vector2(leftOffset, thickness), Rotation: this.Rotation, Color: progressBarColor, OutlineColor: outlineColor), renderState);
             }
-            else {
-                
-                // Draw the inner of the progress bar.
-                renderQueue.SubmitPrimitive(1, static (batch, state) => {
-                    batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-                }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, scaledFillWidth, this.ScaledSize.Y), Origin: scaledOrigin, Rotation: this.Rotation, Color: progressBarColor), renderState);
-            }
+            
+            // Draw the inner of the progress bar.
+            float leftOffset = thickness;
+            float rightOffset = Math.Max(0, scaledFillWidth - (totalWidth - thickness));
+            float innerFillWidth = Math.Max(0, scaledFillWidth - leftOffset - rightOffset);
+            
+            renderQueue.UsePrimitive(renderState).DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, innerFillWidth, this.ScaledSize.Y - thickness * 2.0F), scaledOrigin - new Vector2(leftOffset, thickness), this.Rotation, 0.5F, progressBarColor);
         }
         
         // Draw slider.
-        this.DrawSlider(renderQueue, renderState);
+        this.DrawSlider(renderQueue.UsePrimitive(renderState));
     }
     
     /// <summary>
     /// Draws the slider component of the rectangle slide bar within the specified primitive batch.
     /// </summary>
-    /// <param name="renderQueue">The render queue used to render the primitive shapes.</param>
-    /// <param name="renderState">The primitive render state applied to the slider.</param>
-    private void DrawSlider(GuiRenderQueue renderQueue, PrimitiveGuiRenderState renderState) {
+    /// <param name="primitiveBatch">The batch renderer used to draw primitive shapes like rectangles for the slider.</param>
+    private void DrawSlider(PrimitiveBatch primitiveBatch) {
         if (!this.Data.SliderSize.HasValue) {
             return;
         }
@@ -290,6 +264,9 @@ public class RectangleSlideBarElement : GuiElement {
         // Calculate the slider origin to align it correctly with the bar.
         Vector2 origin = (this.Origin * this.Scale * this.Gui.ScaleFactor) - new Vector2(xPos, (this.ScaledSize.Y - sliderHeight * this.Scale.Y * this.Gui.ScaleFactor) / 2.0F);
         
+        // Draw slider.
+        primitiveBatch.DrawFilledRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderWidth * this.Scale.X * this.Gui.ScaleFactor, sliderHeight * this.Scale.Y * this.Gui.ScaleFactor), origin, this.Rotation, 0.5F, color);
+        
         // Draw slider outline.
         if (this.Data.SliderOutlineThickness > 0.0F) {
             Color outlineColor = this.IsHovered ? this.Data.SliderOutlineHoverColor : this.Data.SliderOutlineColor;
@@ -299,24 +276,9 @@ public class RectangleSlideBarElement : GuiElement {
             }
             
             float outlineThickness = this.Data.SliderOutlineThickness * this.Gui.ScaleFactor;
-            
-            renderQueue.SubmitPrimitive(2, static (batch, state) => {
-                
-                // Draw slider.
-                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-                
-                // Draw slider outline.
-                batch.DrawEmptyRectangle(state.Rectangle, state.Thickness, state.Origin, state.Rotation, 0.5F, state.OutlineColor);
-            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, sliderWidth * this.Scale.X * this.Gui.ScaleFactor, sliderHeight * this.Scale.Y * this.Gui.ScaleFactor), Thickness: outlineThickness, Origin: origin, Rotation: this.Rotation, Color: color, OutlineColor: outlineColor), renderState);
-        }
-        else {
-            
-            // Draw slider.
-            renderQueue.SubmitPrimitive(2, static (batch, state) => {
-                batch.DrawFilledRectangle(state.Rectangle, state.Origin, state.Rotation, 0.5F, state.Color);
-            }, (Rectangle: new RectangleF(this.Position.X, this.Position.Y, sliderWidth * this.Scale.X * this.Gui.ScaleFactor, sliderHeight * this.Scale.Y * this.Gui.ScaleFactor), Origin: origin, Rotation: this.Rotation, Color: color), renderState);
+            primitiveBatch.DrawEmptyRectangle(new RectangleF(this.Position.X, this.Position.Y, sliderWidth * this.Scale.X * this.Gui.ScaleFactor, sliderHeight * this.Scale.Y * this.Gui.ScaleFactor), outlineThickness, origin, this.Rotation, 0.5F, outlineColor);
         }
     }
-    
+        
     protected override void Dispose(bool disposing) { }
 }

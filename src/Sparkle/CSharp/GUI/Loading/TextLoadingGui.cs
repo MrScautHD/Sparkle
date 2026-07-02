@@ -47,7 +47,7 @@ public class TextLoadingScreen : LoadingGui {
         base.Init();
         
         LabelData labelData = new LabelData(this._font, "Loading", this._fontSize);
-        this.AddElement("loading_label", new LabelElement(labelData, 0, Anchor.Center, Vector2.Zero, this._textScale));
+        this.AddElement("loading_label", new LabelElement(labelData, Anchor.Center, Vector2.Zero, this._textScale));
     }
     
     /// <summary>

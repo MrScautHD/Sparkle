@@ -30,7 +30,7 @@ public class TestGui : Gui {
         ToggleData toggleData = new ToggleData(ContentRegistry.ToggleBackground, ContentRegistry.ToggleCheckmark, checkboxHoverColor: Color.LightGray, checkmarkHoverColor: Color.LightGray);
         LabelData toggleLabelData = new LabelData(ContentRegistry.Fontoe, "Toggle ME!", 18);
         
-        this.AddElement("Toggle", new ToggleElement(toggleData, toggleLabelData, 0, Anchor.Center, new Vector2(0, 120), 5, clickFunc: (element) => {
+        this.AddElement("Toggle", new ToggleElement(toggleData, toggleLabelData, Anchor.Center, new Vector2(0, 120), 5, clickFunc: (element) => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -39,7 +39,7 @@ public class TestGui : Gui {
         TextureButtonData textureButtonData = new TextureButtonData(ContentRegistry.UiBannerTexture, hoverColor: Color.LightGray, resizeMode: ResizeMode.None, borderInsets: new BorderInsets(12), flip: SpriteFlip.None);
         LabelData textureButtonLabelData = new LabelData(ContentRegistry.Fontoe, "TTT", 18, hoverColor: Color.Green);
         
-        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, 0, Anchor.Center, new Vector2(0, 60), textOffset: new Vector2(0, 1), clickFunc: (element) => {
+        this.AddElement("Texture-Button", new TextureButtonElement(textureButtonData, textureButtonLabelData, Anchor.Center, new Vector2(0, 60), textOffset: new Vector2(0, 1), clickFunc: (element) => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -48,7 +48,7 @@ public class TestGui : Gui {
         RectangleButtonData rectangleButtonData = new RectangleButtonData(Color.Gray, Color.LightGray, null, 4, Color.DarkGray, Color.Gray);
         LabelData rectangleButtonLabelData = new LabelData(ContentRegistry.Fontoe, "Hello!", 18, hoverColor: Color.Green);
         
-        this.AddElement("Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, 0, Anchor.Center, Vector2.Zero, new Vector2(200, 30), clickFunc: (element) => {
+        this.AddElement("Rectangle-Button", new RectangleButtonElement(rectangleButtonData, rectangleButtonLabelData, Anchor.Center, Vector2.Zero, new Vector2(200, 30), clickFunc: (element) => {
             Logger.Error("CLICKED!");
             return true;
         }));
@@ -58,7 +58,7 @@ public class TestGui : Gui {
         LabelData textureTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData textureHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.Gray);
         
-        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, 0, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Center, new Vector2(0, 1), Vector2.One, 2, (12, 12), new Vector2(260, 30), rotation: 0, clickFunc: (element) => {
+        this.AddElement("Texture-Text-Box", new TextureTextBoxElement(textureTextBoxData, textureTextBoxLabelData, textureHintTextBoxLabelData, Anchor.Center, new Vector2(0, -60), 40, TextAlignment.Center, new Vector2(0, 1), Vector2.One, 2, (12, 12), new Vector2(260, 30), rotation: 0, clickFunc: (element) => {
             Logger.Error("BOX1!");
             return true;
         }));
@@ -68,7 +68,7 @@ public class TestGui : Gui {
         LabelData rectangleTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "", 18, hoverColor: Color.Green);
         LabelData rectangleHintTextBoxLabelData = new LabelData(ContentRegistry.Fontoe, "Write...", 18, color: Color.LightGray, hoverColor: Color.Gray);
         
-        this.AddElement("Rectangle-Text-Box", new RectangleTextBoxElement(rectangleTextBoxData, rectangleTextBoxLabelData, rectangleHintTextBoxLabelData, 0, Anchor.Center, new Vector2(0, -110), new Vector2(200, 35), 40, new Vector2(1, 1), TextAlignment.Left, new Vector2(0, 0), Vector2.One, 2, (12, 12), rotation: 0, clickFunc: (element) => {
+        this.AddElement("Rectangle-Text-Box", new RectangleTextBoxElement(rectangleTextBoxData, rectangleTextBoxLabelData, rectangleHintTextBoxLabelData, Anchor.Center, new Vector2(0, -110), new Vector2(200, 35), 40, new Vector2(1, 1), TextAlignment.Left, new Vector2(0, 0), Vector2.One, 2, (12, 12), rotation: 0, clickFunc: (element) => {
             Logger.Error("BOX1!");
             return true;
         }));
@@ -83,7 +83,7 @@ public class TestGui : Gui {
             barBorderInsets: new BorderInsets(3),
             filledBarBorderInsets: new BorderInsets(3));
         
-        this.AddElement("Texture-Slider-Bar", new TextureSlideBarElement(textureSlideBarData, 0, Anchor.Center, new Vector2(0, 170), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(2, 2), clickFunc: (element) => {
+        this.AddElement("Texture-Slider-Bar", new TextureSlideBarElement(textureSlideBarData, Anchor.Center, new Vector2(0, 170), 0, 10, wholeNumbers: false, size: new Vector2(140, 8), scale: new Vector2(2, 2), clickFunc: (element) => {
             Logger.Error("BOX1!");
             return true;
         }));
@@ -96,7 +96,7 @@ public class TestGui : Gui {
             SliderOutlineThickness = 4
         };
         
-        this.AddElement("Rectangle-Slider-Bar", new RectangleSlideBarElement(rectangleSlideBarData, 0, Anchor.Center, new Vector2(0, 200), new Vector2(280, 16), 0, 10, clickFunc: (element) => {
+        this.AddElement("Rectangle-Slider-Bar", new RectangleSlideBarElement(rectangleSlideBarData, Anchor.Center, new Vector2(0, 200), new Vector2(280, 16), 0, 10, clickFunc: (element) => {
             Logger.Error("BOX1!");
             return true;
         }));
@@ -141,7 +141,6 @@ public class TestGui : Gui {
             textureDropDownData,
             options,
             4,
-            0,
             Anchor.CenterLeft,
             new Vector2(40, 0),
             size: new Vector2(140F, 30),
@@ -194,7 +193,6 @@ public class TestGui : Gui {
             rectangleDropDownData,
             rectOptions,
             4,
-            0,
             Anchor.CenterLeft,
             new Vector2(190, 0),
             new Vector2(140, 30),
@@ -222,13 +220,13 @@ public class TestGui : Gui {
         List<KeyValuePair<string, GuiElement>> texContent = [];
         
         for (int i = 0; i < 20; i++) {
-            texContent.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), 0, Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
+            texContent.Add(new KeyValuePair<string, GuiElement>($"Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Gray), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
                 Logger.Error("TEX CLICKED");
                 return true;
             })));
         }
         
-        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, texContent, 0, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), rotation: 0, size: new Vector2(200, 180));
+        TextureScrollViewElement textureScrollView = new TextureScrollViewElement(textureScrollViewData, texContent, Anchor.TopLeft, new Vector2(20, 20), menuContentInsets: (3, 3, 3, 3), rotation: 0, size: new Vector2(200, 180));
         this.AddElement("Texture-Scroll-View", textureScrollView);
         
         // Rectangle ScrollView element.
@@ -242,7 +240,7 @@ public class TestGui : Gui {
         List<KeyValuePair<string, GuiElement>> rectContent = [];
         
         for (int i = 0; i < 20; i++) {
-            rectContent.Add(new KeyValuePair<string, GuiElement>($"Rect-Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Green), 0, Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
+            rectContent.Add(new KeyValuePair<string, GuiElement>($"Rect-Item-{i}", new LabelElement(new LabelData(ContentRegistry.Fontoe, $"Item {i}", 18, hoverColor: Color.Green), Anchor.TopLeft, new Vector2(8, 8 + i * 28), clickFunc: (element) => {
                 Logger.Error("RECT CLICKED");
                 return true;
             })));
@@ -251,7 +249,6 @@ public class TestGui : Gui {
         RectangleScrollViewElement rectangleScrollView = new RectangleScrollViewElement(
             rectangleScrollViewData,
             rectContent,
-            0,
             Anchor.TopRight,
             new Vector2(-20, 20),
             new Vector2(200, 180),
