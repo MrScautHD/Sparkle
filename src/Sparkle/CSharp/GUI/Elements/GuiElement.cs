@@ -101,24 +101,24 @@ public abstract class GuiElement : Disposable {
     /// <summary>
     /// Initializes a new instance of the <see cref="GuiElement"/> class.
     /// </summary>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">The anchor point for positioning the element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
     /// <param name="size">The unscaled size of the element.</param>
     /// <param name="scale">Optional scaling factor for the element. Defaults to (1, 1).</param>
     /// <param name="origin">Optional origin point for rotation/scaling. Defaults to (0, 0).</param>
     /// <param name="rotation">Optional rotation in radians. Defaults to 0.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function that determines what happens on click. Should return true if handled.</param>
-    public GuiElement(int renderOrder, Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, Func<GuiElement, bool>? clickFunc = null) {
+    public GuiElement(Anchor anchor, Vector2 offset, Vector2 size, Vector2? scale = null, Vector2? origin = null, float rotation = 0.0F, int renderOrder = 0, Func<GuiElement, bool>? clickFunc = null) {
         this.Enabled = true;
         this.Interactable = true;
-        this.RenderOrder = renderOrder;
         this.AnchorPoint = anchor;
         this.Offset = offset;
         this.Size = size;
         this.Scale = scale ?? Vector2.One;
         this.Origin = origin ?? Vector2.Zero;
         this.Rotation = rotation;
+        this.RenderOrder = renderOrder;
         this._clickFunc = clickFunc;
     }
     

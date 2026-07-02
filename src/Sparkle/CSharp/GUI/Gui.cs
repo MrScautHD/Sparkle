@@ -74,6 +74,11 @@ public abstract class Gui : Disposable {
     private GuiRenderQueue _renderQueue;
     
     /// <summary>
+    /// A list of GUI elements that need to be rendered during the draw phase of the GUI lifecycle.
+    /// </summary>
+    private List<GuiElement> _elementsToDraw;
+    
+    /// <summary>
     /// Internal dictionary storing GUI elements by name.
     /// </summary>
     private OrderedDictionary<string, GuiElement> _elements;
@@ -99,6 +104,7 @@ public abstract class Gui : Disposable {
         this.Size = size ?? (1280, 720);
         this.MinVirtualSize = minVirtualSize ?? (640, 360);
         this._renderQueue = new GuiRenderQueue();
+        this._elementsToDraw = new List<GuiElement>();
         this._elements = new OrderedDictionary<string, GuiElement>();
         this._elementsToAdd = new List<GuiElement>();
         this._elementsToRemove = new List<string>();
@@ -171,14 +177,24 @@ public abstract class Gui : Disposable {
     /// <param name="framebuffer">The framebuffer to draw into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         this._renderQueue.Begin(context, framebuffer);
-
-        foreach (GuiElement element in this._elements.Values) {
+        
+        // Add elements to draw.
+        this._elementsToDraw.Clear();
+        this._elementsToDraw.AddRange(this._elements.Values);
+        
+        // Order elements.
+        this._elementsToDraw.Sort((a, b) => {
+            int result = a.RenderOrder.CompareTo(b.RenderOrder);
+            return result != 0 ? result : this._elements.IndexOf(a.Name).CompareTo(this._elements.IndexOf(b.Name));
+        });
+        
+        // Draw elements.
+        foreach (GuiElement element in this._elementsToDraw) {
             if (element.Enabled) {
-                this._renderQueue.SetCurrentElementRenderOrder(element.RenderOrder);
                 element.Draw(this._renderQueue);
             }
         }
-
+        
         this._renderQueue.End();
     }
     
