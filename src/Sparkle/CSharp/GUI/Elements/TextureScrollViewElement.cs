@@ -100,6 +100,41 @@ public class TextureScrollViewElement : GuiElement {
     private RectangleF _visibleContentWindow;
     
     /// <summary>
+    /// Cached scale used to transform local content positions to world positions.
+    /// </summary>
+    private Vector2 _contentTransformScale;
+    
+    /// <summary>
+    /// Cached scaled content inset.
+    /// </summary>
+    private Vector2 _contentTransformInsetTopLeft;
+    
+    /// <summary>
+    /// Cached scaled origin of this scroll view.
+    /// </summary>
+    private Vector2 _contentTransformParentOrigin;
+    
+    /// <summary>
+    /// Cached world top-left position of this scroll view.
+    /// </summary>
+    private Vector2 _contentTransformViewTopLeftWorld;
+    
+    /// <summary>
+    /// Cached rotation matrix of this scroll view.
+    /// </summary>
+    private Matrix3x2 _contentTransformRotation;
+    
+    /// <summary>
+    /// Cached scaled scroll offset.
+    /// </summary>
+    private float _contentTransformScrollOffsetY;
+    
+    /// <summary>
+    /// Cached GUI scale factor.
+    /// </summary>
+    private float _contentTransformGuiScaleFactor;
+    
+    /// <summary>
     /// Initial content provided during construction, applied during Init.
     /// </summary>
     private List<KeyValuePair<string, GuiElement>> _initialContent;
@@ -176,6 +211,13 @@ public class TextureScrollViewElement : GuiElement {
         this._contentLocalBounds = new Dictionary<GuiElement, RectangleF>();
         this._scrollableHeight = 0.0F;
         this._visibleContentWindow = new RectangleF(0.0F, 0.0F, 0.0F, 0.0F);
+        this._contentTransformScale = Vector2.One;
+        this._contentTransformInsetTopLeft = Vector2.Zero;
+        this._contentTransformParentOrigin = Vector2.Zero;
+        this._contentTransformViewTopLeftWorld = Vector2.Zero;
+        this._contentTransformRotation = Matrix3x2.Identity;
+        this._contentTransformScrollOffsetY = 0.0F;
+        this._contentTransformGuiScaleFactor = 1.0F;
         this._initialContent = new List<KeyValuePair<string, GuiElement>>();
         
         if (content != null) {
@@ -295,6 +337,8 @@ public class TextureScrollViewElement : GuiElement {
             this._targetScrollPercent = 0.0F;
             this._isDraggingSlider = false;
         }
+        
+        this.RebuildContentTransform();
         
         // Update content elements.
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
@@ -783,6 +827,8 @@ public class TextureScrollViewElement : GuiElement {
             return;
         }
         
+        this.RebuildContentTransform();
+        
         context.CommandList.SetFramebuffer(this._contentRenderTarget.Framebuffer);
         context.CommandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         context.CommandList.ClearDepthStencil(1.0F);
@@ -792,8 +838,8 @@ public class TextureScrollViewElement : GuiElement {
         
         // Draw content.
         foreach (GuiElement element in this._contentToDraw) {
-            if (element.Enabled && this.IsContentElementVisibleInLayout(element)) {
-                this.DrawContentElement(element, this._renderQueue);
+            if (element.Enabled && this.IsContentElementVisibleInLayout(element, out bool needsWorldVisibilityCheck)) {
+                this.DrawContentElement(element, this._renderQueue, needsWorldVisibilityCheck);
             }
         }
         
@@ -880,23 +926,23 @@ public class TextureScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="element">The content element whose draw commands are submitted.</param>
     /// <param name="renderQueue">The render queue the draw commands are submitted into.</param>
-    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue) {
+    /// <param name="needsWorldVisibilityCheck">Whether to run the transformed world-space visibility check before drawing.</param>
+    private void DrawContentElement(GuiElement element, GuiRenderQueue renderQueue, bool needsWorldVisibilityCheck) {
         Anchor originalAnchor = element.AnchorPoint;
         Vector2 originalOffset = element.Offset;
         Vector2 originalScale = element.Scale;
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(this.GetContentLocalTopLeft(element));
-        float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
+        element.Offset = (desiredTopLeftWorld - element.Origin) / this._contentTransformGuiScaleFactor;
         element.Scale = originalScale * this.Scale;
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
         element.UpdatePosAndSize();
         
-        if (this.IsContentElementVisible(element)) {
+        if (!needsWorldVisibilityCheck || this.IsContentElementVisible(element)) {
             element.Draw(renderQueue);
         }
         
@@ -921,10 +967,9 @@ public class TextureScrollViewElement : GuiElement {
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
         Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(this.GetContentLocalTopLeft(element));
-        float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
-        element.Offset = (desiredTopLeftWorld - element.Origin) / guiScaleFactor;
+        element.Offset = (desiredTopLeftWorld - element.Origin) / this._contentTransformGuiScaleFactor;
         element.Scale = originalScale * this.Scale;
         element.Rotation = originalRotation + this.Rotation;
         element.Interactable = originalInteractable && this.Interactable;
@@ -1095,15 +1140,20 @@ public class TextureScrollViewElement : GuiElement {
     /// Checks whether an element's current local layout bounds overlap the visible content window.
     /// </summary>
     /// <param name="element">The content element.</param>
+    /// <param name="needsWorldVisibilityCheck">Whether the caller should run a transformed world-space visibility check.</param>
     /// <returns><c>true</c> when the element may be visible.</returns>
-    private bool IsContentElementVisibleInLayout(GuiElement element) {
+    private bool IsContentElementVisibleInLayout(GuiElement element, out bool needsWorldVisibilityCheck) {
         if (element.Rotation != 0.0F) {
+            needsWorldVisibilityCheck = true;
             return true;
         }
         
         if (!this._contentLocalBounds.TryGetValue(element, out RectangleF bounds)) {
+            needsWorldVisibilityCheck = true;
             return true;
         }
+        
+        needsWorldVisibilityCheck = false;
         
         float minX = MathF.Min(bounds.X, bounds.X + bounds.Width);
         float maxX = MathF.Max(bounds.X, bounds.X + bounds.Width);
@@ -1122,6 +1172,19 @@ public class TextureScrollViewElement : GuiElement {
     /// <returns>The top-left position of the view.</returns>
     private Vector2 GetViewTopLeftWorld() {
         return this.Position - this.Origin * this.Scale * this.Gui.ScaleFactor;
+    }
+    
+    /// <summary>
+    /// Rebuilds cached values used to transform local content positions into world positions.
+    /// </summary>
+    private void RebuildContentTransform() {
+        this._contentTransformGuiScaleFactor = this.Gui.ScaleFactor;
+        this._contentTransformScale = this.Scale * this._contentTransformGuiScaleFactor;
+        this._contentTransformInsetTopLeft = this.GetContentInsetTopLeft() * this._contentTransformScale;
+        this._contentTransformParentOrigin = this.Origin * this._contentTransformScale;
+        this._contentTransformViewTopLeftWorld = this.GetViewTopLeftWorld();
+        this._contentTransformRotation = Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation));
+        this._contentTransformScrollOffsetY = this.GetScrollOffset() * this._contentTransformScale.Y;
     }
     
     /// <summary>
@@ -1187,16 +1250,11 @@ public class TextureScrollViewElement : GuiElement {
     /// <param name="localTopLeft">The local top-left position of the content element relative to the scroll view's internal coordinate system.</param>
     /// <returns>The calculated top-left position of the content element in world coordinates.</returns>
     private Vector2 GetContentElementTopLeftWorld(Vector2 localTopLeft) {
-        Vector2 scale = this.Scale * this.Gui.ScaleFactor;
-        Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
-        Vector2 localPoint = contentInsetTopLeft + localTopLeft * scale - new Vector2(0.0F, this.GetScrollOffset() * scale.Y);
+        Vector2 localPoint = this._contentTransformInsetTopLeft + localTopLeft * this._contentTransformScale - new Vector2(0.0F, this._contentTransformScrollOffsetY);
+        Vector2 pointRelativeToOrigin = localPoint - this._contentTransformParentOrigin;
+        Vector2 rotatedPoint = Vector2.Transform(pointRelativeToOrigin, this._contentTransformRotation);
         
-        Vector2 parentOrigin = this.Origin * scale;
-        Vector2 viewTopLeftWorld = this.GetViewTopLeftWorld();
-        Vector2 pointRelativeToOrigin = localPoint - parentOrigin;
-        Vector2 rotatedPoint = Vector2.Transform(pointRelativeToOrigin, Matrix3x2.CreateRotation(float.DegreesToRadians(this.Rotation)));
-        
-        return viewTopLeftWorld + parentOrigin + rotatedPoint;
+        return this._contentTransformViewTopLeftWorld + this._contentTransformParentOrigin + rotatedPoint;
     }
     
     /// <summary>
