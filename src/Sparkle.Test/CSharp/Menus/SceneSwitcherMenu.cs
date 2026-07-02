@@ -26,7 +26,7 @@ public class SceneSwitcherMenu : Gui {
         
         // Title label.
         LabelData titleLabelData = new LabelData(ContentRegistry.Fontoe, "Scene Switcher", 18);
-        this.AddElement("Title", new LabelElement(titleLabelData, Anchor.TopCenter, new Vector2(0, 50), new Vector2(3, 3)));
+        this.AddElement("Title", new LabelElement(titleLabelData, 0, Anchor.TopCenter, new Vector2(0, 50), new Vector2(3, 3)));
         
         // Scene drop-down.
         TextureDropDownData chooserDropDownData = new TextureDropDownData(

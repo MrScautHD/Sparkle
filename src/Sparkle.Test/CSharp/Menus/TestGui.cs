@@ -21,7 +21,7 @@ public class TestGui : Gui {
         // Label.
         LabelData labelData = new LabelData(ContentRegistry.Fontoe, "Hello Sparkle!", 18, hoverColor: Color.Gray);
         
-        this.AddElement("Label", new LabelElement(labelData, Anchor.BottomLeft, Vector2.Zero, clickFunc: (element) => {
+        this.AddElement("Label", new LabelElement(labelData, 0, Anchor.BottomLeft, Vector2.Zero, clickFunc: (element) => {
             Logger.Error("CLICKED!");
             return true;
         }));

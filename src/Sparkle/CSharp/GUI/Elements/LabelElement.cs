@@ -16,22 +16,22 @@ public class LabelElement : GuiElement {
     /// Initializes a new instance of the <see cref="LabelElement"/> class.
     /// </summary>
     /// <param name="data">The label data containing text and rendering settings.</param>
+    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="anchor">The anchor point that determines the label’s alignment.</param>
     /// <param name="offset">The offset from the anchor point.</param>
     /// <param name="scale">Optional scaling factor for the element. Defaults to (1, 1).</param>
     /// <param name="origin">Optional origin point used for rotation and scaling (default is null).</param>
     /// <param name="rotation">The rotation of the label in radians (default is 0).</param>
-    /// <param name="renderOrder">The order in which the element is rendered, relative to others.</param>
     /// <param name="clickFunc">Optional function to be called when the label is clicked (default is null).</param>
     public LabelElement(
         LabelData data,
+        int renderOrder,
         Anchor anchor,
         Vector2 offset,
         Vector2? scale = null,
         Vector2? origin = null,
         float rotation = 0.0F,
-        int renderOrder = 0,
-        Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
+        Func<GuiElement, bool>? clickFunc = null) : base(renderOrder, anchor, offset, Vector2.Zero, scale, origin, rotation, clickFunc) {
         this.Data = data;
     }
     
@@ -63,8 +63,26 @@ public class LabelElement : GuiElement {
         }
         
         // Draw text.
-        SpriteGuiRenderState state = new SpriteGuiRenderState(this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
-        renderQueue.UseSprite(state).DrawText(this.Data.Font, this.Data.Text, this.Position, this.Data.Size, this.Data.CharacterSpacing, this.Data.LineSpacing, this.Scale * this.Gui.ScaleFactor, 0.5F, this.Origin, this.Data.PixelSnap, this.Rotation, color, this.Data.Style, this.Data.FontSystemEffect, this.Data.EffectAmount);
+        SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.Data.Sampler, this.Data.Effect, this.Data.BlendState);
+        
+        renderQueue.SubmitSprite(0, static (batch, state) => {
+            batch.DrawText(
+                state.Self.Data.Font,
+                state.Self.Data.Text,
+                state.Self.Position,
+                state.Self.Data.Size,
+                state.Self.Data.CharacterSpacing,
+                state.Self.Data.LineSpacing, 
+                state.Self.Scale * state.Self.Gui.ScaleFactor,
+                0.5F,
+                state.Self.Origin,
+                state.Self.Data.PixelSnap,
+                state.Self.Rotation,
+                state.Color,
+                state.Self.Data.Style,
+                state.Self.Data.FontSystemEffect,
+                state.Self.Data.EffectAmount);
+        }, (Self: this, Color: color), renderState);
     }
     
     protected override void Dispose(bool disposing) { }
