@@ -48,6 +48,11 @@ public class RectangleScrollViewElement : GuiElement {
     private List<GuiElement> _contentToDraw;
     
     /// <summary>
+    /// Stable content insertion order used as the secondary draw sort key.
+    /// </summary>
+    private Dictionary<string, int> _contentDrawOrder;
+    
+    /// <summary>
     /// All active child GUI elements contained inside this scroll view.
     /// </summary>
     private OrderedDictionary<string, GuiElement> _content;
@@ -66,6 +71,26 @@ public class RectangleScrollViewElement : GuiElement {
     /// Stores original offsets of content elements for stable scrolling calculations.
     /// </summary>
     private Dictionary<GuiElement, Vector2> _contentOffsets;
+    
+    /// <summary>
+    /// Current local top-left position for each content element.
+    /// </summary>
+    private Dictionary<GuiElement, Vector2> _contentLocalTopLefts;
+    
+    /// <summary>
+    /// Current local bounds for each content element.
+    /// </summary>
+    private Dictionary<GuiElement, RectangleF> _contentLocalBounds;
+    
+    /// <summary>
+    /// Cached scrollable height.
+    /// </summary>
+    private float _scrollableHeight;
+    
+    /// <summary>
+    /// Current visible content window in local content coordinates.
+    /// </summary>
+    private RectangleF _visibleContentWindow;
     
     /// <summary>
     /// Initial content provided during construction, applied during Init.
@@ -132,10 +157,15 @@ public class RectangleScrollViewElement : GuiElement {
         
         this._renderQueue = new GuiRenderQueue();
         this._contentToDraw = new List<GuiElement>();
+        this._contentDrawOrder = new Dictionary<string, int>();
         this._content = new OrderedDictionary<string, GuiElement>();
         this._contentToAdd = new List<GuiElement>();
         this._contentToRemove = new List<string>();
         this._contentOffsets = new Dictionary<GuiElement, Vector2>();
+        this._contentLocalTopLefts = new Dictionary<GuiElement, Vector2>();
+        this._contentLocalBounds = new Dictionary<GuiElement, RectangleF>();
+        this._scrollableHeight = 0.0F;
+        this._visibleContentWindow = new RectangleF(0.0F, 0.0F, 0.0F, 0.0F);
         this._initialContent = new List<KeyValuePair<string, GuiElement>>();
         
         if (content != null) {
@@ -173,6 +203,8 @@ public class RectangleScrollViewElement : GuiElement {
         foreach (string name in this._contentToRemove) {
             if (this._content.Remove(name, out GuiElement? element)) {
                 this._contentOffsets.Remove(element);
+                this._contentLocalTopLefts.Remove(element);
+                this._contentLocalBounds.Remove(element);
                 element.Dispose();
             }
         }
@@ -190,6 +222,7 @@ public class RectangleScrollViewElement : GuiElement {
         
         // Update base element.
         base.Update(delta, ref interactionHandled);
+        this.RebuildContentLayout(false);
         
         Vector2 mousePos = Input.GetMousePosition();
         Vector2 scale = this.Scale * this.Gui.ScaleFactor;
@@ -262,6 +295,8 @@ public class RectangleScrollViewElement : GuiElement {
         foreach (GuiElement element in this._content.Values) {
             this.UpdateContentElement(element, delta, ref contentInteractionHandled);
         }
+        
+        this.RebuildContentLayout();
     }
     
     /// <summary>
@@ -342,6 +377,7 @@ public class RectangleScrollViewElement : GuiElement {
             element.Resize(rectangle);
         }
         
+        this.RebuildContentLayout();
         this.EnsureContentRenderTarget(true);
     }
     
@@ -656,19 +692,9 @@ public class RectangleScrollViewElement : GuiElement {
         // Draw content elements.
         this._renderQueue.Begin(context, framebuffer);
         
-        // Add content to draw.
-        this._contentToDraw.Clear();
-        this._contentToDraw.AddRange(this._content.Values);
-        
-        // Order content.
-        this._contentToDraw.Sort((a, b) => {
-            int result = a.RenderOrder.CompareTo(b.RenderOrder);
-            return result != 0 ? result : this._content.IndexOf(a.Name).CompareTo(this._content.IndexOf(b.Name));
-        });
-        
         // Draw content.
         foreach (GuiElement element in this._contentToDraw) {
-            if (element.Enabled) {
+            if (element.Enabled && this.IsContentElementVisibleInLayout(element)) {
                 this.DrawContentElement(element, this._renderQueue);
             }
         }
@@ -762,10 +788,7 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 originalScale = element.Scale;
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
-        Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 panelSize = this.GetVisibleContentSize();
-        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(this.GetContentLocalTopLeft(element));
         float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
@@ -799,10 +822,7 @@ public class RectangleScrollViewElement : GuiElement {
         Vector2 originalScale = element.Scale;
         float originalRotation = element.Rotation;
         bool originalInteractable = element.Interactable;
-        Vector2 localOffset = this.GetContentOffset(element);
-        Vector2 panelSize = this.GetVisibleContentSize();
-        Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, originalAnchor, localOffset, panelSize);
-        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(anchoredLocalTopLeft);
+        Vector2 desiredTopLeftWorld = this.GetContentElementTopLeftWorld(this.GetContentLocalTopLeft(element));
         float guiScaleFactor = this.Gui.ScaleFactor;
         
         element.AnchorPoint = Anchor.TopLeft;
@@ -868,37 +888,6 @@ public class RectangleScrollViewElement : GuiElement {
     }
     
     /// <summary>
-    /// Computes the minimum and maximum vertical extents spanned by all content elements.
-    /// </summary>
-    /// <returns>A tuple containing the minimum and maximum Y bounds. Returns (0, 0) when empty.</returns>
-    private (float MinY, float MaxY) GetContentBoundsY() {
-        if (this._content.Count <= 0) {
-            return (0.0F, 0.0F);
-        }
-        
-        float minY = float.MaxValue;
-        float maxY = float.MinValue;
-        Vector2 panelSize = this.GetVisibleContentSize(false);
-        
-        foreach (GuiElement element in this._content.Values) {
-            Vector2 offset = this.GetContentOffset(element);
-            Vector2 anchoredLocalTopLeft = this.GetAnchoredContentLocalTopLeft(element, element.AnchorPoint, offset, panelSize);
-            minY = MathF.Min(minY, anchoredLocalTopLeft.Y);
-            maxY = MathF.Max(maxY, anchoredLocalTopLeft.Y + element.Size.Y * element.Scale.Y);
-        }
-        
-        return (minY, maxY);
-    }
-    
-    /// <summary>
-    /// Gets the total content height, derived from the bottom-most extent of all content elements.
-    /// </summary>
-    /// <returns>The content height.</returns>
-    private float GetContentHeight() {
-        return this.GetContentBoundsY().MaxY;
-    }
-    
-    /// <summary>
     /// Determines whether the content exceeds the visible area and can therefore be scrolled.
     /// </summary>
     /// <returns><c>true</c> if there is scrollable content; otherwise, <c>false</c>.</returns>
@@ -919,15 +908,71 @@ public class RectangleScrollViewElement : GuiElement {
     /// </summary>
     /// <returns>The scrollable height, clamped to be non-negative.</returns>
     private float GetScrollableHeight() {
-        return MathF.Max(0.0F, this.GetContentHeight() + this.GetTrailingContentSpacing() - this.GetVisibleContentSize(false).Y);
+        return this._scrollableHeight;
     }
     
     /// <summary>
-    /// Gets additional trailing spacing derived from a positive top offset of the content, used to keep scroll bounds consistent.
+    /// Rebuilds content layout data used by scrolling, interaction, and draw ordering.
     /// </summary>
-    /// <returns>The trailing content spacing, clamped to be non-negative.</returns>
-    private float GetTrailingContentSpacing() {
-        return MathF.Max(0.0F, this.GetContentBoundsY().MinY);
+    private void RebuildContentLayout(bool rebuildDrawList = true) {
+        this._contentLocalTopLefts.Clear();
+        this._contentLocalBounds.Clear();
+        
+        if (rebuildDrawList) {
+            this._contentDrawOrder.Clear();
+            this._contentToDraw.Clear();
+        }
+        
+        if (this._content.Count <= 0) {
+            this._scrollableHeight = 0.0F;
+            this._visibleContentWindow = new RectangleF(0.0F, 0.0F, 0.0F, 0.0F);
+            return;
+        }
+        
+        float minY = float.MaxValue;
+        float maxY = float.MinValue;
+        Vector2 boundsPanelSize = this.GetVisibleContentSize(false);
+        int order = 0;
+        
+        foreach ((string name, GuiElement element) in this._content) {
+            if (rebuildDrawList) {
+                this._contentDrawOrder[name] = order;
+            }
+            
+            order++;
+            
+            Vector2 offset = this.GetContentOffset(element);
+            Vector2 boundsTopLeft = this.GetAnchoredContentLocalTopLeft(element, element.AnchorPoint, offset, boundsPanelSize);
+            
+            minY = MathF.Min(minY, boundsTopLeft.Y);
+            maxY = MathF.Max(maxY, boundsTopLeft.Y + element.Size.Y * element.Scale.Y);
+        }
+        
+        float trailingContentSpacing = MathF.Max(0.0F, minY);
+        this._scrollableHeight = MathF.Max(0.0F, maxY + trailingContentSpacing - this.GetVisibleContentSize(false).Y);
+        
+        Vector2 layoutPanelSize = this.GetVisibleContentSize();
+        this._visibleContentWindow = new RectangleF(0.0F, this.GetScrollOffset(), layoutPanelSize.X, layoutPanelSize.Y);
+        
+        foreach (GuiElement element in this._content.Values) {
+            Vector2 offset = this.GetContentOffset(element);
+            Vector2 localTopLeft = this.GetAnchoredContentLocalTopLeft(element, element.AnchorPoint, offset, layoutPanelSize);
+            Vector2 elementSize = element.Size * element.Scale;
+            
+            this._contentLocalTopLefts[element] = localTopLeft;
+            this._contentLocalBounds[element] = new RectangleF(localTopLeft.X, localTopLeft.Y, elementSize.X, elementSize.Y);
+            
+            if (rebuildDrawList) {
+                this._contentToDraw.Add(element);
+            }
+        }
+        
+        if (rebuildDrawList) {
+            this._contentToDraw.Sort((a, b) => {
+                int result = a.RenderOrder.CompareTo(b.RenderOrder);
+                return result != 0 ? result : this._contentDrawOrder[a.Name].CompareTo(this._contentDrawOrder[b.Name]);
+            });
+        }
     }
     
     /// <summary>
@@ -942,6 +987,45 @@ public class RectangleScrollViewElement : GuiElement {
         
         this._contentOffsets[element] = element.Offset;
         return element.Offset;
+    }
+    
+    /// <summary>
+    /// Gets the current layout position of a content element.
+    /// </summary>
+    /// <param name="element">The content element.</param>
+    /// <returns>The element's local top-left position.</returns>
+    private Vector2 GetContentLocalTopLeft(GuiElement element) {
+        if (this._contentLocalTopLefts.TryGetValue(element, out Vector2 localTopLeft)) {
+            return localTopLeft;
+        }
+        
+        Vector2 offset = this.GetContentOffset(element);
+        return this.GetAnchoredContentLocalTopLeft(element, element.AnchorPoint, offset, this.GetVisibleContentSize());
+    }
+    
+    /// <summary>
+    /// Checks whether an element's current local layout bounds overlap the visible content window.
+    /// </summary>
+    /// <param name="element">The content element.</param>
+    /// <returns><c>true</c> when the element may be visible.</returns>
+    private bool IsContentElementVisibleInLayout(GuiElement element) {
+        if (element.Rotation != 0.0F) {
+            return true;
+        }
+        
+        if (!this._contentLocalBounds.TryGetValue(element, out RectangleF bounds)) {
+            return true;
+        }
+        
+        float minX = MathF.Min(bounds.X, bounds.X + bounds.Width);
+        float maxX = MathF.Max(bounds.X, bounds.X + bounds.Width);
+        float minY = MathF.Min(bounds.Y, bounds.Y + bounds.Height);
+        float maxY = MathF.Max(bounds.Y, bounds.Y + bounds.Height);
+        
+        return minX < this._visibleContentWindow.X + this._visibleContentWindow.Width &&
+               maxX > this._visibleContentWindow.X &&
+               minY < this._visibleContentWindow.Y + this._visibleContentWindow.Height &&
+               maxY > this._visibleContentWindow.Y;
     }
     
     /// <summary>
@@ -1118,8 +1202,13 @@ public class RectangleScrollViewElement : GuiElement {
             }
             
             this._content.Clear();
+            this._contentToDraw.Clear();
+            this._contentDrawOrder.Clear();
             this._contentToAdd.Clear();
             this._contentToRemove.Clear();
+            this._contentOffsets.Clear();
+            this._contentLocalTopLefts.Clear();
+            this._contentLocalBounds.Clear();
             
             this._contentRenderTarget?.Dispose();
             this._contentResult?.Dispose();
