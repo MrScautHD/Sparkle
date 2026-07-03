@@ -94,6 +94,7 @@ public static class ImGuiOverlayManager {
         
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
+                overlay.UpdateScale(context.ImGuiController);
                 overlay.Draw(context.ImGuiController);
             }
         }
