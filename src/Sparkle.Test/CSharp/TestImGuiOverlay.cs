@@ -1,4 +1,4 @@
-﻿﻿using System.Numerics;
+﻿using System.Numerics;
 using Bliss.ImGUI.CSharp;
 using Hexa.NET.ImGui;
 using Sparkle.CSharp;
@@ -8,22 +8,20 @@ namespace Sparkle.Test.CSharp;
 
 public class TestImGuiOverlay : ImGuiOverlay {
     
-    private static readonly Vector4 DefaultWindowRect = new Vector4(20.0F, 20.0F, 320.0F, 180.0F);
-    
     private Vector4 _pickedColor;
     
-    public TestImGuiOverlay(string name, bool enabled = false) : base(name, enabled) {
+    public TestImGuiOverlay(string name, bool enabled = false) : base(name, (1280, 720), 1.0F, enabled) {
         this._pickedColor = new Vector4(0.0F, 130.0F, 255.0F, 255.0F) / 255.0F;
     }
     
-    protected override void Draw(ImGuiController controller) {
+    protected override void Draw(ImGuiController controller, float scaleFactor) {
         Vector2 minWindowSize = new Vector2(300.0F, 160.0F);
         Vector2 maxWindowSize = new Vector2(1000.0F, 700.0F);
         
-        this.SetNextWindowPlacement(controller, "Test ImGUI Overlay", DefaultWindowRect, minWindowSize, maxWindowSize, ImGuiCond.Always);
+        this.SetNextWindowScaledPlacement(controller, new Vector2(20, 20), new Vector2(320, 180), minWindowSize, maxWindowSize, ImGuiCond.FirstUseEver);
         
         if (ImGui.Begin("Test ImGUI Overlay")) {
-            this.UpdateWindowPlacement("Test ImGUI Overlay");
+            this.UpdateWindowScaledPlacement();
             
             ImGui.Text("Hello World!");
             ImGui.Separator();

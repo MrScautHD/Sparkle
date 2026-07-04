@@ -1,4 +1,5 @@
-﻿using Bliss.CSharp.Transformations;
+﻿using System.Numerics;
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrith;
 
@@ -94,8 +95,8 @@ public static class ImGuiOverlayManager {
         
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
-                overlay.UpdateScale(context.ImGuiController);
-                overlay.Draw(context.ImGuiController);
+                float scaleFactor = overlay.EnableScaleHandler ? overlay.HandleScale(context.ImGuiController) : 1.0F;
+                overlay.Draw(context.ImGuiController, scaleFactor);
             }
         }
         

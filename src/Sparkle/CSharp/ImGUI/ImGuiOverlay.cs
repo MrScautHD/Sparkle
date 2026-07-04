@@ -9,289 +9,258 @@ namespace Sparkle.CSharp.ImGUI;
 public abstract class ImGuiOverlay : Disposable {
     
     /// <summary>
-    /// The default reference resolution used as the baseline for ImGui scaling.
-    /// </summary>
-    protected static readonly Vector2 DefaultScaleReferenceResolution = new Vector2(1280.0F, 720.0F);
-    
-    /// <summary>
-    /// The unique name used to register, look up and remove this overlay.
+    /// The name of the Overlay.
     /// </summary>
     public string Name { get; private set; }
     
     /// <summary>
-    /// Whether this overlay is updated and drawn. Toggle this to show or hide the overlay.
+    /// The base size of this overlay's window was designed for.
+    /// </summary>
+    public (int Width, int Height) Size { get; private set; }
+    
+    /// <summary>
+    /// The user-defined scale multiplier applied on top of the automatically calculated scale factor, clamped between 0.25 and 4.0.
+    /// </summary>
+    public float Scale {
+        get;
+        set => field = Math.Clamp(value, 0.25F, 4.0F);
+    }
+    
+    /// <summary>
+    /// Whether this overlay is currently active and should be drawn/updated.
     /// </summary>
     public bool Enabled;
     
     /// <summary>
-    /// The most recently applied ImGui scale for this overlay.
+    /// Whether the scale handler is enabled for this overlay.
     /// </summary>
-    protected float GuiScale { get; private set; } = 1.0F;
+    public bool EnableScaleHandler { get; private set; }
     
     /// <summary>
-    /// The cached scale states for ImGui styles, keyed by their native style handle.
+    /// The cached unscaled ImGui style, captured before any scaling was applied, used to reset before rescaling.
     /// </summary>
-    private static readonly Dictionary<nint, ImGuiScaleState> ScaleStates = new Dictionary<nint, ImGuiScaleState>();
+    private ImGuiStyle? _defaultStyle;
     
     /// <summary>
-    /// Stores tracked ImGui window placements for this overlay.
+    /// The style handle the cached scale state belongs to, used to detect when the ImGui context/style has changed.
     /// </summary>
-    private readonly Dictionary<string, ImGuiWindowPlacementState> _windowPlacementStates = new Dictionary<string, ImGuiWindowPlacementState>();
+    private nint _scaledStyleHandle;
     
     /// <summary>
-    /// Initializes a new <see cref="ImGuiOverlay"/>.
+    /// The scale factor most recently applied to the style.
     /// </summary>
-    /// <param name="name">The unique name of the overlay.</param>
-    /// <param name="enabled">Whether the overlay starts enabled. Defaults to <see langword="false"/>.</param>
-    protected ImGuiOverlay(string name, bool enabled = false) {
+    private float _appliedScale;
+    
+    /// <summary>
+    /// This overlay's window position and size, stored as fractions (0-1) of the host window, so placement stays proportional across resizes.
+    /// </summary>
+    private RectangleF _relativeWindowRect;
+    
+    /// <summary>
+    /// The host window size from the previous call, used to detect when the host window has been resized.
+    /// </summary>
+    private Vector2 _lastHostWindowSize;
+    
+    /// <summary>
+    /// The current host window size.
+    /// </summary>
+    private Vector2 _hostWindowSize;
+    
+    /// <summary>
+    /// The current scaled minimum window size.
+    /// </summary>
+    private Vector2 _minWindowSize;
+    
+    /// <summary>
+    /// The current scaled maximum window size.
+    /// </summary>
+    private Vector2 _maxWindowSize;
+    
+    /// <summary>
+    /// Whether <see cref="_relativeWindowRect"/> has been set at least once.
+    /// </summary>
+    private bool _relativeWindowRectInitialized;
+    
+    /// <summary>
+    /// Whether the window placement has been applied at least once.
+    /// </summary>
+    private bool _windowPlacementInitialized;
+    
+    /// <summary>
+    /// Creates a new <see cref="ImGuiOverlay"/>.
+    /// </summary>
+    /// <param name="name">The display name of this overlay.</param>
+    /// <param name="size">The base (unscaled) window size this overlay was designed for. Defaults to 1280x720.</param>
+    /// <param name="scale">The initial user-defined scale multiplier.</param>
+    /// <param name="enabled">Whether this overlay should start out active.</param>
+    /// <param name="enableScaleHandler">Whether the scale handler is enabled, allowing use of <see cref="SetNextWindowScaledPlacement"/>, and <see cref="UpdateWindowScaledPlacement"/>.</param>
+    protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true) {
         this.Name = name;
+        this.Size = size ?? (1280, 720);
+        this.Scale = scale;
         this.Enabled = enabled;
+        this.EnableScaleHandler = enableScaleHandler;
     }
     
     /// <summary>
-    /// Updates the overlay each frame.
+    /// Called every frame to update this overlay's state.
     /// </summary>
-    /// <param name="delta">The time delta since the last update.</param>
+    /// <param name="delta">The time elapsed, in seconds, since the last update.</param>
     protected internal virtual void Update(double delta) { }
     
     /// <summary>
-    /// Executes logic after the update step.
+    /// Called every frame, after <see cref="Update"/> has run for all overlays.
     /// </summary>
-    /// <param name="delta">The time delta since the last update.</param>
+    /// <param name="delta">The time elapsed, in seconds, since the last update.</param>
     protected internal virtual void AfterUpdate(double delta) { }
     
     /// <summary>
-    /// Executes fixed-step updates for the overlay.
+    /// Called on a fixed time step, independent of the frame rate.
     /// </summary>
-    /// <param name="timeStep">The fixed time step interval for the update.</param>
+    /// <param name="timeStep">The fixed time step, in seconds.</param>
     protected internal virtual void FixedUpdate(double timeStep) { }
     
     /// <summary>
-    /// Emits the ImGui draw commands for this overlay. Called between <c>ImGui.NewFrame</c> and <c>ImGui.Render</c>.
+    /// Draws this overlay's ImGui content.
     /// </summary>
-    /// <param name="controller">The controller driving this overlay, for access to IO, style and texture bindings.</param>
-    protected internal abstract void Draw(ImGuiController controller);
+    /// <param name="controller">The ImGui controller used to render the overlay.</param>
+    /// <param name="scaleFactor">The current UI scale factor, as calculated by <see cref="HandleScale"/>.</param>
+    protected internal abstract void Draw(ImGuiController controller, float scaleFactor);
     
     /// <summary>
-    /// Executes when the window is resized.
+    /// Called when the window is resized.
     /// </summary>
-    /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
+    /// <param name="rectangle">The new bounds of the window.</param>
     protected internal virtual void Resize(Rectangle rectangle) { }
     
     /// <summary>
-    /// Sets the next ImGui window position and size from a resize-safe placement state.
+    /// Calculates the UI scale factor based on window size and applies it to the ImGui style.
     /// </summary>
-    /// <param name="controller">The ImGui controller providing access to the host window.</param>
-    /// <param name="windowName">The ImGui window name used as the placement key.</param>
-    /// <param name="defaultRect">The default X, Y, Width and Height in reference-resolution pixels.</param>
-    /// <param name="minSize">The unscaled minimum allowed window size.</param>
-    /// <param name="maxSize">The unscaled maximum allowed window size.</param>
-    /// <param name="condition">The ImGui condition used for the initial placement. Host-window resizes always force an update.</param>
-    /// <param name="refResolution">The reference resolution used to convert <paramref name="defaultRect"/> into a relative rect.</param>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="refResolution"/> contains non-positive values.</exception>
-    protected void SetNextWindowPlacement(ImGuiController controller, string windowName, Vector4 defaultRect, Vector2 minSize, Vector2 maxSize, ImGuiCond condition = ImGuiCond.FirstUseEver, Vector2? refResolution = null) {
-        Vector2 resolution = refResolution ?? DefaultScaleReferenceResolution;
+    /// <param name="controller">The ImGui controller providing the window and style.</param>
+    /// <returns>The applied scale factor.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
+    protected internal virtual unsafe float HandleScale(ImGuiController controller) {
+        if (!this.EnableScaleHandler) {
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
+        }
         
-        if (resolution.X <= 0 || resolution.Y <= 0) {
-            throw new ArgumentOutOfRangeException(nameof(refResolution));
+        float scaleFactor = Math.Clamp(Math.Min((float) controller.Window.GetWidth() / (float) this.Size.Width, (float) controller.Window.GetHeight() / (float) this.Size.Height) * this.Scale, 0.25F, 4.0F);
+        
+        ImGuiStylePtr style = controller.Style;
+        nint styleKey = (nint) style.Handle;
+        
+        // Reset cache if the style handle changed.
+        if (this._scaledStyleHandle != styleKey) {
+            this._scaledStyleHandle = styleKey;
+            this._defaultStyle = null;
+            this._appliedScale = 0.0F;
+        }
+        
+        // Skip if scale hasn't meaningfully changed.
+        if (Math.Abs(scaleFactor - this._appliedScale) < 0.01F) {
+            return this._appliedScale;
+        }
+        
+        // Cache the unscaled style, then reset to it before rescaling.
+        this._defaultStyle ??= *style.Handle;
+        *style.Handle = this._defaultStyle.Value;
+        
+        // Apply the new scale.
+        ImGui.ScaleAllSizes(style, scaleFactor);
+        style.FontScaleDpi = scaleFactor;
+        
+        this._appliedScale = scaleFactor;
+        return scaleFactor;
+    }
+    
+    /// <summary>
+    /// Sets the position and size for the next ImGui window, keeping it proportionally placed as the host window resizes.
+    /// </summary>
+    /// <param name="controller">The ImGui controller providing the host window's current size.</param>
+    /// <param name="position">The initial window position, used only on first init.</param>
+    /// <param name="size">The initial window size, used only on first init.</param>
+    /// <param name="minSize">The minimum window size, before scaling.</param>
+    /// <param name="maxSize">The maximum window size, before scaling.</param>
+    /// <param name="condition">The condition under which the placement should normally be applied.</param>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
+    protected virtual void SetNextWindowScaledPlacement(ImGuiController controller, Vector2 position, Vector2 size, Vector2 minSize, Vector2 maxSize, ImGuiCond condition = ImGuiCond.FirstUseEver) {
+        if (!this.EnableScaleHandler) {
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
         }
         
         Vector2 hostWindowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
-        (Vector2 scaledMinSize, Vector2 scaledMaxSize) = this.ScaleWindowSizeConstraints(minSize, maxSize);
+        Vector2 scaledMinSize = minSize * this._appliedScale;
+        Vector2 scaledMaxSize = Vector2.Max(scaledMinSize, maxSize * this._appliedScale);
         
-        this._windowPlacementStates.TryGetValue(windowName, out ImGuiWindowPlacementState placementState);
-        
-        if (!placementState.RelativeRectInitialized) {
-            placementState.RelativeRect = new Vector4(
-                defaultRect.X / resolution.X,
-                defaultRect.Y / resolution.Y,
-                defaultRect.Z / resolution.X,
-                defaultRect.W / resolution.Y
+        // Store initial placement as a fraction of the host window.
+        if (!this._relativeWindowRectInitialized) {
+            this._relativeWindowRect = new RectangleF(
+                position.X / this.Size.Width,
+                position.Y / this.Size.Height,
+                size.X / this.Size.Width,
+                size.Y / this.Size.Height
             );
             
-            placementState.RelativeRectInitialized = true;
+            this._relativeWindowRectInitialized = true;
         }
         
-        placementState.HostWindowSize = hostWindowSize;
-        placementState.MinSize = scaledMinSize;
-        placementState.MaxSize = scaledMaxSize;
+        this._hostWindowSize = hostWindowSize;
+        this._minWindowSize = scaledMinSize;
+        this._maxWindowSize = scaledMaxSize;
         
         ImGui.SetNextWindowSizeConstraints(scaledMinSize, scaledMaxSize);
         
-        bool hostWindowResized = placementState.LastHostWindowSize != Vector2.Zero && Vector2.DistanceSquared(placementState.LastHostWindowSize, hostWindowSize) > 0.01F;
-        bool shouldApplyPlacement = !placementState.WindowPlacementInitialized || hostWindowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
+        // Reapply placement if the host window resized.
+        bool hostWindowResized = this._lastHostWindowSize != Vector2.Zero && Vector2.DistanceSquared(this._lastHostWindowSize, hostWindowSize) > 0.01F;
+        bool shouldApplyPlacement = !this._windowPlacementInitialized || hostWindowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
         
         if (shouldApplyPlacement) {
-            (Vector2 windowPos, Vector2 windowSize) = this.ClampWindowRect(
-                new Vector2(placementState.RelativeRect.X * hostWindowSize.X, placementState.RelativeRect.Y * hostWindowSize.Y),
-                new Vector2(placementState.RelativeRect.Z * hostWindowSize.X, placementState.RelativeRect.W * hostWindowSize.Y),
-                scaledMinSize,
-                scaledMaxSize,
-                hostWindowSize
-            );
             
+            // Convert the relative rect back to absolute size/position.
+            Vector2 windowSize = Vector2.Clamp(new Vector2(this._relativeWindowRect.Width * hostWindowSize.X, this._relativeWindowRect.Height * hostWindowSize.Y), scaledMinSize, scaledMaxSize);
+            Vector2 windowPos = new Vector2(Math.Clamp(this._relativeWindowRect.X * hostWindowSize.X, 0.0F, MathF.Max(0.0F, hostWindowSize.X - windowSize.X)), Math.Clamp(this._relativeWindowRect.Y * hostWindowSize.Y, 0.0F, MathF.Max(0.0F, hostWindowSize.Y - windowSize.Y)));
+            
+            // Always force it through on resize, even with a one-time condition.
             ImGuiCond effectiveCondition = hostWindowResized ? ImGuiCond.Always : condition;
             
             ImGui.SetNextWindowPos(windowPos, effectiveCondition);
             ImGui.SetNextWindowSize(windowSize, effectiveCondition);
-            placementState.WindowPlacementInitialized = true;
+            this._windowPlacementInitialized = true;
         }
         
-        placementState.LastHostWindowSize = hostWindowSize;
-        this._windowPlacementStates[windowName] = placementState;
+        this._lastHostWindowSize = hostWindowSize;
     }
     
     /// <summary>
-    /// Scales unscaled ImGui window size constraints by the current GUI scale.
+    /// Reads back the window's current position and size after rendering, and stores it as the new relative placement.
     /// </summary>
-    /// <param name="minSize">The unscaled minimum allowed window size.</param>
-    /// <param name="maxSize">The unscaled maximum allowed window size.</param>
-    /// <returns>The scaled minimum and maximum window sizes.</returns>
-    protected (Vector2 MinSize, Vector2 MaxSize) ScaleWindowSizeConstraints(Vector2 minSize, Vector2 maxSize) {
-        Vector2 scaledMinSize = minSize * this.GuiScale;
-        Vector2 scaledMaxSize = maxSize * this.GuiScale;
-        
-        return (scaledMinSize, Vector2.Max(scaledMinSize, scaledMaxSize));
-    }
-    
-    /// <summary>
-    /// Stores the current ImGui window position and size as a relative placement for future host-window resizes.
-    /// </summary>
-    /// <param name="windowName">The ImGui window name used as the placement key.</param>
-    /// <exception cref="InvalidOperationException">Thrown if <see cref="SetNextWindowPlacement"/> was not called for this window first.</exception>
-    protected void UpdateWindowPlacement(string windowName) {
-        if (!this._windowPlacementStates.TryGetValue(windowName, out ImGuiWindowPlacementState placementState)) {
-            throw new InvalidOperationException($"The ImGui window placement for [{windowName}] was not initialized.");
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>, or if called before <see cref="SetNextWindowScaledPlacement"/> has initialized the overlay's placement.</exception>
+    protected virtual void UpdateWindowScaledPlacement() {
+        if (!this.EnableScaleHandler) {
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
         }
         
-        (Vector2 windowPos, Vector2 windowSize) = this.ClampWindowRect(ImGui.GetWindowPos(), ImGui.GetWindowSize(), placementState.MinSize, placementState.MaxSize, placementState.HostWindowSize);
+        if (!this._relativeWindowRectInitialized) {
+            throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(this.SetNextWindowScaledPlacement)} before using this method.");
+        }
         
-        Vector2 hostWindowSize = new Vector2(MathF.Max(1.0F, placementState.HostWindowSize.X), MathF.Max(1.0F, placementState.HostWindowSize.Y));
+        // Clamp in case the user dragged/resized outside the host window.
+        Vector2 currentWindowPos = ImGui.GetWindowPos();
+        Vector2 windowSize = Vector2.Clamp(ImGui.GetWindowSize(), this._minWindowSize, this._maxWindowSize);
+        Vector2 windowPos = new Vector2(
+            Math.Clamp(currentWindowPos.X, 0.0F, MathF.Max(0.0F, this._hostWindowSize.X - windowSize.X)),
+            Math.Clamp(currentWindowPos.Y, 0.0F, MathF.Max(0.0F, this._hostWindowSize.Y - windowSize.Y))
+        );
         
-        placementState.RelativeRect = new Vector4(
+        // Avoid division by zero.
+        Vector2 hostWindowSize = new Vector2(MathF.Max(1.0F, this._hostWindowSize.X), MathF.Max(1.0F, this._hostWindowSize.Y));
+        
+        // Store as a fraction of the host window for next time.
+        this._relativeWindowRect = new RectangleF(
             windowPos.X / hostWindowSize.X,
             windowPos.Y / hostWindowSize.Y,
             windowSize.X / hostWindowSize.X,
             windowSize.Y / hostWindowSize.Y
         );
-        
-        this._windowPlacementStates[windowName] = placementState;
-    }
-    
-    /// <summary>
-    /// Calculates and applies the ImGui style scale based on the current window size relative to the default reference resolution.
-    /// </summary>
-    /// <param name="controller">The ImGui controller providing access to the window and style settings.</param>
-    /// <param name="scaleFactor">An optional factor to fine-tune the scaling, defaulting to 0.75.</param>
-    /// <returns>The resulting scale factor that was applied to the ImGui style.</returns>
-    protected internal float UpdateScale(ImGuiController controller, float scaleFactor = 0.75F) {
-        return this.UpdateScale(controller, DefaultScaleReferenceResolution, scaleFactor);
-    }
-    
-    /// <summary>
-    /// Calculates and applies the ImGui style scale based on the current window size relative to a reference resolution.
-    /// </summary>
-    /// <param name="controller">The ImGui controller providing access to the window and style settings.</param>
-    /// <param name="refResolution">The reference resolution used as the baseline for determining the scale.</param>
-    /// <param name="scaleFactor">An optional factor to fine-tune the scaling, defaulting to 0.75.</param>
-    /// <returns>The resulting scale factor that was applied to the ImGui style.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="refResolution"/> contains non-positive values.</exception>
-    protected virtual unsafe float UpdateScale(ImGuiController controller, Vector2 refResolution, float scaleFactor = 0.75F) {
-        if (refResolution.X <= 0 || refResolution.Y <= 0) {
-            throw new ArgumentOutOfRangeException(nameof(refResolution));
-        }
-        
-        float scale = Math.Clamp(Math.Min(controller.Window.GetWidth() / refResolution.X, controller.Window.GetHeight() / refResolution.Y) * scaleFactor, 0.25F, 4.0F);
-        
-        ImGuiStylePtr style = controller.Style;
-        nint styleKey = (nint) style.Handle;
-        ScaleStates.TryGetValue(styleKey, out ImGuiScaleState scaleState);
-        
-        if (Math.Abs(scale - scaleState.AppliedScale) < 0.01F) {
-            this.GuiScale = scaleState.AppliedScale;
-            return scaleState.AppliedScale;
-        }
-        
-        scaleState.DefaultStyle ??= *style.Handle;
-        *style.Handle = scaleState.DefaultStyle.Value;
-        
-        ImGui.ScaleAllSizes(style, scale);
-        style.FontScaleDpi = scale;
-        
-        scaleState.AppliedScale = scale;
-        ScaleStates[styleKey] = scaleState;
-        this.GuiScale = scale;
-        return scale;
-    }
-    
-    /// <summary>
-    /// Clamps a window rectangle so its size and position stay inside the host window.
-    /// </summary>
-    /// <param name="position">The requested window position.</param>
-    /// <param name="size">The requested window size.</param>
-    /// <param name="minSize">The minimum allowed window size.</param>
-    /// <param name="maxSize">The maximum allowed window size.</param>
-    /// <param name="hostSize">The host window size.</param>
-    /// <returns>The clamped window position and size.</returns>
-    protected (Vector2 Position, Vector2 Size) ClampWindowRect(Vector2 position, Vector2 size, Vector2 minSize, Vector2 maxSize, Vector2 hostSize) {
-        size = Vector2.Clamp(size, minSize, maxSize);
-        
-        position = new Vector2(
-            Math.Clamp(position.X, 0.0F, MathF.Max(0.0F, hostSize.X - size.X)),
-            Math.Clamp(position.Y, 0.0F, MathF.Max(0.0F, hostSize.Y - size.Y))
-        );
-        
-        return (position, size);
-    }
-    
-    private struct ImGuiScaleState {
-        
-        /// <summary>
-        /// A pristine copy of the unscaled ImGui style, captured once before scaling is applied.
-        /// </summary>
-        public ImGuiStyle? DefaultStyle;
-        
-        /// <summary>
-        /// The scale factor currently applied to the ImGui style.
-        /// </summary>
-        public float AppliedScale;
-    }
-    
-    private struct ImGuiWindowPlacementState {
-        
-        /// <summary>
-        /// Stores the ImGui window rect relative to the host window as X, Y, Width and Height.
-        /// </summary>
-        public Vector4 RelativeRect;
-        
-        /// <summary>
-        /// The last known size of the host application window.
-        /// </summary>
-        public Vector2 LastHostWindowSize;
-        
-        /// <summary>
-        /// The current size of the host application window.
-        /// </summary>
-        public Vector2 HostWindowSize;
-        
-        /// <summary>
-        /// The minimum allowed window size.
-        /// </summary>
-        public Vector2 MinSize;
-        
-        /// <summary>
-        /// The maximum allowed window size.
-        /// </summary>
-        public Vector2 MaxSize;
-        
-        /// <summary>
-        /// Indicates whether the relative window rect has been initialized.
-        /// </summary>
-        public bool RelativeRectInitialized;
-        
-        /// <summary>
-        /// Indicates whether the ImGui window placement has been initialized.
-        /// </summary>
-        public bool WindowPlacementInitialized;
     }
 }
