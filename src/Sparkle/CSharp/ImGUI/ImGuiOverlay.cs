@@ -241,7 +241,7 @@ public abstract class ImGuiOverlay : Disposable {
         }
         
         if (!this._relativeWindowRectInitialized) {
-            throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(this.SetNextWindowScaledPlacement)} before using this method.");
+            throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(SetNextWindowScaledPlacement)} before using this method.");
         }
         
         // Clamp in case the user dragged/resized outside the host window.
