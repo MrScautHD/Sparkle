@@ -141,7 +141,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
     protected internal virtual unsafe float HandleScale(ImGuiController controller) {
         if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
         float scaleFactor = Math.Clamp(Math.Min((float) controller.Window.GetWidth() / (float) this.Size.Width, (float) controller.Window.GetHeight() / (float) this.Size.Height) * this.Scale, 0.25F, 4.0F);
@@ -185,7 +185,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
     protected virtual void SetNextWindowScaledPlacement(ImGuiController controller, Vector2 position, Vector2 size, Vector2 minSize, Vector2 maxSize, ImGuiCond condition = ImGuiCond.FirstUseEver) {
         if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
         Vector2 hostWindowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
@@ -237,7 +237,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>, or if called before <see cref="SetNextWindowScaledPlacement"/> has initialized the overlay's placement.</exception>
     protected virtual void UpdateWindowScaledPlacement() {
         if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(this.EnableScaleHandler)} before using this method.");
+            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
         if (!this._relativeWindowRectInitialized) {
