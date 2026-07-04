@@ -52,39 +52,39 @@ public abstract class ImGuiOverlay : Disposable {
     private float _appliedScale;
     
     /// <summary>
-    /// This overlay's window position and size, stored as fractions (0-1) of the host window, so placement stays proportional across resizes.
+    /// This overlay's window position and size, stored as fractions (0-1) of the window, so placement stays proportional across resizes.
     /// </summary>
-    private RectangleF _relativeWindowRect;
+    private RectangleF _relativeRect;
     
     /// <summary>
-    /// The host window size from the previous call, used to detect when the host window has been resized.
+    /// The window size from the previous call, used to detect when the window has been resized.
     /// </summary>
-    private Vector2 _lastHostWindowSize;
+    private Vector2 _lastWindowSize;
     
     /// <summary>
-    /// The current host window size.
+    /// The current window size.
     /// </summary>
-    private Vector2 _hostWindowSize;
+    private Vector2 _windowSize;
     
     /// <summary>
-    /// The current scaled minimum window size.
+    /// The current scaled minimum size.
     /// </summary>
-    private Vector2 _minWindowSize;
+    private Vector2 _minSize;
     
     /// <summary>
-    /// The current scaled maximum window size.
+    /// The current scaled maximum size.
     /// </summary>
-    private Vector2 _maxWindowSize;
+    private Vector2 _maxSize;
     
     /// <summary>
-    /// Whether <see cref="_relativeWindowRect"/> has been set at least once.
+    /// Whether <see cref="_relativeRect"/> has been set at least once.
     /// </summary>
-    private bool _relativeWindowRectInitialized;
+    private bool _relativeRectInitialized;
     
     /// <summary>
-    /// Whether the window placement has been applied at least once.
+    /// Whether the placement has been applied at least once.
     /// </summary>
-    private bool _windowPlacementInitialized;
+    private bool _placementInitialized;
     
     /// <summary>
     /// Creates a new <see cref="ImGuiOverlay"/>.
@@ -174,13 +174,13 @@ public abstract class ImGuiOverlay : Disposable {
     }
     
     /// <summary>
-    /// Sets the position and size for the next ImGui window, keeping it proportionally placed as the host window resizes.
+    /// Sets the position and size for the next ImGui window, keeping it proportionally placed as the window resizes.
     /// </summary>
-    /// <param name="controller">The ImGui controller providing the host window's current size.</param>
-    /// <param name="position">The initial window position, used only on first init.</param>
-    /// <param name="size">The initial window size, used only on first init.</param>
-    /// <param name="minSize">The minimum window size, before scaling.</param>
-    /// <param name="maxSize">The maximum window size, before scaling.</param>
+    /// <param name="controller">The ImGui controller providing the window's current size.</param>
+    /// <param name="position">The initial position, used only on first init.</param>
+    /// <param name="size">The initial size, used only on first init.</param>
+    /// <param name="minSize">The minimum size, before scaling.</param>
+    /// <param name="maxSize">The maximum size, before scaling.</param>
     /// <param name="condition">The condition under which the placement should normally be applied.</param>
     /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
     protected virtual void SetNextWindowScaledPlacement(ImGuiController controller, Vector2 position, Vector2 size, Vector2 minSize, Vector2 maxSize, ImGuiCond condition = ImGuiCond.FirstUseEver) {
@@ -188,47 +188,47 @@ public abstract class ImGuiOverlay : Disposable {
             throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
-        Vector2 hostWindowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
+        Vector2 windowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
         Vector2 scaledMinSize = minSize * this._appliedScale;
         Vector2 scaledMaxSize = Vector2.Max(scaledMinSize, maxSize * this._appliedScale);
         
-        // Store initial placement as a fraction of the host window.
-        if (!this._relativeWindowRectInitialized) {
-            this._relativeWindowRect = new RectangleF(
+        // Store initial placement as a fraction of the window.
+        if (!this._relativeRectInitialized) {
+            this._relativeRect = new RectangleF(
                 position.X / this.Size.Width,
                 position.Y / this.Size.Height,
                 size.X / this.Size.Width,
                 size.Y / this.Size.Height
             );
             
-            this._relativeWindowRectInitialized = true;
+            this._relativeRectInitialized = true;
         }
         
-        this._hostWindowSize = hostWindowSize;
-        this._minWindowSize = scaledMinSize;
-        this._maxWindowSize = scaledMaxSize;
+        this._windowSize = windowSize;
+        this._minSize = scaledMinSize;
+        this._maxSize = scaledMaxSize;
         
         ImGui.SetNextWindowSizeConstraints(scaledMinSize, scaledMaxSize);
         
-        // Reapply placement if the host window resized.
-        bool hostWindowResized = this._lastHostWindowSize != Vector2.Zero && Vector2.DistanceSquared(this._lastHostWindowSize, hostWindowSize) > 0.01F;
-        bool shouldApplyPlacement = !this._windowPlacementInitialized || hostWindowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
+        // Reapply placement if the window resized.
+        bool windowResized = this._lastWindowSize != Vector2.Zero && Vector2.DistanceSquared(this._lastWindowSize, windowSize) > 0.01F;
+        bool shouldApplyPlacement = !this._placementInitialized || windowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
         
         if (shouldApplyPlacement) {
             
             // Convert the relative rect back to absolute size/position.
-            Vector2 windowSize = Vector2.Clamp(new Vector2(this._relativeWindowRect.Width * hostWindowSize.X, this._relativeWindowRect.Height * hostWindowSize.Y), scaledMinSize, scaledMaxSize);
-            Vector2 windowPos = new Vector2(Math.Clamp(this._relativeWindowRect.X * hostWindowSize.X, 0.0F, MathF.Max(0.0F, hostWindowSize.X - windowSize.X)), Math.Clamp(this._relativeWindowRect.Y * hostWindowSize.Y, 0.0F, MathF.Max(0.0F, hostWindowSize.Y - windowSize.Y)));
+            Vector2 targetSize = Vector2.Clamp(new Vector2(this._relativeRect.Width * windowSize.X, this._relativeRect.Height * windowSize.Y), scaledMinSize, scaledMaxSize);
+            Vector2 targetPosition = new Vector2(Math.Clamp(this._relativeRect.X * windowSize.X, 0.0F, MathF.Max(0.0F, windowSize.X - targetSize.X)), Math.Clamp(this._relativeRect.Y * windowSize.Y, 0.0F, MathF.Max(0.0F, windowSize.Y - targetSize.Y)));
             
             // Always force it through on resize, even with a one-time condition.
-            ImGuiCond effectiveCondition = hostWindowResized ? ImGuiCond.Always : condition;
+            ImGuiCond effectiveCondition = windowResized ? ImGuiCond.Always : condition;
             
-            ImGui.SetNextWindowPos(windowPos, effectiveCondition);
-            ImGui.SetNextWindowSize(windowSize, effectiveCondition);
-            this._windowPlacementInitialized = true;
+            ImGui.SetNextWindowPos(targetPosition, effectiveCondition);
+            ImGui.SetNextWindowSize(targetSize, effectiveCondition);
+            this._placementInitialized = true;
         }
         
-        this._lastHostWindowSize = hostWindowSize;
+        this._lastWindowSize = windowSize;
     }
     
     /// <summary>
@@ -240,27 +240,27 @@ public abstract class ImGuiOverlay : Disposable {
             throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
-        if (!this._relativeWindowRectInitialized) {
+        if (!this._relativeRectInitialized) {
             throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(SetNextWindowScaledPlacement)} before using this method.");
         }
         
-        // Clamp in case the user dragged/resized outside the host window.
-        Vector2 currentWindowPos = ImGui.GetWindowPos();
-        Vector2 windowSize = Vector2.Clamp(ImGui.GetWindowSize(), this._minWindowSize, this._maxWindowSize);
-        Vector2 windowPos = new Vector2(
-            Math.Clamp(currentWindowPos.X, 0.0F, MathF.Max(0.0F, this._hostWindowSize.X - windowSize.X)),
-            Math.Clamp(currentWindowPos.Y, 0.0F, MathF.Max(0.0F, this._hostWindowSize.Y - windowSize.Y))
+        // Clamp in case the user dragged/resized outside the window.
+        Vector2 currentPosition = ImGui.GetWindowPos();
+        Vector2 size = Vector2.Clamp(ImGui.GetWindowSize(), this._minSize, this._maxSize);
+        Vector2 position = new Vector2(
+            Math.Clamp(currentPosition.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X)),
+            Math.Clamp(currentPosition.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y))
         );
         
         // Avoid division by zero.
-        Vector2 hostWindowSize = new Vector2(MathF.Max(1.0F, this._hostWindowSize.X), MathF.Max(1.0F, this._hostWindowSize.Y));
+        Vector2 windowSize = new Vector2(MathF.Max(1.0F, this._windowSize.X), MathF.Max(1.0F, this._windowSize.Y));
         
-        // Store as a fraction of the host window for next time.
-        this._relativeWindowRect = new RectangleF(
-            windowPos.X / hostWindowSize.X,
-            windowPos.Y / hostWindowSize.Y,
-            windowSize.X / hostWindowSize.X,
-            windowSize.Y / hostWindowSize.Y
+        // Store as a fraction of the window for next time.
+        this._relativeRect = new RectangleF(
+            position.X / windowSize.X,
+            position.Y / windowSize.Y,
+            size.X / windowSize.X,
+            size.Y / windowSize.Y
         );
     }
 }
