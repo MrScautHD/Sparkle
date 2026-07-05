@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using Bliss.CSharp.Transformations;
+﻿using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrith;
 
