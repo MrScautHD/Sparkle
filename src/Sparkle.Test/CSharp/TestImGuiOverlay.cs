@@ -18,7 +18,8 @@ public class TestImGuiOverlay : ImGuiOverlay {
         Vector2 minWindowSize = new Vector2(300.0F, 160.0F);
         Vector2 maxWindowSize = new Vector2(1000.0F, 700.0F);
         
-        this.SetNextWindowScaledPlacement(controller, new Vector2(20, 20), new Vector2(320, 180), minWindowSize, maxWindowSize, ImGuiCond.FirstUseEver);
+        this.SetNextWindowScaledPlacement(controller, new Vector2(20, 20), new Vector2(320, 195), minWindowSize, maxWindowSize, ImGuiCond.Once);
+        ImGui.SetNextWindowCollapsed(true, ImGuiCond.Once);
         
         if (ImGui.Begin("Test ImGUI Overlay")) {
             this.UpdateWindowScaledPlacement();
