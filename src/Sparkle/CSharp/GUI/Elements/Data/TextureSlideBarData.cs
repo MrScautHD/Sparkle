@@ -243,9 +243,9 @@ public class TextureSlideBarData {
         this.BarHoverColor = barHoverColor ?? this.BarColor;
         this.FilledBarHoverColor = filledBarHoverColor ?? this.FilledBarColor;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
-        this.DisabledBarColor = disabledBarColor ?? Color.Gray;
-        this.DisabledFilledBarColor = disabledFilledBarColor ?? Color.Gray;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
+        this.DisabledBarColor = disabledBarColor ?? this.BarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledFilledBarColor = disabledFilledBarColor ?? this.FilledBarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledSliderColor = disabledSliderColor ?? this.SliderColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.BarFlip = barFlip;
         this.FilledBarFlip = filledBarFlip;
         this.SliderFlip = sliderFlip;

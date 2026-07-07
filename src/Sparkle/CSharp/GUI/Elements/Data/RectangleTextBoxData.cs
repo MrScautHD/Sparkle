@@ -72,12 +72,12 @@ public class RectangleTextBoxData {
     public RectangleTextBoxData(Color? color = null, Color? hoverColor = null, Color? disabledColor = null, float outlineThickness = 0.0F, Color? outlineColor = null, Color? outlineHoverColor = null, Color? highlightColor = null, Color? disabledOutlineColor = null, Effect? effect = null, BlendStateDescription? blendState = null) {
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledColor = disabledColor ?? this.Color.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.OutlineThickness = outlineThickness;
         this.OutlineColor = outlineColor ?? Color.White;
         this.OutlineHoverColor = outlineHoverColor ?? this.OutlineColor;
         this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
-        this.DisabledOutlineColor = disabledOutlineColor ?? Color.DarkGray;
+        this.DisabledOutlineColor = disabledOutlineColor ?? this.OutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.Effect = effect;
         this.BlendState = blendState;
     }

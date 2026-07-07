@@ -113,7 +113,7 @@ public class TextureTextBoxData {
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
         this.HighlightColor = highlightColor ?? new Color(0, 128, 228, 128);
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledColor = disabledColor ?? this.Color.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.Flip = flip;
         this.PixelSnap = pixelSnap;
         this.Effect = effect;

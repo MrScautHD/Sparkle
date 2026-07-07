@@ -143,7 +143,7 @@ public class ToggleData {
         this.CheckmarkColor = checkmarkColor ?? Color.White;
         this.CheckboxHoverColor = checkboxHoverColor ?? this.CheckboxColor;
         this.CheckmarkHoverColor = checkmarkHoverColor ?? this.CheckmarkColor;
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledColor = disabledColor ?? this.CheckboxColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.CheckboxFlip = checkboxFlip;
         this.CheckmarkFlip = checkmarkFlip;
         this.CheckboxPixelSnap = checkboxPixelSnap;

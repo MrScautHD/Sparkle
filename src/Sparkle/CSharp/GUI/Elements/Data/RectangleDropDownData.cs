@@ -246,38 +246,38 @@ public class RectangleDropDownData {
     ) {
         this.FieldColor = fieldColor ?? Color.Gray;
         this.FieldHoverColor = fieldHoverColor ?? this.FieldColor;
-        this.DisabledFieldColor = disabledFieldColor ?? Color.DarkGray;
+        this.DisabledFieldColor = disabledFieldColor ?? this.FieldColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.FieldOutlineThickness = fieldOutlineThickness;
         this.FieldOutlineColor = fieldOutlineColor ?? Color.DarkGray;
         this.FieldOutlineHoverColor = fieldOutlineHoverColor ?? this.FieldOutlineColor;
-        this.DisabledFieldOutlineColor = disabledFieldOutlineColor ?? Color.DarkGray;
+        this.DisabledFieldOutlineColor = disabledFieldOutlineColor ?? this.FieldOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.MenuColor = menuColor ?? Color.Gray;
         this.MenuHoverColor = menuHoverColor ?? this.MenuColor;
-        this.DisabledMenuColor = disabledMenuColor ?? Color.DarkGray;
+        this.DisabledMenuColor = disabledMenuColor ?? this.MenuColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.MenuOutlineThickness = menuOutlineThickness;
         this.MenuOutlineColor = menuOutlineColor ?? Color.DarkGray;
         this.MenuOutlineHoverColor = menuOutlineHoverColor ?? this.MenuOutlineColor;
-        this.DisabledMenuOutlineColor = disabledMenuOutlineColor ?? Color.DarkGray;
+        this.DisabledMenuOutlineColor = disabledMenuOutlineColor ?? this.MenuOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.SliderBarWidth = sliderBarWidth;
         this.SliderBarColor = sliderBarColor ?? Color.Gray;
         this.SliderBarHoverColor = sliderBarHoverColor ?? this.SliderBarColor;
-        this.DisabledSliderBarColor = disabledSliderBarColor ?? Color.DarkGray;
+        this.DisabledSliderBarColor = disabledSliderBarColor ?? this.SliderBarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.SliderSize = sliderSize ?? new Vector2(10, 10);
         this.SliderColor = sliderColor ?? Color.LightGray;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
+        this.DisabledSliderColor = disabledSliderColor ?? this.SliderColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.SliderOutlineThickness = sliderOutlineThickness;
         this.SliderOutlineColor = sliderOutlineColor ?? Color.DarkGray;
         this.SliderOutlineHoverColor = sliderOutlineHoverColor ?? this.SliderOutlineColor;
-        this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? Color.DarkGray;
+        this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? this.SliderOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.ArrowSize = arrowSize ?? new Vector2(14, 10);
         this.ArrowColor = arrowColor ?? Color.White;
         this.ArrowHoverColor = arrowHoverColor ?? this.ArrowColor;
-        this.DisabledArrowColor = disabledArrowColor ?? Color.Gray;
+        this.DisabledArrowColor = disabledArrowColor ?? this.ArrowColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.HighlightColor = highlightColor ?? new Color(100, 100, 100, 255);
         this.Effect = effect;

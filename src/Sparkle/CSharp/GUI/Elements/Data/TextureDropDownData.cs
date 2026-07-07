@@ -396,11 +396,11 @@ public class TextureDropDownData {
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
         this.ArrowHoverColor = arrowHoverColor ?? this.ArrowColor;
         this.HighlightColor = highlightColor ?? Color.LightGray;
-        this.DisabledFieldColor = disabledFieldColor ?? Color.Gray;
-        this.DisabledMenuColor = disabledMenuColor ?? Color.Gray;
-        this.DisabledSliderBarColor = disabledSliderBarColor ?? Color.Gray;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
-        this.DisabledArrowColor = disabledArrowColor ?? Color.Gray;
+        this.DisabledFieldColor = disabledFieldColor ?? this.FieldColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledMenuColor = disabledMenuColor ?? this.MenuColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledSliderBarColor = disabledSliderBarColor ?? this.SliderBarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledSliderColor = disabledSliderColor ?? this.SliderColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledArrowColor = disabledArrowColor ?? this.ArrowColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.FieldFlip = fieldFlip;
         this.MenuFlip = menuFlip;
         this.SliderBarFlip = sliderBarFlip;

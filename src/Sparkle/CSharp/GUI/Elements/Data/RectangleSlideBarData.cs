@@ -180,27 +180,27 @@ public class RectangleSlideBarData {
     ) {
         this.BarColor = barColor ?? Color.Gray;
         this.BarHoverColor = barHoverColor ?? this.BarColor;
-        this.DisabledBarColor = disabledBarColor ?? Color.DarkGray;
+        this.DisabledBarColor = disabledBarColor ?? this.BarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.BarOutlineThickness = barOutlineThickness;
         this.BarOutlineColor = barOutlineColor ?? Color.DarkGray;
         this.BarOutlineHoverColor = barOutlineHoverColor ?? this.BarOutlineColor;
-        this.DisabledBarOutlineColor = disabledBarOutlineColor ?? Color.DarkGray;
+        this.DisabledBarOutlineColor = disabledBarOutlineColor ?? this.BarOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.FilledBarColor = filledBarColor ?? Color.White;
         this.FilledBarHoverColor = filledBarHoverColor ?? this.FilledBarColor;
-        this.DisabledFilledBarColor = disabledFilledBarColor ?? Color.Gray;
+        this.DisabledFilledBarColor = disabledFilledBarColor ?? this.FilledBarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.FilledBarOutlineThickness = filledBarOutlineThickness;
         this.FilledBarOutlineColor = filledBarOutlineColor ?? Color.DarkGray;
         this.FilledBarOutlineHoverColor = filledBarOutlineHoverColor ?? this.FilledBarOutlineColor;
-        this.DisabledFilledBarOutlineColor = disabledFilledBarOutlineColor ?? Color.DarkGray;
+        this.DisabledFilledBarOutlineColor = disabledFilledBarOutlineColor ?? this.FilledBarOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.SliderColor = sliderColor ?? Color.LightGray;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
+        this.DisabledSliderColor = disabledSliderColor ?? this.SliderColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.SliderOutlineThickness = sliderOutlineThickness;
         this.SliderOutlineColor = sliderOutlineColor ?? Color.DarkGray;
         this.SliderOutlineHoverColor = sliderOutlineHoverColor ?? this.SliderOutlineColor;
-        this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? Color.DarkGray;
+        this.DisabledSliderOutlineColor = disabledSliderOutlineColor ?? this.SliderOutlineColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         
         this.Effect = effect;
         this.BlendState = blendState;

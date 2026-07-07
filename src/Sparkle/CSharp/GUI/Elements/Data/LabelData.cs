@@ -125,7 +125,7 @@ public class LabelData {
         this.LineSpacing = lineSpacing;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledColor = disabledColor ?? this.Color.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.Style = style;
         this.FontSystemEffect = fontSystemEffect;
         this.EffectAmount = effectAmount;

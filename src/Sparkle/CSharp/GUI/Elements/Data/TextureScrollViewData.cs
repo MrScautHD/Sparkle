@@ -250,9 +250,9 @@ public class TextureScrollViewData {
         this.MenuHoverColor = menuHoverColor ?? this.MenuColor;
         this.SliderBarHoverColor = sliderBarHoverColor ?? this.SliderBarColor;
         this.SliderHoverColor = sliderHoverColor ?? this.SliderColor;
-        this.DisabledMenuColor = disabledMenuColor ?? Color.Gray;
-        this.DisabledSliderBarColor = disabledSliderBarColor ?? Color.Gray;
-        this.DisabledSliderColor = disabledSliderColor ?? Color.Gray;
+        this.DisabledMenuColor = disabledMenuColor ?? this.MenuColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledSliderBarColor = disabledSliderBarColor ?? this.SliderBarColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
+        this.DisabledSliderColor = disabledSliderColor ?? this.SliderColor.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.MenuFlip = menuFlip;
         this.SliderBarFlip = sliderBarFlip;
         this.SliderFlip = sliderFlip;

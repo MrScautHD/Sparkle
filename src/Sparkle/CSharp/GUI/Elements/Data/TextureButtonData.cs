@@ -105,7 +105,7 @@ public class TextureButtonData {
         this.BorderInsets = borderInsets ?? BorderInsets.Zero;
         this.Color = color ?? Color.White;
         this.HoverColor = hoverColor ?? this.Color;
-        this.DisabledColor = disabledColor ?? Color.Gray;
+        this.DisabledColor = disabledColor ?? this.Color.AdjustSaturation(-0.35F) * new Color(140, 140, 140, 255);
         this.Flip = flip;
         this.PixelSnap = pixelSnap;
         this.Effect = effect;
