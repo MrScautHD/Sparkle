@@ -247,6 +247,7 @@ public class TextureDropDownElement : GuiElement {
             bool canUseDropDownScrollInteraction = canStartDropDownScrollInteraction || this._isDraggingSlider;
             
             // Handle mouse wheel.
+            if (canStartDropDownScrollInteraction && !this._isDraggingSlider && localMenuRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
                     float scrollableHeight = fieldSize.Y * MathF.Max(0, this.Options.Count - this.MaxVisibleOptions);
                     
