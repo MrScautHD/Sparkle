@@ -293,8 +293,11 @@ public class TextureScrollViewElement : GuiElement {
         RectangleF localViewRect = new RectangleF(0.0F, 0.0F, viewSize.X, viewSize.Y);
         RectangleF localSliderBarRect = new RectangleF(viewSize.X - sliderBarWidth, 0.0F, sliderBarWidth, sliderBarHeight);
         
+        bool canStartScrollViewInteraction = !interactionHandledBeforeBaseUpdate;
+        bool canUseScrollViewInteraction = canStartScrollViewInteraction || this._isDraggingSlider;
+        
         if (this.Interactable && hasScrollableContent) {
-            if (!this._isDraggingSlider && localViewRect.Contains(localMouse)) {
+            if (canStartScrollViewInteraction && !this._isDraggingSlider && localViewRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
                     float scrollableHeight = this.GetScrollableHeight();
                     
@@ -303,6 +306,8 @@ public class TextureScrollViewElement : GuiElement {
                         float wheelStep = MathF.Max(1.0F, this.GetVisibleContentSize(false).Y * this.ScrollSensitivity);
                         currentOffset = Math.Clamp(currentOffset - wheelDelta.Y * wheelStep, 0.0F, scrollableHeight);
                         this._targetScrollPercent = currentOffset / scrollableHeight;
+                        
+                        interactionHandled = true;
                     }
                 }
             }
@@ -315,17 +320,19 @@ public class TextureScrollViewElement : GuiElement {
             this._targetScrollPercent = Math.Clamp(this._targetScrollPercent, 0.0F, 1.0F);
             
             if (Input.IsMouseButtonDown(MouseButton.Left)) {
-                if (localSliderBarRect.Contains(localMouse)) {
+                if (canStartScrollViewInteraction && Input.IsMouseButtonPressed(MouseButton.Left) && localSliderBarRect.Contains(localMouse)) {
                     this._isDraggingSlider = true;
+                    interactionHandled = true;
                 }
                 
-                if (this._isDraggingSlider) {
+                if (canUseScrollViewInteraction && this._isDraggingSlider) {
                     float sliderHeight = this.Data.SliderSourceRect.Height * scale.Y;
                     float usableSliderBarHeight = sliderBarHeight - sliderHeight;
                     float relativeY = localMouse.Y - sliderHeight / 2.0F;
                     
                     this._scrollPercent = usableSliderBarHeight > 0.0F ? Math.Clamp(relativeY / usableSliderBarHeight, 0.0F, 1.0F) : 0.0F;
                     this._targetScrollPercent = this._scrollPercent;
+                    interactionHandled = true;
                 }
             }
             else {
@@ -344,7 +351,8 @@ public class TextureScrollViewElement : GuiElement {
         Vector2 contentInsetTopLeft = this.GetContentInsetTopLeft() * scale;
         Vector2 visibleContentSize = this.GetVisibleContentSize() * scale;
         RectangleF localContentRect = new RectangleF(contentInsetTopLeft.X, contentInsetTopLeft.Y, visibleContentSize.X, visibleContentSize.Y);
-        bool contentInteractionHandled = interactionHandledBeforeBaseUpdate || !this.Interactable || !localContentRect.Contains(localMouse);
+        
+        bool contentInteractionHandled = interactionHandledBeforeBaseUpdate || this._isDraggingSlider || !this.Interactable || !localContentRect.Contains(localMouse);
         
         foreach (GuiElement element in this._content.Values) {
             this.UpdateContentElement(element, delta, ref contentInteractionHandled);

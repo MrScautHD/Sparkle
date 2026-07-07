@@ -200,6 +200,8 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="delta">The time elapsed since the last update, in seconds, used for timing-related logic.</param>
     /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
+        bool interactionHandledBeforeBaseUpdate = interactionHandled;
+        
         base.Update(delta, ref interactionHandled);
         
         // Arrow animation.
@@ -241,8 +243,10 @@ public class TextureDropDownElement : GuiElement {
             RectangleF localMenuRect = new RectangleF(0.0F, fieldSize.Y, fieldSize.X, scrollBarHeight);
             RectangleF localTrackRect = new RectangleF(fieldSize.X - scrollBarWidth, fieldSize.Y, scrollBarWidth, scrollBarHeight);
             
+            bool canStartDropDownScrollInteraction = !interactionHandledBeforeBaseUpdate;
+            bool canUseDropDownScrollInteraction = canStartDropDownScrollInteraction || this._isDraggingSlider;
+            
             // Handle mouse wheel.
-            if (!this._isDraggingSlider && localMenuRect.Contains(localMouse)) {
                 if (Input.IsMouseScrolling(out Vector2 wheelDelta)) {
                     float scrollableHeight = fieldSize.Y * MathF.Max(0, this.Options.Count - this.MaxVisibleOptions);
                     
@@ -251,6 +255,8 @@ public class TextureDropDownElement : GuiElement {
                         float wheelStep = MathF.Max(1.0F, (fieldSize.Y * this.MaxVisibleOptions) * this.ScrollSensitivity);
                         currentOffset = Math.Clamp(currentOffset - wheelDelta.Y * wheelStep, 0.0F, scrollableHeight);
                         this._targetScrollPercent = currentOffset / scrollableHeight;
+                        
+                        interactionHandled = true;
                     }
                 }
             }
@@ -266,12 +272,14 @@ public class TextureDropDownElement : GuiElement {
             // Handle dragging / clicking on scrollbar.
             if (Input.IsMouseButtonDown(MouseButton.Left)) {
                 
-                // Use localMouse for the initial click check
-                if (localTrackRect.Contains(localMouse)) {
+                // Drag may only start on the press frame, not when moving onto the track while already holding.
+                if (canStartDropDownScrollInteraction && Input.IsMouseButtonPressed(MouseButton.Left) && localTrackRect.Contains(localMouse)) {
                     this._isDraggingSlider = true;
+                    interactionHandled = true;
                 }
                 
-                if (this._isDraggingSlider) {
+                // Drag may continue while the mouse is held.
+                if (canUseDropDownScrollInteraction && this._isDraggingSlider) {
                     float sliderHeight = this.DropDownData.SliderSourceRect.Height * scale.Y;
                     float trackTop = fieldSize.Y;
                     
@@ -279,8 +287,9 @@ public class TextureDropDownElement : GuiElement {
                     float usableTrackHeight = scrollBarHeight - sliderHeight;
                     float relativeY = localMouse.Y - trackTop - sliderHeight / 2.0F;
                     
-                    this._scrollPercent = Math.Clamp(relativeY / usableTrackHeight, 0.0F, 1.0F);
+                    this._scrollPercent = usableTrackHeight > 0.0F ? Math.Clamp(relativeY / usableTrackHeight, 0.0F, 1.0F) : 0.0F;
                     this._targetScrollPercent = this._scrollPercent;
+                    interactionHandled = true;
                 }
             }
             else {
