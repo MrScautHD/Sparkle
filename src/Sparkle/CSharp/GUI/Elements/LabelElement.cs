@@ -33,6 +33,7 @@ public class LabelElement : GuiElement {
         int renderOrder = 0,
         Func<GuiElement, bool>? clickFunc = null) : base(anchor, offset, Vector2.Zero, scale, origin, rotation, renderOrder, clickFunc) {
         this.Data = data;
+        this.Size = data.Font.MeasureText(data.Text, data.Size, Vector2.One, data.CharacterSpacing, data.LineSpacing, data.FontSystemEffect, data.EffectAmount);
     }
     
     /// <summary>

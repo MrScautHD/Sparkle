@@ -230,6 +230,10 @@ public class RectangleScrollViewElement : GuiElement {
         
         this._initialContent.Clear();
         
+        // Build the initial layout immediately, so the first draw after Init has valid content bounds.
+        this.RebuildContentLayout();
+        this.RebuildContentTransform();
+        
         // Create render target.
         this.EnsureContentRenderTarget();
     }
@@ -496,7 +500,15 @@ public class RectangleScrollViewElement : GuiElement {
             return false;
         }
         
+        if (this._contentToAdd.Any(queuedElement => queuedElement.Name == name)) {
+            return false;
+        }
+        
         if (this._content.Values.Contains(element)) {
+            return false;
+        }
+        
+        if (this._contentToAdd.Contains(element)) {
             return false;
         }
         
@@ -515,7 +527,17 @@ public class RectangleScrollViewElement : GuiElement {
         // Forces an immediate recalculation of position and size to avoid a first-tick flicker at (0, 0).
         element.UpdatePosAndSize();
         
-        this._contentToAdd.Add(element);
+        // Build the initial layout immediately, so the first draw after Init has valid content bounds.
+        if (!this.Gui.IsInitialized) {
+            this._content.Add(name, element);
+            
+            this.RebuildContentLayout();
+            this.RebuildContentTransform();
+        }
+        else {
+            this._contentToAdd.Add(element);
+        }
+        
         return true;
     }
     
