@@ -6,9 +6,9 @@ using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Veldrith;
 
-namespace Sparkle.CSharp.Terrain.Heightmap;
+namespace Sparkle.CSharp.Terrain.Chunks;
 
-public class HeightmapChunk : Disposable, IChunk {
+public class HeightmapChunk : Disposable, IHeightmapChunk {
     
     /// <summary>
     /// The terrain this chunk belongs to.
@@ -26,16 +26,6 @@ public class HeightmapChunk : Disposable, IChunk {
     public Vector3 Position { get; private set; }
     
     /// <summary>
-    /// The chunk-grid X index.
-    /// </summary>
-    public int ChunkX { get; private set; }
-    
-    /// <summary>
-    /// The chunk-grid Z index.
-    /// </summary>
-    public int ChunkZ { get; private set; }
-    
-    /// <summary>
     /// The chunk width along the X axis.
     /// </summary>
     public int Width { get; private set; }
@@ -49,6 +39,21 @@ public class HeightmapChunk : Disposable, IChunk {
     /// The chunk depth along the Z axis.
     /// </summary>
     public int Depth { get; private set; }
+    
+    /// <summary>
+    /// The chunk-grid X index.
+    /// </summary>
+    public int ChunkX { get; private set; }
+    
+    /// <summary>
+    /// The chunk-grid Z index.
+    /// </summary>
+    public int ChunkZ { get; private set; }
+    
+    /// <summary>
+    /// The height samples of this chunk, including its positive edge samples.
+    /// </summary>
+    public float[,] Heights { get; private set; }
     
     /// <summary>
     /// Whether this chunk needs its geometry rebuilt.
@@ -142,19 +147,21 @@ public class HeightmapChunk : Disposable, IChunk {
     /// </summary>
     /// <param name="terrain">The heightmap terrain this chunk belongs to.</param>
     /// <param name="position">The terrain-space chunk position.</param>
-    /// <param name="chunkX">The chunk-grid X index.</param>
-    /// <param name="chunkZ">The chunk-grid Z index.</param>
     /// <param name="width">The chunk width along the X axis.</param>
     /// <param name="height">The chunk height along the Y axis.</param>
     /// <param name="depth">The chunk depth along the Z axis.</param>
-    public HeightmapChunk(HeightmapTerrain terrain, Vector3 position, int chunkX, int chunkZ, int width, int height, int depth) {
+    /// <param name="chunkX">The chunk-grid X index.</param>
+    /// <param name="chunkZ">The chunk-grid Z index.</param>
+    /// <param name="heights">The chunk height samples.</param>
+    public HeightmapChunk(HeightmapTerrain terrain, Vector3 position, int width, int height, int depth, int chunkX, int chunkZ, float[,] heights) {
         this.Terrain = terrain;
         this.Position = position;
-        this.ChunkX = chunkX;
-        this.ChunkZ = chunkZ;
         this.Width = width;
         this.Height = height;
         this.Depth = depth;
+        this.ChunkX = chunkX;
+        this.ChunkZ = chunkZ;
+        this.Heights = heights;
         this.IsDirty = false;
         this.CurrentLod = -1;
         this._lod = -1;
@@ -335,8 +342,7 @@ public class HeightmapChunk : Disposable, IChunk {
     }
     
     /// <summary>
-    /// Adjusts and stitches the Level of Detail (LOD) edges of the current heightmap chunk
-    /// with its neighboring chunks to ensure seamless transitions.
+    /// Adjusts and stitches the Level of Detail (LOD) edges of the current heightmap chunk with its neighboring chunks to ensure seamless transitions.
     /// </summary>
     /// <param name="terrain">The heightmap terrain containing this chunk and its neighbors.</param>
     /// <param name="heights">The height values of the current chunk's sampled grid points.</param>
@@ -513,6 +519,27 @@ public class HeightmapChunk : Disposable, IChunk {
         // Keep state transitions consistent with UploadGeometry.
         this.CurrentLod = this.Lod;
         this.IsDirty = this._dirtyVersion != this._generatedVersion;
+    }
+    
+    /// <summary>
+    /// Gets a height sample within the chunk.
+    /// </summary>
+    /// <param name="localX">The local X coordinate.</param>
+    /// <param name="localZ">The local Z coordinate.</param>
+    /// <returns>The height at the specified position.</returns>
+    public float GetHeightAt(int localX, int localZ) {
+        return this.Heights[localX, localZ];
+    }
+    
+    /// <summary>
+    /// Sets a height sample within the chunk and marks the chunk as dirty.
+    /// </summary>
+    /// <param name="localX">The local X coordinate.</param>
+    /// <param name="localZ">The local Z coordinate.</param>
+    /// <param name="height">The new height.</param>
+    public void SetHeightAt(int localX, int localZ, float height) {
+        this.Heights[localX, localZ] = height;
+        this.MarkDirty();
     }
     
     protected override void Dispose(bool disposing) {

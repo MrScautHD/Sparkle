@@ -13,6 +13,7 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
+using Sparkle.CSharp.Terrain.Chunks;
 using Sparkle.CSharp.Terrain.Regions;
 using Veldrith;
 

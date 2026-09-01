@@ -14,7 +14,6 @@ using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Generators;
-using Sparkle.CSharp.Terrain.Heightmap;
 using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
@@ -54,7 +53,7 @@ public class TerrainScene : Scene {
             MaxChunkUploadsPerFrame = 16
         };
         
-        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F)}, "terrain");
+        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F) }, "terrain");
         terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
         this.AddEntity(terrainEntity);
     }
@@ -123,7 +122,7 @@ public class TerrainScene : Scene {
         const int surfaceHeight = 64;
         
         // Create chunk generator.
-        FlatChunkGenerator chunkGenerator = new FlatChunkGenerator(chunkSize, terrainHeight, surfaceHeight);
+        FlatHeightmapGenerator chunkGenerator = new FlatHeightmapGenerator(chunkSize, surfaceHeight);
         
         // Create material.
         Material material = new Material(GlobalResource.DefaultModelEffect);

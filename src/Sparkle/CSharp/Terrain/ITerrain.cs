@@ -1,14 +1,10 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Bliss.CSharp.Materials;
+using Sparkle.CSharp.Terrain.Chunks;
 
 namespace Sparkle.CSharp.Terrain;
 
 public interface ITerrain {
-    
-    /// <summary>
-    /// The generator used to produce density data for each terrain column.
-    /// </summary>
-    IChunkGenerator ChunkGenerator { get; }
     
     /// <summary>
     /// The material used for rendering the terrain, which defines its visual appearance and surface properties.
@@ -44,6 +40,14 @@ public interface ITerrain {
     /// Returns all chunks that subdivide the terrain volume.
     /// </summary>
     IReadOnlyList<IChunk> GetChunks();
+    
+    /// <summary>
+    /// Returns the chunk at the specified chunk-grid coordinate.
+    /// </summary>
+    /// <param name="chunkX">The X coordinate of the chunk in the terrain grid.</param>
+    /// <param name="chunkZ">The Z coordinate of the chunk in the terrain grid.</param>
+    /// <returns>The chunk at the specified coordinate, or <c>null</c> when outside the terrain bounds.</returns>
+    IChunk? GetChunk(int chunkX, int chunkZ);
     
     /// <summary>
     /// Returns all chunks that are currently marked dirty and need a mesh rebuild.

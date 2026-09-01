@@ -1,8 +1,8 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Bliss.CSharp.Geometry.Meshes;
 using Veldrith;
 
-namespace Sparkle.CSharp.Terrain;
+namespace Sparkle.CSharp.Terrain.Chunks;
 
 public interface IChunk : IDisposable {
     
@@ -35,6 +35,16 @@ public interface IChunk : IDisposable {
     /// The depth of this chunk in voxels.
     /// </summary>
     int Depth { get; }
+    
+    /// <summary>
+    /// The X chunk coordinate.
+    /// </summary>
+    int ChunkX { get; }
+    
+    /// <summary>
+    /// The Z chunk coordinate.
+    /// </summary>
+    int ChunkZ { get; }
     
     /// <summary>
     /// Gets whether this chunk needs its mesh rebuilt.
