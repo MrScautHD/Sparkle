@@ -153,8 +153,8 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
             return -1.0F;
         }
         
-        int lowerX = (int)MathF.Floor(position.X);
-        int lowerZ = (int)MathF.Floor(position.Z);
+        int lowerX = (int) MathF.Floor(position.X);
+        int lowerZ = (int) MathF.Floor(position.Z);
         int upperX = Math.Min(lowerX + 1, this.Width);
         int upperZ = Math.Min(lowerZ + 1, this.Depth);
         float lowerHeight = float.Lerp(this.GetSurfaceHeight(lowerX, lowerZ), this.GetSurfaceHeight(upperX, lowerZ), position.X - lowerX);
