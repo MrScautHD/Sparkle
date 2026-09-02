@@ -4,12 +4,12 @@ using Veldrith;
 
 namespace Sparkle.CSharp.Terrain.Chunks;
 
-public interface IChunk : IDisposable {
+public interface IChunk<T> : IDisposable where T : class, IChunk<T> {
     
     /// <summary>
     /// The terrain this chunk belongs to.
     /// </summary>
-    ITerrain Terrain { get; }
+    ITerrain<T> Terrain { get; }
     
     /// <summary>
     /// The uploaded GPU mesh, or <c>null</c> when the chunk has no geometry.

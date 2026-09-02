@@ -1,6 +1,6 @@
 namespace Sparkle.CSharp.Terrain.Chunks;
 
-public interface IDensityChunk : IChunk {
+public interface IDensityChunk : IChunk<IDensityChunk> {
     
     /// <summary>
     /// The chunk-local density samples.

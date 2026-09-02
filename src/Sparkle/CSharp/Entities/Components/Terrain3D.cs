@@ -19,12 +19,12 @@ using Veldrith;
 
 namespace Sparkle.CSharp.Entities.Components;
 
-public class Terrain3D : InterpolatedComponent, IDebugDrawable {
+public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : class, IChunk<T> {
     
     /// <summary>
     /// The terrain data source used by this component.
     /// </summary>
-    public ITerrain Terrain { get; private set; }
+    public ITerrain<T> Terrain { get; private set; }
     
     /// <summary>
     /// Settings controlling terrain LOD, chunk rebuilds, uploads, and far region batching.
@@ -54,32 +54,32 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// <summary>
     /// Factory used to create or load the terrain instance during initialization.
     /// </summary>
-    private readonly Func<Task<ITerrain>> _terrainFactory;
+    private readonly Func<Task<ITerrain<T>>> _terrainFactory;
     
     /// <summary>
     /// List of chunks that currently have mesh state and may be rendered.
     /// </summary>
-    private readonly List<IChunk> _meshChunkList;
+    private readonly List<T> _meshChunkList;
     
     /// <summary>
     /// Queue of chunks waiting for geometry upload or mesh state refresh on the main thread.
     /// </summary>
-    private readonly ConcurrentQueue<IChunk> _pendingUpload;
+    private readonly ConcurrentQueue<T> _pendingUpload;
     
     /// <summary>
     /// Tracks chunks that have generated geometry queued for upload.
     /// </summary>
-    private readonly ConcurrentDictionary<IChunk, byte> _queuedSet;
+    private readonly ConcurrentDictionary<T, byte> _queuedSet;
     
     /// <summary>
     /// Tracks chunks that are currently being rebuilt in the background.
     /// </summary>
-    private readonly ConcurrentDictionary<IChunk, byte> _buildingSet;
+    private readonly ConcurrentDictionary<T, byte> _buildingSet;
     
     /// <summary>
     /// Tracks chunks whose vertex data can be updated in-place during rendering.
     /// </summary>
-    private readonly HashSet<IChunk> _chunksPendingVertexUpload;
+    private readonly HashSet<T> _chunksPendingVertexUpload;
     
     /// <summary>
     /// Queue of rebuilt far region batch results waiting for GPU upload.
@@ -94,38 +94,38 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// <summary>
     /// Cached renderables for normal, non-batched terrain chunks.
     /// </summary>
-    private readonly Dictionary<IChunk, Renderable> _renderables;
+    private readonly Dictionary<T, Renderable> _renderables;
     
     /// <summary>
     /// Local-space bounds for each terrain chunk.
     /// </summary>
-    private readonly Dictionary<IChunk, BoundingBox> _chunkLocalBounds;
+    private readonly Dictionary<T, BoundingBox> _chunkLocalBounds;
     
     /// <summary>
     /// Local-space center position for each terrain chunk.
     /// Used for distance sorting and LOD calculations.
     /// </summary>
-    private readonly Dictionary<IChunk, Vector3> _chunkLocalCenters;
+    private readonly Dictionary<T, Vector3> _chunkLocalCenters;
     
     /// <summary>
     /// Cached world-space bounds for chunks, versioned by the terrain bounds transform cache.
     /// </summary>
-    private readonly Dictionary<IChunk, CachedWorldBounds> _chunkWorldBounds;
+    private readonly Dictionary<T, CachedWorldBounds> _chunkWorldBounds;
     
     /// <summary>
     /// Temporary buffer used when collecting and sorting dirty chunks for scheduling.
     /// </summary>
-    private readonly List<IChunk> _dirtyScheduleBuffer;
+    private readonly List<T> _dirtyScheduleBuffer;
     
     /// <summary>
     /// Maps chunks to the far region batch they currently belong to.
     /// </summary>
-    private readonly Dictionary<IChunk, TerrainRegionKey> _chunkRegions;
+    private readonly Dictionary<T, TerrainRegionKey> _chunkRegions;
     
     /// <summary>
     /// Stores all chunk members for each far region batch.
     /// </summary>
-    private readonly Dictionary<TerrainRegionKey, HashSet<IChunk>> _regionMembers;
+    private readonly Dictionary<TerrainRegionKey, HashSet<T>> _regionMembers;
     
     /// <summary>
     /// Active uploaded far region batches.
@@ -233,30 +233,30 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     private Vector3 _lastLodCameraPosition;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="Terrain3D"/> class.
+    /// Initializes a new instance of the <see cref="Terrain3D{TChunk}"/> class.
     /// </summary>
     /// <param name="terrainFactory">Factory used to create or load the terrain.</param>
     /// <param name="terrainTerrainSettings">Terrain performance, LOD, and batching settings.</param>
     /// <param name="offsetPosition">The local offset position of this terrain component.</param>
     /// <param name="frustumCulling">Whether frustum culling should be enabled.</param>
-    public Terrain3D(Func<Task<ITerrain>> terrainFactory, TerrainSettings terrainTerrainSettings, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
+    public Terrain3D(Func<Task<ITerrain<T>>> terrainFactory, TerrainSettings terrainTerrainSettings, Vector3 offsetPosition, bool frustumCulling = true) : base(offsetPosition) {
         this._terrainFactory = terrainFactory;
         this.TerrainSettings = terrainTerrainSettings;
         this.FrustumCulling = frustumCulling;
-        this._meshChunkList = new List<IChunk>();
-        this._pendingUpload = new ConcurrentQueue<IChunk>();
-        this._queuedSet = new ConcurrentDictionary<IChunk, byte>();
-        this._buildingSet = new ConcurrentDictionary<IChunk, byte>();
-        this._chunksPendingVertexUpload = new HashSet<IChunk>();
+        this._meshChunkList = new List<T>();
+        this._pendingUpload = new ConcurrentQueue<T>();
+        this._queuedSet = new ConcurrentDictionary<T, byte>();
+        this._buildingSet = new ConcurrentDictionary<T, byte>();
+        this._chunksPendingVertexUpload = new HashSet<T>();
         this._pendingRegionUploads = new ConcurrentQueue<TerrainRegionBuildResult>();
         this._regionBuildingSet = new ConcurrentDictionary<TerrainRegionKey, byte>();
-        this._renderables = new Dictionary<IChunk, Renderable>();
-        this._chunkLocalBounds = new Dictionary<IChunk, BoundingBox>();
-        this._chunkLocalCenters = new Dictionary<IChunk, Vector3>();
-        this._chunkWorldBounds = new Dictionary<IChunk, CachedWorldBounds>();
-        this._dirtyScheduleBuffer = new List<IChunk>();
-        this._chunkRegions = new Dictionary<IChunk, TerrainRegionKey>();
-        this._regionMembers = new Dictionary<TerrainRegionKey, HashSet<IChunk>>();
+        this._renderables = new Dictionary<T, Renderable>();
+        this._chunkLocalBounds = new Dictionary<T, BoundingBox>();
+        this._chunkLocalCenters = new Dictionary<T, Vector3>();
+        this._chunkWorldBounds = new Dictionary<T, CachedWorldBounds>();
+        this._dirtyScheduleBuffer = new List<T>();
+        this._chunkRegions = new Dictionary<T, TerrainRegionKey>();
+        this._regionMembers = new Dictionary<TerrainRegionKey, HashSet<T>>();
         this._regionBatches = new Dictionary<TerrainRegionKey, TerrainRegionBatch>();
         this._regionWorldBounds = new Dictionary<TerrainRegionKey, CachedWorldBounds>();
         this._dirtyRegions = new HashSet<TerrainRegionKey>();
@@ -287,7 +287,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         };
         
         // Create chunk local boxes.
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+        foreach (T chunk in this.Terrain.GetChunks()) {
             this._chunkLocalBounds[chunk] = new BoundingBox {
                 Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
                 Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
@@ -362,7 +362,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         int scheduled = 0;
         
         // Schedule chunk builds until the count or time budget is reached.
-        foreach (IChunk chunk in this._dirtyScheduleBuffer) {
+        foreach (T chunk in this._dirtyScheduleBuffer) {
             
             // Stop if the scheduling time budget has been used.
             if (scheduleBudgetMs > 0.0 && scheduled > 0 && scheduleStopwatch.Elapsed.TotalMilliseconds >= scheduleBudgetMs) {
@@ -419,7 +419,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.DrawFarRegionBatches(cam3D);
         
         // Draw normal/non-batched terrain chunks.
-        foreach (IChunk chunk in this._meshChunkList) {
+        foreach (T chunk in this._meshChunkList) {
             if (chunk.Mesh == null) {
                 continue;
             }
@@ -504,7 +504,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         // Draw chunk boxes.
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+        foreach (T chunk in this.Terrain.GetChunks()) {
             if (!this._chunkLocalBounds.TryGetValue(chunk, out BoundingBox chunkBox)) {
                 continue;
             }
@@ -538,7 +538,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         float maxLodDistanceSquared = maxLodDistance * maxLodDistance;
         
         // Set the initial LOD for every terrain chunk.
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+        foreach (T chunk in this.Terrain.GetChunks()) {
             float distanceSquared = this.GetChunkDistanceSquared(cam3D.Position, chunk);
             int targetLod = this.TerrainSettings.EnableLod ? this.DetermineLod(distanceSquared, this.TerrainSettings.LodDistances, this.TerrainSettings.CullChunksBeyondLastLod, maxLodDistanceSquared) : 0;
             
@@ -548,7 +548,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         // Get all chunks that should be visible.
-        IChunk[] chunks = this.Terrain.GetChunks().Where(chunk => chunk.Lod >= 0).ToArray();
+        T[] chunks = this.Terrain.GetChunks().Where(chunk => chunk.Lod >= 0).ToArray();
         
         // Generate all visible chunk meshes in parallel.
         Parallel.ForEach(chunks, new ParallelOptions() {
@@ -556,7 +556,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }, chunk => chunk.GenerateGeometry());
         
         // Upload generated chunk meshes and refresh their render state.
-        foreach (IChunk chunk in chunks) {
+        foreach (T chunk in chunks) {
             this.UploadChunkGeometry(chunk);
             this.RefreshMeshChunkState(chunk);
         }
@@ -573,7 +573,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// </summary>
     /// <param name="chunk">The chunk to check.</param>
     /// <returns><c>true</c> if the chunk can be scheduled.</returns>
-    private bool ShouldSchedule(IChunk chunk) {
+    private bool ShouldSchedule(T chunk) {
         
         // Skip chunks that are already queued or currently building.
         if (this._queuedSet.ContainsKey(chunk) || this._buildingSet.ContainsKey(chunk)) {
@@ -592,7 +592,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// Schedules a chunk geometry rebuild on a background task.
     /// </summary>
     /// <param name="chunk">The chunk to rebuild.</param>
-    private void ScheduleBackground(IChunk chunk) {
+    private void ScheduleBackground(T chunk) {
         
         // Mark the chunk as building so it cannot be scheduled twice.
         if (!this._buildingSet.TryAdd(chunk, 0)) {
@@ -672,7 +672,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         bool updateMidRing = this._lodRingTick % midRingInterval == 0;
         bool updateFarRing = this._lodRingTick % farRingInterval == 0;
         
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+        foreach (T chunk in this.Terrain.GetChunks()) {
             float distanceSquared = this.GetChunkDistanceSquared(cam3D.Position, chunk);
             
             // Check which LOD update ring this chunk belongs to.
@@ -783,7 +783,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// <param name="cameraPosition">The world-space camera position.</param>
     /// <param name="chunk">The chunk to measure.</param>
     /// <returns>The squared distance to the chunk center.</returns>
-    private float GetChunkDistanceSquared(Vector3 cameraPosition, IChunk chunk) {
+    private float GetChunkDistanceSquared(Vector3 cameraPosition, T chunk) {
         
         // Get or calculate the chunk center in terrain local space.
         if (!this._chunkLocalCenters.TryGetValue(chunk, out Vector3 chunkLocalCenter)) {
@@ -811,7 +811,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         int uploads = 0;
         
         // Upload pending chunk meshes until the per-frame budget is reached.
-        while (uploads < uploadBudget && this._pendingUpload.TryDequeue(out IChunk? chunk)) {
+        while (uploads < uploadBudget && this._pendingUpload.TryDequeue(out T? chunk)) {
             this._queuedSet.TryRemove(chunk, out _);
             this.UploadChunkGeometry(chunk);
             this.RefreshMeshChunkState(chunk);
@@ -864,7 +864,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// Refreshes render state, render lists, bounds caches, and region membership for a chunk after geometry changes.
     /// </summary>
     /// <param name="chunk">The chunk whose mesh state should be refreshed.</param>
-    private void RefreshMeshChunkState(IChunk chunk) {
+    private void RefreshMeshChunkState(T chunk) {
         bool hasMesh = chunk.Mesh != null;
         
         // Clear pending vertex upload state when the chunk no longer has a mesh.
@@ -899,7 +899,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// Uploads or defers pending chunk geometry depending on whether the existing mesh can be updated in-place.
     /// </summary>
     /// <param name="chunk">The chunk whose pending geometry should be handled.</param>
-    private void UploadChunkGeometry(IChunk chunk) {
+    private void UploadChunkGeometry(T chunk) {
         
         // Upload immediately when there is no pending geometry or in-place update is not possible.
         if (!chunk.HasPendingGeometry || !chunk.CanUpdateGeometryInPlace) {
@@ -951,7 +951,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// </summary>
     /// <param name="chunk">The chunk that needs a renderable.</param>
     /// <returns>The renderable for the chunk.</returns>
-    private Renderable GetOrCreateChunkRenderable(IChunk chunk) {
+    private Renderable GetOrCreateChunkRenderable(T chunk) {
         if (chunk.Mesh == null) {
             throw new InvalidOperationException("Cannot create a renderable for a chunk without a mesh.");
         }
@@ -1029,7 +1029,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// <param name="chunk">The chunk owning the local bounds.</param>
     /// <param name="localBounds">The chunk bounds in terrain local space.</param>
     /// <returns>The chunk bounds in world space.</returns>
-    private BoundingBox GetChunkWorldBounds(IChunk chunk, BoundingBox localBounds) {
+    private BoundingBox GetChunkWorldBounds(T chunk, BoundingBox localBounds) {
         int currentVersion = this._boundsCacheTransformVersion;
         
         // Return the cached chunk bounds if the transform has not changed.
@@ -1125,7 +1125,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         // Refresh region membership for every terrain chunk.
-        foreach (IChunk chunk in this.Terrain.GetChunks()) {
+        foreach (T chunk in this.Terrain.GetChunks()) {
             this.UpdateChunkRegionMembership(chunk);
         }
     }
@@ -1134,7 +1134,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// Updates which far region batch a chunk belongs to.
     /// </summary>
     /// <param name="chunk">The chunk whose region membership should be updated.</param>
-    private void UpdateChunkRegionMembership(IChunk chunk) {
+    private void UpdateChunkRegionMembership(T chunk) {
         
         // Remove chunks that should not be included in far region batching.
         if (!this.ShouldBatchChunk(chunk)) {
@@ -1153,8 +1153,8 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         this.RemoveChunkFromRegion(chunk);
         this._chunkRegions[chunk] = targetKey;
         
-        if (!this._regionMembers.TryGetValue(targetKey, out HashSet<IChunk>? members)) {
-            members = new HashSet<IChunk>();
+        if (!this._regionMembers.TryGetValue(targetKey, out HashSet<T>? members)) {
+            members = new HashSet<T>();
             this._regionMembers[targetKey] = members;
         }
         
@@ -1168,7 +1168,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// Removes a chunk from its current far region batch membership.
     /// </summary>
     /// <param name="chunk">The chunk to remove.</param>
-    private void RemoveChunkFromRegion(IChunk chunk) {
+    private void RemoveChunkFromRegion(T chunk) {
         
         // Stop if the chunk is not assigned to any region.
         if (!this._chunkRegions.Remove(chunk, out TerrainRegionKey regionKey)) {
@@ -1176,7 +1176,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         // Remove the chunk from its region member list.
-        if (this._regionMembers.TryGetValue(regionKey, out HashSet<IChunk>? members)) {
+        if (this._regionMembers.TryGetValue(regionKey, out HashSet<T>? members)) {
             members.Remove(chunk);
             
             if (members.Count == 0) {
@@ -1211,7 +1211,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// </summary>
     /// <param name="chunk">The chunk to check.</param>
     /// <returns><c>true</c> if the chunk should be region batched.</returns>
-    private bool ShouldBatchChunk(IChunk chunk) {
+    private bool ShouldBatchChunk(T chunk) {
         int minBatchLod = this.TerrainSettings.FarChunkBatchMinLod;
         
         return chunk.Mesh != null &&
@@ -1224,7 +1224,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// </summary>
     /// <param name="chunk">The chunk to calculate a region key for.</param>
     /// <returns>The region key for the chunk.</returns>
-    private TerrainRegionKey GetRegionKey(IChunk chunk) {
+    private TerrainRegionKey GetRegionKey(T chunk) {
         int chunkSize = Math.Max(1, this.Terrain.ChunkSize);
         int regionSizeInChunks = Math.Max(1, this.TerrainSettings.FarChunkBatchRegionSizeInChunks);
         
@@ -1327,12 +1327,12 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         }
         
         // Copy the current region members so the background build has a stable snapshot.
-        IChunk[] memberSnapshot = this._regionMembers.TryGetValue(regionKey, out HashSet<IChunk>? members) ? members.ToArray() : [];
+        T[] memberSnapshot = this._regionMembers.TryGetValue(regionKey, out HashSet<T>? members) ? members.ToArray() : [];
         
         // Build the region geometry in the background.
         _ = Task.Run(() => {
             try {
-                TerrainRegionBuildResult buildResult = BuildRegionGeometry(regionKey, memberSnapshot);
+                TerrainRegionBuildResult buildResult = this.BuildRegionGeometry(regionKey, memberSnapshot);
                 this._pendingRegionUploads.Enqueue(buildResult);
             }
             finally {
@@ -1351,7 +1351,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     /// <param name="regionKey">The region being built.</param>
     /// <param name="members">Snapshot of chunks currently belonging to the region.</param>
     /// <returns>The build result containing merged geometry or an empty result.</returns>
-    private TerrainRegionBuildResult BuildRegionGeometry(TerrainRegionKey regionKey, IChunk[] members) {
+    private TerrainRegionBuildResult BuildRegionGeometry(TerrainRegionKey regionKey, T[] members) {
         int totalVertexCount = 0;
         int totalIndexCount = 0;
         
@@ -1361,7 +1361,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
         List<BasicMeshData> meshDataList = new List<BasicMeshData>(members.Length);
         
         // Collect valid chunk mesh data and calculate the final buffer sizes.
-        foreach (IChunk chunk in members) {
+        foreach (T chunk in members) {
             if (chunk.Mesh is not Mesh<Vertex3D> mesh ||
                 mesh.MeshData is not BasicMeshData meshData ||
                 meshData.Vertices.Length == 0 ||
@@ -1466,6 +1466,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            
             // Dispose chunk renderables.
             foreach (Renderable renderable in this._renderables.Values) {
                 renderable.Dispose();
@@ -1481,7 +1482,7 @@ public class Terrain3D : InterpolatedComponent, IDebugDrawable {
             this._regionBatches.Clear();
             
             // Dispose terrain chunks.
-            foreach (IChunk chunk in this.Terrain.GetChunks()) {
+            foreach (T chunk in this.Terrain.GetChunks()) {
                 chunk.Dispose();
             }
             

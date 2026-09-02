@@ -1,6 +1,6 @@
 namespace Sparkle.CSharp.Terrain.Generators;
 
-public interface IHeightmapGenerator : ITerrainGenerator {
+public interface IHeightmapGenerator {
     
     /// <summary>
     /// Generates height samples for the chunk at the specified chunk-grid coordinate.

@@ -13,6 +13,7 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
+using Sparkle.CSharp.Terrain.Chunks;
 using Sparkle.CSharp.Terrain.Generators;
 using Veldrith;
 
@@ -25,7 +26,7 @@ public class TerrainScene : Scene {
     private const float BrushMaxDistance = 200.0F;
     private const float BrushStepSize = 0.5F;
     
-    private ITerrain? _terrain;
+    private ITerrain<IHeightmapChunk>? _terrain;
     
     public TerrainScene() : base("Terrain3D-Scene", SceneType.Scene3D) { }
     
@@ -54,7 +55,7 @@ public class TerrainScene : Scene {
         };
         
         Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F) }, "terrain");
-        terrainEntity.AddComponent(new Terrain3D(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
+        terrainEntity.AddComponent(new Terrain3D<IHeightmapChunk>(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
         this.AddEntity(terrainEntity);
     }
     
@@ -62,7 +63,7 @@ public class TerrainScene : Scene {
         base.Update(delta);
         
         if (Input.IsKeyPressed(KeyboardKey.U)) {
-            Terrain3D? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D>();
+            Terrain3D<IHeightmapChunk>? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D<IHeightmapChunk>>();
             
             if (terrain3D != null) {
                 
@@ -114,7 +115,7 @@ public class TerrainScene : Scene {
         this._terrain.ApplyBrush(hitPosition, BrushRadius, strength);
     }
     
-    private async Task<ITerrain> CreateTerrainAsync() {
+    private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
         const int terrainWidth = 8192;
         const int terrainHeight = 128;
         const int terrainDepth = 8192;

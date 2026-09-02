@@ -5,7 +5,7 @@ using Sparkle.CSharp.Terrain.Generators;
 
 namespace Sparkle.CSharp.Terrain;
 
-public class HeightmapTerrain : ITerrain {
+public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     
     /// <summary>
     /// The generator used to create the initial height data for each terrain chunk.
@@ -55,7 +55,7 @@ public class HeightmapTerrain : ITerrain {
     /// <summary>
     /// A flat list containing all terrain chunks.
     /// </summary>
-    private List<IChunk> _chunks;
+    private List<IHeightmapChunk> _chunks;
     
     /// <summary>
     /// A grid used to retrieve chunks by their chunk coordinates.
@@ -82,7 +82,7 @@ public class HeightmapTerrain : ITerrain {
         this.IsoLevel = isoLevel;
         this._chunkCountX = Math.Max(1, (int)Math.Ceiling(width / (float)chunkSize));
         this._chunkCountZ = Math.Max(1, (int)Math.Ceiling(depth / (float)chunkSize));
-        this._chunks = new List<IChunk>(this._chunkCountX * this._chunkCountZ);
+        this._chunks = new List<IHeightmapChunk>(this._chunkCountX * this._chunkCountZ);
         this._chunkGrid = new HeightmapChunk[this._chunkCountX, this._chunkCountZ];
     }
     
@@ -112,7 +112,7 @@ public class HeightmapTerrain : ITerrain {
     /// Returns all chunks that make up this terrain.
     /// </summary>
     /// <returns>A read-only list containing all terrain chunks.</returns>
-    public IReadOnlyList<IChunk> GetChunks() {
+    public IReadOnlyList<IHeightmapChunk> GetChunks() {
         return this._chunks;
     }
     
@@ -122,7 +122,7 @@ public class HeightmapTerrain : ITerrain {
     /// <param name="chunkX">The X coordinate of the chunk in the terrain grid.</param>
     /// <param name="chunkZ">The Z coordinate of the chunk in the terrain grid.</param>
     /// <returns>The chunk at the specified coordinate, or <c>null</c> when outside the terrain bounds.</returns>
-    public IChunk? GetChunk(int chunkX, int chunkZ) {
+    public IHeightmapChunk? GetChunk(int chunkX, int chunkZ) {
         if (chunkX < 0 || chunkX >= this._chunkCountX || chunkZ < 0 || chunkZ >= this._chunkCountZ) {
             return null;
         }
@@ -134,8 +134,8 @@ public class HeightmapTerrain : ITerrain {
     /// Returns all chunks that are currently marked dirty and need a mesh rebuild.
     /// </summary>
     /// <returns>An enumerable containing all dirty terrain chunks.</returns>
-    public IEnumerable<IChunk> GetDirtyChunks() {
-        foreach (IChunk chunk in this._chunks) {
+    public IEnumerable<IHeightmapChunk> GetDirtyChunks() {
+        foreach (IHeightmapChunk chunk in this._chunks) {
             if (chunk.IsDirty) {
                 yield return chunk;
             }
@@ -373,7 +373,7 @@ public class HeightmapTerrain : ITerrain {
     /// <param name="offsetX">The chunk offset along the X axis.</param>
     /// <param name="offsetZ">The chunk offset along the Z axis.</param>
     /// <returns>The neighboring chunk, or <c>null</c> when outside the terrain bounds.</returns>
-    public IChunk? GetNeighborChunk(IChunk chunk, int offsetX, int offsetZ) {
+    public IHeightmapChunk? GetNeighborChunk(IHeightmapChunk chunk, int offsetX, int offsetZ) {
         return this.GetChunk(chunk.ChunkX + offsetX, chunk.ChunkZ + offsetZ);
     }
     
@@ -381,7 +381,7 @@ public class HeightmapTerrain : ITerrain {
     /// Marks every terrain chunk as dirty so all chunk meshes will be rebuilt.
     /// </summary>
     public void MarkAllChunksDirty() {
-        foreach (IChunk chunk in this._chunks) {
+        foreach (IHeightmapChunk chunk in this._chunks) {
             chunk.MarkDirty();
         }
     }
@@ -441,7 +441,7 @@ public class HeightmapTerrain : ITerrain {
     /// </summary>
     private async Task CreateChunks() {
         int totalChunkCount = this._chunkCountX * this._chunkCountZ;
-        IChunk[] createdChunks = new IChunk[totalChunkCount];
+        IHeightmapChunk[] createdChunks = new IHeightmapChunk[totalChunkCount];
         
         ParallelOptions parallelOptions = new ParallelOptions {
             MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1)

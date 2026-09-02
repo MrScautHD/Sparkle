@@ -1,6 +1,6 @@
 namespace Sparkle.CSharp.Terrain.Chunks;
 
-public interface IHeightmapChunk : IChunk {
+public interface IHeightmapChunk : IChunk<IHeightmapChunk> {
     
     /// <summary>
     /// The chunk-local height samples, including the positive X and Z edge samples.

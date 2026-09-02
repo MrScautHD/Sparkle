@@ -4,7 +4,7 @@ using Sparkle.CSharp.Terrain.Chunks;
 
 namespace Sparkle.CSharp.Terrain;
 
-public interface ITerrain {
+public interface ITerrain<T> where T : class, IChunk<T> {
     
     /// <summary>
     /// The material used for rendering the terrain, which defines its visual appearance and surface properties.
@@ -39,7 +39,7 @@ public interface ITerrain {
     /// <summary>
     /// Returns all chunks that subdivide the terrain volume.
     /// </summary>
-    IReadOnlyList<IChunk> GetChunks();
+    IReadOnlyList<T> GetChunks();
     
     /// <summary>
     /// Returns the chunk at the specified chunk-grid coordinate.
@@ -47,12 +47,12 @@ public interface ITerrain {
     /// <param name="chunkX">The X coordinate of the chunk in the terrain grid.</param>
     /// <param name="chunkZ">The Z coordinate of the chunk in the terrain grid.</param>
     /// <returns>The chunk at the specified coordinate, or <c>null</c> when outside the terrain bounds.</returns>
-    IChunk? GetChunk(int chunkX, int chunkZ);
+    T? GetChunk(int chunkX, int chunkZ);
     
     /// <summary>
     /// Returns all chunks that are currently marked dirty and need a mesh rebuild.
     /// </summary>
-    IEnumerable<IChunk> GetDirtyChunks();
+    IEnumerable<T> GetDirtyChunks();
     
     /// <summary>
     /// Returns the trilinearly interpolated density at <paramref name="position"/>, or -1 when out of bounds.
@@ -135,7 +135,7 @@ public interface ITerrain {
     /// <param name="offsetX">The horizontal chunk offset along the X axis.</param>
     /// <param name="offsetZ">The horizontal chunk offset along the Z axis.</param>
     /// <returns>The neighboring chunk at the specified offset, or null if no such chunk exists.</returns>
-    IChunk? GetNeighborChunk(IChunk chunk, int offsetX, int offsetZ);
+    T? GetNeighborChunk(T chunk, int offsetX, int offsetZ);
     
     /// <summary>
     /// Marks every chunk in the terrain as dirty.

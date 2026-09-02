@@ -1,6 +1,6 @@
 namespace Sparkle.CSharp.Terrain.Generators;
 
-public interface IDensityGenerator : ITerrainGenerator {
+public interface IDensityGenerator {
     
     /// <summary>
     /// Generates density samples for the chunk at the specified chunk-grid coordinate.

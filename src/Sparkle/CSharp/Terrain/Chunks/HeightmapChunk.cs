@@ -13,7 +13,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     /// <summary>
     /// The terrain this chunk belongs to.
     /// </summary>
-    public ITerrain Terrain { get; private set; }
+    public ITerrain<IHeightmapChunk> Terrain { get; private set; }
     
     /// <summary>
     /// The uploaded mesh used for rendering this chunk.
@@ -368,7 +368,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     /// <param name="worldZValues">An array of world-space Z-coordinate values for each row in the chunk.</param>
     /// <param name="neighborChunk">The neighboring chunk along the vertical axis to stitch with.</param>
     /// <param name="selfStep">The step size for the current chunk's LOD.</param>
-    private void StitchVerticalEdge(float[] heights, int xCount, int columnIndex, int[] worldZValues, IChunk? neighborChunk, int selfStep) {
+    private void StitchVerticalEdge(float[] heights, int xCount, int columnIndex, int[] worldZValues, IHeightmapChunk? neighborChunk, int selfStep) {
         if (neighborChunk == null || neighborChunk.Lod < 0) {
             return;
         }
@@ -428,7 +428,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     /// <param name="worldXValues">The array of world-space X coordinates for the vertices of the chunk.</param>
     /// <param name="neighborChunk">The neighboring chunk with which the edge is being stitched.</param>
     /// <param name="selfStep">The step size for the LoD of the current chunk.</param>
-    private void StitchHorizontalEdge(float[] heights, int xCount, int rowIndex, int[] worldXValues, IChunk? neighborChunk, int selfStep) {
+    private void StitchHorizontalEdge(float[] heights, int xCount, int rowIndex, int[] worldXValues, IHeightmapChunk? neighborChunk, int selfStep) {
         if (neighborChunk == null || neighborChunk.Lod < 0) {
             return;
         }
