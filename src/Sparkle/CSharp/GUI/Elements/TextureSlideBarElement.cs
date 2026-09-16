@@ -421,7 +421,7 @@ public class TextureSlideBarElement : GuiElement {
         if (this.Data.SliderTexture == null) {
             return;
         }
-
+        
         Color color = this.IsHovered ? this.Data.SliderHoverColor : this.Data.SliderColor;
         
         if (!this.Interactable) {
@@ -439,7 +439,7 @@ public class TextureSlideBarElement : GuiElement {
         float xPos = (sliderWidth / 2.0F) + (percent * usableWidth);
         
         // Calculate the slider origin to align it correctly with the bar.
-        Vector2 origin = new Vector2(this.Data.SliderTexture.Width / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
+        Vector2 origin = new Vector2(sliderWidth / 2.0F - xPos + (this.Size.X / 2.0F), sliderHeight / 2.0F) - (this.Size / 2.0F - this.Origin);
         
         // Draw.
         SpriteGuiRenderState renderState = new SpriteGuiRenderState(this.Data.SliderSampler, this.Data.Effect, this.Data.BlendState);
