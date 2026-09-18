@@ -140,9 +140,13 @@ public class Camera3D : Entity {
     /// <param name="delta">The time elapsed since the last frame update, in seconds.</param>
     protected internal override void Update(double delta) {
         base.Update(delta);
-
-        // To make sure just the active camera moves from the input.
-        if (SceneManager.ActiveCam3D == this && GuiManager.ActiveGui == null) {
+        
+        // To make sure just the active camera moves from the input and check if the active gui allows the camera to get moved.
+        if (SceneManager.ActiveCam3D == this) {
+            if (GuiManager.ActiveGui != null && !GuiManager.ActiveGui.AllowCameraMovement) {
+                return;
+            }
+            
             this._cam3D.Update(delta);
         }
     }

@@ -17,6 +17,11 @@ public abstract class Gui : Disposable {
     public readonly string Name;
     
     /// <summary>
+    /// Determines whether camera movement is allowed while the GUI is active.
+    /// </summary>
+    public bool AllowCameraMovement;
+    
+    /// <summary>
     /// Indicates whether the GUI has been successfully initialized.
     /// </summary>
     public bool IsInitialized { get; internal set; }
