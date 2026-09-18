@@ -210,8 +210,9 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     /// <param name="center">The terrain-space center of the brush.</param>
     /// <param name="radius">The radius of the brush.</param>
     /// <param name="strength">The height delta applied at the center of the brush.</param>
+    /// <param name="brushType">The shape or falloff type used by the brush.</param>
     /// <returns><c>true</c> when at least one height sample was modified; otherwise <c>false</c>.</returns>
-    public bool ApplyBrush(Vector3 center, float radius, float strength) {
+    public bool ApplyBrush(Vector3 center, float radius, float strength, TerrainBrushType brushType) {
         if (radius <= 0.0F || MathF.Abs(strength) <= float.Epsilon) {
             return false;
         }
@@ -228,11 +229,86 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                 float offsetX = worldX - center.X;
                 float offsetZ = worldZ - center.Z;
                 float distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
-                if (distanceSquared > radiusSquared) {
+                float weight = 0.0F;
+                
+                switch (brushType) {
+                    case TerrainBrushType.Circle:
+                        if (distanceSquared <= radiusSquared) {
+                            weight = 1.0F;
+                        }
+                        
+                        break;
+                    
+                    case TerrainBrushType.SoftCircle:
+                        if (distanceSquared <= radiusSquared) {
+                            weight = 1.0F - MathF.Sqrt(distanceSquared) / radius;
+                        }
+                        
+                        break;
+                    
+                    case TerrainBrushType.Route: {
+                        float rotatedX = (offsetX + offsetZ) * 0.70710678F;
+                        float rotatedZ = (offsetZ - offsetX) * 0.70710678F;
+                        
+                        if (MathF.Abs(rotatedX) <= radius && MathF.Abs(rotatedZ) <= radius) {
+                            weight = 1.0F;
+                        }
+                        
+                        break;
+                    }
+                    
+                    case TerrainBrushType.Quad:
+                        if (MathF.Abs(offsetX) <= radius && MathF.Abs(offsetZ) <= radius) {
+                            weight = 1.0F;
+                        }
+                        
+                        break;
+                    
+                    case TerrainBrushType.Pentagon: {
+                        float distance = MathF.Sqrt(distanceSquared);
+                        
+                        if (distance <= float.Epsilon) {
+                            weight = 1.0F;
+                            break;
+                        }
+                        
+                        const int sideCount = 5;
+                        float sectorAngle = MathF.Tau / sideCount;
+                        float angle = MathF.Atan2(offsetZ, offsetX) - MathF.PI * 0.5F;
+                        
+                        angle -= MathF.Floor(angle / MathF.Tau) * MathF.Tau;
+                        
+                        float localAngle = angle % sectorAngle;
+                        localAngle -= sectorAngle * 0.5F;
+                        
+                        float polygonRadius = radius * MathF.Cos(MathF.PI / sideCount) / MathF.Cos(localAngle);
+                        
+                        if (distance <= polygonRadius) {
+                            weight = 1.0F;
+                        }
+                        
+                        break;
+                    }
+                    
+                    case TerrainBrushType.Noisy:
+                        if (distanceSquared <= radiusSquared) {
+                            uint hash = (uint) worldX * 374761393U + (uint) worldZ * 668265263U;
+                            hash = (hash ^ (hash >> 13)) * 1274126177U;
+                            hash ^= hash >> 16;
+                            
+                            float noise = hash / (float) uint.MaxValue;
+                            float falloff = 1.0F - MathF.Sqrt(distanceSquared) / radius;
+                            weight = falloff * float.Lerp(0.45F, 1.0F, noise);
+                        }
+                        
+                        break;
+                }
+                
+                if (weight <= 0.0F) {
                     continue;
                 }
                 
-                float height = this.GetSurfaceHeight(worldX, worldZ) + strength * (1.0F - MathF.Sqrt(distanceSquared) / radius);
+                float height = this.GetSurfaceHeight(worldX, worldZ) + strength * weight;
                 this.SetSurfaceHeight(worldX, worldZ, height);
                 changed = true;
             }
@@ -255,8 +331,8 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     /// <param name="position">The terrain-space position to sample.</param>
     /// <returns>The normalized surface normal.</returns>
     public Vector3 CalculateNormal(Vector3 position) {
-        int x = Math.Clamp((int)MathF.Round(position.X), 0, this.Width);
-        int z = Math.Clamp((int)MathF.Round(position.Z), 0, this.Depth);
+        int x = Math.Clamp((int) MathF.Round(position.X), 0, this.Width);
+        int z = Math.Clamp((int) MathF.Round(position.Z), 0, this.Depth);
         int previousX = Math.Max(x - 1, 0);
         int nextX = Math.Min(x + 1, this.Width);
         int previousZ = Math.Max(z - 1, 0);

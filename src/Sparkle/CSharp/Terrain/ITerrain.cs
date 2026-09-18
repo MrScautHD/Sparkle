@@ -81,13 +81,14 @@ public interface ITerrain<T> where T : class, IChunk<T> {
     void ApplyFlatSurface(float surfaceHeight);
     
     /// <summary>
-    /// Adds a spherical density falloff centered at <paramref name="center"/> to all voxels within <paramref name="radius"/>,
-    /// then marks affected chunks dirty. Returns <c>true</c> if any voxel was modified.
+    /// Adds a spherical density falloff centered at <paramref name="center"/> to all voxels within <paramref name="radius"/>, then marks affected chunks dirty.
     /// </summary>
     /// <param name="center">The world-space center of the brush.</param>
     /// <param name="radius">The radius of the brush in voxels.</param>
     /// <param name="strength">The density delta applied at the brush center. Negative values remove material.</param>
-    bool ApplyBrush(Vector3 center, float radius, float strength);
+    /// <param name="brushType">The shape or falloff type used by the brush.</param>
+    /// <returns><c>true</c> if any voxel was modified; otherwise, <c>false</c>.</returns>
+    bool ApplyBrush(Vector3 center, float radius, float strength, TerrainBrushType brushType);
     
     /// <summary>
     /// Resets the entire terrain to <paramref name="density"/> and marks all chunks dirty.

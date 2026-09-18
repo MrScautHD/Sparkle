@@ -112,7 +112,7 @@ public class TerrainScene : Scene {
         }
         
         float strength = (addMaterial ? BrushStrength : -BrushStrength) * (float) delta;
-        this._terrain.ApplyBrush(hitPosition, BrushRadius, strength);
+        this._terrain.ApplyBrush(hitPosition, BrushRadius, strength, TerrainBrushType.Route);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
