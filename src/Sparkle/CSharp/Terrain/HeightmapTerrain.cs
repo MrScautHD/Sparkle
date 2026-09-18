@@ -217,10 +217,10 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
             return false;
         }
         
-        int minimumX = Math.Max(0, (int)MathF.Floor(center.X - radius));
-        int maximumX = Math.Min(this.Width, (int)MathF.Ceiling(center.X + radius));
-        int minimumZ = Math.Max(0, (int)MathF.Floor(center.Z - radius));
-        int maximumZ = Math.Min(this.Depth, (int)MathF.Ceiling(center.Z + radius));
+        int minimumX = Math.Max(0, (int) MathF.Floor(center.X - radius));
+        int maximumX = Math.Min(this.Width, (int) MathF.Ceiling(center.X + radius));
+        int minimumZ = Math.Max(0, (int) MathF.Floor(center.Z - radius));
+        int maximumZ = Math.Min(this.Depth, (int) MathF.Ceiling(center.Z + radius));
         float radiusSquared = radius * radius;
         bool changed = false;
         
