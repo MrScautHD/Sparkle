@@ -91,6 +91,17 @@ public interface ITerrain<T> where T : class, IChunk<T> {
     bool ApplyBrush(Vector3 center, float radius, float strength, TerrainBrushType brushType);
     
     /// <summary>
+    /// Applies a brush to the specified terrain texture layer weight map.
+    /// </summary>
+    /// <param name="center">The terrain-space center of the brush.</param>
+    /// <param name="radius">The radius of the brush in terrain units.</param>
+    /// <param name="strength">The layer-weight delta applied at the brush center.</param>
+    /// <param name="layer">The texture layer index to modify.</param>
+    /// <param name="brushType">The shape or falloff type used by the brush.</param>
+    /// <returns><c>true</c> if any texture layer weight was modified; otherwise, <c>false</c>.</returns>
+    bool ApplyTextureLayerBrush(Vector3 center, float radius, float strength, int layer, TerrainBrushType brushType);
+    
+    /// <summary>
     /// Resets the entire terrain to <paramref name="density"/> and marks all chunks dirty.
     /// </summary>
     /// <param name="density">The density value to fill with. Defaults to -1.</param>

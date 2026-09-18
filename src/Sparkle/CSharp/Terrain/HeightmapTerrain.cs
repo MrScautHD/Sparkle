@@ -232,19 +232,21 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                 float weight = 0.0F;
                 
                 switch (brushType) {
-                    case TerrainBrushType.Circle:
+                    case TerrainBrushType.Circle: {
                         if (distanceSquared <= radiusSquared) {
                             weight = 1.0F;
                         }
                         
                         break;
+                    }
                     
-                    case TerrainBrushType.SoftCircle:
+                    case TerrainBrushType.SoftCircle: {
                         if (distanceSquared <= radiusSquared) {
                             weight = 1.0F - MathF.Sqrt(distanceSquared) / radius;
                         }
                         
                         break;
+                    }
                     
                     case TerrainBrushType.Route: {
                         float rotatedX = (offsetX + offsetZ) * 0.70710678F;
@@ -257,12 +259,13 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                         break;
                     }
                     
-                    case TerrainBrushType.Quad:
+                    case TerrainBrushType.Quad: {
                         if (MathF.Abs(offsetX) <= radius && MathF.Abs(offsetZ) <= radius) {
                             weight = 1.0F;
                         }
                         
                         break;
+                    }
                     
                     case TerrainBrushType.Pentagon: {
                         float distance = MathF.Sqrt(distanceSquared);
@@ -290,7 +293,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                         break;
                     }
                     
-                    case TerrainBrushType.Noisy:
+                    case TerrainBrushType.Noisy: {
                         if (distanceSquared <= radiusSquared) {
                             uint hash = (uint) worldX * 374761393U + (uint) worldZ * 668265263U;
                             hash = (hash ^ (hash >> 13)) * 1274126177U;
@@ -302,6 +305,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                         }
                         
                         break;
+                    }
                 }
                 
                 if (weight <= 0.0F) {
@@ -315,6 +319,10 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         }
         
         return changed;
+    }
+    
+    public bool ApplyTextureLayerBrush(Vector3 center, float radius, float strength, int layer, TerrainBrushType brushType) {
+        return false;
     }
     
     /// <summary>
