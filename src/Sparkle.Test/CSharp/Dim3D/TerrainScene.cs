@@ -21,10 +21,10 @@ namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TerrainScene : Scene {
     
-    private const float BrushRadius = 8.0F;
-    private const float BrushStrength = 4.0F;
-    private const float BrushMaxDistance = 200.0F;
-    private const float BrushStepSize = 0.5F;
+    private const float _brushRadius = 8.0F;
+    private const float _brushStrength = 4.0F;
+    private const float _brushMaxDistance = 200.0F;
+    private const float _brushStepSize = 0.5F;
     
     private ITerrain<IHeightmapChunk>? _terrain;
     
@@ -107,12 +107,12 @@ public class TerrainScene : Scene {
         Vector3 terrainOffset = new Vector3(0.0F, -64, 0.0F);
         Vector3 localCamPos = cam.Position - terrainOffset;
         
-        if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), BrushMaxDistance, BrushStepSize, out Vector3 hitPosition, out _)) {
+        if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
             return;
         }
         
-        float strength = (addMaterial ? BrushStrength : -BrushStrength) * (float) delta;
-        this._terrain.ApplyBrush(hitPosition, BrushRadius, strength, TerrainBrushType.Route);
+        float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
+        this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Route);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
