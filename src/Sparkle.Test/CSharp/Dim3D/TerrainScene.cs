@@ -54,7 +54,7 @@ public class TerrainScene : Scene {
             MaxChunkUploadsPerFrame = 16
         };
         
-        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -64.0F, 0.0F) }, "terrain");
+        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -128.0F, 0.0F) }, "terrain");
         terrainEntity.AddComponent(new Terrain3D<IHeightmapChunk>(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
         this.AddEntity(terrainEntity);
     }
@@ -104,7 +104,7 @@ public class TerrainScene : Scene {
         }
         
         // Convert camera world position into terrain local space
-        Vector3 terrainOffset = new Vector3(0.0F, -64, 0.0F);
+        Vector3 terrainOffset = new Vector3(0.0F, 0.0F, 0.0F);
         Vector3 localCamPos = cam.Position - terrainOffset;
         
         if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
@@ -112,15 +112,15 @@ public class TerrainScene : Scene {
         }
         
         float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
-        this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Route);
+        this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
         const int terrainWidth = 8192;
-        const int terrainHeight = 128;
+        const int terrainHeight = 256;
         const int terrainDepth = 8192;
         const int chunkSize = 256;
-        const int surfaceHeight = 64;
+        const int surfaceHeight = 128;
         
         // Create chunk generator.
         FlatHeightmapGenerator chunkGenerator = new FlatHeightmapGenerator(chunkSize, surfaceHeight);

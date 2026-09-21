@@ -443,6 +443,8 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
             return;
         }
         
+        height = Math.Clamp(height, 0.0F, this.Height);
+        
         chunk!.SetHeightAt(localX, localZ, height);
         this.SetMirroredHeight(chunk.ChunkX - 1, chunk.ChunkZ, x, z, height);
         this.SetMirroredHeight(chunk.ChunkX + 1, chunk.ChunkZ, x, z, height);

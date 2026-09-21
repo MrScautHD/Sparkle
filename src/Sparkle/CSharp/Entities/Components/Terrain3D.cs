@@ -282,14 +282,14 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
         
         // Create terrain base box.
         this._terrainLocalBounds = new BoundingBox {
-            Min = new Vector3(0.0F, -this.Terrain.Height, 0.0F),
+            Min = new Vector3(0.0F, 0.0F, 0.0F),
             Max = new Vector3(this.Terrain.Width, this.Terrain.Height, this.Terrain.Depth)
         };
         
         // Create chunk local boxes.
         foreach (T chunk in this.Terrain.GetChunks()) {
             this._chunkLocalBounds[chunk] = new BoundingBox {
-                Min = chunk.Position + new Vector3(0.0F, -chunk.Height, 0.0F),
+                Min = chunk.Position,
                 Max = chunk.Position + new Vector3(chunk.Width, chunk.Height, chunk.Depth)
             };
             
