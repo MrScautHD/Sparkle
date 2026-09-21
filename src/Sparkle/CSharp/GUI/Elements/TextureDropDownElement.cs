@@ -133,6 +133,7 @@ public class TextureDropDownElement : GuiElement {
     /// <param name="dropDownData">The visual and texture data used to render the dropdown field and menu.</param>
     /// <param name="options">The list of label data entries representing selectable options.</param>
     /// <param name="maxVisibleOptions">The maximum number of options visible in the dropdown menu at a time.</param>
+    /// <param name="defaultOption">The option that should be selected by default. If null or not contained in options, the first option is selected.</param>
     /// <param name="anchor">The anchor point used to position the dropdown element.</param>
     /// <param name="offset">The offset from the anchor position.</param>
     /// <param name="fieldTextAlignment">The text alignment used for the selected value displayed in the field.</param>
@@ -156,6 +157,7 @@ public class TextureDropDownElement : GuiElement {
         TextureDropDownData dropDownData,
         List<LabelData> options,
         int maxVisibleOptions,
+        LabelData? defaultOption,
         Anchor anchor,
         Vector2 offset,
         TextAlignment fieldTextAlignment = TextAlignment.Left,
@@ -178,7 +180,7 @@ public class TextureDropDownElement : GuiElement {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
-        this.SelectedOption = this.Options.FirstOrDefault();
+        this.SelectedOption = defaultOption != null && this.Options.Contains(defaultOption) ? defaultOption : this.Options.FirstOrDefault();
         this.FieldTextAlignment = fieldTextAlignment;
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;

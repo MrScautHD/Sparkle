@@ -51,20 +51,19 @@ public class SceneSwitcherMenu : Gui {
             new LabelData(ContentRegistry.Fontoe, "Test 2D", 18),
         ];
         
-        string currentSceneName = SceneManager.ActiveScene switch {
-            TestScene3D => "Test 3D",
-            PlayerMovementScene => "Test Player",
-            TerrainScene => "Terrain",
-            TestScene2D => "Test 2D",
-            _ => "Test 3D"
+        LabelData selectedOption = SceneManager.ActiveScene switch {
+            TestScene3D => options[0],
+            PlayerMovementScene => options[1],
+            TerrainScene => options[2],
+            TestScene2D => options[3],
+            _ => options[0]
         };
-        
-        options.Sort((a, b) => a.Text == currentSceneName ? -1 : b.Text == currentSceneName ? 1 : 0);
         
         TextureDropDownElement chooserDownElement = new TextureDropDownElement(
             chooserDropDownData,
             options,
             4,
+            selectedOption,
             Anchor.Center,
             new Vector2(0, 0),
             size: new Vector2(150, 30),

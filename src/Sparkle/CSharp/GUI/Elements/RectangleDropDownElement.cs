@@ -120,6 +120,7 @@ public class RectangleDropDownElement : GuiElement {
     /// <param name="dropDownData">Visual styling data for the dropdown.</param>
     /// <param name="options">List of selectable options.</param>
     /// <param name="maxVisibleOptions">Maximum number of visible menu items.</param>
+    /// <param name="defaultOption">The option that should be selected by default. If null or not contained in options, the first option is selected.</param>
     /// <param name="anchor">Anchor point of the element.</param>
     /// <param name="offset">Offset from the anchor.</param>
     /// <param name="size">Size of the dropdown field.</param>
@@ -141,6 +142,7 @@ public class RectangleDropDownElement : GuiElement {
         RectangleDropDownData dropDownData,
         List<LabelData> options,
         int maxVisibleOptions,
+        LabelData? defaultOption,
         Anchor anchor,
         Vector2 offset,
         Vector2 size,
@@ -161,7 +163,7 @@ public class RectangleDropDownElement : GuiElement {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
-        this.SelectedOption = this.Options.FirstOrDefault();
+        this.SelectedOption = defaultOption != null && this.Options.Contains(defaultOption) ? defaultOption : this.Options.FirstOrDefault();
         this.FieldTextAlignment = fieldTextAlignment;
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
