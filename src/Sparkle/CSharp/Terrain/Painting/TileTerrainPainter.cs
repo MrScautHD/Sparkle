@@ -304,7 +304,8 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
                 
                 switch (brushType) {
                     case TerrainBrushType.Circle:
-                    case TerrainBrushType.SoftCircle: {
+                    case TerrainBrushType.SoftCircle:
+                    case TerrainBrushType.Smoothing: {
                         isInsideBrush = distanceSquared <= radiusSquared;
                         break;
                     }

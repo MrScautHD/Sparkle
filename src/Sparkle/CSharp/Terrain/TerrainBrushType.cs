@@ -13,6 +13,11 @@ public enum TerrainBrushType {
     SoftCircle,
     
     /// <summary>
+    /// A brush type used to smooth out terrain elevations and transitions, creating a flatter
+    /// </summary>
+    Smoothing,
+    
+    /// <summary>
     /// A rotated quad brush, typically elongated and oriented along a path, useful for carving roads or rivers.
     /// </summary>
     Route,

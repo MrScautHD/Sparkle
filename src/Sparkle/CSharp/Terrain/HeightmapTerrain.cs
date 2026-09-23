@@ -226,12 +226,25 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         float radiusSquared = radius * radius;
         bool changed = false;
         
+        float[,]? heightSnapshot = null;
+        
+        if (brushType == TerrainBrushType.Smoothing) {
+            heightSnapshot = new float[maximumX - minimumX + 1, maximumZ - minimumZ + 1];
+            
+            for (int worldX = minimumX; worldX <= maximumX; worldX++) {
+                for (int worldZ = minimumZ; worldZ <= maximumZ; worldZ++) {
+                    heightSnapshot[worldX - minimumX, worldZ - minimumZ] = this.GetSurfaceHeight(worldX, worldZ);
+                }
+            }
+        }
+        
         for (int worldX = minimumX; worldX <= maximumX; worldX++) {
             for (int worldZ = minimumZ; worldZ <= maximumZ; worldZ++) {
                 float offsetX = worldX - center.X;
                 float offsetZ = worldZ - center.Z;
                 float distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
                 float weight = 0.0F;
+                float? targetHeight = null;
                 
                 switch (brushType) {
                     case TerrainBrushType.Circle: {
@@ -247,6 +260,29 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                             weight = 1.0F - MathF.Sqrt(distanceSquared) / radius;
                         }
                         
+                        break;
+                    }
+                    
+                    case TerrainBrushType.Smoothing: {
+                        if (distanceSquared > radiusSquared) {
+                            break;
+                        }
+                        
+                        float totalHeight = 0.0F;
+                        int sampleCount = 0;
+                        
+                        for (int sampleX = Math.Max(minimumX, worldX - 1); sampleX <= Math.Min(maximumX, worldX + 1); sampleX++) {
+                            for (int sampleZ = Math.Max(minimumZ, worldZ - 1); sampleZ <= Math.Min(maximumZ, worldZ + 1); sampleZ++) {
+                                totalHeight += heightSnapshot![sampleX - minimumX, sampleZ - minimumZ];
+                                sampleCount++;
+                            }
+                        }
+                        
+                        float currentHeight = heightSnapshot![worldX - minimumX, worldZ - minimumZ];
+                        float averageHeight = totalHeight / sampleCount;
+                        float smoothingAmount = Math.Clamp(MathF.Abs(strength), 0.0F, 1.0F);
+                        
+                        targetHeight = float.Lerp(currentHeight, averageHeight, smoothingAmount);
                         break;
                     }
                     
@@ -310,12 +346,21 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                     }
                 }
                 
-                if (weight <= 0.0F) {
+                if (!targetHeight.HasValue) {
+                    if (weight <= 0.0F) {
+                        continue;
+                    }
+                    
+                    targetHeight = this.GetSurfaceHeight(worldX, worldZ) + strength * weight;
+                }
+                
+                float currentSurfaceHeight = this.GetSurfaceHeight(worldX, worldZ);
+                
+                if (MathF.Abs(targetHeight.Value - currentSurfaceHeight) <= float.Epsilon) {
                     continue;
                 }
                 
-                float height = this.GetSurfaceHeight(worldX, worldZ) + strength * weight;
-                this.SetSurfaceHeight(worldX, worldZ, height);
+                this.SetSurfaceHeight(worldX, worldZ, targetHeight.Value);
                 changed = true;
             }
         }
