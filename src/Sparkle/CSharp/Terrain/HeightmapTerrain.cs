@@ -1,7 +1,7 @@
 using System.Numerics;
-using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Terrain.Chunks;
 using Sparkle.CSharp.Terrain.Generators;
+using Sparkle.CSharp.Terrain.Painting;
 
 namespace Sparkle.CSharp.Terrain;
 
@@ -13,9 +13,9 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     public IHeightmapGenerator HeightmapGenerator { get; private set; }
     
     /// <summary>
-    /// The material used when rendering terrain meshes.
+    /// The painter responsible for terrain material and texture-layer painting.
     /// </summary>
-    public Material Material { get; private set; }
+    public ITerrainPainter Painter { get; private set; }
     
     /// <summary>
     /// The total terrain width along the X axis.
@@ -66,22 +66,26 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     /// Initializes a new instance of the <see cref="HeightmapTerrain"/> class.
     /// </summary>
     /// <param name="generator">The generator used to create initial chunk height data.</param>
-    /// <param name="material">The material used for terrain rendering.</param>
+    /// <param name="painter">The terrain painter used for material and texture-layer painting.</param>
     /// <param name="width">The terrain width along the X axis.</param>
     /// <param name="height">The terrain height along the Y axis.</param>
     /// <param name="depth">The terrain depth along the Z axis.</param>
     /// <param name="chunkSize">The size of each chunk along the X and Z axes.</param>
     /// <param name="isoLevel">The density value used as the terrain surface threshold.</param>
-    private HeightmapTerrain(IHeightmapGenerator generator, Material material, int width, int height, int depth, int chunkSize, float isoLevel) {
+    private HeightmapTerrain(IHeightmapGenerator generator, ITerrainPainter painter, int width, int height, int depth, int chunkSize, float isoLevel) {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(chunkSize);
         this.HeightmapGenerator = generator;
-        this.Material = material;
+        this.Painter = painter;
         this.Width = width;
         this.Height = height;
         this.Depth = depth;
         this.ChunkSize = chunkSize;
         this.IsoLevel = isoLevel;
-        this._chunkCountX = Math.Max(1, (int)Math.Ceiling(width / (float)chunkSize));
-        this._chunkCountZ = Math.Max(1, (int)Math.Ceiling(depth / (float)chunkSize));
+        this._chunkCountX = Math.Max(1, (int) Math.Ceiling(width / (float) chunkSize));
+        this._chunkCountZ = Math.Max(1, (int) Math.Ceiling(depth / (float) chunkSize));
         this._chunks = new List<IHeightmapChunk>(this._chunkCountX * this._chunkCountZ);
         this._chunkGrid = new HeightmapChunk[this._chunkCountX, this._chunkCountZ];
     }
@@ -90,20 +94,15 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     /// Creates a heightmap terrain and initializes all chunks asynchronously.
     /// </summary>
     /// <param name="generator">The generator used to create initial chunk height data.</param>
-    /// <param name="material">The material used for terrain rendering.</param>
+    /// <param name="painter">The terrain painter used for material and texture-layer painting.</param>
     /// <param name="width">The terrain width along the X axis.</param>
     /// <param name="height">The terrain height along the Y axis.</param>
     /// <param name="depth">The terrain depth along the Z axis.</param>
     /// <param name="chunkSize">The size of each chunk along the X and Z axes.</param>
     /// <param name="isoLevel">The density value used as the terrain surface threshold.</param>
     /// <returns>The created and initialized heightmap terrain.</returns>
-    public static async Task<HeightmapTerrain> CreateAsync(IHeightmapGenerator generator, Material material, int width, int height, int depth, int chunkSize, float isoLevel = 0.0F) {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(chunkSize);
-        
-        HeightmapTerrain terrain = new HeightmapTerrain(generator, material, width, height, depth, chunkSize, isoLevel);
+    public static async Task<HeightmapTerrain> CreateAsync(IHeightmapGenerator generator, ITerrainPainter painter, int width, int height, int depth, int chunkSize, float isoLevel = 0.0F) {
+        HeightmapTerrain terrain = new HeightmapTerrain(generator, painter, width, height, depth, chunkSize, isoLevel);
         await terrain.CreateChunks();
         return terrain;
     }
@@ -155,8 +154,10 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         
         int lowerX = (int) MathF.Floor(position.X);
         int lowerZ = (int) MathF.Floor(position.Z);
+        
         int upperX = Math.Min(lowerX + 1, this.Width);
         int upperZ = Math.Min(lowerZ + 1, this.Depth);
+        
         float lowerHeight = float.Lerp(this.GetSurfaceHeight(lowerX, lowerZ), this.GetSurfaceHeight(upperX, lowerZ), position.X - lowerX);
         float upperHeight = float.Lerp(this.GetSurfaceHeight(lowerX, upperZ), this.GetSurfaceHeight(upperX, upperZ), position.X - lowerX);
         
@@ -221,6 +222,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         int maximumX = Math.Min(this.Width, (int) MathF.Ceiling(center.X + radius));
         int minimumZ = Math.Max(0, (int) MathF.Floor(center.Z - radius));
         int maximumZ = Math.Min(this.Depth, (int) MathF.Ceiling(center.Z + radius));
+        
         float radiusSquared = radius * radius;
         bool changed = false;
         
@@ -321,10 +323,6 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         return changed;
     }
     
-    public bool ApplyTextureLayerBrush(Vector3 center, float radius, float strength, int layer, TerrainBrushType brushType) {
-        return false;
-    }
-    
     /// <summary>
     /// Clears the terrain using the specified density value.
     /// </summary>
@@ -341,8 +339,10 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     public Vector3 CalculateNormal(Vector3 position) {
         int x = Math.Clamp((int) MathF.Round(position.X), 0, this.Width);
         int z = Math.Clamp((int) MathF.Round(position.Z), 0, this.Depth);
+        
         int previousX = Math.Max(x - 1, 0);
         int nextX = Math.Min(x + 1, this.Width);
+        
         int previousZ = Math.Max(z - 1, 0);
         int nextZ = Math.Min(z + 1, this.Depth);
         
@@ -368,6 +368,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
     public bool RaycastSurface(Vector3 origin, Vector3 direction, float maxDistance, float stepSize, out Vector3 hitPosition, out Vector3 hitNormal) {
         hitPosition = Vector3.Zero;
         hitNormal = Vector3.UnitY;
+        
         if (maxDistance <= 0.0F || stepSize <= 0.0F || direction.LengthSquared() <= 1.0E-10F) {
             return false;
         }
@@ -379,6 +380,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
         for (float distance = stepSize; distance <= maxDistance; distance += stepSize) {
             Vector3 currentPoint = origin + rayDirection * distance;
             float currentDensity = this.GetDensityAt(currentPoint) - this.IsoLevel;
+            
             if (previousDensity * currentDensity <= 0.0F) {
                 Vector3 lowerPoint = previousPoint;
                 Vector3 upperPoint = currentPoint;
@@ -387,6 +389,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                 for (int iteration = 0; iteration < 8; iteration++) {
                     Vector3 midpoint = (lowerPoint + upperPoint) * 0.5F;
                     float midpointDensity = this.GetDensityAt(midpoint) - this.IsoLevel;
+                    
                     if (lowerDensity * midpointDensity <= 0.0F) {
                         upperPoint = midpoint;
                     }
@@ -400,6 +403,7 @@ public class HeightmapTerrain : ITerrain<IHeightmapChunk> {
                 hitNormal = this.CalculateNormal(hitPosition);
                 return true;
             }
+            
             previousPoint = currentPoint;
             previousDensity = currentDensity;
         }

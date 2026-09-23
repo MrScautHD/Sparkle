@@ -15,6 +15,7 @@ using Sparkle.CSharp.Scenes;
 using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Chunks;
 using Sparkle.CSharp.Terrain.Generators;
+using Sparkle.CSharp.Terrain.Painting;
 using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
@@ -104,7 +105,7 @@ public class TerrainScene : Scene {
         }
         
         // Convert camera world position into terrain local space
-        Vector3 terrainOffset = new Vector3(0.0F, 0.0F, 0.0F);
+        Vector3 terrainOffset = new Vector3(0.0F, -128.0F, 0.0F);
         Vector3 localCamPos = cam.Position - terrainOffset;
         
         if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
@@ -112,7 +113,8 @@ public class TerrainScene : Scene {
         }
         
         float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
-        this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
+        //this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
+        this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 2, TerrainBrushType.Circle);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
@@ -126,15 +128,20 @@ public class TerrainScene : Scene {
         FlatHeightmapGenerator chunkGenerator = new FlatHeightmapGenerator(chunkSize, surfaceHeight);
         
         // Create material.
-        Material material = new Material(GlobalResource.DefaultModelEffect);
+        Material material = new Material(GlobalGraphicsAssets.TileTerrainEffect);
         
         material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
         });
         
+        TileTerrainPainter painter = new TileTerrainPainter(GlobalGraphicsAssets.GraphicsDevice, material, terrainWidth, terrainDepth, 32, 8, 0);
+        painter.AddLayer(ContentRegistry.TerrainGrass);
+        painter.AddLayer(ContentRegistry.TerrainDirt);
+        painter.AddLayer(ContentRegistry.TerrainRock);
+        
         // Create/Load terrain.
-        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, material, terrainWidth, terrainHeight, terrainDepth, chunkSize);
+        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, painter, terrainWidth, terrainHeight, terrainDepth, chunkSize);
         
         this._terrain = terrain;
         return terrain;

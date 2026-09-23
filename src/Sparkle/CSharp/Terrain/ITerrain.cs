@@ -1,15 +1,21 @@
 using System.Numerics;
 using Bliss.CSharp.Materials;
 using Sparkle.CSharp.Terrain.Chunks;
+using Sparkle.CSharp.Terrain.Painting;
 
 namespace Sparkle.CSharp.Terrain;
 
 public interface ITerrain<T> where T : class, IChunk<T> {
     
     /// <summary>
-    /// The material used for rendering the terrain, which defines its visual appearance and surface properties.
+    /// The painter responsible for terrain material and texture-layer painting.
     /// </summary>
-    Material Material { get; }
+    ITerrainPainter Painter { get; }
+    
+    /// <summary>
+    /// The material used for rendering the terrain, provided by <see cref="Painter"/>.
+    /// </summary>
+    Material Material => this.Painter.Material;
     
     /// <summary>
     /// The total width of the terrain in voxels.
@@ -89,17 +95,6 @@ public interface ITerrain<T> where T : class, IChunk<T> {
     /// <param name="brushType">The shape or falloff type used by the brush.</param>
     /// <returns><c>true</c> if any voxel was modified; otherwise, <c>false</c>.</returns>
     bool ApplyBrush(Vector3 center, float radius, float strength, TerrainBrushType brushType);
-    
-    /// <summary>
-    /// Applies a brush to the specified terrain texture layer weight map.
-    /// </summary>
-    /// <param name="center">The terrain-space center of the brush.</param>
-    /// <param name="radius">The radius of the brush in terrain units.</param>
-    /// <param name="strength">The layer-weight delta applied at the brush center.</param>
-    /// <param name="layer">The texture layer index to modify.</param>
-    /// <param name="brushType">The shape or falloff type used by the brush.</param>
-    /// <returns><c>true</c> if any texture layer weight was modified; otherwise, <c>false</c>.</returns>
-    bool ApplyTextureLayerBrush(Vector3 center, float radius, float strength, int layer, TerrainBrushType brushType);
     
     /// <summary>
     /// Resets the entire terrain to <paramref name="density"/> and marks all chunks dirty.

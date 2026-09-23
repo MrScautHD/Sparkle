@@ -2,6 +2,7 @@ using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Content;
+using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Effects.Posts;
 using Veldrith;
@@ -30,6 +31,11 @@ public static class GlobalGraphicsAssets {
     /// The shader effect used for rendering physics debug visuals.
     /// </summary>
     public static Effect PhysicsDebugEffect { get; private set; }
+    
+    /// <summary>
+    /// The shader effect used for rendering tile-based terrain graphics.
+    /// </summary>
+    public static TileTerrainEffect TileTerrainEffect { get; private set; }
     
     /// <summary>
     /// The FXAA (Fast Approximate Anti-Aliasing) effect used for post-processing rendering.
@@ -95,6 +101,14 @@ public static class GlobalGraphicsAssets {
         // Physics debug effect.
         PhysicsDebugEffect = new Effect(GraphicsDevice, "content/sparkle/shaders/physics_debug_drawer.vert", "content/sparkle/shaders/physics_debug_drawer.frag", new CrossCompileOptions());
         PhysicsDebugEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        
+        // Tile terrain effect.
+        TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions());
+        TileTerrainEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        TileTerrainEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        TileTerrainEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        TileTerrainEffect.AddTextureLayout("fSources", 3);
+        TileTerrainEffect.AddTextureLayout("fTiles", 4);
         
         // FXAA post-processing effect.
         FxaaEffect = new FxaaEffect(GraphicsDevice, new CrossCompileOptions());
