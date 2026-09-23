@@ -197,10 +197,6 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
             return;
         }
         
-        if (this.Terrain is not HeightmapTerrain heightmapTerrain) {
-            throw new InvalidOperationException($"{nameof(HeightmapChunk)} requires a {nameof(HeightmapTerrain)}.");
-        }
-        
         int step = Math.Max(1, 1 << this.Lod);
         
         int width = this.Width;
@@ -243,11 +239,11 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
             
             for (int xIndex = 0; xIndex < xCount; xIndex++) {
                 int worldXValue = worldXValues[xIndex];
-                heights[rowOffset + xIndex] = heightmapTerrain.GetSurfaceHeight(worldXValue, worldZValue);
+                heights[rowOffset + xIndex] = this.Terrain.GetSurfaceHeight(worldXValue, worldZValue);
             }
         }
         
-        this.StitchLodEdges(heightmapTerrain, heights, worldXValues, worldZValues, xCount);
+        this.StitchLodEdges(this.Terrain, heights, worldXValues, worldZValues, xCount);
         
         // Create/update vertex data.
         int vertexCount = xCount * zCount;
@@ -255,43 +251,33 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
         Vector4 whiteColor = Color.White.ToRgbaFloatVec4();
         
         for (int zIndex = 0; zIndex < zCount; zIndex++) {
-            int zDown = zIndex > 0 ? zIndex - 1 : 0;
-            int zUp = zIndex < zCount - 1 ? zIndex + 1 : zCount - 1;
-            
             int rowOffset = zIndex * xCount;
-            int rowDownOffset = zDown * xCount;
-            
-            int rowUpOffset = zUp * xCount;
-            
             int worldZValue = worldZValues[zIndex];
-            int worldZDownValue = worldZValues[zDown];
-            int worldZUpValue = worldZValues[zUp];
             
             for (int xIndex = 0; xIndex < xCount; xIndex++) {
-                int xLeft = xIndex > 0 ? xIndex - 1 : 0;
-                int xRight = xIndex < xCount - 1 ? xIndex + 1 : xCount - 1;
-                
                 int centerIndex = rowOffset + xIndex;
                 
                 int worldXValue = worldXValues[xIndex];
-                int worldXLeftValue = worldXValues[xLeft];
-                int worldXRightValue = worldXValues[xRight];
+                int worldXLeftValue = Math.Max(worldXValue - step, 0);
+                int worldXRightValue = Math.Min(worldXValue + step, this.Terrain.Width);
+                int worldZDownValue = Math.Max(worldZValue - step, 0);
+                int worldZUpValue = Math.Min(worldZValue + step, this.Terrain.Depth);
                 
-                Vector3 tangentX = new Vector3(
-                    worldXRightValue - worldXLeftValue,
-                    heights[rowOffset + xRight] - heights[rowOffset + xLeft],
-                    0.0F
-                );
+                Vector3 tangentX = new Vector3() {
+                    X = worldXRightValue - worldXLeftValue,
+                    Y = this.Terrain.GetSurfaceHeight(worldXRightValue, worldZValue) - this.Terrain.GetSurfaceHeight(worldXLeftValue, worldZValue),
+                    Z = 0.0F
+                };
                 
-                Vector3 tangentZ = new Vector3(
-                    0.0F,
-                    heights[rowUpOffset + xIndex] - heights[rowDownOffset + xIndex],
-                    worldZUpValue - worldZDownValue
-                );
+                Vector3 tangentZ = new Vector3() {
+                    X = 0.0F,
+                    Y = this.Terrain.GetSurfaceHeight(worldXValue, worldZUpValue) - this.Terrain.GetSurfaceHeight(worldXValue, worldZDownValue),
+                    Z = worldZUpValue - worldZDownValue
+                };
                 
                 Vector3 normal = Vector3.Cross(tangentZ, tangentX);
                 
-                normal = normal.LengthSquared() <= 1.0E-10F ? Vector3.UnitY : Vector3.Normalize(normal);
+                normal = normal.LengthSquared() <= 0.0F ? Vector3.UnitY : Vector3.Normalize(normal);
                 
                 Vector3 position = new Vector3(worldXValue, heights[centerIndex], worldZValue);
                 
@@ -349,7 +335,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     /// <param name="worldXValues">The world-space X-coordinate values of the current chunk's sampled grid points.</param>
     /// <param name="worldZValues">The world-space Z-coordinate values of the current chunk's sampled grid points.</param>
     /// <param name="xCount">The number of grid points in the X-axis direction for the current chunk.</param>
-    private void StitchLodEdges(HeightmapTerrain terrain, float[] heights, int[] worldXValues, int[] worldZValues, int xCount) {
+    private void StitchLodEdges(ITerrain<IHeightmapChunk> terrain, float[] heights, int[] worldXValues, int[] worldZValues, int xCount) {
         int selfStep = Math.Max(1, 1 << Math.Max(0, this.Lod));
         
         this.StitchVerticalEdge(heights, xCount, 0, worldZValues, terrain.GetNeighborChunk(this, -1, 0), selfStep);
