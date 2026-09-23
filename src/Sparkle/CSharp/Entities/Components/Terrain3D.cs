@@ -544,6 +544,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
             
             if (chunk.Lod != targetLod) {
                 chunk.Lod = targetLod;
+                this.MarkNeighborChunksDirty(chunk);
             }
         }
         
@@ -586,6 +587,17 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
         }
         
         return true;
+    }
+    
+    /// <summary>
+    /// Marks chunks directly adjacent to the given chunk as dirty.
+    /// </summary>
+    /// <param name="chunk">The chunk whose adjacent chunks should be marked dirty.</param>
+    private void MarkNeighborChunksDirty(T chunk) {
+        this.Terrain.GetNeighborChunk(chunk, -1, 0)?.MarkDirty();
+        this.Terrain.GetNeighborChunk(chunk, 1, 0)?.MarkDirty();
+        this.Terrain.GetNeighborChunk(chunk, 0, -1)?.MarkDirty();
+        this.Terrain.GetNeighborChunk(chunk, 0, 1)?.MarkDirty();
     }
     
     /// <summary>
@@ -699,6 +711,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
             
             // Apply the new LOD and update far batching membership.
             chunk.Lod = targetLod;
+            this.MarkNeighborChunksDirty(chunk);
             this.UpdateChunkRegionMembership(chunk);
         }
     }
