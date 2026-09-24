@@ -46,6 +46,11 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     public int LayerCount { get; private set; }
     
     /// <summary>
+    /// Indicates whether source terrain layer textures use mipmaps.
+    /// </summary>
+    public bool UseMipmaps { get; private set; }
+    
+    /// <summary>
     /// GPU-side source texture array.
     /// This should be bound to the terrain tile shader as fSources.
     /// </summary>
@@ -62,7 +67,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// Each byte stores the selected terrain material layer for one tile cell.
     /// </summary>
     private byte[] _tiles;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TileTerrainPainter"/> class.
     /// </summary>
@@ -73,7 +78,8 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// <param name="sourceTextureSize">The width and height of every terrain source layer texture.</param>
     /// <param name="maxLayerCount">The maximum number of terrain source layers.</param>
     /// <param name="defaultLayer">The layer used to initialize the tile map.</param>
-    public TileTerrainPainter(GraphicsDevice graphicsDevice, Material material, int width, int depth, int sourceTextureSize, int maxLayerCount, byte defaultLayer = 0) {
+    /// <param name="useMipmaps">Whether mipmaps are generated for the terrain source layer textures.</param>
+    public TileTerrainPainter(GraphicsDevice graphicsDevice, Material material, int width, int depth, int sourceTextureSize, int maxLayerCount, byte defaultLayer = 0, bool useMipmaps = true) {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sourceTextureSize);
@@ -90,13 +96,14 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         this.SourceTextureSize = sourceTextureSize;
         this.MaxLayerCount = maxLayerCount;
         this.LayerCount = 0;
+        this.UseMipmaps = useMipmaps;
         this._tiles = new byte[width * depth];
         
         // Create source texture array.
         this.SourceTextureArray = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(
             (uint) sourceTextureSize,
             (uint) sourceTextureSize,
-            1,
+             useMipmaps ? 1 + (uint) MathF.Floor(MathF.Log2(sourceTextureSize)) : 1,
             (uint) Math.Max(2, maxLayerCount),
             PixelFormat.R8G8B8A8UNorm,
             TextureUsage.Sampled
@@ -169,7 +176,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// <param name="layer">The layer index to replace.</param>
     /// <param name="texture">The texture to copy into the source texture array.</param>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="layer"/> is outside the valid layer range.</exception>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="texture"/> does not match <see cref="SourceTextureSize"/>.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="texture"/> does not match <see cref="SourceTextureSize"/>, or has fewer mip levels than the source texture array requires.</exception>
     public void SetLayer(int layer, Texture2D texture) {
         if (layer < 0 || layer >= this.MaxLayerCount) {
             throw new ArgumentOutOfRangeException(nameof(layer));
@@ -179,11 +186,22 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
             throw new ArgumentException($"Layer texture must be {this.SourceTextureSize}x{this.SourceTextureSize}.", nameof(texture));
         }
         
+        if (texture.MipLevels < this.SourceTextureArray.MipLevels) {
+            throw new ArgumentException($"Layer texture must have at least {this.SourceTextureArray.MipLevels} mip levels.", nameof(texture));
+        }
+        
         // Copy the texture directly on the GPU into the target array slice.
         using CommandList commandList = this.GraphicsDevice.ResourceFactory.CreateCommandList();
         
         commandList.Begin();
-        commandList.CopyTexture(texture.DeviceTexture, 0, 0, 0, 0, 0, this.SourceTextureArray, 0, 0, 0, 0, (uint) layer, (uint) this.SourceTextureSize, (uint) this.SourceTextureSize, 1, 1);
+        
+        for (uint mipLevel = 0; mipLevel < this.SourceTextureArray.MipLevels; mipLevel++) {
+            uint mipWidth = Math.Max(1U, (uint) this.SourceTextureSize >> (int) mipLevel);
+            uint mipHeight = Math.Max(1U, (uint) this.SourceTextureSize >> (int) mipLevel);
+            
+            commandList.CopyTexture(texture.DeviceTexture, 0, 0, 0, mipLevel, 0, this.SourceTextureArray, 0, 0, 0, mipLevel, (uint) layer, mipWidth, mipHeight, 1, 1);
+        }
+        
         commandList.End();
         
         this.GraphicsDevice.SubmitCommands(commandList);
@@ -196,6 +214,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// <param name="image">The source image.</param>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="layer"/> is outside the valid layer range.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="image"/> does not match <see cref="SourceTextureSize"/>, or its data length does not match the expected RGBA8 byte count.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the generated mipmap chain has fewer levels than the source texture array requires.</exception>
     public unsafe void SetLayer(int layer, Image image) {
         if (layer < 0 || layer >= this.MaxLayerCount) {
             throw new ArgumentOutOfRangeException(nameof(layer));
@@ -211,9 +230,19 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
             throw new ArgumentException($"Layer image data must be exactly {expectedLength} bytes.", nameof(image));
         }
         
-        // Upload the pixel data directly into the target array slice.
-        fixed (byte* pixelPointer = image.Data) {
-            this.GraphicsDevice.UpdateTexture(this.SourceTextureArray, (nint) pixelPointer, (uint) image.Data.Length, 0, 0, 0, (uint) this.SourceTextureSize, (uint) this.SourceTextureSize, 1, 0, (uint) layer);
+        Image[] mipmaps = this.SourceTextureArray.MipLevels > 1 ? MipmapHelper.GenerateMipmaps(image) : [image];
+        
+        if (mipmaps.Length < this.SourceTextureArray.MipLevels) {
+            throw new InvalidOperationException($"Generated mipmap chain has only {mipmaps.Length} levels, but the source texture array requires {this.SourceTextureArray.MipLevels} levels.");
+        }
+        
+        // Upload all mip levels into the target array slice.
+        for (uint mipLevel = 0; mipLevel < this.SourceTextureArray.MipLevels; mipLevel++) {
+            Image mipmap = mipmaps[mipLevel];
+            
+            fixed (byte* pixelPointer = mipmap.Data) {
+                this.GraphicsDevice.UpdateTexture(this.SourceTextureArray, (nint) pixelPointer, (uint) mipmap.Data.Length, 0, 0, 0, (uint) mipmap.Width, (uint) mipmap.Height, 1, mipLevel, (uint) layer);
+            }
         }
     }
     
