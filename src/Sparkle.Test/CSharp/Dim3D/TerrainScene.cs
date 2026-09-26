@@ -2,6 +2,8 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Interact.Mice;
@@ -114,7 +116,7 @@ public class TerrainScene : Scene {
         
         float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
         //this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
-        this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 2, TerrainBrushType.Circle);
+        this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 1, TerrainBrushType.Circle);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
@@ -130,6 +132,9 @@ public class TerrainScene : Scene {
         // Create material.
         Material material = new Material(GlobalGraphicsAssets.TileTerrainEffect);
         
+        material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
+        material.RenderMode = RenderMode.Cutout;
+        
         material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
@@ -139,6 +144,7 @@ public class TerrainScene : Scene {
         painter.AddLayer(ContentRegistry.TerrainGrass);
         painter.AddLayer(ContentRegistry.TerrainDirt);
         painter.AddLayer(ContentRegistry.TerrainRock);
+        painter.AddLayer(new Image(32, 32, new Color(0, 0, 0, 0)));
         
         // Create/Load terrain.
         HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, painter, terrainWidth, terrainHeight, terrainDepth, chunkSize);

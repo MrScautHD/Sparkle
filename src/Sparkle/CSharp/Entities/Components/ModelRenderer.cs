@@ -35,7 +35,7 @@ public class ModelRenderer : InterpolatedComponent, IDebugDrawable {
     /// Gets or sets a value indicating whether debug drawing is enabled.
     /// </summary>
     public bool DebugDrawEnabled { get; set; }
-
+    
     /// <summary>
     /// The original bounding box of the model before being transformed.
     /// </summary>

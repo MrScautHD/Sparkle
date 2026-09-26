@@ -113,7 +113,7 @@ vec3 getMaskPosition(vec3 normal, int axis, vec2 projected, int size) {
  * linearly blended to provide smooth distance filtering without mixing
  * different terrain materials.
  */
-vec3 sampleSource(ivec2 sourcePixel, int size, int layer, float lod) {
+vec4 sampleSource(ivec2 sourcePixel, int size, int layer, float lod) {
     int levelCount = textureQueryLevels(sampler2DArray(fSources, fSourcesSampler));
     
     int lowerLevel = int(floor(lod));
@@ -124,7 +124,7 @@ vec3 sampleSource(ivec2 sourcePixel, int size, int layer, float lod) {
     ivec2 lowerSize = textureSize(sampler2DArray(fSources, fSourcesSampler), lowerLevel).xy;
     ivec2 lowerPixel = min(ivec2(uv * vec2(lowerSize)), lowerSize - 1);
     
-    vec3 lowerColor = texelFetch(sampler2DArray(fSources, fSourcesSampler), ivec3(lowerPixel, layer), lowerLevel).rgb;
+    vec4 lowerColor = texelFetch(sampler2DArray(fSources, fSourcesSampler), ivec3(lowerPixel, layer), lowerLevel);
     
     if (upperLevel == lowerLevel || fract(lod) == 0.0F) {
         return lowerColor;
@@ -133,7 +133,7 @@ vec3 sampleSource(ivec2 sourcePixel, int size, int layer, float lod) {
     ivec2 upperSize = textureSize(sampler2DArray(fSources, fSourcesSampler), upperLevel).xy;
     ivec2 upperPixel = min(ivec2(uv * vec2(upperSize)), upperSize - 1);
     
-    vec3 upperColor = texelFetch(sampler2DArray(fSources, fSourcesSampler), ivec3(upperPixel, layer), upperLevel).rgb;
+    vec4 upperColor = texelFetch(sampler2DArray(fSources, fSourcesSampler), ivec3(upperPixel, layer), upperLevel);
     
     return mix(lowerColor, upperColor, fract(lod));
 }
@@ -225,7 +225,7 @@ float getMaterialCoverage(int layer, ivec4 corners, vec2 uv, vec3 normal) {
  * regions sample the material texture, while narrow transition regions use
  * the shadow texture to soften the boundary between materials.
  */
-vec3 getTerrainColor(ivec4 corners, ivec2 pixel, ivec2 sourcePixel, vec2 uv, vec3 normal, float lod, float noise, int size) {
+vec4 getTerrainColor(ivec4 corners, ivec2 pixel, ivec2 sourcePixel, vec2 uv, vec3 normal, float lod, float noise, int size) {
     ivec4 layers = corners;
     
     sortPair(layers.x, layers.y);
@@ -234,7 +234,7 @@ vec3 getTerrainColor(ivec4 corners, ivec2 pixel, ivec2 sourcePixel, vec2 uv, vec
     sortPair(layers.y, layers.w);
     sortPair(layers.y, layers.z);
     
-    vec3 color = vec3(0.0F);
+    vec4 color = vec4(0.0F);
     int below = layers.x;
     
     for (int index = 0; index < 4; index++) {
@@ -253,11 +253,12 @@ vec3 getTerrainColor(ivec4 corners, ivec2 pixel, ivec2 sourcePixel, vec2 uv, vec
         else if (coverage > -0.12F) {
             float transition = smoothstep(0.0F, 1.0F, (coverage + 0.12F) / 0.12F);
             
-            vec3 belowColor = sampleSource(sourcePixel, size, below, lod);
-            vec3 layerColor = sampleSource(sourcePixel, size, layer, lod);
+            vec4 belowColor = sampleSource(sourcePixel, size, below, lod);
+            vec4 layerColor = sampleSource(sourcePixel, size, layer, lod);
             
             float shadow = mix(0.75F, 1.0F, transition);
-            color = mix(belowColor, layerColor, transition) * shadow;
+            color = mix(belowColor, layerColor, transition);
+            color.rgb *= shadow;
         }
     }
     
@@ -286,6 +287,24 @@ void main() {
     
     float noise = getMaskNoise(axis, pixel, sourcePixel, size, footprint);
     
-    vec3 color = getTerrainColor(corners, pixel, sourcePixel, uv, normal, lod, noise, size);
-    fFragColor = vec4(color, 1.0F) * fColor * maps[0].color;
+    vec4 color = getTerrainColor(corners, pixel, sourcePixel, uv, normal, lod, noise, size);
+    vec4 texelColor = color * fColor * maps[0].color;
+    
+    // Set render mode.
+    switch (renderMode) {
+        
+        // Solid.
+        case 0:
+            texelColor.a = 1.0F;
+            break;
+        
+        // Cutout.
+        case 1:
+            if (texelColor.a < 0.99F) {
+                discard;
+            }
+            break;
+    }
+    
+    fFragColor = texelColor;
 }
