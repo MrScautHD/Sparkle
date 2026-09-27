@@ -130,10 +130,11 @@ public class TerrainScene : Scene {
         FlatHeightmapGenerator chunkGenerator = new FlatHeightmapGenerator(chunkSize, surfaceHeight);
         
         // Create material.
-        Material material = new Material(GlobalGraphicsAssets.TileTerrainEffect);
-        material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
-        material.RenderMode = RenderMode.Cutout;
-        
+        Material material = new Material(GlobalGraphicsAssets.TileTerrainEffect) {
+            BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND,
+            RenderMode = RenderMode.Cutout
+        };
+
         material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White
