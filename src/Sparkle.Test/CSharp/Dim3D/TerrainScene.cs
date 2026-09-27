@@ -131,7 +131,6 @@ public class TerrainScene : Scene {
         
         // Create material.
         Material material = new Material(GlobalGraphicsAssets.TileTerrainEffect);
-        
         material.BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND;
         material.RenderMode = RenderMode.Cutout;
         
