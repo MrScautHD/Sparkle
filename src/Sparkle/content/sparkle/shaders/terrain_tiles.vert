@@ -26,11 +26,26 @@ layout (location = 9) in vec4 iModel3;
 layout (location = 0) out vec3 fTerrainPosition;
 layout (location = 1) out vec4 fColor;
 layout (location = 2) out vec3 fSurfacePosition;
+layout (location = 3) noperspective out vec3 fBarycentric;
 
 void main() {
     fTerrainPosition = vPosition;
     fColor = vColor;
     
+    // Assign barycentric coordinates based on the vertex's corner within its triangle.
+    int triangleVertex = gl_VertexIndex % 3;
+    
+    if (triangleVertex == 0) {
+        fBarycentric = vec3(1.0F, 0.0F, 0.0F);
+    }
+    else if (triangleVertex == 1) {
+        fBarycentric = vec3(0.0F, 1.0F, 0.0F);
+    }
+    else {
+        fBarycentric = vec3(0.0F, 0.0F, 1.0F);
+    }
+    
+    // Calculate transformion.
     #if USE_INSTANCING
     mat4x4 transformation = mat4x4(iModel0, iModel1, iModel2, iModel3);
     #else
@@ -40,5 +55,6 @@ void main() {
     // Calculate surface position.
     fSurfacePosition = vPosition - inverse(uView * transformation)[3].xyz;
     
+    // Calculate final position.
     gl_Position = uProjection * uView * transformation * vec4(vPosition, 1.0F);
 }

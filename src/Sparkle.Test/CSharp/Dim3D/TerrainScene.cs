@@ -10,6 +10,7 @@ using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
+using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
@@ -119,6 +120,32 @@ public class TerrainScene : Scene {
         this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 1, TerrainBrushType.Circle);
     }
     
+    protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
+        base.Draw(context, framebuffer);
+        
+        Camera3D? cam = SceneManager.ActiveCam3D;
+        
+        if (cam == null) {
+            return;
+        }
+        
+        if (this._terrain?.Painter is TileTerrainPainter painter) {
+            if (painter.Material.Effect is TileTerrainEffect tileTerrainEffect) {
+                
+                // Convert camera world position into terrain local space
+                Vector3 terrainOffset = new Vector3(0.0F, -128.0F, 0.0F);
+                Vector3 localCamPos = cam.Position - terrainOffset;
+                
+                if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
+                    tileTerrainEffect.DisableBrushPreview();
+                    return;
+                }
+                
+                tileTerrainEffect.SetBrushPreview(hitPosition, _brushRadius, TerrainBrushType.Circle, Color.Red.ToRgbaFloatVec4(), 1.0F, 0.5F);
+            }
+        }
+    }
+
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
         const int terrainWidth = 8192;
         const int terrainHeight = 256;

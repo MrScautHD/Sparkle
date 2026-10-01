@@ -1,6 +1,10 @@
-﻿using Bliss.CSharp.Effects;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
+using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics;
+using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Materials;
+using Sparkle.CSharp.Terrain;
 using Veldrith;
 using Veldrith.SPIRV;
 
@@ -17,6 +21,21 @@ public class TileTerrainEffect : Effect {
     /// Path to the terrain tile fragment shader.
     /// </summary>
     public static readonly string FragPath = "content/sparkle/shaders/terrain_tiles.frag";
+    
+    /// <summary>
+    /// Indicates whether the brush parameters buffer needs to be updated.
+    /// </summary>
+    private bool _brushParametersDirty;
+    
+    /// <summary>
+    /// Stores the configurable brush parameters.
+    /// </summary>
+    private BrushParameters _brushParameters;
+    
+    /// <summary>
+    /// Uniform buffer used to pass brush parameters to the shader.
+    /// </summary>
+    private SimpleUniformBuffer<BrushParameters> _brushBuffer;
     
     /// <summary>
     /// Source texture arrays per material.
@@ -55,12 +74,59 @@ public class TileTerrainEffect : Effect {
     /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
     /// <param name="macros">Optional macro definitions injected during shader compilation.</param>
     public TileTerrainEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, MacroDefinition[]? macros = null) : base(graphicsDevice, LoadTextCodeFromFile(VertPath), LoadTextCodeFromFile(FragPath), compileOptions, macros ?? []) {
+        this._brushParameters = new BrushParameters() {
+            BrushType = 0,
+            BrushPreviewEnabled = 0,
+            BrushRadius = 0.0F,
+            BrushPreviewStrength = 0.0F,
+            BrushPreviewColor = new Vector4(1.0F, 0.65F, 0.1F, 0.45F),
+            BrushCenter = Vector3.Zero,
+            BrushWireThickness = 0.5F
+        };
+        
+        // Create the brush params buffer.
+        this._brushBuffer = new SimpleUniformBuffer<BrushParameters>(graphicsDevice, 1, ShaderStages.Fragment);
+        this._brushParametersDirty = true;
+        
+        // Create SourceSet dictionaries.
         this._sourcesTextures = new Dictionary<Material, Texture>();
         this._tilesTextures = new Dictionary<Material, Texture>();
         this._sourcesSamplers = new Dictionary<Material, Sampler>();
         this._tilesSamplers = new Dictionary<Material, Sampler>();
         this._sourcesResourceSets = new Dictionary<Material, ResourceSet>();
         this._tilesResourceSets = new Dictionary<Material, ResourceSet>();
+    }
+    
+    /// <summary>
+    /// Enables or updates the terrain brush preview mask.
+    /// </summary>
+    /// <param name="center">The terrain-space brush center.</param>
+    /// <param name="radius">The brush radius in terrain units.</param>
+    /// <param name="brushType">The brush shape to preview.</param>
+    /// <param name="color">The preview overlay color.</param>
+    /// <param name="strength">The preview blend strength.</param>
+    /// <param name="wireThickness">The screen-space wire thickness.</param>
+    public void SetBrushPreview(Vector3 center, float radius, TerrainBrushType brushType, Vector4 color, float strength = 1.0F, float wireThickness = 0.5F) {
+        this._brushParameters.BrushType = (int) brushType;
+        this._brushParameters.BrushPreviewEnabled = 1;
+        this._brushParameters.BrushRadius = radius;
+        this._brushParameters.BrushPreviewStrength = strength;
+        this._brushParameters.BrushPreviewColor = color;
+        this._brushParameters.BrushCenter = center;
+        this._brushParameters.BrushWireThickness = wireThickness;
+        this._brushParametersDirty = true;
+    }
+    
+    /// <summary>
+    /// Disables the terrain brush preview mask.
+    /// </summary>
+    public void DisableBrushPreview() {
+        if (this._brushParameters.BrushPreviewEnabled == 0) {
+            return;
+        }
+        
+        this._brushParameters.BrushPreviewEnabled = 0;
+        this._brushParametersDirty = true;
     }
     
     /// <summary>
@@ -101,6 +167,14 @@ public class TileTerrainEffect : Effect {
     public override void Apply(CommandList commandList, Material? material = null) {
         base.Apply(commandList, material);
         
+        if (this._brushParametersDirty) {
+            this._brushBuffer.SetValue(0, this._brushParameters);
+            this._brushBuffer.UpdateBufferDeferred(commandList);
+            this._brushParametersDirty = false;
+        }
+        
+        commandList.SetGraphicsResourceSet(this.GetBufferLayoutSlot("BrushBuffer"), this._brushBuffer.GetResourceSet(this.GetBufferLayout("BrushBuffer")));
+        
         // Bind the source texture array for this material.
         if (material != null && this._sourcesTextures.TryGetValue(material, out Texture? sourcesTexture)) {
             if (!this._sourcesResourceSets.TryGetValue(material, out ResourceSet? sourcesResourceSet)) {
@@ -120,6 +194,23 @@ public class TileTerrainEffect : Effect {
             
             commandList.SetGraphicsResourceSet(this.GetTextureLayoutSlot("fTiles"), tilesResourceSet);
         }
+    }
+    
+    /// <summary>
+    /// Struct holding configurable brush parameters.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    private struct BrushParameters {
+        public int BrushType;
+        public int BrushPreviewEnabled;
+        public float BrushRadius;
+        public float BrushPreviewStrength;
+        public Vector4 BrushPreviewColor;
+        public Vector3 BrushCenter;
+        public float BrushWireThickness;
+        private float _padding;
+        private float _padding1;
+        private float _padding2;
     }
     
     protected override void Dispose(bool disposing) {

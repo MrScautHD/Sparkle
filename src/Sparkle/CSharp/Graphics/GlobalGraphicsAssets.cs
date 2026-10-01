@@ -107,8 +107,9 @@ public static class GlobalGraphicsAssets {
         TileTerrainEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         TileTerrainEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         TileTerrainEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        TileTerrainEffect.AddTextureLayout("fSources", 3);
-        TileTerrainEffect.AddTextureLayout("fTiles", 4);
+        TileTerrainEffect.AddBufferLayout("BrushBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        TileTerrainEffect.AddTextureLayout("fSources", 4);
+        TileTerrainEffect.AddTextureLayout("fTiles", 5);
         
         // FXAA post-processing effect.
         FxaaEffect = new FxaaEffect(GraphicsDevice, new CrossCompileOptions());
