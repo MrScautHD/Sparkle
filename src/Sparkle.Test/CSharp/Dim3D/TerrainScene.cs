@@ -137,11 +137,11 @@ public class TerrainScene : Scene {
                 Vector3 localCamPos = cam.Position - terrainOffset;
                 
                 if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
-                    tileTerrainEffect.DisableBrushPreview();
+                    tileTerrainEffect.DisableBrushPreview(painter.Material);
                     return;
                 }
                 
-                tileTerrainEffect.SetBrushPreview(hitPosition, _brushRadius, TerrainBrushType.Circle, Color.Red.ToRgbaFloatVec4(), 1.0F, 0.5F);
+                tileTerrainEffect.SetBrushPreview(painter.Material, hitPosition, _brushRadius, TerrainBrushType.Circle, Color.Red.ToRgbaFloatVec4(), 1.0F, 0.5F);
             }
         }
     }
