@@ -1,0 +1,341 @@
+﻿using System.Numerics;
+using Bliss.CSharp;
+using Bliss.CSharp.Camera.Dim3;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Graphics;
+using Bliss.CSharp.Graphics.Pipelines;
+using Bliss.CSharp.Graphics.Pipelines.Buffers;
+using Bliss.CSharp.Graphics.Pipelines.Textures;
+using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Materials;
+using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Graphics.Rendering.Forward.Pbr.Data;
+using Veldrith;
+
+namespace Sparkle.CSharp.Graphics.Rendering.Forward.Pbr;
+
+public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
+    
+    /// <summary>
+    /// The graphics device used for rendering.
+    /// </summary>
+    public GraphicsDevice GraphicsDevice { get; private set; }
+    
+    /// <summary>
+    /// Global ambient scene light color. W stores intensity.
+    /// </summary>
+    public Vector4 AmbientColor;
+    
+    /// <summary>
+    /// List of opaque renderables waiting to be drawn.
+    /// </summary>
+    private List<Renderable> _opaqueRenderables;
+    
+    /// <summary>
+    /// List of translucent renderables waiting to be drawn.
+    /// </summary>
+    private List<Renderable> _translucentRenderables;
+    
+    /// <summary>
+    /// List of lights waiting to be uploaded for the current frame.
+    /// </summary>
+    private List<Light> _lights;
+    
+    /// <summary>
+    /// CPU-side light data uploaded to the GPU.
+    /// </summary>
+    private PbrLightData _lightData;
+    
+    /// <summary>
+    /// GPU-side light buffer.
+    /// </summary>
+    private SimpleUniformBuffer<PbrLightData> _lightBuffer;
+    
+    /// <summary>
+    /// Description of the pipeline used for rendering.
+    /// </summary>
+    private SimplePipelineDescription _pipelineDescription;
+    
+    /// <summary>
+    /// Creates a new PBR forward renderer with empty renderable and light queues, a fragment-stage light buffer, and a default depth-tested triangle-list pipeline.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
+    /// <param name="ambientColor">The global ambient light color. Defaults to a dim gray if <c>null</c>.</param>
+    public PbrForwardRenderer(GraphicsDevice graphicsDevice, Color? ambientColor = null) {
+        this.GraphicsDevice = graphicsDevice;
+        this.AmbientColor = ambientColor?.ToRgbaFloatVec4() ?? new Vector4(0.03F, 0.03F, 0.03F, 1.0F);
+        
+        // Create lists for renderables.
+        this._opaqueRenderables = new List<Renderable>();
+        this._translucentRenderables = new List<Renderable>();
+        this._lights = new List<Light>();
+        
+        // Create light data.
+        this._lightData = new PbrLightData() {
+            NumOfLights = 0,
+            AmbientColor = this.AmbientColor
+        };
+        
+        // Create light buffer.
+        this._lightBuffer = new SimpleUniformBuffer<PbrLightData>(graphicsDevice, 1, ShaderStages.Fragment);
+        
+        // Create the main pipeline description.
+        this._pipelineDescription = new SimplePipelineDescription() {
+            DepthStencilState = DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL,
+            PrimitiveTopology = PrimitiveTopology.TriangleList
+        };
+    }
+    
+    /// <summary>
+    /// Queues a renderable for drawing.
+    /// </summary>
+    /// <param name="renderable">The renderable to draw.</param>
+    public void DrawRenderable(Renderable renderable) {
+        if (renderable.Material.RenderMode == RenderMode.Translucent) {
+            this._translucentRenderables.Add(renderable);
+        }
+        else {
+            this._opaqueRenderables.Add(renderable);
+        }
+    }
+    
+    /// <summary>
+    /// Queues a light for drawing.
+    /// </summary>
+    /// <param name="light">The light to queue.</param>
+    public void SubmitLight(Light light) {
+        if (!light.Enabled) {
+            return;
+        }
+        
+        if (this._lights.Count >= PbrLightData.MaxLightCount) {
+            return;
+        }
+        
+        this._lights.Add(light);
+    }
+    
+    /// <summary>
+    /// Executes the rendering process for drawing opaque and translucent renderable objects.
+    /// </summary>
+    /// <param name="commandList">The command list used to execute rendering commands.</param>
+    /// <param name="output">The output description specifying the rendering target configuration.</param>
+    public void Draw(CommandList commandList, OutputDescription output) {
+        Cam3D? cam3D = Cam3D.ActiveCamera;
+        
+        if (cam3D == null) {
+            return;
+        }
+        
+        // Order renderables.
+        this._opaqueRenderables.Sort((a, b) => Vector3.DistanceSquared(a.GetTransforms()[0].Translation, cam3D.Position).CompareTo(Vector3.DistanceSquared(b.GetTransforms()[0].Translation, cam3D.Position)));
+        this._translucentRenderables.Sort((a, b) => Vector3.DistanceSquared(b.GetTransforms()[0].Translation, cam3D.Position).CompareTo(Vector3.DistanceSquared(a.GetTransforms()[0].Translation, cam3D.Position)));
+        
+        // Set the pipeline output.
+        this._pipelineDescription.Outputs = output;
+        
+        // Update opaques renderable buffers.
+        foreach (Renderable renderable in this._opaqueRenderables) {
+            this.UpdateRenderableBuffer(commandList, renderable);
+        }
+        
+        // Update translucent renderable buffers.
+        foreach (Renderable renderable in this._translucentRenderables) {
+            this.UpdateRenderableBuffer(commandList, renderable);
+        }
+        
+        // Update light buffer.
+        this.UpdateLightBuffer(commandList);
+        
+        // Draw opaques renderables.
+        foreach (Renderable renderable in this._opaqueRenderables) {
+            this.DrawPreparedRenderable(commandList, cam3D, renderable);
+        }
+        
+        // Draw translucent renderables.
+        foreach (Renderable renderable in this._translucentRenderables) {
+            this.DrawPreparedRenderable(commandList, cam3D, renderable);
+        }
+        
+        // Clean up.
+        this._opaqueRenderables.Clear();
+        this._translucentRenderables.Clear();
+        this._lights.Clear();
+    }
+    
+    /// <summary>
+    /// Draws a prepared renderable object by configuring necessary buffers, setting up pipeline parameters, and executing the rendering process.
+    /// </summary>
+    /// <param name="commandList">The command list used for issuing rendering commands.</param>
+    /// <param name="camera">The 3D camera providing view and projection matrices for rendering.</param>
+    /// <param name="renderable">The renderable object containing mesh, material, transforms, and other rendering data to be processed.</param>
+    private void DrawPreparedRenderable(CommandList commandList, Cam3D camera, Renderable renderable) {
+        
+        // Set the main pipeline parameters.
+        this._pipelineDescription.BlendState = renderable.Material.BlendState;
+        this._pipelineDescription.RasterizerState = renderable.Material.RasterizerState;
+        this._pipelineDescription.BufferLayouts = renderable.Material.Effect.GetBufferLayouts();
+        this._pipelineDescription.TextureLayouts = renderable.Material.Effect.GetTextureLayouts();
+        this._pipelineDescription.ShaderSet = new ShaderSetDescription(renderable.Mesh.VertexFormat.Layouts, renderable.Mesh.Material.Effect.Shaders);
+        
+        // Set pipeline.
+        commandList.SetPipeline(renderable.Material.Effect.GetPipeline(this._pipelineDescription).Pipeline);
+        
+        // Set matrix buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("MatrixBuffer"), camera.GetMatrixBuffer().GetResourceSet(renderable.Material.Effect.GetBufferLayout("MatrixBuffer")));
+        
+        // Set transform buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("TransformBuffer"), renderable.GetTransformBuffer().GetResourceSet(renderable.Material.Effect.GetBufferLayout("TransformBuffer")));
+        
+        // Set bone buffer.
+        if (renderable.HasBones) {
+            SimpleUniformBuffer<Matrix4x4>? boneBuffer = renderable.GetBoneBuffer();
+            
+            if (boneBuffer != null) {
+                commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("BoneBuffer"), boneBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("BoneBuffer")));
+            }
+        }
+        
+        // Set material map buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("MaterialBuffer"), renderable.GetMaterialBuffer().GetResourceSet(renderable.Material.Effect.GetBufferLayout("MaterialBuffer")));
+        
+        // Set light buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("LightBuffer"), this._lightBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("LightBuffer")));
+        
+        // Set material texture.
+        foreach (SimpleTextureLayout textureLayout in renderable.Material.Effect.GetTextureLayouts()) {
+            foreach (MaterialMapKey mapKey in renderable.Material.GetMaterialMapKeys()) {
+                if (textureLayout.Name == mapKey.Name) {
+                    string mapName = textureLayout.Name;
+                    MaterialMap map = renderable.Material.GetMaterialMap(mapKey)!;
+                    ResourceSet? resourceSet = map.GetTextureResourceSet(map.Sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.PointWrap), renderable.Material.Effect.GetTextureLayout(mapName));
+                    
+                    if (resourceSet != null) {
+                        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetTextureLayoutSlot(mapName), resourceSet);
+                    }
+                }
+            }
+        }
+        
+        // Apply effect.
+        renderable.Material.Effect.Apply(commandList, renderable.Material);
+        
+        // Draw renderable and set vertex/index buffers.
+        if (renderable.Mesh.IndexCount > 0) {
+            
+            // Set vertex and index buffer.
+            commandList.SetVertexBuffer(0, renderable.Mesh.VertexBuffer);
+            commandList.SetIndexBuffer(renderable.Mesh.IndexBuffer, IndexFormat.UInt32);
+            
+            if (renderable.UseInstancing) {
+                
+                // Set the instance buffer.
+                commandList.SetVertexBuffer(1, renderable.GetInstanceVertexBuffer());
+                
+                // Draw.
+                commandList.DrawIndexed(renderable.Mesh.IndexCount, renderable.InstanceCount, 0, 0, 0);
+            }
+            else {
+                
+                // Draw.
+                commandList.DrawIndexed(renderable.Mesh.IndexCount);
+            }
+        }
+        else {
+            
+            // Set vertex buffer.
+            commandList.SetVertexBuffer(0, renderable.Mesh.VertexBuffer);
+            
+            if (renderable.UseInstancing) {
+                
+                // Set the instance buffer.
+                commandList.SetVertexBuffer(1, renderable.GetInstanceVertexBuffer());
+                
+                // Draw.
+                commandList.Draw(renderable.Mesh.VertexCount, renderable.InstanceCount, 0, 0);
+            }
+            else {
+                
+                // Draw.
+                commandList.Draw(renderable.Mesh.VertexCount);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Updates the necessary GPU buffers for the specified renderable based on its dirty state.
+    /// </summary>
+    /// <param name="commandList">The command list used to issue GPU commands.</param>
+    /// <param name="renderable">The renderable object whose buffers need to be updated.</param>
+    private void UpdateRenderableBuffer(CommandList commandList, Renderable renderable) {
+        
+        // Update transform buffer.
+        if (renderable.IsTransformBufferDirty) {
+            renderable.UpdateTransformBuffer(commandList);
+        }
+        
+        // Update instance vertex buffer.
+        if (renderable.IsInstanceVertexBufferDirty) {
+            renderable.UpdateInstanceVertexBuffer(commandList);
+        }
+        
+        // Update bone buffer.
+        if (renderable.IsBoneBufferDirty) {
+            renderable.UpdateBoneBuffer(commandList);
+        }
+        
+        // Update material buffer.
+        if (renderable.IsMaterialBufferDirty) {
+            renderable.UpdateMaterialBuffer(commandList);
+        }
+    }
+    
+    /// <summary>
+    /// Updates the light buffer from queued lights.
+    /// </summary>
+    /// <param name="commandList">The command list used to upload the buffer.</param>
+    private void UpdateLightBuffer(CommandList commandList) { // TODO: CHECK IF IT NEEDS TO BE UPDATED EVERY FRAME!
+        this._lightData.NumOfLights = Math.Min(this._lights.Count, PbrLightData.MaxLightCount);
+        this._lightData.AmbientColor = this.AmbientColor;
+        
+        Span<PbrGpuLight> gpuLights = this._lightData.Lights.AsSpan();
+        
+        for (int i = 0; i < this._lightData.NumOfLights; i++) {
+            Light light = this._lights[i];
+            
+            Vector3 direction = Vector3.Transform(-Vector3.UnitZ, light.LerpedRotation);
+            
+            if (direction.LengthSquared() <= 0.0F) {
+                direction = -Vector3.UnitY;
+            }
+            else {
+                direction = Vector3.Normalize(direction);
+            }
+            
+            gpuLights[i] = new PbrGpuLight(
+                light.LightType,
+                light.LerpedGlobalPosition,
+                direction,
+                light.Color.ToRgbaFloatVec4().AsVector3(),
+                light.Intensity,
+                light.Range,
+                float.DegreesToRadians(light.InnerSpotAngle),
+                float.DegreesToRadians(light.OuterSpotAngle)
+            );
+        }
+        
+        for (int i = this._lightData.NumOfLights; i < PbrLightData.MaxLightCount; i++) {
+            gpuLights[i] = default;
+        }
+        
+        this._lightBuffer.SetValue(0, this._lightData);
+        this._lightBuffer.UpdateBufferDeferred(commandList);
+    }
+    
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this._lightBuffer.Dispose();
+        }
+    }
+}

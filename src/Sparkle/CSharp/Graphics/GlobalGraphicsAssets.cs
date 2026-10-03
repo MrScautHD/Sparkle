@@ -1,5 +1,6 @@
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
+using Bliss.CSharp.Materials;
 using Bliss.CSharp.Windowing;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Effects;
@@ -31,6 +32,16 @@ public static class GlobalGraphicsAssets {
     /// The shader effect used for rendering physics debug visuals.
     /// </summary>
     public static Effect PhysicsDebugEffect { get; private set; }
+
+    /// <summary>
+    /// The effect used for rendering 3D models with PBR.
+    /// </summary>
+    public static Effect PbrModelEffect { get; private set; }
+    
+    /// <summary>
+    /// The effect used for skinned rendering 3D models with PBR.
+    /// </summary>
+    public static Effect SkinnedPbrModelEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used for rendering tile-based terrain graphics.
@@ -101,6 +112,26 @@ public static class GlobalGraphicsAssets {
         // Physics debug effect.
         PhysicsDebugEffect = new Effect(GraphicsDevice, "content/sparkle/shaders/physics_debug_drawer.vert", "content/sparkle/shaders/physics_debug_drawer.frag", new CrossCompileOptions());
         PhysicsDebugEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        
+        // PBR model effect.
+        PbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_model.frag"), new CrossCompileOptions(), []);
+        PbrModelEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        PbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        PbrModelEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("LightBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 4);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 5);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 6);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 7);
+        
+        // PBR skinned model effect.
+        //SkinnedPbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_skinned_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_skinned_model.frag"), new CrossCompileOptions(), []);
+        //SkinnedPbrModelEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedPbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedPbrModelEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedPbrModelEffect.AddBufferLayout("MaterialBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        //SkinnedPbrModelEffect.AddBufferLayout("LightBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        //SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 5);
         
         // Tile terrain effect.
         TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions());

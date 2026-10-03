@@ -46,6 +46,7 @@ public class SceneSwitcherMenu : Gui {
         
         List<LabelData> options = [
             new LabelData(ContentRegistry.Fontoe, "Test 3D", 18),
+            new LabelData(ContentRegistry.Fontoe, "Light Test", 18),
             new LabelData(ContentRegistry.Fontoe, "Test Player", 18),
             new LabelData(ContentRegistry.Fontoe, "Terrain", 18),
             new LabelData(ContentRegistry.Fontoe, "Test 2D", 18),
@@ -94,6 +95,11 @@ public class SceneSwitcherMenu : Gui {
                 case "Test 3D":
                     GuiManager.SetGui(null);
                     SceneManager.LoadSceneAsync(new TestScene3D(), new ProgressBarLoadingGui("Loading"));
+                    break;
+                
+                case "Light Test":
+                    GuiManager.SetGui(null);
+                    SceneManager.LoadSceneAsync(new LightTestScene(), new ProgressBarLoadingGui("Loading"));
                     break;
                 
                 case "Test Player":

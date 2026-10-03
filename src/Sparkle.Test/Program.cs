@@ -5,6 +5,7 @@ using Sparkle.CSharp;
 using Sparkle.CSharp.GUI.Loading;
 using Sparkle.Test.CSharp;
 using Sparkle.Test.CSharp.Dim3D;
+using Veldrith;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]",
