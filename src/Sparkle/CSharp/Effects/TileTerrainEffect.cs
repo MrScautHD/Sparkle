@@ -167,6 +167,7 @@ public class TileTerrainEffect : Effect {
     public override void Apply(CommandList commandList, Material? material = null) {
         base.Apply(commandList, material);
         
+        // Bind/Update the brush buffer.
         if (this._brushParametersDirty) {
             this._brushBuffer.SetValue(0, this._brushParameters);
             this._brushBuffer.UpdateBufferDeferred(commandList);
