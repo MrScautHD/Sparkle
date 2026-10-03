@@ -109,7 +109,7 @@ public class SoftBodySphere : SimpleSoftBody {
         
         // Create constraints between center and vertices.
         foreach (RigidBody vertex in this.Vertices) {
-            var constraint = world.CreateConstraint<BallSocket>(this.Center, vertex);
+            BallSocket constraint = world.CreateConstraint<BallSocket>(this.Center, vertex);
             constraint.Initialize(vertex.Position);
             constraint.Softness = softness;
             this.Springs.Add(constraint);
@@ -143,10 +143,10 @@ public class SoftBodySphere : SimpleSoftBody {
                 Vector2 uv2 = this.CalculateSphereUv(triangle.Vertex3.Position);
 
                 // Check if any of the UVs cross the seam (difference > 0.5).
-                if (MathF.Abs(uv0.X - uv1.X) > 0.5f || MathF.Abs(uv1.X - uv2.X) > 0.5f || MathF.Abs(uv2.X - uv0.X) > 0.5f) {
-                    if (uv0.X < 0.5f) uv0.X += 1.0f;
-                    if (uv1.X < 0.5f) uv1.X += 1.0f;
-                    if (uv2.X < 0.5f) uv2.X += 1.0f;
+                if (MathF.Abs(uv0.X - uv1.X) > 0.5F || MathF.Abs(uv1.X - uv2.X) > 0.5F || MathF.Abs(uv2.X - uv0.X) > 0.5F) {
+                    if (uv0.X < 0.5F) uv0.X += 1.0F;
+                    if (uv1.X < 0.5F) uv1.X += 1.0F;
+                    if (uv2.X < 0.5F) uv2.X += 1.0F;
                 }
                 
                 SkinnedVertex3D vertex1 = new SkinnedVertex3D {

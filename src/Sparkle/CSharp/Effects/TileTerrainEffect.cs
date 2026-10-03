@@ -195,12 +195,14 @@ public class TileTerrainEffect : Effect {
                 this._dirtyBrushMaterials.Add(material);
             }
             
+            // Get brush buffer for the material.
             if (!this._brushBuffers.TryGetValue(material, out SimpleUniformBuffer<BrushParameters>? brushBuffer)) {
                 brushBuffer = new SimpleUniformBuffer<BrushParameters>(this.GraphicsDevice, 1, ShaderStages.Fragment);
                 this._brushBuffers[material] = brushBuffer;
                 this._dirtyBrushMaterials.Add(material);
             }
             
+            // Update dirty brush buffers.
             if (this._dirtyBrushMaterials.Remove(material)) {
                 brushBuffer.SetValue(0, brushParameters);
                 brushBuffer.UpdateBufferDeferred(commandList);
