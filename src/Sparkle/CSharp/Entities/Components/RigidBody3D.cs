@@ -385,9 +385,9 @@ public class RigidBody3D : Component {
     /// <param name="mass">The mass of the rigid body.</param>
     /// <param name="setAsInverse">Determines whether the provided inertia matrix should be treated as an inverse matrix.</param>
     public void SetMassInertia(Matrix4x4 inertia, float mass, bool setAsInverse = false) {
-        this.Body.SetMassInertia(inertia.ToJMatrix(), mass, setAsInverse);
+        this.Body.SetMassInertia(inertia.ToJSymmetricMatrix(), mass, setAsInverse);
     }
-
+    
     /// <summary>
     /// Applies a force to the rigid body.
     /// </summary>
@@ -395,7 +395,7 @@ public class RigidBody3D : Component {
     public void AddForce(Vector3 force) {
         this.Body.AddForce(force);
     }
-
+    
     /// <summary>
     /// Applies a force at a specific position on the rigid body.
     /// </summary>

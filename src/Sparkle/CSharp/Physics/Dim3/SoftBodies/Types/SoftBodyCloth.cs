@@ -137,7 +137,7 @@ public class SoftBodyCloth : SimpleSoftBody {
         // Create rigid bodies for vertices.
         for (int i = 0; i < vertices.Count; i++) {
             RigidBody body = world.CreateRigidBody();
-            body.SetMassInertia(JMatrix.Zero, vertexMass, true);
+            body.SetMassInertia(JSymmetricMatrix.Zero, vertexMass, true);
             body.Position = vertices[i];
             centerPos += vertices[i];
             this.Vertices.Add(body);
@@ -157,7 +157,7 @@ public class SoftBodyCloth : SimpleSoftBody {
         
         // Create a center body.
         this.Center = world.CreateRigidBody();
-        this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
+        this.Center.SetMassInertia(JSymmetricMatrix.Identity * centerInertia, centerMass);
         this.Center.Position = centerPos / vertices.Count;
         this.Center.Orientation = rotation;
         

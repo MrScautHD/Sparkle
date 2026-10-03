@@ -87,7 +87,7 @@ public class SoftBodySphere : SimpleSoftBody {
         // Create rigid bodies for vertices.
         for (int i = 0; i < vertices.Count; i++) {
             RigidBody body = world.CreateRigidBody();
-            body.SetMassInertia(JMatrix.Zero, vertexMass, true);
+            body.SetMassInertia(JSymmetricMatrix.Zero, vertexMass, true);
             body.Position = vertices[i] + position;
             centerPos += body.Position;
             this.Vertices.Add(body);
@@ -105,7 +105,7 @@ public class SoftBodySphere : SimpleSoftBody {
         this.Center = world.CreateRigidBody();
         this.Center.Position = centerPos / vertices.Count;
         this.Center.Orientation = rotation;
-        this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
+        this.Center.SetMassInertia(JSymmetricMatrix.Identity * centerInertia, centerMass);
         
         // Create constraints between center and vertices.
         foreach (RigidBody vertex in this.Vertices) {

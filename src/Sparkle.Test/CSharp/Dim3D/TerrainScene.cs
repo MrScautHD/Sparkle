@@ -161,7 +161,7 @@ public class TerrainScene : Scene {
             BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND,
             RenderMode = RenderMode.Cutout
         };
-
+        
         material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
             Texture = GlobalResource.DefaultModelTexture,
             Color = Color.White

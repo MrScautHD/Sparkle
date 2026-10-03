@@ -74,7 +74,7 @@ public class SoftBodyCube : SimpleSoftBody {
         // Calculate vertices.
         for (int i = 0; i < 8; i++) {
             RigidBody body = world.CreateRigidBody();
-            body.SetMassInertia(JMatrix.Zero, vertexMass, true);
+            body.SetMassInertia(JSymmetricMatrix.Zero, vertexMass, true);
             body.Position = (Vector3.Transform(vertices[i] * scale, rotation) + position) * (size / 2.0F);
             centerPos += (Vector3) body.Position;
             this.Vertices.Add(body);
@@ -106,7 +106,7 @@ public class SoftBodyCube : SimpleSoftBody {
         // Create a center body.
         this.Center = world.CreateRigidBody();
         this.Center.Position = centerPos / 8.0F;
-        this.Center.SetMassInertia(JMatrix.Identity * centerInertia, centerMass);
+        this.Center.SetMassInertia(JSymmetricMatrix.Identity * centerInertia, centerMass);
 
         // Create constraints.
         for (int i = 0; i < 8; i++) {
