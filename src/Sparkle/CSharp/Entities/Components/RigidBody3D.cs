@@ -182,6 +182,22 @@ public class RigidBody3D : Component {
     }
     
     /// <summary>
+    /// Gets or sets the motion axes allowed for the rigid body, determining which degrees of freedom are enabled or restricted.
+    /// </summary>
+    public MotionAxes AllowedMotion {
+        get => this.Body.AllowedMotion;
+        set => this.Body.AllowedMotion = value;
+    }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether gyroscopic forces are enabled for the rigid body.
+    /// </summary>
+    public bool EnableGyroscopicForces {
+        get => this.Body.EnableGyroscopicForces;
+        set => this.Body.EnableGyroscopicForces = value;
+    }
+    
+    /// <summary>
     /// Gets or sets the motion type of the rigid body, determining its dynamic behavior within the physics simulation (e.g., static, dynamic, or kinematic).
     /// </summary>
     public MotionType MotionType {
@@ -403,6 +419,25 @@ public class RigidBody3D : Component {
     /// <param name="position">The position at which the force is applied, relative to the rigid body's center of mass.</param>
     public void AddForce(Vector3 force, Vector3 position) {
         this.Body.AddForce(force, position);
+    }
+    
+    /// <summary>
+    /// Applies an impulse to the rigid body.
+    /// </summary>
+    /// <param name="impulse">The impulse vector to apply to the rigid body in world space.</param>
+    /// <param name="wakeup">Indicates whether to wake up the rigid body if it is inactive.</param>
+    public void ApplyImpulse(Vector3 impulse, bool wakeup = true) {
+        this.Body.ApplyImpulse(impulse, wakeup);
+    }
+    
+    /// <summary>
+    /// Applies an impulse to the rigid body at a specified position.
+    /// </summary>
+    /// <param name="impulse">The impulse vector to apply to the rigid body.</param>
+    /// <param name="position">The position in world coordinates where the impulse is applied.</param>
+    /// <param name="wakeup">Determines whether the rigid body should be woken up if it is sleeping. Default is true.</param>
+    public void ApplyImpulse(Vector3 impulse, Vector3 position, bool wakeup = true) {
+        this.Body.ApplyImpulse(impulse, position, wakeup);
     }
     
     /// <summary>
