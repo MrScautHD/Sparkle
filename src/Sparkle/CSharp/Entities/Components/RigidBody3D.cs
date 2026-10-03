@@ -29,7 +29,7 @@ public class RigidBody3D : Component {
     /// Throws an <see cref="InvalidOperationException"/> if the simulation is not of type <see cref="Simulation3D"/>.
     /// </summary>
     public Simulation3D Simulation => SceneManager.Simulation as Simulation3D ?? throw new InvalidOperationException("The current simulation must be of type Simulation3D.");
-
+    
     /// <summary>
     /// Gets the physics world from the current 3D simulation.
     /// </summary>
