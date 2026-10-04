@@ -20,6 +20,8 @@ __Sparkle__ is a modern, high-performance, low-level, cross-platform game engine
 - 🖌️ GUI system for easy-to-use interfaces
 - 📦 Content manager for streamlined asset loading and organization
 
+<img width="2739" height="1437" alt="grafik" src="https://github.com/user-attachments/assets/ccb786b0-73b8-4962-8a00-3b02e4dca95f" />
+
 # 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ```
 dotnet add package Sparkle --version [VERSION]
