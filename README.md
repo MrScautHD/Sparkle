@@ -20,6 +20,8 @@ __Sparkle__ is a modern, high-performance, low-level, cross-platform game engine
 - 🖌️ GUI system for easy-to-use interfaces
 - 📦 Content manager for streamlined asset loading and organization
 
+<img width="2739" height="1437" alt="grafik" src="https://github.com/user-attachments/assets/ccb786b0-73b8-4962-8a00-3b02e4dca95f" />
+
 # 🪙 Installation - [Nuget](https://www.nuget.org/packages/Sparkle)
 ```
 dotnet add package Sparkle --version [VERSION]
@@ -45,11 +47,11 @@ dotnet add package Sparkle --version [VERSION]
 
 |      | D3D12 | Vulkan | Metal |
 | :--- | :---: | :----: | :---: |
-| [<img src="https://github.com/user-attachments/assets/f8b66880-9037-4ba8-acc4-6ea390e1dde9" alt="Windows" width="54" height="54" align="center">](https://www.microsoft.com/windows) Windows | ✔️ | ✔️ | ❌ |
-| [<img src="https://github.com/user-attachments/assets/814ce8c3-5242-47f4-a51b-b185680d38ff" alt="Linux" width="54" height="54" align="center">](https://www.ubuntu.com/) Linux | ❌ | ✔️ | ❌ |
-| [<img src="https://github.com/user-attachments/assets/99605868-0590-42ce-a72a-f6feb1cabf6e" alt="macOS" width="54" height="54" align="center">](https://www.apple.com/macos/) macOS | ❌ | 🔶 | ✔️ |
-| [<img src="https://github.com/user-attachments/assets/8ec16850-3a1e-42e1-b35e-cf3d3ea32d46" alt="Android" width="54" height="54" align="center">](https://www.android.com/) Android | ❌ | 🔜 | ❌ |
-| [<img src="https://github.com/user-attachments/assets/a0f33f2f-bd7c-4049-a207-85d3a67bef78" alt="iOS" width="54" height="54" align="center">](https://www.apple.com/ios/) iOS | ❌ | 🔜 | 🔜 |
+| [<img src="https://github.com/user-attachments/assets/f8b66880-9037-4ba8-acc4-6ea390e1dde9" alt="Windows" width="54" height="54" align="center">](https://www.microsoft.com/windows) Windows | ✔️ | ✔️ | - |
+| [<img src="https://github.com/user-attachments/assets/814ce8c3-5242-47f4-a51b-b185680d38ff" alt="Linux" width="54" height="54" align="center">](https://www.ubuntu.com/) Linux | - | ✔️ | - |
+| [<img src="https://github.com/user-attachments/assets/99605868-0590-42ce-a72a-f6feb1cabf6e" alt="macOS" width="54" height="54" align="center">](https://www.apple.com/macos/) macOS | - | 🔶 | ✔️ |
+| [<img src="https://github.com/user-attachments/assets/8ec16850-3a1e-42e1-b35e-cf3d3ea32d46" alt="Android" width="54" height="54" align="center">](https://www.android.com/) Android | - | 🔜 | - |
+| [<img src="https://github.com/user-attachments/assets/a0f33f2f-bd7c-4049-a207-85d3a67bef78" alt="iOS" width="54" height="54" align="center">](https://www.apple.com/ios/) iOS | - | 🔜 | 🔜 |
 
 🔶 - Requires [MoltenVK](https://github.com/KhronosGroup/MoltenVK) as a translation layer from Vulkan to Metal.
 
