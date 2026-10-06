@@ -364,7 +364,7 @@ public class TestScene3D : Scene {
     }
 
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer.OutputDescription);
+        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
         
         // Draw gird.
         this.ImmediateRenderer.DrawGrid(new Transform(), 96, 1, 16, Color.Gray);

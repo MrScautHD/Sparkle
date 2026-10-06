@@ -131,7 +131,7 @@ public class TestScene2D : Scene {
             return;
         }
         
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer, view: cam2D.GetView());
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(-200, -192, 400, 200), layerDepth: 0.4F, color: new Color(192, 112, 162, 100));
         context.PrimitiveBatch.End();
     }

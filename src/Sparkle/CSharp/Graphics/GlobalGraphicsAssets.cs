@@ -42,6 +42,16 @@ public static class GlobalGraphicsAssets {
     /// The effect used for skinned rendering 3D models with PBR.
     /// </summary>
     public static Effect SkinnedPbrModelEffect { get; private set; }
+
+    /// <summary>
+    /// The effect used for shadow-based visual elements in the graphics pipeline.
+    /// </summary>
+    public static Effect ShadowEffect { get; private set; }
+    
+    /// <summary>
+    /// The effect used for skinned shadow-based visual elements in the graphics pipeline.
+    /// </summary>
+    public static Effect SkinnedShadowEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used for rendering tile-based terrain graphics.
@@ -119,10 +129,12 @@ public static class GlobalGraphicsAssets {
         PbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrModelEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
         PbrModelEffect.AddBufferLayout("LightBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 4);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 5);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 6);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 7);
+        PbrModelEffect.AddBufferLayout("ShadowBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 5);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 6);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 7);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 8);
+        PbrModelEffect.AddTextureLayout("fShadowMap", 9);
         
         // PBR skinned model effect.
         //SkinnedPbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_skinned_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/pbr_skinned_model.frag"), new CrossCompileOptions(), []);
@@ -132,6 +144,21 @@ public static class GlobalGraphicsAssets {
         //SkinnedPbrModelEffect.AddBufferLayout("MaterialBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
         //SkinnedPbrModelEffect.AddBufferLayout("LightBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
         //SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 5);
+        
+        // Shadow model effect.
+        ShadowEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadow_map.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadow_map.frag"), new CrossCompileOptions(), []);
+        ShadowEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        ShadowEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        ShadowEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        ShadowEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 3);
+        
+        // Shadow skinned model effect.
+        //SkinnedShadowEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/skinned_shadow_map.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/skinned_shadow_map.frag"), new CrossCompileOptions(), []);
+        //SkinnedShadowEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedShadowEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedShadowEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        //SkinnedShadowEffect.AddBufferLayout("MaterialBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        //SkinnedShadowEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 4);
         
         // Tile terrain effect.
         TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions());

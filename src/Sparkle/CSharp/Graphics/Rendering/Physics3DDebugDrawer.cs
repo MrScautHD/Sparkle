@@ -71,19 +71,19 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     private CommandList _currentCommandList;
 
     /// <summary>
-    /// The main <see cref="OutputDescription"/>.
+    /// The main <see cref="Framebuffer"/>.
     /// </summary>
-    private OutputDescription _mainOutput;
+    private Framebuffer _mainFramebuffer;
     
     /// <summary>
-    /// The current <see cref="OutputDescription"/>.
+    /// The current <see cref="Framebuffer"/>.
     /// </summary>
-    private OutputDescription _currentOutput;
+    private Framebuffer _currentFramebuffer;
     
     /// <summary>
-    /// The requested <see cref="OutputDescription"/>.
+    /// The requested <see cref="Framebuffer"/>.
     /// </summary>
-    private OutputDescription _requestedOutput;
+    private Framebuffer _requestedFramebuffer;
     
     /// <summary>
     /// The main <see cref="BlendStateDescription"/>.
@@ -171,23 +171,23 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Begins a new rendering session with the specified command list and output description.
+    /// Begins a new rendering session with the specified command list and frame buffer.
     /// </summary>
     /// <param name="commandList">The command list used for issuing rendering commands.</param>
-    /// <param name="output">The output description for rendering.</param>
+    /// <param name="framebuffer">The framebuffer that defines the render target for the session.</param>
     /// <param name="blendState">Optional blend state description. If null, a default is used.</param>
     /// <param name="depthStencilState">Optional depth-stencil state description. If null, a default is used.</param>
     /// <param name="rasterizerState">Optional rasterizer state description. If null, a default is used.</param>
     /// <param name="color">Optional color for rendering debug visuals. If null, white is used.</param>
     /// <exception cref="Exception">Thrown if a rendering session has already begun.</exception>
-    public void Begin(CommandList commandList, OutputDescription output, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null) {
+    public void Begin(CommandList commandList, Framebuffer framebuffer, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null) {
         if (this._begun) {
             throw new Exception("The Physics3DDebugDrawer has already begun!");
         }
         
         this._begun = true;
         this._currentCommandList = commandList;
-        this._mainOutput = this._currentOutput = this._requestedOutput = output;
+        this._mainFramebuffer = this._currentFramebuffer = this._requestedFramebuffer = framebuffer;
         this._mainBlendState = this._currentBlendState = this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_DISABLED;
         this._mainDepthStencilState = this._currentDepthStencilState = this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
         this._mainRasterizerState = this._currentRasterizerState = this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
@@ -210,41 +210,41 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Gets the current output description being used for rendering.
+    /// Retrieves the current framebuffer being used by the <see cref="Physics3DDebugDrawer"/> instance.
     /// </summary>
-    /// <returns>The current <see cref="OutputDescription"/>.</returns>
-    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public OutputDescription GetCurrentOutput() {
+    /// <returns>The current <see cref="Framebuffer"/>.</returns>
+    /// <exception cref="Exception">Thrown if the <see cref="Physics3DDebugDrawer"/> instance has not started a draw session.</exception>
+    public Framebuffer GetCurrentFramebuffer() {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        return this._currentOutput;
+        return this._currentFramebuffer;
     }
     
     /// <summary>
-    /// Pushes a new output description to override the current rendering target.
+    /// Sets the current framebuffer to the specified framebuffer if a draw session has already begun.
     /// </summary>
-    /// <param name="output">The new <see cref="OutputDescription"/> to apply.</param>
-    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void PushOutput(OutputDescription output) {
+    /// <param name="framebuffer">The framebuffer to be set as the current framebuffer.</param>
+    /// <exception cref="Exception">Thrown if the draw session has not been initiated by calling <see cref="Begin"/>.</exception>
+    public void PushFramebuffer(Framebuffer framebuffer) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedOutput = output;
+        this._requestedFramebuffer = framebuffer;
     }
     
     /// <summary>
-    /// Restores the output description back to the one set at <see cref="Begin"/>.
+    /// Pops the currently assigned framebuffer and resets it to the main framebuffer.
     /// </summary>
-    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void PopOutput() {
+    /// <exception cref="Exception">Thrown if the method is called before a draw session has been started.</exception>
+    public void PopFramebuffer() {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
         }
         
-        this._requestedOutput = this._mainOutput;
+        this._requestedFramebuffer = this._mainFramebuffer;
     }
     
     /// <summary>
@@ -514,7 +514,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             throw new InvalidOperationException($"The number of provided vertices exceeds the capacity! [{vertexCount} > {this.Capacity}]");
         }
         
-        bool stateChanged = !this._currentOutput.Equals(this._requestedOutput) ||
+        bool stateChanged = !this._currentFramebuffer.Equals(this._requestedFramebuffer) ||
                             !this._currentBlendState.Equals(this._requestedBlendState) ||
                             !this._currentDepthStencilState.Equals(this._requestedDepthStencilState) ||
                             !this._currentRasterizerState.Equals(this._requestedRasterizerState) ||
@@ -524,7 +524,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             this.Flush();
         }
         
-        this._currentOutput = this._requestedOutput;
+        this._currentFramebuffer = this._requestedFramebuffer;
         this._currentBlendState = this._requestedBlendState;
         this._currentDepthStencilState = this._requestedDepthStencilState;
         this._currentRasterizerState = this._requestedRasterizerState;
@@ -534,7 +534,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._pipelineDescription.BlendState = this._currentBlendState;
         this._pipelineDescription.DepthStencilState = this._currentDepthStencilState;
         this._pipelineDescription.RasterizerState = this._currentRasterizerState;
-        this._pipelineDescription.Outputs = this._currentOutput;
+        this._pipelineDescription.Outputs = this._currentFramebuffer.OutputDescription;
         
         if (this._vertexCount + vertexCount > this._vertices.Length) {
             this.Flush();

@@ -128,11 +128,11 @@ public class SkyBox : Disposable {
     }
     
     /// <summary>
-    /// Renders the skybox using the specified command list and output description.
+    /// Renders the skybox using the specified command list and framebuffer.
     /// </summary>
     /// <param name="commandList">The command list used for issuing draw commands.</param>
-    /// <param name="output">The output description of the current rendering target.</param>
-    internal void Draw(CommandList commandList, OutputDescription output) {
+    /// <param name="framebuffer">The framebuffer representing the current rendering target.</param>
+    internal void Draw(CommandList commandList, Framebuffer framebuffer) {
         Cam3D? cam3D = Cam3D.ActiveCamera;
         
         if (cam3D == null) {
@@ -140,7 +140,7 @@ public class SkyBox : Disposable {
         }
         
         // Update pipeline description.
-        this._pipelineDescription.Outputs = output;
+        this._pipelineDescription.Outputs = framebuffer.OutputDescription;
         
         // Update vertex buffer.
         if (this._isDirty) {

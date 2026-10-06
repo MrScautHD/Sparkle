@@ -198,7 +198,7 @@ public abstract class Scene : Disposable {
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         
         // Draw immediate renderer.
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer.OutputDescription);
+        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
         
         foreach (Entity entity in this.Entities.Values) {
             foreach (Component component in entity.GetComponents()) {
@@ -213,10 +213,10 @@ public abstract class Scene : Disposable {
         this.ImmediateRenderer.End();
         
         // Draw skybox.
-        this.SkyBox?.Draw(context.CommandList, framebuffer.OutputDescription);
+        this.SkyBox?.Draw(context.CommandList, framebuffer);
         
         // Draw physics debug drawer.
-        this.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer.OutputDescription);
+        this.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer);
         
         foreach (Entity entity in this.Entities.Values) {
             if (entity.TryGetComponent(out RigidBody3D? rigidBody)) {
@@ -248,7 +248,7 @@ public abstract class Scene : Disposable {
         }
         
         // Draw 3D renderer.
-        this.Renderer.Draw(context.CommandList, framebuffer.OutputDescription);
+        this.Renderer.Draw(context.CommandList, framebuffer);
         
         // Draw sprite renderer.
         this.SpriteRenderer.Draw(context, framebuffer);

@@ -373,7 +373,7 @@ public class Game : Disposable {
             this.CommandList.SetFramebuffer(graphicsDevice.SwapchainFramebuffer);
             this.CommandList.ClearColorTarget(0, Color.DarkGray.ToRgbaFloat());
             
-            this.FullScreenRenderPass.Draw(this.CommandList, this._renderResult, graphicsDevice.SwapchainFramebuffer.OutputDescription);
+            this.FullScreenRenderPass.Draw(this.CommandList, this._renderResult, graphicsDevice.SwapchainFramebuffer);
             
             this.CommandList.End();
             graphicsDevice.WaitForIdle();

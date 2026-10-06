@@ -90,7 +90,7 @@ public static class ImGuiOverlayManager {
     /// <param name="context">The graphics context used for rendering operations.</param>
     /// <param name="framebuffer">The framebuffer to which the overlays are drawn.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
-        context.ImGuiController.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.ImGuiController.Begin(context.CommandList, framebuffer);
         
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {

@@ -37,7 +37,7 @@ public class LightTestScene : Scene {
     public Model OldCarModel { get; private set; }
     public Model PlaneModel { get; private set; }
     
-    public LightTestScene() : base("Light-Test-Scene", SceneType.Scene3D, (graphicsDevice) => new PbrForwardRenderer(graphicsDevice)) { }
+    public LightTestScene() : base("Light-Test-Scene", SceneType.Scene3D, (graphicsDevice) => new PbrForwardRenderer(graphicsDevice, Color.Black)) { }
     
     protected override void Load(ContentManager content) {
         base.Load(content);
@@ -150,7 +150,59 @@ public class LightTestScene : Scene {
     
     protected override void Update(double delta) {
         base.Update(delta);
-
+        
+        Entity? sun = this.GetEntitiesWithTag("sun").FirstOrDefault();
+        Entity? moon = this.GetEntitiesWithTag("moon").FirstOrDefault();
+        
+        if (sun != null) {
+            sun.LocalTransform.Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitX, (float) delta * 0.2F);
+            
+            Vector3 sunDirection = Vector3.Transform(Vector3.UnitZ, sun.LocalTransform.Rotation);
+            float sunHeight = sunDirection.Y;
+            float daylight = this.Smooth01((sunHeight + 0.35F) / 0.9F);
+            float sunHorizonFade = this.Smooth01(sunHeight / 0.2F);
+            
+            Light? sunLight = sun.GetComponent<Light>();
+            
+            if (sunLight != null) {
+                float sunriseAmount = 1.0F - this.Smooth01(daylight / 0.5F);
+                
+                byte red = 255;
+                byte green = (byte) Math.Clamp(120 + (124 * (1.0F - sunriseAmount)), 0.0F, 255.0F);
+                byte blue = (byte) Math.Clamp(80 + (134 * (1.0F - sunriseAmount)), 0.0F, 255.0F);
+                
+                sunLight.Enabled = true;
+                sunLight.Color = new Color(red, green, blue, 255);
+                sunLight.Intensity = 54.2F * daylight * sunHorizonFade;
+            }
+            
+            if (moon != null) {
+                moon.LocalTransform.Rotation = sun.LocalTransform.Rotation * Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI);
+                
+                Light? moonLight = moon.GetComponent<Light>();
+                if (moonLight != null) {
+                    float moonHeight = -sunHeight;
+                    float moonHorizonFade = this.Smooth01(moonHeight / 0.3F);
+                    
+                    moonLight.Enabled = true;
+                    moonLight.Color = new Color(70, 95, 160, 255);
+                    moonLight.Intensity = 1.0F * moonHorizonFade;
+                }
+            }
+            
+            if (this.Renderer is PbrForwardRenderer pbrRenderer) {
+                float dayAmbient = 0.08F;
+                float nightR = 0.012F, nightG = 0.016F, nightB = 0.03F;
+                
+                pbrRenderer.AmbientColor = new Vector4(
+                    nightR + ((dayAmbient - nightR) * daylight),
+                    nightG + ((dayAmbient - nightG) * daylight),
+                    nightB + ((dayAmbient - nightB) * daylight),
+                    1.0F
+                );
+            }
+        }
+        
         if (Input.IsKeyPressed(KeyboardKey.Number1)) {
             this.GetEntitiesWithTag("red").FirstOrDefault()?.GetComponent<Light>()?.Enabled ^= true;
             this.GetEntitiesWithTag("red").FirstOrDefault()?.GetComponent<Light>()?.DebugDrawEnabled ^= true;
@@ -200,13 +252,28 @@ public class LightTestScene : Scene {
         this.AddEntity(car);
         
         // ROAD
-        Entity road = new Entity(new Transform() { Translation = new Vector3(0, 0, 0), Scale = new Vector3(30, 30, 30)});
+        Entity road = new Entity(new Transform() { Translation = new Vector3(0, 0, 0), Scale = new Vector3(20, 20, 20)});
         road.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), MassInertiaUpdateMode.Update, MotionType.Static) {
             DrawDebug = false,
             DebugDrawColor = Color.Green
         });
         road.AddComponent(new ModelRenderer(this.PlaneModel, Vector3.Zero));
         this.AddEntity(road);
+        
+        // LIGHT SUN
+        Entity sunLight = new Entity(new Transform() { Translation = new Vector3(0, 0, 0) }, "sun");
+        Light sunLightComp = Light.CreateDirectional(new Color(255, 244, 214, 255), 54.2F);
+        sunLightComp.CastShadows = true;
+        //sunLightComp.DebugDrawEnabled = true;
+        sunLight.AddComponent(sunLightComp);
+        this.AddEntity(sunLight);
+        
+        // LIGHT MOON
+        Entity moonLight = new Entity(new Transform() { Translation = new Vector3(0, 0, 0) }, "moon");
+        Light moonLightComp = Light.CreateDirectional(new Color(120, 160, 255, 255), 0.2F);
+        //moonLightComp.DebugDrawEnabled = true;
+        moonLight.AddComponent(moonLightComp);
+        this.AddEntity(moonLight);
         
         // LIGHT RED
         Entity redLight = new Entity(new Transform() { Translation = new Vector3(7, 5, 7) }, "red");
@@ -235,5 +302,10 @@ public class LightTestScene : Scene {
         yellowLightComp.DebugDrawEnabled = true;
         yellowLight.AddComponent(yellowLightComp);
         this.AddEntity(yellowLight);
+    }
+    
+    private float Smooth01(float value) {
+        value = Math.Clamp(value, 0.0F, 1.0F);
+        return value * value * (3.0F - (2.0F * value));
     }
 }

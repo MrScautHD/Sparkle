@@ -32,17 +32,31 @@ layout(std140, set = 3, binding = 0) uniform LightBuffer {
     Light[MAX_LIGHT_COUNT] lights; // The lights array.
 };
 
-layout (set = 4, binding = 0) uniform texture2D fAlbedo;
-layout (set = 4, binding = 1) uniform sampler fAlbedoSampler;
+layout(std140, set = 4, binding = 0) uniform ShadowBuffer {
+    float shadowMapResolution; // Shadow map resolution (in pixels).
+    float shadowBias; // Constant depth bias applied when comparing against the shadow map (reduces shadow acne).
+    float shadowNormalBias; // Offset along the surface normal when sampling the shadow map (reduces acne at grazing angles).
+    float shadowBiasClamp; // Maximum allowed total depth bias (prevents peter-panning).
+    vec4 shadowAmbientColor; // rgb: (Color), w: (Intensity).
+    mat4x4 lightVP; // View-projection matrix of the shadow light (world space -> light space).
+    vec4 shadowLightDirection; // xyz: (Direction), w: (Padding).
+    vec4 shadowLightColor; // rgb: (Color), w: (Intensity).
+};
 
-layout (set = 5, binding = 0) uniform texture2D fNormal;
-layout (set = 5, binding = 1) uniform sampler fNormalSampler;
+layout (set = 5, binding = 0) uniform texture2D fAlbedo;
+layout (set = 5, binding = 1) uniform sampler fAlbedoSampler;
 
-layout (set = 6, binding = 0) uniform texture2D fMetallic;
-layout (set = 6, binding = 1) uniform sampler fMetallicSampler;
+layout (set = 6, binding = 0) uniform texture2D fNormal;
+layout (set = 6, binding = 1) uniform sampler fNormalSampler;
 
-layout (set = 7, binding = 0) uniform texture2D fEmission;
-layout (set = 7, binding = 1) uniform sampler fEmissionSampler;
+layout (set = 7, binding = 0) uniform texture2D fMetallic;
+layout (set = 7, binding = 1) uniform sampler fMetallicSampler;
+
+layout (set = 8, binding = 0) uniform texture2D fEmission;
+layout (set = 8, binding = 1) uniform sampler fEmissionSampler;
+
+layout (set = 9, binding = 0) uniform texture2D fShadowMap;
+layout (set = 9, binding = 1) uniform samplerShadow fShadowMapSampler;
 
 layout (location = 0) in vec2 fTexCoords;
 layout (location = 1) in vec4 fColor;
@@ -190,6 +204,52 @@ vec3 getLightColor(Light light, vec3 albedo, vec3 normal, vec3 viewDirection, fl
 }
 
 /*
+ * Samples the shadow map using the light-space position passed from the vertex shader.
+ *
+ * Returns:
+ * 1.0 = fully lit
+ * 0.0 = fully shadowed
+ */
+float getShadowFactor(vec3 normal) {
+    if (shadowLightColor.w <= 0.0F || shadowMapResolution <= 0.0F) {
+        return 1.0F;
+    }
+
+    vec4 lightSpacePosition = lightVP * vec4(fWorldPosition, 1.0F);
+    vec3 projectionCoords = lightSpacePosition.xyz / lightSpacePosition.w;
+
+    projectionCoords.xy = projectionCoords.xy * 0.5F + 0.5F;
+    projectionCoords.y = 1.0F - projectionCoords.y;
+
+    if (projectionCoords.x < 0.0F || projectionCoords.x > 1.0F ||
+    projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
+    projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
+        return 1.0F;
+    }
+
+    float currentDepth = projectionCoords.z;
+
+    vec3 lightDirection = normalize(-shadowLightDirection.xyz);
+    float normalDotLight = max(dot(normal, lightDirection), 0.0F);
+    
+    float normalBias = shadowNormalBias * (1.0F - normalDotLight);
+    float bias = clamp(shadowBias + normalBias, 0.0F, shadowBiasClamp);
+    
+    vec2 texelSize = vec2(1.0F / shadowMapResolution);
+    
+    float shadow = 0.0F;
+    
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            vec2 offset = vec2(x, y) * texelSize;
+            shadow += texture(sampler2DShadow(fShadowMap, fShadowMapSampler), vec3(projectionCoords.xy + offset, currentDepth - bias));
+        }
+    }
+    
+    return shadow / 9.0F;
+}
+
+/*
  * Calculates the final PBR color.
  *
  * Material map usage:
@@ -217,10 +277,18 @@ vec4 getPbrColor() {
     vec3 normal = getNormal();
     vec3 viewDirection = normalize(fViewPosition - fWorldPosition);
 
+    float shadowFactor = getShadowFactor(normal);
     vec3 lightColor = vec3(0.0F);
 
     for (int index = 0; index < numOfLights; index++) {
-        lightColor += getLightColor(lights[index], albedo, normal, viewDirection, metallic, roughness);
+        vec3 currentLightColor = getLightColor(lights[index], albedo, normal, viewDirection, metallic, roughness);
+
+        // Apply the shadow map only to directional lights.
+        if (lights[index].type == 0) {
+            currentLightColor *= mix(0.35F, 1.0F, shadowFactor);
+        }
+
+        lightColor += currentLightColor;
     }
 
     vec3 ambient = ambientColor.rgb * ambientColor.w * albedo * ambientOcclusion;

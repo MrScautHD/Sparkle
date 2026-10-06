@@ -107,7 +107,7 @@ public class SpriteRenderer {
             return sprite1.Texture.GetHashCode().CompareTo(sprite2.Texture.GetHashCode());
         });
         
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription, view: cam2D.GetView());
+        context.SpriteBatch.Begin(context.CommandList, framebuffer, view: cam2D.GetView());
         
         // Draw sprites.
         foreach (SpriteData sprite in this._sprites) {

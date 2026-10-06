@@ -138,7 +138,7 @@ public class PlayerMovementScene : Scene {
         }
         
         // Draw gird.
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer.OutputDescription);
+        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
         this.ImmediateRenderer.DrawGrid(new Transform(), 32, 1, 16, Color.Blue);
         //context.ImmediateRenderer.DrawCube(context.CommandList, framebuffer.OutputDescription, new Transform() { Translation = new Vector3(0, -0.5F, 0)}, new Vector3(32, 1, 32), color: Color.Gray);
         this.ImmediateRenderer.End();

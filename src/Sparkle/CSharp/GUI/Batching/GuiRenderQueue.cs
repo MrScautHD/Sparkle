@@ -65,8 +65,8 @@ public class GuiRenderQueue {
         this.DrawCallCount = 0;
         
         // Begin sprite/primitive batch.
-        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
-        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
+        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer);
+        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer);
     }
     
     /// <summary>
@@ -120,8 +120,8 @@ public class GuiRenderQueue {
         draw(this._context, this._framebuffer, state);
         
         // Begin sprite/primitive batch.
-        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
-        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer.OutputDescription);
+        this._context.SpriteBatch.Begin(this._context.CommandList, this._framebuffer);
+        this._context.PrimitiveBatch.Begin(this._context.CommandList, this._framebuffer);
     }
     
     /// <summary>

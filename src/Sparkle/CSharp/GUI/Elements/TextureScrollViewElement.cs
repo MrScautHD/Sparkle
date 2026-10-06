@@ -910,7 +910,7 @@ public class TextureScrollViewElement : GuiElement {
             }
         };
         
-        primitiveBatch.Begin(commandList, framebuffer.OutputDescription);
+        primitiveBatch.Begin(commandList, framebuffer);
         primitiveBatch.PushDepthStencilState(stencilWrite);
         primitiveBatch.DrawFilledRectangle(maskRect, maskOrigin, this.Rotation, 0.5F, new Color(255, 255, 255, 0));
         primitiveBatch.PopDepthStencilState();
@@ -944,7 +944,7 @@ public class TextureScrollViewElement : GuiElement {
         
         Rectangle sourceRect = new Rectangle(0, 0, (int) this._contentResult.Width, (int) this._contentResult.Height);
         
-        spriteBatch.Begin(commandList, framebuffer.OutputDescription);
+        spriteBatch.Begin(commandList, framebuffer);
         spriteBatch.PushDepthStencilState(stencilTest);
         spriteBatch.DrawTexture(this._contentResult, Vector2.Zero, 0.5F, sourceRect, Vector2.One, Vector2.Zero, false, 0.0F, Color.White);
         spriteBatch.PopDepthStencilState();

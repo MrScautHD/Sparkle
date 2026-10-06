@@ -125,7 +125,7 @@ public class SceneSwitcherMenu : Gui {
     protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
         
         // Draw background.
-        context.PrimitiveBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.PrimitiveBatch.Begin(context.CommandList, framebuffer);
         context.PrimitiveBatch.DrawFilledRectangle(new RectangleF(0, 0, GlobalGraphicsAssets.Window.GetWidth(), GlobalGraphicsAssets.Window.GetHeight()), color: new Color(128, 128, 128, 128));
         context.PrimitiveBatch.End();
         

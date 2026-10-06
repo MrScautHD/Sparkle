@@ -26,7 +26,7 @@ public class TestOverlay : Overlay {
             this._timeAccumulator -= 1.0F;
         }
         
-        context.SpriteBatch.Begin(context.CommandList, framebuffer.OutputDescription);
+        context.SpriteBatch.Begin(context.CommandList, framebuffer);
         context.SpriteBatch.DrawText(ContentRegistry.Fontoe, $"FPS: {this._fps}", new Vector2(10, 10), 18, scale: new Vector2(2, 2));
         
         //if (SceneManager.ActiveScene?.Name == "Terrain3D-Scene") {
