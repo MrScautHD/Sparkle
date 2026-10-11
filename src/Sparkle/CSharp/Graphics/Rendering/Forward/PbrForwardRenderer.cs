@@ -55,6 +55,31 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     public Vector4 AmbientColor;
     
     /// <summary>
+    /// The maximum number of directional lights that are uploaded per frame. Further directional lights are ignored.
+    /// </summary>
+    public int MaxDirectionalLights;
+    
+    /// <summary>
+    /// The maximum number of local lights (point and spot) that are uploaded per frame.
+    /// </summary>
+    public int MaxVisibleLocalLights => PbrLightData.MaxLightCount - this.MaxDirectionalLights;
+    
+    /// <summary>
+    /// The intensity at or below which a light is skipped, because it would be too weak to notice.
+    /// </summary>
+    public float MinLightIntensity;
+    
+    /// <summary>
+    /// The distance to the camera, in world units, up to which local lights keep their full strength.
+    /// </summary>
+    public float LocalLightFadeStartDistance;
+    
+    /// <summary>
+    /// The distance to the camera, in world units, at which local lights have faded out completely.
+    /// </summary>
+    public float LocalLightFadeEndDistance;
+    
+    /// <summary>
     /// Resolution of the shadow map.
     /// </summary>
     public int ShadowMapResolution {
@@ -148,9 +173,19 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private List<Renderable> _translucentRenderables;
     
     /// <summary>
-    /// List of lights waiting to be uploaded for the current frame.
+    /// All lights that were submitted for the current frame.
     /// </summary>
     private List<Light> _lights;
+    
+    /// <summary>
+    /// The lights that passed culling and ranking and are uploaded to the GPU this frame.
+    /// </summary>
+    private List<Light> _culledLights;
+    
+    /// <summary>
+    /// A reusable scratch list that holds the local lights which passed culling, before they are ranked and trimmed to the available slots.
+    /// </summary>
+    private List<Light> _localLightCandidates;
     
     /// <summary>
     /// The first enabled directional light with CastShadows enabled.
@@ -283,6 +318,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         GraphicsDevice graphicsDevice,
         SkyBox? skyBox = null,
         Color? ambientColor = null,
+        int maxDirectionalLights = 4,
+        float minLightIntensity = 0.001F,
+        float localLightFadeStartDistance = 180.0F,
+        float localLightFadeEndDistance = 250.0F,
         int shadowMapResolution = 2048,
         float shadowCameraDistance = 80.0F,
         float shadowCameraSize = 120.0F,
@@ -302,6 +341,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.GraphicsDevice = graphicsDevice;
         this.SkyBox = skyBox;
         this.AmbientColor = ambientColor?.ToRgbaFloatVec4() ?? new Vector4(0.03F, 0.03F, 0.03F, 1.0F);
+        this.MaxDirectionalLights = maxDirectionalLights;
+        this.MinLightIntensity = minLightIntensity;
+        this.LocalLightFadeStartDistance = localLightFadeStartDistance;
+        this.LocalLightFadeEndDistance = localLightFadeEndDistance;
         this.ShadowCameraDistance = shadowCameraDistance;
         this.ShadowCameraSize = shadowCameraSize;
         this.ShadowCameraNear = shadowCameraNear;
@@ -322,6 +365,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._opaqueRenderables = new List<Renderable>();
         this._translucentRenderables = new List<Renderable>();
         this._lights = new List<Light>();
+        this._culledLights = new List<Light>();
+        this._localLightCandidates = new List<Light>();
         
         // Create shadow map.
         this._shadowMap = new ShadowMap(graphicsDevice, shadowMapResolution);
@@ -509,8 +554,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this.UpdateRenderableBuffer(commandList, renderable);
         }
         
+        // Cull and sort lights before uploading them to the GPU.
+        this.UpdateCulledLights(cam3D);
+        
         // Update light buffer.
-        this.UpdateLightBuffer(commandList);
+        this.UpdateLightBuffer(commandList, cam3D);
         
         // Ensure PBR IBL maps are baked for the current skybox.
         this.EnsurePbrEnvironmentMap(commandList);
@@ -575,6 +623,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._opaqueRenderables.Clear();
         this._translucentRenderables.Clear();
         this._lights.Clear();
+        this._culledLights.Clear();
+        this._localLightCandidates.Clear();
         this._shadowLight = null;
     }
     
@@ -1139,14 +1189,15 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// Updates the light buffer from queued lights.
     /// </summary>
     /// <param name="commandList">The command list used to upload the buffer.</param>
-    private void UpdateLightBuffer(CommandList commandList) { // TODO: CHECK IF IT NEEDS TO BE UPDATED EVERY FRAME!
-        this._lightData.NumOfLights = Math.Min(this._lights.Count, PbrLightData.MaxLightCount);
+    /// <param name="camera">The active camera used for distance fade.</param>
+    private void UpdateLightBuffer(CommandList commandList, Cam3D camera) {
+        this._lightData.NumOfLights = Math.Min(this._culledLights.Count, PbrLightData.MaxLightCount);
         this._lightData.AmbientColor = this.AmbientColor;
         
         Span<PbrGpuLight> gpuLights = this._lightData.Lights.AsSpan();
         
         for (int i = 0; i < this._lightData.NumOfLights; i++) {
-            Light light = this._lights[i];
+            Light light = this._culledLights[i];
             
             // Calculate direction for the light.
             Vector3 direction = Vector3.Transform(-Vector3.UnitZ, light.LerpedRotation);
@@ -1164,7 +1215,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 light.LerpedGlobalPosition,
                 direction,
                 light.Color.ToRgbaFloatVec4().AsVector3(),
-                light.Intensity,
+                light.Intensity * this.GetLightDistanceFade(light, camera),
                 light.Range,
                 float.DegreesToRadians(light.InnerSpotAngle),
                 float.DegreesToRadians(light.OuterSpotAngle)
@@ -1179,6 +1230,125 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Upload buffer to GPU.
         this._lightBuffer.SetValue(0, this._lightData);
         this._lightBuffer.UpdateBufferDeferred(commandList);
+    }
+    
+    /// <summary>
+    /// Decides whether a light should be considered for the GPU light buffer this frame.
+    /// </summary>
+    /// <param name="light">The light to test.</param>
+    /// <param name="camera">The active camera, used for the distance test.</param>
+    /// <returns><see langword="true"/> if the light should be uploaded; otherwise, <see langword="false"/>.</returns>
+    private bool ShouldUploadLight(Light light, Cam3D camera) {
+        if (!light.Enabled || light.Intensity <= this.MinLightIntensity) {
+            return false;
+        }
+        
+        if (light.LightType == LightType.Directional) {
+            return true;
+        }
+        
+        if (light.Range <= 0.0F) {
+            return false;
+        }
+        
+        Vector3 lightPosition = light.LerpedGlobalPosition;
+        float cameraDistanceSquared = Vector3.DistanceSquared(lightPosition, camera.Position);
+        float maxDistance = this.LocalLightFadeEndDistance + light.Range;
+        
+        return cameraDistanceSquared <= maxDistance * maxDistance;
+    }
+    
+    /// <summary>
+    /// Calculates a score that describes how much a light contributes to the image. It is used to rank lights when there are more than the buffer can hold.
+    /// </summary>
+    /// <param name="light">The light to rate.</param>
+    /// <param name="camera">The active camera, used for the distance.</param>
+    /// <returns>The importance of the light. Higher values mean a more important light.</returns>
+    private static float GetLightImportance(Light light, Cam3D camera) {
+        if (light.LightType == LightType.Directional) {
+            return float.PositiveInfinity;
+        }
+        
+        Vector3 lightPosition = light.LerpedGlobalPosition;
+        float distanceSquared = MathF.Max(Vector3.DistanceSquared(lightPosition, camera.Position), 1.0F);
+        float rangeSquared = light.Range * light.Range;
+        
+        return light.Intensity * rangeSquared / distanceSquared;
+    }
+    
+    /// <summary>
+    /// Calculates how strongly a light is faded out by its distance to the camera.
+    /// </summary>
+    /// <param name="light">The light to fade.</param>
+    /// <param name="camera">The active camera, used for the distance.</param>
+    /// <returns>A multiplier in the range [0, 1] that is applied to the light.</returns>
+    private float GetLightDistanceFade(Light light, Cam3D camera) {
+        if (light.LightType == LightType.Directional) {
+            return 1.0F;
+        }
+        
+        // The end distance is kept slightly above the start distance, so the division below can never hit zero.
+        float fadeStart = MathF.Max(0.0F, this.LocalLightFadeStartDistance);
+        float fadeEnd = MathF.Max(fadeStart + 0.001F, this.LocalLightFadeEndDistance);
+        
+        // Convert the distance into a 0 to 1 progress value between the fade start and end.
+        float distance = Vector3.Distance(light.LerpedGlobalPosition, camera.Position);
+        float fadeT = Math.Clamp((distance - fadeStart) / (fadeEnd - fadeStart), 0.0F, 1.0F);
+        
+        // Smoothstep makes the fade start and end gently instead of linearly.
+        fadeT = fadeT * fadeT * (3.0F - 2.0F * fadeT);
+        
+        return 1.0F - fadeT;
+    }
+    
+    /// <summary>
+    /// Culls and ranks the scene lights and stores the ones that are uploaded to the GPU this frame in the culled light list.
+    /// </summary>
+    /// <param name="camera">The active camera, used for culling and ranking the lights.</param>
+    private void UpdateCulledLights(Cam3D camera) {
+        this._culledLights.Clear();
+        
+        int directionalCount = 0;
+        
+        // Collect the directional lights.
+        foreach (Light light in this._lights) {
+            if (!this.ShouldUploadLight(light, camera)) {
+                continue;
+            }
+            
+            if (light.LightType != LightType.Directional) {
+                continue;
+            }
+            
+            if (directionalCount >= this.MaxDirectionalLights) {
+                continue;
+            }
+            
+            this._culledLights.Add(light);
+            directionalCount++;
+        }
+        
+        this._localLightCandidates.Clear();
+        
+        // Collect all local lights that pass the culling test.
+        foreach (Light light in this._lights) {
+            if (light.LightType == LightType.Directional || !this.ShouldUploadLight(light, camera)) {
+                continue;
+            }
+            
+            this._localLightCandidates.Add(light);
+        }
+        
+        // Sort the candidates from most to least important, so the best lights are kept when there are too many.
+        this._localLightCandidates.Sort((a, b) => GetLightImportance(b, camera).CompareTo(GetLightImportance(a, camera)));
+        
+        // The local lights may only use the slots that the directional lights left free, and never more than the configured limit.
+        int remainingSlots = Math.Min(this.MaxVisibleLocalLights, PbrLightData.MaxLightCount - this._culledLights.Count);
+        
+        // Take the best candidates until the slots are full.
+        for (int i = 0; i < this._localLightCandidates.Count && i < remainingSlots; i++) {
+            this._culledLights.Add(this._localLightCandidates[i]);
+        }
     }
     
     /// <summary>
