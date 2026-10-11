@@ -1,6 +1,6 @@
 ﻿#version 450
 
-#define MAX_MAPS_COUNT 8
+#define MAX_MAPS_COUNT 12
 
 const float PI = 3.14159265359F;
 const float TWO_PI = 6.28318530718F;

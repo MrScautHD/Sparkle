@@ -1,6 +1,6 @@
 ﻿#version 450
 
-#define MAX_MAPS_COUNT 8
+#define MAX_MAPS_COUNT 12
 #define MAX_LIGHT_COUNT 512
 
 const float PI = 3.14159265359F;
