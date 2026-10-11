@@ -200,11 +200,10 @@ float getSpotAttenuation(Light light, vec3 lightDirection) {
  *
  * The direction from the fragment towards the light is returned through
  * lightDirection. Directional lights have no position or attenuation, while
- * point and spot lights are weakened by distance, and spot lights also by
- * their cone.
+ * point and spot lights are weakened by distance, and spot lights also by their cone.
  */
 vec3 getLightRadiance(Light light, out vec3 lightDirection) {
-
+    
     // Directional light: constant direction and no attenuation.
     if (light.type == 0) {
         lightDirection = normalize(-light.direction.xyz);
@@ -212,16 +211,30 @@ vec3 getLightRadiance(Light light, out vec3 lightDirection) {
     }
     
     vec3 difference = light.position.xyz - fWorldPosition;
-    float distance = length(difference);
+    float distanceSquared = dot(difference, difference);
+    float range = light.range;
+    
+    if (range > 0.0F && distanceSquared > range * range) {
+        lightDirection = vec3(0.0F, 1.0F, 0.0F);
+        return vec3(0.0F);
+    }
+    
+    float distance = sqrt(max(distanceSquared, EPSILON));
     
     // Fall back to straight up if the fragment sits exactly on the light.
     lightDirection = distance > EPSILON ? difference / distance : vec3(0.0F, 1.0F, 0.0F);
     
-    float attenuation = getRangeAttenuation(distance, light.range);
+    float attenuation = getRangeAttenuation(distance, range);
     
     // Spot light: additionally restrict the light to its cone.
     if (light.type == 2) {
-        attenuation *= getSpotAttenuation(light, lightDirection);
+        float spotAttenuation = getSpotAttenuation(light, lightDirection);
+        
+        if (spotAttenuation <= 0.0F) {
+            return vec3(0.0F);
+        }
+        
+        attenuation *= spotAttenuation;
     }
     
     return light.color.rgb * light.color.w * attenuation;
@@ -238,11 +251,20 @@ vec3 getLightColor(Light light, vec3 albedo, vec3 normal, vec3 viewDirection, fl
     vec3 lightDirection;
     vec3 radiance = getLightRadiance(light, lightDirection);
     
+    if (dot(radiance, radiance) <= EPSILON) {
+        return vec3(0.0F);
+    }
+    
+    float nDotL = max(dot(normal, lightDirection), 0.0F);
+    
+    if (nDotL <= 0.0F) {
+        return vec3(0.0F);
+    }
+    
     vec3 halfDirection = normalize(viewDirection + lightDirection);
     
     // NdotV is kept above zero because it is used as a divisor below.
     float nDotV = max(dot(normal, viewDirection), EPSILON);
-    float nDotL = max(dot(normal, lightDirection), 0.0F);
     float nDotH = max(dot(normal, halfDirection), 0.0F);
     float hDotV = max(dot(halfDirection, viewDirection), 0.0F);
     
