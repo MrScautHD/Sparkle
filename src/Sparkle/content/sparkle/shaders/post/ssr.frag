@@ -173,21 +173,37 @@ vec3 getSceneWorldPosition(vec2 uv, out float sceneDepth) {
 }
 
 /*
- * Refines a coarse ray hit with a binary search.
+ * Returns how far behind the visible surface a ray position is, measured as the distance from the camera.
  *
- * The ray march steps in fixed increments, so the first detected hit can be
- * up to one step past the real surface. This searches between the last
- * position before the hit and the hit position to find the intersection
- * more precisely, which reduces visible stepping artifacts.
+ * Positive values mean the ray is behind the surface, negative values mean it is still in front of it.
+ * A hit is only valid when the ray is behind the surface, but not further than the surface thickness.
+ * Without this one-sided test, rays that are still in front of a surface would count as hits, which
+ * shifts the reflected image toward the camera.
  */
-vec2 refineHit(vec3 previousRayPosition, vec3 currentRayPosition) {
+float getRayDepthDelta(vec3 rayPosition, vec3 scenePosition) {
+    vec3 cameraWorldPosition = inverseView[3].xyz;
+    return length(rayPosition - cameraWorldPosition) - length(scenePosition - cameraWorldPosition);
+}
+/*
+ * Refines a surface crossing with a binary search and validates it.
+ *
+ * The ray was in front of the surface at previousRayPosition and behind it at
+ * currentRayPosition. The search narrows this down to the actual crossing point.
+ * At a real surface the remaining depth delta becomes very small, while at a
+ * depth discontinuity (the ray passing behind the edge of a nearer object) it
+ * stays large. Only the first case is accepted as a hit.
+ *
+ * Returns true if the crossing is a valid hit. The hit position is returned through hitUv.
+ */
+bool refineHit(vec3 previousRayPosition, vec3 currentRayPosition, float currentDelta, out vec2 hitUv) {
     vec3 startPosition = previousRayPosition;
     vec3 endPosition = currentRayPosition;
     
-    // Fall back to the coarse hit if no refined position passes the thickness test.
-    vec2 bestUv = projectWorldPosition(currentRayPosition);
+    // Start with the coarse hit. The delta tracks how far behind the surface the best position so far is.
+    hitUv = projectWorldPosition(currentRayPosition);
+    float bestDelta = currentDelta;
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 8; i++) {
         vec3 midPosition = (startPosition + endPosition) * 0.5F;
         vec2 midUv = projectWorldPosition(midPosition);
         
@@ -199,27 +215,29 @@ vec2 refineHit(vec3 previousRayPosition, vec3 currentRayPosition) {
         
         float sceneDepth;
         vec3 scenePosition = getSceneWorldPosition(midUv, sceneDepth);
-        
+
         // The midpoint sees empty space, so the surface must be further along the ray.
         if (sceneDepth >= 1.0F) {
             startPosition = midPosition;
             continue;
         }
         
-        float depthDifference = abs(length(midPosition - scenePosition));
+        float depthDelta = getRayDepthDelta(midPosition, scenePosition);
         
-        // Inside the surface thickness: remember this hit and keep searching closer to the start.
-        if (depthDifference < thickness) {
-            bestUv = midUv;
+        // The midpoint is behind the surface: remember it and keep searching closer to the start.
+        if (depthDelta > 0.0F) {
+            hitUv = midUv;
+            bestDelta = depthDelta;
             endPosition = midPosition;
         }
-        // Not touching the surface yet: continue searching further along the ray.
+        // The midpoint is still in front of the surface, so search further along the ray.
         else {
             startPosition = midPosition;
         }
     }
     
-    return bestUv;
+    // A real surface leaves almost no gap. A large gap means the ray slipped behind a silhouette edge.
+    return bestDelta < thickness;
 }
 
 void main() {
@@ -259,14 +277,22 @@ void main() {
         return;
     }
     
-    // The ray starts at the surface and advances by a fixed world-space step.
-    vec3 rayPosition = worldPosition;
+    // Lift the start of the ray off the surface. The reconstructed position is slightly imprecise, and without this the ray hits the surface it starts on.
+    float startBias = thickness * 0.25F;
+    vec3 rayPosition = worldPosition + normalWorld * startBias;
     vec3 previousRayPosition = rayPosition;
     vec3 rayStep = reflectionDirection * stepSize;
     
+    // Offset the start of the ray by a per-pixel fraction of a step. This turns visible contour lines into fine noise.
+    float jitter = fract(52.9829189F * fract(dot(gl_FragCoord.xy, vec2(0.06711056F, 0.00583715F))));
+    rayPosition += rayStep * jitter;
+    
     vec2 hitUv = vec2(0.0F);
     float hitAmount = 0.0F;
-    float hitDistance = 0.0F;
+    float hitDistance = stepSize * jitter;
+    
+    // The ray starts in front of the surface. A hit is the moment it goes from in front to behind.
+    float previousDelta = -1.0F;
     
     int steps = int(maxSteps);
     
@@ -292,24 +318,31 @@ void main() {
         float sceneDepth;
         vec3 sceneWorldPosition = getSceneWorldPosition(rayUv, sceneDepth);
         
-        // The ray is currently over empty space such as the sky, so keep marching.
+        // The ray is currently over empty space such as the sky, which counts as being in front of everything.
         if (sceneDepth >= 1.0F) {
+            previousDelta = -1.0F;
             continue;
         }
         
-        float depthDifference = abs(length(rayPosition - sceneWorldPosition));
+        float depthDelta = getRayDepthDelta(rayPosition, sceneWorldPosition);
         
-        // The ray is within the surface thickness, which counts as a hit.
-        if (depthDifference < thickness) {
-            hitUv = refineHit(previousRayPosition, rayPosition);
+        // The ray just went from in front of the surface to behind it, so it crossed the surface during this step.
+        if (previousDelta <= 0.0F && depthDelta > 0.0F) {
+            vec2 refinedUv;
             
-            // Weaken reflections that hit near the screen border or came from far away.
-            float edge = getEdgeFade(hitUv);
-            float distanceFade = getDistanceFade(hitDistance);
-            
-            hitAmount = edge * distanceFade;
-            break;
+            if (refineHit(previousRayPosition, rayPosition, depthDelta, refinedUv)) {
+                hitUv = refinedUv;
+                
+                // Weaken reflections that hit near the screen border or came from far away.
+                float edge = getEdgeFade(hitUv);
+                float distanceFade = getDistanceFade(hitDistance);
+                
+                hitAmount = edge * distanceFade;
+                break;
+            }
         }
+        
+        previousDelta = depthDelta;
     }
     
     // No valid hit was found, so output a fully transparent reflection.
