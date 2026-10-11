@@ -298,6 +298,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="graphicsDevice">The graphics device used for managing GPU resources and rendering operations.</param>
     /// <param name="skyBox">An optional <see cref="SkyBox"/> instance to use as the background of the rendered scene. If <see langword="null"/>, no skybox will be rendered.</param>
     /// <param name="ambientColor">The ambient light color applied to the scene. If <see langword="null"/>, a default dark gray color (0.03, 0.03, 0.03) is applied.</param>
+    /// <param name="maxDirectionalLights">The maximum number of directional lights that are uploaded per frame. The remaining slots of the light buffer are available to local lights.</param>
+    /// <param name="minLightIntensity">The intensity at or below which a light is skipped, because it would be too weak to notice.</param>
+    /// <param name="localLightFadeStartDistance">The distance to the camera, in world units, up to which local lights (point and spot) keep their full strength.</param>
+    /// <param name="localLightFadeEndDistance">The distance to the camera, in world units, at which local lights have faded out completely. Lights are also culled based on this distance plus their own range.</param>
     /// <param name="shadowMapResolution">The resolution of the square shadow map texture. Higher values result in better shadow quality at the cost of increased memory usage.</param>
     /// <param name="shadowCameraDistance">The distance between the shadow camera and its focus point, measured along the light direction.</param>
     /// <param name="shadowCameraSize">The size of the orthographic projection used by the shadow camera.</param>
