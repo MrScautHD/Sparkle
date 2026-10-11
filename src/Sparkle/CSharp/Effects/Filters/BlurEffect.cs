@@ -19,7 +19,7 @@ public class BlurEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/filters/blur.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/post/filters/blur.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.

@@ -19,7 +19,7 @@ public class SobelEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/filters/sobel.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/post/filters/sobel.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.

@@ -1,11 +1,10 @@
 ﻿using System.Numerics;
-using Assimp;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
-using Bliss.CSharp.Geometry;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Graphics.Pipelines;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Materials;
@@ -19,7 +18,6 @@ using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Particles.Dim3;
 using Sparkle.CSharp.Graphics.Particles.Dim3.Collisions.Providers;
-using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Physics.Dim3;
 using Sparkle.CSharp.Scenes;
 using Veldrith;
@@ -61,7 +59,7 @@ public class PlayerMovementScene : Scene {
         Input.EnableRelativeMouseMode();
         
         // Set skybox.
-        this.SkyBox = this.CloudySkybox;
+        this.Renderer.SkyBox = this.CloudySkybox;
         
         // Create camera.
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
@@ -137,16 +135,20 @@ public class PlayerMovementScene : Scene {
             }
         }
         
-        // Draw gird.
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
-        this.ImmediateRenderer.DrawGrid(new Transform(), 32, 1, 16, Color.Blue);
-        //context.ImmediateRenderer.DrawCube(context.CommandList, framebuffer.OutputDescription, new Transform() { Translation = new Vector3(0, -0.5F, 0)}, new Vector3(32, 1, 32), color: Color.Gray);
-        this.ImmediateRenderer.End();
-        
         // Draw the base method.
         base.Draw(context, framebuffer);
     }
-
+    
+    protected override void DrawBeforeOpaquePass(CommandList commandList, Framebuffer framebuffer) {
+        base.DrawBeforeOpaquePass(commandList, framebuffer);
+        
+        // Draw gird.
+        this.ImmediateRenderer.Begin(commandList, framebuffer);
+        this.ImmediateRenderer.DrawGrid(new Transform(), 32, 1, 16, Color.Blue);
+        //context.ImmediateRenderer.DrawCube(commandList, framebuffer.OutputDescription, new Transform() { Translation = new Vector3(0, -0.5F, 0)}, new Vector3(32, 1, 32), color: Color.Gray);
+        this.ImmediateRenderer.End();
+    }
+    
     protected override void Dispose(bool disposing) {
         base.Dispose(disposing);
         

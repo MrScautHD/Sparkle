@@ -19,7 +19,7 @@ public class PixelizerEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/filters/pixelizer.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/post/filters/pixelizer.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.

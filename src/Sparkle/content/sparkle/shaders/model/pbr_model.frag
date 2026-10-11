@@ -1,0 +1,438 @@
+﻿#version 450
+
+#define MAX_MAPS_COUNT 8
+#define MAX_LIGHT_COUNT 512
+
+const float PI = 3.14159265359F;
+const float EPSILON = 0.000001F;
+
+const int MAP_ALBEDO = 0;
+const int MAP_NORMAL = 1;
+const int MAP_METALLIC = 2;
+const int MAP_ROUGHNESS = 3;
+const int MAP_OCCLUSION = 4;
+const int MAP_EMISSION = 5;
+const int MAP_REFLECTION = 6;
+const int MAP_SSR_REFLECTION = 7;
+
+struct MaterialMap {
+    vec4 color;
+    float value;
+};
+
+layout (std140, set = 2, binding = 0) uniform MaterialBuffer {
+    int renderMode;
+    MaterialMap maps[MAX_MAPS_COUNT];
+};
+
+struct Light {
+    int type; // Type: (Direction = 0, Point = 1, Spot = 2).
+    float range; // Range.
+    float innerSpotAngle; // Inner SpotAngle.
+    float outerSpotAngle; // Outer SpotAngle.
+    vec4 position; // xyz: (Position), w: (Padding).
+    vec4 direction; // xyz: (Direction), w: (Padding).
+    vec4 color; // rgb: (Color), w: (Intensity).
+};
+
+layout (std140, set = 3, binding = 0) uniform LightBuffer {
+    int numOfLights; // Number of lights.
+    vec4 ambientColor; // rgb: (Color), w: (Intensity).
+    Light[MAX_LIGHT_COUNT] lights; // The lights array.
+};
+
+layout (std140, set = 4, binding = 0) uniform ShadowBuffer {
+    float shadowMapResolution; // Shadow map resolution (in pixels).
+    float shadowBias; // Constant depth bias applied when comparing against the shadow map (reduces shadow acne).
+    float shadowNormalBias; // Offset along the surface normal when sampling the shadow map (reduces acne at grazing angles).
+    float shadowBiasClamp; // Maximum allowed total depth bias (prevents peter-panning).
+    vec4 shadowAmbientColor; // rgb: (Color), w: (Intensity).
+    mat4x4 lightVP; // View-projection matrix of the shadow light (world space -> light space).
+    vec4 shadowLightDirection; // xyz: (Direction), w: (Padding).
+    vec4 shadowLightColor; // rgb: (Color), w: (Intensity).
+};
+
+layout (std140, set = 5, binding = 0) uniform EnvironmentBuffer {
+    float maxReflectionLod; // Highest mip level of the prefilter map (roughness 1.0 reads this level).
+    vec4 environmentColor; // rgb: (Tint), w: (Intensity).
+};
+
+layout (set = 6, binding = 0) uniform texture2D fAlbedo;
+layout (set = 6, binding = 1) uniform sampler fAlbedoSampler;
+
+layout (set = 7, binding = 0) uniform texture2D fNormal;
+layout (set = 7, binding = 1) uniform sampler fNormalSampler;
+
+layout (set = 8, binding = 0) uniform texture2D fMetallic;
+layout (set = 8, binding = 1) uniform sampler fMetallicSampler;
+
+layout (set = 9, binding = 0) uniform texture2D fEmission;
+layout (set = 9, binding = 1) uniform sampler fEmissionSampler;
+
+layout (set = 10, binding = 0) uniform texture2D fShadowMap;
+layout (set = 10, binding = 1) uniform samplerShadow fShadowMapSampler;
+
+layout (set = 11, binding = 0) uniform textureCube fIrradianceMap;
+layout (set = 11, binding = 1) uniform sampler fIrradianceMapSampler;
+
+layout (set = 12, binding = 0) uniform textureCube fPrefilterMap;
+layout (set = 12, binding = 1) uniform sampler fPrefilterMapSampler;
+
+layout (set = 13, binding = 0) uniform texture2D fBrdfLut;
+layout (set = 13, binding = 1) uniform sampler fBrdfLutSampler;
+
+layout (location = 0) in vec2 fTexCoords;
+layout (location = 1) in vec4 fColor;
+layout (location = 2) in vec3 fWorldPosition;
+layout (location = 3) in vec3 fWorldNormal;
+layout (location = 4) in mat3 fTbn;
+layout (location = 7) in vec3 fViewPosition;
+
+layout (location = 0) out vec4 fFragColor;
+layout (location = 1) out vec4 fSsrMaskColor;
+
+/*
+ * Calculates the Fresnel reflectance using the Schlick approximation.
+ *
+ * Describes how much light is reflected instead of refracted, which grows
+ * towards 1.0 as the viewing angle becomes more grazing.
+ * The reflectance parameter is the base reflectance at normal incidence (F0).
+ */
+vec3 getFresnel(float hDotV, vec3 reflectance) {
+    return reflectance + (1.0F - reflectance) * pow(1.0F - hDotV, 5.0F);
+}
+
+/*
+ * Calculates the Fresnel reflectance for image-based lighting.
+ *
+ * Rough surfaces cannot reflect as strongly at grazing angles, so the upper
+ * limit is lowered by the roughness.
+ * Without this, rough materials would get unrealistically bright rims from the environment.
+ */
+vec3 getFresnelRoughness(float nDotV, vec3 reflectance, float roughness) {
+    return reflectance + (max(vec3(1.0F - roughness), reflectance) - reflectance) * pow(1.0F - nDotV, 5.0F);
+}
+
+/*
+ * Calculates the normal distribution function using GGX (Trowbridge-Reitz).
+ *
+ * Describes how many microfacets are aligned with the halfway vector. Low
+ * roughness results in a small, bright highlight, and high roughness spreads the highlight over a wide area.
+ */
+float getDistribution(float nDotH, float roughness) {
+    float alpha = roughness * roughness;
+    float alphaSquared = alpha * alpha;
+    float divisor = nDotH * nDotH * (alphaSquared - 1.0F) + 1.0F;
+    
+    return alphaSquared / max(PI * divisor * divisor, EPSILON);
+}
+
+/*
+ * Calculates the Smith geometry term using Schlick-GGX.
+ *
+ * Describes how much light is lost to microfacet self-shadowing (light
+ * direction) and masking (view direction). This is the direct lighting
+ * variant of k, as opposed to the IBL variant used in the BRDF LUT shader.
+ */
+float getGeometry(float nDotV, float nDotL, float roughness) {
+    float radius = roughness + 1.0F;
+    float k = radius * radius / 8.0F;
+    
+    float viewGeometry = nDotV / max(nDotV * (1.0F - k) + k, EPSILON);
+    float lightGeometry = nDotL / max(nDotL * (1.0F - k) + k, EPSILON);
+    
+    return viewGeometry * lightGeometry;
+}
+
+/*
+ * Calculates the world-space surface normal, including the normal map.
+ *
+ * The normal map is stored in tangent space, so it is decoded and rotated
+ * into world space with the TBN matrix. The normal strength is controlled by the value of the normal material map.
+ */
+vec3 getNormal() {
+    vec3 normal = normalize(fWorldNormal);
+    vec3 sampledNormal = texture(sampler2D(fNormal, fNormalSampler), fTexCoords).rgb;
+    
+    // Decode the normal from the [0, 1] range into a unit vector in the [-1, 1] range.
+    sampledNormal = normalize(sampledNormal * 2.0F - 1.0F);
+    
+    // Scaling only X and Y strengthens or weakens the bumps without flipping the surface.
+    sampledNormal.xy *= maps[MAP_NORMAL].value;
+    
+    return normalize(fTbn * sampledNormal);
+}
+
+/*
+ * Calculates how much a point or spot light weakens with distance.
+ *
+ * The light fades linearly to zero at its range and additionally follows the
+ * inverse-square law. The distance is clamped to 1.0 so the intensity cannot
+ * explode when a surface is very close to the light. A range of zero or less disables the attenuation.
+ */
+float getRangeAttenuation(float distance, float range) {
+    if (range <= 0.0F) {
+        return 1.0F;
+    }
+    
+    float attenuation = clamp(1.0F - distance / range, 0.0F, 1.0F);
+    return attenuation * attenuation / max(distance * distance, 1.0F);
+}
+
+/*
+ * Calculates the cone falloff of a spot light.
+ *
+ * Returns 1.0 inside the inner cone, 0.0 outside the outer cone, and a
+ * linear blend in between. The cone angles are expected in radians.
+ */
+float getSpotAttenuation(Light light, vec3 lightDirection) {
+    vec3 direction = normalize(-light.direction.xyz);
+    float angle = dot(lightDirection, direction);
+    
+    float innerCone = cos(light.innerSpotAngle);
+    float outerCone = cos(light.outerSpotAngle);
+    
+    return clamp((angle - outerCone) / max(innerCone - outerCone, EPSILON), 0.0F, 1.0F);
+}
+
+/*
+ * Calculates the radiance a light delivers to the current fragment.
+ *
+ * The direction from the fragment towards the light is returned through
+ * lightDirection. Directional lights have no position or attenuation, while
+ * point and spot lights are weakened by distance, and spot lights also by
+ * their cone.
+ */
+vec3 getLightRadiance(Light light, out vec3 lightDirection) {
+
+    // Directional light: constant direction and no attenuation.
+    if (light.type == 0) {
+        lightDirection = normalize(-light.direction.xyz);
+        return light.color.rgb * light.color.w;
+    }
+    
+    vec3 difference = light.position.xyz - fWorldPosition;
+    float distance = length(difference);
+    
+    // Fall back to straight up if the fragment sits exactly on the light.
+    lightDirection = distance > EPSILON ? difference / distance : vec3(0.0F, 1.0F, 0.0F);
+    
+    float attenuation = getRangeAttenuation(distance, light.range);
+    
+    // Spot light: additionally restrict the light to its cone.
+    if (light.type == 2) {
+        attenuation *= getSpotAttenuation(light, lightDirection);
+    }
+    
+    return light.color.rgb * light.color.w * attenuation;
+}
+
+/*
+ * Calculates the direct lighting of a single light using a Cook-Torrance BRDF.
+ *
+ * The result is the sum of a Lambertian diffuse term and a microfacet
+ * specular term, multiplied by the light radiance and NdotL.
+ * The reflectionStrength scales the specular part of the material.
+ */
+vec3 getLightColor(Light light, vec3 albedo, vec3 normal, vec3 viewDirection, float metallic, float roughness, float reflectionStrength) {
+    vec3 lightDirection;
+    vec3 radiance = getLightRadiance(light, lightDirection);
+    
+    vec3 halfDirection = normalize(viewDirection + lightDirection);
+    
+    // NdotV is kept above zero because it is used as a divisor below.
+    float nDotV = max(dot(normal, viewDirection), EPSILON);
+    float nDotL = max(dot(normal, lightDirection), 0.0F);
+    float nDotH = max(dot(normal, halfDirection), 0.0F);
+    float hDotV = max(dot(halfDirection, viewDirection), 0.0F);
+    
+    // Dielectrics reflect about 4% of the light, while metals reflect their albedo color.
+    vec3 baseReflectance = mix(vec3(0.04F), albedo, metallic);
+    
+    float distribution = getDistribution(nDotH, roughness);
+    float geometry = getGeometry(nDotV, nDotL, roughness);
+    vec3 fresnel = getFresnel(hDotV, baseReflectance);
+    
+    // Cook-Torrance specular term.
+    vec3 specular = distribution * geometry * fresnel / max(4.0F * nDotV * nDotL, EPSILON);
+    specular *= reflectionStrength;
+    
+    // Energy conservation: light that is reflected cannot also be diffused, and metals have no diffuse light.
+    vec3 diffuse = vec3(1.0F) - fresnel;
+    diffuse *= 1.0F - metallic;
+    
+    return (diffuse * albedo / PI + specular) * radiance * nDotL;
+}
+
+/*
+ * Calculates the ambient lighting from the environment maps.
+ *
+ * The diffuse part comes from the irradiance map. The specular part uses the
+ * split-sum approximation, where the prefiltered environment color is
+ * combined with the scale and bias from the BRDF LUT.
+ * The result is multiplied by the ambient occlusion and the environment tint.
+ */
+vec3 getImageBasedLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float metallic, float roughness, float ambientOcclusion, float reflectionStrength) {
+    float nDotV = max(dot(normal, viewDirection), EPSILON);
+    
+    vec3 baseReflectance = mix(vec3(0.04F), albedo, metallic);
+    vec3 fresnel = getFresnelRoughness(nDotV, baseReflectance, roughness);
+    
+    // Energy conservation: the diffuse part only gets the light that is not reflected.
+    vec3 diffuse = vec3(1.0F) - fresnel;
+    diffuse *= 1.0F - metallic;
+    
+    // Diffuse: the irradiance map already holds the cosine-weighted light around the normal.
+    vec3 irradiance = texture(samplerCube(fIrradianceMap, fIrradianceMapSampler), normal).rgb;
+    vec3 diffuseColor = irradiance * albedo;
+    
+    // Specular: rougher surfaces read from higher, blurrier mip levels of the prefilter map.
+    vec3 reflection = reflect(-viewDirection, normal);
+    vec3 prefilteredColor = textureLod(samplerCube(fPrefilterMap, fPrefilterMapSampler), reflection, roughness * maxReflectionLod).rgb;
+    
+    // The LUT replaces the BRDF integral with a scale and bias applied to the Fresnel term.
+    vec2 brdf = texture(sampler2D(fBrdfLut, fBrdfLutSampler), vec2(nDotV, roughness)).rg;
+    vec3 specularColor = prefilteredColor * (fresnel * brdf.x + brdf.y) * reflectionStrength;
+    
+    return (diffuse * diffuseColor + specularColor) * ambientOcclusion * environmentColor.rgb * environmentColor.w;
+}
+
+/*
+ * Calculates how much of the shadow light reaches the current fragment.
+ *
+ * Returns 1.0 for fully lit and 0.0 for fully shadowed. The fragment is
+ * projected into the light's view, compared against the shadow map with a
+ * slope-dependent bias, and filtered with a 3x3 PCF kernel for soft edges.
+ */
+float getShadowFactor(vec3 normal) {
+    
+    // Without an active shadow light there is nothing to shadow.
+    if (shadowLightColor.w <= 0.0F || shadowMapResolution <= 0.0F) {
+        return 1.0F;
+    }
+    
+    // Transform the world position into light space and apply the perspective divide.
+    vec4 lightSpacePosition = lightVP * vec4(fWorldPosition, 1.0F);
+    vec3 projectionCoords = lightSpacePosition.xyz / lightSpacePosition.w;
+    
+    // Convert from clip space to UV space and flip Y to a top-left origin.
+    projectionCoords.xy = projectionCoords.xy * 0.5F + 0.5F;
+    projectionCoords.y = 1.0F - projectionCoords.y;
+    
+    // Fragments outside the shadow map are treated as lit.
+    if (projectionCoords.x < 0.0F || projectionCoords.x > 1.0F ||
+        projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
+        projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
+        return 1.0F;
+    }
+    
+    float currentDepth = projectionCoords.z;
+    
+    vec3 lightDirection = normalize(-shadowLightDirection.xyz);
+    float normalDotLight = max(dot(normal, lightDirection), 0.0F);
+    
+    // Surfaces at grazing angles to the light need a larger bias to avoid shadow acne.
+    float normalBias = shadowNormalBias * (1.0F - normalDotLight);
+
+    // The total bias is clamped so shadows do not detach from their casters.
+    float bias = clamp(shadowBias + normalBias, 0.0F, shadowBiasClamp);
+    
+    vec2 texelSize = vec2(1.0F / shadowMapResolution);
+    
+    float shadow = 0.0F;
+    
+    // Percentage-closer filtering: average the comparison results of the 3x3 neighborhood.
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            vec2 offset = vec2(x, y) * texelSize;
+            shadow += texture(sampler2DShadow(fShadowMap, fShadowMapSampler), vec3(projectionCoords.xy + offset, currentDepth - bias));
+        }
+    }
+    
+    return shadow / 9.0F;
+}
+
+/*
+ * Calculates the final lit color and opacity of the fragment.
+ *
+ * Reads the material textures, accumulates the direct and ambient lighting,
+ * adds the emission, and finally applies tone mapping and gamma correction.
+ */
+vec4 getPbrColor() {
+    vec4 albedoTexel = texture(sampler2D(fAlbedo, fAlbedoSampler), fTexCoords);
+    vec4 metallicTexel = texture(sampler2D(fMetallic, fMetallicSampler), fTexCoords);
+    vec4 emissionTexel = texture(sampler2D(fEmission, fEmissionSampler), fTexCoords);
+    
+    // Combine the texture with the vertex color and the material tint.
+    vec3 albedo = albedoTexel.rgb * fColor.rgb * maps[MAP_ALBEDO].color.rgb;
+    float alpha = albedoTexel.a * fColor.a * maps[MAP_ALBEDO].color.a;
+    
+    // Unpack metallic, roughness and occlusion from the material texture.
+    float metallic = clamp(metallicTexel.r * maps[MAP_METALLIC].value, 0.0F, 1.0F);
+    
+    // Roughness has a lower limit, because perfectly smooth surfaces break the GGX distribution.
+    float roughness = clamp(metallicTexel.g * maps[MAP_ROUGHNESS].value, 0.04F, 1.0F);
+    float ambientOcclusion = clamp(metallicTexel.b * maps[MAP_OCCLUSION].value, 0.0F, 1.0F);
+    
+    float reflectionStrength = clamp(maps[MAP_REFLECTION].value, 0.0F, 1.0F);
+    
+    vec3 emission = emissionTexel.rgb * maps[MAP_EMISSION].color.rgb * maps[MAP_EMISSION].value;
+    
+    vec3 normal = getNormal();
+    vec3 viewDirection = normalize(fViewPosition - fWorldPosition);
+    
+    float shadowFactor = getShadowFactor(normal);
+    vec3 lightColor = vec3(0.0F);
+    
+    // Accumulate the direct lighting of all lights.
+    for (int index = 0; index < numOfLights; index++) {
+        vec3 currentLightColor = getLightColor(lights[index], albedo, normal, viewDirection, metallic, roughness, reflectionStrength);
+        
+        // Only directional lights are shadowed, and shadowed areas keep 35% of the light.
+        if (lights[index].type == 0) {
+            currentLightColor *= mix(0.35F, 1.0F, shadowFactor);
+        }
+        
+        lightColor += currentLightColor;
+    }
+    
+    // Ambient lighting from the environment maps plus the flat ambient color.
+    vec3 ambient = getImageBasedLightColor(albedo, normal, viewDirection, metallic, roughness, ambientOcclusion, reflectionStrength);
+    ambient += ambientColor.rgb * ambientColor.w * albedo * ambientOcclusion;
+    
+    vec3 color = ambient + lightColor * ambientOcclusion + emission;
+    
+    // Reinhard tone mapping compresses the HDR color into [0, 1).
+    color = color / (color + vec3(1.0F));
+    
+    // Gamma correction converts the linear color to display space.
+    color = pow(color, vec3(1.0F / 2.2F));
+    
+    return vec4(color, alpha);
+}
+
+void main() {
+    vec4 texelColor = getPbrColor();
+    
+    // The SSR pass reads this mask to decide how reflective this pixel is.
+    float ssrReflectionMask = clamp(maps[MAP_SSR_REFLECTION].value, 0.0F, 1.0F);
+    
+    // Set render mode.
+    switch (renderMode) {
+        
+        // Solid.
+        case 0:
+            texelColor.a = 1.0F;
+            break;
+        
+        // Cutout.
+        case 1:
+            if (texelColor.a < 0.99F) {
+                discard;
+            }
+            break;
+    }
+    
+    fFragColor = texelColor;
+    fSsrMaskColor = vec4(ssrReflectionMask, 0.0F, 0.0F, 1.0F);
+}

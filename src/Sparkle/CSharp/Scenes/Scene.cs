@@ -66,11 +66,6 @@ public abstract class Scene : Disposable {
     public Effect? FilterEffect;
     
     /// <summary>
-    /// The skybox used in the scene.
-    /// </summary>
-    public SkyBox? SkyBox;
-    
-    /// <summary>
     /// Stores all entities within the scene.
     /// </summary>
     internal Dictionary<uint, Entity> Entities;
@@ -134,6 +129,10 @@ public abstract class Scene : Disposable {
     /// </summary>
     protected internal virtual void Init() {
         this.Renderer = this._rendererFactory?.Invoke(GlobalGraphicsAssets.GraphicsDevice) ?? new BasicForwardRenderer(GlobalGraphicsAssets.GraphicsDevice);
+        this.Renderer.BeforeOpaquePass += this.DrawBeforeOpaquePass;
+        this.Renderer.AfterOpaquePass += this.DrawAfterOpaquePass;
+        this.Renderer.AfterTranslucentPass += this.DrawAfterTranslucentPass;
+        
         this.ImmediateRenderer = new ImmediateRenderer(GlobalGraphicsAssets.GraphicsDevice);
         this.Physics3DDebugDrawer = new Physics3DDebugDrawer(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
         this.SpriteRenderer = new SpriteRenderer();
@@ -189,7 +188,7 @@ public abstract class Scene : Disposable {
             entity.FixedUpdate(fixedStep);
         }
     }
-
+    
     /// <summary>
     /// Draws all entities in the scene.
     /// </summary>
@@ -197,8 +196,29 @@ public abstract class Scene : Disposable {
     /// <param name="framebuffer">The framebuffer to render into.</param>
     protected internal virtual void Draw(GraphicsContext context, Framebuffer framebuffer) {
         
+        // Draw entities (Renderables linked to the renderer).
+        foreach (Entity entity in this.Entities.Values) {
+            entity.Draw(context, framebuffer);
+        }
+        
+        // Draw multi instance renderers (Renderables linked to the renderer).
+        foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
+            multiInstanceRenderer.Draw(context, framebuffer);
+        }
+        
+        // Draw 3D renderer.
+        this.Renderer.Draw(context.CommandList, framebuffer);
+        
+        // Draw sprite renderer.
+        this.SpriteRenderer.Draw(context, framebuffer);
+    }
+    
+    protected virtual void DrawBeforeOpaquePass(CommandList commandList, Framebuffer framebuffer) { }
+    
+    protected virtual void DrawAfterOpaquePass(CommandList commandList, Framebuffer framebuffer) {
+        
         // Draw immediate renderer.
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
+        this.ImmediateRenderer.Begin(commandList, framebuffer);
         
         foreach (Entity entity in this.Entities.Values) {
             foreach (Component component in entity.GetComponents()) {
@@ -212,11 +232,8 @@ public abstract class Scene : Disposable {
         
         this.ImmediateRenderer.End();
         
-        // Draw skybox.
-        this.SkyBox?.Draw(context.CommandList, framebuffer);
-        
         // Draw physics debug drawer.
-        this.Physics3DDebugDrawer.Begin(context.CommandList, framebuffer);
+        this.Physics3DDebugDrawer.Begin(commandList, framebuffer);
         
         foreach (Entity entity in this.Entities.Values) {
             if (entity.TryGetComponent(out RigidBody3D? rigidBody)) {
@@ -236,23 +253,9 @@ public abstract class Scene : Disposable {
         }
         
         this.Physics3DDebugDrawer.End();
-        
-        // Draw entities (Renderables linked to the renderer).
-        foreach (Entity entity in this.Entities.Values) {
-            entity.Draw(context, framebuffer);
-        }
-        
-        // Draw multi instance renderers (Renderables linked to the renderer).
-        foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
-            multiInstanceRenderer.Draw(context, framebuffer);
-        }
-        
-        // Draw 3D renderer.
-        this.Renderer.Draw(context.CommandList, framebuffer);
-        
-        // Draw sprite renderer.
-        this.SpriteRenderer.Draw(context, framebuffer);
     }
+    
+    protected virtual void DrawAfterTranslucentPass(CommandList commandList, Framebuffer framebuffer) { }
     
     /// <summary>
     /// Handles window resizing events and updates entities accordingly.
@@ -464,7 +467,12 @@ public abstract class Scene : Disposable {
             this._multiInstanceRenderers.Clear();
             
             this.Simulation.Dispose();
+            
+            this.Renderer.BeforeOpaquePass -= this.DrawBeforeOpaquePass;
+            this.Renderer.AfterOpaquePass -= this.DrawAfterOpaquePass;
+            this.Renderer.AfterTranslucentPass -= this.DrawAfterTranslucentPass;
             this.Renderer.Dispose();
+            
             this.ImmediateRenderer.Dispose();
             this.Physics3DDebugDrawer.Dispose();
             Game.Instance?.Content.UnloadSceneContent();

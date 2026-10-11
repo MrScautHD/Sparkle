@@ -3,7 +3,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
-using Sparkle.CSharp.Graphics.Rendering.Forward;
+using Sparkle.CSharp.Graphics.Rendering.Forward.Lighting;
 using Sparkle.CSharp.Graphics.Rendering.Gizmos;
 using Veldrith;
 

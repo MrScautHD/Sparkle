@@ -160,6 +160,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         // Create vertex buffer.
         this._vertices = new PhysicsDebugVertex3D[this.Capacity];
         this._vertexBuffer = graphicsDevice.ResourceFactory.CreateBuffer(new BufferDescription(this.Capacity * (uint) Marshal.SizeOf<PhysicsDebugVertex3D>(), BufferUsage.VertexBuffer | BufferUsage.Dynamic));
+        this._vertexBuffer.Name = "VertexBuffer";
         
         // Create pipeline description.
         this._pipelineDescription = new SimplePipelineDescription() {

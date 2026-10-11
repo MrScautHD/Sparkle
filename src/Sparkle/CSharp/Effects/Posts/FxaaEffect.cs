@@ -19,7 +19,7 @@ public class FxaaEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/filters/fxaa.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/post/filters/fxaa.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.

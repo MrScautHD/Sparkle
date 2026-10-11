@@ -16,12 +16,12 @@ public class TileTerrainEffect : Effect {
     /// <summary>
     /// Path to the terrain tile vertex shader.
     /// </summary>
-    public static readonly string VertPath = "content/sparkle/shaders/terrain_tiles.vert";
+    public static readonly string VertPath = "content/sparkle/shaders/terrain/terrain_tiles.vert";
     
     /// <summary>
     /// Path to the terrain tile fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/terrain_tiles.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/terrain/terrain_tiles.frag";
     
     /// <summary>
     /// Tracks materials whose brush preview buffer needs to be updated.

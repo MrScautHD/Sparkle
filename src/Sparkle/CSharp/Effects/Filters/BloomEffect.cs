@@ -19,7 +19,7 @@ public class BloomEffect : Effect {
     /// <summary>
     /// Path to the fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/filters/bloom.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/post/filters/bloom.frag";
     
     /// <summary>
     /// Indicates whether the parameters buffer needs to be updated.

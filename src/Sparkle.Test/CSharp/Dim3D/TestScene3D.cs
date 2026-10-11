@@ -6,6 +6,7 @@ using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Geometry.Models;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
@@ -103,7 +104,7 @@ public class TestScene3D : Scene {
         Input.EnableRelativeMouseMode();
         
         // Set skybox.
-        this.SkyBox = this.CloudySkybox;
+        this.Renderer.SkyBox = this.CloudySkybox;
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
@@ -362,9 +363,11 @@ public class TestScene3D : Scene {
             softSphereBody.Center.AngularVelocity = new JVector(5, 0, 0);
         }
     }
-
-    protected override void Draw(GraphicsContext context, Framebuffer framebuffer) {
-        this.ImmediateRenderer.Begin(context.CommandList, framebuffer);
+    
+    protected override void DrawBeforeOpaquePass(CommandList commandList, Framebuffer framebuffer) {
+        base.DrawBeforeOpaquePass(commandList, framebuffer);
+        
+        this.ImmediateRenderer.Begin(commandList, framebuffer);
         
         // Draw gird.
         this.ImmediateRenderer.DrawGrid(new Transform(), 96, 1, 16, Color.Gray);
@@ -391,9 +394,6 @@ public class TestScene3D : Scene {
         this.ImmediateRenderer.PopTexture();
         
         this.ImmediateRenderer.End();
-        
-        // Draw the base method.
-        base.Draw(context, framebuffer);
     }
 
     protected override void Dispose(bool disposing) {
