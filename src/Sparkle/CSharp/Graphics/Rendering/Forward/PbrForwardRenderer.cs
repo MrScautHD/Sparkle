@@ -585,6 +585,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             commandList.SetFramebuffer(this._screenSpaceReflectionMap.ColorFramebuffer);
             commandList.ClearColorTarget(0, Color.Black.ToRgbaFloat());
             commandList.ClearColorTarget(1, new RgbaFloat(0.0F, 0.0F, 0.0F, 1.0F));
+            commandList.ClearDepthStencil(1.0F);
             
             // Draw Skybox.
             this.SkyBox?.Draw(commandList, this._screenSpaceReflectionMap.ColorFramebuffer);
