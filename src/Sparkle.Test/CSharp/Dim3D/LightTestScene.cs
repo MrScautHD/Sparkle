@@ -98,7 +98,7 @@ public class LightTestScene : Scene {
                 });
                 
                 // Set reflection map.
-                mesh.Material.AddMaterialMap("Reflection", 6, new MaterialMap {
+                mesh.Material.AddMaterialMap(MaterialMapType.Reflection, 6, new MaterialMap {
                     Color = Color.White,
                     Value = 1.0F
                 });
@@ -157,7 +157,7 @@ public class LightTestScene : Scene {
                 });
                 
                 // Set reflection map.
-                mesh.Material.AddMaterialMap("Reflection", 6, new MaterialMap {
+                mesh.Material.AddMaterialMap(MaterialMapType.Reflection, 6, new MaterialMap {
                     Color = Color.White,
                     Value = 1.0F
                 });

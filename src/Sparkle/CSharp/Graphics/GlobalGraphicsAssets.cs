@@ -37,6 +37,11 @@ public static class GlobalGraphicsAssets {
     /// The effect used for skinned rendering 3D models with PBR.
     /// </summary>
     public static Effect SkinnedPbrModelEffect { get; private set; }
+    
+    /// <summary>
+    /// The compute effect that assigns the lights to the clusters of the view frustum.
+    /// </summary>
+    public static ComputeEffect ClusterLightsEffect { get; private set; }
 
     /// <summary>
     /// The effect used for shadow-based visual elements in the graphics pipeline.
@@ -59,16 +64,6 @@ public static class GlobalGraphicsAssets {
     public static Effect SkinnedPbrNormalPrepassEffect { get; private set; }
     
     /// <summary>
-    /// The effect used by the PBR screen-space reflection pass.
-    /// </summary>
-    public static Effect SsrEffect { get; private set; }
-    
-    /// <summary>
-    /// The effect used to composite the scaled PBR screen-space reflection result.
-    /// </summary>
-    public static Effect SsrCompositeEffect { get; private set; }
-    
-    /// <summary>
     /// The effect used to bake the diffuse irradiance cubemap from an environment cubemap.
     /// </summary>
     public static Effect IrradianceEffect { get; private set; }
@@ -82,6 +77,16 @@ public static class GlobalGraphicsAssets {
     /// The effect used to generate the split-sum BRDF lookup table (x = NdotV, y = roughness, rg = scale and bias).
     /// </summary>
     public static Effect BrdfLut { get; private set; }
+    
+    /// <summary>
+    /// The effect used by the PBR screen-space reflection pass.
+    /// </summary>
+    public static Effect SsrEffect { get; private set; }
+    
+    /// <summary>
+    /// The effect used to composite the scaled PBR screen-space reflection result.
+    /// </summary>
+    public static Effect SsrCompositeEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used for rendering tile-based terrain graphics.
@@ -153,17 +158,20 @@ public static class GlobalGraphicsAssets {
         PbrModelEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrModelEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PbrModelEffect.AddBufferLayout("LightBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PbrModelEffect.AddBufferLayout("ShadowBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PbrModelEffect.AddBufferLayout("EnvironmentBuffer", 5, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 6);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 7);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 8);
-        PbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 9);
-        PbrModelEffect.AddTextureLayout("fShadowMap", 10);
-        PbrModelEffect.AddTextureLayout("fIrradianceMap", 11);
-        PbrModelEffect.AddTextureLayout("fPrefilterMap", 12);
-        PbrModelEffect.AddTextureLayout("fBrdfLut", 13);
+        PbrModelEffect.AddBufferLayout("LightBuffer", 3, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("ClusterDataBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("ClusterBuffer", 5, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("ClusterLightIndexBuffer", 6, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("ShadowBuffer", 7, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddBufferLayout("EnvironmentBuffer", 8, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 9);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 10);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 11);
+        PbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 12);
+        PbrModelEffect.AddTextureLayout("fShadowMap", 13);
+        PbrModelEffect.AddTextureLayout("fIrradianceMap", 14);
+        PbrModelEffect.AddTextureLayout("fPrefilterMap", 15);
+        PbrModelEffect.AddTextureLayout("fBrdfLut", 16);
         
         // PBR skinned model effect.
         SkinnedPbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_skinned_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_skinned_model.frag"), new CrossCompileOptions(), []);
@@ -171,17 +179,28 @@ public static class GlobalGraphicsAssets {
         SkinnedPbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrModelEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrModelEffect.AddBufferLayout("MaterialBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SkinnedPbrModelEffect.AddBufferLayout("LightBuffer", 4, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SkinnedPbrModelEffect.AddBufferLayout("ShadowBuffer", 5, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SkinnedPbrModelEffect.AddBufferLayout("EnvironmentBuffer", 6, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 7);
-        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 8);
-        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 9);
-        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 10);
-        SkinnedPbrModelEffect.AddTextureLayout("fShadowMap", 11);
-        SkinnedPbrModelEffect.AddTextureLayout("fIrradianceMap", 12);
-        SkinnedPbrModelEffect.AddTextureLayout("fPrefilterMap", 13);
-        SkinnedPbrModelEffect.AddTextureLayout("fBrdfLut", 14);
+        SkinnedPbrModelEffect.AddBufferLayout("LightBuffer", 4, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddBufferLayout("ClusterDataBuffer", 5, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddBufferLayout("ClusterBuffer", 6, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddBufferLayout("ClusterLightIndexBuffer", 7, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddBufferLayout("ShadowBuffer", 8, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddBufferLayout("EnvironmentBuffer", 9, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 10);
+        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 11);
+        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 12);
+        SkinnedPbrModelEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 13);
+        SkinnedPbrModelEffect.AddTextureLayout("fShadowMap", 14);
+        SkinnedPbrModelEffect.AddTextureLayout("fIrradianceMap", 15);
+        SkinnedPbrModelEffect.AddTextureLayout("fPrefilterMap", 16);
+        SkinnedPbrModelEffect.AddTextureLayout("fBrdfLut", 17);
+        
+        // Cluster lights effect.
+        ClusterLightsEffect = new ComputeEffect(GraphicsDevice, ComputeEffect.LoadTextCodeFromFile("content/sparkle/shaders/compute/cluster_lights.comp"), new CrossCompileOptions(), [], 64, 1, 1);
+        ClusterLightsEffect.AddBufferLayout("LightBuffer", 0, SimpleBufferType.StructuredReadOnly, ShaderStages.Compute);
+        ClusterLightsEffect.AddBufferLayout("ClusterDataBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Compute);
+        ClusterLightsEffect.AddBufferLayout("ClusterBuffer", 2, SimpleBufferType.StructuredReadWrite, ShaderStages.Compute);
+        ClusterLightsEffect.AddBufferLayout("ClusterLightIndexBuffer", 3, SimpleBufferType.StructuredReadWrite, ShaderStages.Compute);
+        ClusterLightsEffect.BuildPipeline();
         
         // Shadow model effect.
         ShadowEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/shadow_map.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/shadow_map.frag"), new CrossCompileOptions(), []);
@@ -209,20 +228,6 @@ public static class GlobalGraphicsAssets {
         SkinnedPbrNormalPrepassEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrNormalPrepassEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
-        // Screen-space reflections effect.
-        SsrEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr.frag"), new CrossCompileOptions(), []);
-        SsrEffect.AddBufferLayout("SsrBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SsrEffect.AddTextureLayout("fSceneColor", 1);
-        SsrEffect.AddTextureLayout("fNormal", 2);
-        SsrEffect.AddTextureLayout("fDepth", 3);
-        SsrEffect.AddTextureLayout("fSsrMask", 4);
-        
-        // Screen-space reflections composite effect.
-        SsrCompositeEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr_composite.frag"), new CrossCompileOptions(), []);
-        SsrCompositeEffect.AddTextureLayout("fSceneColor", 0);
-        SsrCompositeEffect.AddTextureLayout("fSsrColor", 1);
-        SsrCompositeEffect.AddTextureLayout("fSsrMask", 2);
-        
         // Irradiance effect.
         IrradianceEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/environment/cubemap_capture.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/environment/irradiance_convolution.frag"), new CrossCompileOptions(), []);
         IrradianceEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
@@ -236,6 +241,20 @@ public static class GlobalGraphicsAssets {
         
         // BRDF Lut effect.
         BrdfLut = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/environment/brdf_lut.frag"), new CrossCompileOptions(), []);
+        
+        // Screen-space reflections effect.
+        SsrEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr.frag"), new CrossCompileOptions(), []);
+        SsrEffect.AddBufferLayout("SsrBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SsrEffect.AddTextureLayout("fSceneColor", 1);
+        SsrEffect.AddTextureLayout("fNormal", 2);
+        SsrEffect.AddTextureLayout("fDepth", 3);
+        SsrEffect.AddTextureLayout("fSsrMask", 4);
+        
+        // Screen-space reflections composite effect.
+        SsrCompositeEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr_composite.frag"), new CrossCompileOptions(), []);
+        SsrCompositeEffect.AddTextureLayout("fSceneColor", 0);
+        SsrCompositeEffect.AddTextureLayout("fSsrColor", 1);
+        SsrCompositeEffect.AddTextureLayout("fSsrMask", 2);
         
         // Tile terrain effect.
         TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions());
@@ -293,6 +312,7 @@ public static class GlobalGraphicsAssets {
         PhysicsDebugEffect.Dispose();
         PbrModelEffect.Dispose();
         SkinnedPbrModelEffect.Dispose();
+        ClusterLightsEffect.Dispose();
         ShadowEffect.Dispose();
         SkinnedShadowEffect.Dispose();
         PbrNormalPrepassEffect.Dispose();

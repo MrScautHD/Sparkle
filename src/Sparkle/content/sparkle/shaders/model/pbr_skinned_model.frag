@@ -1,7 +1,6 @@
 ﻿#version 450
 
 #define MAX_MAPS_COUNT 12
-#define MAX_LIGHT_COUNT 512
 
 const float PI = 3.14159265359F;
 const float EPSILON = 0.000001F;
@@ -20,11 +19,6 @@ struct MaterialMap {
     float value;
 };
 
-layout (std140, set = 3, binding = 0) uniform MaterialBuffer {
-    int renderMode;
-    MaterialMap maps[MAX_MAPS_COUNT];
-};
-
 struct Light {
     int type; // Type: (Direction = 0, Point = 1, Spot = 2).
     float range; // Range.
@@ -35,13 +29,48 @@ struct Light {
     vec4 color; // rgb: (Color), w: (Intensity).
 };
 
-layout (std140, set = 4, binding = 0) uniform LightBuffer {
-    int numOfLights; // Number of lights.
-    vec4 ambientColor; // rgb: (Color), w: (Intensity).
-    Light[MAX_LIGHT_COUNT] lights; // The lights array.
+struct LightCluster {
+    uint lightOffset; // Index of the first entry of this cluster in the cluster light index buffer.
+    uint lightCount; // Number of lights that affect this cluster.
+    vec2 lightClusterPadding; // Padding to keep the struct at 16 bytes.
 };
 
-layout (std140, set = 5, binding = 0) uniform ShadowBuffer {
+layout (std140, set = 3, binding = 0) uniform MaterialBuffer {
+    int renderMode; // Render mode: (Solid = 0, Cutout = 1, Translucent = 2).
+    MaterialMap maps[MAX_MAPS_COUNT]; // The material parameters.
+};
+
+layout (std430, set = 4, binding = 0) readonly buffer LightBuffer {
+    int numOfLights; // Number of lights.
+    int numOfDirectionalLights; // Number of directional lights.
+    vec2 lightPadding; // Padding to keep the struct at 16 bytes.
+    vec4 ambientColor; // rgb: (Color), w: (Intensity).
+    Light[] lights; // The lights array.
+};
+
+layout (std140, set = 5, binding = 0) uniform ClusterDataBuffer {
+    vec2 clusterScreenSize; // Size of the render target in pixels.
+    uint maxLightsPerCluster; // The max number of lights per cluster.
+    uint clusterCountX; // Number of clusters along the screen X axis.
+    uint clusterCountY; // Number of clusters along the screen Y axis.
+    uint clusterCountZ; // Number of clusters along the depth axis (depth slices).
+    float clusterNearPlane; // Near plane of the camera, where the first depth slice starts.
+    float clusterFarPlane; // Far plane of the camera, where the last depth slice ends.
+    mat4 clusterProjection; // Camera projection matrix.
+    mat4 clusterView; // Camera view matrix (world space -> view space).
+    mat4 clusterInverseProjection; // Inverse of the projection matrix.
+    mat4 clusterInverseView; // Inverse of the view matrix (view space -> world space).
+};
+
+layout(std430, set = 6, binding = 0) readonly buffer ClusterBuffer {
+    LightCluster clusters[]; // The light range of every cluster.
+};
+
+layout(std430, set = 7, binding = 0) readonly buffer ClusterLightIndexBuffer {
+    uint clusterLightIndices[]; // Light indices, grouped by cluster.
+};
+
+layout (std140, set = 8, binding = 0) uniform ShadowBuffer {
     float shadowMapResolution; // Shadow map resolution (in pixels).
     float shadowBias; // Constant depth bias applied when comparing against the shadow map (reduces shadow acne).
     float shadowNormalBias; // Offset along the surface normal when sampling the shadow map (reduces acne at grazing angles).
@@ -52,34 +81,34 @@ layout (std140, set = 5, binding = 0) uniform ShadowBuffer {
     vec4 shadowLightColor; // rgb: (Color), w: (Intensity).
 };
 
-layout (std140, set = 6, binding = 0) uniform EnvironmentBuffer {
+layout (std140, set = 9, binding = 0) uniform EnvironmentBuffer {
     float maxReflectionLod; // Highest mip level of the prefilter map (roughness 1.0 reads this level).
     vec4 environmentColor; // rgb: (Tint), w: (Intensity).
 };
 
-layout (set = 7, binding = 0) uniform texture2D fAlbedo;
-layout (set = 7, binding = 1) uniform sampler fAlbedoSampler;
+layout (set = 10, binding = 0) uniform texture2D fAlbedo;
+layout (set = 10, binding = 1) uniform sampler fAlbedoSampler;
 
-layout (set = 8, binding = 0) uniform texture2D fNormal;
-layout (set = 8, binding = 1) uniform sampler fNormalSampler;
+layout (set = 11, binding = 0) uniform texture2D fNormal;
+layout (set = 11, binding = 1) uniform sampler fNormalSampler;
 
-layout (set = 9, binding = 0) uniform texture2D fMetallic;
-layout (set = 9, binding = 1) uniform sampler fMetallicSampler;
+layout (set = 12, binding = 0) uniform texture2D fMetallic;
+layout (set = 12, binding = 1) uniform sampler fMetallicSampler;
 
-layout (set = 10, binding = 0) uniform texture2D fEmission;
-layout (set = 10, binding = 1) uniform sampler fEmissionSampler;
+layout (set = 13, binding = 0) uniform texture2D fEmission;
+layout (set = 13, binding = 1) uniform sampler fEmissionSampler;
 
-layout (set = 11, binding = 0) uniform texture2D fShadowMap;
-layout (set = 11, binding = 1) uniform samplerShadow fShadowMapSampler;
+layout (set = 14, binding = 0) uniform texture2D fShadowMap;
+layout (set = 14, binding = 1) uniform samplerShadow fShadowMapSampler;
 
-layout (set = 12, binding = 0) uniform textureCube fIrradianceMap;
-layout (set = 12, binding = 1) uniform sampler fIrradianceMapSampler;
+layout (set = 15, binding = 0) uniform textureCube fIrradianceMap;
+layout (set = 15, binding = 1) uniform sampler fIrradianceMapSampler;
 
-layout (set = 13, binding = 0) uniform textureCube fPrefilterMap;
-layout (set = 13, binding = 1) uniform sampler fPrefilterMapSampler;
+layout (set = 16, binding = 0) uniform textureCube fPrefilterMap;
+layout (set = 16, binding = 1) uniform sampler fPrefilterMapSampler;
 
-layout (set = 14, binding = 0) uniform texture2D fBrdfLut;
-layout (set = 14, binding = 1) uniform sampler fBrdfLutSampler;
+layout (set = 17, binding = 0) uniform texture2D fBrdfLut;
+layout (set = 17, binding = 1) uniform sampler fBrdfLutSampler;
 
 layout (location = 0) in vec2 fTexCoords;
 layout (location = 1) in vec4 fColor;
@@ -153,9 +182,10 @@ float getGeometry(float nDotV, float nDotL, float roughness) {
 vec3 getNormal() {
     vec3 normal = normalize(fWorldNormal);
     vec3 sampledNormal = texture(sampler2D(fNormal, fNormalSampler), fTexCoords).rgb;
+    vec3 decoded = sampledNormal * 2.0F - 1.0F;
     
     // Decode the normal from the [0, 1] range into a unit vector in the [-1, 1] range.
-    sampledNormal = normalize(sampledNormal * 2.0F - 1.0F);
+    sampledNormal = dot(decoded, decoded) > EPSILON ? normalize(decoded) : vec3(0.0F, 0.0F, 1.0F);
     
     // Scaling only X and Y strengthens or weakens the bumps without flipping the surface.
     sampledNormal.xy *= maps[MAP_NORMAL].value;
@@ -261,12 +291,13 @@ vec3 getLightColor(Light light, vec3 albedo, vec3 normal, vec3 viewDirection, fl
         return vec3(0.0F);
     }
     
-    vec3 halfDirection = normalize(viewDirection + lightDirection);
+    vec3 halfSum = viewDirection + lightDirection;
+    vec3 halfDirection = halfSum / max(length(halfSum), EPSILON);
     
     // NdotV is kept above zero because it is used as a divisor below.
-    float nDotV = max(dot(normal, viewDirection), EPSILON);
-    float nDotH = max(dot(normal, halfDirection), 0.0F);
-    float hDotV = max(dot(halfDirection, viewDirection), 0.0F);
+    float nDotV = clamp(dot(normal, viewDirection), EPSILON, 1.0F);
+    float nDotH = clamp(dot(normal, halfDirection), 0.0F, 1.0F);
+    float hDotV = clamp(dot(halfDirection, viewDirection), 0.0F, 1.0F);
     
     // Dielectrics reflect about 4% of the light, while metals reflect their albedo color.
     vec3 baseReflectance = mix(vec3(0.04F), albedo, metallic);
@@ -295,7 +326,7 @@ vec3 getLightColor(Light light, vec3 albedo, vec3 normal, vec3 viewDirection, fl
  * The result is multiplied by the ambient occlusion and the environment tint.
  */
 vec3 getImageBasedLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float metallic, float roughness, float ambientOcclusion, float reflectionStrength) {
-    float nDotV = max(dot(normal, viewDirection), EPSILON);
+    float nDotV = clamp(dot(normal, viewDirection), EPSILON, 1.0F);
     
     vec3 baseReflectance = mix(vec3(0.04F), albedo, metallic);
     vec3 fresnel = getFresnelRoughness(nDotV, baseReflectance, roughness);
@@ -374,6 +405,57 @@ float getShadowFactor(vec3 normal) {
     return shadow / 9.0F;
 }
 
+uint getClusterIndex() {
+    vec2 tileCounts = vec2(clusterCountX, clusterCountY);
+    vec2 tile = min(gl_FragCoord.xy * tileCounts / max(clusterScreenSize, vec2(1.0F)), tileCounts - 1.0F);
+    
+    // Only the Z row of the view matrix is needed for the depth (camera looks down -Z).
+    float viewZ = clusterView[0][2] * fWorldPosition.x
+        + clusterView[1][2] * fWorldPosition.y
+        + clusterView[2][2] * fWorldPosition.z
+        + clusterView[3][2];
+    
+    float viewDepth = max(-viewZ, clusterNearPlane);
+    
+    float nearPlane = max(clusterNearPlane, EPSILON);
+    float farPlane = max(clusterFarPlane, nearPlane + EPSILON);
+    float depthRatio = max(farPlane / nearPlane, 1.0F + EPSILON);
+    
+    float slice = log(viewDepth / nearPlane) / log(depthRatio) * float(clusterCountZ);
+    uint clusterZ = uint(clamp(slice, 0.0F, float(clusterCountZ - 1u)));
+    
+    return uint(tile.x) + uint(tile.y) * clusterCountX + clusterZ * clusterCountX * clusterCountY;
+}
+
+vec3 getDirectLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float metallic, float roughness, float reflectionStrength, float shadowFactor) {
+    vec3 lightColor = vec3(0.0F);
+    
+    // Directional lights.
+    int directionalCount = clamp(numOfDirectionalLights, 0, numOfLights);
+    
+    for (int index = 0; index < directionalCount; index++) {
+        vec3 currentLightColor = getLightColor(lights[index], albedo, normal, viewDirection, metallic, roughness, reflectionStrength);
+        
+        if (lights[index].type == 0) {
+            currentLightColor *= mix(0.35F, 1.0F, shadowFactor);
+        }
+        
+        lightColor += currentLightColor;
+    }
+    
+    // Local lights.
+    uint clusterIndex = getClusterIndex();
+    LightCluster cluster = clusters[clusterIndex];
+    uint lightCount = min(cluster.lightCount, maxLightsPerCluster);
+    
+    for (uint i = 0u; i < lightCount; i++) {
+        uint lightIndex = clusterLightIndices[cluster.lightOffset + i];
+        lightColor += getLightColor(lights[lightIndex], albedo, normal, viewDirection, metallic, roughness, reflectionStrength);
+    }
+    
+    return lightColor;
+}
+
 /*
  * Calculates the final lit color and opacity of the fragment.
  *
@@ -404,23 +486,11 @@ vec4 getPbrColor() {
     vec3 viewDirection = normalize(fViewPosition - fWorldPosition);
     
     float shadowFactor = getShadowFactor(normal);
-    vec3 lightColor = vec3(0.0F);
-    
-    // Accumulate the direct lighting of all lights.
-    for (int index = 0; index < numOfLights; index++) {
-        vec3 currentLightColor = getLightColor(lights[index], albedo, normal, viewDirection, metallic, roughness, reflectionStrength);
-        
-        // Only directional lights are shadowed, and shadowed areas keep 35% of the light.
-        if (lights[index].type == 0) {
-            currentLightColor *= mix(0.35F, 1.0F, shadowFactor);
-        }
-        
-        lightColor += currentLightColor;
-    }
+    vec3 lightColor = getDirectLightColor(albedo, normal, viewDirection, metallic, roughness, reflectionStrength, shadowFactor);
     
     // Ambient lighting from the environment maps plus the flat ambient color.
     vec3 ambient = getImageBasedLightColor(albedo, normal, viewDirection, metallic, roughness, ambientOcclusion, reflectionStrength);
-    ambient += ambientColor.rgb * ambientColor.w * albedo * ambientOcclusion;
+    ambient += ambientColor.rgb * ambientColor.w * albedo * (1.0F - metallic) * ambientOcclusion;
     
     vec3 color = ambient + lightColor * ambientOcclusion + emission;
     

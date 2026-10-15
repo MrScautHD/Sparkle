@@ -55,6 +55,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     public Vector4 AmbientColor;
     
     /// <summary>
+    /// The number of lights the GPU light buffer can hold. It limits the directional and local lights that are uploaded per frame together.
+    /// </summary>
+    public int LightCapacity { get; private set; }
+    
+    /// <summary>
     /// The maximum number of directional lights that are uploaded per frame. Further directional lights are ignored.
     /// </summary>
     public int MaxDirectionalLights;
@@ -62,7 +67,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <summary>
     /// The maximum number of local lights (point and spot) that are uploaded per frame.
     /// </summary>
-    public int MaxVisibleLocalLights => PbrLightData.MaxLightCount - this.MaxDirectionalLights;
+    public int MaxVisibleLocalLights => this.LightCapacity - this.MaxDirectionalLights;
     
     /// <summary>
     /// The intensity at or below which a light is skipped, because it would be too weak to notice.
@@ -78,6 +83,36 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// The distance to the camera, in world units, at which local lights have faded out completely.
     /// </summary>
     public float LocalLightFadeEndDistance;
+    
+    /// <summary>
+    /// The maximum number of local light indices one cluster can reference.
+    /// </summary>
+    public int MaxLightsPerCluster;
+    
+    /// <summary>
+    /// Number of clusters along the screen X axis.
+    /// </summary>
+    public int ClusterCountX;
+    
+    /// <summary>
+    /// Number of clusters along the screen Y axis.
+    /// </summary>
+    public int ClusterCountY;
+    
+    /// <summary>
+    /// Number of depth slices used by clustered lighting.
+    /// </summary>
+    public int ClusterCountZ;
+    
+    /// <summary>
+    /// Near plane used for cluster Z slicing.
+    /// </summary>
+    public float ClusterNearPlane;
+    
+    /// <summary>
+    /// Far plane used for cluster Z slicing.
+    /// </summary>
+    public float ClusterFarPlane;
     
     /// <summary>
     /// Resolution of the shadow map.
@@ -243,9 +278,19 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private Sampler _ssrSampler;
     
     /// <summary>
-    /// CPU-side light data uploaded to the GPU.
+    /// Number of lights that were uploaded during the previous light-buffer update.
     /// </summary>
-    private PbrLightData _lightData;
+    private int _lastUploadedLightCount;
+    
+    /// <summary>
+    /// Last uploaded light-buffer header.
+    /// </summary>
+    private PbrLightData _lastUploadedLightHeader;
+    
+    /// <summary>
+    /// CPU-side cluster data uploaded to the GPU.
+    /// </summary>
+    private PbrClusterData _clusterData;
     
     /// <summary>
     /// CPU-side shadow data uploaded to the GPU.
@@ -265,7 +310,22 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <summary>
     /// GPU-side light buffer.
     /// </summary>
-    private SimpleUniformBuffer<PbrLightData> _lightBuffer;
+    private SimpleStructuredBuffer<PbrLightData, PbrGpuLight> _lightBuffer;
+    
+    /// <summary>
+    /// GPU-side cluster parameter buffer.
+    /// </summary>
+    private SimpleUniformBuffer<PbrClusterData> _clusterDataBuffer;
+    
+    /// <summary>
+    /// GPU-side cluster buffer.
+    /// </summary>
+    private SimpleStructuredBuffer<int, PbrLightCluster> _clusterBuffer;
+    
+    /// <summary>
+    /// GPU-side flattened cluster light-index buffer.
+    /// </summary>
+    private SimpleStructuredBuffer<int, uint> _clusterLightIndexBuffer;
     
     /// <summary>
     /// GPU-side shadow buffer.
@@ -298,10 +358,17 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="graphicsDevice">The graphics device used for managing GPU resources and rendering operations.</param>
     /// <param name="skyBox">An optional <see cref="SkyBox"/> instance to use as the background of the rendered scene. If <see langword="null"/>, no skybox will be rendered.</param>
     /// <param name="ambientColor">The ambient light color applied to the scene. If <see langword="null"/>, a default dark gray color (0.03, 0.03, 0.03) is applied.</param>
+    /// <param name="lightCapacity">The number of lights the GPU light buffer can hold. It limits the directional and local lights that are uploaded per frame together, and it has to match the light array size in the PBR shader.</param>
     /// <param name="maxDirectionalLights">The maximum number of directional lights that are uploaded per frame. The remaining slots of the light buffer are available to local lights.</param>
     /// <param name="minLightIntensity">The intensity at or below which a light is skipped, because it would be too weak to notice.</param>
     /// <param name="localLightFadeStartDistance">The distance to the camera, in world units, up to which local lights (point and spot) keep their full strength.</param>
     /// <param name="localLightFadeEndDistance">The distance to the camera, in world units, at which local lights have faded out completely. Lights are also culled based on this distance plus their own range.</param>
+    /// <param name="maxLightsPerCluster">The maximum number of lights that can be stored for a single cluster. Further lights that affect the cluster are dropped. Together with the cluster counts, it defines the size of the cluster light index buffer.</param>
+    /// <param name="clusterCountX">The number of clusters along the screen X axis. Together with the other two counts, it splits the view frustum into a 3D grid for clustered lighting.</param>
+    /// <param name="clusterCountY">The number of clusters along the screen Y axis.</param>
+    /// <param name="clusterCountZ">The number of clusters along the depth axis (depth slices) between the cluster near and far plane.</param>
+    /// <param name="clusterNearPlane">The distance to the camera, in world units, where the first depth slice of the cluster grid starts.</param>
+    /// <param name="clusterFarPlane">The distance to the camera, in world units, where the last depth slice of the cluster grid ends.</param>
     /// <param name="shadowMapResolution">The resolution of the square shadow map texture. Higher values result in better shadow quality at the cost of increased memory usage.</param>
     /// <param name="shadowCameraDistance">The distance between the shadow camera and its focus point, measured along the light direction.</param>
     /// <param name="shadowCameraSize">The size of the orthographic projection used by the shadow camera.</param>
@@ -322,10 +389,17 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         GraphicsDevice graphicsDevice,
         SkyBox? skyBox = null,
         Color? ambientColor = null,
+        int lightCapacity = 512,
         int maxDirectionalLights = 4,
         float minLightIntensity = 0.001F,
         float localLightFadeStartDistance = 180.0F,
         float localLightFadeEndDistance = 250.0F,
+        int clusterCountX = 32,
+        int clusterCountY = 18,
+        int clusterCountZ = 40,
+        int maxLightsPerCluster = 128,
+        float clusterNearPlane = 1.0F,
+        float clusterFarPlane = 250.0F,
         int shadowMapResolution = 2048,
         float shadowCameraDistance = 80.0F,
         float shadowCameraSize = 120.0F,
@@ -337,7 +411,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         bool enableSsr = true,
         ReflectionQuality ssrQuality = ReflectionQuality.Medium,
         float ssrMaxDistance = 40.0F,
-        float ssrMaxSteps = 48.0F,
+        float ssrMaxSteps = 32.0F,
         float ssrStepSize = 0.35F,
         float ssrThickness = 0.35F,
         float ssrStrength = 0.45F,
@@ -345,10 +419,17 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.GraphicsDevice = graphicsDevice;
         this.SkyBox = skyBox;
         this.AmbientColor = ambientColor?.ToRgbaFloatVec4() ?? new Vector4(0.03F, 0.03F, 0.03F, 1.0F);
+        this.LightCapacity = lightCapacity;
         this.MaxDirectionalLights = maxDirectionalLights;
         this.MinLightIntensity = minLightIntensity;
         this.LocalLightFadeStartDistance = localLightFadeStartDistance;
         this.LocalLightFadeEndDistance = localLightFadeEndDistance;
+        this.MaxLightsPerCluster = maxLightsPerCluster;
+        this.ClusterCountX = clusterCountX;
+        this.ClusterCountY = clusterCountY;
+        this.ClusterCountZ = clusterCountZ;
+        this.ClusterNearPlane = clusterNearPlane;
+        this.ClusterFarPlane = clusterFarPlane;
         this.ShadowCameraDistance = shadowCameraDistance;
         this.ShadowCameraSize = shadowCameraSize;
         this.ShadowCameraNear = shadowCameraNear;
@@ -368,6 +449,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Create lists for renderables.
         this._opaqueRenderables = new List<Renderable>();
         this._translucentRenderables = new List<Renderable>();
+        
+        // Create light lists.
         this._lights = new List<Light>();
         this._culledLights = new List<Light>();
         this._localLightCandidates = new List<Light>();
@@ -448,12 +531,6 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             BorderColor = SamplerBorderColor.OpaqueBlack
         });
         
-        // Create light data.
-        this._lightData = new PbrLightData() {
-            NumOfLights = 0,
-            AmbientColor = this.AmbientColor
-        };
-        
         // Create shadow data.
         this._shadowData = new ShadowData() {
             ShadowMapResolution = shadowMapResolution,
@@ -476,8 +553,22 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._ssrData = new SsrData();
         
         // Create light buffer.
-        this._lightBuffer = new SimpleUniformBuffer<PbrLightData>(graphicsDevice, 1, ShaderStages.Fragment);
+        this._lightBuffer = new SimpleStructuredBuffer<PbrLightData, PbrGpuLight>(graphicsDevice, 1, (uint) this.LightCapacity, ShaderStages.Compute | ShaderStages.Fragment);
         this._lightBuffer.DeviceBuffer.Name = "LightBuffer";
+        
+        // Create cluster data buffer.
+        this._clusterDataBuffer = new SimpleUniformBuffer<PbrClusterData>(graphicsDevice, 1, ShaderStages.Compute | ShaderStages.Fragment);
+        this._clusterDataBuffer.DeviceBuffer.Name = "ClusterDataBuffer";
+        
+        // Create cluster buffer
+        int clusterCount = this.ClusterCountX * this.ClusterCountY * this.ClusterCountZ;
+        this._clusterBuffer = new SimpleStructuredBuffer<int, PbrLightCluster>(graphicsDevice, 0, (uint) clusterCount, ShaderStages.Compute | ShaderStages.Fragment, true, false);
+        this._clusterBuffer.DeviceBuffer.Name = "ClusterBuffer";
+        
+        // Create cluster light-index buffer.
+        int clusterLightIndexCapacity = clusterCount * this.MaxLightsPerCluster;
+        this._clusterLightIndexBuffer = new SimpleStructuredBuffer<int, uint>(graphicsDevice, 0, (uint) clusterLightIndexCapacity, ShaderStages.Compute | ShaderStages.Fragment, true, false);
+        this._clusterLightIndexBuffer.DeviceBuffer.Name = "ClusterLightIndexBuffer";
         
         // Create shadow buffer.
         this._shadowBuffer = new SimpleUniformBuffer<ShadowData>(graphicsDevice, 1, ShaderStages.Fragment);
@@ -525,10 +616,6 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._shadowLight = light;
         }
         
-        if (this._lights.Count >= PbrLightData.MaxLightCount) {
-            return;
-        }
-        
         this._lights.Add(light);
     }
     
@@ -563,6 +650,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         
         // Update light buffer.
         this.UpdateLightBuffer(commandList, cam3D);
+        
+        // Update cluster buffers.
+        this.UpdateClusterBuffers(commandList, cam3D, framebuffer);
         
         // Ensure PBR IBL maps are baked for the current skybox.
         this.EnsurePbrEnvironmentMap(commandList);
@@ -786,6 +876,15 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         
         // Set light buffer.
         commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("LightBuffer"), this._lightBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("LightBuffer")));
+        
+        // Set cluster data buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("ClusterDataBuffer"), this._clusterDataBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("ClusterDataBuffer")));
+        
+        // Set cluster buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("ClusterBuffer"), this._clusterBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("ClusterBuffer")));
+        
+        // Set cluster light-index buffer.
+        commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("ClusterLightIndexBuffer"), this._clusterLightIndexBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("ClusterLightIndexBuffer")));
         
         // Set shadow buffer.
         commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetBufferLayoutSlot("ShadowBuffer"), this._shadowBuffer.GetResourceSet(renderable.Material.Effect.GetBufferLayout("ShadowBuffer")));
@@ -1196,15 +1295,39 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="commandList">The command list used to upload the buffer.</param>
     /// <param name="camera">The active camera used for distance fade.</param>
     private void UpdateLightBuffer(CommandList commandList, Cam3D camera) {
-        this._lightData.NumOfLights = Math.Min(this._culledLights.Count, PbrLightData.MaxLightCount);
-        this._lightData.AmbientColor = this.AmbientColor;
+        int numOfLights = Math.Min(this._culledLights.Count, this.LightCapacity);
+        int numOfDirectionalLights = 0;
         
-        Span<PbrGpuLight> gpuLights = this._lightData.Lights.AsSpan();
+        for (int i = 0; i < numOfLights; i++) {
+            if (this._culledLights[i].LightType != LightType.Directional) {
+                break;
+            }
+            
+            numOfDirectionalLights++;
+        }
         
-        for (int i = 0; i < this._lightData.NumOfLights; i++) {
+        PbrLightData lightHeader = new PbrLightData() {
+            NumOfLights = numOfLights,
+            NumOfDirectionalLights = numOfDirectionalLights,
+            AmbientColor = this.AmbientColor
+        };
+        
+        bool headerChanged = lightHeader != this._lastUploadedLightHeader;
+        
+        if (headerChanged) {
+            this._lightBuffer.SetHeaderValue(0, lightHeader);
+            this._lastUploadedLightHeader = lightHeader;
+        }
+        
+        Span<PbrGpuLight> gpuLights = this._lightBuffer.ElementData.AsSpan();
+        
+        int dirtyStart = this.LightCapacity;
+        int dirtyEnd = 0;
+        
+        // Fill/update active lights only when the generated GPU data changed.
+        for (int i = 0; i < numOfLights; i++) {
             Light light = this._culledLights[i];
             
-            // Calculate direction for the light.
             Vector3 direction = Vector3.Transform(-Vector3.UnitZ, light.LerpedRotation);
             
             if (direction.LengthSquared() <= 0.0F) {
@@ -1214,8 +1337,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 direction = Vector3.Normalize(direction);
             }
             
-            // Fill data to the GPU light.
-            gpuLights[i] = new PbrGpuLight(
+            PbrGpuLight gpuLight = new PbrGpuLight(
                 light.LightType,
                 light.LerpedGlobalPosition,
                 direction,
@@ -1225,16 +1347,43 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 float.DegreesToRadians(light.InnerSpotAngle),
                 float.DegreesToRadians(light.OuterSpotAngle)
             );
+            
+            if (gpuLights[i] == gpuLight) {
+                continue;
+            }
+            
+            gpuLights[i] = gpuLight;
+            
+            dirtyStart = Math.Min(dirtyStart, i);
+            dirtyEnd = Math.Max(dirtyEnd, i + 1);
         }
         
-        // Fill the rest with empty/default data.
-        for (int i = this._lightData.NumOfLights; i < PbrLightData.MaxLightCount; i++) {
-            gpuLights[i] = default;
+        // Clear only slots that were used last frame but are unused now.
+        if (this._lastUploadedLightCount > numOfLights) {
+            int clearStart = numOfLights;
+            int clearEnd = this._lastUploadedLightCount;
+            
+            gpuLights.Slice(clearStart, clearEnd - clearStart).Clear();
+            
+            dirtyStart = Math.Min(dirtyStart, clearStart);
+            dirtyEnd = Math.Max(dirtyEnd, clearEnd);
         }
         
-        // Upload buffer to GPU.
-        this._lightBuffer.SetValue(0, this._lightData);
-        this._lightBuffer.UpdateBufferDeferred(commandList);
+        this._lastUploadedLightCount = numOfLights;
+        
+        bool lightElementsChanged = dirtyStart < dirtyEnd;
+        
+        if (!headerChanged && !lightElementsChanged) {
+            return;
+        }
+        
+        if (headerChanged) {
+            this._lightBuffer.UpdateHeaderDeferred(commandList);
+        }
+        
+        if (lightElementsChanged) {
+            this._lightBuffer.UpdateElementRangeDeferred(commandList, dirtyStart, dirtyEnd - dirtyStart);
+        }
     }
     
     /// <summary>
@@ -1348,12 +1497,61 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._localLightCandidates.Sort((a, b) => GetLightImportance(b, camera).CompareTo(GetLightImportance(a, camera)));
         
         // The local lights may only use the slots that the directional lights left free, and never more than the configured limit.
-        int remainingSlots = Math.Min(this.MaxVisibleLocalLights, PbrLightData.MaxLightCount - this._culledLights.Count);
+        int remainingSlots = Math.Min(this.MaxVisibleLocalLights, this.LightCapacity - this._culledLights.Count);
         
         // Take the best candidates until the slots are full.
         for (int i = 0; i < this._localLightCandidates.Count && i < remainingSlots; i++) {
             this._culledLights.Add(this._localLightCandidates[i]);
         }
+    }
+    
+    /// <summary>
+    /// Updates clustered-lighting buffers from the currently culled lights.
+    /// </summary>
+    /// <param name="commandList">The command list used to upload the buffers.</param>
+    /// <param name="camera">The active camera.</param>
+    /// <param name="framebuffer">The target framebuffer.</param>
+    private void UpdateClusterBuffers(CommandList commandList, Cam3D camera, Framebuffer framebuffer) {
+        Matrix4x4 projection = camera.GetProjection();
+        Matrix4x4 view = camera.GetView();
+        
+        Matrix4x4.Invert(projection, out Matrix4x4 inverseProjection);
+        Matrix4x4.Invert(view, out Matrix4x4 inverseView);
+        
+        // Fill the cluster data buffer.
+        this._clusterData.ScreenSize = new Vector2(framebuffer.Width, framebuffer.Height);
+        this._clusterData.MaxLightsPerCluster = (uint) this.MaxLightsPerCluster;
+        this._clusterData.ClusterCountX = (uint) this.ClusterCountX;
+        this._clusterData.ClusterCountY = (uint) this.ClusterCountY;
+        this._clusterData.ClusterCountZ = (uint) this.ClusterCountZ;
+        this._clusterData.NearPlane = this.ClusterNearPlane;
+        this._clusterData.FarPlane = this.ClusterFarPlane;
+        this._clusterData.Projection = projection;
+        this._clusterData.View = view;
+        this._clusterData.InverseProjection = inverseProjection;
+        this._clusterData.InverseView = inverseView;
+        
+        // Upload buffer to GPU.
+        this._clusterDataBuffer.SetValue(0, this._clusterData);
+        this._clusterDataBuffer.UpdateBufferDeferred(commandList);
+        
+        uint clusterCount = (uint) (this.ClusterCountX * this.ClusterCountY * this.ClusterCountZ);
+        
+        ComputeEffect clusterLightsEffect = GlobalGraphicsAssets.ClusterLightsEffect;
+        
+        // Dispatch.
+        clusterLightsEffect.DispatchInvocations(
+            commandList,
+            [
+                (clusterLightsEffect.GetBufferLayoutSlot("LightBuffer"), this._lightBuffer.GetResourceSet(clusterLightsEffect.GetBufferLayout("LightBuffer"))),
+                (clusterLightsEffect.GetBufferLayoutSlot("ClusterDataBuffer"), this._clusterDataBuffer.GetResourceSet(clusterLightsEffect.GetBufferLayout("ClusterDataBuffer"))),
+                (clusterLightsEffect.GetBufferLayoutSlot("ClusterBuffer"), this._clusterBuffer.GetResourceSet(clusterLightsEffect.GetBufferLayout("ClusterBuffer"))),
+                (clusterLightsEffect.GetBufferLayoutSlot("ClusterLightIndexBuffer"), this._clusterLightIndexBuffer.GetResourceSet(clusterLightsEffect.GetBufferLayout("ClusterLightIndexBuffer")))
+            ],
+            clusterCount,
+            1,
+            1
+        );
     }
     
     /// <summary>
@@ -1434,8 +1632,12 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._brdfLutSampler.Dispose();
             this._ssrSampler.Dispose();
             this._lightBuffer.Dispose();
+            this._clusterDataBuffer.Dispose();
+            this._clusterBuffer.Dispose();
+            this._clusterLightIndexBuffer.Dispose();
             this._shadowBuffer.Dispose();
             this._shadowMatrixBuffer.Dispose();
+            this._environmentBuffer.Dispose();
             this._ssrBuffer.Dispose();
         }
     }

@@ -50,6 +50,11 @@ public class EnvironmentMap : Disposable {
     private Framebuffer[][] _prefilterFramebuffers;
     
     /// <summary>
+    /// Temporary color textures used while baking the prefilter cubemap. Each one is copied into the real cubemap face/mip after rendering.
+    /// </summary>
+    private Texture[][] _prefilterColorTextures;
+    
+    /// <summary>
     /// The depth textures used by the irradiance framebuffers, one per face.
     /// </summary>
     private Texture[] _irradianceDepthTextures;
@@ -124,11 +129,11 @@ public class EnvironmentMap : Disposable {
         
         // Create cubemap textures.
         this.IrradianceTexture = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(irradianceSize, irradianceSize, 1, 6, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled | TextureUsage.Cubemap));
-        this.PrefilterTexture = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(prefilterSize, prefilterSize, prefilterMipLevels, 6, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled | TextureUsage.Cubemap));
+        this.PrefilterTexture = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(prefilterSize, prefilterSize, prefilterMipLevels, 6, PixelFormat.R16G16B16A16Float, TextureUsage.Sampled | TextureUsage.Cubemap));
         
         // Create framebuffers.
         this._irradianceFramebuffers = this.CreateCubemapFaceFramebuffers(this.IrradianceTexture, irradianceSize, irradianceSize, 0, out this._irradianceDepthTextures);
-        this._prefilterFramebuffers = this.CreatePrefilterFramebuffers(this.PrefilterTexture, prefilterSize, prefilterSize, prefilterMipLevels, out this._prefilterDepthTextures);
+        this._prefilterFramebuffers = this.CreatePrefilterFramebuffers(prefilterSize, prefilterMipLevels, out this._prefilterColorTextures, out this._prefilterDepthTextures);
         
         // Create environment sampler.
         this._environmentSampler = graphicsDevice.ResourceFactory.CreateSampler(new SamplerDescription() {
@@ -318,6 +323,10 @@ public class EnvironmentMap : Disposable {
                 
                 // Draw.
                 commandList.Draw(36);
+                
+                // Copy the rendered temporary face into the real prefilter cubemap mip/face.
+                uint mipSize = Math.Max(1, this.PrefilterTexture.Width >> (int) mip);
+                commandList.CopyTexture(this._prefilterColorTextures[mip][face], 0, 0, 0, 0, 0, this.PrefilterTexture, 0, 0, 0, mip, (uint) face, mipSize, mipSize, 1, 1);
             }
         }
     }
@@ -350,24 +359,42 @@ public class EnvironmentMap : Disposable {
     }
     
     /// <summary>
-    /// Creates the framebuffers for every face of every mip level of the prefilter cubemap.
+    /// Creates temporary 2D framebuffers for every face of every prefilter mip level.
+    /// The rendered temporary color texture is copied into the real cubemap face/mip after each draw.
     /// </summary>
-    /// <param name="texture">The prefilter cubemap texture to render into.</param>
     /// <param name="width">The width of the first mip level in pixels.</param>
-    /// <param name="height">The height of the first mip level in pixels. Currently unused, because the faces are square and the width is used for both sizes.</param>
     /// <param name="mipLevels">The number of mip levels.</param>
-    /// <param name="depthTextures">Returns the depth textures created for the framebuffers, indexed by mip level and then by face.</param>
-    /// <returns>The framebuffers, indexed by mip level and then by face.</returns>
-    private Framebuffer[][] CreatePrefilterFramebuffers(Texture texture, uint width, uint height, uint mipLevels, out Texture[][] depthTextures) {
+    /// <param name="colorTextures">Returns the temporary color textures, indexed by mip level and then by face.</param>
+    /// <param name="depthTextures">Returns the temporary depth textures, indexed by mip level and then by face.</param>
+    /// <returns>The temporary framebuffers, indexed by mip level and then by face.</returns>
+    private Framebuffer[][] CreatePrefilterFramebuffers(uint width, uint mipLevels, out Texture[][] colorTextures, out Texture[][] depthTextures) {
         Framebuffer[][] framebuffers = new Framebuffer[mipLevels][];
-        Texture[][] textures = new Texture[mipLevels][];
+        Texture[][] colors = new Texture[mipLevels][];
+        Texture[][] depths = new Texture[mipLevels][];
         
         for (uint mip = 0; mip < mipLevels; mip++) {
             uint mipSize = Math.Max(1, width >> (int) mip);
-            framebuffers[mip] = this.CreateCubemapFaceFramebuffers(texture, mipSize, mipSize, mip, out textures[mip]);
+            
+            framebuffers[mip] = new Framebuffer[6];
+            colors[mip] = new Texture[6];
+            depths[mip] = new Texture[6];
+            
+            for (uint face = 0; face < 6; face++) {
+                Texture colorTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(mipSize, mipSize, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget));
+                Texture depthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(mipSize, mipSize, 1, 1, PixelFormat.D32FloatS8UInt, TextureUsage.DepthStencil));
+                
+                colors[mip][face] = colorTexture;
+                depths[mip][face] = depthTexture;
+                
+                framebuffers[mip][face] = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(new FramebufferAttachmentDescription(depthTexture, 0), [
+                        new FramebufferAttachmentDescription(colorTexture, 0)
+                    ]
+                ));
+            }
         }
         
-        depthTextures = textures;
+        colorTextures = colors;
+        depthTextures = depths;
         return framebuffers;
     }
     
@@ -459,6 +486,12 @@ public class EnvironmentMap : Disposable {
             foreach (Framebuffer[] mipFramebuffers in this._prefilterFramebuffers) {
                 foreach (Framebuffer framebuffer in mipFramebuffers) {
                     framebuffer.Dispose();
+                }
+            }
+            
+            foreach (Texture[] mipColorTextures in this._prefilterColorTextures) {
+                foreach (Texture colorTexture in mipColorTextures) {
+                    colorTexture.Dispose();
                 }
             }
             

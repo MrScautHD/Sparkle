@@ -1,0 +1,205 @@
+﻿#version 450
+
+const float EPSILON = 0.000001F;
+const uint GROUP_SIZE = 64u; // Must match local_size_x.
+
+const float MIN_CONTRIBUTION = 0.003F;
+const float DEPTH_THRESHOLD_SCALE = 0.02F;
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+struct Light {
+    int type; // Type: (Direction = 0, Point = 1, Spot = 2).
+    float range; // Range.
+    float innerSpotAngle; // Inner SpotAngle.
+    float outerSpotAngle; // Outer SpotAngle.
+    vec4 position; // xyz: (Position), w: (Padding).
+    vec4 direction; // xyz: (Direction), w: (Padding).
+    vec4 color; // rgb: (Color), w: (Intensity).
+};
+
+struct LightCluster {
+    uint lightOffset; // Index of the first entry of this cluster in the cluster light index buffer.
+    uint lightCount; // Number of lights that affect this cluster.
+    vec2 lightClusterPadding; // Padding to keep the struct at 16 bytes.
+};
+
+layout(std430, set = 0, binding = 0) readonly buffer LightBuffer {
+    int numOfLights; // Number of lights.
+    int numOfDirectionalLights; // Number of directional lights.
+    vec2 lightPadding; // Padding to keep the struct at 16 bytes.
+    vec4 ambientColor; // rgb: (Color), w: (Intensity).
+    Light[] lights; // The lights array.
+};
+
+layout(std140, set = 1, binding = 0) uniform ClusterDataBuffer {
+    vec2 clusterScreenSize; // Size of the render target in pixels.
+    uint maxLightsPerCluster; // The max number of lights per cluster.
+    uint clusterCountX; // Number of clusters along the screen X axis.
+    uint clusterCountY; // Number of clusters along the screen Y axis.
+    uint clusterCountZ; // Number of clusters along the depth axis (depth slices).
+    float clusterNearPlane; // Near plane of the camera, where the first depth slice starts.
+    float clusterFarPlane; // Far plane of the camera, where the last depth slice ends.
+    mat4 clusterProjection; // Camera projection matrix.
+    mat4 clusterView; // Camera view matrix (world space -> view space).
+    mat4 clusterInverseProjection; // Inverse of the projection matrix.
+    mat4 clusterInverseView; // Inverse of the view matrix (view space -> world space).
+};
+
+layout(std430, set = 2, binding = 0) buffer ClusterBuffer {
+    LightCluster clusters[]; // The light range of every cluster.
+};
+
+layout(std430, set = 3, binding = 0) buffer ClusterLightIndexBuffer {
+    uint clusterLightIndices[]; // Light indices, grouped by cluster.
+};
+
+shared vec4 sharedSphere[GROUP_SIZE]; // xyz: view-space position, w: range
+shared float sharedIntensity[GROUP_SIZE]; // <= 0: skip (directional or black light, or past the end of the array)
+
+/*
+ * Converts a screen-space pixel coordinate and positive view-space depth into a view-space position.
+ *
+ * Reconstructs the corresponding viewing ray using the inverse projection
+ * matrix, then scales the ray to the requested depth. The camera looks down the negative Z axis in view space.
+ */
+vec3 screenToView(vec2 pixel, float viewDepth) {
+    vec2 ndc = vec2(
+        pixel.x / clusterScreenSize.x * 2.0F - 1.0F, 
+        1.0F - pixel.y / clusterScreenSize.y * 2.0F
+    );
+    
+    vec4 point = clusterInverseProjection * vec4(ndc, 0.5F, 1.0F);
+    point.xyz /= point.w;
+    
+    // View space looks down -Z, so point.z is negative.
+    return point.xyz * (viewDepth / -point.z);
+}
+
+void main() {
+    uint clusterIndex = gl_GlobalInvocationID.x;
+    uint clusterCount = clusterCountX * clusterCountY * clusterCountZ;
+    
+    // No early return, every thread must reach the barriers below.
+    bool valid = clusterIndex < clusterCount;
+    
+    vec3 aabbMin = vec3(0.0F);
+    vec3 aabbMax = vec3(0.0F);
+    float clusterDepth = 0.0F;
+    
+    if (valid) {
+        uint clusterX = clusterIndex % clusterCountX;
+        uint clusterY = (clusterIndex / clusterCountX) % clusterCountY;
+        uint clusterZ = clusterIndex / (clusterCountX * clusterCountY);
+        
+        // Pixel rectangle of this cluster's tile.
+        vec2 tileSize = clusterScreenSize / vec2(clusterCountX, clusterCountY);
+        vec2 minPixel = vec2(clusterX, clusterY) * tileSize;
+        vec2 maxPixel = minPixel + tileSize;
+        
+        // Exponential depth slices, identical to the mapping in the fragment shader.
+        float nearPlane = max(clusterNearPlane, EPSILON);
+        float farPlane = max(clusterFarPlane, nearPlane + EPSILON);
+        float depthRatio = max(farPlane / nearPlane, 1.0F + EPSILON);
+        
+        float sliceNear = nearPlane * pow(depthRatio, float(clusterZ) / float(clusterCountZ));
+        float sliceFar = nearPlane * pow(depthRatio, float(clusterZ + 1) / float(clusterCountZ));
+        
+        clusterDepth = sliceNear;
+        
+        // View-space AABB of the 8 frustum corners of this cluster.
+        vec3 corner = screenToView(minPixel, sliceNear);
+        aabbMin = corner;
+        aabbMax = corner;
+        
+        vec3 corners[7];
+        corners[0] = screenToView(vec2(maxPixel.x, minPixel.y), sliceNear);
+        corners[1] = screenToView(vec2(minPixel.x, maxPixel.y), sliceNear);
+        corners[2] = screenToView(maxPixel, sliceNear);
+        corners[3] = screenToView(minPixel, sliceFar);
+        corners[4] = screenToView(vec2(maxPixel.x, minPixel.y), sliceFar);
+        corners[5] = screenToView(vec2(minPixel.x, maxPixel.y), sliceFar);
+        corners[6] = screenToView(maxPixel, sliceFar);
+        
+        for (int i = 0; i < 7; i++) {
+            aabbMin = min(aabbMin, corners[i]);
+            aabbMax = max(aabbMax, corners[i]);
+        }
+    }
+    
+    uint offset = clusterIndex * maxLightsPerCluster;
+    uint count = 0;
+    uint totalLights = uint(max(numOfLights, 0));
+    
+    // Distant clusters are huge and hard to resolve visually, so they use a stricter threshold.
+    float threshold = MIN_CONTRIBUTION * (1.0F + clusterDepth * DEPTH_THRESHOLD_SCALE);
+    
+    for (uint batch = 0u; batch < totalLights; batch += GROUP_SIZE) {
+        
+        // Cooperative load: each thread transforms one light into view space for the whole group.
+        uint loadIndex = batch + gl_LocalInvocationIndex;
+        vec4 sphere = vec4(0.0F);
+        float loadedIntensity = -1.0F;
+        
+        if (loadIndex < totalLights) {
+            Light light = lights[loadIndex];
+            
+            // Directional lights are handled globally in the fragment shader.
+            if (light.type != 0) {
+                sphere = vec4((clusterView * vec4(light.position.xyz, 1.0F)).xyz, light.range);
+                loadedIntensity = max(max(light.color.r, light.color.g), light.color.b) * light.color.w;
+            }
+        }
+        
+        sharedSphere[gl_LocalInvocationIndex] = sphere;
+        sharedIntensity[gl_LocalInvocationIndex] = loadedIntensity;
+        
+        memoryBarrierShared();
+        barrier();
+        
+        if (valid) {
+            uint batchCount = min(GROUP_SIZE, totalLights - batch);
+            
+            for (uint j = 0u; j < batchCount && count < maxLightsPerCluster; j++) {
+                float intensity = sharedIntensity[j];
+                
+                if (intensity <= 0.0F) {
+                    continue;
+                }
+                
+                vec4 lightSphere = sharedSphere[j];
+                float range = lightSphere.w;
+                
+                // The fragment shader treats range <= 0 as "no attenuation", so such lights affect every cluster.
+                bool affectsCluster = range <= 0.0F;
+                
+                if (!affectsCluster) {
+                    vec3 delta = lightSphere.xyz - clamp(lightSphere.xyz, aabbMin, aabbMax);
+                    float distanceSquared = dot(delta, delta);
+                    
+                    if (distanceSquared <= range * range) {
+                        
+                        // Same falloff as getRangeAttenuation(), evaluated at the closest point of the cluster.
+                        float fade = 1.0F - sqrt(distanceSquared) / range;
+                        float attenuation = fade * fade / max(distanceSquared, 1.0F);
+                        
+                        affectsCluster = intensity * attenuation >= threshold;
+                    }
+                }
+                
+                if (affectsCluster) {
+                    clusterLightIndices[offset + count] = batch + j;
+                    count++;
+                }
+            }
+        }
+        
+        // Do not overwrite the shared arrays while other threads are still reading them.
+        barrier();
+    }
+    
+    if (valid) {
+        clusters[clusterIndex].lightOffset = offset;
+        clusters[clusterIndex].lightCount = count;
+    }
+}

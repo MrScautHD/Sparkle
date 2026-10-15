@@ -75,18 +75,18 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     }
     
     /// <summary>
-    /// Executes actions required after the simulation step has completed.
+    /// Handles post-step updates for the soft body, tracking the current and previous positions of each vertex in the soft body.
     /// </summary>
-    /// <param name="dt">The time step duration since the last simulation update.</param>
-    protected override void WorldOnPostStep(float dt) {
-        base.WorldOnPostStep(dt);
-
+    /// <param name="timeStep">The time step information for the current physics update.</param>
+    protected override void WorldOnPostStep(TimeStep timeStep) {
+        base.WorldOnPostStep(timeStep);
+        
         if (this.IsActive) {
             foreach (RigidBody body in this.Vertices) {
-                if (!this._vertexPositonsHistory.TryGetValue(body, out var positions)) {
+                if (!this._vertexPositonsHistory.TryGetValue(body, out (Vector3 Previous, Vector3 Current) positions)) {
                     positions = (body.Position, body.Position);
                 }
-
+                
                 this._vertexPositonsHistory[body] = (positions.Current, body.Position);
             }
         }
@@ -99,7 +99,7 @@ public abstract class SimpleSoftBody : SoftBody, IDebugDrawable {
     /// <returns>The interpolated position of the vertex. If interpolation data is not available, the current position of the vertex is returned.</returns>
     public Vector3 GetLerpedVertexPos(int index) {
         if (this.IsActive) {
-            if (this._vertexPositonsHistory.TryGetValue(this.Vertices[index], out var positions)) {
+            if (this._vertexPositonsHistory.TryGetValue(this.Vertices[index], out (Vector3 Previous, Vector3 Current) positions)) {
                 return Vector3.Lerp(positions.Previous, positions.Current, (float) (Time.FixedAccumulator / Time.FixedStep));
             }
         }

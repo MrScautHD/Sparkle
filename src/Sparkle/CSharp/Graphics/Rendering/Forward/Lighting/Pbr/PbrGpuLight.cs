@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Sparkle.CSharp.Graphics.Rendering.Forward.Lighting.Pbr;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct PbrGpuLight {
+public struct PbrGpuLight : IEquatable<PbrGpuLight> {
     
     /// <summary>
     /// Gets or sets the type of the light (Directional, Point, or Spot).
@@ -53,13 +53,21 @@ public struct PbrGpuLight {
         get => this._range;
         set => this._range = value;
     }
-    
+
     /// <summary>
-    /// Gets or sets the cone angle of the spotlight in radians. (Relevant for spot lights)
+    /// Gets or sets the inner angle, in radians, of the spotlight's cone.
     /// </summary>
-    public float SpotAngle {
+    public float InnerSpotAngle {
         get => this._innerSpotAngle;
         set => this._innerSpotAngle = value;
+    }
+    
+    /// <summary>
+    /// Gets or sets the outer angle, in radians, of the spotlight's cone.
+    /// </summary>
+    public float OuterSpotAngle {
+        get => this._outerSpotAngle;
+        set => this._outerSpotAngle = value;
     }
     
     /// <summary>
@@ -116,5 +124,61 @@ public struct PbrGpuLight {
         this._range = range;
         this._innerSpotAngle = innerSpotAngle;
         this._outerSpotAngle = outerSpotAngle;
+    }
+    
+    /// <summary>
+    /// Determines whether two lights are equal.
+    /// </summary>
+    /// <param name="left">The first light to compare.</param>
+    /// <param name="right">The second light to compare.</param>
+    /// <returns><see langword="true"/> if both lights have identical properties; otherwise, <see langword="false"/>.</returns>
+    public static bool operator ==(PbrGpuLight left, PbrGpuLight right) => left.Equals(right);
+    
+    /// <summary>
+    /// Determines whether two lights are different.
+    /// </summary>
+    /// <param name="left">The first light to compare.</param>
+    /// <param name="right">The second light to compare.</param>
+    /// <returns><see langword="true"/> if the lights differ in any property; otherwise, <see langword="false"/>.</returns>
+    public static bool operator !=(PbrGpuLight left, PbrGpuLight right) => !left.Equals(right);
+    
+    /// <summary>
+    /// Determines whether this light is equal to another light.
+    /// </summary>
+    /// <param name="other">The light to compare with.</param>
+    /// <returns><see langword="true"/> if both lights have identical properties; otherwise, <see langword="false"/>.</returns>
+    public bool Equals(PbrGpuLight other) {
+        return this._lightType == other._lightType &&
+               this._range.Equals(other._range) &&
+               this._innerSpotAngle.Equals(other._innerSpotAngle) &&
+               this._outerSpotAngle.Equals(other._outerSpotAngle) &&
+               this._position.Equals(other._position) &&
+               this._direction.Equals(other._direction) &&
+               this._color.Equals(other._color);
+    }
+    
+    /// <summary>
+    /// Determines whether an object is a <see cref="PbrGpuLight"/> that is equal to this light.
+    /// </summary>
+    /// <param name="obj">The object to compare with.</param>
+    /// <returns><see langword="true"/> if the object is an equal light; otherwise, <see langword="false"/>.</returns>
+    public override bool Equals(object? obj) {
+        return obj is PbrGpuLight other && this.Equals(other);
+    }
+    
+    /// <summary>
+    /// Returns a hash code based on the light's properties.
+    /// </summary>
+    /// <returns>A hash code suitable for use in hash-based collections.</returns>
+    public override int GetHashCode() {
+        return HashCode.Combine(
+            this._lightType.GetHashCode(),
+            this._range.GetHashCode(),
+            this._innerSpotAngle.GetHashCode(),
+            this._outerSpotAngle.GetHashCode(),
+            this._position.GetHashCode(),
+            this._direction.GetHashCode(),
+            this._color.GetHashCode()
+        );
     }
 }
