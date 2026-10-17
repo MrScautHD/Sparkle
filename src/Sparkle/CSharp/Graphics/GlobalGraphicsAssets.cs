@@ -79,6 +79,11 @@ public static class GlobalGraphicsAssets {
     public static Effect BrdfLut { get; private set; }
     
     /// <summary>
+    /// The effect used by the fullscreen exponential height fog pass.
+    /// </summary>
+    public static Effect ExponentialHeightFogEffect { get; private set; }
+    
+    /// <summary>
     /// The effect used by the PBR screen-space reflection pass.
     /// </summary>
     public static Effect SsrEffect { get; private set; }
@@ -242,6 +247,12 @@ public static class GlobalGraphicsAssets {
         // BRDF Lut effect.
         BrdfLut = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/environment/brdf_lut.frag"), new CrossCompileOptions(), []);
         
+        // Exponential height fog effect.
+        ExponentialHeightFogEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/exponential_height_fog.frag"), new CrossCompileOptions(), []);
+        ExponentialHeightFogEffect.AddBufferLayout("FogBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        ExponentialHeightFogEffect.AddTextureLayout("fSceneColor", 1);
+        ExponentialHeightFogEffect.AddTextureLayout("fDepth", 2);
+        
         // Screen-space reflections effect.
         SsrEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr.frag"), new CrossCompileOptions(), []);
         SsrEffect.AddBufferLayout("SsrBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
@@ -317,6 +328,7 @@ public static class GlobalGraphicsAssets {
         SkinnedShadowEffect.Dispose();
         PbrNormalPrepassEffect.Dispose();
         SkinnedPbrNormalPrepassEffect.Dispose();
+        ExponentialHeightFogEffect.Dispose();
         SsrEffect.Dispose();
         SsrCompositeEffect.Dispose();
         IrradianceEffect.Dispose();

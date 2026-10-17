@@ -4,8 +4,10 @@ using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Geometry.Models;
+using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
 using Bliss.CSharp.Materials;
@@ -18,6 +20,7 @@ using Sparkle.CSharp.Content.Types;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
+using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Graphics.Rendering.Forward;
 using Sparkle.CSharp.Scenes;
 
@@ -36,6 +39,8 @@ public class LightTestScene : Scene {
     
     public Model OldCarModel { get; private set; }
     public Model PlaneModel { get; private set; }
+    
+    public MultiInstanceRenderer PlaneMultiInstanceRenderer { get; private set; }
     
     public SkyBox CloudySkybox { get; private set; }
     
@@ -81,7 +86,7 @@ public class LightTestScene : Scene {
                 // Set roughness map.
                 mesh.Material.AddMaterialMap(MaterialMapType.Roughness, 3, new MaterialMap {
                     Color = Color.White,
-                    Value = 1.0F
+                    Value = 0.0F
                 });
                 
                 // Set occlusion map.
@@ -173,12 +178,37 @@ public class LightTestScene : Scene {
             }
         }), false);
         
+        // Plane instance renderer.
+        this.PlaneMultiInstanceRenderer = new MultiInstanceRenderer(this.PlaneModel);
+        
+        foreach (IMesh planeMesh in this.PlaneMultiInstanceRenderer.Meshes) {
+            this.PlaneMultiInstanceRenderer.GetRenderableMaterialByMesh(planeMesh).Effect = GlobalGraphicsAssets.PbrModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+            
+            if (planeMesh is Mesh<Vertex3D> mesh) {
+                mesh.MeshData.VertexFormat = new VertexFormat(
+                    Vertex3D.VertexLayout.Name,
+                    [
+                        ..Vertex3D.VertexLayout.Layouts,
+                        ..Vertex3D.InstanceMatrixLayout.Layouts
+                    ]
+                );
+            }
+        }
+        
         // Skybox's:
         this.CloudySkybox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
     }
     
     protected override void Init() {
         base.Init();
+        
+        if (this.Renderer is PbrForwardRenderer forwardRenderer) {
+            forwardRenderer.FogDensity = 0.018F;
+            forwardRenderer.FogFalloff = 0.03F;
+            forwardRenderer.FogStartDistance = 0;
+            forwardRenderer.FogEndDistance = 50;
+            forwardRenderer.FogColor = new Vector4(0.65F, 0.72F, 0.78F, 1.0F);
+        }
         
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
@@ -203,13 +233,26 @@ public class LightTestScene : Scene {
         this.AddEntity(car);
         
         // ROAD
-        Entity road = new Entity(new Transform() { Translation = new Vector3(0, 0, 0), Scale = new Vector3(20, 20, 20)});
-        road.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), MassInertiaUpdateMode.Update, MotionType.Static) {
-            DrawDebug = false,
-            DebugDrawColor = Color.Green
-        });
-        road.AddComponent(new ModelRenderer(this.PlaneModel, Vector3.Zero));
-        this.AddEntity(road);
+        const int gridSize = 16;
+        const float tileSize = 40.0F;
+        float offset = (gridSize - 1) * tileSize / 2.0F;
+        
+        for (int x = 0; x < gridSize; x++) {
+            for (int z = 0; z < gridSize; z++) {
+                Entity road = new Entity(new Transform() {
+                    Translation = new Vector3(x * tileSize - offset, 0, z * tileSize - offset),
+                    Scale = new Vector3(20, 20, 20)
+                });
+                
+                road.AddComponent(new RigidBody3D(new BoxShape(96, 1, 96), MassInertiaUpdateMode.Update, MotionType.Static) {
+                    DrawDebug = false,
+                    DebugDrawColor = Color.Green
+                });
+                
+                road.AddComponent(new InstancedRenderProxy(this.PlaneMultiInstanceRenderer, Vector3.Zero));
+                this.AddEntity(road);
+            }
+        }
         
         // LIGHT SUN
         Entity sunLight = new Entity(new Transform() { Translation = new Vector3(0, 0, 0) }, "sun");
@@ -272,12 +315,18 @@ public class LightTestScene : Scene {
             Light? sunLight = sun.GetComponent<Light>();
             
             if (sunLight != null) {
-                float sunriseAmount = 1.0F - this.Smooth01(daylight / 0.5F);
-                
-                byte red = 255;
-                byte green = (byte) Math.Clamp(120 + (124 * (1.0F - sunriseAmount)), 0.0F, 255.0F);
-                byte blue = (byte) Math.Clamp(80 + (134 * (1.0F - sunriseAmount)), 0.0F, 255.0F);
-                
+                float sunAboveHorizon = Math.Clamp((sunHeight + 0.08F) / 0.18F, 0.0F, 1.0F);
+                float sunNearHorizon = 1.0F - Math.Clamp(MathF.Abs(sunHeight) / 0.45F, 0.0F, 1.0F);
+                float sunriseAmount = this.Smooth01(sunAboveHorizon) * this.Smooth01(sunNearHorizon);
+    
+                Vector3 daySunColor = new Vector3(255.0F, 244.0F, 214.0F);
+                Vector3 sunriseSunColor = new Vector3(255.0F, 45.0F, 18.0F);
+                Vector3 sunColor = Vector3.Lerp(daySunColor, sunriseSunColor, sunriseAmount);
+    
+                byte red = (byte) Math.Clamp(sunColor.X, 0.0F, 255.0F);
+                byte green = (byte) Math.Clamp(sunColor.Y, 0.0F, 255.0F);
+                byte blue = (byte) Math.Clamp(sunColor.Z, 0.0F, 255.0F);
+    
                 sunLight.Enabled = true;
                 sunLight.Color = new Color(red, green, blue, 255);
                 sunLight.Intensity = 54.2F * daylight * sunHorizonFade;

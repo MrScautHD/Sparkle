@@ -14,6 +14,7 @@ using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures.Cubemaps;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Environment;
+using Sparkle.CSharp.Graphics.Rendering.Forward.Fog;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Lighting;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Lighting.Pbr;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Reflections;
@@ -198,6 +199,41 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     public float SsrEdgeFade;
     
     /// <summary>
+    /// Enables exponential height fog in the PBR model shader.
+    /// </summary>
+    public bool EnableFog;
+    
+    /// <summary>
+    /// Fog color. W stores fog intensity.
+    /// </summary>
+    public Vector4 FogColor;
+    
+    /// <summary>
+    /// Overall fog density.
+    /// </summary>
+    public float FogDensity;
+    
+    /// <summary>
+    /// Controls how quickly fog density fades with height.
+    /// </summary>
+    public float FogFalloff;
+    
+    /// <summary>
+    /// World-space height where fog density is strongest.
+    /// </summary>
+    public float FogBaseHeight;
+    
+    /// <summary>
+    /// Distance from the camera before fog starts appearing.
+    /// </summary>
+    public float FogStartDistance;
+    
+    /// <summary>
+    /// Distance where fog reaches its configured strength.
+    /// </summary>
+    public float FogEndDistance;
+    
+    /// <summary>
     /// List of opaque renderables waiting to be drawn.
     /// </summary>
     private List<Renderable> _opaqueRenderables;
@@ -248,9 +284,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private Cubemap? _bakedSkyboxCubemap;
     
     /// <summary>
-    /// Screen-space reflection render target holder.
+    /// Render targets used by the PBR forward scene, fog, and SSR passes.
     /// </summary>
-    private ScreenSpaceReflectionMap? _screenSpaceReflectionMap;
+    private PbrForwardRenderTargets? _renderTargets;
     
     /// <summary>
     /// The shadow map sampler.
@@ -308,6 +344,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private SsrData _ssrData;
     
     /// <summary>
+    /// CPU-side exponential height fog data.
+    /// </summary>
+    private ExponentialHeightFogData _fogData;
+    
+    /// <summary>
     /// GPU-side light buffer.
     /// </summary>
     private SimpleStructuredBuffer<PbrLightData, PbrGpuLight> _lightBuffer;
@@ -348,6 +389,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private SimpleUniformBuffer<SsrData> _ssrBuffer;
     
     /// <summary>
+    /// GPU-side exponential height fog buffer.
+    /// </summary>
+    private SimpleUniformBuffer<ExponentialHeightFogData> _fogBuffer;
+    
+    /// <summary>
     /// Description of the pipeline used for rendering.
     /// </summary>
     private SimplePipelineDescription _pipelineDescription;
@@ -358,15 +404,15 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="graphicsDevice">The graphics device used for managing GPU resources and rendering operations.</param>
     /// <param name="skyBox">An optional <see cref="SkyBox"/> instance to use as the background of the rendered scene. If <see langword="null"/>, no skybox will be rendered.</param>
     /// <param name="ambientColor">The ambient light color applied to the scene. If <see langword="null"/>, a default dark gray color (0.03, 0.03, 0.03) is applied.</param>
-    /// <param name="lightCapacity">The number of lights the GPU light buffer can hold. It limits the directional and local lights that are uploaded per frame together, and it has to match the light array size in the PBR shader.</param>
+    /// <param name="lightCapacity">The number of lights the GPU light buffer can hold. It limits the directional and local lights that are uploaded per frame together.</param>
     /// <param name="maxDirectionalLights">The maximum number of directional lights that are uploaded per frame. The remaining slots of the light buffer are available to local lights.</param>
     /// <param name="minLightIntensity">The intensity at or below which a light is skipped, because it would be too weak to notice.</param>
     /// <param name="localLightFadeStartDistance">The distance to the camera, in world units, up to which local lights (point and spot) keep their full strength.</param>
     /// <param name="localLightFadeEndDistance">The distance to the camera, in world units, at which local lights have faded out completely. Lights are also culled based on this distance plus their own range.</param>
-    /// <param name="maxLightsPerCluster">The maximum number of lights that can be stored for a single cluster. Further lights that affect the cluster are dropped. Together with the cluster counts, it defines the size of the cluster light index buffer.</param>
     /// <param name="clusterCountX">The number of clusters along the screen X axis. Together with the other two counts, it splits the view frustum into a 3D grid for clustered lighting.</param>
     /// <param name="clusterCountY">The number of clusters along the screen Y axis.</param>
     /// <param name="clusterCountZ">The number of clusters along the depth axis (depth slices) between the cluster near and far plane.</param>
+    /// <param name="maxLightsPerCluster">The maximum number of lights that can be stored for a single cluster. Further lights that affect the cluster are dropped. Together with the cluster counts, it defines the size of the cluster light index buffer.</param>
     /// <param name="clusterNearPlane">The distance to the camera, in world units, where the first depth slice of the cluster grid starts.</param>
     /// <param name="clusterFarPlane">The distance to the camera, in world units, where the last depth slice of the cluster grid ends.</param>
     /// <param name="shadowMapResolution">The resolution of the square shadow map texture. Higher values result in better shadow quality at the cost of increased memory usage.</param>
@@ -378,13 +424,20 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="shadowNormalBias">A bias applied in the direction of the surface normal to mitigate artifacts at grazing angles during shadow sampling.</param>
     /// <param name="shadowBiasClamp">The maximum allowable offset for shadow bias adjustments, helping to prevent excessive "peter-panning" effects.</param>
     /// <param name="enableSsr">Specifies whether screen space reflections (SSR) are enabled for the renderer.</param>
-    /// <param name="ssrQuality">The quality setting for screen space reflections, influencing the detail and performance of SSR effects.</param>
+    /// <param name="ssrQuality">The quality setting for screen space reflections, which defines the resolution of the SSR result relative to the screen resolution.</param>
     /// <param name="ssrMaxDistance">The maximum traceable distance for screen space reflections, determining their area of influence.</param>
     /// <param name="ssrMaxSteps">The maximum number of ray marching steps used in SSR tracing.</param>
     /// <param name="ssrStepSize">The size of each incremental step during SSR ray tracing.</param>
     /// <param name="ssrThickness">The thickness threshold used to resolve SSR artifacts caused by thin geometry.</param>
     /// <param name="ssrStrength">The intensity of screen space reflections, determining their visual prominence.</param>
     /// <param name="ssrEdgeFade">The rate at which SSR effects fade toward screen edges, improving visual smoothness and blending.</param>
+    /// <param name="enableFog">Specifies whether distance and height fog is applied to the scene.</param>
+    /// <param name="fogColor">The color of the fog. If <see langword="null"/>, a default color is used.</param>
+    /// <param name="fogDensity">The thickness of the fog. Higher values make the fog denser, so objects fade into it sooner.</param>
+    /// <param name="fogFalloff">How quickly the fog thins out with increasing height above <paramref name="fogBaseHeight"/>. Higher values confine the fog to a thinner layer near the ground.</param>
+    /// <param name="fogBaseHeight">The world-space height, in world units, up to which the fog has its full density.</param>
+    /// <param name="fogStartDistance">The distance to the camera, in world units, where the fog starts to appear. Everything closer stays fog-free.</param>
+    /// <param name="fogEndDistance">The distance to the camera, in world units, from which the fog is fully applied.</param>
     public PbrForwardRenderer(
         GraphicsDevice graphicsDevice,
         SkyBox? skyBox = null,
@@ -415,7 +468,14 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         float ssrStepSize = 0.35F,
         float ssrThickness = 0.35F,
         float ssrStrength = 0.45F,
-        float ssrEdgeFade = 0.08F) {
+        float ssrEdgeFade = 0.08F,
+        bool enableFog = true,
+        Color? fogColor = null,
+        float fogDensity = 0.015F,
+        float fogFalloff = 0.04F,
+        float fogBaseHeight = 0.0F,
+        float fogStartDistance = 10.0F,
+        float fogEndDistance = 250.0F) {
         this.GraphicsDevice = graphicsDevice;
         this.SkyBox = skyBox;
         this.AmbientColor = ambientColor?.ToRgbaFloatVec4() ?? new Vector4(0.03F, 0.03F, 0.03F, 1.0F);
@@ -445,6 +505,13 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.SsrThickness = ssrThickness;
         this.SsrStrength = ssrStrength;
         this.SsrEdgeFade = ssrEdgeFade;
+        this.EnableFog = enableFog;
+        this.FogColor = fogColor?.ToRgbaFloatVec4() ?? new Vector4(0.55F, 0.62F, 0.70F, 0.35F);
+        this.FogDensity = fogDensity;
+        this.FogFalloff = fogFalloff;
+        this.FogBaseHeight = fogBaseHeight;
+        this.FogStartDistance = fogStartDistance;
+        this.FogEndDistance = fogEndDistance;
         
         // Create lists for renderables.
         this._opaqueRenderables = new List<Renderable>();
@@ -552,6 +619,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Create SSR data.
         this._ssrData = new SsrData();
         
+        // Create exponential height fog data.
+        this._fogData = new ExponentialHeightFogData();
+        
         // Create light buffer.
         this._lightBuffer = new SimpleStructuredBuffer<PbrLightData, PbrGpuLight>(graphicsDevice, 1, (uint) this.LightCapacity, ShaderStages.Compute | ShaderStages.Fragment);
         this._lightBuffer.DeviceBuffer.Name = "LightBuffer";
@@ -585,6 +655,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Create SSR buffer.
         this._ssrBuffer = new SimpleUniformBuffer<SsrData>(graphicsDevice, 1, ShaderStages.Fragment);
         this._ssrBuffer.DeviceBuffer.Name = "SsrBuffer";
+        
+        // Create fog buffer.
+        this._fogBuffer = new SimpleUniformBuffer<ExponentialHeightFogData>(graphicsDevice, 1, ShaderStages.Fragment);
+        this._fogBuffer.DeviceBuffer.Name = "FogBuffer";
         
         // Create the pipeline description.
         this._pipelineDescription = new SimplePipelineDescription();
@@ -657,43 +731,58 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Ensure PBR IBL maps are baked for the current skybox.
         this.EnsurePbrEnvironmentMap(commandList);
         
+        // Update fog buffer.
+        this.UpdateFogBuffer(commandList, cam3D);
+        
         // Draw shadow scene.
         this.DrawShadowScene(commandList, framebuffer, cam3D);
         
         // Draw scene.
-        if (this.EnableSsr) {
-            this.EnsureScreenSpaceReflectionMap(framebuffer);
+        if (this.EnableSsr || this.EnableFog) {
+            this.EnsureRenderTargets(framebuffer);
             
-            // Draw normal prepass.
-            commandList.SetFramebuffer(this._screenSpaceReflectionMap!.NormalFramebuffer);
-            commandList.ClearColorTarget(0, new RgbaFloat(0.5F, 0.5F, 1.0F, 1.0F));
-            commandList.ClearDepthStencil(1.0F);
+            if (this.EnableSsr) {
+                
+                // Draw normal prepass.
+                commandList.SetFramebuffer(this._renderTargets!.NormalFramebuffer);
+                commandList.ClearColorTarget(0, new RgbaFloat(0.5F, 0.5F, 1.0F, 1.0F));
+                commandList.ClearDepthStencil(1.0F);
+                
+                this.DrawNormalPrepass(commandList, cam3D);
+            }
             
-            this.DrawNormalPrepass(commandList, cam3D);
-            
-            // Draw main pass.
-            commandList.SetFramebuffer(this._screenSpaceReflectionMap.ColorFramebuffer);
+            // Draw main pass into the scene texture.
+            commandList.SetFramebuffer(this._renderTargets!.ColorFramebuffer);
             commandList.ClearColorTarget(0, Color.Black.ToRgbaFloat());
             commandList.ClearColorTarget(1, new RgbaFloat(0.0F, 0.0F, 0.0F, 1.0F));
             commandList.ClearDepthStencil(1.0F);
             
             // Draw Skybox.
-            this.SkyBox?.Draw(commandList, this._screenSpaceReflectionMap.ColorFramebuffer);
+            this.SkyBox?.Draw(commandList, this._renderTargets.ColorFramebuffer);
             
-            this.BeforeOpaquePass?.Invoke(commandList, this._screenSpaceReflectionMap.ColorFramebuffer);
+            this.BeforeOpaquePass?.Invoke(commandList, this._renderTargets.ColorFramebuffer);
             
             // Draw opaques renderables.
-            this.DrawOpaqueScene(commandList, this._screenSpaceReflectionMap.ColorFramebuffer, cam3D);
+            this.DrawOpaqueScene(commandList, this._renderTargets.ColorFramebuffer, cam3D);
             
-            this.AfterOpaquePass?.Invoke(commandList, this._screenSpaceReflectionMap.ColorFramebuffer);
+            this.AfterOpaquePass?.Invoke(commandList, this._renderTargets.ColorFramebuffer);
             
             // Draw translucent renderables.
-            this.DrawTranslucentScene(commandList, this._screenSpaceReflectionMap.ColorFramebuffer, cam3D);
+            this.DrawTranslucentScene(commandList, this._renderTargets.ColorFramebuffer, cam3D);
             
-            this.AfterTranslucentPass?.Invoke(commandList, this._screenSpaceReflectionMap.ColorFramebuffer);
+            this.AfterTranslucentPass?.Invoke(commandList, this._renderTargets.ColorFramebuffer);
             
-            // Draw SSR pass.
-            this.DrawSsrPass(commandList, framebuffer, cam3D);
+            // Draw SSR/Fog.
+            if (this.EnableFog && this.EnableSsr) {
+                this.DrawFogPass(commandList, this._renderTargets.FogFramebuffer);
+                this.DrawSsrPass(commandList, framebuffer, cam3D, true);
+            }
+            else if (this.EnableFog) {
+                this.DrawFogPass(commandList, framebuffer);
+            }
+            else {
+                this.DrawSsrPass(commandList, framebuffer, cam3D, false);
+            }
         }
         else {
             commandList.SetFramebuffer(framebuffer);
@@ -1080,7 +1169,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         }
         
         // Set the pipeline parameters.
-        this._pipelineDescription.Outputs = this._screenSpaceReflectionMap!.NormalFramebuffer.OutputDescription;
+        this._pipelineDescription.Outputs = this._renderTargets!.NormalFramebuffer.OutputDescription;
         this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
         this._pipelineDescription.RasterizerState = renderable.Material.RasterizerState;
         this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
@@ -1149,7 +1238,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="commandList">The command list used to record the rendering commands.</param>
     /// <param name="framebuffer">The framebuffer that receives the final composited image.</param>
     /// <param name="camera">The 3D camera providing the matrices used to move between screen and world space.</param>
-    private void DrawSsrPass(CommandList commandList, Framebuffer framebuffer, Cam3D camera) {
+    /// <param name="useFoggedSceneColor">Whether SSR should sample the fogged scene color instead of the raw scene color.</param>
+    private void DrawSsrPass(CommandList commandList, Framebuffer framebuffer, Cam3D camera, bool useFoggedSceneColor) {
         Effect effect = GlobalGraphicsAssets.SsrEffect;
         
         Matrix4x4 projection = camera.GetProjection();
@@ -1161,7 +1251,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         Matrix4x4.Invert(viewProjection, out Matrix4x4 inverseViewProjection);
         
         // Fill the SSR buffer.
-        this._ssrData.ScreenSize = new Vector2(this._screenSpaceReflectionMap!.ColorFramebuffer.Width, this._screenSpaceReflectionMap.ColorFramebuffer.Height);
+        this._ssrData.ScreenSize = new Vector2(this._renderTargets!.ColorFramebuffer.Width, this._renderTargets.ColorFramebuffer.Height);
         this._ssrData.MaxDistance = this.SsrMaxDistance;
         this._ssrData.MaxSteps = this.SsrMaxSteps;
         this._ssrData.StepSize = this.SsrStepSize;
@@ -1180,7 +1270,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._ssrBuffer.UpdateBufferDeferred(commandList);
         
         // Set the pipeline parameters.
-        this._pipelineDescription.Outputs = this._screenSpaceReflectionMap.SsrFramebuffer.OutputDescription;
+        this._pipelineDescription.Outputs = this._renderTargets.SsrFramebuffer.OutputDescription;
         this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
         this._pipelineDescription.RasterizerState = RasterizerStateDescription.CULL_NONE;
         this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DISABLED;
@@ -1190,7 +1280,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleList;
         
         // Render into the SSR framebuffer. A fully transparent clear color means "no reflection" for every pixel the shader does not write.
-        commandList.SetFramebuffer(this._screenSpaceReflectionMap.SsrFramebuffer);
+        commandList.SetFramebuffer(this._renderTargets.SsrFramebuffer);
         commandList.ClearColorTarget(0, new RgbaFloat(0.0F, 0.0F, 0.0F, 0.0F));
         
         // Set pipeline.
@@ -1199,17 +1289,22 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Set the SSR buffer.
         commandList.SetGraphicsResourceSet(effect.GetBufferLayoutSlot("SsrBuffer"), this._ssrBuffer.GetResourceSet(effect.GetBufferLayout("SsrBuffer")));
         
-        // Set the lit scene color, which is sampled at the hit position to get the reflected color.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._screenSpaceReflectionMap.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        // Set the lit scene color.
+        if (useFoggedSceneColor) {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets.GetFogResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
+        else {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
         
         // Set the world-space normals from the normal prepass, used to calculate the reflection direction.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fNormal"), this._screenSpaceReflectionMap.GetNormalResourceSet(this._ssrSampler, effect.GetTextureLayout("fNormal")));
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fNormal"), this._renderTargets.GetNormalResourceSet(this._ssrSampler, effect.GetTextureLayout("fNormal")));
         
         // Set the scene depth, used to reconstruct world positions and to detect ray hits.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fDepth"), this._screenSpaceReflectionMap.GetDepthResourceSet(this._ssrSampler, effect.GetTextureLayout("fDepth")));
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fDepth"), this._renderTargets.GetDepthResourceSet(this._ssrSampler, effect.GetTextureLayout("fDepth")));
         
         // Set the per-pixel material reflectivity, which decides which pixels are traced at all.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrMask"), this._screenSpaceReflectionMap.GetSsrMaskResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrMask")));
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrMask"), this._renderTargets.GetSsrMaskResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrMask")));
         
         // Apply effect.
         effect.Apply(commandList);
@@ -1218,7 +1313,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         commandList.Draw(3);
         
         // Blend the traced reflections onto the scene.
-        this.DrawSsrCompositePass(commandList, framebuffer);
+        this.DrawSsrCompositePass(commandList, framebuffer, useFoggedSceneColor);
     }
     
     /// <summary>
@@ -1226,7 +1321,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// </summary>
     /// <param name="commandList">The command list used to record the rendering commands.</param>
     /// <param name="framebuffer">The framebuffer that receives the final composited image.</param>
-    private void DrawSsrCompositePass(CommandList commandList, Framebuffer framebuffer) {
+    /// <param name="useFoggedSceneColor">Whether SSR should sample the fogged scene color instead of the raw scene color.</param>
+    private void DrawSsrCompositePass(CommandList commandList, Framebuffer framebuffer, bool useFoggedSceneColor) {
         Effect effect = GlobalGraphicsAssets.SsrCompositeEffect;
         
         // Set the pipeline parameters.
@@ -1239,20 +1335,65 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._pipelineDescription.ShaderSet = new ShaderSetDescription([], effect.Shaders);
         this._pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleList;
         
-        // Render into the final framebuffer.
+        // Render into the target framebuffer.
         commandList.SetFramebuffer(framebuffer);
         
         // Set pipeline.
         commandList.SetPipeline(effect.GetPipeline(this._pipelineDescription).Pipeline);
         
-        // Set the lit scene color, which is the base image the reflections are composited onto.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._screenSpaceReflectionMap!.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        // Set the lit scene color.
+        if (useFoggedSceneColor) {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetFogResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
+        else {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
         
         // Set the traced reflections (rgb = reflected color, a = opacity).
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrColor"), this._screenSpaceReflectionMap.GetSsrResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrColor")));
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrColor"), this._renderTargets.GetSsrResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrColor")));
         
         // Set the per-pixel material reflectivity, which scales the reflection strength.
-        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrMask"), this._screenSpaceReflectionMap.GetSsrMaskResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrMask")));
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSsrMask"), this._renderTargets.GetSsrMaskResourceSet(this._ssrSampler, effect.GetTextureLayout("fSsrMask")));
+        
+        // Apply effect.
+        effect.Apply(commandList);
+        
+        // Draw.
+        commandList.Draw(3);
+    }
+    
+    /// <summary>
+    /// Applies fullscreen exponential height fog to the rendered scene color.
+    /// </summary>
+    /// <param name="commandList">The command list used to record rendering commands.</param>
+    /// <param name="framebuffer">The framebuffer that receives the fogged image.</param>
+    private void DrawFogPass(CommandList commandList, Framebuffer framebuffer) {
+        Effect effect = GlobalGraphicsAssets.ExponentialHeightFogEffect;
+        
+        // Set the pipeline parameters.
+        this._pipelineDescription.Outputs = framebuffer.OutputDescription;
+        this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
+        this._pipelineDescription.RasterizerState = RasterizerStateDescription.CULL_NONE;
+        this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DISABLED;
+        this._pipelineDescription.BufferLayouts = effect.GetBufferLayouts();
+        this._pipelineDescription.TextureLayouts = effect.GetTextureLayouts();
+        this._pipelineDescription.ShaderSet = new ShaderSetDescription([], effect.Shaders);
+        this._pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleList;
+        
+        // Render into the target framebuffer.
+        commandList.SetFramebuffer(framebuffer);
+        
+        // Set pipeline.
+        commandList.SetPipeline(effect.GetPipeline(this._pipelineDescription).Pipeline);
+        
+        // Set fog buffer.
+        commandList.SetGraphicsResourceSet(effect.GetBufferLayoutSlot("FogBuffer"), this._fogBuffer.GetResourceSet(effect.GetBufferLayout("FogBuffer")));
+        
+        // Set the lit scene color.
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        
+        // Set the scene depth, used to reconstruct world positions and to detect ray hits.
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fDepth"), this._renderTargets.GetDepthResourceSet(this._ssrSampler, effect.GetTextureLayout("fDepth")));
         
         // Apply effect.
         effect.Apply(commandList);
@@ -1555,6 +1696,46 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     }
     
     /// <summary>
+    /// Updates the exponential height fog buffer.
+    /// </summary>
+    /// <param name="commandList">The command list used to upload the fog buffer.</param>
+    /// <param name="camera">The active camera.</param>
+    private void UpdateFogBuffer(CommandList commandList, Cam3D camera) {
+        Matrix4x4 projection = camera.GetProjection();
+        Matrix4x4 view = camera.GetView();
+        Matrix4x4 viewProjection = view * projection;
+        
+        Matrix4x4.Invert(projection, out Matrix4x4 inverseProjection);
+        Matrix4x4.Invert(view, out Matrix4x4 inverseView);
+        Matrix4x4.Invert(viewProjection, out Matrix4x4 inverseViewProjection);
+        
+        // Fill the fog data buffer.
+        this._fogData = new ExponentialHeightFogData() {
+            Color = this.EnableFog ? this.FogColor : Vector4.Zero,
+            Parameters = new Vector4(
+                MathF.Max(0.0F, this.FogDensity),
+                MathF.Max(0.0F, this.FogFalloff),
+                this.FogBaseHeight,
+                MathF.Max(0.0F, this.FogStartDistance)
+            ),
+            DistanceParameters = new Vector4(
+                MathF.Max(this.FogStartDistance + 0.001F, this.FogEndDistance),
+                0.0F,
+                0.0F,
+                0.0F
+            ),
+            CameraPosition = new Vector4(camera.Position, MathF.Max(this.FogEndDistance, this.ClusterFarPlane)),
+            InverseProjection = inverseProjection,
+            InverseView = inverseView,
+            InverseViewProjection = inverseViewProjection
+        };
+        
+        // Upload buffer to GPU.
+        this._fogBuffer.SetValue(0, this._fogData);
+        this._fogBuffer.UpdateBufferDeferred(commandList);
+    }
+    
+    /// <summary>
     /// Ensures the current skybox has baked PBR IBL maps.
     /// </summary>
     /// <param name="commandList">The command list used to upload the environment buffer.</param>
@@ -1592,19 +1773,19 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     }
     
     /// <summary>
-    /// Ensures the SSR map matches the current framebuffer size, color format, and SSR quality.
+    /// Ensures the renderer targets match the current framebuffer size, color format, and SSR quality.
     /// </summary>
     /// <param name="framebuffer">The final target framebuffer.</param>
-    private void EnsureScreenSpaceReflectionMap(Framebuffer framebuffer) {
+    private void EnsureRenderTargets(Framebuffer framebuffer) {
         PixelFormat colorFormat = framebuffer.OutputDescription.ColorAttachments[0].Format;
         float ssrResolutionScale = this.GetSsrResolutionScale();
         
-        if (this._screenSpaceReflectionMap == null) {
-            this._screenSpaceReflectionMap = new ScreenSpaceReflectionMap(this.GraphicsDevice, framebuffer.Width, framebuffer.Height, colorFormat, ssrResolutionScale);
+        if (this._renderTargets == null) {
+            this._renderTargets = new PbrForwardRenderTargets(this.GraphicsDevice, framebuffer.Width, framebuffer.Height, colorFormat, ssrResolutionScale);
             return;
         }
         
-        this._screenSpaceReflectionMap.Resize(framebuffer.Width, framebuffer.Height, colorFormat, ssrResolutionScale);
+        this._renderTargets.Resize(framebuffer.Width, framebuffer.Height, colorFormat, ssrResolutionScale);
     }
     
     /// <summary>
@@ -1625,7 +1806,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._shadowMap.Dispose();
             this._environmentMap?.Dispose();
             this._brdfLut.Dispose();
-            this._screenSpaceReflectionMap?.Dispose();
+            this._renderTargets?.Dispose();
             this._shadowSampler.Dispose();
             this._irradianceSampler.Dispose();
             this._prefilterSampler.Dispose();
@@ -1638,6 +1819,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._shadowBuffer.Dispose();
             this._shadowMatrixBuffer.Dispose();
             this._environmentBuffer.Dispose();
+            this._fogBuffer.Dispose();
             this._ssrBuffer.Dispose();
         }
     }

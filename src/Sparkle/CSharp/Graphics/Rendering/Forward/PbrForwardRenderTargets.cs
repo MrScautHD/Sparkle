@@ -2,9 +2,9 @@
 using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Veldrith;
 
-namespace Sparkle.CSharp.Graphics.Rendering.Forward.Reflections;
+namespace Sparkle.CSharp.Graphics.Rendering.Forward;
 
-public class ScreenSpaceReflectionMap : Disposable {
+public class PbrForwardRenderTargets : Disposable {
     
     /// <summary>
     /// The graphics device used to create and dispose the resources.
@@ -37,6 +37,11 @@ public class ScreenSpaceReflectionMap : Disposable {
     public Texture SsrTexture { get; private set; }
     
     /// <summary>
+    /// The fogged scene color at full resolution.
+    /// </summary>
+    public Texture FogTexture { get; private set; }
+    
+    /// <summary>
     /// The framebuffer of the main scene pass. It writes the scene color and the SSR mask and uses the shared depth texture.
     /// </summary>
     public Framebuffer ColorFramebuffer { get; private set; }
@@ -50,6 +55,11 @@ public class ScreenSpaceReflectionMap : Disposable {
     /// The framebuffer of the SSR pass. It only writes the reflection result and has no depth attachment.
     /// </summary>
     public Framebuffer SsrFramebuffer { get; private set; }
+    
+    /// <summary>
+    /// The framebuffer of the fog pass. It writes the fogged scene color and has no depth attachment.
+    /// </summary>
+    public Framebuffer FogFramebuffer { get; private set; }
     
     /// <summary>
     /// The width of the full-resolution targets in pixels.
@@ -97,14 +107,19 @@ public class ScreenSpaceReflectionMap : Disposable {
     private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedSsrResourceSets;
     
     /// <summary>
-    /// Creates the render targets for the SSR pipeline.
+    /// The cached resource sets of the fogged scene color texture, one per sampler and layout combination.
+    /// </summary>
+    private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedFogResourceSets;
+    
+    /// <summary>
+    /// Creates the render targets for the PBR forward renderer.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create the resources.</param>
     /// <param name="width">The width of the full-resolution targets in pixels.</param>
     /// <param name="height">The height of the full-resolution targets in pixels.</param>
     /// <param name="colorFormat">The pixel format of the scene color and SSR result textures.</param>
     /// <param name="ssrResolutionScale">The resolution of the SSR result relative to the screen resolution, clamped to [0.1, 1.0].</param>
-    public ScreenSpaceReflectionMap(GraphicsDevice graphicsDevice, uint width, uint height, PixelFormat colorFormat, float ssrResolutionScale = 1.0F) {
+    public PbrForwardRenderTargets(GraphicsDevice graphicsDevice, uint width, uint height, PixelFormat colorFormat, float ssrResolutionScale = 1.0F) {
         this.GraphicsDevice = graphicsDevice;
         this._width = width;
         this._height = height;
@@ -115,6 +130,7 @@ public class ScreenSpaceReflectionMap : Disposable {
         this._cachedDepthResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedSsrMaskResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedSsrResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
+        this._cachedFogResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this.CreateFrameBuffers();
     }
     
@@ -204,6 +220,23 @@ public class ScreenSpaceReflectionMap : Disposable {
     }
     
     /// <summary>
+    /// Gets the resource set of the fogged scene color texture for the given sampler and layout.
+    /// </summary>
+    /// <param name="sampler">The sampler used to read the texture.</param>
+    /// <param name="layout">The texture layout the resource set has to match.</param>
+    /// <returns>The cached or newly created resource set.</returns>
+    public ResourceSet GetFogResourceSet(Sampler sampler, SimpleTextureLayout layout) {
+        if (!this._cachedFogResourceSets.TryGetValue((sampler, layout), out ResourceSet? resourceSet)) {
+            ResourceSet newResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(layout.Layout, this.FogTexture, sampler));
+            
+            this._cachedFogResourceSets.Add((sampler, layout), newResourceSet);
+            return newResourceSet;
+        }
+        
+        return resourceSet;
+    }
+    
+    /// <summary>
     /// Changes the size, color format and resolution scale in one step.
     /// </summary>
     /// <remarks>
@@ -241,10 +274,12 @@ public class ScreenSpaceReflectionMap : Disposable {
         this.NormalTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.SsrMaskTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R8UNorm, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.SsrTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(ssrWidth, ssrHeight, 1, 1, this._colorFormat, TextureUsage.RenderTarget | TextureUsage.Sampled));
+        this.FogTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, this._colorFormat, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.DepthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R32Float, TextureUsage.DepthStencil | TextureUsage.Sampled));
         
         this.ColorFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTexture, this.ColorTexture, this.SsrMaskTexture));
         this.NormalFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTexture, this.NormalTexture));
+        this.FogFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.FogTexture));
         this.SsrFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.SsrTexture));
     }
     
@@ -282,15 +317,23 @@ public class ScreenSpaceReflectionMap : Disposable {
         
         this._cachedSsrResourceSets.Clear();
         
+        foreach (ResourceSet resourceSet in this._cachedFogResourceSets.Values) {
+            resourceSet.Dispose();
+        }
+        
+        this._cachedFogResourceSets.Clear();
+        
         this.ColorTexture.Dispose();
         this.NormalTexture.Dispose();
+        this.DepthTexture.Dispose();
         this.SsrMaskTexture.Dispose();
         this.SsrTexture.Dispose();
-        this.DepthTexture.Dispose();
+        this.FogTexture.Dispose();
         
         this.ColorFramebuffer.Dispose();
         this.NormalFramebuffer.Dispose();
         this.SsrFramebuffer.Dispose();
+        this.FogFramebuffer.Dispose();
     }
     
     protected override void Dispose(bool disposing) {
