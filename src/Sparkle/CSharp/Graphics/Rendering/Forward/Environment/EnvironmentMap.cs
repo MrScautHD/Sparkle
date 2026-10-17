@@ -67,7 +67,7 @@ public class EnvironmentMap : Disposable {
     /// <summary>
     /// The effect that bakes the irradiance map.
     /// </summary>
-    private Effect _irradiancEffect;
+    private Effect _irradianceEffect;
     
     /// <summary>
     /// The effect that bakes the prefilter map.
@@ -122,7 +122,7 @@ public class EnvironmentMap : Disposable {
         this.GraphicsDevice = graphicsDevice;
         this.SourceEnvironmentMap = sourceEnvironmentMap;
         this.PrefilterMipLevels = prefilterMipLevels;
-        this._irradiancEffect = GlobalGraphicsAssets.IrradianceEffect;
+        this._irradianceEffect = GlobalGraphicsAssets.IrradianceEffect;
         this._prefilterEffect = GlobalGraphicsAssets.PrefilterEffect;
         this._cachedIrradianceResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedPrefilterResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
@@ -233,9 +233,9 @@ public class EnvironmentMap : Disposable {
         
         // Set the pipeline parameters.
         this._pipelineDescription.Outputs = this._irradianceFramebuffers[0].OutputDescription;
-        this._pipelineDescription.BufferLayouts = this._irradiancEffect.GetBufferLayouts();
-        this._pipelineDescription.TextureLayouts = this._irradiancEffect.GetTextureLayouts();
-        this._pipelineDescription.ShaderSet = new ShaderSetDescription(CubemapVertex3D.VertexLayout.Layouts, this._irradiancEffect.Shaders);
+        this._pipelineDescription.BufferLayouts = this._irradianceEffect.GetBufferLayouts();
+        this._pipelineDescription.TextureLayouts = this._irradianceEffect.GetTextureLayouts();
+        this._pipelineDescription.ShaderSet = new ShaderSetDescription(CubemapVertex3D.VertexLayout.Layouts, this._irradianceEffect.Shaders);
         
         for (int face = 0; face < 6; face++) {
             
@@ -250,16 +250,16 @@ public class EnvironmentMap : Disposable {
             commandList.ClearDepthStencil(1.0F);
             
             // Set pipeline.
-            commandList.SetPipeline(this._irradiancEffect.GetPipeline(this._pipelineDescription).Pipeline);
+            commandList.SetPipeline(this._irradianceEffect.GetPipeline(this._pipelineDescription).Pipeline);
             
             // Set matrix buffer.
-            commandList.SetGraphicsResourceSet(this._irradiancEffect.GetBufferLayoutSlot("MatrixBuffer"), this._matrixBuffer.GetResourceSet(this._irradiancEffect.GetBufferLayout("MatrixBuffer")));
+            commandList.SetGraphicsResourceSet(this._irradianceEffect.GetBufferLayoutSlot("MatrixBuffer"), this._matrixBuffer.GetResourceSet(this._irradianceEffect.GetBufferLayout("MatrixBuffer")));
             
             // Set environment map.
-            commandList.SetGraphicsResourceSet(this._irradiancEffect.GetTextureLayoutSlot("fEnvironmentMap"), this.SourceEnvironmentMap.GetResourceSet(this._environmentSampler, this._irradiancEffect.GetTextureLayout("fEnvironmentMap")));
+            commandList.SetGraphicsResourceSet(this._irradianceEffect.GetTextureLayoutSlot("fEnvironmentMap"), this.SourceEnvironmentMap.GetResourceSet(this._environmentSampler, this._irradianceEffect.GetTextureLayout("fEnvironmentMap")));
             
             // Apply effect.
-            this._irradiancEffect.Apply(commandList);
+            this._irradianceEffect.Apply(commandList);
             
             // Set vertex buffer.
             commandList.SetVertexBuffer(0, this._vertexBuffer);
