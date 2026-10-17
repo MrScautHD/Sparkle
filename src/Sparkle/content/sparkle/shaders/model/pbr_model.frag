@@ -405,6 +405,15 @@ float getShadowFactor(vec3 normal) {
     return shadow / 9.0F;
 }
 
+/*
+ * Calculates the index of the light cluster that contains the current fragment.
+ *
+ * The view frustum is split into a 3D grid. X and Y follow the screen position,
+ * and Z follows the view depth on a logarithmic scale, so slices close to the camera
+ * are thin and slices far away are thick. The result is an index into the cluster
+ * buffer, ordered by x, then y, then z. It has to match the order that the cluster
+ * compute shaders used when they built the grid.
+ */
 uint getClusterIndex() {
     vec2 tileCounts = vec2(clusterCountX, clusterCountY);
     vec2 tile = min(gl_FragCoord.xy * tileCounts / max(clusterScreenSize, vec2(1.0F)), tileCounts - 1.0F);
@@ -427,6 +436,14 @@ uint getClusterIndex() {
     return uint(tile.x) + uint(tile.y) * clusterCountX + clusterZ * clusterCountX * clusterCountY;
 }
 
+/*
+ * Calculates the direct lighting of all lights that affect the current fragment.
+ *
+ * Directional lights are stored at the start of the light array and are always
+ * evaluated. Local lights are only evaluated if the cluster of the fragment lists
+ * them, so the cost depends on the lights near the fragment and not on the total
+ * number of lights in the scene.
+ */
 vec3 getDirectLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float metallic, float roughness, float reflectionStrength, float shadowFactor) {
     vec3 lightColor = vec3(0.0F);
     
