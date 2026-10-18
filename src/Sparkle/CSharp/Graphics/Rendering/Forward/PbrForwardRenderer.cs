@@ -1487,7 +1487,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// </summary>
     /// <param name="commandList">The command list used to record rendering commands.</param>
     /// <param name="framebuffer">The framebuffer that receives the composited image.</param>
-    /// <param name="useFoggedSceneColor">Whether SSR should sample the fogged scene color instead of the raw scene color.</param>
+    /// <param name="useFoggedSceneColor">Whether bloom should sample the fogged scene color instead of the raw scene color.</param>
     private void DrawBloomCompositePass(CommandList commandList, Framebuffer framebuffer, bool useFoggedSceneColor) {
         Effect effect = GlobalGraphicsAssets.BloomCompositeEffect;
         
