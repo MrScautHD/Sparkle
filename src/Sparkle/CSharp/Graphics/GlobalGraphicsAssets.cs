@@ -349,7 +349,7 @@ public static class GlobalGraphicsAssets {
         PbrNormalPrepassEffect.Dispose();
         SkinnedPbrNormalPrepassEffect.Dispose();
         ExponentialHeightFogEffect.Dispose();
-        BloomFilterEffect.Dispose();
+        BloomEffect.Dispose();
         BloomCompositeEffect.Dispose();
         SsrEffect.Dispose();
         SsrCompositeEffect.Dispose();
