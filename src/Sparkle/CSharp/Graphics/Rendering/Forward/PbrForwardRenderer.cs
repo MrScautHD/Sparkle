@@ -1331,7 +1331,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         Effect effect = renderable.Mesh.IsSkinned ? GlobalGraphicsAssets.SkinnedPbrNormalPrepassEffect : GlobalGraphicsAssets.PbrNormalPrepassEffect;
         
         if (renderable.UseInstancing) {
-            effect = effect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+            effect = effect.GetEffectVariant([("USE_INSTANCING", "1")]).Effect;
         }
         
         // Set the pipeline parameters.

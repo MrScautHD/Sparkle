@@ -15,12 +15,12 @@ struct MaterialMap {
     float value;
 };
 
-layout (std140, set = 2, binding = 0) uniform MaterialBuffer {
+layout (std140, set = MATERIAL_BUFFER_SET, binding = 0) uniform MaterialBuffer {
     int renderMode;
     MaterialMap maps[MAX_MAPS_COUNT];
 };
 
-layout (std140, set = 3, binding = 0) uniform BrushBuffer {
+layout (std140, set = BRUSH_BUFFER_SET, binding = 0) uniform BrushBuffer {
     int brushType;
     int brushPreviewEnabled;
     float brushRadius;
@@ -30,11 +30,11 @@ layout (std140, set = 3, binding = 0) uniform BrushBuffer {
     float brushWireThickness;
 };
 
-layout (set = 4, binding = 0) uniform texture2DArray fSources;
-layout (set = 4, binding = 1) uniform sampler fSourcesSampler;
+layout (set = SOURCE_TEXTURE_SET, binding = 0) uniform texture2DArray fSources;
+layout (set = SOURCE_TEXTURE_SET, binding = 1) uniform sampler fSourcesSampler;
 
-layout (set = 5, binding = 0) uniform texture2D fTiles;
-layout (set = 5, binding = 1) uniform sampler fTilesSampler;
+layout (set = TILES_TEXTURE_SET, binding = 0) uniform texture2D fTiles;
+layout (set = TILES_TEXTURE_SET, binding = 1) uniform sampler fTilesSampler;
 
 layout (location = 0) in vec3 fTerrainPosition;
 layout (location = 1) in vec4 fColor;

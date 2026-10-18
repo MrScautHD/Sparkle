@@ -182,7 +182,7 @@ public class LightTestScene : Scene {
         this.PlaneMultiInstanceRenderer = new MultiInstanceRenderer(this.PlaneModel);
         
         foreach (IMesh planeMesh in this.PlaneMultiInstanceRenderer.Meshes) {
-            this.PlaneMultiInstanceRenderer.GetRenderableMaterialByMesh(planeMesh).Effect = GlobalGraphicsAssets.PbrModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+            this.PlaneMultiInstanceRenderer.GetRenderableMaterialByMesh(planeMesh).Effect = GlobalGraphicsAssets.PbrModelEffect.GetEffectVariant([("USE_INSTANCING", "1")]).Effect;
             
             if (planeMesh is Mesh<Vertex3D> mesh) {
                 mesh.MeshData.VertexFormat = new VertexFormat(

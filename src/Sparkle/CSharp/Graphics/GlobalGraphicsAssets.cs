@@ -109,6 +109,11 @@ public static class GlobalGraphicsAssets {
     public static TileTerrainEffect TileTerrainEffect { get; private set; }
     
     /// <summary>
+    /// The shader effect used for rendering pbr-tile-based terrain graphics.
+    /// </summary>
+    public static TileTerrainEffect PbrTileTerrainEffect { get; private set; }
+    
+    /// <summary>
     /// The FXAA (Fast Approximate Anti-Aliasing) effect used for post-processing rendering.
     /// </summary>
     public static FxaaEffect FxaaEffect { get; private set; }
@@ -169,7 +174,25 @@ public static class GlobalGraphicsAssets {
         PhysicsDebugEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
         // PBR model effect.
-        PbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_model.frag"), new CrossCompileOptions(), []);
+        PbrModelEffect = Effect.FromFiles(GraphicsDevice, "content", "content/sparkle/shaders/model/pbr_model.vert", "content/sparkle/shaders/model/pbr_model.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "2"),
+            new MacroDefinition("LIGHT_BUFFER_SET", "3"),
+            new MacroDefinition("CLUSTER_DATA_BUFFER_SET", "4"),
+            new MacroDefinition("CLUSTER_BUFFER_SET", "5"),
+            new MacroDefinition("CLUSTER_LIGHT_INDEX_BUFFER_SET", "6"),
+            new MacroDefinition("SHADOW_BUFFER_SET", "7"),
+            new MacroDefinition("ENVIRONMENT_BUFFER_SET", "8"),
+            new MacroDefinition("ALBEDO_TEXTURE_SET", "9"),
+            new MacroDefinition("NORMAL_TEXTURE_SET", "10"),
+            new MacroDefinition("METALLIC_TEXTURE_SET", "11"),
+            new MacroDefinition("EMISSION_TEXTURE_SET", "12"),
+            new MacroDefinition("SHADOW_MAP_TEXTURE_SET", "13"),
+            new MacroDefinition("IRRADIANCE_MAP_TEXTURE_SET", "14"),
+            new MacroDefinition("PREFILTER_MAP_TEXTURE_SET", "15"),
+            new MacroDefinition("BRDF_LUT_TEXTURE_SET", "16")
+        ]);
         PbrModelEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrModelEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
@@ -189,7 +212,26 @@ public static class GlobalGraphicsAssets {
         PbrModelEffect.AddTextureLayout("fBrdfLut", 16);
         
         // PBR skinned model effect.
-        SkinnedPbrModelEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_skinned_model.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/model/pbr_skinned_model.frag"), new CrossCompileOptions(), []);
+        SkinnedPbrModelEffect = Effect.FromFiles(GraphicsDevice, "content", "content/sparkle/shaders/model/pbr_skinned_model.vert", "content/sparkle/shaders/model/pbr_model.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("BONE_BUFFER_SET", "2"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "3"),
+            new MacroDefinition("LIGHT_BUFFER_SET", "4"),
+            new MacroDefinition("CLUSTER_DATA_BUFFER_SET", "5"),
+            new MacroDefinition("CLUSTER_BUFFER_SET", "6"),
+            new MacroDefinition("CLUSTER_LIGHT_INDEX_BUFFER_SET", "7"),
+            new MacroDefinition("SHADOW_BUFFER_SET", "8"),
+            new MacroDefinition("ENVIRONMENT_BUFFER_SET", "9"),
+            new MacroDefinition("ALBEDO_TEXTURE_SET", "10"),
+            new MacroDefinition("NORMAL_TEXTURE_SET", "11"),
+            new MacroDefinition("METALLIC_TEXTURE_SET", "12"),
+            new MacroDefinition("EMISSION_TEXTURE_SET", "13"),
+            new MacroDefinition("SHADOW_MAP_TEXTURE_SET", "14"),
+            new MacroDefinition("IRRADIANCE_MAP_TEXTURE_SET", "15"),
+            new MacroDefinition("PREFILTER_MAP_TEXTURE_SET", "16"),
+            new MacroDefinition("BRDF_LUT_TEXTURE_SET", "17")
+        ]);
         SkinnedPbrModelEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrModelEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrModelEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
@@ -288,13 +330,23 @@ public static class GlobalGraphicsAssets {
         SsrCompositeEffect.AddTextureLayout("fSsrMask", 2);
         
         // Tile terrain effect.
-        TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions());
+        TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "2"),
+            new MacroDefinition("BRUSH_BUFFER_SET", "3"),
+            new MacroDefinition("SOURCE_TEXTURE_SET", "4"),
+            new MacroDefinition("TILES_TEXTURE_SET", "5")
+        ]);
         TileTerrainEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         TileTerrainEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         TileTerrainEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
         TileTerrainEffect.AddBufferLayout("BrushBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
         TileTerrainEffect.AddTextureLayout("fSources", 4);
         TileTerrainEffect.AddTextureLayout("fTiles", 5);
+        
+        // Pbr tile terrain effect.
+        //TODO: DONE THIS!
         
         // FXAA post-processing effect.
         FxaaEffect = new FxaaEffect(GraphicsDevice, new CrossCompileOptions());

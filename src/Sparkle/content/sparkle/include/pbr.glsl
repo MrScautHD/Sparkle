@@ -1,23 +1,61 @@
-﻿#version 450
+﻿#ifndef LIGHT_BUFFER_SET
+#error LIGHT_BUFFER_SET is not defined.
+#endif
 
-#define MAX_MAPS_COUNT 12
+#ifndef CLUSTER_DATA_BUFFER_SET
+#error CLUSTER_DATA_BUFFER_SET is not defined.
+#endif
+
+#ifndef CLUSTER_BUFFER_SET
+#error CLUSTER_BUFFER_SET is not defined.
+#endif
+
+#ifndef CLUSTER_LIGHT_INDEX_BUFFER_SET
+#error CLUSTER_LIGHT_INDEX_BUFFER_SET is not defined.
+#endif
+
+#ifndef SHADOW_BUFFER_SET
+#error SHADOW_BUFFER_SET is not defined.
+#endif
+
+#ifndef ENVIRONMENT_BUFFER_SET
+#error ENVIRONMENT_BUFFER_SET is not defined.
+#endif
+
+#ifndef ALBEDO_TEXTURE_SET
+#error ALBEDO_TEXTURE_SET is not defined.
+#endif
+
+#ifndef NORMAL_TEXTURE_SET
+#error NORMAL_TEXTURE_SET is not defined.
+#endif
+
+#ifndef METALLIC_TEXTURE_SET
+#error METALLIC_TEXTURE_SET is not defined.
+#endif
+
+#ifndef EMISSION_TEXTURE_SET
+#error EMISSION_TEXTURE_SET is not defined.
+#endif
+
+#ifndef SHADOW_MAP_TEXTURE_SET
+#error SHADOW_MAP_TEXTURE_SET is not defined.
+#endif
+
+#ifndef IRRADIANCE_MAP_TEXTURE_SET
+#error IRRADIANCE_MAP_TEXTURE_SET is not defined.
+#endif
+
+#ifndef PREFILTER_MAP_TEXTURE_SET
+#error PREFILTER_MAP_TEXTURE_SET is not defined.
+#endif
+
+#ifndef BRDF_LUT_TEXTURE_SET
+#error BRDF_LUT_TEXTURE_SET is not defined.
+#endif
 
 const float PI = 3.14159265359F;
 const float EPSILON = 0.000001F;
-
-const int MAP_ALBEDO = 0;
-const int MAP_NORMAL = 1;
-const int MAP_METALLIC = 2;
-const int MAP_ROUGHNESS = 3;
-const int MAP_OCCLUSION = 4;
-const int MAP_EMISSION = 5;
-const int MAP_REFLECTION = 6;
-const int MAP_SSR_REFLECTION = 7;
-
-struct MaterialMap {
-    vec4 color;
-    float value;
-};
 
 struct Light {
     int type; // Type: (Direction = 0, Point = 1, Spot = 2).
@@ -35,12 +73,7 @@ struct LightCluster {
     vec2 lightClusterPadding; // Padding to keep the struct at 16 bytes.
 };
 
-layout (std140, set = 3, binding = 0) uniform MaterialBuffer {
-    int renderMode; // Render mode: (Solid = 0, Cutout = 1, Translucent = 2).
-    MaterialMap maps[MAX_MAPS_COUNT]; // The material parameters.
-};
-
-layout (std430, set = 4, binding = 0) readonly buffer LightBuffer {
+layout (std430, set = LIGHT_BUFFER_SET, binding = 0) readonly buffer LightBuffer {
     int numOfLights; // Number of lights.
     int numOfDirectionalLights; // Number of directional lights.
     vec2 lightPadding; // Padding to keep the struct at 16 bytes.
@@ -48,7 +81,7 @@ layout (std430, set = 4, binding = 0) readonly buffer LightBuffer {
     Light[] lights; // The lights array.
 };
 
-layout (std140, set = 5, binding = 0) uniform ClusterDataBuffer {
+layout (std140, set = CLUSTER_DATA_BUFFER_SET, binding = 0) uniform ClusterDataBuffer {
     vec2 clusterScreenSize; // Size of the render target in pixels.
     uint maxLightsPerCluster; // The max number of lights per cluster.
     uint clusterCountX; // Number of clusters along the screen X axis.
@@ -62,15 +95,15 @@ layout (std140, set = 5, binding = 0) uniform ClusterDataBuffer {
     mat4 clusterInverseView; // Inverse of the view matrix (view space -> world space).
 };
 
-layout(std430, set = 6, binding = 0) readonly buffer ClusterBuffer {
+layout(std430, set = CLUSTER_BUFFER_SET, binding = 0) readonly buffer ClusterBuffer {
     LightCluster clusters[]; // The light range of every cluster.
 };
 
-layout(std430, set = 7, binding = 0) readonly buffer ClusterLightIndexBuffer {
+layout(std430, set = CLUSTER_LIGHT_INDEX_BUFFER_SET, binding = 0) readonly buffer ClusterLightIndexBuffer {
     uint clusterLightIndices[]; // Light indices, grouped by cluster.
 };
 
-layout (std140, set = 8, binding = 0) uniform ShadowBuffer {
+layout (std140, set = SHADOW_BUFFER_SET, binding = 0) uniform ShadowBuffer {
     float shadowMapResolution; // Shadow map resolution (in pixels).
     float shadowBias; // Constant depth bias applied when comparing against the shadow map (reduces shadow acne).
     float shadowNormalBias; // Offset along the surface normal when sampling the shadow map (reduces acne at grazing angles).
@@ -81,45 +114,31 @@ layout (std140, set = 8, binding = 0) uniform ShadowBuffer {
     vec4 shadowLightColor; // rgb: (Color), w: (Intensity).
 };
 
-layout (std140, set = 9, binding = 0) uniform EnvironmentBuffer {
+layout (std140, set = ENVIRONMENT_BUFFER_SET, binding = 0) uniform EnvironmentBuffer {
     float maxReflectionLod; // Highest mip level of the prefilter map (roughness 1.0 reads this level).
     vec4 environmentColor; // rgb: (Tint), w: (Intensity).
 };
 
-layout (set = 10, binding = 0) uniform texture2D fAlbedo;
-layout (set = 10, binding = 1) uniform sampler fAlbedoSampler;
+layout (set = NORMAL_TEXTURE_SET, binding = 0) uniform texture2D fNormal;
+layout (set = NORMAL_TEXTURE_SET, binding = 1) uniform sampler fNormalSampler;
 
-layout (set = 11, binding = 0) uniform texture2D fNormal;
-layout (set = 11, binding = 1) uniform sampler fNormalSampler;
+layout (set = METALLIC_TEXTURE_SET, binding = 0) uniform texture2D fMetallic;
+layout (set = METALLIC_TEXTURE_SET, binding = 1) uniform sampler fMetallicSampler;
 
-layout (set = 12, binding = 0) uniform texture2D fMetallic;
-layout (set = 12, binding = 1) uniform sampler fMetallicSampler;
+layout (set = EMISSION_TEXTURE_SET, binding = 0) uniform texture2D fEmission;
+layout (set = EMISSION_TEXTURE_SET, binding = 1) uniform sampler fEmissionSampler;
 
-layout (set = 13, binding = 0) uniform texture2D fEmission;
-layout (set = 13, binding = 1) uniform sampler fEmissionSampler;
+layout (set = SHADOW_MAP_TEXTURE_SET, binding = 0) uniform texture2D fShadowMap;
+layout (set = SHADOW_MAP_TEXTURE_SET, binding = 1) uniform samplerShadow fShadowMapSampler;
 
-layout (set = 14, binding = 0) uniform texture2D fShadowMap;
-layout (set = 14, binding = 1) uniform samplerShadow fShadowMapSampler;
+layout (set = IRRADIANCE_MAP_TEXTURE_SET, binding = 0) uniform textureCube fIrradianceMap;
+layout (set = IRRADIANCE_MAP_TEXTURE_SET, binding = 1) uniform sampler fIrradianceMapSampler;
 
-layout (set = 15, binding = 0) uniform textureCube fIrradianceMap;
-layout (set = 15, binding = 1) uniform sampler fIrradianceMapSampler;
+layout (set = PREFILTER_MAP_TEXTURE_SET, binding = 0) uniform textureCube fPrefilterMap;
+layout (set = PREFILTER_MAP_TEXTURE_SET, binding = 1) uniform sampler fPrefilterMapSampler;
 
-layout (set = 16, binding = 0) uniform textureCube fPrefilterMap;
-layout (set = 16, binding = 1) uniform sampler fPrefilterMapSampler;
-
-layout (set = 17, binding = 0) uniform texture2D fBrdfLut;
-layout (set = 17, binding = 1) uniform sampler fBrdfLutSampler;
-
-layout (location = 0) in vec2 fTexCoords;
-layout (location = 1) in vec4 fColor;
-layout (location = 2) in vec3 fWorldPosition;
-layout (location = 3) in vec3 fWorldNormal;
-layout (location = 4) in mat3 fTbn;
-layout (location = 7) in vec3 fViewPosition;
-
-layout (location = 0) out vec4 fFragColor;
-layout (location = 1) out vec4 fSsrMaskColor;
-layout (location = 2) out vec4 fBloomMaskColor;
+layout (set = BRDF_LUT_TEXTURE_SET, binding = 0) uniform texture2D fBrdfLut;
+layout (set = BRDF_LUT_TEXTURE_SET, binding = 1) uniform sampler fBrdfLutSampler;
 
 /*
  * Calculates the Fresnel reflectance using the Schlick approximation.
@@ -260,7 +279,7 @@ vec3 getLightRadiance(Light light, out vec3 lightDirection) {
     // Spot light: additionally restrict the light to its cone.
     if (light.type == 2) {
         float spotAttenuation = getSpotAttenuation(light, lightDirection);
-        
+
         if (spotAttenuation <= 0.0F) {
             return vec3(0.0F);
         }
@@ -375,8 +394,8 @@ float getShadowFactor(vec3 normal) {
     
     // Fragments outside the shadow map are treated as lit.
     if (projectionCoords.x < 0.0F || projectionCoords.x > 1.0F ||
-        projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
-        projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
+    projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
+    projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
         return 1.0F;
     }
     
@@ -387,7 +406,7 @@ float getShadowFactor(vec3 normal) {
     
     // Surfaces at grazing angles to the light need a larger bias to avoid shadow acne.
     float normalBias = shadowNormalBias * (1.0F - normalDotLight);
-
+    
     // The total bias is clamped so shadows do not detach from their casters.
     float bias = clamp(shadowBias + normalBias, 0.0F, shadowBiasClamp);
     
@@ -432,7 +451,7 @@ uint getClusterIndex() {
     float depthRatio = max(farPlane / nearPlane, 1.0F + EPSILON);
     
     float slice = log(viewDepth / nearPlane) / log(depthRatio) * float(clusterCountZ);
-    uint clusterZ = uint(clamp(slice, 0.0F, float(clusterCountZ - 1u)));
+    uint clusterZ = uint(clamp(slice, 0.0F, float(clusterCountZ - 1)));
     
     return uint(tile.x) + uint(tile.y) * clusterCountX + clusterZ * clusterCountX * clusterCountY;
 }
@@ -532,34 +551,4 @@ vec4 getPbrColor() {
     color = pow(color, vec3(1.0F / 2.2F));
     
     return vec4(color, alpha);
-}
-
-void main() {
-    vec4 texelColor = getPbrColor();
-    
-    // The SSR pass reads this mask to decide how reflective this pixel is.
-    float ssrReflectionMask = clamp(maps[MAP_SSR_REFLECTION].value, 0.0F, 1.0F);
-    
-    // Raw emission bloom source.
-    vec3 bloomColor = getEmissionColor();
-    
-    // Set render mode.
-    switch (renderMode) {
-        
-        // Solid.
-        case 0:
-            texelColor.a = 1.0F;
-            break;
-        
-        // Cutout.
-        case 1:
-            if (texelColor.a < 0.99F) {
-                discard;
-            }
-            break;
-    }
-    
-    fFragColor = texelColor;
-    fSsrMaskColor = vec4(ssrReflectionMask, 0.0F, 0.0F, 1.0F);
-    fBloomMaskColor = vec4(bloomColor, 1.0F);
 }

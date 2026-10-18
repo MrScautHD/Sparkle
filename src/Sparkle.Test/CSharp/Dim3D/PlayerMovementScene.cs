@@ -38,7 +38,7 @@ public class PlayerMovementScene : Scene {
         
         // Meshes:
         this.RainParticleMesh = Mesh<Vertex3D>.GenQuad(GlobalGraphicsAssets.GraphicsDevice, 1, 1);
-        this.RainParticleMesh.Material.Effect = GlobalResource.DefaultModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+        this.RainParticleMesh.Material.Effect = GlobalResource.DefaultModelEffect.GetEffectVariant([("USE_INSTANCING", "1")]).Effect;
         this.RainParticleMesh.Material.SetMapColor(MaterialMapType.Albedo, Color.Blue);
         this.RainParticleMesh.MeshData.VertexFormat = new VertexFormat(
             Vertex3D.VertexLayout.Name,

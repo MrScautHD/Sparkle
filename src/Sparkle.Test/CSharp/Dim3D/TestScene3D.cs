@@ -80,7 +80,7 @@ public class TestScene3D : Scene {
         this.PlayerMultiInstanceRenderer = new MultiInstanceRenderer(this.InstancedPlayer);
         
         foreach (IMesh playerMesh in this.PlayerMultiInstanceRenderer.Meshes) {
-            this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(playerMesh).Effect = GlobalResource.DefaultModelEffect.GetEffectVariant(["USE_INSTANCING"]).Effect;
+            this.PlayerMultiInstanceRenderer.GetRenderableMaterialByMesh(playerMesh).Effect = GlobalResource.DefaultModelEffect.GetEffectVariant([("USE_INSTANCING", "1")]).Effect;
             
             if (playerMesh is Mesh<Vertex3D> mesh) {
                 mesh.MeshData.VertexFormat = new VertexFormat(
