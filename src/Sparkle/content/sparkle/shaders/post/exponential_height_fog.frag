@@ -1,12 +1,17 @@
 ﻿#version 450
 
 const float EPSILON = 0.000001F;
+const int MAX_GOD_RAY_SAMPLES = 96;
 
 layout (std140, set = 0, binding = 0) uniform FogBuffer {
     vec4 fogColor; // rgb: (Color), w: (Intensity).
     vec4 fogParameters; // x: (Density), y: (Height falloff), z: (Base height), w: (Start distance).
     vec4 fogDistanceParameters; // x: (End distance), yzw: (Padding).
     vec4 cameraPosition; // xyz: (Camera position), w: (Sky fog distance).
+    vec4 godRayDirectionIntensity; // xyz: (World-space light direction), w: (God ray intensity).
+    vec4 godRayColorLength; // rgb: (God ray color), w: (Max ray length).
+    vec4 godRayParameters; // x: (Sample count), y: (Density), z: (Weight), w: (Decay).
+    vec4 godRayPostParameters; // x: (Exposure), y: (Depth fade distance), z: (Horizon fade), w: (Padding).
     mat4x4 inverseProjection; // Inverse of the projection matrix (clip space -> view space). Not used in this shader.
     mat4x4 inverseView; // Inverse of the view matrix (view space -> world space). Not used in this shader.
     mat4x4 inverseViewProjection; // Inverse of the view projection matrix (clip space -> world space).
@@ -75,6 +80,126 @@ vec3 getWorldRayDirection(vec2 uv) {
 float smooth01(float value) {
     value = clamp(value, 0.0F, 1.0F);
     return value * value * (3.0F - (2.0F * value));
+}
+
+/*
+ * Small stable screen-space noise used to hide visible gradient banding in foggy sky.
+ */
+float getDitherNoise(vec2 pixelPosition) {
+    return fract(52.9829189F * fract(dot(pixelPosition, vec2(0.06711056F, 0.00583715F))));
+}
+
+/*
+ * Adds very small dithering in display-space-sized steps.
+ *
+ * This is intentionally tiny: enough to break fog/sky rings, not enough to look noisy.
+ */
+vec3 applyFogDither(vec3 color) {
+    float noise = getDitherNoise(gl_FragCoord.xy) - 0.5F;
+    return color + noise / 255.0F;
+}
+
+/*
+ * Returns a stable linear depth-like world distance for a screen pixel.
+ * Sky pixels use the configured sky fog distance.
+ */
+float getSceneDistance(vec2 uv, float depth) {
+    if (depth >= 0.9999F) {
+        return cameraPosition.w;
+    }
+    
+    vec3 worldPosition = reconstructWorldPosition(uv, depth);
+    return length(worldPosition - cameraPosition.xyz);
+}
+
+/*
+ * Samples scene transmittance along the current pixel towards the light direction.
+ *
+ * This is a cheap screen-space approximation:
+ * - march along the projected sun direction on screen,
+ * - use depth discontinuities as occluders,
+ * - fade with distance/fog so rays sit naturally inside the fog.
+ */
+float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fogFactor) {
+    if (godRayDirectionIntensity.w <= 0.0F) {
+        return 0.0F;
+    }
+    
+    float sampleCountFloat = clamp(godRayParameters.x, 1.0F, float(MAX_GOD_RAY_SAMPLES));
+    int sampleCount = int(sampleCountFloat);
+    
+    vec3 lightDirection = normalize(godRayDirectionIntensity.xyz);
+    
+    // God rays are strongest when looking toward the incoming light.
+    float viewLightAmount = clamp(dot(viewDirection, -lightDirection), 0.0F, 1.0F);
+    viewLightAmount = pow(viewLightAmount, 1.25F);
+    
+    // Reduce shafts when looking too far away from the horizon if desired.
+    float horizonAmount = 1.0F - clamp(abs(viewDirection.y), 0.0F, 1.0F);
+    float horizonFade = mix(1.0F, smooth01(horizonAmount), clamp(godRayPostParameters.z, 0.0F, 1.0F));
+    
+    if (viewLightAmount <= EPSILON || horizonFade <= EPSILON) {
+        return 0.0F;
+    }
+    
+    vec3 worldPosition = currentDepth >= 0.9999F ? cameraPosition.xyz + viewDirection * cameraPosition.w : reconstructWorldPosition(uv, currentDepth);
+    
+    float currentDistance = length(worldPosition - cameraPosition.xyz);
+    float maxRayLength = max(godRayColorLength.w, EPSILON);
+    
+    // Project a point in the opposite light direction into screen space.
+    // Moving from the current pixel toward that projected position approximates tracing toward the sun.
+    vec3 lightProbeWorld = worldPosition - lightDirection * maxRayLength;
+    vec4 lightProbeClip = inverse(inverseViewProjection) * vec4(lightProbeWorld, 1.0F);
+    lightProbeClip.xyz /= max(abs(lightProbeClip.w), EPSILON);
+    
+    vec2 lightProbeUv = lightProbeClip.xy * 0.5F + 0.5F;
+    lightProbeUv.y = 1.0F - lightProbeUv.y;
+    
+    vec2 rayVector = (lightProbeUv - uv) * godRayParameters.y / sampleCountFloat;
+    
+    float illuminationDecay = 1.0F;
+    float rayFactor = 0.0F;
+    vec2 sampleUv = uv;
+    
+    for (int index = 0; index < MAX_GOD_RAY_SAMPLES; index++) {
+        if (index >= sampleCount) {
+            break;
+        }
+        
+        sampleUv += rayVector;
+        
+        if (sampleUv.x < 0.0F || sampleUv.x > 1.0F || sampleUv.y < 0.0F || sampleUv.y > 1.0F) {
+            break;
+        }
+        
+        float sampleDepth = texture(sampler2D(fDepth, fDepthSampler), sampleUv).r;
+        float sampleDistance = getSceneDistance(sampleUv, sampleDepth);
+        
+        // Nearby geometry blocks the ray. Sky/far pixels transmit it.
+        float depthFadeDistance = max(godRayPostParameters.y, EPSILON);
+        float distanceDelta = sampleDistance - currentDistance;
+        float transmittance = smooth01(distanceDelta / depthFadeDistance);
+        
+        if (sampleDepth >= 0.9999F) {
+            transmittance = 1.0F;
+        }
+        
+        rayFactor += transmittance * illuminationDecay * godRayParameters.z;
+        illuminationDecay *= godRayParameters.w;
+    }
+    
+    rayFactor *= godRayPostParameters.x;
+    rayFactor *= viewLightAmount;
+    rayFactor *= horizonFade;
+    
+    // God rays need participating media, but keep a baseline so light fog/dust still shows shafts.
+    float fogAtmosphere = fogFactor + fogParameters.x * 18.0F;
+    float dustAtmosphere = 0.35F;
+    float atmosphericAmount = clamp(max(fogAtmosphere, dustAtmosphere), 0.0F, 1.0F);
+    rayFactor *= smooth01(atmosphericAmount);
+    
+    return clamp(rayFactor * godRayDirectionIntensity.w, 0.0F, 1.0F);
 }
 
 /*
@@ -153,7 +278,7 @@ float getSkyFogFactor(vec3 viewDirection) {
     horizonAmount = smooth01(horizonAmount);
     
     // Wide horizon band. This keeps the fog from being only a thin line.
-    float horizonBand = pow(horizonAmount, 0.65F);
+    float horizonBand = pow(horizonAmount, 1.15F);
     
     // Fog density at the height of the camera, the same as for geometry.
     float heightFalloff = max(fogParameters.y, EPSILON);
@@ -178,20 +303,28 @@ void main() {
     float depth = texture(sampler2D(fDepth, fDepthSampler), uv).r;
     
     float fogFactor;
+    vec3 viewDirection;
     
     // Pixels at the far plane have no geometry, so they are the sky and are fogged by view direction.
     if (depth >= 0.9999F) {
-        vec3 viewDirection = getWorldRayDirection(uv);
+        viewDirection = getWorldRayDirection(uv);
         fogFactor = getSkyFogFactor(viewDirection);
     }
     // Everything else is fogged by its distance and height.
     else {
         vec3 worldPosition = reconstructWorldPosition(uv, depth);
+        viewDirection = normalize(worldPosition - cameraPosition.xyz);
         fogFactor = getExponentialHeightFogFactor(worldPosition);
     }
     
     // Blend from the scene color towards the fog color. The alpha stays untouched.
     vec3 color = mix(sceneColor.rgb, fogColor.rgb, fogFactor);
+    
+    // Add screen-space god rays after fog, so shafts sit inside the atmospheric layer.
+    float godRayFactor = getGodRayFactor(uv, depth, viewDirection, fogFactor);
+    color += godRayColorLength.rgb * godRayFactor;
+    
+    color = applyFogDither(color);
     
     fFragColor = vec4(color, sceneColor.a);
 }

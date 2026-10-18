@@ -208,6 +208,14 @@ public class LightTestScene : Scene {
             forwardRenderer.FogStartDistance = 0;
             forwardRenderer.FogEndDistance = 50;
             forwardRenderer.FogColor = new Vector4(0.65F, 0.72F, 0.78F, 1.0F);
+            
+            forwardRenderer.GodRayIntensity = 0.01F;
+            forwardRenderer.GodRayColor = new Vector4(1.0F, 0.78F, 0.45F, 1.0F);
+            forwardRenderer.GodRayDensity = 0.85F;
+            forwardRenderer.GodRayWeight = 0.045F;
+            forwardRenderer.GodRayDecay = 0.93F;
+            forwardRenderer.GodRayExposure = 1.1F;
+            forwardRenderer.GodRaySampleCount = 48.0F;
         }
         
         // RELATIVE MOUSE MODE.

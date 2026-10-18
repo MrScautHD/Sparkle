@@ -234,6 +234,61 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     public float FogEndDistance;
     
     /// <summary>
+    /// Enables screen-space god rays/light shafts in the fog pass.
+    /// </summary>
+    public bool EnableGodRays;
+    
+    /// <summary>
+    /// Color of the god rays. W is unused.
+    /// </summary>
+    public Vector4 GodRayColor;
+    
+    /// <summary>
+    /// Overall god ray intensity.
+    /// </summary>
+    public float GodRayIntensity;
+    
+    /// <summary>
+    /// Maximum world-space ray length used by the screen-space shaft projection.
+    /// </summary>
+    public float GodRayMaxLength;
+    
+    /// <summary>
+    /// Number of screen-space samples used by the god ray pass.
+    /// </summary>
+    public float GodRaySampleCount;
+    
+    /// <summary>
+    /// Controls how far each sample moves along the ray in screen space.
+    /// </summary>
+    public float GodRayDensity;
+    
+    /// <summary>
+    /// Per-sample contribution multiplier.
+    /// </summary>
+    public float GodRayWeight;
+    
+    /// <summary>
+    /// Per-sample decay multiplier.
+    /// </summary>
+    public float GodRayDecay;
+    
+    /// <summary>
+    /// Final god ray exposure multiplier.
+    /// </summary>
+    public float GodRayExposure;
+    
+    /// <summary>
+    /// Distance over which geometry stops occluding the ray.
+    /// </summary>
+    public float GodRayDepthFadeDistance;
+    
+    /// <summary>
+    /// How much god rays prefer the horizon. 0 disables horizon shaping, 1 fully applies it.
+    /// </summary>
+    public float GodRayHorizonFade;
+    
+    /// <summary>
     /// List of opaque renderables waiting to be drawn.
     /// </summary>
     private List<Renderable> _opaqueRenderables;
@@ -475,7 +530,18 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         float fogFalloff = 0.04F,
         float fogBaseHeight = 0.0F,
         float fogStartDistance = 10.0F,
-        float fogEndDistance = 250.0F) {
+        float fogEndDistance = 250.0F,
+        bool enableGodRays = true,
+        Color? godRayColor = null,
+        float godRayIntensity = 0.35F,
+        float godRayMaxLength = 180.0F,
+        float godRaySampleCount = 48.0F,
+        float godRayDensity = 0.85F,
+        float godRayWeight = 0.045F,
+        float godRayDecay = 0.94F,
+        float godRayExposure = 1.0F,
+        float godRayDepthFadeDistance = 35.0F,
+        float godRayHorizonFade = 0.65F) {
         this.GraphicsDevice = graphicsDevice;
         this.SkyBox = skyBox;
         this.AmbientColor = ambientColor?.ToRgbaFloatVec4() ?? new Vector4(0.03F, 0.03F, 0.03F, 1.0F);
@@ -512,6 +578,17 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.FogBaseHeight = fogBaseHeight;
         this.FogStartDistance = fogStartDistance;
         this.FogEndDistance = fogEndDistance;
+        this.EnableGodRays = enableGodRays;
+        this.GodRayColor = godRayColor?.ToRgbaFloatVec4() ?? new Vector4(1.0F, 0.88F, 0.62F, 1.0F);
+        this.GodRayIntensity = godRayIntensity;
+        this.GodRayMaxLength = godRayMaxLength;
+        this.GodRaySampleCount = godRaySampleCount;
+        this.GodRayDensity = godRayDensity;
+        this.GodRayWeight = godRayWeight;
+        this.GodRayDecay = godRayDecay;
+        this.GodRayExposure = godRayExposure;
+        this.GodRayDepthFadeDistance = godRayDepthFadeDistance;
+        this.GodRayHorizonFade = godRayHorizonFade;
         
         // Create lists for renderables.
         this._opaqueRenderables = new List<Renderable>();
@@ -1709,6 +1786,22 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         Matrix4x4.Invert(view, out Matrix4x4 inverseView);
         Matrix4x4.Invert(viewProjection, out Matrix4x4 inverseViewProjection);
         
+        Vector3 godRayDirection = -Vector3.UnitY;
+        float godRayIntensity = 0.0F;
+        
+        if (this.EnableGodRays && this._shadowLight != null && this._shadowLight.Enabled && this._shadowLight.LightType == LightType.Directional) {
+            godRayDirection = Vector3.Transform(-Vector3.UnitZ, this._shadowLight.LerpedRotation);
+            
+            if (godRayDirection.LengthSquared() <= 0.0F) {
+                godRayDirection = -Vector3.UnitY;
+            }
+            else {
+                godRayDirection = Vector3.Normalize(godRayDirection);
+            }
+            
+            godRayIntensity = MathF.Max(0.0F, this.GodRayIntensity) * MathF.Max(0.0F, this._shadowLight.Intensity);
+        }
+        
         // Fill the fog data buffer.
         this._fogData = new ExponentialHeightFogData() {
             Color = this.EnableFog ? this.FogColor : Vector4.Zero,
@@ -1725,6 +1818,20 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 0.0F
             ),
             CameraPosition = new Vector4(camera.Position, MathF.Max(this.FogEndDistance, this.ClusterFarPlane)),
+            GodRayDirectionIntensity = new Vector4(godRayDirection, godRayIntensity),
+            GodRayColorLength = new Vector4(this.GodRayColor.AsVector3(), MathF.Max(1.0F, this.GodRayMaxLength)),
+            GodRayParameters = new Vector4(
+                Math.Clamp(this.GodRaySampleCount, 1.0F, 96.0F),
+                MathF.Max(0.0F, this.GodRayDensity),
+                MathF.Max(0.0F, this.GodRayWeight),
+                Math.Clamp(this.GodRayDecay, 0.0F, 1.0F)
+            ),
+            GodRayPostParameters = new Vector4(
+                MathF.Max(0.0F, this.GodRayExposure),
+                MathF.Max(0.001F, this.GodRayDepthFadeDistance),
+                Math.Clamp(this.GodRayHorizonFade, 0.0F, 1.0F),
+                0.0F
+            ),
             InverseProjection = inverseProjection,
             InverseView = inverseView,
             InverseViewProjection = inverseViewProjection

@@ -27,6 +27,26 @@ public struct ExponentialHeightFogData {
     public Vector4 CameraPosition;
     
     /// <summary>
+    /// XYZ = world-space light direction, W = god ray intensity.
+    /// </summary>
+    public Vector4 GodRayDirectionIntensity;
+    
+    /// <summary>
+    /// RGB = god ray color, W = max ray length in world units.
+    /// </summary>
+    public Vector4 GodRayColorLength;
+    
+    /// <summary>
+    /// X = sample count, Y = density, Z = weight, W = decay.
+    /// </summary>
+    public Vector4 GodRayParameters;
+    
+    /// <summary>
+    /// X = exposure, Y = depth fade distance, Z = horizon fade, W = padding.
+    /// </summary>
+    public Vector4 GodRayPostParameters;
+    
+    /// <summary>
     /// Inverse projection matrix of the active camera.
     /// </summary>
     public Matrix4x4 InverseProjection;
