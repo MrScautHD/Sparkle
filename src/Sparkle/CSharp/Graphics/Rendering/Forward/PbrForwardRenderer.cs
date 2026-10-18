@@ -12,7 +12,6 @@ using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures.Cubemaps;
-using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Bloom;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Environment;
@@ -930,25 +929,25 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 this.DrawSsrPass(commandList, this.EnableBloom ? this._renderTargets.ColorFramebuffer : framebuffer, cam3D, true);
                 
                 if (this.EnableBloom) {
-                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
+                    this.DrawBloomCompositePass(commandList, framebuffer, false);
                 }
             }
             else if (this.EnableFog) {
                 this.DrawFogPass(commandList, this.EnableBloom ? this._renderTargets.FogFramebuffer : framebuffer);
                 
                 if (this.EnableBloom) {
-                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Fog);
+                    this.DrawBloomCompositePass(commandList, framebuffer, true);
                 }
             }
             else if (this.EnableSsr) {
                 this.DrawSsrPass(commandList, this.EnableBloom ? this._renderTargets.ColorFramebuffer : framebuffer, cam3D, false);
                 
                 if (this.EnableBloom) {
-                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
+                    this.DrawBloomCompositePass(commandList, framebuffer, false);
                 }
             }
             else if (this.EnableBloom) {
-                this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
+                this.DrawBloomCompositePass(commandList, framebuffer, false);
             }
         }
         else {
@@ -1488,8 +1487,8 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// </summary>
     /// <param name="commandList">The command list used to record rendering commands.</param>
     /// <param name="framebuffer">The framebuffer that receives the composited image.</param>
-    /// <param name="sceneColorSource">The scene color source to composite bloom over.</param>
-    private void DrawBloomCompositePass(CommandList commandList, Framebuffer framebuffer, BloomSceneColorSource sceneColorSource) {
+    /// <param name="useFoggedSceneColor">Whether SSR should sample the fogged scene color instead of the raw scene color.</param>
+    private void DrawBloomCompositePass(CommandList commandList, Framebuffer framebuffer, bool useFoggedSceneColor) {
         Effect effect = GlobalGraphicsAssets.BloomCompositeEffect;
         
         // Set the pipeline parameters.
@@ -1509,7 +1508,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         commandList.SetPipeline(effect.GetPipeline(this._pipelineDescription).Pipeline);
         
         // Set scene color.
-        if (sceneColorSource == BloomSceneColorSource.Fog) {
+        if (useFoggedSceneColor) {
             commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetFogResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
         }
         else {
@@ -2123,14 +2122,6 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             ReflectionQuality.Ultra => 1.0F,
             _ => 0.5F
         };
-    }
-    
-    /// <summary>
-    /// Selects which scene texture bloom is composited over.
-    /// </summary>
-    private enum BloomSceneColorSource {
-        Color,
-        Fog
     }
     
     protected override void Dispose(bool disposing) {
