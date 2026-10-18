@@ -12,7 +12,9 @@ using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures.Cubemaps;
+using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Entities.Components;
+using Sparkle.CSharp.Graphics.Rendering.Forward.Bloom;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Environment;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Fog;
 using Sparkle.CSharp.Graphics.Rendering.Forward.Lighting;
@@ -157,6 +159,31 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// Maximum depth bias applied to shadow comparisons.
     /// </summary>
     public float ShadowBiasClamp;
+    
+    /// <summary>
+    /// Enables bloom from material emission maps.
+    /// </summary>
+    public bool EnableBloom;
+    
+    /// <summary>
+    /// Number of samples used by the bloom blur.
+    /// </summary>
+    public float BloomSamples;
+    
+    /// <summary>
+    /// Bloom blur spread.
+    /// </summary>
+    public float BloomQuality;
+    
+    /// <summary>
+    /// Final bloom strength.
+    /// </summary>
+    public float BloomStrength;
+    
+    /// <summary>
+    /// Bloom brightness threshold.
+    /// </summary>
+    public float BloomThreshold;
     
     /// <summary>
     /// Enables the screen-space reflection pass.
@@ -394,6 +421,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private EnvironmentData _environmentData;
     
     /// <summary>
+    /// CPU-side bloom parameter data.
+    /// </summary>
+    private BloomData _bloomData;
+    
+    /// <summary>
     /// CPU-side SSR parameter data.
     /// </summary>
     private SsrData _ssrData;
@@ -439,6 +471,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     private SimpleUniformBuffer<EnvironmentData> _environmentBuffer;
     
     /// <summary>
+    /// GPU-side bloom parameter buffer.
+    /// </summary>
+    private SimpleUniformBuffer<BloomData> _bloomBuffer;
+    
+    /// <summary>
     /// GPU-side SSR parameter buffer.
     /// </summary>
     private SimpleUniformBuffer<SsrData> _ssrBuffer;
@@ -478,6 +515,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="shadowBias">A constant depth bias value applied during shadow sampling to reduce shadow acne artifacts.</param>
     /// <param name="shadowNormalBias">A bias applied in the direction of the surface normal to mitigate artifacts at grazing angles during shadow sampling.</param>
     /// <param name="shadowBiasClamp">The maximum allowable offset for shadow bias adjustments, helping to prevent excessive "peter-panning" effects.</param>
+    /// <param name="enableBloom">Specifies whether bloom is applied, so bright and emissive surfaces glow into their surroundings.</param>
+    /// <param name="bloomSamples">The number of samples taken per pixel when the bloom is blurred. Higher values give a smoother glow at a higher GPU cost.</param>
+    /// <param name="bloomQuality">The quality of the bloom blur. Higher values give a wider and softer glow at a higher GPU cost.</param>
+    /// <param name="bloomStrength">The strength of the bloom, which is a multiplier for the glow that is added to the scene. 0.0 gives no glow, and values above 1.0 exaggerate it.</param>
+    /// <param name="bloomThreshold">The brightness above which a pixel contributes to the bloom. Lower values let more of the scene glow, and higher values restrict the glow to very bright surfaces.</param>
     /// <param name="enableSsr">Specifies whether screen space reflections (SSR) are enabled for the renderer.</param>
     /// <param name="ssrQuality">The quality setting for screen space reflections, which defines the resolution of the SSR result relative to the screen resolution.</param>
     /// <param name="ssrMaxDistance">The maximum traceable distance for screen space reflections, determining their area of influence.</param>
@@ -527,6 +569,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         float shadowBias = 0.0005F,
         float shadowNormalBias = 0.0025F,
         float shadowBiasClamp = 0.01F,
+        bool enableBloom = true,
+        float bloomSamples = 5.0F,
+        float bloomQuality = 1.25F,
+        float bloomStrength = 0.75F,
+        float bloomThreshold = 0.05F,
         bool enableSsr = true,
         ReflectionQuality ssrQuality = ReflectionQuality.Medium,
         float ssrMaxDistance = 40.0F,
@@ -574,6 +621,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.ShadowBias = shadowBias;
         this.ShadowNormalBias = shadowNormalBias;
         this.ShadowBiasClamp = shadowBiasClamp;
+        this.EnableBloom = enableBloom;
+        this.BloomSamples = bloomSamples;
+        this.BloomQuality = bloomQuality;
+        this.BloomStrength = bloomStrength;
+        this.BloomThreshold = bloomThreshold;
         this.EnableSsr = enableSsr;
         this.SsrQuality = ssrQuality;
         this.SsrMaxDistance = ssrMaxDistance;
@@ -704,6 +756,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             EnvironmentColor = Vector4.One
         };
         
+        // Create bloom data.
+        this._bloomData = new BloomData();
+        
         // Create SSR data.
         this._ssrData = new SsrData();
         
@@ -739,6 +794,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         // Create environment buffer.
         this._environmentBuffer = new SimpleUniformBuffer<EnvironmentData>(graphicsDevice, 1, ShaderStages.Fragment);
         this._environmentBuffer.DeviceBuffer.Name = "EnvironmentBuffer";
+        
+        // Create bloom buffer.
+        this._bloomBuffer = new SimpleUniformBuffer<BloomData>(graphicsDevice, 1, ShaderStages.Fragment);
+        this._bloomBuffer.DeviceBuffer.Name = "BloomBuffer";
         
         // Create SSR buffer.
         this._ssrBuffer = new SimpleUniformBuffer<SsrData>(graphicsDevice, 1, ShaderStages.Fragment);
@@ -826,7 +885,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.DrawShadowScene(commandList, framebuffer, cam3D);
         
         // Draw scene.
-        if (this.EnableSsr || this.EnableFog) {
+        if (this.EnableSsr || this.EnableFog || this.EnableBloom) {
             this.EnsureRenderTargets(framebuffer);
             
             if (this.EnableSsr) {
@@ -843,6 +902,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             commandList.SetFramebuffer(this._renderTargets!.ColorFramebuffer);
             commandList.ClearColorTarget(0, Color.Black.ToRgbaFloat());
             commandList.ClearColorTarget(1, new RgbaFloat(0.0F, 0.0F, 0.0F, 1.0F));
+            commandList.ClearColorTarget(2, new RgbaFloat(0.0F, 0.0F, 0.0F, 1.0F));
             commandList.ClearDepthStencil(1.0F);
             
             // Draw Skybox.
@@ -860,16 +920,35 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             
             this.AfterTranslucentPass?.Invoke(commandList, this._renderTargets.ColorFramebuffer);
             
-            // Draw SSR/Fog.
+            // Draw Bloom/SSR/Fog.
+            if (this.EnableBloom) {
+                this.DrawBloomPass(commandList);
+            }
+            
             if (this.EnableFog && this.EnableSsr) {
                 this.DrawFogPass(commandList, this._renderTargets.FogFramebuffer);
-                this.DrawSsrPass(commandList, framebuffer, cam3D, true);
+                this.DrawSsrPass(commandList, this.EnableBloom ? this._renderTargets.ColorFramebuffer : framebuffer, cam3D, true);
+                
+                if (this.EnableBloom) {
+                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
+                }
             }
             else if (this.EnableFog) {
-                this.DrawFogPass(commandList, framebuffer);
+                this.DrawFogPass(commandList, this.EnableBloom ? this._renderTargets.FogFramebuffer : framebuffer);
+                
+                if (this.EnableBloom) {
+                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Fog);
+                }
             }
-            else {
-                this.DrawSsrPass(commandList, framebuffer, cam3D, false);
+            else if (this.EnableSsr) {
+                this.DrawSsrPass(commandList, this.EnableBloom ? this._renderTargets.ColorFramebuffer : framebuffer, cam3D, false);
+                
+                if (this.EnableBloom) {
+                    this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
+                }
+            }
+            else if (this.EnableBloom) {
+                this.DrawBloomCompositePass(commandList, framebuffer, BloomSceneColorSource.Color);
             }
         }
         else {
@@ -1318,6 +1397,133 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 commandList.Draw(renderable.Mesh.VertexCount);
             }
         }
+    }
+    
+    /// <summary>
+    /// Blurs the emission bloom mask into the bloom texture using two cheap separable passes.
+    /// </summary>
+    /// <param name="commandList">The command list used to record rendering commands.</param>
+    private void DrawBloomPass(CommandList commandList) {
+        Effect effect = GlobalGraphicsAssets.BloomEffect;
+        
+        // Horizontal pass: bloom mask temp bloom texture.
+        this.DrawBloomBlurPass(
+            commandList,
+            effect,
+            this._renderTargets!.BloomTempFramebuffer,
+            this._renderTargets.GetBloomMaskResourceSet(this._ssrSampler, effect.GetTextureLayout("fBloomMask")),
+            new Vector2(this._renderTargets.BloomMaskTexture.Width, this._renderTargets.BloomMaskTexture.Height),
+            new Vector2(1.0F, 0.0F),
+            1.0F
+        );
+        
+        // Vertical pass: temp bloom texture final bloom texture.
+        this.DrawBloomBlurPass(
+            commandList,
+            effect,
+            this._renderTargets.BloomFramebuffer,
+            this._renderTargets.GetBloomTempResourceSet(this._ssrSampler, effect.GetTextureLayout("fBloomMask")),
+            new Vector2(this._renderTargets.BloomTempTexture.Width, this._renderTargets.BloomTempTexture.Height),
+            new Vector2(0.0F, 1.0F),
+            this.BloomStrength
+        );
+    }
+    
+    /// <summary>
+    /// Draws one separable bloom blur pass.
+    /// </summary>
+    /// <param name="commandList">The command list used to record rendering commands.</param>
+    /// <param name="effect">The bloom blur effect.</param>
+    /// <param name="targetFramebuffer">The framebuffer to render into.</param>
+    /// <param name="sourceResourceSet">The source texture resource set.</param>
+    /// <param name="sourceSize">The source texture size in pixels.</param>
+    /// <param name="direction">The blur direction.</param>
+    /// <param name="strength">The strength applied in this pass.</param>
+    private void DrawBloomBlurPass(CommandList commandList, Effect effect, Framebuffer targetFramebuffer, ResourceSet sourceResourceSet, Vector2 sourceSize, Vector2 direction, float strength) {
+        
+        // Fill the bloom buffer.
+        this._bloomData.ScreenSize = sourceSize;
+        this._bloomData.Samples = this.BloomSamples;
+        this._bloomData.Quality = this.BloomQuality;
+        this._bloomData.Strength = strength;
+        this._bloomData.Threshold = this.BloomThreshold;
+        this._bloomData.Direction = direction;
+        
+        // Upload buffer to GPU.
+        this._bloomBuffer.SetValue(0, this._bloomData);
+        this._bloomBuffer.UpdateBufferDeferred(commandList);
+        
+        // Set the pipeline parameters.
+        this._pipelineDescription.Outputs = targetFramebuffer.OutputDescription;
+        this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
+        this._pipelineDescription.RasterizerState = RasterizerStateDescription.CULL_NONE;
+        this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DISABLED;
+        this._pipelineDescription.BufferLayouts = effect.GetBufferLayouts();
+        this._pipelineDescription.TextureLayouts = effect.GetTextureLayouts();
+        this._pipelineDescription.ShaderSet = new ShaderSetDescription([], effect.Shaders);
+        this._pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleList;
+        
+        // Render into the target framebuffer.
+        commandList.SetFramebuffer(targetFramebuffer);
+        commandList.ClearColorTarget(0, new RgbaFloat(0.0F, 0.0F, 0.0F, 1.0F));
+        
+        // Set pipeline.
+        commandList.SetPipeline(effect.GetPipeline(this._pipelineDescription).Pipeline);
+        
+        // Set the Bloom buffer.
+        commandList.SetGraphicsResourceSet(effect.GetBufferLayoutSlot("BloomBuffer"), this._bloomBuffer.GetResourceSet(effect.GetBufferLayout("BloomBuffer")));
+        
+        // Set bloom mask.
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fBloomMask"), sourceResourceSet);
+        
+        // Apply effect.
+        effect.Apply(commandList);
+        
+        // Draw.
+        commandList.Draw(3);
+    }
+    
+    /// <summary>
+    /// Composites blurred bloom over a scene color texture.
+    /// </summary>
+    /// <param name="commandList">The command list used to record rendering commands.</param>
+    /// <param name="framebuffer">The framebuffer that receives the composited image.</param>
+    /// <param name="sceneColorSource">The scene color source to composite bloom over.</param>
+    private void DrawBloomCompositePass(CommandList commandList, Framebuffer framebuffer, BloomSceneColorSource sceneColorSource) {
+        Effect effect = GlobalGraphicsAssets.BloomCompositeEffect;
+        
+        // Set the pipeline parameters.
+        this._pipelineDescription.Outputs = framebuffer.OutputDescription;
+        this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
+        this._pipelineDescription.RasterizerState = RasterizerStateDescription.CULL_NONE;
+        this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DISABLED;
+        this._pipelineDescription.BufferLayouts = effect.GetBufferLayouts();
+        this._pipelineDescription.TextureLayouts = effect.GetTextureLayouts();
+        this._pipelineDescription.ShaderSet = new ShaderSetDescription([], effect.Shaders);
+        this._pipelineDescription.PrimitiveTopology = PrimitiveTopology.TriangleList;
+        
+        // Render into the target framebuffer.
+        commandList.SetFramebuffer(framebuffer);
+        
+        // Set pipeline.
+        commandList.SetPipeline(effect.GetPipeline(this._pipelineDescription).Pipeline);
+        
+        // Set scene color.
+        if (sceneColorSource == BloomSceneColorSource.Fog) {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetFogResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
+        else {
+            commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fSceneColor"), this._renderTargets!.GetColorResourceSet(this._ssrSampler, effect.GetTextureLayout("fSceneColor")));
+        }
+        
+        // Set blurred bloom.
+        commandList.SetGraphicsResourceSet(effect.GetTextureLayoutSlot("fBloomColor"), this._renderTargets.GetBloomResourceSet(this._ssrSampler, effect.GetTextureLayout("fBloomColor")));
+        
+        // Apply effect.
+        effect.Apply(commandList);
+        
+        // Draw.
+        commandList.Draw(3);
     }
     
     /// <summary>
@@ -1919,6 +2125,14 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         };
     }
     
+    /// <summary>
+    /// Selects which scene texture bloom is composited over.
+    /// </summary>
+    private enum BloomSceneColorSource {
+        Color,
+        Fog
+    }
+    
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this._shadowMap.Dispose();
@@ -1937,8 +2151,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._shadowBuffer.Dispose();
             this._shadowMatrixBuffer.Dispose();
             this._environmentBuffer.Dispose();
-            this._fogBuffer.Dispose();
+            this._bloomBuffer.Dispose();
             this._ssrBuffer.Dispose();
+            this._fogBuffer.Dispose();
         }
     }
 }

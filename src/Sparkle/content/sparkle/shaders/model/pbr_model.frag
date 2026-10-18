@@ -119,6 +119,7 @@ layout (location = 7) in vec3 fViewPosition;
 
 layout (location = 0) out vec4 fFragColor;
 layout (location = 1) out vec4 fSsrMaskColor;
+layout (location = 2) out vec4 fBloomMaskColor;
 
 /*
  * Calculates the Fresnel reflectance using the Schlick approximation.
@@ -474,6 +475,19 @@ vec3 getDirectLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float met
 }
 
 /*
+ * Calculates the emitted light of the fragment.
+ *
+ * Emission is light that the surface produces itself, so it is not affected by
+ * lighting, shadows or ambient occlusion. The texture is tinted by the color of
+ * the emission map and scaled by its value. A value above 1.0 makes the surface
+ * brighter than white, which is what a bloom pass needs to pick up.
+ */
+vec3 getEmissionColor() {
+    vec4 emissionTexel = texture(sampler2D(fEmission, fEmissionSampler), fTexCoords);
+    return emissionTexel.rgb * maps[MAP_EMISSION].color.rgb * maps[MAP_EMISSION].value;
+}
+
+/*
  * Calculates the final lit color and opacity of the fragment.
  *
  * Reads the material textures, accumulates the direct and ambient lighting,
@@ -497,7 +511,7 @@ vec4 getPbrColor() {
     
     float reflectionStrength = clamp(maps[MAP_REFLECTION].value, 0.0F, 1.0F);
     
-    vec3 emission = emissionTexel.rgb * maps[MAP_EMISSION].color.rgb * maps[MAP_EMISSION].value;
+    vec3 emission = getEmissionColor();
     
     vec3 normal = getNormal();
     vec3 viewDirection = normalize(fViewPosition - fWorldPosition);
@@ -526,6 +540,9 @@ void main() {
     // The SSR pass reads this mask to decide how reflective this pixel is.
     float ssrReflectionMask = clamp(maps[MAP_SSR_REFLECTION].value, 0.0F, 1.0F);
     
+    // Raw emission bloom source.
+    vec3 bloomColor = getEmissionColor();
+    
     // Set render mode.
     switch (renderMode) {
         
@@ -544,4 +561,5 @@ void main() {
     
     fFragColor = texelColor;
     fSsrMaskColor = vec4(ssrReflectionMask, 0.0F, 0.0F, 1.0F);
+    fBloomMaskColor = vec4(bloomColor, 1.0F);
 }

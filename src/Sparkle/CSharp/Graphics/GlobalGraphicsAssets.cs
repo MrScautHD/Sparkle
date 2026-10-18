@@ -84,6 +84,16 @@ public static class GlobalGraphicsAssets {
     public static Effect ExponentialHeightFogEffect { get; private set; }
     
     /// <summary>
+    /// The shader effect used to apply a bloom filter.
+    /// </summary>
+    public static Effect BloomEffect { get; private set; }
+    
+    /// <summary>
+    /// The effect used to composite bloom over the final scene color.
+    /// </summary>
+    public static Effect BloomCompositeEffect { get; private set; }
+    
+    /// <summary>
     /// The effect used by the PBR screen-space reflection pass.
     /// </summary>
     public static Effect SsrEffect { get; private set; }
@@ -106,37 +116,37 @@ public static class GlobalGraphicsAssets {
     /// <summary>
     /// The shader effect used to apply a grayscale filter.
     /// </summary>
-    public static Effect GrayScaleEffect { get; private set; }
+    public static Effect GrayScaleFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a bloom filter.
     /// </summary>
-    public static BloomEffect BloomEffect { get; private set; }
+    public static BloomEffect BloomFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a blur filter.
     /// </summary>
-    public static BlurEffect BlurEffect { get; private set; }
+    public static BlurEffect BlurFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a sobel filter.
     /// </summary>
-    public static SobelEffect SobelEffect { get; private set; }
+    public static SobelEffect SobelFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a predator filter.
     /// </summary>
-    public static PredatorEffect PredatorEffect { get; private set; }
+    public static PredatorEffect PredatorFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a posterization filter.
     /// </summary>
-    public static PosterizationEffect PosterizationEffect { get; private set; }
+    public static PosterizationEffect PosterizationFilterEffect { get; private set; }
     
     /// <summary>
     /// The shader effect used to apply a pixelizer filter.
     /// </summary>
-    public static PixelizerEffect PixelizerEffect { get; private set; }
+    public static PixelizerEffect PixelizerFilterEffect { get; private set; }
     
     /// <summary>
     /// Initializes the global graphics assets with the provided graphics device and window.
@@ -253,6 +263,16 @@ public static class GlobalGraphicsAssets {
         ExponentialHeightFogEffect.AddTextureLayout("fSceneColor", 1);
         ExponentialHeightFogEffect.AddTextureLayout("fDepth", 2);
         
+        // Bloom filter effect.
+        BloomEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/bloom.frag"), new CrossCompileOptions(), []);
+        BloomEffect.AddBufferLayout("BloomBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        BloomEffect.AddTextureLayout("fBloomMask", 1);
+        
+        // Bloom composite effect.
+        BloomCompositeEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/bloom_composite.frag"), new CrossCompileOptions(), []);
+        BloomCompositeEffect.AddTextureLayout("fSceneColor", 0);
+        BloomCompositeEffect.AddTextureLayout("fBloomColor", 1);
+        
         // Screen-space reflections effect.
         SsrEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/fullscreen_triangle.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/post/ssr.frag"), new CrossCompileOptions(), []);
         SsrEffect.AddBufferLayout("SsrBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
@@ -282,38 +302,38 @@ public static class GlobalGraphicsAssets {
         FxaaEffect.AddTextureLayout("fTexture", 1);
         
         // Gray scale filter effect.
-        GrayScaleEffect = new Effect(GraphicsDevice, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/post/filters/gray_scale.frag", new CrossCompileOptions());
-        GrayScaleEffect.AddTextureLayout("fTexture", 0);
+        GrayScaleFilterEffect = new Effect(GraphicsDevice, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/post/filters/gray_scale.frag", new CrossCompileOptions());
+        GrayScaleFilterEffect.AddTextureLayout("fTexture", 0);
         
         // Bloom filter effect.
-        BloomEffect = new BloomEffect(GraphicsDevice, new CrossCompileOptions());
-        BloomEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        BloomEffect.AddTextureLayout("fTexture", 1);
+        BloomFilterEffect = new BloomEffect(GraphicsDevice, new CrossCompileOptions());
+        BloomFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        BloomFilterEffect.AddTextureLayout("fTexture", 1);
         
         // Blur filter effect.
-        BlurEffect = new BlurEffect(GraphicsDevice, new CrossCompileOptions());
-        BlurEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        BlurEffect.AddTextureLayout("fTexture", 1);
+        BlurFilterEffect = new BlurEffect(GraphicsDevice, new CrossCompileOptions());
+        BlurFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        BlurFilterEffect.AddTextureLayout("fTexture", 1);
         
         // Sobel filter effect.
-        SobelEffect = new SobelEffect(GraphicsDevice, new CrossCompileOptions());
-        SobelEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        SobelEffect.AddTextureLayout("fTexture", 1);
+        SobelFilterEffect = new SobelEffect(GraphicsDevice, new CrossCompileOptions());
+        SobelFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        SobelFilterEffect.AddTextureLayout("fTexture", 1);
         
         // Predator filter effect.
-        PredatorEffect = new PredatorEffect(GraphicsDevice, new CrossCompileOptions());
-        PredatorEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PredatorEffect.AddTextureLayout("fTexture", 1);
+        PredatorFilterEffect = new PredatorEffect(GraphicsDevice, new CrossCompileOptions());
+        PredatorFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PredatorFilterEffect.AddTextureLayout("fTexture", 1);
         
         // Posterization filter effect.
-        PosterizationEffect = new PosterizationEffect(GraphicsDevice, new CrossCompileOptions());
-        PosterizationEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PosterizationEffect.AddTextureLayout("fTexture", 1);
+        PosterizationFilterEffect = new PosterizationEffect(GraphicsDevice, new CrossCompileOptions());
+        PosterizationFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PosterizationFilterEffect.AddTextureLayout("fTexture", 1);
         
         // Pixelizer filter effect.
-        PixelizerEffect = new PixelizerEffect(GraphicsDevice, new CrossCompileOptions());
-        PixelizerEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
-        PixelizerEffect.AddTextureLayout("fTexture", 1);
+        PixelizerFilterEffect = new PixelizerEffect(GraphicsDevice, new CrossCompileOptions());
+        PixelizerFilterEffect.AddBufferLayout("ParameterBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PixelizerFilterEffect.AddTextureLayout("fTexture", 1);
     }
     
     /// <summary>
@@ -329,6 +349,8 @@ public static class GlobalGraphicsAssets {
         PbrNormalPrepassEffect.Dispose();
         SkinnedPbrNormalPrepassEffect.Dispose();
         ExponentialHeightFogEffect.Dispose();
+        BloomFilterEffect.Dispose();
+        BloomCompositeEffect.Dispose();
         SsrEffect.Dispose();
         SsrCompositeEffect.Dispose();
         IrradianceEffect.Dispose();
@@ -336,12 +358,12 @@ public static class GlobalGraphicsAssets {
         BrdfLut.Dispose();
         TileTerrainEffect.Dispose();
         FxaaEffect.Dispose();
-        GrayScaleEffect.Dispose();
-        BloomEffect.Dispose();
-        BlurEffect.Dispose();
-        SobelEffect.Dispose();
-        PredatorEffect.Dispose();
-        PosterizationEffect.Dispose();
-        PixelizerEffect.Dispose();
+        GrayScaleFilterEffect.Dispose();
+        BloomFilterEffect.Dispose();
+        BlurFilterEffect.Dispose();
+        SobelFilterEffect.Dispose();
+        PredatorFilterEffect.Dispose();
+        PosterizationFilterEffect.Dispose();
+        PixelizerFilterEffect.Dispose();
     }
 }

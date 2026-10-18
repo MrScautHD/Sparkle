@@ -256,31 +256,31 @@ public class TestScene3D : Scene {
         base.Update(delta);
         
         if (Input.IsKeyDown(KeyboardKey.Number1)) {
-            this.FilterEffect = GlobalGraphicsAssets.GrayScaleEffect;
+            this.FilterEffect = GlobalGraphicsAssets.GrayScaleFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number2)) {
-            this.FilterEffect = GlobalGraphicsAssets.BloomEffect;
+            this.FilterEffect = GlobalGraphicsAssets.BloomFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number3)) {
-            this.FilterEffect = GlobalGraphicsAssets.BlurEffect;
+            this.FilterEffect = GlobalGraphicsAssets.BlurFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number4)) {
-            this.FilterEffect = GlobalGraphicsAssets.PixelizerEffect;
+            this.FilterEffect = GlobalGraphicsAssets.PixelizerFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number5)) {
-            this.FilterEffect = GlobalGraphicsAssets.PosterizationEffect;
+            this.FilterEffect = GlobalGraphicsAssets.PosterizationFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number6)) {
-            this.FilterEffect = GlobalGraphicsAssets.PredatorEffect;
+            this.FilterEffect = GlobalGraphicsAssets.PredatorFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Number7)) {
-            this.FilterEffect = GlobalGraphicsAssets.SobelEffect;
+            this.FilterEffect = GlobalGraphicsAssets.SobelFilterEffect;
         }
         
         if (Input.IsKeyDown(KeyboardKey.Q)) {

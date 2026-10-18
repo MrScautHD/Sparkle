@@ -37,6 +37,21 @@ public class PbrForwardRenderTargets : Disposable {
     public Texture SsrTexture { get; private set; }
     
     /// <summary>
+    /// The per-pixel bloom mask (red channel), written by the main scene pass.
+    /// </summary>
+    public Texture BloomMaskTexture { get; private set; }
+    
+    /// <summary>
+    /// The blurred bloom texture produced from the bloom mask.
+    /// </summary>
+    public Texture BloomTexture { get; private set; }
+    
+    /// <summary>
+    /// Temporary bloom blur texture used between horizontal and vertical blur passes.
+    /// </summary>
+    public Texture BloomTempTexture { get; private set; }
+    
+    /// <summary>
     /// The fogged scene color at full resolution.
     /// </summary>
     public Texture FogTexture { get; private set; }
@@ -55,6 +70,16 @@ public class PbrForwardRenderTargets : Disposable {
     /// The framebuffer of the SSR pass. It only writes the reflection result and has no depth attachment.
     /// </summary>
     public Framebuffer SsrFramebuffer { get; private set; }
+    
+    /// <summary>
+    /// The framebuffer of the bloom blur pass. It writes blurred bloom and has no depth attachment.
+    /// </summary>
+    public Framebuffer BloomFramebuffer { get; private set; }
+    
+    /// <summary>
+    /// Temporary framebuffer used between horizontal and vertical bloom blur passes.
+    /// </summary>
+    public Framebuffer BloomTempFramebuffer { get; private set; }
     
     /// <summary>
     /// The framebuffer of the fog pass. It writes the fogged scene color and has no depth attachment.
@@ -107,6 +132,21 @@ public class PbrForwardRenderTargets : Disposable {
     private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedSsrResourceSets;
     
     /// <summary>
+    /// The cached resource sets of the bloom mask texture, one per sampler and layout combination.
+    /// </summary>
+    private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedBloomMaskResourceSets;
+    
+    /// <summary>
+    /// The cached resource sets of the blurred bloom texture, one per sampler and layout combination.
+    /// </summary>
+    private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedBloomResourceSets;
+    
+    /// <summary>
+    /// The cached resource sets of the temporary bloom texture, one per sampler and layout combination.
+    /// </summary>
+    private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedBloomTempResourceSets;
+    
+    /// <summary>
     /// The cached resource sets of the fogged scene color texture, one per sampler and layout combination.
     /// </summary>
     private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedFogResourceSets;
@@ -130,6 +170,9 @@ public class PbrForwardRenderTargets : Disposable {
         this._cachedDepthResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedSsrMaskResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedSsrResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
+        this._cachedBloomMaskResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
+        this._cachedBloomResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
+        this._cachedBloomTempResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedFogResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this.CreateFrameBuffers();
     }
@@ -220,6 +263,54 @@ public class PbrForwardRenderTargets : Disposable {
     }
     
     /// <summary>
+    /// Gets the resource set of the bloom mask texture for the given sampler and layout.
+    /// </summary>
+    /// <param name="sampler">The sampler used to read the texture.</param>
+    /// <param name="layout">The texture layout the resource set has to match.</param>
+    /// <returns>The cached or newly created resource set.</returns>
+    public ResourceSet GetBloomMaskResourceSet(Sampler sampler, SimpleTextureLayout layout) {
+        if (!this._cachedBloomMaskResourceSets.TryGetValue((sampler, layout), out ResourceSet? resourceSet)) {
+            ResourceSet newResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(layout.Layout, this.BloomMaskTexture, sampler));
+            
+            this._cachedBloomMaskResourceSets.Add((sampler, layout), newResourceSet);
+            return newResourceSet;
+        }
+        
+        return resourceSet;
+    }
+    
+    /// <summary>
+    /// Gets the resource set of the bloom texture for the given sampler and layout.
+    /// </summary>
+    /// <param name="sampler">The sampler used to read the texture.</param>
+    /// <param name="layout">The texture layout the resource set has to match.</param>
+    /// <returns>The cached or newly created resource set.</returns>
+    public ResourceSet GetBloomResourceSet(Sampler sampler, SimpleTextureLayout layout) {
+        if (!this._cachedBloomResourceSets.TryGetValue((sampler, layout), out ResourceSet? resourceSet)) {
+            ResourceSet newResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(layout.Layout, this.BloomTexture, sampler));
+            
+            this._cachedBloomResourceSets.Add((sampler, layout), newResourceSet);
+            return newResourceSet;
+        }
+        
+        return resourceSet;
+    }
+    
+    /// <summary>
+    /// Gets the resource set of the temporary bloom texture for the given sampler and layout.
+    /// </summary>
+    public ResourceSet GetBloomTempResourceSet(Sampler sampler, SimpleTextureLayout layout) {
+        if (!this._cachedBloomTempResourceSets.TryGetValue((sampler, layout), out ResourceSet? resourceSet)) {
+            ResourceSet newResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(layout.Layout, this.BloomTempTexture, sampler));
+            
+            this._cachedBloomTempResourceSets.Add((sampler, layout), newResourceSet);
+            return newResourceSet;
+        }
+        
+        return resourceSet;
+    }
+    
+    /// <summary>
     /// Gets the resource set of the fogged scene color texture for the given sampler and layout.
     /// </summary>
     /// <param name="sampler">The sampler used to read the texture.</param>
@@ -270,17 +361,25 @@ public class PbrForwardRenderTargets : Disposable {
         uint ssrWidth = Math.Max(1, (uint) MathF.Ceiling(this._width * this._ssrResolutionScale));
         uint ssrHeight = Math.Max(1, (uint) MathF.Ceiling(this._height * this._ssrResolutionScale));
         
+        uint bloomWidth = Math.Max(1, this._width / 2);
+        uint bloomHeight = Math.Max(1, this._height / 2);
+        
         this.ColorTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, this._colorFormat, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.NormalTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.SsrMaskTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R8UNorm, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.SsrTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(ssrWidth, ssrHeight, 1, 1, this._colorFormat, TextureUsage.RenderTarget | TextureUsage.Sampled));
+        this.BloomMaskTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
+        this.BloomTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(bloomWidth, bloomHeight, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
+        this.BloomTempTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(bloomWidth, bloomHeight, 1, 1, PixelFormat.R16G16B16A16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.FogTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, this._colorFormat, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.DepthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(this._width, this._height, 1, 1, PixelFormat.R32Float, TextureUsage.DepthStencil | TextureUsage.Sampled));
         
-        this.ColorFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTexture, this.ColorTexture, this.SsrMaskTexture));
+        this.ColorFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTexture, this.ColorTexture, this.SsrMaskTexture, this.BloomMaskTexture));
         this.NormalFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTexture, this.NormalTexture));
-        this.FogFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.FogTexture));
         this.SsrFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.SsrTexture));
+        this.BloomFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.BloomTexture));
+        this.BloomTempFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.BloomTempTexture));
+        this.FogFramebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.FogTexture));
     }
     
     /// <summary>
@@ -317,6 +416,24 @@ public class PbrForwardRenderTargets : Disposable {
         
         this._cachedSsrResourceSets.Clear();
         
+        foreach (ResourceSet resourceSet in this._cachedBloomMaskResourceSets.Values) {
+            resourceSet.Dispose();
+        }
+        
+        this._cachedBloomMaskResourceSets.Clear();
+        
+        foreach (ResourceSet resourceSet in this._cachedBloomResourceSets.Values) {
+            resourceSet.Dispose();
+        }
+        
+        this._cachedBloomResourceSets.Clear();
+        
+        foreach (ResourceSet resourceSet in this._cachedBloomTempResourceSets.Values) {
+            resourceSet.Dispose();
+        }
+
+        this._cachedBloomTempResourceSets.Clear();
+        
         foreach (ResourceSet resourceSet in this._cachedFogResourceSets.Values) {
             resourceSet.Dispose();
         }
@@ -328,11 +445,16 @@ public class PbrForwardRenderTargets : Disposable {
         this.DepthTexture.Dispose();
         this.SsrMaskTexture.Dispose();
         this.SsrTexture.Dispose();
+        this.BloomMaskTexture.Dispose();
+        this.BloomTexture.Dispose();
+        this.BloomTempTexture.Dispose();
         this.FogTexture.Dispose();
         
         this.ColorFramebuffer.Dispose();
         this.NormalFramebuffer.Dispose();
         this.SsrFramebuffer.Dispose();
+        this.BloomFramebuffer.Dispose();
+        this.BloomTempFramebuffer.Dispose();
         this.FogFramebuffer.Dispose();
     }
     
