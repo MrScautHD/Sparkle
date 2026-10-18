@@ -125,26 +125,35 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
         return 0.0F;
     }
     
-    float sampleCountFloat = clamp(godRayParameters.x, 1.0F, float(MAX_GOD_RAY_SAMPLES));
-    int sampleCount = int(sampleCountFloat);
-    
     vec3 lightDirection = normalize(godRayDirectionIntensity.xyz);
     
     // God rays are strongest when looking toward the incoming light.
     float viewLightAmount = clamp(dot(viewDirection, -lightDirection), 0.0F, 1.0F);
     viewLightAmount = pow(viewLightAmount, 1.25F);
     
+    // Early out before the expensive sample loop.
+    if (viewLightAmount <= 0.015F) {
+        return 0.0F;
+    }
+    
     // Reduce shafts when looking too far away from the horizon if desired.
     float horizonAmount = 1.0F - clamp(abs(viewDirection.y), 0.0F, 1.0F);
     float horizonFade = mix(1.0F, smooth01(horizonAmount), clamp(godRayPostParameters.z, 0.0F, 1.0F));
     
-    if (viewLightAmount <= EPSILON || horizonFade <= EPSILON) {
+    // Early out before the expensive sample loop.
+    if (horizonFade <= 0.015F) {
         return 0.0F;
     }
     
     vec3 worldPosition = currentDepth >= 0.9999F ? cameraPosition.xyz + viewDirection * cameraPosition.w : reconstructWorldPosition(uv, currentDepth);
     
     float currentDistance = length(worldPosition - cameraPosition.xyz);
+    
+    // Nearby surfaces barely need fullscreen shaft accumulation.
+    if (currentDepth < 0.9999F && currentDistance < 8.0F) {
+        return 0.0F;
+    }
+    
     float maxRayLength = max(godRayColorLength.w, EPSILON);
     
     // Project a point in the opposite light direction into screen space.
@@ -155,6 +164,14 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
     
     vec2 lightProbeUv = lightProbeClip.xy * 0.5F + 0.5F;
     lightProbeUv.y = 1.0F - lightProbeUv.y;
+    
+    float sampleCountFloat = clamp(godRayParameters.x, 1.0F, float(MAX_GOD_RAY_SAMPLES));
+    
+    // Weak rays do not need full quality.
+    sampleCountFloat *= mix(0.35F, 1.0F, viewLightAmount);
+    sampleCountFloat = clamp(sampleCountFloat, 6.0F, float(MAX_GOD_RAY_SAMPLES));
+    
+    int sampleCount = int(sampleCountFloat);
     
     vec2 rayVector = (lightProbeUv - uv) * godRayParameters.y / sampleCountFloat;
     

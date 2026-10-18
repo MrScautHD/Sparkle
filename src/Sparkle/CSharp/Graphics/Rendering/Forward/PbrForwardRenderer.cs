@@ -546,7 +546,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         Color? godRayColor = null,
         float godRayIntensity = 0.01F,
         float godRayMaxLength = 180.0F,
-        float godRaySampleCount = 48.0F,
+        float godRaySampleCount = 24.0F,
         float godRayDensity = 0.85F,
         float godRayWeight = 0.045F,
         float godRayDecay = 0.93F,
