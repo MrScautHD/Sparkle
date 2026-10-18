@@ -493,6 +493,17 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="fogBaseHeight">The world-space height, in world units, up to which the fog has its full density.</param>
     /// <param name="fogStartDistance">The distance to the camera, in world units, where the fog starts to appear. Everything closer stays fog-free.</param>
     /// <param name="fogEndDistance">The distance to the camera, in world units, from which the fog is fully applied.</param>
+    /// <param name="enableGodRays">Specifies whether god rays (light shafts) are rendered for the shadow light.</param>
+    /// <param name="godRayColor">The color of the light shafts. If <see langword="null"/>, a default color is used.</param>
+    /// <param name="godRayIntensity">The overall strength of the light shafts. The effect is added on top of the scene, so small values are usually enough.</param>
+    /// <param name="godRayMaxLength">The maximum length, in world units, over which light shafts are traced from the camera.</param>
+    /// <param name="godRaySampleCount">The number of samples taken per pixel along the shaft. Higher values give smoother shafts at a higher GPU cost.</param>
+    /// <param name="godRayDensity">The distance covered by the samples, relative to the distance between the pixel and the light. Lower values give shorter, more compact shafts.</param>
+    /// <param name="godRayWeight">The contribution of each individual sample to the final brightness.</param>
+    /// <param name="godRayDecay">The factor that weakens each following sample along the shaft. Values close to 1.0 make long shafts, and lower values make them fade out sooner.</param>
+    /// <param name="godRayExposure">A final multiplier applied to the accumulated light shafts.</param>
+    /// <param name="godRayDepthFadeDistance">The distance, in world units, over which the shafts fade out near geometry. This avoids hard bright edges where objects meet the shafts.</param>
+    /// <param name="godRayHorizonFade">The amount by which the shafts are weakened near the horizon, so they do not glow along the whole skyline.</param>
     public PbrForwardRenderer(
         GraphicsDevice graphicsDevice,
         SkyBox? skyBox = null,
@@ -533,13 +544,13 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         float fogEndDistance = 250.0F,
         bool enableGodRays = true,
         Color? godRayColor = null,
-        float godRayIntensity = 0.35F,
+        float godRayIntensity = 0.01F,
         float godRayMaxLength = 180.0F,
         float godRaySampleCount = 48.0F,
         float godRayDensity = 0.85F,
         float godRayWeight = 0.045F,
-        float godRayDecay = 0.94F,
-        float godRayExposure = 1.0F,
+        float godRayDecay = 0.93F,
+        float godRayExposure = 1.1F,
         float godRayDepthFadeDistance = 35.0F,
         float godRayHorizonFade = 0.65F) {
         this.GraphicsDevice = graphicsDevice;
@@ -579,7 +590,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.FogStartDistance = fogStartDistance;
         this.FogEndDistance = fogEndDistance;
         this.EnableGodRays = enableGodRays;
-        this.GodRayColor = godRayColor?.ToRgbaFloatVec4() ?? new Vector4(1.0F, 0.88F, 0.62F, 1.0F);
+        this.GodRayColor = godRayColor?.ToRgbaFloatVec4() ?? new Vector4(1.0F, 0.78F, 0.45F, 1.0F);
         this.GodRayIntensity = godRayIntensity;
         this.GodRayMaxLength = godRayMaxLength;
         this.GodRaySampleCount = godRaySampleCount;
