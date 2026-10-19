@@ -500,6 +500,11 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this.DrawCallCount++;
     }
     
+    /// <summary>
+    /// Converts a 32-bit packed color value into a <see cref="Vector4"/> representation with normalized channels.
+    /// </summary>
+    /// <param name="color">The 32-bit packed color value in ARGB format where each channel is 8 bits.</param>
+    /// <returns>A <see cref="Vector4"/> where the components represent the normalized values of the color's alpha, red, green, and blue channels respectively.</returns>
     private Vector4 ToVec4(uint color) {
         return new Vector4(
             ((color >> 24) & 0xFF) / 255F,
