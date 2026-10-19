@@ -92,11 +92,6 @@ public class SoftBody3D : Component {
     public bool DrawDebug;
     
     /// <summary>
-    /// The color used for debugging visualization of the 3D soft body's properties and behavior.
-    /// </summary>
-    public Color DebugDrawColor;
-    
-    /// <summary>
     /// The positional offset from the entity's origin. Always returns zero for this component.
     /// </summary>
     public new Vector3 OffsetPosition => Vector3.Zero;
@@ -121,7 +116,6 @@ public class SoftBody3D : Component {
         this._factory = factory;
         this.DrawMesh = drawMesh;
         this.DrawDebug = drawDebug;
-        this.DebugDrawColor = Color.White;
     }
     
     /// <summary>

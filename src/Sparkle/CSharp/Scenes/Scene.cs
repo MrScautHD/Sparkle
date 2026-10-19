@@ -238,16 +238,12 @@ public abstract class Scene : Disposable {
         foreach (Entity entity in this.Entities.Values) {
             if (entity.TryGetComponent(out RigidBody3D? rigidBody)) {
                 if (rigidBody.DrawDebug) {
-                    this.Physics3DDebugDrawer.PushColor(rigidBody.DebugDrawColor);
                     rigidBody.DebugDraw(this.Physics3DDebugDrawer);
-                    this.Physics3DDebugDrawer.PopColor();
                 }
             }
             else if (entity.TryGetComponent(out SoftBody3D? softBody)) {
                 if (softBody.DrawDebug) {
-                    this.Physics3DDebugDrawer.PushColor(softBody.DebugDrawColor);
                     softBody.DebugDraw(this.Physics3DDebugDrawer);
-                    this.Physics3DDebugDrawer.PopColor();
                 }
             }
         }

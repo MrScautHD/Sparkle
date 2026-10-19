@@ -217,19 +217,19 @@ public class SoftBodySphere : SimpleSoftBody {
         // Draw shapes.
         foreach (SoftBodyShape shape in this.Shapes) {
             if (shape is SoftBodyTriangle triangle) {
-                drawer.DrawSegment(triangle.Vertex1.Position, triangle.Vertex2.Position);
-                drawer.DrawSegment(triangle.Vertex2.Position, triangle.Vertex3.Position);
-                drawer.DrawSegment(triangle.Vertex3.Position, triangle.Vertex1.Position);
+                drawer.DrawSegment(triangle.Vertex1.Position, triangle.Vertex2.Position, DebugDrawColors.Green);
+                drawer.DrawSegment(triangle.Vertex2.Position, triangle.Vertex3.Position, DebugDrawColors.Green);
+                drawer.DrawSegment(triangle.Vertex3.Position, triangle.Vertex1.Position, DebugDrawColors.Green);
             }
         }
         
         // Draw springs.
         foreach (Constraint spring in this.Springs) {
-            drawer.DrawSegment(spring.Body1.Position, spring.Body2.Position);
+            drawer.DrawSegment(spring.Body1.Position, spring.Body2.Position, DebugDrawColors.Green);
         }
         
         // Draw center point.
-        drawer.DrawPoint(this.Center.Position);
+        drawer.DrawPoint(this.Center.Position, 0.2F, DebugDrawColors.Red);
     }
 
     /// <summary>

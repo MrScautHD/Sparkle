@@ -249,10 +249,10 @@ public class SoftBodyCube : SimpleSoftBody {
         
         // Draw edges.
         foreach ((int, int) spring in Edges) {
-            drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position);
+            drawer.DrawSegment(this.Vertices[spring.Item1].Position, this.Vertices[spring.Item2].Position, DebugDrawColors.Green);
         }
         
         // Draw center point.
-        drawer.DrawPoint(this.Center.Position);
+        drawer.DrawPoint(this.Center.Position, 0.2F, DebugDrawColors.Red);
     }
 }

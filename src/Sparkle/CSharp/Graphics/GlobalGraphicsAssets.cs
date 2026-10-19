@@ -354,7 +354,7 @@ public static class GlobalGraphicsAssets {
         FxaaEffect.AddTextureLayout("fTexture", 1);
         
         // Gray scale filter effect.
-        GrayScaleFilterEffect = new Effect(GraphicsDevice, "content/bliss/shaders/full_screen_render_pass.vert", "content/sparkle/shaders/post/filters/gray_scale.frag", new CrossCompileOptions());
+        GrayScaleFilterEffect = new Effect(GraphicsDevice, "content/bliss/shaders/post/full_screen_render_pass.vert", "content/sparkle/shaders/post/filters/gray_scale.frag", new CrossCompileOptions());
         GrayScaleFilterEffect.AddTextureLayout("fTexture", 0);
         
         // Bloom filter effect.

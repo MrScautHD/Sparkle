@@ -139,8 +139,7 @@ public class TestScene3D : Scene {
         // SOFT CLOTH
         Entity cloth = new Entity(new Transform() { Translation = new Vector3(0, 15, 0) });
         SoftBody3D softBodyCloth = new SoftBody3D(new SoftBodyClothFactory(10, 10, new Vector2(10, 10))) {
-            DrawDebug = false,
-            DebugDrawColor = Color.Green
+            DrawDebug = false
         };
         cloth.AddComponent(softBodyCloth);
         this.AddEntity(cloth);

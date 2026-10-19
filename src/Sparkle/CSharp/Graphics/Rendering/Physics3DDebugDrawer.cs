@@ -2,7 +2,6 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
-using Bliss.CSharp.Colors;
 using Bliss.CSharp.Effects;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Windowing;
@@ -131,21 +130,6 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     private RasterizerStateDescription _requestedRasterizerState;
     
     /// <summary>
-    /// The current <see cref="Color"/>.
-    /// </summary>
-    private Color _mainColor;
-    
-    /// <summary>
-    /// The current <see cref="Color"/>.
-    /// </summary>
-    private Color _currentColor;
-
-    /// <summary>
-    /// The requested <see cref="Color"/>.
-    /// </summary>
-    private Color _requestedColor;
-    
-    /// <summary>
     /// Initializes a new instance of the <see cref="Physics3DDebugDrawer"/> class with the specified graphics device, window, and optional capacity.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used for rendering.</param>
@@ -181,7 +165,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="rasterizerState">Optional rasterizer state description. If null, a default is used.</param>
     /// <param name="color">Optional color for rendering debug visuals. If null, white is used.</param>
     /// <exception cref="Exception">Thrown if a rendering session has already begun.</exception>
-    public void Begin(CommandList commandList, Framebuffer framebuffer, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null, Color? color = null) {
+    public void Begin(CommandList commandList, Framebuffer framebuffer, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null) {
         if (this._begun) {
             throw new Exception("The Physics3DDebugDrawer has already begun!");
         }
@@ -192,7 +176,6 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._mainBlendState = this._currentBlendState = this._requestedBlendState = blendState ?? BlendStateDescription.SINGLE_DISABLED;
         this._mainDepthStencilState = this._currentDepthStencilState = this._requestedDepthStencilState = depthStencilState ?? DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
         this._mainRasterizerState = this._currentRasterizerState = this._requestedRasterizerState = rasterizerState ?? RasterizerStateDescription.DEFAULT;
-        this._mainColor = this._currentColor = this._requestedColor = color ?? Color.White;
         
         this.DrawCallCount = 0;
     }
@@ -363,50 +346,13 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     }
     
     /// <summary>
-    /// Gets the current color used for rendering debug shapes.
+    /// Draws a line segment in 3D space using the specified start and end points and applies the current color.
     /// </summary>
-    /// <returns>The current color used for rendering.</returns>
-    /// <exception cref="Exception">Thrown if the drawer has not begun rendering yet.</exception>
-    public Color GetCurrentColor() {
-        if (!this._begun) {
-            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
-        }
-
-        return this._currentColor;
-    }
-    
-    /// <summary>
-    /// Pushes a new color to override the current debug shape color.
-    /// </summary>
-    /// <param name="color">The new <see cref="Color"/> to apply.</param>
-    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void PushColor(Color color) {
-        if (!this._begun) {
-            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
-        }
-
-        this._requestedColor = color;
-    }
-    
-    /// <summary>
-    /// Restores the debug shape color back to the one set at <see cref="Begin"/>.
-    /// </summary>
-    /// <exception cref="Exception">Thrown if a rendering session has not begun.</exception>
-    public void PopColor() {
-        if (!this._begun) {
-            throw new Exception("The Physics3DDebugDrawer has not begun yet!");
-        }
-
-        this._requestedColor = this._mainColor;
-    }
-    
-    /// <summary>
-    /// Draws a line segment using the specified start and end points in 3D space.
-    /// </summary>
-    /// <param name="pA">The <see cref="JVector"/> representing the starting point of the segment.</param>
-    /// <param name="pB">The <see cref="JVector"/> representing the ending point of the segment.</param>
-    public void DrawSegment(in JVector pA, in JVector pB) {
-        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
+    /// <param name="pA">The starting point of the segment, represented as a <see cref="JVector"/>.</param>
+    /// <param name="pB">The ending point of the segment, represented as a <see cref="JVector"/>.</param>
+    /// <param name="color">The color of the segment, represented as an unsigned 32-bit integer.</param>
+    public void DrawSegment(in JVector pA, in JVector pB, uint color) {
+        Vector4 colorVec4 = this.ToVec4(color);
         
         this.Prepare(2);
         
@@ -422,15 +368,16 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             Color = colorVec4
         };
     }
-
+    
     /// <summary>
-    /// Draws a triangle using the specified vertices in 3D space.
+    /// Draws a triangle using the specified vertices and a color in a 3D space.
     /// </summary>
     /// <param name="pA">The <see cref="JVector"/> representing the first vertex of the triangle.</param>
     /// <param name="pB">The <see cref="JVector"/> representing the second vertex of the triangle.</param>
     /// <param name="pC">The <see cref="JVector"/> representing the third vertex of the triangle.</param>
-    public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC) {
-        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
+    /// <param name="color">The 32-bit unsigned integer specifying the color of the triangle.</param>
+    public void DrawTriangle(in JVector pA, in JVector pB, in JVector pC, uint color) {
+        Vector4 colorVec4 = this.ToVec4(color);
         
         this.Prepare(6);
         
@@ -464,48 +411,14 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
             Color = colorVec4
         };
     }
-
-    /// <summary>
-    /// Draws a point at the specified position.
-    /// </summary>
-    /// <param name="p">The <see cref="JVector"/> representing the position of the point in 3D space.</param>
-    public void DrawPoint(in JVector p) {
-        Vector4 colorVec4 = this._currentColor.ToRgbaFloatVec4();
-        float size = 0.1f;
-        
-        this.Prepare(6);
-        
-        // Add horizontal line (X-axis)
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X - size, p.Y, p.Z),
-            Color = colorVec4
-        };
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X + size, p.Y, p.Z),
-            Color = colorVec4
-        };
-        
-        // Add vertical line (Y-axis)
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X, p.Y + size, p.Z),
-            Color = colorVec4
-        };
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X, p.Y - size, p.Z),
-            Color = colorVec4
-        };
-        
-        // Add depth line (Z-axis)
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X, p.Y, p.Z + size),
-            Color = colorVec4
-        };
-        this._vertices[this._vertexCount++] = new PhysicsDebugVertex3D() {
-            Position = new JVector(p.X, p.Y, p.Z - size),
-            Color = colorVec4
-        };
-    }
     
+    /// <summary>
+    /// Prepares the rendering pipeline by ensuring the required states and resources are set, and flushes the pipeline if necessary to accommodate the specified number of vertices.
+    /// </summary>
+    /// <param name="vertexCount">The number of vertices to be prepared for rendering. Must not exceed the current capacity.</param>
+    /// <returns>The current count of vertices prepared for rendering.</returns>
+    /// <exception cref="Exception">Thrown if the Prepare method is called before the rendering process has begun.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number of provided vertices exceeds the capacity.</exception>
     private int Prepare(int vertexCount) {
         if (!this._begun) {
             throw new Exception("The Physics3DDebugDrawer has not begun yet!");
@@ -518,8 +431,7 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         bool stateChanged = !this._currentFramebuffer.Equals(this._requestedFramebuffer) ||
                             !this._currentBlendState.Equals(this._requestedBlendState) ||
                             !this._currentDepthStencilState.Equals(this._requestedDepthStencilState) ||
-                            !this._currentRasterizerState.Equals(this._requestedRasterizerState) ||
-                            this._currentColor != this._requestedColor;
+                            !this._currentRasterizerState.Equals(this._requestedRasterizerState);
         
         if (stateChanged) {
             this.Flush();
@@ -529,7 +441,6 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._currentBlendState = this._requestedBlendState;
         this._currentDepthStencilState = this._requestedDepthStencilState;
         this._currentRasterizerState = this._requestedRasterizerState;
-        this._currentColor = this._requestedColor;
         
         // Update pipeline description.
         this._pipelineDescription.BlendState = this._currentBlendState;
@@ -587,6 +498,15 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
         this._vertexCount = 0;
         
         this.DrawCallCount++;
+    }
+    
+    private Vector4 ToVec4(uint color) {
+        return new Vector4(
+            ((color >> 24) & 0xFF) / 255F,
+            ((color >> 16) & 0xFF) / 255F,
+            ((color >> 8) & 0xFF) / 255F,
+            (color & 0xFF) / 255F
+        );
     }
     
     protected override void Dispose(bool disposing) {
