@@ -80,7 +80,6 @@ public class JsonStorage {
     /// </summary>
     /// <param name="data">The root JSON object to write.</param>
     public void WriteData(JObject data) {
-        ArgumentNullException.ThrowIfNull(data);
         FileAccessor.WriteAllAtomic(this.Path, CryptoProvider.Encrypt(data.ToString(Formatting.Indented), this._encryptKey));
     }
     
