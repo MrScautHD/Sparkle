@@ -1,5 +1,7 @@
 ﻿#version 450
 
+const float EPSILON = 0.000001F;
+
 layout (std140, set = MATRIX_BUFFER_SET, binding = 0) uniform MatrixBuffer {
     mat4x4 uProjection;
     mat4x4 uView;
@@ -32,12 +34,12 @@ layout (location = 5) out vec3 fWorldPosition;
 layout (location = 6) out vec3 fWorldNormal;
 layout (location = 7) out mat3 fTbn;
 layout (location = 10) out vec3 fViewPosition;
-const float EPSILON = 0.000001F;
 
 vec3 safeNormalize(vec3 value, vec3 fallback) {
     float lengthSquared = dot(value, value);
     return lengthSquared > EPSILON ? value * inversesqrt(lengthSquared) : fallback;
 }
+
 void main() {
     fTerrainPosition = vPosition;
     fColor = vColor;
