@@ -54,8 +54,13 @@
 #error BRDF_LUT_TEXTURE_SET is not defined.
 #endif
 
-const float PI = 3.14159265359F;
-const float EPSILON = 0.000001F;
+#ifndef PI
+#define PI 3.14159265359F
+#endif
+
+#ifndef EPSILON
+#define EPSILON 0.000001F
+#endif 
 
 struct Light {
     int type; // Type: (Direction = 0, Point = 1, Spot = 2).

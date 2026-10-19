@@ -8,8 +8,11 @@ using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.VertexTypes;
+using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
+using Bliss.CSharp.Interact.Mice;
+using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
@@ -17,12 +20,18 @@ using Jitter2.Collision.Shapes;
 using Jitter2.Dynamics;
 using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Content.Types;
+using Sparkle.CSharp.Effects.Terrain;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.Graphics.Rendering;
 using Sparkle.CSharp.Graphics.Rendering.Forward;
 using Sparkle.CSharp.Scenes;
+using Sparkle.CSharp.Terrain;
+using Sparkle.CSharp.Terrain.Chunks;
+using Sparkle.CSharp.Terrain.Generators;
+using Sparkle.CSharp.Terrain.Painting;
+using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 
@@ -43,6 +52,13 @@ public class LightTestScene : Scene {
     public MultiInstanceRenderer PlaneMultiInstanceRenderer { get; private set; }
     
     public SkyBox CloudySkybox { get; private set; }
+    
+    private const float _brushRadius = 8.0F;
+    private const float _brushStrength = 4.0F;
+    private const float _brushMaxDistance = 200.0F;
+    private const float _brushStepSize = 0.5F;
+    
+    private ITerrain<IHeightmapChunk>? _terrain;
     
     public LightTestScene() : base("Light-Test-Scene", SceneType.Scene3D, (graphicsDevice) => new PbrForwardRenderer(graphicsDevice, null, Color.Black, enableSsr: true)) { }
     
@@ -206,7 +222,7 @@ public class LightTestScene : Scene {
             forwardRenderer.FogDensity = 0.018F;
             forwardRenderer.FogFalloff = 0.03F;
             forwardRenderer.FogStartDistance = 0;
-            forwardRenderer.FogEndDistance = 50;
+            forwardRenderer.FogEndDistance = 70;
             forwardRenderer.FogColor = new Vector4(0.65F, 0.72F, 0.78F, 1.0F);
         }
         
@@ -249,14 +265,14 @@ public class LightTestScene : Scene {
                     DebugDrawColor = Color.Green
                 });
                 
-                road.AddComponent(new InstancedRenderProxy(this.PlaneMultiInstanceRenderer, Vector3.Zero));
+                //road.AddComponent(new InstancedRenderProxy(this.PlaneMultiInstanceRenderer, Vector3.Zero));
                 this.AddEntity(road);
             }
         }
         
         // LIGHT SUN
         Entity sunLight = new Entity(new Transform() { Translation = new Vector3(0, 0, 0) }, "sun");
-        Light sunLightComp = Light.CreateDirectional(new Color(255, 244, 214, 255), 54.2F);
+        Light sunLightComp = Light.CreateDirectional(new Color(255, 244, 214, 255), 10.0F);
         sunLightComp.CastShadows = true;
         //sunLightComp.DebugDrawEnabled = true;
         sunLight.AddComponent(sunLightComp);
@@ -296,6 +312,21 @@ public class LightTestScene : Scene {
         yellowLightComp.DebugDrawEnabled = true;
         yellowLight.AddComponent(yellowLightComp);
         this.AddEntity(yellowLight);
+        
+        // Create terrain.
+        TerrainSettings terrainSettings = new TerrainSettings() {
+            EnableLod = true,
+            LodDistances = [400.0F, 600.0F, 900.0F, 1500.0F, 2500],
+            LodHysteresis = 0.2F,
+            CullChunksBeyondLastLod = false,
+            MaxChunkBuildsPerFrame = 24,
+            MaxConcurrentChunkBuilds = 12,
+            MaxChunkUploadsPerFrame = 16
+        };
+        
+        Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(-4096.0F, -128.0F, -4096.0F) }, "terrain");
+        terrainEntity.AddComponent(new Terrain3D<IHeightmapChunk>(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
+        this.AddEntity(terrainEntity);
     }
     
     protected override void Update(double delta) {
@@ -329,7 +360,7 @@ public class LightTestScene : Scene {
     
                 sunLight.Enabled = true;
                 sunLight.Color = new Color(red, green, blue, 255);
-                sunLight.Intensity = 54.2F * daylight * sunHorizonFade;
+                sunLight.Intensity = 10.0F * daylight * sunHorizonFade;
             }
             
             if (moon != null) {
@@ -392,6 +423,160 @@ public class LightTestScene : Scene {
                 pbrRenderer.EnableSsr ^= true;
             }
         }
+        
+        if (Input.IsKeyPressed(KeyboardKey.U)) {
+            Terrain3D<IHeightmapChunk>? terrain3D = this.GetEntitiesWithTag("terrain").First().GetComponent<Terrain3D<IHeightmapChunk>>();
+            
+            if (terrain3D != null) {
+                
+                // Toggle debug drawing.
+                terrain3D.DebugDrawEnabled = !terrain3D.DebugDrawEnabled;
+                
+                // Toggle wireframe.
+                if (GlobalGraphicsAssets.GraphicsDevice.Features.FillModeWireframe) {
+                    RasterizerStateDescription rasterizerState = terrain3D.Terrain.Material.RasterizerState;
+                    rasterizerState.FillMode = rasterizerState.FillMode == PolygonFillMode.Solid ? PolygonFillMode.Wireframe : PolygonFillMode.Solid;
+                    terrain3D.Terrain.Material.RasterizerState = rasterizerState;
+                }
+                else {
+                    Logger.Warn("This backend to not support fill mode [Wireframe]");
+                }
+            }
+        }
+        
+        Camera3D? cam = SceneManager.ActiveCam3D;
+        
+        if (cam != null) {
+            if (this._terrain?.Painter is TileTerrainPainter painter) {
+                if (painter.Material.Effect is TerrainEffect terrainEffect) {
+                    
+                    // Convert camera world position into terrain local space
+                    Vector3 terrainOffset = new Vector3(-4096.0F, -128.0F, -4096.0F);
+                    Vector3 localCamPos = cam.Position - terrainOffset;
+                    
+                    if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
+                        terrainEffect.DisableBrushPreview(painter.Material);
+                        return;
+                    }
+                    
+                    terrainEffect.SetBrushPreview(painter.Material, hitPosition, _brushRadius, TerrainBrushType.Circle, Color.Red.ToRgbaFloatVec4(), 1.0F, 0.5F);
+                }
+            }
+        }
+    }
+    
+    protected override void FixedUpdate(double delta) {
+        base.FixedUpdate(delta);
+        
+        if (this._terrain == null) {
+            return;
+        }
+        
+        bool addMaterial = Input.IsMouseButtonDown(MouseButton.Left);
+        bool removeMaterial = Input.IsMouseButtonDown(MouseButton.Right);
+        
+        if (!addMaterial && !removeMaterial) {
+            return;
+        }
+        
+        Camera3D? cam = SceneManager.ActiveCam3D;
+        
+        if (cam == null) {
+            return;
+        }
+        
+        // Convert camera world position into terrain local space
+        Vector3 terrainOffset = new Vector3(-4096.0F, -128.0F, -4096.0F);
+        Vector3 localCamPos = cam.Position - terrainOffset;
+        
+        if (!this._terrain.RaycastSurface(localCamPos, cam.GetForward(), _brushMaxDistance, _brushStepSize, out Vector3 hitPosition, out _)) {
+            return;
+        }
+        
+        float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
+        //this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
+        this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 1, TerrainBrushType.Circle);
+    }
+    
+    private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
+        const int terrainWidth = 8192;
+        const int terrainHeight = 256;
+        const int terrainDepth = 8192;
+        const int chunkSize = 256;
+        const int surfaceHeight = 128;
+        
+        // Create chunk generator.
+        FlatHeightmapGenerator chunkGenerator = new FlatHeightmapGenerator(chunkSize, surfaceHeight);
+        
+        // Create material.
+        Material material = new Material(GlobalGraphicsAssets.PbrTileTerrainEffect) {
+            BlendState = BlendStateDescription.SINGLE_ALPHA_BLEND,
+            RenderMode = RenderMode.Cutout
+        };
+        
+        // Set albedo map.
+        material.AddMaterialMap(MaterialMapType.Albedo, 0, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White,
+            Value = 1.0F
+        });
+        
+        // Set normal map.
+        material.AddMaterialMap(MaterialMapType.Normal, 1, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White,
+            Value = 0.0F
+        });
+        
+        // Set metallic map.
+        material.AddMaterialMap(MaterialMapType.Metallic, 2, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.White,
+            Value = 0.0F
+        });
+        
+        // Set roughness map.
+        material.AddMaterialMap(MaterialMapType.Roughness, 3, new MaterialMap {
+            Color = Color.White,
+            Value = 1.0F
+        });
+        
+        // Set occlusion map.
+        material.AddMaterialMap(MaterialMapType.Occlusion, 4, new MaterialMap {
+            Color = Color.White,
+            Value = 1.0F
+        });
+        
+        // Set emission map.
+        material.AddMaterialMap(MaterialMapType.Emission, 5, new MaterialMap {
+            Texture = GlobalResource.DefaultModelTexture,
+            Color = Color.Black,
+            Value = 0.0F
+        });
+        
+        // Set reflection map.
+        material.AddMaterialMap(MaterialMapType.Reflection, 6, new MaterialMap {
+            Color = Color.White,
+            Value = 0.0F
+        });
+        
+        // Set SSR reflection map.
+        material.AddMaterialMap("SsrReflection", 7, new MaterialMap {
+            Color = Color.White,
+            Value = 0.0F
+        });
+        
+        TileTerrainPainter painter = new TileTerrainPainter(GlobalGraphicsAssets.GraphicsDevice, material, terrainWidth, terrainDepth, 32, 8, 0);
+        painter.AddLayer(ContentRegistry.TerrainGrass);
+        painter.AddLayer(ContentRegistry.TerrainDirt);
+        painter.AddLayer(ContentRegistry.TerrainRock);
+        painter.AddLayer(new Image(32, 32, new Color(0, 0, 0, 0)));
+        
+        // Create/Load terrain.
+        HeightmapTerrain terrain = await HeightmapTerrain.CreateAsync(chunkGenerator, painter, terrainWidth, terrainHeight, terrainDepth, chunkSize);
+        
+        this._terrain = terrain;
+        return terrain;
     }
     
     private float Smooth01(float value) {

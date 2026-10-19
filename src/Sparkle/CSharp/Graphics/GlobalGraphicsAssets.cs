@@ -6,6 +6,7 @@ using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Effects;
 using Sparkle.CSharp.Effects.Filters;
 using Sparkle.CSharp.Effects.Posts;
+using Sparkle.CSharp.Effects.Terrain;
 using Veldrith;
 using Veldrith.SPIRV;
 
@@ -111,7 +112,7 @@ public static class GlobalGraphicsAssets {
     /// <summary>
     /// The shader effect used for rendering pbr-tile-based terrain graphics.
     /// </summary>
-    public static TileTerrainEffect PbrTileTerrainEffect { get; private set; }
+    public static PbrTileTerrainEffect PbrTileTerrainEffect { get; private set; }
     
     /// <summary>
     /// The FXAA (Fast Approximate Anti-Aliasing) effect used for post-processing rendering.
@@ -330,7 +331,7 @@ public static class GlobalGraphicsAssets {
         SsrCompositeEffect.AddTextureLayout("fSsrMask", 2);
         
         // Tile terrain effect.
-        TileTerrainEffect = new TileTerrainEffect(GraphicsDevice, new CrossCompileOptions(), [
+        TileTerrainEffect = TileTerrainEffect.FromFiles(GraphicsDevice, new CrossCompileOptions(), [
             new MacroDefinition("MATRIX_BUFFER_SET", "0"),
             new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
             new MacroDefinition("MATERIAL_BUFFER_SET", "2"),
@@ -346,7 +347,48 @@ public static class GlobalGraphicsAssets {
         TileTerrainEffect.AddTextureLayout("fTiles", 5);
         
         // Pbr tile terrain effect.
-        //TODO: DONE THIS!
+        PbrTileTerrainEffect = PbrTileTerrainEffect.FromFiles(GraphicsDevice, new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "2"),
+            new MacroDefinition("BRUSH_BUFFER_SET", "3"),
+            new MacroDefinition("LIGHT_BUFFER_SET", "4"),
+            new MacroDefinition("CLUSTER_DATA_BUFFER_SET", "5"),
+            new MacroDefinition("CLUSTER_BUFFER_SET", "6"),
+            new MacroDefinition("CLUSTER_LIGHT_INDEX_BUFFER_SET", "7"),
+            new MacroDefinition("SHADOW_BUFFER_SET", "8"),
+            new MacroDefinition("ENVIRONMENT_BUFFER_SET", "9"),
+            new MacroDefinition("ALBEDO_TEXTURE_SET", "10"),
+            new MacroDefinition("NORMAL_TEXTURE_SET", "11"),
+            new MacroDefinition("METALLIC_TEXTURE_SET", "12"),
+            new MacroDefinition("EMISSION_TEXTURE_SET", "13"),
+            new MacroDefinition("SHADOW_MAP_TEXTURE_SET", "14"),
+            new MacroDefinition("IRRADIANCE_MAP_TEXTURE_SET", "15"),
+            new MacroDefinition("PREFILTER_MAP_TEXTURE_SET", "16"),
+            new MacroDefinition("BRDF_LUT_TEXTURE_SET", "17"),
+            new MacroDefinition("SOURCE_TEXTURE_SET", "18"),
+            new MacroDefinition("TILES_TEXTURE_SET", "19")
+        ]);
+        PbrTileTerrainEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        PbrTileTerrainEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
+        PbrTileTerrainEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("BrushBuffer", 3, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("LightBuffer", 4, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("ClusterDataBuffer", 5, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("ClusterBuffer", 6, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("ClusterLightIndexBuffer", 7, SimpleBufferType.StructuredReadOnly, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("ShadowBuffer", 8, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddBufferLayout("EnvironmentBuffer", 9, SimpleBufferType.Uniform, ShaderStages.Fragment);
+        PbrTileTerrainEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 10);
+        PbrTileTerrainEffect.AddTextureLayout(MaterialMapType.Normal.GetName(), 11);
+        PbrTileTerrainEffect.AddTextureLayout(MaterialMapType.Metallic.GetName(), 12);
+        PbrTileTerrainEffect.AddTextureLayout(MaterialMapType.Emission.GetName(), 13);
+        PbrTileTerrainEffect.AddTextureLayout("fShadowMap", 14);
+        PbrTileTerrainEffect.AddTextureLayout("fIrradianceMap", 15);
+        PbrTileTerrainEffect.AddTextureLayout("fPrefilterMap", 16);
+        PbrTileTerrainEffect.AddTextureLayout("fBrdfLut", 17);
+        PbrTileTerrainEffect.AddTextureLayout("fSources", 18);
+        PbrTileTerrainEffect.AddTextureLayout("fTiles", 19);
         
         // FXAA post-processing effect.
         FxaaEffect = new FxaaEffect(GraphicsDevice, new CrossCompileOptions());
@@ -409,6 +451,7 @@ public static class GlobalGraphicsAssets {
         PrefilterEffect.Dispose();
         BrdfLut.Dispose();
         TileTerrainEffect.Dispose();
+        PbrTileTerrainEffect.Dispose();
         FxaaEffect.Dispose();
         GrayScaleFilterEffect.Dispose();
         BloomFilterEffect.Dispose();

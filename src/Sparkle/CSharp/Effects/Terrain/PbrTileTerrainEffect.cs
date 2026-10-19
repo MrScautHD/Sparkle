@@ -9,19 +9,19 @@ using Sparkle.CSharp.Terrain;
 using Veldrith;
 using Veldrith.SPIRV;
 
-namespace Sparkle.CSharp.Effects;
+namespace Sparkle.CSharp.Effects.Terrain;
 
-public class TileTerrainEffect : Effect {
+public class PbrTileTerrainEffect : TerrainEffect {
     
     /// <summary>
     /// Path to the terrain tile vertex shader.
     /// </summary>
-    public static readonly string VertPath = "content/sparkle/shaders/terrain/terrain_tiles.vert";
+    public static readonly string VertPath = "content/sparkle/shaders/terrain/pbr_terrain_tiles.vert";
     
     /// <summary>
     /// Path to the terrain tile fragment shader.
     /// </summary>
-    public static readonly string FragPath = "content/sparkle/shaders/terrain/terrain_tiles.frag";
+    public static readonly string FragPath = "content/sparkle/shaders/terrain/pbr_terrain_tiles.frag";
     
     /// <summary>
     /// Tracks materials whose brush preview buffer needs to be updated.
@@ -41,49 +41,69 @@ public class TileTerrainEffect : Effect {
     /// <summary>
     /// Source texture arrays per material.
     /// </summary>
-    private Dictionary<Material, Texture> _sourcesTextures;
+    private Dictionary<Material, Texture> _sourceTextureArray;
     
     /// <summary>
     /// Tile index textures per material.
     /// </summary>
-    private Dictionary<Material, Texture> _tilesTextures;
+    private Dictionary<Material, Texture> _terrainLayerMap;
     
     /// <summary>
     /// Source texture samplers per material.
     /// </summary>
-    private Dictionary<Material, Sampler> _sourcesSamplers;
+    private Dictionary<Material, Sampler> _sourceTextureArraySampler;
     
     /// <summary>
     /// Tile index samplers per material.
     /// </summary>
-    private Dictionary<Material, Sampler> _tilesSamplers;
+    private Dictionary<Material, Sampler> _terrainLayerMapSampler;
     
     /// <summary>
     /// Source texture resource sets per material.
     /// </summary>
-    private Dictionary<Material, ResourceSet> _sourcesResourceSets;
+    private Dictionary<Material, ResourceSet> _sourceTextureArrayResourceSets;
     
     /// <summary>
     /// Tile index resource sets per material.
     /// </summary>
-    private Dictionary<Material, ResourceSet> _tilesResourceSets;
+    private Dictionary<Material, ResourceSet> _terrainLayerMapResourceSets;
     
     /// <summary>
-    /// Initializes a new instance of the <see cref="TileTerrainEffect"/> class.
+    /// Initializes a new instance of the <see cref="PbrTileTerrainEffect"/> class.
     /// </summary>
-    /// <param name="graphicsDevice">The graphics device used for rendering.</param>
-    /// <param name="compileOptions">Optional cross-compilation options used when creating the shaders.</param>
-    /// <param name="macros">Optional macro definitions injected during shader compilation.</param>
-    public TileTerrainEffect(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, MacroDefinition[]? macros = null) : base(graphicsDevice, LoadTextCodeFromFile(VertPath), LoadTextCodeFromFile(FragPath), compileOptions, macros ?? []) {
+    /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
+    /// <param name="vertText">The GLSL source code of the vertex shader, with all includes inserted.</param>
+    /// <param name="fragText">The GLSL source code of the fragment shader, with all includes inserted.</param>
+    /// <param name="compileOptions">The cross compile options.</param>
+    /// <param name="macros">The shader macro definitions.</param>
+    private PbrTileTerrainEffect(GraphicsDevice graphicsDevice, string vertText, string fragText, CrossCompileOptions compileOptions, MacroDefinition[] macros) : base(graphicsDevice, vertText, fragText, compileOptions, macros) {
         this._dirtyBrushMaterials = new HashSet<Material>();
         this._brushParameters = new Dictionary<Material, BrushParameters>();
         this._brushBuffers = new Dictionary<Material, SimpleUniformBuffer<BrushParameters>>();
-        this._sourcesTextures = new Dictionary<Material, Texture>();
-        this._tilesTextures = new Dictionary<Material, Texture>();
-        this._sourcesSamplers = new Dictionary<Material, Sampler>();
-        this._tilesSamplers = new Dictionary<Material, Sampler>();
-        this._sourcesResourceSets = new Dictionary<Material, ResourceSet>();
-        this._tilesResourceSets = new Dictionary<Material, ResourceSet>();
+        this._sourceTextureArray = new Dictionary<Material, Texture>();
+        this._terrainLayerMap = new Dictionary<Material, Texture>();
+        this._sourceTextureArraySampler = new Dictionary<Material, Sampler>();
+        this._terrainLayerMapSampler = new Dictionary<Material, Sampler>();
+        this._sourceTextureArrayResourceSets = new Dictionary<Material, ResourceSet>();
+        this._terrainLayerMapResourceSets = new Dictionary<Material, ResourceSet>();
+    }
+    
+    /// <summary>
+    /// Creates a new <see cref="PbrTileTerrainEffect"/> by loading the terrain shaders from files.
+    /// </summary>
+    /// <param name="graphicsDevice">The graphics device used to create GPU resources.</param>
+    /// <param name="compileOptions">The cross compile options.</param>
+    /// <param name="macros">Optional macro definitions injected during shader compilation. If <see langword="null"/>, no macros are defined.</param>
+    /// <returns>The compiled terrain effect.</returns>
+    /// <exception cref="FileNotFoundException">Thrown if a shader file or one of its includes cannot be found.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the includes form a cycle.</exception>
+    public static PbrTileTerrainEffect FromFiles(GraphicsDevice graphicsDevice, CrossCompileOptions compileOptions, MacroDefinition[]? macros = null) {
+        ShaderIncludeProcessor processor = new ShaderIncludeProcessor("content");
+        
+        string vertText = processor.ProcessFile(VertPath);
+        string fragText = processor.ProcessFile(FragPath);
+        
+        return new PbrTileTerrainEffect(graphicsDevice, vertText, fragText, compileOptions, macros ?? []);
     }
     
     /// <summary>
@@ -96,7 +116,7 @@ public class TileTerrainEffect : Effect {
     /// <param name="color">The preview overlay color.</param>
     /// <param name="strength">The preview blend strength.</param>
     /// <param name="wireThickness">The screen-space wire thickness.</param>
-    public void SetBrushPreview(Material material, Vector3 center, float radius, TerrainBrushType brushType, Vector4 color, float strength = 1.0F, float wireThickness = 1.25F) {
+    public override void SetBrushPreview(Material material, Vector3 center, float radius, TerrainBrushType brushType, Vector4 color, float strength = 1.0F, float wireThickness = 1.25F) {
         this._brushParameters[material] = new BrushParameters() {
             BrushType = (int) brushType,
             BrushPreviewEnabled = 1,
@@ -114,7 +134,7 @@ public class TileTerrainEffect : Effect {
     /// Disables the terrain brush preview mask for a specific material.
     /// </summary>
     /// <param name="material">The material whose brush preview should be disabled.</param>
-    public void DisableBrushPreview(Material material) {
+    public override void DisableBrushPreview(Material material) {
         if (!this._brushParameters.TryGetValue(material, out BrushParameters parameters)) {
             parameters = new BrushParameters() {
                 BrushType = 0,
@@ -141,31 +161,31 @@ public class TileTerrainEffect : Effect {
     }
     
     /// <summary>
-    /// Sets the source texture array used by the terrain shader for a specific material.
+    /// Sets the source texture array of a material, which holds one texture layer for each terrain material.
     /// </summary>
-    /// <param name="material">The material that owns the texture binding.</param>
-    /// <param name="texture">The source texture array.</param>
-    /// <param name="sampler">Optional sampler.</param>
-    public void SetSourcesTexture(Material material, Texture texture, Sampler? sampler = null) {
-        this._sourcesTextures[material] = texture;
-        this._sourcesSamplers[material] = sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.PointWrap);
+    /// <param name="material">The material that owns the texture array.</param>
+    /// <param name="texture">The texture array with one layer per terrain material.</param>
+    /// <param name="sampler">The sampler used to read the texture. If <see langword="null"/>, a point sampler with wrap addressing is used.</param>
+    public override void SetSourceTextureArray(Material material, Texture texture, Sampler? sampler = null) {
+        this._sourceTextureArray[material] = texture;
+        this._sourceTextureArraySampler[material] = sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.PointWrap);
         
-        if (this._sourcesResourceSets.Remove(material, out ResourceSet? resourceSet)) {
+        if (this._sourceTextureArrayResourceSets.Remove(material, out ResourceSet? resourceSet)) {
             resourceSet.Dispose();
         }
     }
     
     /// <summary>
-    /// Sets the tile index texture used by the terrain shader for a specific material.
+    /// Sets the terrain layer map of a material, which stores the terrain material index of every tile.
     /// </summary>
-    /// <param name="material">The material that owns the texture binding.</param>
-    /// <param name="texture">The tile index texture.</param>
-    /// <param name="sampler">Optional sampler.</param>
-    public void SetTilesTexture(Material material, Texture texture, Sampler? sampler = null) {
-        this._tilesTextures[material] = texture;
-        this._tilesSamplers[material] = sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.PointWrap);
+    /// <param name="material">The material that owns the layer map.</param>
+    /// <param name="texture">The tile index texture, with one texel per tile.</param>
+    /// <param name="sampler">The sampler used to read the texture. If <see langword="null"/>, a point sampler with wrap addressing is used.</param>
+    public override void SetTerrainLayerMap(Material material, Texture texture, Sampler? sampler = null) {
+        this._terrainLayerMap[material] = texture;
+        this._terrainLayerMapSampler[material] = sampler ?? GraphicsHelper.GetSampler(this.GraphicsDevice, SamplerType.PointWrap);
         
-        if (this._tilesResourceSets.Remove(material, out ResourceSet? resourceSet)) {
+        if (this._terrainLayerMapResourceSets.Remove(material, out ResourceSet? resourceSet)) {
             resourceSet.Dispose();
         }
     }
@@ -214,20 +234,20 @@ public class TileTerrainEffect : Effect {
         }
         
         // Bind the source texture array for this material.
-        if (material != null && this._sourcesTextures.TryGetValue(material, out Texture? sourcesTexture)) {
-            if (!this._sourcesResourceSets.TryGetValue(material, out ResourceSet? sourcesResourceSet)) {
-                sourcesResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(this.GetTextureLayout("fSources").Layout, sourcesTexture, this._sourcesSamplers[material]));
-                this._sourcesResourceSets[material] = sourcesResourceSet;
+        if (material != null && this._sourceTextureArray.TryGetValue(material, out Texture? sourcesTexture)) {
+            if (!this._sourceTextureArrayResourceSets.TryGetValue(material, out ResourceSet? sourcesResourceSet)) {
+                sourcesResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(this.GetTextureLayout("fSources").Layout, sourcesTexture, this._sourceTextureArraySampler[material]));
+                this._sourceTextureArrayResourceSets[material] = sourcesResourceSet;
             }
             
             commandList.SetGraphicsResourceSet(this.GetTextureLayoutSlot("fSources"), sourcesResourceSet);
         }
         
         // Bind the tile index texture for this material.
-        if (material != null && this._tilesTextures.TryGetValue(material, out Texture? tilesTexture)) {
-            if (!this._tilesResourceSets.TryGetValue(material, out ResourceSet? tilesResourceSet)) {
-                tilesResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(this.GetTextureLayout("fTiles").Layout, tilesTexture, this._tilesSamplers[material]));
-                this._tilesResourceSets[material] = tilesResourceSet;
+        if (material != null && this._terrainLayerMap.TryGetValue(material, out Texture? tilesTexture)) {
+            if (!this._terrainLayerMapResourceSets.TryGetValue(material, out ResourceSet? tilesResourceSet)) {
+                tilesResourceSet = this.GraphicsDevice.ResourceFactory.CreateResourceSet(new ResourceSetDescription(this.GetTextureLayout("fTiles").Layout, tilesTexture, this._terrainLayerMapSampler[material]));
+                this._terrainLayerMapResourceSets[material] = tilesResourceSet;
             }
             
             commandList.SetGraphicsResourceSet(this.GetTextureLayoutSlot("fTiles"), tilesResourceSet);
@@ -267,22 +287,22 @@ public class TileTerrainEffect : Effect {
             this._brushBuffers.Clear();
             
             // Dispose texture ResourceSets.
-            this._sourcesTextures.Clear();
-            this._tilesTextures.Clear();
-            this._sourcesSamplers.Clear();
-            this._tilesSamplers.Clear();
+            this._sourceTextureArray.Clear();
+            this._terrainLayerMap.Clear();
+            this._sourceTextureArraySampler.Clear();
+            this._terrainLayerMapSampler.Clear();
             
-            foreach (ResourceSet resourceSet in this._sourcesResourceSets.Values) {
+            foreach (ResourceSet resourceSet in this._sourceTextureArrayResourceSets.Values) {
                 resourceSet.Dispose();
             }
             
-            this._sourcesResourceSets.Clear();
+            this._sourceTextureArrayResourceSets.Clear();
             
-            foreach (ResourceSet resourceSet in this._tilesResourceSets.Values) {
+            foreach (ResourceSet resourceSet in this._terrainLayerMapResourceSets.Values) {
                 resourceSet.Dispose();
             }
             
-            this._tilesResourceSets.Clear();
+            this._terrainLayerMapResourceSets.Clear();
         }
     }
 }

@@ -31,8 +31,13 @@ layout (location = 4) out vec2 fTexCoords;
 layout (location = 5) out vec3 fWorldPosition;
 layout (location = 6) out vec3 fWorldNormal;
 layout (location = 7) out mat3 fTbn;
-layout (location = 8) out vec3 fViewPosition;
+layout (location = 10) out vec3 fViewPosition;
+const float EPSILON = 0.000001F;
 
+vec3 safeNormalize(vec3 value, vec3 fallback) {
+    float lengthSquared = dot(value, value);
+    return lengthSquared > EPSILON ? value * inversesqrt(lengthSquared) : fallback;
+}
 void main() {
     fTerrainPosition = vPosition;
     fColor = vColor;
@@ -65,9 +70,19 @@ void main() {
     // Calculate normal matrix.
     mat3 normalMatrix = transpose(inverse(mat3(transformation)));
     
-    vec3 normal = normalize(normalMatrix * vNormal);
-    vec3 tangent = normalize(normalMatrix * vTangent.xyz);
-    vec3 bitangent = normalize(cross(normal, tangent) * vTangent.w);
+    vec3 normal = safeNormalize(normalMatrix * vNormal, vec3(0.0F, 1.0F, 0.0F));
+    
+    vec3 tangent = normalMatrix * vTangent.xyz;
+    tangent = tangent - normal * dot(tangent, normal);
+    tangent = safeNormalize(tangent, vec3(1.0F, 0.0F, 0.0F));
+    
+    if (abs(dot(tangent, normal)) > 0.95F) {
+        tangent = vec3(0.0F, 0.0F, 1.0F) - normal * dot(vec3(0.0F, 0.0F, 1.0F), normal);
+        tangent = safeNormalize(tangent, vec3(1.0F, 0.0F, 0.0F));
+    }
+    
+    float tangentSign = abs(vTangent.w) > EPSILON ? sign(vTangent.w) : 1.0F;
+    vec3 bitangent = safeNormalize(cross(normal, tangent) * tangentSign, vec3(0.0F, 0.0F, 1.0F));
     
     fWorldNormal = normal;
     fTbn = mat3(tangent, bitangent, normal);

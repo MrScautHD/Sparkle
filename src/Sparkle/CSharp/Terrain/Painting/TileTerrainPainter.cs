@@ -4,6 +4,7 @@ using Bliss.CSharp.Images;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures;
 using Sparkle.CSharp.Effects;
+using Sparkle.CSharp.Effects.Terrain;
 using Veldrith;
 
 namespace Sparkle.CSharp.Terrain.Painting;
@@ -60,7 +61,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// GPU-side tile layer texture.
     /// This should be bound to the terrain tile shader as fTiles.
     /// </summary>
-    public Texture TileTexture { get; private set; }
+    public Texture TerrainLayerMap { get; private set; }
     
     /// <summary>
     /// CPU-side tile layer data.
@@ -110,7 +111,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         ));
         
         // Create tile texture.
-        this.TileTexture = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(
+        this.TerrainLayerMap = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(
             (uint) width,
             (uint) depth,
             1,
@@ -120,9 +121,9 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         ));
         
         // Assign textures to the effect.
-        if (material.Effect is TileTerrainEffect tileTerrainEffect) {
-            tileTerrainEffect.SetSourcesTexture(material, this.SourceTextureArray);
-            tileTerrainEffect.SetTilesTexture(material, this.TileTexture);
+        if (material.Effect is TerrainEffect terrainEffect) {
+            terrainEffect.SetSourceTextureArray(material, this.SourceTextureArray);
+            terrainEffect.SetTerrainLayerMap(material, this.TerrainLayerMap);
         }
         
         // Setup the tile map with the default layer.
@@ -454,7 +455,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         // The whole map is dirty, upload the tile array directly.
         if (x == 0 && z == 0 && width == this.Width && depth == this.Depth) {
             fixed (byte* tilePointer = this._tiles) {
-                this.GraphicsDevice.UpdateTexture(this.TileTexture, (nint) tilePointer, (uint) this._tiles.Length, 0, 0, 0, (uint) this.Width, (uint) this.Depth, 1, 0, 0);
+                this.GraphicsDevice.UpdateTexture(this.TerrainLayerMap, (nint) tilePointer, (uint) this._tiles.Length, 0, 0, 0, (uint) this.Width, (uint) this.Depth, 1, 0, 0);
             }
             
             return;
@@ -472,7 +473,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         
         // Upload the packed region at its correct offset.
         fixed (byte* uploadPointer = uploadData) {
-            this.GraphicsDevice.UpdateTexture(this.TileTexture, (nint) uploadPointer, (uint) uploadData.Length, (uint) x, (uint) z, 0, (uint) width, (uint) depth, 1, 0, 0);
+            this.GraphicsDevice.UpdateTexture(this.TerrainLayerMap, (nint) uploadPointer, (uint) uploadData.Length, (uint) x, (uint) z, 0, (uint) width, (uint) depth, 1, 0, 0);
         }
     }
     
@@ -486,7 +487,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.SourceTextureArray.Dispose();
-            this.TileTexture.Dispose();
+            this.TerrainLayerMap.Dispose();
             this._tiles = [];
         }
     }

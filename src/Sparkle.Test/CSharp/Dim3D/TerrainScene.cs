@@ -10,7 +10,7 @@ using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp.Effects;
+using Sparkle.CSharp.Effects.Terrain;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
 using Sparkle.CSharp.Graphics;
