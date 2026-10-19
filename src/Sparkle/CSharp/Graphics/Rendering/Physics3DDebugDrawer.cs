@@ -163,7 +163,6 @@ public class Physics3DDebugDrawer : Disposable, IDebugDrawer {
     /// <param name="blendState">Optional blend state description. If null, a default is used.</param>
     /// <param name="depthStencilState">Optional depth-stencil state description. If null, a default is used.</param>
     /// <param name="rasterizerState">Optional rasterizer state description. If null, a default is used.</param>
-    /// <param name="color">Optional color for rendering debug visuals. If null, white is used.</param>
     /// <exception cref="Exception">Thrown if a rendering session has already begun.</exception>
     public void Begin(CommandList commandList, Framebuffer framebuffer, BlendStateDescription? blendState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null) {
         if (this._begun) {
