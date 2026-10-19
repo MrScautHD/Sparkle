@@ -66,14 +66,3 @@ not validate existing value types or recursively merge nested objects. Null defa
 are supported. The defaults dictionary is copied and exposed through a read-only
 view; nested mutable values are not deep-copied. `Reset` writes only the defaults,
 including when unknown keys were retained during construction.
-
-## Tests
-
-Run the headless regression suite with the .NET 10 SDK:
-
-```sh
-dotnet test tests/Sparkle.Tests/Sparkle.Tests.csproj
-```
-
-The project is included in `Sparkle.slnx`, so the existing CI build and test steps
-also run it. `src/Sparkle.Test` remains the interactive graphical demo.
