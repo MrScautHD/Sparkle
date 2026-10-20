@@ -68,7 +68,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// Each byte stores the selected terrain material layer for one tile cell.
     /// </summary>
     private byte[] _tiles;
-
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="TileTerrainPainter"/> class.
     /// </summary>
@@ -80,7 +80,8 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// <param name="maxLayerCount">The maximum number of terrain source layers.</param>
     /// <param name="defaultLayer">The layer used to initialize the tile map.</param>
     /// <param name="useMipmaps">Whether mipmaps are generated for the terrain source layer textures.</param>
-    public TileTerrainPainter(GraphicsDevice graphicsDevice, Material material, int width, int depth, int sourceTextureSize, int maxLayerCount, byte defaultLayer = 0, bool useMipmaps = true) {
+    /// <param name="srgb">Specifies whether the textures use the sRGB color space.</param>
+    public TileTerrainPainter(GraphicsDevice graphicsDevice, Material material, int width, int depth, int sourceTextureSize, int maxLayerCount, byte defaultLayer = 0, bool useMipmaps = true, bool srgb = false) {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sourceTextureSize);
@@ -104,9 +105,9 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         this.SourceTextureArray = graphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D(
             (uint) sourceTextureSize,
             (uint) sourceTextureSize,
-             useMipmaps ? 1 + (uint) MathF.Floor(MathF.Log2(sourceTextureSize)) : 1,
+            useMipmaps ? 1 + (uint) MathF.Floor(MathF.Log2(sourceTextureSize)) : 1,
             (uint) Math.Max(2, maxLayerCount),
-            PixelFormat.R8G8B8A8UNorm,
+            srgb ? PixelFormat.R8G8B8A8UNormSRgb : PixelFormat.R8G8B8A8UNorm,
             TextureUsage.Sampled
         ));
         

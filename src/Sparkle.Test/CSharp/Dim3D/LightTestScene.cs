@@ -566,7 +566,7 @@ public class LightTestScene : Scene {
             Value = 0.0F
         });
         
-        TileTerrainPainter painter = new TileTerrainPainter(GlobalGraphicsAssets.GraphicsDevice, material, terrainWidth, terrainDepth, 32, 8, 0);
+        TileTerrainPainter painter = new TileTerrainPainter(GlobalGraphicsAssets.GraphicsDevice, material, terrainWidth, terrainDepth, 32, 8, 0, true, true);
         painter.AddLayer(ContentRegistry.TerrainGrass);
         painter.AddLayer(ContentRegistry.TerrainDirt);
         painter.AddLayer(ContentRegistry.TerrainRock);
