@@ -16,12 +16,15 @@ public static class FileAccessor {
     /// <param name="name">The name of the file to be created.</param>
     /// <param name="replace">Specifies whether to replace an existing file with the same name in the directory. Default is false.</param>
     public static void Create(string directory, string name, bool replace = false) {
-        if (!Directory.Exists(directory)) {
+        lock (FileLock) {
             Directory.CreateDirectory(directory);
-        }
+            string path = GetPath(directory, name);
+            if (!replace && File.Exists(path)) {
+                return;
+            }
 
-        if (replace || !File.Exists(GetPath(directory, name))) {
-            File.Create(GetPath(directory, name)).Close();
+            // OpenOrCreate avoids truncating a file created by another caller.
+            using FileStream stream = new FileStream(path, replace ? FileMode.Create : FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
         }
     }
     
@@ -66,6 +69,33 @@ public static class FileAccessor {
                 using (StreamWriter writer = new StreamWriter(stream)) {
                     writer.Write(text);
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Writes text to a temporary file in the destination directory, then replaces the destination.
+    /// Readers see either the old content or the complete new content on file systems supporting atomic renames.
+    /// </summary>
+    /// <param name="path">The path to the destination file. Its directory must already exist.</param>
+    /// <param name="text">The text to write.</param>
+    public static void WriteAllAtomic(string path, string text) {
+        lock (FileLock) {
+            string fullPath = Path.GetFullPath(path);
+            string temporaryPath = Path.Combine(Path.GetDirectoryName(fullPath)!, $".{Path.GetFileName(fullPath)}.{Guid.NewGuid():N}.tmp");
+
+            try {
+                using (FileStream stream = new FileStream(temporaryPath, FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
+                    using StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(text);
+                    writer.Flush();
+                    stream.Flush(true);
+                }
+
+                File.Move(temporaryPath, fullPath, true);
+            }
+            finally {
+                File.Delete(temporaryPath);
             }
         }
     }

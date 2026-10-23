@@ -28,7 +28,8 @@ public class JsonStorage {
     
     /// <summary>
     /// Initializes a new instance of the <see cref="JsonStorage"/> class.
-    /// Creates the JSON file if it does not exist and initializes it with an empty JSON object if needed.
+    /// Creates the JSON file if it does not exist and initializes empty files with an empty JSON object.
+    /// Existing non-empty files are validated; read, decryption and parsing errors propagate without overwriting the file.
     /// </summary>
     /// <param name="name">The name of the JSON storage file without the file extension.</param>
     /// <param name="directory">The directory where the JSON storage file is located.</param>
@@ -43,8 +44,12 @@ public class JsonStorage {
         FileAccessor.Create(this.Directory, $"{this.Name}.json");
         
         // Init JSON storage.
-        if (string.IsNullOrWhiteSpace(FileAccessor.ReadAll(this.Path)) || !this.IsValid()) {
+        if (string.IsNullOrWhiteSpace(FileAccessor.ReadAll(this.Path))) {
             this.WriteData(new JObject());
+        }
+        else {
+            // Invalid JSON or a wrong encryption key must never erase existing data.
+            this.GetData();
         }
     }
     
@@ -75,7 +80,7 @@ public class JsonStorage {
     /// </summary>
     /// <param name="data">The root JSON object to write.</param>
     public void WriteData(JObject data) {
-        FileAccessor.WriteAll(this.Path, CryptoProvider.Encrypt(data.ToString(Formatting.Indented), this._encryptKey));
+        FileAccessor.WriteAllAtomic(this.Path, CryptoProvider.Encrypt(data.ToString(Formatting.Indented), this._encryptKey));
     }
     
     /// <summary>
@@ -157,7 +162,7 @@ public class JsonStorage {
             return false;
         }
         
-        data.Add(key, JToken.FromObject(value!));
+        data.Add(key, value is null ? JValue.CreateNull() : JToken.FromObject(value));
         this.WriteData(data);
         return true;
     }
@@ -198,8 +203,25 @@ public class JsonStorage {
     /// <param name="value">The value to set.</param>
     public void SetValue<T>(string key, T value) {
         JObject values = this.GetData();
-        values[key] = JToken.FromObject(value!);
+        values[key] = value is null ? JValue.CreateNull() : JToken.FromObject(value);
         
         this.WriteData(values);
+    }
+
+    /// <summary>
+    /// Sets or creates multiple values with one read and one atomic file replacement.
+    /// If enumeration or serialization fails, the file remains unchanged.
+    /// Concurrent read-modify-write operations must be synchronized by the caller.
+    /// </summary>
+    /// <param name="values">The keys and values to set. Null values are stored as JSON null.</param>
+    public void SetValues(IEnumerable<KeyValuePair<string, object?>> values) {
+        ArgumentNullException.ThrowIfNull(values);
+        JObject data = this.GetData();
+
+        foreach (KeyValuePair<string, object?> value in values) {
+            data[value.Key] = value.Value is null ? JValue.CreateNull() : JToken.FromObject(value.Value);
+        }
+
+        this.WriteData(data);
     }
 }
