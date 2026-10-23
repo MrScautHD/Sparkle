@@ -70,7 +70,7 @@ void main() {
     fWorldPosition = worldPosition.xyz;
     
     // Calculate normal matrix.
-    mat3 normalMatrix = transpose(inverse(mat3(transformation)));
+    mat3 normalMatrix = transpose(inverse(mat3(transformation * boneTransformation)));
     
     vec3 normal = normalize(normalMatrix * vNormal);
     vec3 tangent = normalize(normalMatrix * vTangent.xyz);

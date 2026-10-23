@@ -1229,7 +1229,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="commandList">The command list used for issuing rendering commands to the GPU.</param>
     /// <param name="renderable">The renderable object representing the mesh and associated data needed for rendering.</param>
     private void DrawPreparedShadowRenderable(CommandList commandList, Renderable renderable) {
-        Effect effect = renderable.Mesh.IsSkinned ? GlobalGraphicsAssets.SkinnedShadowEffect : GlobalGraphicsAssets.ShadowEffect;
+        Effect effect = renderable.HasBones ? GlobalGraphicsAssets.SkinnedShadowEffect : GlobalGraphicsAssets.ShadowEffect;
         
         // Set the pipeline parameters.
         this._pipelineDescription.Outputs = this._shadowMap.Framebuffer.OutputDescription;
@@ -1328,7 +1328,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="camera">The 3D camera providing the view and projection matrices.</param>
     /// <param name="renderable">The renderable object containing mesh, material, and transformation data to be drawn.</param>
     private void DrawPreparedNormalRenderable(CommandList commandList, Cam3D camera, Renderable renderable) {
-        Effect effect = renderable.Mesh.IsSkinned ? GlobalGraphicsAssets.SkinnedPbrNormalPrepassEffect : GlobalGraphicsAssets.PbrNormalPrepassEffect;
+        Effect effect = renderable.HasBones ? GlobalGraphicsAssets.SkinnedPbrNormalPrepassEffect : GlobalGraphicsAssets.PbrNormalPrepassEffect;
         
         if (renderable.UseInstancing) {
             effect = effect.GetEffectVariant([("USE_INSTANCING", "1")]).Effect;
@@ -1352,6 +1352,15 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         
         // Set transform buffer.
         commandList.SetGraphicsResourceSet(effect.GetBufferLayoutSlot("TransformBuffer"), renderable.GetTransformBuffer().GetResourceSet(effect.GetBufferLayout("TransformBuffer")));
+        
+        // Set bone buffer.
+        if (renderable.HasBones) {
+            SimpleUniformBuffer<Matrix4x4>? boneBuffer = renderable.GetBoneBuffer();
+            
+            if (boneBuffer != null) {
+                commandList.SetGraphicsResourceSet(effect.GetBufferLayoutSlot("BoneBuffer"), boneBuffer.GetResourceSet(effect.GetBufferLayout("BoneBuffer")));
+            }
+        }
         
         // Apply effect.
         effect.Apply(commandList, renderable.Material);

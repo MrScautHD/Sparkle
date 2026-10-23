@@ -261,14 +261,25 @@ public static class GlobalGraphicsAssets {
         ClusterLightsEffect.BuildPipeline();
         
         // Shadow model effect.
-        ShadowEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/shadow_map.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/shadow_map.frag"), new CrossCompileOptions(), []);
+        ShadowEffect = Effect.FromFiles(GraphicsDevice, "content/sparkle/shaders/shadows/shadow_map.vert", "content/sparkle/shaders/shadows/shadow_map.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "2"),
+            new MacroDefinition("ALBEDO_TEXTURE_SET", "3")
+        ]);
         ShadowEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         ShadowEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         ShadowEffect.AddBufferLayout("MaterialBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Fragment);
         ShadowEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 3);
         
         // Shadow skinned model effect.
-        SkinnedShadowEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/skinned_shadow_map.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/shadows/skinned_shadow_map.frag"), new CrossCompileOptions(), []);
+        SkinnedShadowEffect = Effect.FromFiles(GraphicsDevice, "content/sparkle/shaders/shadows/skinned_shadow_map.vert", "content/sparkle/shaders/shadows/shadow_map.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("BONE_BUFFER_SET", "2"),
+            new MacroDefinition("MATERIAL_BUFFER_SET", "3"),
+            new MacroDefinition("ALBEDO_TEXTURE_SET", "4")
+        ]);
         SkinnedShadowEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedShadowEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedShadowEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
@@ -276,12 +287,19 @@ public static class GlobalGraphicsAssets {
         SkinnedShadowEffect.AddTextureLayout(MaterialMapType.Albedo.GetName(), 4);
         
         // PBR normal/depth prepass effect.
-        PbrNormalPrepassEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/prepass/normal_depth_prepass.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/prepass/normal_depth_prepass.frag"), new CrossCompileOptions(), []);
+        PbrNormalPrepassEffect = Effect.FromFiles(GraphicsDevice, "content/sparkle/shaders/prepass/normal_depth_prepass.vert", "content/sparkle/shaders/prepass/normal_depth_prepass.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1")
+        ]);
         PbrNormalPrepassEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         PbrNormalPrepassEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         
         // PBR skinned normal/depth prepass effect.
-        SkinnedPbrNormalPrepassEffect = new Effect(GraphicsDevice, Effect.LoadTextCodeFromFile("content/sparkle/shaders/prepass/skinned_normal_depth_prepass.vert"), Effect.LoadTextCodeFromFile("content/sparkle/shaders/prepass/normal_depth_prepass.frag"), new CrossCompileOptions(), []);
+        SkinnedPbrNormalPrepassEffect = Effect.FromFiles(GraphicsDevice, "content/sparkle/shaders/prepass/skinned_normal_depth_prepass.vert", "content/sparkle/shaders/prepass/normal_depth_prepass.frag", new CrossCompileOptions(), [
+            new MacroDefinition("MATRIX_BUFFER_SET", "0"),
+            new MacroDefinition("TRANSFORMER_BUFFER_SET", "1"),
+            new MacroDefinition("BONE_BUFFER_SET", "2")
+        ]);
         SkinnedPbrNormalPrepassEffect.AddBufferLayout("MatrixBuffer", 0, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrNormalPrepassEffect.AddBufferLayout("TransformBuffer", 1, SimpleBufferType.Uniform, ShaderStages.Vertex);
         SkinnedPbrNormalPrepassEffect.AddBufferLayout("BoneBuffer", 2, SimpleBufferType.Uniform, ShaderStages.Vertex);
