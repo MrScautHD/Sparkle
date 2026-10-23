@@ -174,11 +174,12 @@ public class RigidBody3D : Component {
     }
     
     /// <summary>
-    /// Enables or disables speculative contact solving for better collision detection.
+    /// Gets or sets a value indicating whether continuous collision detection (CCD) is enabled for the rigid body.
+    /// When enabled, the physics engine performs additional calculations to prevent fast-moving objects from passing through other objects without detecting a collision.
     /// </summary>
-    public bool EnableSpeculativeContacts {
-        get => this.Body.EnableSpeculativeContacts;
-        set => this.Body.EnableSpeculativeContacts = value;
+    public bool EnableCcd {
+        get => this.Body.EnableCcd;
+        set => this.Body.EnableCcd = value;
     }
     
     /// <summary>
