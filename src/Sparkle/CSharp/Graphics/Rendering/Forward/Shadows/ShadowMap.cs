@@ -24,7 +24,7 @@ public class ShadowMap : Disposable {
             
             this._resolution = value;
             this.ClearResources();
-            this.CreateFrameBuffer();
+            this.CreateFramebuffer();
         }
     }
     
@@ -62,7 +62,7 @@ public class ShadowMap : Disposable {
         this.GraphicsDevice = graphicsDevice;
         this._resolution = resolution;
         this._cachedResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
-        this.CreateFrameBuffer();
+        this.CreateFramebuffer();
     }
     
     /// <summary>
@@ -85,7 +85,7 @@ public class ShadowMap : Disposable {
     /// <summary>
     /// Creates the textures and the framebuffer using the current resolution.
     /// </summary>
-    private void CreateFrameBuffer() {
+    private void CreateFramebuffer() {
         this.DepthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, 1, PixelFormat.R32Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.DepthTestTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, 1, PixelFormat.D32FloatS8UInt, TextureUsage.DepthStencil));
         this.Framebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTestTexture, this.DepthTexture));

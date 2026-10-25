@@ -8,8 +8,9 @@ using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Pipelines.Buffers;
 using Bliss.CSharp.Graphics.Pipelines.Textures;
 using Bliss.CSharp.Graphics.Rendering;
-using Bliss.CSharp.Graphics.Rendering.Renderers;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Forward;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky.Environment;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Textures.Cubemaps;
 using Sparkle.CSharp.Entities.Components;
@@ -34,7 +35,13 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <summary>
     /// The skybox used for rendering a three-dimensional background.
     /// </summary>
-    public SkyBox? SkyBox { get; set; }
+    public ISkybox? SkyBox { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the provider of the environment data that the renderer lights the scene with, for example the maps for ambient and reflected light.
+    /// If <see langword="null"/>, the scene gets no environment lighting.
+    /// </summary>
+    public IEnvironmentProvider? EnvironmentProvider { get; set; }
     
     /// <summary>
     /// Occurs after the skybox/background was rendered and before opaque geometry is rendered.
@@ -547,7 +554,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="godRayHorizonFade">The amount by which the shafts are weakened near the horizon, so they do not glow along the whole skyline.</param>
     public PbrForwardRenderer(
         GraphicsDevice graphicsDevice,
-        SkyBox? skyBox = null,
+        ISkybox? skyBox = null,
         Color? ambientColor = null,
         int lightCapacity = 512,
         int maxDirectionalLights = 4,
@@ -905,7 +912,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             commandList.ClearDepthStencil(1.0F);
             
             // Draw Skybox.
-            this.SkyBox?.Draw(commandList, this._renderTargets.ColorFramebuffer);
+            this.SkyBox?.Draw(commandList, this._renderTargets.ColorFramebuffer, cam3D.GetProjection(), cam3D.GetView());
             
             this.BeforeOpaquePass?.Invoke(commandList, this._renderTargets.ColorFramebuffer);
             
@@ -954,7 +961,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             commandList.SetFramebuffer(framebuffer);
             
             // Draw Skybox.
-            this.SkyBox?.Draw(commandList, framebuffer);
+            this.SkyBox?.Draw(commandList, framebuffer, cam3D.GetProjection(), cam3D.GetView());
             
             this.BeforeOpaquePass?.Invoke(commandList, framebuffer);
             
@@ -2072,7 +2079,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// </summary>
     /// <param name="commandList">The command list used to upload the environment buffer.</param>
     private void EnsurePbrEnvironmentMap(CommandList commandList) {
-        if (this.SkyBox == null) {
+        if (this.EnvironmentProvider == null) {
             this._environmentMap?.Dispose();
             this._environmentMap = null;
             this._bakedSkyboxCubemap = null;
@@ -2084,10 +2091,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         }
         
         // The skybox color tints and scales the environment light, so it is refreshed every frame.
-        this._environmentData.EnvironmentColor = this.SkyBox.Color.ToRgbaFloatVec4();
+        this._environmentData.EnvironmentColor = this.EnvironmentProvider.EnvironmentColor;
         
         // The maps were already baked for this cubemap, so only the buffer needs to be uploaded.
-        if (this._environmentMap != null && this._bakedSkyboxCubemap == this.SkyBox.Cubemap) {
+        if (this._environmentMap != null && this._bakedSkyboxCubemap == this.EnvironmentProvider.SourceEnvironmentCubemap) {
             this._environmentBuffer.SetValue(0, this._environmentData);
             this._environmentBuffer.UpdateBufferDeferred(commandList);
             return;
@@ -2095,9 +2102,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         
         // Recreate environment map.
         this._environmentMap?.Dispose();
-        this._environmentMap = new EnvironmentMap(this.GraphicsDevice, this.SkyBox.Cubemap, irradianceSize: 32, prefilterSize: 128, prefilterMipLevels: 5, prefilterSampleCount: 1024.0F);
+        this._environmentMap = new EnvironmentMap(this.GraphicsDevice, this.EnvironmentProvider.SourceEnvironmentCubemap, 32, 128, 5, 1024.0F);
         this._environmentData.MaxReflectionLod = this._environmentMap.PrefilterMipLevels - 1.0F;
-        this._bakedSkyboxCubemap = this.SkyBox.Cubemap;
+        this._bakedSkyboxCubemap = this.EnvironmentProvider.SourceEnvironmentCubemap;
         
         // Upload buffer to GPU.
         this._environmentBuffer.SetValue(0, this._environmentData);

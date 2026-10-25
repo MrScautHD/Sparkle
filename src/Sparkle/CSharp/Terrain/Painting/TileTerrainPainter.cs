@@ -108,7 +108,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
             useMipmaps ? 1 + (uint) MathF.Floor(MathF.Log2(sourceTextureSize)) : 1,
             (uint) Math.Max(2, maxLayerCount),
             srgb ? PixelFormat.R8G8B8A8UNormSRgb : PixelFormat.R8G8B8A8UNorm,
-            TextureUsage.Sampled
+            TextureUsage.Sampled | TextureUsage.GenerateMipmaps
         ));
         
         // Create tile texture.
@@ -188,22 +188,12 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
             throw new ArgumentException($"Layer texture must be {this.SourceTextureSize}x{this.SourceTextureSize}.", nameof(texture));
         }
         
-        if (texture.MipLevels < this.SourceTextureArray.MipLevels) {
-            throw new ArgumentException($"Layer texture must have at least {this.SourceTextureArray.MipLevels} mip levels.", nameof(texture));
-        }
-        
         // Copy the texture directly on the GPU into the target array slice.
         using CommandList commandList = this.GraphicsDevice.ResourceFactory.CreateCommandList();
         
         commandList.Begin();
-        
-        for (uint mipLevel = 0; mipLevel < this.SourceTextureArray.MipLevels; mipLevel++) {
-            uint mipWidth = Math.Max(1U, (uint) this.SourceTextureSize >> (int) mipLevel);
-            uint mipHeight = Math.Max(1U, (uint) this.SourceTextureSize >> (int) mipLevel);
-            
-            commandList.CopyTexture(texture.DeviceTexture, 0, 0, 0, mipLevel, 0, this.SourceTextureArray, 0, 0, 0, mipLevel, (uint) layer, mipWidth, mipHeight, 1, 1);
-        }
-        
+        commandList.CopyTexture(texture.DeviceTexture, 0, 0, 0, 0, 0, this.SourceTextureArray, 0, 0, 0, 0, (uint) layer, (uint) this.SourceTextureSize, (uint) this.SourceTextureSize, 1, 1);
+        commandList.GenerateMipmaps(this.SourceTextureArray);
         commandList.End();
         
         this.GraphicsDevice.SubmitCommands(commandList);
@@ -217,7 +207,7 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="layer"/> is outside the valid layer range.</exception>
     /// <exception cref="ArgumentException">Thrown when <paramref name="image"/> does not match <see cref="SourceTextureSize"/>, or its data length does not match the expected RGBA8 byte count.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the generated mipmap chain has fewer levels than the source texture array requires.</exception>
-    public unsafe void SetLayer(int layer, Image image) {
+    public void SetLayer(int layer, Image image) {
         if (layer < 0 || layer >= this.MaxLayerCount) {
             throw new ArgumentOutOfRangeException(nameof(layer));
         }
@@ -227,25 +217,22 @@ public class TileTerrainPainter : Disposable, ITerrainPainter {
         }
         
         int expectedLength = this.SourceTextureSize * this.SourceTextureSize * 4;
-        
+
         if (image.Data.Length != expectedLength) {
             throw new ArgumentException($"Layer image data must be exactly {expectedLength} bytes.", nameof(image));
         }
         
-        Image[] mipmaps = this.SourceTextureArray.MipLevels > 1 ? MipmapHelper.GenerateMipmaps(image) : [image];
+        this.GraphicsDevice.UpdateTexture(this.SourceTextureArray, image.Data, 0, 0, 0, (uint) image.Width, (uint) image.Height, 1, 0, (uint) layer);
         
-        if (mipmaps.Length < this.SourceTextureArray.MipLevels) {
-            throw new InvalidOperationException($"Generated mipmap chain has only {mipmaps.Length} levels, but the source texture array requires {this.SourceTextureArray.MipLevels} levels.");
-        }
+        // Update mipmaps.
+        using CommandList commandList = this.GraphicsDevice.ResourceFactory.CreateCommandList();
         
-        // Upload all mip levels into the target array slice.
-        for (uint mipLevel = 0; mipLevel < this.SourceTextureArray.MipLevels; mipLevel++) {
-            Image mipmap = mipmaps[mipLevel];
-            
-            fixed (byte* pixelPointer = mipmap.Data) {
-                this.GraphicsDevice.UpdateTexture(this.SourceTextureArray, (nint) pixelPointer, (uint) mipmap.Data.Length, 0, 0, 0, (uint) mipmap.Width, (uint) mipmap.Height, 1, mipLevel, (uint) layer);
-            }
-        }
+        commandList.Begin();
+        commandList.GenerateMipmaps(this.SourceTextureArray);
+        commandList.End();
+        
+        this.GraphicsDevice.SubmitCommands(commandList);
+        this.GraphicsDevice.WaitForIdle();
     }
     
     /// <summary>

@@ -5,6 +5,7 @@ using Bliss.CSharp.Colors;
 using Bliss.CSharp.Geometry.Meshes;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Materials;
@@ -29,7 +30,7 @@ public class PlayerMovementScene : Scene {
     
     public Mesh<Vertex3D> RainParticleMesh { get; private set; }
     
-    public SkyBox CloudySkybox { get; private set; }
+    public CubemapSkybox CloudySkybox { get; private set; }
     
     public PlayerMovementScene() : base("Player-Movement-Scene", SceneType.Scene3D) { }
     
@@ -49,7 +50,7 @@ public class PlayerMovementScene : Scene {
         );
         
         // Skybox's:
-        this.CloudySkybox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
+        this.CloudySkybox = new CubemapSkybox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
     }
     
     protected override void Init() {

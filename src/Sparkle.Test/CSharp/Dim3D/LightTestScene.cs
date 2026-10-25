@@ -7,6 +7,8 @@ using Bliss.CSharp.Geometry.Models;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky.Environment;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
@@ -51,7 +53,7 @@ public class LightTestScene : Scene {
     
     public MultiInstanceRenderer PlaneMultiInstanceRenderer { get; private set; }
     
-    public SkyBox CloudySkybox { get; private set; }
+    public CubemapSkybox CloudySkybox { get; private set; }
     
     private const float _brushRadius = 8.0F;
     private const float _brushStrength = 4.0F;
@@ -212,7 +214,7 @@ public class LightTestScene : Scene {
         }
         
         // Skybox's:
-        this.CloudySkybox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
+        this.CloudySkybox = new CubemapSkybox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
     }
     
     protected override void Init() {
@@ -231,6 +233,7 @@ public class LightTestScene : Scene {
         
         // Set skybox.
         this.Renderer.SkyBox = this.CloudySkybox;
+        this.Renderer.EnvironmentProvider = new CubemapEnvironment(this.CloudySkybox);
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();

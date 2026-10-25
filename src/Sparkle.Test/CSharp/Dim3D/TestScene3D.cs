@@ -7,6 +7,7 @@ using Bliss.CSharp.Geometry.Models;
 using Bliss.CSharp.Graphics.Pipelines;
 using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Graphics.Rendering.Renderers;
+using Bliss.CSharp.Graphics.Rendering.Renderers.Sky;
 using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
@@ -43,7 +44,7 @@ public class TestScene3D : Scene {
     
     public MultiInstanceRenderer PlayerMultiInstanceRenderer { get; private set; }
     
-    public SkyBox CloudySkybox { get; private set; }
+    public CubemapSkybox CloudySkybox { get; private set; }
     
     public TestScene3D() : base("Test-3D-Scene", SceneType.Scene3D) { }
     
@@ -94,7 +95,7 @@ public class TestScene3D : Scene {
         }
         
         // Skybox's:
-        this.CloudySkybox = new SkyBox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
+        this.CloudySkybox = new CubemapSkybox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
     }
     
     protected override void Init() {

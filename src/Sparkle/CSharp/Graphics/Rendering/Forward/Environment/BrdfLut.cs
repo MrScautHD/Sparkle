@@ -25,7 +25,7 @@ public class BrdfLut : Disposable {
             
             this._resolution = value;
             this.ClearResources();
-            this.CreateFrameBuffer();
+            this.CreateFramebuffer();
             this.Bake();
         }
     }
@@ -79,7 +79,7 @@ public class BrdfLut : Disposable {
             PrimitiveTopology = PrimitiveTopology.TriangleList
         };
         
-        this.CreateFrameBuffer();
+        this.CreateFramebuffer();
         this.Bake();
     }
     
@@ -136,7 +136,7 @@ public class BrdfLut : Disposable {
     /// <summary>
     /// Creates the texture and framebuffer using the current resolution.
     /// </summary>
-    private void CreateFrameBuffer() {
+    private void CreateFramebuffer() {
         this.Texture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, 1, PixelFormat.R16G16Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
         this.Framebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(null, this.Texture));
     }

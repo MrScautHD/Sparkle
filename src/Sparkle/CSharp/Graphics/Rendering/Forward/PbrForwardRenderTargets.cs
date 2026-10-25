@@ -174,7 +174,7 @@ public class PbrForwardRenderTargets : Disposable {
         this._cachedBloomResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedBloomTempResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
         this._cachedFogResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
-        this.CreateFrameBuffers();
+        this.CreateFramebuffers();
     }
     
     /// <summary>
@@ -351,13 +351,13 @@ public class PbrForwardRenderTargets : Disposable {
         this._ssrResolutionScale = clampedScale;
         
         this.ClearResources();
-        this.CreateFrameBuffers();
+        this.CreateFramebuffers();
     }
     
     /// <summary>
     /// Creates all textures and framebuffers for the current size, format, and scale.
     /// </summary>
-    private void CreateFrameBuffers() {
+    private void CreateFramebuffers() {
         uint ssrWidth = Math.Max(1, (uint) MathF.Ceiling(this._width * this._ssrResolutionScale));
         uint ssrHeight = Math.Max(1, (uint) MathF.Ceiling(this._height * this._ssrResolutionScale));
         

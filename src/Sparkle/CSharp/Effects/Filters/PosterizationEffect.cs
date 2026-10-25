@@ -50,6 +50,7 @@ public class PosterizationEffect : Effect {
         
         // Create the params buffer.
         this._parameterBuffer = new SimpleUniformBuffer<Parameters>(graphicsDevice, 1, ShaderStages.Fragment);
+        this._parameterBuffer.DeviceBuffer.Name = "ParameterBuffer";
         this._isDirty = true;
         
         // Add resize event.
