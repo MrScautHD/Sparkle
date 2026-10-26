@@ -223,11 +223,11 @@ public class LightTestScene : Scene {
         base.Init();
         
         // Thick fog.
-        //if (this.Renderer is PbrForwardRenderer forwardRenderer) {
-        //    forwardRenderer.FogDensity = 0.1F;
-        //    forwardRenderer.FogStartDistance = 0.0F;
-        //    forwardRenderer.FogEndDistance = 100.0F;
-        //}
+        if (this.Renderer is PbrForwardRenderer forwardRenderer) {
+            //forwardRenderer.FogDensity = 0.1F;
+            //forwardRenderer.FogStartDistance = 0.0F;
+            //forwardRenderer.FogEndDistance = 100.0F;
+        }
         
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
@@ -238,7 +238,7 @@ public class LightTestScene : Scene {
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
-        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F) {
+        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, nearPlane: 1.0F, farPlane: 10000F) {
             MovementSpeed = 100.0F
         };
         this.AddEntity(camera3D);

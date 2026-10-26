@@ -2196,7 +2196,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
                 0.0F,
                 0.0F
             ),
-            CameraPosition = new Vector4(camera.Position, MathF.Max(this.FogEndDistance, this.ClusterFarPlane)),
+            CameraPosition = new Vector4(camera.Position, MathF.Max(MathF.Max(this.FogEndDistance, this.ClusterFarPlane), this.ShadowCascadeFar) * 4.0F),
             GodRayDirectionIntensity = new Vector4(godRayDirection, godRayIntensity),
             GodRayColorLength = new Vector4(this.GodRayColor.AsVector3(), MathF.Max(1.0F, this.GodRayMaxLength)),
             GodRayParameters = new Vector4(

@@ -29,6 +29,17 @@ layout (location = 0) in vec2 fTexCoords;
 layout (location = 0) out vec4 fFragColor;
 
 /*
+ * Performs a stable perspective divide while preserving the sign of w.
+ *
+ * Using abs(w) here can mirror reconstructed positions for projections where
+ * clip-space reconstruction produces a negative homogeneous w.
+ */
+vec4 perspectiveDivide(vec4 position) {
+    float w = abs(position.w) > EPSILON ? position.w : (position.w < 0.0F ? -EPSILON : EPSILON);
+    return position / w;
+}
+
+/*
  * Builds a clip-space position from a screen UV and a depth value.
  *
  * UV space has its origin at the top-left, while clip space has its Y axis
@@ -48,8 +59,8 @@ vec3 reconstructWorldPosition(vec2 uv, float depth) {
     vec4 clipPosition = getClipPosition(uv, depth);
     vec4 worldPosition = inverseViewProjection * clipPosition;
     
-    // Undo the perspective projection. The w component is guarded against division by zero.
-    worldPosition /= max(abs(worldPosition.w), EPSILON);
+    // Undo the perspective projection while preserving the sign of w.
+    worldPosition = perspectiveDivide(worldPosition);
     
     return worldPosition.xyz;
 }
@@ -67,8 +78,8 @@ vec3 getWorldRayDirection(vec2 uv) {
     vec4 nearWorld = inverseViewProjection * nearClip;
     vec4 farWorld = inverseViewProjection * farClip;
     
-    nearWorld /= max(abs(nearWorld.w), EPSILON);
-    farWorld /= max(abs(farWorld.w), EPSILON);
+    nearWorld = perspectiveDivide(nearWorld);
+    farWorld = perspectiveDivide(farWorld);
     
     return normalize(farWorld.xyz - nearWorld.xyz);
 }
@@ -105,13 +116,29 @@ vec3 applyFogDither(vec3 color) {
 }
 
 /*
+ * Samples the depth buffer without filtering.
+ *
+ * Depth values are non-linear and must not be linearly filtered before world-position
+ * reconstruction. Filtered depth creates fake positions, which can flicker badly when
+ * looking at far terrain or when the camera is high above the scene.
+ */
+float sampleDepthNearest(vec2 uv) {
+    ivec2 size = textureSize(sampler2D(fDepth, fDepthSampler), 0);
+    ivec2 pixel = ivec2(clamp(uv, vec2(0.0F), vec2(1.0F)) * vec2(size));
+    pixel = clamp(pixel, ivec2(0), size - ivec2(1));
+    
+    return texelFetch(sampler2D(fDepth, fDepthSampler), pixel, 0).r;
+}
+
+/*
  * Returns whether a depth value belongs to the untouched far plane.
  *
- * Keep this threshold very tight. Real distant geometry can easily have depth
- * values above looser thresholds because perspective depth is highly non-linear.
+ * Only the actual cleared depth should count as sky. Real distant geometry can
+ * be extremely close to 1.0 with a large far plane, and treating it as sky makes
+ * fog switch/flicker when flying high.
  */
 bool isSkyDepth(float depth) {
-    return depth >= 0.999999F;
+    return depth >= 1.0F;
 }
 
 /*
@@ -320,7 +347,7 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
     // Moving from the current pixel toward that projected position approximates tracing toward the sun.
     vec3 lightProbeWorld = worldPosition - lightDirection * maxRayLength;
     vec4 lightProbeClip = inverse(inverseViewProjection) * vec4(lightProbeWorld, 1.0F);
-    lightProbeClip.xyz /= max(abs(lightProbeClip.w), EPSILON);
+    lightProbeClip = perspectiveDivide(lightProbeClip);
     
     vec2 lightProbeUv = lightProbeClip.xy * 0.5F + 0.5F;
     lightProbeUv.y = 1.0F - lightProbeUv.y;
@@ -355,7 +382,7 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
             break;
         }
         
-        float sampleDepth = texture(sampler2D(fDepth, fDepthSampler), sampleUv).r;
+        float sampleDepth = sampleDepthNearest(sampleUv);
         float sampleDistance = getSceneDistance(sampleUv, sampleDepth);
         
         // Nearby geometry blocks the ray. Sky/far pixels transmit it.
@@ -391,7 +418,7 @@ void main() {
     vec2 uv = clamp(fTexCoords, vec2(0.0F), vec2(1.0F));
     
     vec4 sceneColor = texture(sampler2D(fSceneColor, fSceneColorSampler), uv);
-    float depth = texture(sampler2D(fDepth, fDepthSampler), uv).r;
+    float depth = sampleDepthNearest(uv);
     
     vec3 viewDirection;
     vec3 fogWorldPosition;
