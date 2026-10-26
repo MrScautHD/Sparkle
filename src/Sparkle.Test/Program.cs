@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using Bliss.CSharp.Logging;
+using Bliss.CSharp.Windowing;
 using Sparkle.CSharp;
 using Sparkle.CSharp.GUI.Loading;
 using Sparkle.Test.CSharp;
@@ -8,6 +9,7 @@ using Sparkle.Test.CSharp.Dim3D;
 
 GameSettings settings = new GameSettings() {
     Title = "Sparkle - [Test]",
+    Backend = Window.GetPlatformDefaultBackend(),
     VSync = false // For some reason on 240+ Hz monitors on Windows, it starts stuttering (Solutions: 1. Move to Linux, 2. Set the Hz in your windows settings down for the monitor, 3. Just don't use vsync).
 };
 
