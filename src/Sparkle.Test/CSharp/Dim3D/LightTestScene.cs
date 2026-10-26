@@ -238,7 +238,9 @@ public class LightTestScene : Scene {
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
-        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F);
+        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F) {
+            MovementSpeed = 100.0F
+        };
         this.AddEntity(camera3D);
         
         // CAR

@@ -92,6 +92,11 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
     private readonly ConcurrentDictionary<TerrainRegionKey, byte> _regionBuildingSet;
     
     /// <summary>
+    /// Tracks far region batches that have finished rebuilding and are waiting for GPU upload.
+    /// </summary>
+    private readonly ConcurrentDictionary<TerrainRegionKey, byte> _regionUploadQueuedSet;
+    
+    /// <summary>
     /// Cached renderables for normal, non-batched terrain chunks.
     /// </summary>
     private readonly Dictionary<T, Renderable> _renderables;
@@ -250,6 +255,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
         this._chunksPendingVertexUpload = new HashSet<T>();
         this._pendingRegionUploads = new ConcurrentQueue<TerrainRegionBuildResult>();
         this._regionBuildingSet = new ConcurrentDictionary<TerrainRegionKey, byte>();
+        this._regionUploadQueuedSet = new ConcurrentDictionary<TerrainRegionKey, byte>();
         this._renderables = new Dictionary<T, Renderable>();
         this._chunkLocalBounds = new Dictionary<T, BoundingBox>();
         this._chunkLocalCenters = new Dictionary<T, Vector3>();
@@ -424,19 +430,19 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
                 continue;
             }
             
-            // Apply pending in-place mesh updates before visibility/Lod checks.
+            // Apply pending in-place mesh updates before visibility/LOD checks.
             if (this._chunksPendingVertexUpload.Contains(chunk)) {
                 chunk.UpdateGeometry();
                 this._chunksPendingVertexUpload.Remove(chunk);
             }
             
             // Skip chunks that LOD currently culls.
-            if (chunk.Lod < 0) {
+            if (chunk.CurrentLod < 0) {
                 continue;
             }
             
-            // Skip this chunk if it is already included inside a far region batch.
-            if (this._chunkRegions.TryGetValue(chunk, out TerrainRegionKey regionKey) && this._regionBatches.TryGetValue(regionKey, out TerrainRegionBatch? regionBatch) && regionBatch.Mesh != null) {
+            // Skip this chunk only when it is covered by a stable far region batch.
+            if (this._chunkRegions.TryGetValue(chunk, out TerrainRegionKey regionKey) && this._regionBatches.TryGetValue(regionKey, out TerrainRegionBatch? regionBatch) && regionBatch.Mesh != null && !this.IsRegionTransitioning(regionKey)) {
                 continue;
             }
             
@@ -712,7 +718,6 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
             // Apply the new LOD and update far batching membership.
             chunk.Lod = targetLod;
             this.MarkNeighborChunksDirty(chunk);
-            this.UpdateChunkRegionMembership(chunk);
         }
     }
     
@@ -855,6 +860,8 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
                 break;
             }
             
+            this._regionUploadQueuedSet.TryRemove(buildResult.Key, out _);
+            
             // Replace the old region batch with the newly built result.
             this.DisposeRegionBatch(buildResult.Key);
             
@@ -926,12 +933,26 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
     }
     
     /// <summary>
+    /// Checks whether a far region batch is currently changing and should not hide its individual chunks.
+    /// </summary>
+    /// <param name="regionKey">The region key to check.</param>
+    /// <returns><c>true</c> if the region is dirty, building, or waiting for upload.</returns>
+    private bool IsRegionTransitioning(TerrainRegionKey regionKey) {
+        return this._dirtyRegions.Contains(regionKey) || this._regionBuildingSet.ContainsKey(regionKey) || this._regionUploadQueuedSet.ContainsKey(regionKey);
+    }
+    
+    /// <summary>
     /// Draws all active far region batches.
     /// </summary>
     /// <param name="cam3D">The active 3D camera.</param>
     private void DrawFarRegionBatches(Camera3D cam3D) {
         foreach ((TerrainRegionKey regionKey, TerrainRegionBatch batch) in this._regionBatches) {
             Renderable? renderable = batch.Renderable;
+            
+            // During rebuild/upload transitions, draw the individual chunks instead of the stale region batch.
+            if (this.IsRegionTransitioning(regionKey)) {
+                continue;
+            }
             
             // Skip empty or disposed region batches.
             if (batch.Mesh == null || renderable == null) {
@@ -1217,6 +1238,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
         this._regionMembers.Clear();
         this._regionWorldBounds.Clear();
         this._dirtyRegions.Clear();
+        this._regionUploadQueuedSet.Clear();
     }
     
     /// <summary>
@@ -1346,6 +1368,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
         _ = Task.Run(() => {
             try {
                 TerrainRegionBuildResult buildResult = this.BuildRegionGeometry(regionKey, memberSnapshot);
+                this._regionUploadQueuedSet.TryAdd(regionKey, 0);
                 this._pendingRegionUploads.Enqueue(buildResult);
             }
             finally {
@@ -1514,6 +1537,7 @@ public class Terrain3D<T> : InterpolatedComponent, IDebugDrawable where T : clas
             // Clear region state.
             this._pendingRegionUploads.Clear();
             this._regionBuildingSet.Clear();
+            this._regionUploadQueuedSet.Clear();
             this._chunkRegions.Clear();
             this._regionMembers.Clear();
             this._regionWorldBounds.Clear();

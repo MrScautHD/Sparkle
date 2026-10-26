@@ -143,6 +143,11 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     private int _generatedVersion;
     
     /// <summary>
+    /// The LOD level that was used for the latest generated geometry.
+    /// </summary>
+    private int _generatedLod;
+    
+    /// <summary>
     /// Initializes a new instance of the <see cref="HeightmapChunk"/> class.
     /// </summary>
     /// <param name="terrain">The heightmap terrain this chunk belongs to.</param>
@@ -172,6 +177,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
         this._worldZSamples = [];
         this._dirtyVersion = 0;
         this._generatedVersion = 0;
+        this._generatedLod = -1;
     }
     
     /// <summary>
@@ -188,16 +194,18 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
     /// </summary>
     public void GenerateGeometry() {
         int targetVersion = this._dirtyVersion;
+        int targetLod = this.Lod;
         
         // Early out for invalid chunk dimensions/LOD.
-        if (this.Lod < 0 || this.Width <= 0 || this.Depth <= 0) {
+        if (targetLod < 0 || this.Width <= 0 || this.Depth <= 0) {
             this._pendingVertices = [];
             this._pendingIndices = [];
             this._generatedVersion = targetVersion;
+            this._generatedLod = targetLod;
             return;
         }
         
-        int step = Math.Max(1, 1 << this.Lod);
+        int step = Math.Max(1, 1 << targetLod);
         
         int width = this.Width;
         int depth = this.Depth;
@@ -325,6 +333,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
         this._worldXSamples = worldXValues;
         this._worldZSamples = worldZValues;
         this._generatedVersion = targetVersion;
+        this._generatedLod = targetLod;
     }
     
     /// <summary>
@@ -477,7 +486,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
         this.Mesh?.GenTangents();
         
         // Set current lod and mark this chunk as dirty.
-        this.CurrentLod = this.Lod;
+        this.CurrentLod = hasGeometry ? this._generatedLod : -1;
         this.IsDirty = this._dirtyVersion != this._generatedVersion;
     }
     
@@ -504,7 +513,7 @@ public class HeightmapChunk : Disposable, IHeightmapChunk {
         mesh.UpdateVertexBufferImmediate();
         
         // Keep state transitions consistent with UploadGeometry.
-        this.CurrentLod = this.Lod;
+        this.CurrentLod = this._generatedLod;
         this.IsDirty = this._dirtyVersion != this._generatedVersion;
     }
     
