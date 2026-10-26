@@ -53,7 +53,8 @@ public class LightTestScene : Scene {
     
     public MultiInstanceRenderer PlaneMultiInstanceRenderer { get; private set; }
     
-    public CubemapSkybox CloudySkybox { get; private set; }
+    public ProceduralSkybox CloudySkybox { get; private set; }
+    public UniversalEnvironment Environment { get; private set; }
     
     private const float _brushRadius = 8.0F;
     private const float _brushStrength = 4.0F;
@@ -214,30 +215,30 @@ public class LightTestScene : Scene {
         }
         
         // Skybox's:
-        this.CloudySkybox = new CubemapSkybox(content.GraphicsDevice, content.Load(new CubemapContent("content/skybox.png"), false));
+        this.CloudySkybox = new ProceduralSkybox(GlobalGraphicsAssets.GraphicsDevice);
+        this.Environment = new UniversalEnvironment(GlobalGraphicsAssets.GraphicsDevice, this.CloudySkybox);
     }
     
     protected override void Init() {
         base.Init();
         
-        if (this.Renderer is PbrForwardRenderer forwardRenderer) {
-            forwardRenderer.FogDensity = 0.018F;
-            forwardRenderer.FogFalloff = 0.03F;
-            forwardRenderer.FogStartDistance = 0;
-            forwardRenderer.FogEndDistance = 70;
-            forwardRenderer.FogColor = new Vector4(0.65F, 0.72F, 0.78F, 1.0F);
-        }
+        // Thick fog.
+        //if (this.Renderer is PbrForwardRenderer forwardRenderer) {
+        //    forwardRenderer.FogDensity = 0.1F;
+        //    forwardRenderer.FogStartDistance = 0.0F;
+        //    forwardRenderer.FogEndDistance = 100.0F;
+        //}
         
         // RELATIVE MOUSE MODE.
         Input.EnableRelativeMouseMode();
         
         // Set skybox.
         this.Renderer.SkyBox = this.CloudySkybox;
-        this.Renderer.EnvironmentProvider = new CubemapEnvironment(this.CloudySkybox);
+        this.Renderer.EnvironmentProvider = this.Environment;
         
         // CAMERA
         float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
-        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
+        Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F);
         this.AddEntity(camera3D);
         
         // CAR
@@ -396,7 +397,25 @@ public class LightTestScene : Scene {
                 float skyBrightness = 4.0F + (251.0F * daylight);
                 byte skyTint = (byte) Math.Clamp(skyBrightness, 0.0F, 255.0F);
                 
+                float nightExposure = 0.02F;
+                float dayExposure = 1.0F;
+                
                 this.CloudySkybox.Color = new Color(skyTint, skyTint, skyTint, 255);
+                this.CloudySkybox.Exposure = nightExposure * MathF.Pow(dayExposure / nightExposure, daylight);
+                this.CloudySkybox.SunDirection = sunDirection;
+                
+                Vector3 dayFog = new Vector3(0.725F, 0.804F, 0.902F);
+                Vector3 nightFog = new Vector3(0.012F, 0.016F, 0.035F);
+                Vector3 sunriseFog = new Vector3(1.0F, 0.471F, 0.275F);
+                
+                Vector3 fog = Vector3.Lerp(nightFog, dayFog, daylight);
+                
+                float twilight = 1.0F - MathF.Abs((daylight * 2.0F) - 1.0F);
+                twilight *= twilight;
+                
+                fog = Vector3.Lerp(fog, sunriseFog, twilight * 0.55F);
+                
+                pbrRenderer.FogColor = new Vector4(fog, pbrRenderer.FogColor.W);
             }
         }
         
@@ -592,6 +611,7 @@ public class LightTestScene : Scene {
         
         if (disposing) {
             this.CloudySkybox.Dispose();
+            this.Environment.Dispose();
         }
     }
 }

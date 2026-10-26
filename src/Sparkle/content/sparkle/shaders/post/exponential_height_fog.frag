@@ -1,6 +1,7 @@
 ﻿#version 450
 
 const float EPSILON = 0.000001F;
+const float LINE_INTEGRAL_EPSILON = 0.01F;
 const int MAX_GOD_RAY_SAMPLES = 96;
 
 layout (std140, set = 0, binding = 0) uniform FogBuffer {
@@ -84,6 +85,9 @@ float smooth01(float value) {
 
 /*
  * Small stable screen-space noise used to hide visible gradient banding in foggy sky.
+ *
+ * The noise only depends on the pixel position, so it does not flicker between frames.
+ * It is an interleaved gradient noise, which has an even distribution at pixel level.
  */
 float getDitherNoise(vec2 pixelPosition) {
     return fract(52.9829189F * fract(dot(pixelPosition, vec2(0.06711056F, 0.00583715F))));
@@ -93,6 +97,7 @@ float getDitherNoise(vec2 pixelPosition) {
  * Adds very small dithering in display-space-sized steps.
  *
  * This is intentionally tiny: enough to break fog/sky rings, not enough to look noisy.
+ * The noise is centered around zero and spans one 8-bit color step.
  */
 vec3 applyFogDither(vec3 color) {
     float noise = getDitherNoise(gl_FragCoord.xy) - 0.5F;
@@ -100,16 +105,167 @@ vec3 applyFogDither(vec3 color) {
 }
 
 /*
- * Returns a stable linear depth-like world distance for a screen pixel.
- * Sky pixels use the configured sky fog distance.
+ * Returns whether a depth value belongs to the untouched far plane.
+ *
+ * Keep this threshold very tight. Real distant geometry can easily have depth
+ * values above looser thresholds because perspective depth is highly non-linear.
+ */
+bool isSkyDepth(float depth) {
+    return depth >= 0.999999F;
+}
+
+/*
+ * Returns a stable linear world distance for a screen pixel.
+ *
+ * Sky pixels use the configured sky fog distance because they have no scene depth.
  */
 float getSceneDistance(vec2 uv, float depth) {
-    if (depth >= 0.9999F) {
+    
+    // The sky has no position, so the configured distance stands in for it.
+    if (isSkyDepth(depth)) {
         return cameraPosition.w;
     }
     
     vec3 worldPosition = reconstructWorldPosition(uv, depth);
     return length(worldPosition - cameraPosition.xyz);
+}
+
+/*
+ * Returns the square of a value.
+ */
+float pow2(float value) {
+    return value * value;
+}
+
+/*
+ * Calculates the density of exponential height fog, integrated along one ray.
+ *
+ * The density falls off exponentially with height, so the fog is thicker near the ground. The
+ * result is the average density along the ray (for a ray parameter from 0 to 1), multiplied
+ * by the density at the start of the ray. The caller multiplies it with the ray length, and
+ * exp2(-integral) is then the transmittance. The exact formula divides by the height change, so a
+ * Taylor approximation takes over for almost-horizontal rays, where the division would become unstable.
+ *
+ * heightFalloff: How quickly the density falls off with height.
+ * rayDirectionY: The vertical distance that the ray covers, positive when it goes up. It is not normalized.
+ * rayOriginDensity: The density at the start of the ray.
+ */
+float calculateLineIntegralShared(float heightFalloff, float rayDirectionY, float rayOriginDensity) {
+    
+    // How much the density changes along the ray, limited so exp2 below cannot overflow.
+    float falloff = max(-127.0F, heightFalloff * rayDirectionY);
+    
+    // First two terms of the Taylor series of the integral, used for almost-horizontal rays.
+    float log2Value = log(2.0F);
+    float lineIntegralTaylor = log2Value - 0.5F * pow2(log2Value) * falloff;
+    
+    if (abs(falloff) <= LINE_INTEGRAL_EPSILON) {
+        return rayOriginDensity * lineIntegralTaylor;
+    }
+    
+    // The exact integral of the exponential density along the ray.
+    float lineIntegral = (1.0F - exp2(-falloff)) / falloff;
+    return rayOriginDensity * lineIntegral;
+}
+
+/*
+ * Calculates exponential height fog for a world position.
+ *
+ * Returns:
+ *   rgb: Fog color contribution.
+ *   a:   Remaining scene transmittance.
+ *
+ * Final composition:
+ *   finalColor = sceneColor * transmittance + fogContribution
+ *
+ * The amount of fog depends on the density summed along the ray from the camera to the
+ * position, so thick fog near the ground affects a ray that travels through it for a long distance.
+ * The end distance is not a cutoff. The fog keeps building up naturally behind it.
+ */
+vec4 getExponentialHeightFog(vec3 worldPosition) {
+    
+    // Without intensity or density there is no fog, so the whole scene shines through.
+    if (fogColor.w <= 0.0F || fogParameters.x <= 0.0F) {
+        return vec4(0.0F, 0.0F, 0.0F, 1.0F);
+    }
+    
+    vec3 cameraToFragment = worldPosition - cameraPosition.xyz;
+    float distanceSquared = dot(cameraToFragment, cameraToFragment);
+    
+    // A position at the camera has no ray, which also avoids dividing by zero below.
+    if (distanceSquared <= EPSILON) {
+        return vec4(0.0F, 0.0F, 0.0F, 1.0F);
+    }
+    
+    // One inverse square root gives both the inverse distance and the distance.
+    float inverseDistance = inversesqrt(distanceSquared);
+    float distanceToFragment = distanceSquared * inverseDistance;
+    
+    // The part of the ray that is fogged. It starts as the whole ray and is shortened below if the fog starts further away.
+    float rayLength = distanceToFragment;
+    
+    // The vertical distance that the fogged part of the ray covers, positive when it goes up.
+    float rayDirectionY = cameraToFragment.y;
+    
+    // The intensity scales the density, so a lower intensity gives thinner fog.
+    float fogDensity = fogParameters.x * fogColor.w;
+    float heightFalloff = max(fogParameters.y, EPSILON);
+    float baseHeight = fogParameters.z;
+    float startDistance = max(fogParameters.w, 0.0F);
+    
+    // The density at the height of the camera: the density falls off by a factor of 2 for every 1 / falloff units of height above the base.
+    float cameraHeight = cameraPosition.y - baseHeight;
+    float rayOriginDensity = fogDensity * exp2(-max(-127.0F, heightFalloff * cameraHeight));
+    
+    // The fog starts at the start distance and not directly at the camera, so the ray is cut at that point.
+    if (startDistance > 0.0F && distanceToFragment > startDistance) {
+        
+        // How far along the ray (from 0 to 1) the start distance lies.
+        float excludeIntersectionTime = startDistance * inverseDistance;
+        
+        // The height of the point where the fog starts, and the vertical distance that remains behind it.
+        float cameraToExclusionY = excludeIntersectionTime * cameraToFragment.y;
+        float exclusionY = cameraPosition.y + cameraToExclusionY;
+        float exclusionToFragmentY = cameraToFragment.y - cameraToExclusionY;
+        
+        // Only the part of the ray behind that point is fogged, and its density starts at the height of that point.
+        rayLength = (1.0F - excludeIntersectionTime) * distanceToFragment;
+        rayDirectionY = exclusionToFragmentY;
+        
+        float exclusionHeight = exclusionY - baseHeight;
+        rayOriginDensity = fogDensity * exp2(-max(-127.0F, heightFalloff * exclusionHeight));
+    }
+    // The position is closer than the start distance, so it has no fog.
+    else if (startDistance > 0.0F) {
+        return vec4(0.0F, 0.0F, 0.0F, 1.0F);
+    }
+    
+    // The total amount of fog along the fogged part of the ray.
+    float sharedLineIntegral = calculateLineIntegralShared(heightFalloff, rayDirectionY, rayOriginDensity);
+    float heightLineIntegral = sharedLineIntegral * rayLength;
+    
+    // Transmittance: the part of the scene that shines through the fog. Lower values mean that more fog color replaces the scene color.
+    float transmittance = clamp(exp2(-heightLineIntegral), 0.0F, 1.0F);
+    
+    // A lower limit for the transmittance. It is zero, so the fog can become fully opaque, because the buffer has no setting for a minimum.
+    float minTransmittance = 0.0F;
+    transmittance = max(transmittance, minTransmittance);
+    
+    // The fog fades in softly after the start distance. The end distance is not a cutoff: it only sets
+    // the length of this fade-in (a quarter of the range between start and end, at least 10 units).
+    float fogStartDistance = max(fogParameters.w, 0.0F);
+    float fogEndDistance = max(fogDistanceParameters.x, fogStartDistance + EPSILON);
+    float fadeRange = max(fogEndDistance - fogStartDistance, EPSILON);
+    float startFadeRange = max(min(fadeRange * 0.25F, fadeRange), 10.0F);
+    float startFade = smooth01((distanceToFragment - fogStartDistance) / startFadeRange);
+    
+    // Apply the fade to the opacity, and convert it back to the transmittance.
+    float fogOpacity = (1.0F - transmittance) * startFade;
+    transmittance = 1.0F - fogOpacity;
+    
+    vec3 fogContribution = fogColor.rgb * fogOpacity;
+    
+    return vec4(fogContribution, transmittance);
 }
 
 /*
@@ -119,8 +275,12 @@ float getSceneDistance(vec2 uv, float depth) {
  * - march along the projected sun direction on screen,
  * - use depth discontinuities as occluders,
  * - fade with distance/fog so rays sit naturally inside the fog.
+ *
+ * Returns the amount of god ray light for the pixel in the range [0, 1].
  */
 float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fogFactor) {
+    
+    // Without intensity there are no god rays.
     if (godRayDirectionIntensity.w <= 0.0F) {
         return 0.0F;
     }
@@ -145,12 +305,12 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
         return 0.0F;
     }
     
-    vec3 worldPosition = currentDepth >= 0.9999F ? cameraPosition.xyz + viewDirection * cameraPosition.w : reconstructWorldPosition(uv, currentDepth);
-    
+    // The position of the pixel in the world. Sky pixels use the sky fog distance along their view ray.
+    vec3 worldPosition = isSkyDepth(currentDepth) ? cameraPosition.xyz + viewDirection * cameraPosition.w : reconstructWorldPosition(uv, currentDepth);
     float currentDistance = length(worldPosition - cameraPosition.xyz);
     
     // Nearby surfaces barely need fullscreen shaft accumulation.
-    if (currentDepth < 0.9999F && currentDistance < 8.0F) {
+    if (!isSkyDepth(currentDepth) && currentDistance < 8.0F) {
         return 0.0F;
     }
     
@@ -173,19 +333,24 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
     
     int sampleCount = int(sampleCountFloat);
     
+    // One step of the march on the screen. The density sets which fraction of the way to the light is covered.
     vec2 rayVector = (lightProbeUv - uv) * godRayParameters.y / sampleCountFloat;
     
     float illuminationDecay = 1.0F;
     float rayFactor = 0.0F;
     vec2 sampleUv = uv;
     
+    // March towards the light and collect the light that passes through open space.
     for (int index = 0; index < MAX_GOD_RAY_SAMPLES; index++) {
+        
+        // The loop bound is constant, so the actual sample count ends the loop early.
         if (index >= sampleCount) {
             break;
         }
         
         sampleUv += rayVector;
         
+        // The march left the screen, so there is no information beyond this point.
         if (sampleUv.x < 0.0F || sampleUv.x > 1.0F || sampleUv.y < 0.0F || sampleUv.y > 1.0F) {
             break;
         }
@@ -198,14 +363,17 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
         float distanceDelta = sampleDistance - currentDistance;
         float transmittance = smooth01(distanceDelta / depthFadeDistance);
         
-        if (sampleDepth >= 0.9999F) {
+        // The sky never blocks the light.
+        if (isSkyDepth(sampleDepth)) {
             transmittance = 1.0F;
         }
         
+        // Every sample adds its light, and the following samples count less.
         rayFactor += transmittance * illuminationDecay * godRayParameters.z;
         illuminationDecay *= godRayParameters.w;
     }
     
+    // Exposure, the angle to the light and the horizon fade scale the collected light.
     rayFactor *= godRayPostParameters.x;
     rayFactor *= viewLightAmount;
     rayFactor *= horizonFade;
@@ -219,128 +387,37 @@ float getGodRayFactor(vec2 uv, float currentDepth, vec3 viewDirection, float fog
     return clamp(rayFactor * godRayDirectionIntensity.w, 0.0F, 1.0F);
 }
 
-/*
- * Natural exponential height fog for geometry.
- *
- * This version avoids forced cutoffs. Fog reaches full opacity naturally through
- * density and distance instead of a visible artificial wall.
- */
-float getExponentialHeightFogFactor(vec3 worldPosition) {
-    if (fogColor.w <= 0.0F || fogParameters.x <= 0.0F) {
-        return 0.0F;
-    }
-    
-    vec3 cameraToFragment = worldPosition - cameraPosition.xyz;
-    float distanceToFragment = length(cameraToFragment);
-    
-    // The end distance is kept above the start distance, so the fade range can never be zero.
-    float fogStartDistance = max(fogParameters.w, 0.0F);
-    float fogEndDistance = max(fogDistanceParameters.x, fogStartDistance + EPSILON);
-    float fadeRange = max(fogEndDistance - fogStartDistance, EPSILON);
-    
-    vec3 rayDirection = cameraToFragment / max(distanceToFragment, EPSILON);
-    float heightFalloff = max(fogParameters.y, EPSILON);
-    float cameraHeight = cameraPosition.y - fogParameters.z;
-    
-    // Fog density at the height of the camera. The exponent is clamped to avoid overflow.
-    float startDensity = exp(clamp(-cameraHeight * heightFalloff, -50.0F, 50.0F));
-    float heightIntegral;
-    
-    // How fast the density changes along the ray, which depends on how steeply the ray goes up or down.
-    float heightFalloffAlongRay = rayDirection.y * heightFalloff;
-    
-    // For a (nearly) horizontal ray the density is constant, so the integral is a simple product.
-    if (abs(heightFalloffAlongRay) < 0.0001F) {
-        heightIntegral = startDensity * distanceToFragment;
-    }
-    // Otherwise, the density integrated along the ray has a closed form, so no ray marching is needed.
-    else {
-        float exponent = clamp(-heightFalloffAlongRay * distanceToFragment, -50.0F, 50.0F);
-        heightIntegral = startDensity * (1.0F - exp(exponent)) / heightFalloffAlongRay;
-    }
-    
-    // Beer-Lambert law: the more density the ray passes through, the less of the scene shines through.
-    float exponentialFog = 1.0F - exp(-fogParameters.x * max(heightIntegral, 0.0F));
-    
-    // Smoothly fade fog in around the start distance.
-    float startFadeRange = max(fadeRange * 0.25F, 10.0F);
-    float startFade = smooth01((distanceToFragment - fogStartDistance) / startFadeRange);
-    
-    // Optional broad distance shaping. This makes endDistance meaningful without creating a wall.
-    float distanceShape = smooth01((distanceToFragment - fogStartDistance) / fadeRange);
-    
-    // Keep the physically-shaped fog, but help it build smoothly over the configured distance range.
-    float fogFactor = max(exponentialFog, distanceShape * exponentialFog);
-    fogFactor *= startFade;
-    
-    // The fog intensity scales the final amount.
-    return clamp(fogFactor * fogColor.w, 0.0F, 1.0F);
-}
-
-/*
- * Sky fog uses view direction because skybox has no scene depth.
- */
-float getSkyFogFactor(vec3 viewDirection) {
-    if (fogColor.w <= 0.0F || fogParameters.x <= 0.0F) {
-        return 0.0F;
-    }
-    
-    // The sky has no distance, so the sky fog distance stands in for it (at least the end distance).
-    float fogStartDistance = max(fogParameters.w, 0.0F);
-    float fogEndDistance = max(fogDistanceParameters.x, fogStartDistance + EPSILON);
-    float skyDistance = max(cameraPosition.w, fogEndDistance);
-    
-    // 1 at horizon, 0 when looking straight up/down.
-    float horizonAmount = 1.0F - clamp(abs(viewDirection.y), 0.0F, 1.0F);
-    horizonAmount = smooth01(horizonAmount);
-    
-    // Wide horizon band. This keeps the fog from being only a thin line.
-    float horizonBand = pow(horizonAmount, 1.15F);
-    
-    // Fog density at the height of the camera, the same as for geometry.
-    float heightFalloff = max(fogParameters.y, EPSILON);
-    float cameraHeight = cameraPosition.y - fogParameters.z;
-    float startDensity = exp(clamp(-cameraHeight * heightFalloff, -50.0F, 50.0F));
-    
-    // Fog amount for a ray of the sky distance, as if the sky were geometry at that distance.
-    float skyFog = 1.0F - exp(-fogParameters.x * startDensity * skyDistance);
-    
-    // Force the horizon to match dense far fog.
-    // Looking upward keeps more of the original sky.
-    float horizonFog = mix(skyFog * 0.25F, 1.0F, horizonBand);
-    
-    // The fog intensity scales the final amount.
-    return clamp(horizonFog * fogColor.w, 0.0F, 1.0F);
-}
-
 void main() {
     vec2 uv = clamp(fTexCoords, vec2(0.0F), vec2(1.0F));
     
     vec4 sceneColor = texture(sampler2D(fSceneColor, fSceneColorSampler), uv);
     float depth = texture(sampler2D(fDepth, fDepthSampler), uv).r;
     
-    float fogFactor;
     vec3 viewDirection;
+    vec3 fogWorldPosition;
     
-    // Pixels at the far plane have no geometry, so they are the sky and are fogged by view direction.
-    if (depth >= 0.9999F) {
+    // Sky pixels have no position, so a point far along their view ray stands in for it.
+    if (isSkyDepth(depth)) {
         viewDirection = getWorldRayDirection(uv);
-        fogFactor = getSkyFogFactor(viewDirection);
+        fogWorldPosition = cameraPosition.xyz + viewDirection * max(cameraPosition.w, fogDistanceParameters.x);
     }
-    // Everything else is fogged by its distance and height.
+    // Everything else is fogged at its real position in the world.
     else {
-        vec3 worldPosition = reconstructWorldPosition(uv, depth);
-        viewDirection = normalize(worldPosition - cameraPosition.xyz);
-        fogFactor = getExponentialHeightFogFactor(worldPosition);
+        fogWorldPosition = reconstructWorldPosition(uv, depth);
+        viewDirection = normalize(fogWorldPosition - cameraPosition.xyz);
     }
     
-    // Blend from the scene color towards the fog color. The alpha stays untouched.
-    vec3 color = mix(sceneColor.rgb, fogColor.rgb, fogFactor);
+    vec4 fogResult = getExponentialHeightFog(fogWorldPosition);
     
-    // Add screen-space god rays after fog, so shafts sit inside the atmospheric layer.
+    // Composition: the scene shines through by the transmittance, and the fog color is added on top.
+    vec3 color = sceneColor.rgb * fogResult.a + fogResult.rgb;
+    
+    // God rays still need a fog amount, so convert transmittance into fog opacity.
+    float fogFactor = 1.0F - fogResult.a;
     float godRayFactor = getGodRayFactor(uv, depth, viewDirection, fogFactor);
     color += godRayColorLength.rgb * godRayFactor;
     
+    // Break up banding rings in smooth fog gradients.
     color = applyFogDither(color);
     
     fFragColor = vec4(color, sceneColor.a);

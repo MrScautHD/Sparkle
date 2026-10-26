@@ -399,8 +399,8 @@ float getShadowFactor(vec3 normal) {
     
     // Fragments outside the shadow map are treated as lit.
     if (projectionCoords.x < 0.0F || projectionCoords.x > 1.0F ||
-    projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
-    projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
+        projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
+        projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
         return 1.0F;
     }
     
@@ -427,7 +427,19 @@ float getShadowFactor(vec3 normal) {
         }
     }
     
-    return shadow / 9.0F;
+    float shadowFactor = shadow / 9.0F;
+    
+    // Fade shadows out near the edge of the shadow map.
+    float fadeWidth = 0.08F;
+    
+    float distanceToEdge = min(
+        min(projectionCoords.x, 1.0F - projectionCoords.x),
+        min(projectionCoords.y, 1.0F - projectionCoords.y)
+    );
+    
+    float edgeFade = smoothstep(0.0F, fadeWidth, distanceToEdge);
+    
+    return mix(1.0F, shadowFactor, edgeFade);
 }
 
 /*

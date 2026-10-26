@@ -10,12 +10,12 @@ public struct GameSettings {
     /// The title of the game window.
     /// </summary>
     public string Title { get; init; }
-
+    
     /// <summary>
     /// The dimensions of the game window, defined as a tuple containing the width and height in pixels.
     /// </summary>
     public (int Width, int Height) Size { get; init; }
-
+    
     /// <summary>
     /// The minimum allowed dimensions for the game window, defined as a tuple of width and height.
     /// </summary>
