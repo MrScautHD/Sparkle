@@ -7,12 +7,17 @@ namespace Sparkle.CSharp.Graphics.Rendering.Forward.Shadows;
 public class ShadowMap : Disposable {
     
     /// <summary>
+    /// Number of cascades stored in the shadow map texture array.
+    /// </summary>
+    public const int CascadeCount = 4;
+    
+    /// <summary>
     /// The graphics device used to create the GPU resources.
     /// </summary>
     public GraphicsDevice GraphicsDevice { get; private set; }
     
     /// <summary>
-    /// The width and height of the shadow map in pixels.
+    /// The width and height of each cascade shadow map layer in pixels.
     /// Changing it recreates the framebuffer.
     /// </summary>
     public int Resolution {
@@ -24,24 +29,26 @@ public class ShadowMap : Disposable {
             
             this._resolution = value;
             this.ClearResources();
-            this.CreateFramebuffer();
+            this.CreateFramebuffers();
         }
     }
     
     /// <summary>
-    /// The texture that stores the depth values written during the shadow pass.
+    /// The texture array that stores the depth values written during the shadow pass.
+    /// Each array layer is one cascade.
     /// </summary>
     public Texture DepthTexture { get; private set; }
     
     /// <summary>
-    /// The depth-stencil texture used for depth testing during the shadow pass.
+    /// The depth-stencil texture array used for depth testing during the shadow pass.
+    /// Each array layer matches one cascade.
     /// </summary>
     public Texture DepthTestTexture { get; private set; }
     
     /// <summary>
-    /// The framebuffer used to render the shadow pass.
+    /// The framebuffer for each cascade layer.
     /// </summary>
-    public Framebuffer Framebuffer { get; private set; }
+    public Framebuffer[] Framebuffers { get; private set; }
     
     /// <summary>
     /// The current resolution in pixels.
@@ -54,15 +61,16 @@ public class ShadowMap : Disposable {
     private Dictionary<(Sampler, SimpleTextureLayout), ResourceSet> _cachedResourceSets;
     
     /// <summary>
-    /// Creates a new shadow map.
+    /// Creates a new cascaded shadow map.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device used to create the GPU resources.</param>
-    /// <param name="resolution">The width and height of the shadow map in pixels.</param>
+    /// <param name="resolution">The width and height of each cascade layer in pixels.</param>
     public ShadowMap(GraphicsDevice graphicsDevice, int resolution = 2048) {
         this.GraphicsDevice = graphicsDevice;
         this._resolution = resolution;
+        this.Framebuffers = new Framebuffer[CascadeCount];
         this._cachedResourceSets = new Dictionary<(Sampler, SimpleTextureLayout), ResourceSet>();
-        this.CreateFramebuffer();
+        this.CreateFramebuffers();
     }
     
     /// <summary>
@@ -83,12 +91,18 @@ public class ShadowMap : Disposable {
     }
     
     /// <summary>
-    /// Creates the textures and the framebuffer using the current resolution.
+    /// Creates the texture arrays and one framebuffer per cascade layer.
     /// </summary>
-    private void CreateFramebuffer() {
-        this.DepthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, 1, PixelFormat.R32Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
-        this.DepthTestTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, 1, PixelFormat.D32FloatS8UInt, TextureUsage.DepthStencil));
-        this.Framebuffer = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(this.DepthTestTexture, this.DepthTexture));
+    private void CreateFramebuffers() {
+        this.DepthTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, CascadeCount, PixelFormat.R32Float, TextureUsage.RenderTarget | TextureUsage.Sampled));
+        this.DepthTestTexture = this.GraphicsDevice.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint) this._resolution, (uint) this._resolution, 1, CascadeCount, PixelFormat.D32FloatS8UInt, TextureUsage.DepthStencil));
+        
+        for (uint cascadeIndex = 0; cascadeIndex < CascadeCount; cascadeIndex++) {
+            this.Framebuffers[cascadeIndex] = this.GraphicsDevice.ResourceFactory.CreateFramebuffer(new FramebufferDescription(new FramebufferAttachmentDescription(this.DepthTestTexture, cascadeIndex), [
+                    new FramebufferAttachmentDescription(this.DepthTexture, cascadeIndex)
+                ])
+            );
+        }
     }
     
     /// <summary>
@@ -101,11 +115,14 @@ public class ShadowMap : Disposable {
         
         this._cachedResourceSets.Clear();
         
+        foreach (Framebuffer framebuffer in this.Framebuffers) {
+            framebuffer.Dispose();
+        }
+        
         this.DepthTexture.Dispose();
         this.DepthTestTexture.Dispose();
-        this.Framebuffer.Dispose();
     }
-    
+
     protected override void Dispose(bool disposing) {
         if (disposing) {
             this.ClearResources();

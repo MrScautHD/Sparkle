@@ -62,6 +62,8 @@
 #define EPSILON 0.000001F
 #endif 
 
+#define SHADOW_CASCADE_COUNT 4
+
 struct Light {
     int type; // Type: (Direction = 0, Point = 1, Spot = 2).
     float range; // Range.
@@ -109,12 +111,13 @@ layout(std430, set = CLUSTER_LIGHT_INDEX_BUFFER_SET, binding = 0) readonly buffe
 };
 
 layout (std140, set = SHADOW_BUFFER_SET, binding = 0) uniform ShadowBuffer {
-    float shadowMapResolution; // Shadow map resolution (in pixels).
-    float shadowBias; // Constant depth bias applied when comparing against the shadow map (reduces shadow acne).
-    float shadowNormalBias; // Offset along the surface normal when sampling the shadow map (reduces acne at grazing angles).
-    float shadowBiasClamp; // Maximum allowed total depth bias (prevents peter-panning).
+    float shadowMapResolution; // Shadow map resolution per cascade layer.
+    float shadowBias; // Constant depth bias applied when comparing against the shadow map.
+    float shadowNormalBias; // Offset along the surface normal when sampling the shadow map.
+    float shadowBiasClamp; // Maximum allowed total depth bias.
     vec4 shadowAmbientColor; // rgb: (Color), w: (Intensity).
-    mat4x4 lightVP; // View-projection matrix of the shadow light (world space -> light space).
+    mat4x4 lightVP[SHADOW_CASCADE_COUNT]; // View-projection matrices of the cascade light views.
+    vec4 cascadeSplits; // View-space far split distance for each cascade.
     vec4 shadowLightDirection; // xyz: (Direction), w: (Padding).
     vec4 shadowLightColor; // rgb: (Color), w: (Intensity).
 };
@@ -133,7 +136,7 @@ layout (set = METALLIC_TEXTURE_SET, binding = 1) uniform sampler fMetallicSample
 layout (set = EMISSION_TEXTURE_SET, binding = 0) uniform texture2D fEmission;
 layout (set = EMISSION_TEXTURE_SET, binding = 1) uniform sampler fEmissionSampler;
 
-layout (set = SHADOW_MAP_TEXTURE_SET, binding = 0) uniform texture2D fShadowMap;
+layout (set = SHADOW_MAP_TEXTURE_SET, binding = 0) uniform texture2DArray fShadowMap;
 layout (set = SHADOW_MAP_TEXTURE_SET, binding = 1) uniform samplerShadow fShadowMapSampler;
 
 layout (set = IRRADIANCE_MAP_TEXTURE_SET, binding = 0) uniform textureCube fIrradianceMap;
@@ -376,11 +379,51 @@ vec3 getImageBasedLightColor(vec3 albedo, vec3 normal, vec3 viewDirection, float
 }
 
 /*
+ * Returns the view-space depth of the current fragment.
+ */
+float getViewDepth() {
+    float viewZ = clusterView[0][2] * fWorldPosition.x
+                + clusterView[1][2] * fWorldPosition.y
+                + clusterView[2][2] * fWorldPosition.z
+                + clusterView[3][2];
+    
+    return max(-viewZ, 0.0F);
+}
+
+/*
+ * Selects the shadow cascade based on the fragment's view-space depth.
+ */
+int getShadowCascadeIndex() {
+    float viewDepth = getViewDepth();
+    
+    if (viewDepth <= cascadeSplits.x) {
+        return 0;
+    }
+    
+    if (viewDepth <= cascadeSplits.y) {
+        return 1;
+    }
+    
+    if (viewDepth <= cascadeSplits.z) {
+        return 2;
+    }
+    
+    return 3;
+}
+
+/*
+ * Samples a cascaded shadow-map array layer.
+ */
+float sampleCascadeShadow(int cascadeIndex, vec2 uv, float depth) {
+    return texture(sampler2DArrayShadow(fShadowMap, fShadowMapSampler), vec4(uv, float(cascadeIndex), depth));
+}
+
+/*
  * Calculates how much of the shadow light reaches the current fragment.
  *
- * Returns 1.0 for fully lit and 0.0 for fully shadowed. The fragment is
- * projected into the light's view, compared against the shadow map with a
- * slope-dependent bias, and filtered with a 3x3 PCF kernel for soft edges.
+ * Returns 1.0 for fully lit and 0.0 for fully shadowed. The fragment is assigned
+ * to a cascade by camera view depth, projected into that cascade's light view,
+ * compared against the matching texture-array layer, and filtered with a 3x3 PCF kernel.
  */
 float getShadowFactor(vec3 normal) {
     
@@ -389,15 +432,17 @@ float getShadowFactor(vec3 normal) {
         return 1.0F;
     }
     
-    // Transform the world position into light space and apply the perspective divide.
-    vec4 lightSpacePosition = lightVP * vec4(fWorldPosition, 1.0F);
+    int cascadeIndex = getShadowCascadeIndex();
+    
+    // Transform the world position into the selected cascade's light space and apply the perspective divide.
+    vec4 lightSpacePosition = lightVP[cascadeIndex] * vec4(fWorldPosition, 1.0F);
     vec3 projectionCoords = lightSpacePosition.xyz / lightSpacePosition.w;
     
     // Convert from clip space to UV space and flip Y to a top-left origin.
     projectionCoords.xy = projectionCoords.xy * 0.5F + 0.5F;
     projectionCoords.y = 1.0F - projectionCoords.y;
     
-    // Fragments outside the shadow map are treated as lit.
+    // Fragments outside the selected cascade are treated as lit.
     if (projectionCoords.x < 0.0F || projectionCoords.x > 1.0F ||
         projectionCoords.y < 0.0F || projectionCoords.y > 1.0F ||
         projectionCoords.z < 0.0F || projectionCoords.z > 1.0F) {
@@ -412,8 +457,11 @@ float getShadowFactor(vec3 normal) {
     // Surfaces at grazing angles to the light need a larger bias to avoid shadow acne.
     float normalBias = shadowNormalBias * (1.0F - normalDotLight);
     
+    // Slightly increase bias on distant cascades where one texel covers more world space.
+    float cascadeBiasScale = 1.0F + float(cascadeIndex) * 0.12F;
+    
     // The total bias is clamped so shadows do not detach from their casters.
-    float bias = clamp(shadowBias + normalBias, 0.0F, shadowBiasClamp);
+    float bias = clamp((shadowBias + normalBias) * cascadeBiasScale, 0.0F, shadowBiasClamp);
     
     vec2 texelSize = vec2(1.0F / shadowMapResolution);
     
@@ -423,13 +471,13 @@ float getShadowFactor(vec3 normal) {
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             vec2 offset = vec2(x, y) * texelSize;
-            shadow += texture(sampler2DShadow(fShadowMap, fShadowMapSampler), vec3(projectionCoords.xy + offset, currentDepth - bias));
+            shadow += sampleCascadeShadow(cascadeIndex, projectionCoords.xy + offset, currentDepth - bias);
         }
     }
     
     float shadowFactor = shadow / 9.0F;
     
-    // Fade shadows out near the edge of the shadow map.
+    // Fade shadows out near the edge of each cascade to hide hard boundaries and missing coverage.
     float fadeWidth = 0.08F;
     
     float distanceToEdge = min(

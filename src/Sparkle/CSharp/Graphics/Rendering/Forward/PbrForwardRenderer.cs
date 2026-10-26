@@ -124,7 +124,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     public float ClusterFarPlane;
     
     /// <summary>
-    /// Resolution of the shadow map.
+    /// Resolution of each shadow cascade layer.
     /// </summary>
     public int ShadowMapResolution {
         get => this._shadowMap.Resolution;
@@ -132,24 +132,19 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     }
     
     /// <summary>
-    /// Distance of the virtual shadow camera from the active camera.
+    /// Maximum camera distance covered by cascaded shadows.
+    /// </summary>
+    public float ShadowCascadeFar;
+    
+    /// <summary>
+    /// Blend between linear and logarithmic cascade split distribution. 0 = linear, 1 = logarithmic.
+    /// </summary>
+    public float ShadowCascadeSplitLambda;
+    
+    /// <summary>
+    /// Extra depth range added behind the cascade to catch off-screen shadow casters.
     /// </summary>
     public float ShadowCameraDistance;
-    
-    /// <summary>
-    /// Orthographic size of the shadow camera.
-    /// </summary>
-    public float ShadowCameraSize;
-    
-    /// <summary>
-    /// Near plane of the shadow camera.
-    /// </summary>
-    public float ShadowCameraNear;
-    
-    /// <summary>
-    /// Far plane of the shadow camera.
-    /// </summary>
-    public float ShadowCameraFar;
     
     /// <summary>
     /// Constant depth bias applied to shadow comparisons.
@@ -513,11 +508,10 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// <param name="maxLightsPerCluster">The maximum number of lights that can be stored for a single cluster. Further lights that affect the cluster are dropped. Together with the cluster counts, it defines the size of the cluster light index buffer.</param>
     /// <param name="clusterNearPlane">The distance to the camera, in world units, where the first depth slice of the cluster grid starts.</param>
     /// <param name="clusterFarPlane">The distance to the camera, in world units, where the last depth slice of the cluster grid ends.</param>
-    /// <param name="shadowMapResolution">The resolution of the square shadow map texture. Higher values result in better shadow quality at the cost of increased memory usage.</param>
-    /// <param name="shadowCameraDistance">The distance between the shadow camera and its focus point, measured along the light direction.</param>
-    /// <param name="shadowCameraSize">The size of the orthographic projection used by the shadow camera.</param>
-    /// <param name="shadowCameraNear">The near-plane distance for the shadow camera, defining the start of the camera's visible range.</param>
-    /// <param name="shadowCameraFar">The far-plane distance for the shadow camera, defining the end of the camera's visible range.</param>
+    /// <param name="shadowMapResolution">The resolution of each square shadow cascade layer. Higher values improve quality at the cost of memory and render time.</param>
+    /// <param name="shadowCascadeFar">The maximum camera distance covered by cascaded shadows.</param>
+    /// <param name="shadowCascadeSplitLambda">Blend between linear and logarithmic cascade split distribution. 0 is linear, 1 is logarithmic.</param>
+    /// <param name="shadowCameraDistance">Extra depth range added behind each cascade to catch off-screen shadow casters.</param>
     /// <param name="shadowBias">A constant depth bias value applied during shadow sampling to reduce shadow acne artifacts.</param>
     /// <param name="shadowNormalBias">A bias applied in the direction of the surface normal to mitigate artifacts at grazing angles during shadow sampling.</param>
     /// <param name="shadowBiasClamp">The maximum allowable offset for shadow bias adjustments, helping to prevent excessive "peter-panning" effects.</param>
@@ -568,13 +562,12 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         float clusterNearPlane = 1.0F,
         float clusterFarPlane = 250.0F,
         int shadowMapResolution = 2048,
-        float shadowCameraDistance = 80.0F,
-        float shadowCameraSize = 120.0F,
-        float shadowCameraNear = 0.1F,
-        float shadowCameraFar = 250.0F,
-        float shadowBias = 0.0005F,
-        float shadowNormalBias = 0.0025F,
-        float shadowBiasClamp = 0.01F,
+        float shadowCascadeFar = 600.0F,
+        float shadowCascadeSplitLambda = 0.75F,
+        float shadowCameraDistance = 350.0F,
+        float shadowBias = 0.00015F,
+        float shadowNormalBias = 0.0008F,
+        float shadowBiasClamp = 0.003F,
         bool enableBloom = true,
         float bloomSamples = 5.0F,
         float bloomQuality = 1.25F,
@@ -620,10 +613,9 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this.ClusterCountZ = clusterCountZ;
         this.ClusterNearPlane = clusterNearPlane;
         this.ClusterFarPlane = clusterFarPlane;
+        this.ShadowCascadeFar = shadowCascadeFar;
+        this.ShadowCascadeSplitLambda = shadowCascadeSplitLambda;
         this.ShadowCameraDistance = shadowCameraDistance;
-        this.ShadowCameraSize = shadowCameraSize;
-        this.ShadowCameraNear = shadowCameraNear;
-        this.ShadowCameraFar = shadowCameraFar;
         this.ShadowBias = shadowBias;
         this.ShadowNormalBias = shadowNormalBias;
         this.ShadowBiasClamp = shadowBiasClamp;
@@ -751,7 +743,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             ShadowNormalBias = shadowNormalBias,
             ShadowBiasClamp = shadowBiasClamp,
             AmbientColor = this.AmbientColor,
-            LightVP = Matrix4x4.Identity,
+            LightVP0 = Matrix4x4.Identity,
+            LightVP1 = Matrix4x4.Identity,
+            LightVP2 = Matrix4x4.Identity,
+            LightVP3 = Matrix4x4.Identity,
+            CascadeSplits = Vector4.Zero,
             LightDirection = -Vector4.UnitY,
             LightColor = Vector4.Zero
         };
@@ -1022,7 +1018,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             this._shadowData.ShadowNormalBias = this.ShadowNormalBias;
             this._shadowData.ShadowBiasClamp = this.ShadowBiasClamp;
             this._shadowData.AmbientColor = this.AmbientColor;
-            this._shadowData.LightVP = Matrix4x4.Identity;
+            this._shadowData.LightVP0 = Matrix4x4.Identity;
+            this._shadowData.LightVP1 = Matrix4x4.Identity;
+            this._shadowData.LightVP2 = Matrix4x4.Identity;
+            this._shadowData.LightVP3 = Matrix4x4.Identity;
+            this._shadowData.CascadeSplits = Vector4.Zero;
             this._shadowData.LightDirection = -Vector4.UnitY;
             this._shadowData.LightColor = Vector4.Zero;
             
@@ -1041,16 +1041,26 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             lightDirection = Vector3.Normalize(lightDirection);
         }
         
-        // Use a different up vector when the light points almost straight up or down, to avoid a degenerate view matrix.
-        Vector3 up = MathF.Abs(Vector3.Dot(lightDirection, Vector3.UnitY)) > 0.95F ? Vector3.UnitZ : Vector3.UnitY;
+        Span<float> cascadeSplits = stackalloc float[ShadowMap.CascadeCount];
+        this.CalculateCascadeSplits(this.ClusterNearPlane, this.ShadowCascadeFar, cascadeSplits);
         
-        // Place the light camera behind the main camera, looking along the light direction.
-        Vector3 lightPosition = cam.Position - lightDirection * this.ShadowCameraDistance;
+        Matrix4x4[] cascadeViews = new Matrix4x4[ShadowMap.CascadeCount];
+        Matrix4x4[] cascadeProjections = new Matrix4x4[ShadowMap.CascadeCount];
+        Matrix4x4[] cascadeViewProjections = new Matrix4x4[ShadowMap.CascadeCount];
         
-        // Build the light view, the orthographic projection and the combined matrix.
-        Matrix4x4 lightView = Matrix4x4.CreateLookAt(lightPosition, cam.Position, up);
-        Matrix4x4 lightProjection = Matrix4x4.CreateOrthographic(this.ShadowCameraSize, this.ShadowCameraSize, this.ShadowCameraNear, this.ShadowCameraFar);
-        Matrix4x4 lightVp = lightView * lightProjection;
+        float cascadeNear = this.ClusterNearPlane;
+        
+        for (int cascadeIndex = 0; cascadeIndex < ShadowMap.CascadeCount; cascadeIndex++) {
+            float cascadeFar = cascadeSplits[cascadeIndex];
+            
+            this.CreateCascadeMatrices(cam, lightDirection, cascadeNear, cascadeFar, out Matrix4x4 lightView, out Matrix4x4 lightProjection, out Matrix4x4 lightViewProjection);
+            
+            cascadeViews[cascadeIndex] = lightView;
+            cascadeProjections[cascadeIndex] = lightProjection;
+            cascadeViewProjections[cascadeIndex] = lightViewProjection;
+            
+            cascadeNear = cascadeFar;
+        }
         
         // Fill the shadow data.
         this._shadowData.ShadowMapResolution = this.ShadowMapResolution;
@@ -1058,7 +1068,11 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._shadowData.ShadowNormalBias = this.ShadowNormalBias;
         this._shadowData.ShadowBiasClamp = this.ShadowBiasClamp;
         this._shadowData.AmbientColor = Color.Black.ToRgbaFloatVec4();
-        this._shadowData.LightVP = lightVp;
+        this._shadowData.LightVP0 = cascadeViewProjections[0];
+        this._shadowData.LightVP1 = cascadeViewProjections[1];
+        this._shadowData.LightVP2 = cascadeViewProjections[2];
+        this._shadowData.LightVP3 = cascadeViewProjections[3];
+        this._shadowData.CascadeSplits = new Vector4(cascadeSplits[0], cascadeSplits[1], cascadeSplits[2], cascadeSplits[3]);
         this._shadowData.LightDirection = lightDirection.AsVector4();
         this._shadowData.LightColor = new Vector4(this._shadowLight.Color.ToRgbaFloatVec4().AsVector3(), this._shadowLight.Intensity);
         
@@ -1066,23 +1080,155 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
         this._shadowBuffer.SetValue(0, this._shadowData);
         this._shadowBuffer.UpdateBufferDeferred(commandList);
         
-        // Upload the light matrices.
-        this._shadowMatrixBuffer.SetValue(0, lightProjection);
-        this._shadowMatrixBuffer.SetValue(1, lightView);
-        this._shadowMatrixBuffer.UpdateBufferDeferred(commandList);
-        
-        // Switch to the shadow map.
-        commandList.SetFramebuffer(this._shadowMap.Framebuffer);
-        commandList.ClearColorTarget(0, new RgbaFloat(1.0F, 1.0F, 1.0F, 1.0F));
-        commandList.ClearDepthStencil(1.0F);
-        
-        // Render all opaque renderables into the shadow map.
-        foreach (Renderable renderable in this._opaqueRenderables) {
-            this.DrawPreparedShadowRenderable(commandList, renderable);
+        // Render every cascade into its matching texture-array layer.
+        for (int cascadeIndex = 0; cascadeIndex < ShadowMap.CascadeCount; cascadeIndex++) {
+            
+            // Upload the current cascade matrices for the shadow-map vertex shader.
+            this._shadowMatrixBuffer.SetValue(0, cascadeProjections[cascadeIndex]);
+            this._shadowMatrixBuffer.SetValue(1, cascadeViews[cascadeIndex]);
+            this._shadowMatrixBuffer.UpdateBufferDeferred(commandList);
+            
+            // Switch to this cascade framebuffer layer.
+            commandList.SetFramebuffer(this._shadowMap.Framebuffers[cascadeIndex]);
+            commandList.ClearColorTarget(0, new RgbaFloat(1.0F, 1.0F, 1.0F, 1.0F));
+            commandList.ClearDepthStencil(1.0F);
+            
+            // Render all opaque renderables into this cascade.
+            foreach (Renderable renderable in this._opaqueRenderables) {
+                this.DrawPreparedShadowRenderable(commandList, renderable, cascadeIndex);
+            }
         }
         
         // Set to default framebuffer back.
         commandList.SetFramebuffer(framebuffer);
+    }
+    
+    /// <summary>
+    /// Calculates practical split distances for the cascades.
+    /// </summary>
+    /// <param name="nearPlane">The first shadowed camera distance.</param>
+    /// <param name="farPlane">The last shadowed camera distance.</param>
+    /// <param name="splits">The output cascade far distances.</param>
+    private void CalculateCascadeSplits(float nearPlane, float farPlane, Span<float> splits) {
+        float near = MathF.Max(nearPlane, 0.001F);
+        float far = MathF.Max(farPlane, near + 0.001F);
+        float clipRange = far - near;
+        float lambda = Math.Clamp(this.ShadowCascadeSplitLambda, 0.0F, 1.0F);
+        
+        for (int i = 0; i < ShadowMap.CascadeCount; i++) {
+            float progress = (i + 1.0F) / ShadowMap.CascadeCount;
+            
+            float logarithmic = near * MathF.Pow(far / near, progress);
+            float linear = near + clipRange * progress;
+            
+            splits[i] = float.Lerp(linear, logarithmic, lambda);
+        }
+    }
+    
+    /// <summary>
+    /// Creates the light view, projection and combined matrix for one cascade.
+    /// </summary>
+    /// <param name="camera">The active camera.</param>
+    /// <param name="lightDirection">The normalized directional-light direction.</param>
+    /// <param name="cascadeNear">The near distance of the cascade in camera view space.</param>
+    /// <param name="cascadeFar">The far distance of the cascade in camera view space.</param>
+    /// <param name="lightView">The output light view matrix.</param>
+    /// <param name="lightProjection">The output light projection matrix.</param>
+    /// <param name="lightViewProjection">The output combined light view-projection matrix.</param>
+    private void CreateCascadeMatrices(Cam3D camera, Vector3 lightDirection, float cascadeNear, float cascadeFar, out Matrix4x4 lightView, out Matrix4x4 lightProjection, out Matrix4x4 lightViewProjection) {
+        Span<Vector3> corners = stackalloc Vector3[8];
+        this.GetFrustumCornersWorldSpace(camera, cascadeNear, cascadeFar, corners);
+        
+        Vector3 center = Vector3.Zero;
+        
+        for (int i = 0; i < corners.Length; i++) {
+            center += corners[i];
+        }
+        
+        center /= corners.Length;
+        
+        // Use a different up vector when the light points almost straight up or down, to avoid a degenerate view matrix.
+        Vector3 up = MathF.Abs(Vector3.Dot(lightDirection, Vector3.UnitY)) > 0.95F ? Vector3.UnitZ : Vector3.UnitY;
+        
+        // The light is placed behind the cascade center, looking along the light direction.
+        Vector3 lightPosition = center - lightDirection * this.ShadowCameraDistance;
+        lightView = Matrix4x4.CreateLookAt(lightPosition, center, up);
+        
+        Vector3 min = new Vector3(float.MaxValue);
+        Vector3 max = new Vector3(float.MinValue);
+        
+        for (int i = 0; i < corners.Length; i++) {
+            Vector3 lightSpaceCorner = Vector3.Transform(corners[i], lightView);
+            
+            min = Vector3.Min(min, lightSpaceCorner);
+            max = Vector3.Max(max, lightSpaceCorner);
+        }
+        
+        // Add depth padding so casters just outside the camera frustum can still cast into the cascade.
+        min.Z -= this.ShadowCameraDistance;
+        max.Z += this.ShadowCameraDistance;
+        
+        // Snap XY bounds to shadow texels to reduce shimmering when the camera moves.
+        float unitsPerTexelX = MathF.Max((max.X - min.X) / this.ShadowMapResolution, 0.0001F);
+        float unitsPerTexelY = MathF.Max((max.Y - min.Y) / this.ShadowMapResolution, 0.0001F);
+        
+        min.X = MathF.Floor(min.X / unitsPerTexelX) * unitsPerTexelX;
+        min.Y = MathF.Floor(min.Y / unitsPerTexelY) * unitsPerTexelY;
+        max.X = MathF.Floor(max.X / unitsPerTexelX) * unitsPerTexelX;
+        max.Y = MathF.Floor(max.Y / unitsPerTexelY) * unitsPerTexelY;
+        
+        lightProjection = Matrix4x4.CreateOrthographicOffCenter(min.X, max.X, min.Y, max.Y, -max.Z, -min.Z);
+        lightViewProjection = lightView * lightProjection;
+    }
+    
+    /// <summary>
+    /// Gets the eight world-space corners of a camera frustum slice.
+    /// </summary>
+    /// <param name="camera">The active camera.</param>
+    /// <param name="sliceNear">The near distance of the slice.</param>
+    /// <param name="sliceFar">The far distance of the slice.</param>
+    /// <param name="corners">The output world-space corners.</param>
+    private void GetFrustumCornersWorldSpace(Cam3D camera, float sliceNear, float sliceFar, Span<Vector3> corners) {
+        Matrix4x4 view = camera.GetView();
+        Matrix4x4 projection = camera.GetProjection();
+        
+        if (!Matrix4x4.Invert(view, out Matrix4x4 inverseView)) {
+            inverseView = Matrix4x4.Identity;
+        }
+        
+        Vector3 cameraRight = Vector3.Normalize(new Vector3(inverseView.M11, inverseView.M12, inverseView.M13));
+        Vector3 cameraUp = Vector3.Normalize(new Vector3(inverseView.M21, inverseView.M22, inverseView.M23));
+        Vector3 cameraForward = Vector3.Normalize(-new Vector3(inverseView.M31, inverseView.M32, inverseView.M33));
+        
+        float nearPlane = MathF.Max(sliceNear, 0.001F);
+        float farPlane = MathF.Max(sliceFar, nearPlane + 0.001F);
+        
+        // Extract aspect and vertical FOV from the projection matrix.
+        float verticalFov = 2.0F * MathF.Atan(1.0F / projection.M22);
+        float aspect = projection.M22 / projection.M11;
+        
+        float nearHeight = 2.0F * MathF.Tan(verticalFov * 0.5F) * nearPlane;
+        float nearWidth = nearHeight * aspect;
+        float farHeight = 2.0F * MathF.Tan(verticalFov * 0.5F) * farPlane;
+        float farWidth = farHeight * aspect;
+        
+        Vector3 nearCenter = camera.Position + cameraForward * nearPlane;
+        Vector3 farCenter = camera.Position + cameraForward * farPlane;
+        
+        Vector3 nearRight = cameraRight * (nearWidth * 0.5F);
+        Vector3 nearUp = cameraUp * (nearHeight * 0.5F);
+        Vector3 farRight = cameraRight * (farWidth * 0.5F);
+        Vector3 farUp = cameraUp * (farHeight * 0.5F);
+        
+        corners[0] = nearCenter - nearRight - nearUp;
+        corners[1] = nearCenter + nearRight - nearUp;
+        corners[2] = nearCenter + nearRight + nearUp;
+        corners[3] = nearCenter - nearRight + nearUp;
+        
+        corners[4] = farCenter - farRight - farUp;
+        corners[5] = farCenter + farRight - farUp;
+        corners[6] = farCenter + farRight + farUp;
+        corners[7] = farCenter - farRight + farUp;
     }
     
     /// <summary>
@@ -1169,7 +1315,7 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
             }
         }
         
-        // Set shadow map.
+        // Set shadow map texture array.
         commandList.SetGraphicsResourceSet(renderable.Material.Effect.GetTextureLayoutSlot("fShadowMap"), this._shadowMap.GetResourceSet(this._shadowSampler, renderable.Material.Effect.GetTextureLayout("fShadowMap")));
         
         // Set PBR environment reflection maps.
@@ -1235,11 +1381,12 @@ public class PbrForwardRenderer : Disposable, IRenderer, ILightReceiver {
     /// </summary>
     /// <param name="commandList">The command list used for issuing rendering commands to the GPU.</param>
     /// <param name="renderable">The renderable object representing the mesh and associated data needed for rendering.</param>
-    private void DrawPreparedShadowRenderable(CommandList commandList, Renderable renderable) {
+    /// <param name="cascadeIndex">The cascade layer being rendered.</param>
+    private void DrawPreparedShadowRenderable(CommandList commandList, Renderable renderable, int cascadeIndex) {
         Effect effect = renderable.HasBones ? GlobalGraphicsAssets.SkinnedShadowEffect : GlobalGraphicsAssets.ShadowEffect;
         
         // Set the pipeline parameters.
-        this._pipelineDescription.Outputs = this._shadowMap.Framebuffer.OutputDescription;
+        this._pipelineDescription.Outputs = this._shadowMap.Framebuffers[cascadeIndex].OutputDescription;
         this._pipelineDescription.BlendState = BlendStateDescription.SINGLE_DISABLED;
         this._pipelineDescription.RasterizerState = RasterizerStateDescription.DEFAULT with { CullMode = FaceCullMode.Front };
         this._pipelineDescription.DepthStencilState = DepthStencilStateDescription.DEPTH_ONLY_LESS_EQUAL;
