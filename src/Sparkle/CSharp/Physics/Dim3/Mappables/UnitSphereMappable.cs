@@ -3,7 +3,7 @@ using Jitter2.LinearMath;
 
 namespace Sparkle.CSharp.Physics.Dim3.Mappables;
 
-public class UnitSphere : ISupportMappable {
+public readonly struct UnitSphereMappable : ISupportMappable {
     
     /// <summary>
     /// Provides the support mapping for the unit sphere in a specified direction.
@@ -13,7 +13,7 @@ public class UnitSphere : ISupportMappable {
     public void SupportMap(in JVector direction, out JVector result) {
         result = JVector.Normalize(direction);
     }
-
+    
     /// <summary>
     /// Gets the center point of the unit sphere.
     /// </summary>

@@ -2,7 +2,10 @@ using System.Numerics;
 using Bliss.CSharp;
 using Bliss.CSharp.Camera.Dim3;
 using Bliss.CSharp.Colors;
+using Bliss.CSharp.Geometry.Meshes;
+using Bliss.CSharp.Geometry.Meshes.Data;
 using Bliss.CSharp.Graphics.Rendering;
+using Bliss.CSharp.Graphics.VertexTypes;
 using Bliss.CSharp.Images;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Keyboards;
@@ -10,6 +13,8 @@ using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Logging;
 using Bliss.CSharp.Materials;
 using Bliss.CSharp.Transformations;
+using Jitter2.Collision.Shapes;
+using Sparkle.CSharp.Content;
 using Sparkle.CSharp.Effects.Terrain;
 using Sparkle.CSharp.Entities;
 using Sparkle.CSharp.Entities.Components;
@@ -19,11 +24,17 @@ using Sparkle.CSharp.Terrain;
 using Sparkle.CSharp.Terrain.Chunks;
 using Sparkle.CSharp.Terrain.Generators;
 using Sparkle.CSharp.Terrain.Painting;
+using Sparkle.CSharp.Terrain.Physics;
 using Veldrith;
 
 namespace Sparkle.Test.CSharp.Dim3D;
 
 public class TerrainScene : Scene {
+
+    /**
+     * Meshes.
+     */
+    private Mesh<Vertex3D> _cubeMesh;
     
     private const float _brushRadius = 8.0F;
     private const float _brushStrength = 4.0F;
@@ -33,7 +44,14 @@ public class TerrainScene : Scene {
     private ITerrain<IHeightmapChunk>? _terrain;
     
     public TerrainScene() : base("Terrain3D-Scene", SceneType.Scene3D) { }
-    
+
+    protected override void Load(ContentManager content) {
+        base.Load(content);
+        
+        this._cubeMesh = Mesh<Vertex3D>.GenCube(GlobalGraphicsAssets.GraphicsDevice, 1, 1, 1);
+        this._cubeMesh.Material.SetMapTexture(new MaterialMapKey(MaterialMapType.Albedo), ContentRegistry.Sprite);
+    }
+
     protected override void Init() {
         base.Init();
         
@@ -59,7 +77,8 @@ public class TerrainScene : Scene {
         };
         
         Entity terrainEntity = new Entity(new Transform() { Translation = new Vector3(0.0F, -128.0F, 0.0F) }, "terrain");
-        terrainEntity.AddComponent(new Terrain3D<IHeightmapChunk>(this.CreateTerrainAsync, terrainSettings, Vector3.Zero, frustumCulling: true));
+        terrainEntity.AddComponent(new Terrain3D<IHeightmapChunk>(this.CreateTerrainAsync, terrainSettings, Vector3.Zero));
+        terrainEntity.AddComponent(new TerrainPhysics3D<IHeightmapChunk>(Vector3.Zero, new HeightmapTerrainPhysicsProvider<IHeightmapChunk>()));
         this.AddEntity(terrainEntity);
     }
     
@@ -83,6 +102,19 @@ public class TerrainScene : Scene {
                 else {
                     Logger.Warn("This backend to not support fill mode [Wireframe]");
                 }
+            }
+        }
+        
+        if (Input.IsKeyPressed(KeyboardKey.F)) {
+            Camera3D? camera = SceneManager.ActiveCam3D;
+            
+            if (camera != null) {
+                Entity entity = new Entity(new Transform() { Translation = camera.Position });
+                entity.AddComponent(new MeshRenderer(this._cubeMesh, Vector3.Zero));
+                entity.AddComponent(new RigidBody3D(new BoxShape(1)));
+                this.AddEntity(entity);
+                
+                entity.GetComponent<RigidBody3D>()?.Velocity = camera.GetForward() * 10;
             }
         }
         
@@ -136,8 +168,8 @@ public class TerrainScene : Scene {
         }
         
         float strength = (addMaterial ? _brushStrength : -_brushStrength) * (float) delta;
-        //this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
-        this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 1, TerrainBrushType.Circle);
+        this._terrain.ApplyBrush(hitPosition, _brushRadius, strength, TerrainBrushType.Circle);
+        //this._terrain.Painter.ApplyTextureLayerBrush(hitPosition, _brushRadius, strength, 1, TerrainBrushType.Circle);
     }
     
     private async Task<ITerrain<IHeightmapChunk>> CreateTerrainAsync() {
@@ -172,5 +204,13 @@ public class TerrainScene : Scene {
         
         this._terrain = terrain;
         return terrain;
+    }
+
+    protected override void Dispose(bool disposing) {
+        base.Dispose(disposing);
+
+        if (disposing) {
+            this._cubeMesh.Dispose();
+        }
     }
 }

@@ -96,7 +96,7 @@ public class Animator : InterpolatedComponent {
         base.Init();
         
         if (!this.Entity.TryGetComponent(out this._modelRenderer)) {
-            Logger.Error($"The Animator component requires a ModelRenderer component to function properly. Please ensure a ModelRenderer is attached to Entity with the id: [{this.Entity.Id}]");
+            throw new InvalidOperationException($"The Animator component requires a ModelRenderer component to function properly. Please ensure a ModelRenderer is attached to Entity with the id: [{this.Entity.Id}]");
         }
     }
     

@@ -54,7 +54,7 @@ public class SoftBodySphere : SimpleSoftBody {
         
         Vector3 halfSize = size / 2 * scale;
         
-        List<JTriangle> triangles = ShapeHelper.Tessellate(new UnitSphere(), subdivisions)
+        List<JTriangle> triangles = ShapeHelper.Tessellate(new UnitSphereMappable(), subdivisions)
             .Select(t => new JTriangle(
                 Vector3.Transform(t.V0, rotation) * halfSize,
                 Vector3.Transform(t.V1, rotation) * halfSize,
