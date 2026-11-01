@@ -76,7 +76,7 @@ public class SceneSwitcherMenu : Gui {
             menuContentInsets: (5, 5, 3, 3)
         );
         
-        chooserDownElement.MenuToggled += (isMenuOpen) => {
+        chooserDownElement.MenuToggled += (_, isMenuOpen) => {
             if (isMenuOpen) {
                 if (chooserDownElement.Options.Count > chooserDownElement.MaxVisibleOptions) {
                     chooserDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);
@@ -89,7 +89,7 @@ public class SceneSwitcherMenu : Gui {
             }
         };
         
-        chooserDownElement.OptionChanged += optionData => {
+        chooserDownElement.OptionChanged += (_, optionData) => {
             switch (optionData.Text) {
                 case "Test 3D":
                     GuiManager.SetGui(null);

@@ -4,10 +4,8 @@ using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 
@@ -36,7 +34,7 @@ public class RectangleSlideBarElement : GuiElement {
         set {
             float clampedValue = Math.Clamp(value, this.MinValue, this.MaxValue);
             field = this.WholeNumbers ? MathF.Round(clampedValue) : clampedValue;
-            this.ValueUpdated?.Invoke(field);
+            this.ValueUpdated?.Invoke(this, field);
         }
     }
     
@@ -49,7 +47,7 @@ public class RectangleSlideBarElement : GuiElement {
     /// An event that triggers when the slider value is updated.
     /// The new value of the slider is passed as a parameter to the attached event handlers.
     /// </summary>
-    public event Action<float>? ValueUpdated;
+    public event Action<RectangleSlideBarElement, float>? ValueUpdated;
     
     /// <summary>
     /// The user is currently dragging the slider.

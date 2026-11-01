@@ -40,7 +40,7 @@ public class ToggleElement : GuiElement {
     /// <summary>
     /// Event invoked when the toggle state changes.
     /// </summary>
-    public event Action<bool>? Toggled;
+    public event Action<ToggleElement, bool>? Toggled;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="ToggleElement"/> class.
@@ -89,7 +89,7 @@ public class ToggleElement : GuiElement {
         if (this.Interactable) {
             if (this.IsClicked) {
                 this.ToggleState = !this.ToggleState;
-                this.Toggled?.Invoke(this.ToggleState);
+                this.Toggled?.Invoke(this, this.ToggleState);
             }
         }
     }

@@ -1,10 +1,8 @@
 using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Transformations;
-using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI.Batching;
 using Sparkle.CSharp.GUI.Elements.Data;
-using Veldrith;
 
 namespace Sparkle.CSharp.GUI.Elements;
 

@@ -154,7 +154,7 @@ public class TestGui : Gui {
             menuContentInsets: (5, 3, 3, 3)
         );
         
-        dropDownElement.MenuToggled += (isMenuOpen) => {
+        dropDownElement.MenuToggled += (_, isMenuOpen) => {
             if (isMenuOpen) {
                 if (dropDownElement.Options.Count > dropDownElement.MaxVisibleOptions) {
                     dropDownElement.DropDownData.MenuSourceRect = new Rectangle(0, 0, (int) ContentRegistry.UiBannerEdgeLessTexture.Width - 2, (int) ContentRegistry.UiBannerEdgeLessTexture.Height);

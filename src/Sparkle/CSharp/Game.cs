@@ -457,6 +457,7 @@ public class Game : Disposable {
         SceneManager.OnDraw(context, framebuffer);
         OverlayManager.OnDraw(context, framebuffer);
         GuiManager.OnDraw(context, framebuffer);
+        OverlayManager.OnAfterDraw(context, framebuffer);
         ImGuiOverlayManager.OnDraw(context, framebuffer);
     }
     

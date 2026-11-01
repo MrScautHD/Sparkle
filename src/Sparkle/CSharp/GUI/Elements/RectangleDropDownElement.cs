@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using Bliss.CSharp.Colors;
 using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Primitives;
-using Bliss.CSharp.Graphics.Rendering.Renderers.Batches.Sprites;
 using Bliss.CSharp.Interact;
 using Bliss.CSharp.Interact.Mice;
 using Bliss.CSharp.Transformations;
@@ -32,7 +31,10 @@ public class RectangleDropDownElement : GuiElement {
     /// <summary>
     /// The currently selected option from the dropdown menu.
     /// </summary>
-    public LabelData? SelectedOption { get; private set; }
+    public LabelData? SelectedOption { 
+        get;
+        set => field = value != null && this.Options.Contains(value) ? value : this.Options.FirstOrDefault();
+    }
     
     /// <summary>
     /// The text alignment used for the selected value displayed in the dropdown field.
@@ -87,12 +89,12 @@ public class RectangleDropDownElement : GuiElement {
     /// <summary>
     /// Triggered when the selected option in the dropdown menu changes.
     /// </summary>
-    public event Action<LabelData>? OptionChanged;
+    public event Action<RectangleDropDownElement, LabelData>? OptionChanged;
     
     /// <summary>
     /// Event triggered when the dropdown menu is toggled open or closed.
     /// </summary>
-    public event Action<bool>? MenuToggled;
+    public event Action<RectangleDropDownElement, bool>? MenuToggled;
     
     /// <summary>
     /// The current rotational state of the dropdown arrow, used for visual animation when opening or closing the menu.
@@ -163,7 +165,7 @@ public class RectangleDropDownElement : GuiElement {
         this.DropDownData = dropDownData;
         this.Options = options;
         this.MaxVisibleOptions = Math.Max(2, maxVisibleOptions);
-        this.SelectedOption = defaultOption != null && this.Options.Contains(defaultOption) ? defaultOption : this.Options.FirstOrDefault();
+        this.SelectedOption = defaultOption;
         this.FieldTextAlignment = fieldTextAlignment;
         this.MenuTextAlignment = menuTextAlignment;
         this.FieldTextOffset = fieldTextOffset ?? Vector2.Zero;
@@ -289,7 +291,7 @@ public class RectangleDropDownElement : GuiElement {
             
             if (fieldRect.Contains(mousePos, fieldOrigin, this.Rotation)) {
                 this.IsMenuOpen = !this.IsMenuOpen;
-                this.MenuToggled?.Invoke(this.IsMenuOpen);
+                this.MenuToggled?.Invoke(this, this.IsMenuOpen);
             }
             else if (this.IsMenuOpen) {
                 
@@ -330,8 +332,8 @@ public class RectangleDropDownElement : GuiElement {
                         if (itemRect.Contains(mousePos, itemOrigin, this.Rotation)) {
                             this.SelectedOption = this.Options[optionIndex];
                             this.IsMenuOpen = false;
-                            this.OptionChanged?.Invoke(this.SelectedOption);
-                            this.MenuToggled?.Invoke(this.IsMenuOpen);
+                            this.OptionChanged?.Invoke(this, this.SelectedOption);
+                            this.MenuToggled?.Invoke(this, this.IsMenuOpen);
                             break;
                         }
                     }
@@ -340,7 +342,7 @@ public class RectangleDropDownElement : GuiElement {
                     
                     // Clicked outside the field and outside the visible menu, then close the menu.
                     this.IsMenuOpen = false;
-                    this.MenuToggled?.Invoke(this.IsMenuOpen);
+                    this.MenuToggled?.Invoke(this, this.IsMenuOpen);
                 }
             }
         }
@@ -348,7 +350,7 @@ public class RectangleDropDownElement : GuiElement {
         if (!this.IsSelected || this.Options.Count <= 0) {
             if (this.IsMenuOpen) {
                 this.IsMenuOpen = false;
-                this.MenuToggled?.Invoke(this.IsMenuOpen);
+                this.MenuToggled?.Invoke(this, this.IsMenuOpen);
             }
         }
     }

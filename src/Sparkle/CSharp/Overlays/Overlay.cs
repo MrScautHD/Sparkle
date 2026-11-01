@@ -44,14 +44,23 @@ public abstract class Overlay : Disposable {
     /// </summary>
     /// <param name="timeStep">The fixed time step interval for the update.</param>
     protected internal virtual void FixedUpdate(double timeStep) { }
-
+    
     /// <summary>
-    /// Draws the overlay.
+    /// Draws the overlay. Called once per frame while the overlay is enabled,
+    /// after the scene has been drawn and before the GUI.
     /// </summary>
     /// <param name="context">The graphics context used for rendering.</param>
     /// <param name="framebuffer">The framebuffer to which the overlay is rendered.</param>
     protected internal abstract void Draw(GraphicsContext context, Framebuffer framebuffer);
-
+    
+    /// <summary>
+    /// Executes logic after the overlay and the GUI have been drawn, and before the ImGui overlays are drawn.
+    /// Useful for rendering on top of the GUI.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering.</param>
+    /// <param name="framebuffer">The framebuffer to which the overlay is rendered.</param>
+    protected internal virtual void AfterDraw(GraphicsContext context, Framebuffer framebuffer) { }
+    
     /// <summary>
     /// Executes when the window is resized.
     /// </summary>

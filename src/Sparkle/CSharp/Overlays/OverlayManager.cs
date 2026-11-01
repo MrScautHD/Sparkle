@@ -86,6 +86,7 @@ public static class OverlayManager {
     
     /// <summary>
     /// Draws all active overlays using the provided graphics context and framebuffer.
+    /// Called after the scene has been drawn and before the GUI is drawn.
     /// </summary>
     /// <param name="context">The graphics context used for rendering operations.</param>
     /// <param name="framebuffer">The framebuffer to which the overlays are rendered.</param>
@@ -93,6 +94,20 @@ public static class OverlayManager {
         foreach (Overlay overlay in _overlays) {
             if (overlay.Enabled) {
                 overlay.Draw(context, framebuffer);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Executes the after-draw step of all active overlays using the provided graphics context and framebuffer.
+    /// Called after the scene, overlays and GUI have been drawn, and before the ImGui overlays are drawn.
+    /// </summary>
+    /// <param name="context">The graphics context used for rendering operations.</param>
+    /// <param name="framebuffer">The framebuffer to which the overlays are rendered.</param>
+    internal static void OnAfterDraw(GraphicsContext context, Framebuffer framebuffer) {
+        foreach (Overlay overlay in _overlays) {
+            if (overlay.Enabled) {
+                overlay.AfterDraw(context, framebuffer);
             }
         }
     }

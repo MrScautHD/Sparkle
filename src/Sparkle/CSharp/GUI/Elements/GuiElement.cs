@@ -93,10 +93,16 @@ public abstract class GuiElement : Disposable {
     public Vector2 ScaledSize { get; private set; }
     
     /// <summary>
+    /// An event triggered when the selection state of the GUI element changes.
+    /// The event provides the GUI element and the new selection state as arguments.
+    /// </summary>
+    public event Action<GuiElement, bool>? SelectionChanged;
+    
+    /// <summary>
     /// A function invoked to handle click behavior for the GUI element.
     /// Should return a boolean indicating if the element was successfully clicked.
     /// </summary>
-    private Func<GuiElement, bool>? _clickFunc;
+    private readonly Func<GuiElement, bool>? _clickFunc;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="GuiElement"/> class.
@@ -148,7 +154,7 @@ public abstract class GuiElement : Disposable {
             if (Input.IsMouseButtonPressed(MouseButton.Left) && this.Interactable) {
                 if (this._clickFunc?.Invoke(this) ?? true) {
                     this.IsClicked = true;
-                    this.IsSelected = true;
+                    this.SetSelected(true);
                 }
             }
             else {
@@ -160,12 +166,12 @@ public abstract class GuiElement : Disposable {
             this.IsClicked = false;
             
             if (Input.IsMouseButtonPressed(MouseButton.Left)) {
-                this.IsSelected = false;
+                this.SetSelected(false);
             }
         }
         
         if (Input.IsKeyPressed(KeyboardKey.Escape) || Input.IsKeyPressed(KeyboardKey.Enter) || !this.Interactable) {
-            this.IsSelected = false;
+            this.SetSelected(false);
         }
     }
     
@@ -263,5 +269,18 @@ public abstract class GuiElement : Disposable {
     internal void UpdatePosAndSize() {
         this.ScaledSize = this.CalculateSize();
         this.Position = this.CalculatePos();
+    }
+    
+    /// <summary>
+    /// Updates the selection state of the <see cref="GuiElement"/>.
+    /// </summary>
+    /// <param name="value">A boolean indicating whether the element should be selected.</param>
+    private void SetSelected(bool value) {
+        if (this.IsSelected == value) {
+            return;
+        }
+        
+        this.IsSelected = value;
+        this.SelectionChanged?.Invoke(this, value);
     }
 }

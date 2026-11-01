@@ -59,7 +59,12 @@ public class RectangleTextBoxElement : GuiElement {
     /// The horizontal offsets to be applied to the text edges within the textbox.
     /// </summary>
     public (float Left, float Right) TextEdgeOffset;
-
+    
+    /// <summary>
+    /// Event triggered when the text content of the rectangle-based textbox element changes.
+    /// </summary>
+    public event Action<RectangleTextBoxElement, string>? TextChanged;
+    
     /// <summary>
     /// Indicates whether the text input system is currently active for the textbox element.
     /// </summary>
@@ -151,6 +156,9 @@ public class RectangleTextBoxElement : GuiElement {
     /// <param name="interactionHandled">A reference to a boolean tracking whether interaction has already been handled by another element.</param>
     protected internal override void Update(double delta, ref bool interactionHandled) {
         base.Update(delta, ref interactionHandled);
+        
+        // Remember the text before any user input is processed this frame.
+        string textBeforeInput = this.LabelData.Text;
         
         // Enable text input system.
         if (this.IsSelected) {
@@ -265,7 +273,7 @@ public class RectangleTextBoxElement : GuiElement {
                         
                         this._caretIndex--;
                     }
-
+                    
                     // Adjust scroll offset.
                     this.UpdateTextScroll(this.LabelData);
                     
@@ -295,10 +303,10 @@ public class RectangleTextBoxElement : GuiElement {
                         } else {
                             this._highlightRange = (0, 0);
                         }
-
+                        
                         this._caretIndex++;
                     }
-
+                    
                     // Adjust scroll offset.
                     this.UpdateTextScroll(this.LabelData);
                     
@@ -443,6 +451,11 @@ public class RectangleTextBoxElement : GuiElement {
             
             // Reset highlight.
             this._highlightRange = (0, 0);
+        }
+        
+        // Fire TextChanged once if the user changed the text this frame.
+        if (this.LabelData.Text != textBeforeInput) {
+            this.TextChanged?.Invoke(this, this.LabelData.Text);
         }
         
         // Caret timer.
