@@ -1,3 +1,4 @@
+
 name: Build Sparkle
 
 on:
@@ -14,7 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Run
     steps:
     - uses: actions/checkout@v4
 
@@ -39,11 +39,17 @@ jobs:
   # Publish to NuGet
   publish-nuget:
     runs-on: ubuntu-latest
-    
-    # Run
+    needs: build
+    if: github.event_name == 'release'
+
+    # Enable GitHub OIDC authentication
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - uses: actions/checkout@v4
-      
+
       # Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -53,13 +59,18 @@ jobs:
       # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
-      
+
       # Build and pack NuGet package
       - name: Pack NuGet package
-        if: github.event_name == 'release'
         run: dotnet pack src/Sparkle -p:PackageVersion=${{ github.event.release.tag_name }} --configuration Release --output nuget
+
+      # Authenticate with NuGet using OIDC
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: MrScautHD
 
       # Publish NuGet package
       - name: Publish NuGet package
-        if: github.event_name == 'release'
-        run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push nuget/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
