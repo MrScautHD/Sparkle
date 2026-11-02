@@ -165,13 +165,13 @@ public class Game : Disposable {
         
         this.MainWindow = Window.CreateWindow(WindowType.Sdl3, this.Settings.Size.Width, this.Settings.Size.Height, this.Settings.Title, this.Settings.WindowFlags, options, this.Settings.Backend, out GraphicsDevice graphicsDevice);
         this.MainWindow.SetMinimumSize(this.Settings.MinSize.Width, this.Settings.MinSize.Height);
-        this.MainWindow.Resized += () => this.OnResize(new Rectangle(this.MainWindow.GetX(), this.MainWindow.GetY(), this.MainWindow.GetWidth(), this.MainWindow.GetHeight()));
+        this.MainWindow.Resized += () => this.OnResize(new Rectangle(0, 0, this.MainWindow.GetWidthInPixels(), this.MainWindow.GetHeightInPixels()));
         this.GraphicsDevice = graphicsDevice;
         this.GraphicsDevice.AllowTearing = this.Settings.AllowTearing;
         
         Logger.Info("\t> Window Info:");
         Logger.Info($"\t \t> Window type: {WindowType.Sdl3}");
-        Logger.Info($"\t \t> Window Size: {this.MainWindow.GetWidth()} x {this.MainWindow.GetHeight()}");
+        Logger.Info($"\t \t> Window Size: {this.MainWindow.GetWidthInPixels()} x {this.MainWindow.GetHeightInPixels()}");
         Logger.Info("\t> Device Info:");
         Logger.Info($"\t \t> Vendor: {this.GraphicsDevice.VendorName}");
         Logger.Info($"\t \t> Renderer: {this.GraphicsDevice.DeviceName}");
@@ -210,8 +210,8 @@ public class Game : Disposable {
         this.FullScreenRenderPass = new FullScreenRenderer(graphicsDevice);
         
         Logger.Info("Initialize render target texture...");
-        this._renderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidth(), (uint) this.MainWindow.GetHeight(), sampleCount: this.Settings.SampleCount);
-        this._renderResult = new Texture2D(graphicsDevice, new Image(this.MainWindow.GetWidth(), this.MainWindow.GetHeight()), false);
+        this._renderTarget = new RenderTexture2D(graphicsDevice, (uint) this.MainWindow.GetWidthInPixels(), (uint) this.MainWindow.GetHeightInPixels(), sampleCount: this.Settings.SampleCount);
+        this._renderResult = new Texture2D(graphicsDevice, new Image(this.MainWindow.GetWidthInPixels(), this.MainWindow.GetHeightInPixels()), false);
         
         Logger.Info("Initialize global sprite batch...");
         this.GlobalSpriteBatch = new SpriteBatch(graphicsDevice, this.MainWindow);

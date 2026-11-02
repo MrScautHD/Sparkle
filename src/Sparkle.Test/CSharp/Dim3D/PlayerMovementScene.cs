@@ -63,7 +63,7 @@ public class PlayerMovementScene : Scene {
         this.Renderer.SkyBox = this.CloudySkybox;
         
         // Create camera.
-        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
+        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidthInPixels() / (float) GlobalGraphicsAssets.Window.GetHeightInPixels();
         Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.ThirdPerson);
         this.AddEntity(camera3D);
         

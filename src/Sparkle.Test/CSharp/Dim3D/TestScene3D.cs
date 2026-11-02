@@ -108,7 +108,7 @@ public class TestScene3D : Scene {
         this.Renderer.SkyBox = this.CloudySkybox;
         
         // CAMERA
-        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
+        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidthInPixels() / (float) GlobalGraphicsAssets.Window.GetHeightInPixels();
         Camera3D camera3D = new Camera3D(new Vector3(10, 10, 10), Vector3.UnitY, aspectRatio, mode: CameraMode.Free);
         this.AddEntity(camera3D);
         

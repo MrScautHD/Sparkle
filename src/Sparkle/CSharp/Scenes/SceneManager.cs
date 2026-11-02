@@ -96,12 +96,12 @@ public static class SceneManager {
         ActiveScene = defaultScene;
         
         // Create a filter render target.
-        FilterTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight(), sampleCount: sampleCount);
-        FilterResult = new Texture2D(graphicsDevice, new Image(window.GetWidth(), window.GetHeight()), false);
+        FilterTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidthInPixels(), (uint) window.GetHeightInPixels(), sampleCount: sampleCount);
+        FilterResult = new Texture2D(graphicsDevice, new Image(window.GetWidthInPixels(), window.GetHeightInPixels()), false);
         
         // Create a post-processing render target.
-        PostProcessingTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidth(), (uint) window.GetHeight());
-        PostProcessingResult = new Texture2D(graphicsDevice, new Image(window.GetWidth(), window.GetHeight()), false);
+        PostProcessingTarget = new RenderTexture2D(graphicsDevice, (uint) window.GetWidthInPixels(), (uint) window.GetHeightInPixels());
+        PostProcessingResult = new Texture2D(graphicsDevice, new Image(window.GetWidthInPixels(), window.GetHeightInPixels()), false);
     }
     
     /// <summary>

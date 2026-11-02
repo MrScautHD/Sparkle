@@ -59,7 +59,7 @@ public class TerrainScene : Scene {
         Input.EnableRelativeMouseMode();
         
         // Create camera.
-        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidth() / (float) GlobalGraphicsAssets.Window.GetHeight();
+        float aspectRatio = (float) GlobalGraphicsAssets.Window.GetWidthInPixels() / (float) GlobalGraphicsAssets.Window.GetHeightInPixels();
         Camera3D camera3D = new Camera3D(new Vector3(0, 6, 3), Vector3.UnitY, aspectRatio, mode: CameraMode.Free, farPlane: 10000F) {
             MovementSpeed = 10
         };

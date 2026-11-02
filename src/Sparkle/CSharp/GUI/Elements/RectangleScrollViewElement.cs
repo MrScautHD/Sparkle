@@ -1203,8 +1203,8 @@ public class RectangleScrollViewElement : GuiElement {
     /// </summary>
     /// <param name="forceResize">When <c>true</c>, forces the targets to be resized even if the window size is unchanged.</param>
     private void EnsureContentRenderTarget(bool forceResize = false) {
-        uint width = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetWidth());
-        uint height = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetHeight());
+        uint width = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetWidthInPixels());
+        uint height = (uint) Math.Max(1, GlobalGraphicsAssets.Window.GetHeightInPixels());
         
         if (this._contentRenderTarget == null || this._contentResult == null) {
             this._contentRenderTarget = new RenderTexture2D(GlobalGraphicsAssets.GraphicsDevice, width, height);
