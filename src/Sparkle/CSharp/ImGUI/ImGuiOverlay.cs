@@ -23,10 +23,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// </summary>
     public float Scale {
         get;
-        set {
-            field = Math.Clamp(value, 0.25F, 4.0F);
-            this._appliedScale = 0.0F;
-        }
+        set => field = Math.Clamp(value, 0.25F, 4.0F);
     }
     
     /// <summary>
@@ -65,14 +62,19 @@ public abstract class ImGuiOverlay : Disposable {
     private Vector2 _lastWindowSize;
     
     /// <summary>
-    /// The UI scale factor from the previous placement update, used to detect when the scale has changed.
-    /// </summary>
-    private float _lastPlacementScale;
-    
-    /// <summary>
     /// The current window size.
     /// </summary>
     private Vector2 _windowSize;
+    
+    /// <summary>
+    /// The current scaled minimum size.
+    /// </summary>
+    private Vector2 _minSize;
+    
+    /// <summary>
+    /// The current scaled maximum size.
+    /// </summary>
+    private Vector2 _maxSize;
     
     /// <summary>
     /// Whether <see cref="_relativeRect"/> has been set at least once.
@@ -161,14 +163,11 @@ public abstract class ImGuiOverlay : Disposable {
         
         // Cache the unscaled style, then reset to it before rescaling.
         this._defaultStyle ??= *style.Handle;
+        *style.Handle = this._defaultStyle.Value;
         
-        ImGuiStyle originalStyle = this._defaultStyle.Value;
-        
-        *style.Handle = originalStyle;
-        
-        ScaleStyleSizes(style, originalStyle, scaleFactor);
-        
-        style.FontScaleDpi = scaleFactor;
+        // Apply the new scale.
+        ImGui.ScaleAllSizes(style, scaleFactor);
+        style.FontScaleMain = scaleFactor;
         
         this._appliedScale = scaleFactor;
         return scaleFactor;
@@ -189,50 +188,40 @@ public abstract class ImGuiOverlay : Disposable {
             throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
         }
         
-        Vector2 windowSize = new(controller.Window.GetWidth(), controller.Window.GetHeight());
-        Vector2 referenceSize = new(Math.Max(1, this.Size.Width), Math.Max(1, this.Size.Height));
+        Vector2 windowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
+        Vector2 scaledMinSize = minSize * this._appliedScale;
+        Vector2 scaledMaxSize = Vector2.Max(scaledMinSize, maxSize * this._appliedScale);
         
-        float scaleFactor = this._appliedScale;
-        
-        Vector2 scaledMinSize = minSize * scaleFactor;
-        Vector2 scaledMaxSize = Vector2.Max(scaledMinSize, maxSize * scaleFactor);
-        
-        // Store the initial placement relative to the reference resolution.
+        // Store initial placement as a fraction of the window.
         if (!this._relativeRectInitialized) {
             this._relativeRect = new RectangleF(
-                position.X / referenceSize.X,
-                position.Y / referenceSize.Y,
-                size.X / referenceSize.X,
-                size.Y / referenceSize.Y
+                position.X / this.Size.Width,
+                position.Y / this.Size.Height,
+                size.X / this.Size.Width,
+                size.Y / this.Size.Height
             );
             
             this._relativeRectInitialized = true;
         }
         
         this._windowSize = windowSize;
+        this._minSize = scaledMinSize;
+        this._maxSize = scaledMaxSize;
         
         ImGui.SetNextWindowSizeConstraints(scaledMinSize, scaledMaxSize);
         
-        // Detect application window resizing.
+        // Reapply placement if the window resized.
         bool windowResized = this._lastWindowSize != Vector2.Zero && Vector2.DistanceSquared(this._lastWindowSize, windowSize) > 0.01F;
+        bool shouldApplyPlacement = !this._placementInitialized || windowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
         
-        // Detect UI scaling changes independently of application resizing.
-        bool scaleChanged = Math.Abs(this._lastPlacementScale - scaleFactor) > 0.001F;
-        
-        if (!this._placementInitialized || windowResized || scaleChanged || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing)) {
+        if (shouldApplyPlacement) {
             
-            // Convert reference-resolution placement into scaled coordinates.
-            Vector2 targetSize = new(this._relativeRect.Width * referenceSize.X * scaleFactor, this._relativeRect.Height * referenceSize.Y * scaleFactor);
-            targetSize = Vector2.Clamp(targetSize, scaledMinSize, scaledMaxSize);
+            // Convert the relative rect back to absolute size/position.
+            Vector2 targetSize = Vector2.Clamp(new Vector2(this._relativeRect.Width * windowSize.X, this._relativeRect.Height * windowSize.Y), scaledMinSize, scaledMaxSize);
+            Vector2 targetPosition = new Vector2(Math.Clamp(this._relativeRect.X * windowSize.X, 0.0F, MathF.Max(0.0F, windowSize.X - targetSize.X)), Math.Clamp(this._relativeRect.Y * windowSize.Y, 0.0F, MathF.Max(0.0F, windowSize.Y - targetSize.Y)));
             
-            Vector2 targetPosition = new(this._relativeRect.X * referenceSize.X * scaleFactor, this._relativeRect.Y * referenceSize.Y * scaleFactor);
-            
-            // Keep the window inside the application window.
-            targetPosition.X = Math.Clamp(targetPosition.X, 0.0F, MathF.Max(0.0F, windowSize.X - targetSize.X));
-            targetPosition.Y = Math.Clamp(targetPosition.Y, 0.0F, MathF.Max(0.0F, windowSize.Y - targetSize.Y));
-            
-            // Force placement when either the application size or UI scale changes.
-            ImGuiCond effectiveCondition = windowResized || scaleChanged ? ImGuiCond.Always : condition;
+            // Always force it through on resize, even with a one-time condition.
+            ImGuiCond effectiveCondition = windowResized ? ImGuiCond.Always : condition;
             
             ImGui.SetNextWindowPos(targetPosition, effectiveCondition);
             ImGui.SetNextWindowSize(targetSize, effectiveCondition);
@@ -240,7 +229,6 @@ public abstract class ImGuiOverlay : Disposable {
         }
         
         this._lastWindowSize = windowSize;
-        this._lastPlacementScale = scaleFactor;
     }
     
     /// <summary>
@@ -256,110 +244,23 @@ public abstract class ImGuiOverlay : Disposable {
             throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(SetNextWindowScaledPlacement)} before using this method.");
         }
         
-        // Only save placement while the user is interacting with this window.
-        if (!ImGui.IsMouseDragging(ImGuiMouseButton.Left) ||
-            !ImGui.IsWindowFocused()) {
-            return;
-        }
-        
-        Vector2 position = ImGui.GetWindowPos();
-        Vector2 size = ImGui.GetWindowSize();
-        
-        // Clamp position to the application window.
-        position.X = Math.Clamp(position.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X));
-        position.Y = Math.Clamp(position.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y));
-        
-        // Convert from current scaled coordinates to reference coordinates.
-        float scaleFactor = MathF.Max(this._appliedScale, 0.0001F);
-        
-        Vector2 referenceSize = new(Math.Max(1, this.Size.Width), Math.Max(1, this.Size.Height));
-        Vector2 referencePosition = position / scaleFactor;
-        Vector2 referenceWindowSize = size / scaleFactor;
-        
-        // Store the placement relative to the reference resolution.
-        this._relativeRect = new RectangleF(
-            referencePosition.X / referenceSize.X,
-            referencePosition.Y / referenceSize.Y,
-            referenceWindowSize.X / referenceSize.X,
-            referenceWindowSize.Y / referenceSize.Y
+        // Clamp in case the user dragged/resized outside the window.
+        Vector2 currentPosition = ImGui.GetWindowPos();
+        Vector2 size = Vector2.Clamp(ImGui.GetWindowSize(), this._minSize, this._maxSize);
+        Vector2 position = new Vector2(
+            Math.Clamp(currentPosition.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X)),
+            Math.Clamp(currentPosition.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y))
         );
-    }
-    
-    /// <summary>
-    /// Applies the specified scale factor to the ImGui style's dimensions and spacing values using the original style as the baseline, preserving fractional values.
-    /// </summary>
-    /// <param name="style">The ImGui style to modify.</param>
-    /// <param name="original">The original, unscaled ImGui style.</param>
-    /// <param name="scale">The scale factor to apply.</param>
-    private static void ScaleStyleSizes(ImGuiStylePtr style, ImGuiStyle original, float scale) {
-        style.WindowPadding = original.WindowPadding * scale;
-        style.WindowRounding = original.WindowRounding * scale;
-        style.WindowBorderSize = original.WindowBorderSize * scale;
-        style.WindowMinSize = original.WindowMinSize * scale;
-        style.WindowBorderHoverPadding = original.WindowBorderHoverPadding * scale;
         
-        style.ChildRounding = original.ChildRounding * scale;
-        style.ChildBorderSize = original.ChildBorderSize * scale;
-        style.PopupRounding = original.PopupRounding * scale;
-        style.PopupBorderSize = original.PopupBorderSize * scale;
+        // Avoid division by zero.
+        Vector2 windowSize = new Vector2(MathF.Max(1.0F, this._windowSize.X), MathF.Max(1.0F, this._windowSize.Y));
         
-        style.FramePadding = original.FramePadding * scale;
-        style.FrameBorderSize = original.FrameBorderSize * scale;
-        style.FrameRounding = original.FrameRounding * scale;
-        
-        style.ItemSpacing = original.ItemSpacing * scale;
-        style.ItemInnerSpacing = original.ItemInnerSpacing * scale;
-        style.CellPadding = original.CellPadding * scale;
-        style.TouchExtraPadding = original.TouchExtraPadding * scale;
-        
-        style.IndentSpacing = original.IndentSpacing * scale;
-        style.ColumnsMinSpacing = original.ColumnsMinSpacing * scale;
-        
-        style.ScrollbarSize = original.ScrollbarSize * scale;
-        style.ScrollbarRounding = original.ScrollbarRounding * scale;
-        style.ScrollbarPadding = original.ScrollbarPadding * scale;
-        
-        style.GrabMinSize = original.GrabMinSize * scale;
-        style.GrabRounding = original.GrabRounding * scale;
-        style.LogSliderDeadzone = original.LogSliderDeadzone * scale;
-        
-        style.ImageRounding = original.ImageRounding * scale;
-        style.ImageBorderSize = original.ImageBorderSize * scale;
-        
-        style.TabRounding = original.TabRounding * scale;
-        style.TabBorderSize = original.TabBorderSize * scale;
-        style.TabMinWidthBase = original.TabMinWidthBase * scale;
-        style.TabMinWidthShrink = original.TabMinWidthShrink * scale;
-        
-        style.TabCloseButtonMinWidthSelected = original.TabCloseButtonMinWidthSelected > 0.0F && Math.Abs(original.TabCloseButtonMinWidthSelected - float.MaxValue) > float.Epsilon ? original.TabCloseButtonMinWidthSelected * scale : original.TabCloseButtonMinWidthSelected;
-        style.TabCloseButtonMinWidthUnselected = original.TabCloseButtonMinWidthUnselected > 0.0F && Math.Abs(original.TabCloseButtonMinWidthUnselected - float.MaxValue) > float.Epsilon ? original.TabCloseButtonMinWidthUnselected * scale : original.TabCloseButtonMinWidthUnselected;
-        
-        style.TabBarBorderSize = original.TabBarBorderSize * scale;
-        style.TabBarOverlineSize = original.TabBarOverlineSize * scale;
-        
-        style.TreeLinesSize = original.TreeLinesSize * scale;
-        style.TreeLinesRounding = original.TreeLinesRounding * scale;
-        
-        style.MenuItemRounding = original.MenuItemRounding * scale;
-        style.SelectableRounding = original.SelectableRounding * scale;
-        
-        style.DragDropTargetRounding = original.DragDropTargetRounding * scale;
-        style.DragDropTargetBorderSize = original.DragDropTargetBorderSize * scale;
-        style.DragDropTargetPadding = original.DragDropTargetPadding * scale;
-        
-        style.ColorMarkerSize = original.ColorMarkerSize * scale;
-        style.InputTextCursorSize = original.InputTextCursorSize * scale;
-        
-        style.SeparatorSize = original.SeparatorSize * scale;
-        style.SeparatorTextBorderSize = original.SeparatorTextBorderSize * scale;
-        style.SeparatorTextPadding = original.SeparatorTextPadding * scale;
-        
-        style.DisplayWindowPadding = original.DisplayWindowPadding * scale;
-        style.DisplaySafeAreaPadding = original.DisplaySafeAreaPadding * scale;
-        
-        style.MouseCursorScale = original.MouseCursorScale * scale;
-        
-        style.MainScale = original.MainScale * scale;
-        style.DockingSeparatorSize = original.DockingSeparatorSize * scale;
+        // Store as a fraction of the window for next time.
+        this._relativeRect = new RectangleF(
+            position.X / windowSize.X,
+            position.Y / windowSize.Y,
+            size.X / windowSize.X,
+            size.Y / windowSize.Y
+        );
     }
 }
