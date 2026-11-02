@@ -213,8 +213,18 @@ public abstract class Scene : Disposable {
         this.SpriteRenderer.Draw(context, framebuffer);
     }
     
+    /// <summary>
+    /// Called before the opaque render pass. Override to draw additional content before opaque geometry is rendered.
+    /// </summary>
+    /// <param name="commandList">The command list to record draw commands into.</param>
+    /// <param name="framebuffer">The framebuffer to render into.</param>
     protected virtual void DrawBeforeOpaquePass(CommandList commandList, Framebuffer framebuffer) { }
     
+    /// <summary>
+    /// Called after the opaque render pass. Override to draw additional content after opaque geometry is rendered.
+    /// </summary>
+    /// <param name="commandList">The command list to record draw commands into.</param>
+    /// <param name="framebuffer">The framebuffer to render into.</param>
     protected virtual void DrawAfterOpaquePass(CommandList commandList, Framebuffer framebuffer) {
         
         // Draw immediate renderer.
@@ -251,6 +261,11 @@ public abstract class Scene : Disposable {
         this.Physics3DDebugDrawer.End();
     }
     
+    /// <summary>
+    /// Called after the translucent render pass. Override to draw additional content after translucent geometry is rendered.
+    /// </summary>
+    /// <param name="commandList">The command list to record draw commands into.</param>
+    /// <param name="framebuffer">The framebuffer to render into.</param>
     protected virtual void DrawAfterTranslucentPass(CommandList commandList, Framebuffer framebuffer) { }
     
     /// <summary>

@@ -2,6 +2,7 @@
 using Bliss.ImGUI.CSharp;
 using Hexa.NET.ImGui;
 using Sparkle.CSharp;
+using Sparkle.CSharp.GUI;
 using Sparkle.CSharp.ImGUI;
 
 namespace Sparkle.Test.CSharp;
@@ -15,14 +16,21 @@ public class TestImGuiOverlay : ImGuiOverlay {
     }
     
     protected override void Draw(ImGuiController controller) {
-        ImGui.SetNextWindowPos(new Vector2(20.0F, 20.0F), ImGuiCond.Once);
-        ImGui.SetNextWindowSize(new Vector2(320.0F, 195.0F), ImGuiCond.Once);
+        string windowName = "Test ImGUI Overlay";
+        
+        this.SetNextWindowAnchoredPlacement(windowName, new Vector2(320.0F, 195.0F), Anchor.TopRight, new Vector2(-5, 5));
         ImGui.SetNextWindowSizeConstraints(new Vector2(300.0F, 160.0F), new Vector2(1000.0F, 700.0F));
         ImGui.SetNextWindowCollapsed(true, ImGuiCond.Once);
         
-        if (ImGui.Begin("Test ImGUI Overlay")) {
+        if (ImGui.Begin(windowName)) {
+            this.UpdateWindowPlacementState();
+            
             ImGui.Text("Hello World!");
             ImGui.Separator();
+
+            if (ImGui.Button("Reset Placement")) {
+                this.ResetWindowPlacement();
+            }
             
             ImGui.Text("Time:");
             ImGui.Separator();
