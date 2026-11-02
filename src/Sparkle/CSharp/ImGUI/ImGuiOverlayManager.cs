@@ -1,4 +1,7 @@
-﻿using Bliss.CSharp.Transformations;
+﻿using System.Numerics;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Textures;
+using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Veldrith;
 
@@ -17,12 +20,12 @@ public static class ImGuiOverlayManager {
     private static List<ImGuiOverlay> _overlaysToAdd;
     
     /// <summary>
-    /// Stores the Overlays scheduled for removal during the next update pass.
+    /// Stores overlays scheduled for removal during the next update pass.
     /// </summary>
     private static List<ImGuiOverlay> _overlaysToRemove;
     
     /// <summary>
-    /// Initializes the <see cref="ImGuiOverlayManager"/>, creating the overlay list.
+    /// Initializes the overlay manager.
     /// </summary>
     internal static void Init() {
         _overlays = new List<ImGuiOverlay>();
@@ -33,7 +36,7 @@ public static class ImGuiOverlayManager {
     /// <summary>
     /// Updates all enabled overlays.
     /// </summary>
-    /// <param name="delta">The time delta since the last update.</param>
+    /// <param name="delta">Delta time in seconds.</param>
     internal static void OnUpdate(double delta) {
         
         // Handle removing overlays.
@@ -61,9 +64,9 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Executes logic after the update step for all enabled overlays.
+    /// Runs after-update logic for all enabled overlays.
     /// </summary>
-    /// <param name="delta">The time delta since the last update.</param>
+    /// <param name="delta">Delta time in seconds.</param>
     internal static void OnAfterUpdate(double delta) {
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
@@ -73,9 +76,9 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Executes fixed-step logic for all enabled overlays.
+    /// Runs fixed update logic for all enabled overlays.
     /// </summary>
-    /// <param name="fixedStep">The fixed time step duration.</param>
+    /// <param name="fixedStep">Fixed timestep in seconds.</param>
     internal static void OnFixedUpdate(double fixedStep) {
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
@@ -85,27 +88,36 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Handles the drawing step for all enabled overlays, utilizing the provided graphics context and framebuffer.
+    /// Draws all enabled overlays by rendering each one to a scaled RenderTexture first, then drawing that texture 1:1 onto the final framebuffer.
     /// </summary>
-    /// <param name="context">The graphics context used for rendering operations.</param>
-    /// <param name="framebuffer">The framebuffer to which the overlays are drawn.</param>
+    /// <param name="context">Graphics context.</param>
+    /// <param name="framebuffer">Final destination framebuffer.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
-        context.ImGuiController.Begin(context.CommandList, framebuffer);
-        
         foreach (ImGuiOverlay overlay in _overlays) {
-            if (overlay.Enabled) {
-                float scaleFactor = overlay.EnableScaleHandler ? overlay.HandleScale(context.ImGuiController) : 1.0F;
-                overlay.Draw(context.ImGuiController, scaleFactor);
+            if (!overlay.Enabled) {
+                continue;
             }
+            
+            Texture2D? texture = overlay.RenderToTexture(context.CommandList, context.ImGuiController);
+            
+            if (texture == null) {
+                continue;
+            }
+            
+            Rectangle sourceRect = new Rectangle(0, 0, (int) texture.Width, (int) texture.Height);
+            RectangleF destination = overlay.DestinationRectangle;
+            
+            context.CommandList.SetFramebuffer(framebuffer);
+            context.SpriteBatch.Begin(context.CommandList, framebuffer);
+            context.SpriteBatch.DrawTexture(texture, new Vector2(destination.X, destination.Y), 0.5F, sourceRect, Vector2.One, Vector2.Zero, true, 0.0F, Color.White);
+            context.SpriteBatch.End();
         }
-        
-        context.ImGuiController.End();
     }
     
     /// <summary>
-    /// Executes when the window is resized.
+    /// Handles window resize events.
     /// </summary>
-    /// <param name="rectangle">The rectangle specifying the window's updated size.</param>
+    /// <param name="rectangle">The new window rectangle.</param>
     internal static void OnResize(Rectangle rectangle) {
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
@@ -115,29 +127,28 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Retrieves the list of active overlays managed by the <see cref="ImGuiOverlayManager"/>.
+    /// Gets all overlays.
     /// </summary>
-    /// <returns>A collection of overlays currently managed by the <see cref="ImGuiOverlayManager"/>.</returns>
+    /// <returns>All active overlays.</returns>
     public static IEnumerable<ImGuiOverlay> GetOverlays() {
         return _overlays;
     }
     
     /// <summary>
-    /// Adds an overlay to the manager.
+    /// Adds an overlay.
     /// </summary>
     /// <param name="overlay">The overlay to add.</param>
     public static void AddOverlay(ImGuiOverlay overlay) {
         if (!TryAddOverlay(overlay)) {
-            throw new Exception($"The ImGUI overlay: [{overlay.Name}] is already present in the ImGUIOverlayManager!");
+            throw new Exception($"The ImGUI overlay: [{overlay.Name}] is already present in the ImGuiOverlayManager!");
         }
     }
     
     /// <summary>
-    /// Attempts to add the specified overlay to the list of overlays to be added during the next update pass.
-    /// Ensures the overlay is not already in the manager or queued for addition.
+    /// Attempts to add an overlay.
     /// </summary>
-    /// <param name="overlay">The overlay to be added.</param>
-    /// <returns>True if the overlay was successfully queued for addition; otherwise, false.</returns>
+    /// <param name="overlay">The overlay to add.</param>
+    /// <returns>True if queued successfully.</returns>
     public static bool TryAddOverlay(ImGuiOverlay overlay) {
         if (_overlaysToAdd.Contains(overlay)) {
             return false;
@@ -152,23 +163,20 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Removes an overlay from the manager.
+    /// Removes an overlay.
     /// </summary>
     /// <param name="overlay">The overlay to remove.</param>
     public static void RemoveOverlay(ImGuiOverlay overlay) {
         if (!TryRemoveOverlay(overlay)) {
-            throw new Exception($"Failed to remove the ImGUI overlay: [{overlay.Name}] from the ImGUIOverlayManager!");
+            throw new Exception($"Failed to remove the ImGUI overlay: [{overlay.Name}] from the ImGuiOverlayManager!");
         }
     }
     
     /// <summary>
-    /// Attempts to schedule the specified overlay for removal from the active overlay list.
+    /// Attempts to remove an overlay.
     /// </summary>
-    /// <param name="overlay">The overlay instance to be removed.</param>
-    /// <returns>
-    /// Returns <c>true</c> if the overlay was successfully scheduled for removal; otherwise, <c>false</c>.
-    /// This can happen if the overlay is not in the active overlay list or is already scheduled for removal.
-    /// </returns>
+    /// <param name="overlay">The overlay to remove.</param>
+    /// <returns>True if queued successfully.</returns>
     public static bool TryRemoveOverlay(ImGuiOverlay overlay) {
         if (!_overlays.Contains(overlay)) {
             return false;
@@ -183,7 +191,7 @@ public static class ImGuiOverlayManager {
     }
     
     /// <summary>
-    /// Clears all overlays from the manager.
+    /// Clears all overlays.
     /// </summary>
     internal static void Destroy() {
         HashSet<ImGuiOverlay> disposedOverlays = new HashSet<ImGuiOverlay>();

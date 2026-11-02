@@ -1,25 +1,32 @@
 ﻿using System.Numerics;
 using Bliss.CSharp;
+using Bliss.CSharp.Colors;
+using Bliss.CSharp.Images;
+using Bliss.CSharp.Interact;
+using Bliss.CSharp.Textures;
 using Bliss.CSharp.Transformations;
 using Bliss.ImGUI.CSharp;
 using Hexa.NET.ImGui;
+using Sparkle.CSharp.Graphics;
+using Veldrith;
 
 namespace Sparkle.CSharp.ImGUI;
 
 public abstract class ImGuiOverlay : Disposable {
     
     /// <summary>
-    /// The name of the Overlay.
+    /// The name of the overlay.
     /// </summary>
     public string Name { get; private set; }
     
     /// <summary>
-    /// The base size of this overlay's window was designed for.
+    /// The virtual design size this overlay targets.
+    /// Used as the reference resolution for automatic scaling.
     /// </summary>
     public (int Width, int Height) Size { get; private set; }
     
     /// <summary>
-    /// The user-defined scale multiplier applied on top of the automatically calculated scale factor, clamped between 0.25 and 4.0.
+    /// User-defined render scale multiplier.
     /// </summary>
     public float Scale {
         get;
@@ -27,243 +34,267 @@ public abstract class ImGuiOverlay : Disposable {
     }
     
     /// <summary>
-    /// Whether this overlay is currently active and should be drawn/updated.
+    /// Whether this overlay is active.
     /// </summary>
     public bool Enabled;
     
     /// <summary>
-    /// Whether the scale handler is enabled for this overlay.
+    /// Whether the RenderTexture scale handler is enabled.
     /// </summary>
     public bool EnableScaleHandler { get; private set; }
     
     /// <summary>
-    /// The cached unscaled ImGui style, captured before any scaling was applied, used to reset before rescaling.
+    /// If true, scale is rounded down to whole numbers where possible.
     /// </summary>
-    private ImGuiStyle? _defaultStyle;
+    public bool UseIntegerScaling;
     
     /// <summary>
-    /// The style handle the cached scale state belongs to, used to detect when the ImGui context/style has changed.
+    /// Final scale used by ImGui.
     /// </summary>
-    private nint _scaledStyleHandle;
+    public float CurrentScaleFactor { get; private set; }
     
     /// <summary>
-    /// The scale factor most recently applied to the style.
+    /// Destination rectangle of this overlay in real window pixels.
+    /// This always covers the whole framebuffer.
     /// </summary>
-    private float _appliedScale;
+    public RectangleF DestinationRectangle { get; private set; }
     
     /// <summary>
-    /// This overlay's window position and size, stored as fractions (0-1) of the window, so placement stays proportional across resizes.
+    /// Virtual ImGui display size after applying scale.
     /// </summary>
-    private RectangleF _relativeRect;
+    public Vector2 VirtualDisplaySize { get; private set; }
     
     /// <summary>
-    /// The window size from the previous call, used to detect when the window has been resized.
+    /// Render target containing the full-window ImGui overlay.
     /// </summary>
-    private Vector2 _lastWindowSize;
+    private RenderTexture2D? _renderTarget;
     
     /// <summary>
-    /// The current window size.
+    /// Texture copy of the render target, used for sprite drawing.
     /// </summary>
-    private Vector2 _windowSize;
+    private Texture2D? _resultTexture;
     
     /// <summary>
-    /// The current scaled minimum size.
+    /// Previous ImGui display size.
     /// </summary>
-    private Vector2 _minSize;
+    private Vector2 _previousDisplaySize;
     
     /// <summary>
-    /// The current scaled maximum size.
+    /// Previous ImGui framebuffer scale.
     /// </summary>
-    private Vector2 _maxSize;
+    private Vector2 _previousFramebufferScale;
     
     /// <summary>
-    /// Whether <see cref="_relativeRect"/> has been set at least once.
+    /// Previous ImGui mouse position.
     /// </summary>
-    private bool _relativeRectInitialized;
+    private Vector2 _previousMousePos;
     
     /// <summary>
-    /// Whether the placement has been applied at least once.
+    /// Creates a new ImGui overlay.
     /// </summary>
-    private bool _placementInitialized;
-    
-    /// <summary>
-    /// Creates a new <see cref="ImGuiOverlay"/>.
-    /// </summary>
-    /// <param name="name">The display name of this overlay.</param>
-    /// <param name="size">The base (unscaled) window size this overlay was designed for. Defaults to 1280x720.</param>
-    /// <param name="scale">The initial user-defined scale multiplier.</param>
-    /// <param name="enabled">Whether this overlay should start out active.</param>
-    /// <param name="enableScaleHandler">Whether the scale handler is enabled, allowing use of <see cref="SetNextWindowScaledPlacement"/>, and <see cref="UpdateWindowScaledPlacement"/>.</param>
-    protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true) {
+    /// <param name="name">The overlay name.</param>
+    /// <param name="size">The virtual reference size. Defaults to 1280x720.</param>
+    /// <param name="scale">User scale multiplier.</param>
+    /// <param name="enabled">Whether the overlay starts enabled.</param>
+    /// <param name="enableScaleHandler">Whether texture-based scaling is enabled.</param>
+    /// <param name="useIntegerScaling">Whether to prefer integer scales for sharper output.</param>
+    protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true, bool useIntegerScaling = false) {
         this.Name = name;
         this.Size = size ?? (1280, 720);
         this.Scale = scale;
         this.Enabled = enabled;
         this.EnableScaleHandler = enableScaleHandler;
+        this.UseIntegerScaling = useIntegerScaling;
+        this.CurrentScaleFactor = 1.0F;
+        this.DestinationRectangle = new RectangleF(0.0F, 0.0F, this.Size.Width, this.Size.Height);
+        this.VirtualDisplaySize = new Vector2(this.Size.Width, this.Size.Height);
     }
     
     /// <summary>
-    /// Called every frame to update this overlay's state.
+    /// Called every frame to update this overlay.
     /// </summary>
-    /// <param name="delta">The time elapsed, in seconds, since the last update.</param>
+    /// <param name="delta">Delta time in seconds.</param>
     protected internal virtual void Update(double delta) { }
     
     /// <summary>
-    /// Called every frame, after <see cref="Update"/> has run for all overlays.
+    /// Called after update.
     /// </summary>
-    /// <param name="delta">The time elapsed, in seconds, since the last update.</param>
+    /// <param name="delta">Delta time in seconds.</param>
     protected internal virtual void AfterUpdate(double delta) { }
     
     /// <summary>
-    /// Called on a fixed time step, independent of the frame rate.
+    /// Called on fixed update.
     /// </summary>
-    /// <param name="timeStep">The fixed time step, in seconds.</param>
+    /// <param name="timeStep">Fixed timestep in seconds.</param>
     protected internal virtual void FixedUpdate(double timeStep) { }
     
     /// <summary>
-    /// Draws this overlay's ImGui content.
+    /// Draws this overlay in scaled virtual ImGui coordinates.
     /// </summary>
-    /// <param name="controller">The ImGui controller used to render the overlay.</param>
-    /// <param name="scaleFactor">The current UI scale factor, as calculated by <see cref="HandleScale"/>.</param>
-    protected internal abstract void Draw(ImGuiController controller, float scaleFactor);
+    /// <param name="controller">The ImGui controller.</param>
+    protected abstract void Draw(ImGuiController controller);
     
     /// <summary>
     /// Called when the window is resized.
     /// </summary>
-    /// <param name="rectangle">The new bounds of the window.</param>
+    /// <param name="rectangle">The new window rectangle.</param>
     protected internal virtual void Resize(Rectangle rectangle) { }
     
     /// <summary>
-    /// Calculates the UI scale factor based on window size and applies it to the ImGui style.
+    /// Renders this ImGui overlay into its offscreen render texture and returns the resolved texture.
     /// </summary>
-    /// <param name="controller">The ImGui controller providing the window and style.</param>
-    /// <returns>The applied scale factor.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
-    protected internal virtual unsafe float HandleScale(ImGuiController controller) {
-        if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
+    /// <param name="commandList">The command list used to record framebuffer, clear, ImGui, and texture copy commands.</param>
+    /// <param name="controller">The ImGui controller responsible for beginning, ending, and rendering the ImGui frame.</param>
+    /// <returns>The texture containing the rendered overlay for the current frame, or <c>null</c> if the render target could not be created.</returns>
+    internal Texture2D? RenderToTexture(CommandList commandList, ImGuiController controller) {
+        this.HandleScale(controller.Window.GetWidth(), controller.Window.GetHeight());
+        this.EnsureRenderTarget();
+        
+        if (this._renderTarget == null || this._resultTexture == null) {
+            return null;
         }
         
-        float scaleFactor = Math.Clamp(Math.Min((float) controller.Window.GetWidth() / (float) this.Size.Width, (float) controller.Window.GetHeight() / (float) this.Size.Height) * this.Scale, 0.25F, 4.0F);
+        // Queue mouse before NewFrame so dragging gets the correct scaled mouse position.
+        this.ApplyVirtualMouseBeforeBegin(controller);
         
-        ImGuiStylePtr style = controller.Style;
-        nint styleKey = (nint) style.Handle;
+        // Render into the target framebuffer.
+        commandList.SetFramebuffer(this._renderTarget.Framebuffer);
+        commandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
+        commandList.ClearDepthStencil(1.0F);
         
-        // Reset cache if the style handle changed.
-        if (this._scaledStyleHandle != styleKey) {
-            this._scaledStyleHandle = styleKey;
-            this._defaultStyle = null;
-            this._appliedScale = 0.0F;
-        }
+        // Begin controller.
+        controller.Begin(commandList, this._renderTarget.Framebuffer);
         
-        // Skip if scale hasn't meaningfully changed.
-        if (Math.Abs(scaleFactor - this._appliedScale) < float.Epsilon) {
-            return this._appliedScale;
-        }
+        // Refreshes IO from the real window, so patch display values right after it.
+        this.ApplyVirtualDisplayAfterBegin(controller);
         
-        // Cache the unscaled style, then reset to it before rescaling.
-        this._defaultStyle ??= *style.Handle;
-        *style.Handle = this._defaultStyle.Value;
+        // Draw overlay.
+        this.Draw(controller);
         
-        // Apply the new scale.
-        ImGui.ScaleAllSizes(style, scaleFactor);
-        style.FontScaleMain = scaleFactor;
+        // End controller.
+        controller.End();
         
-        this._appliedScale = scaleFactor;
-        return scaleFactor;
+        // Restore previous ImGui values.
+        this.RestoreImGuiIo(controller);
+        
+        // Copy render target to result texture.
+        commandList.CopyTexture(this._renderTarget.ColorTexture, this._resultTexture.DeviceTexture);
+        
+        return this._resultTexture;
     }
     
-    /// <summary>
-    /// Sets the position and size for the next ImGui window, keeping it proportionally placed as the window resizes.
-    /// </summary>
-    /// <param name="controller">The ImGui controller providing the window's current size.</param>
-    /// <param name="position">The initial position, used only on first init.</param>
-    /// <param name="size">The initial size, used only on first init.</param>
-    /// <param name="minSize">The minimum size, before scaling.</param>
-    /// <param name="maxSize">The maximum size, before scaling.</param>
-    /// <param name="condition">The condition under which the placement should normally be applied.</param>
-    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>.</exception>
-    protected virtual void SetNextWindowScaledPlacement(ImGuiController controller, Vector2 position, Vector2 size, Vector2 minSize, Vector2 maxSize, ImGuiCond condition = ImGuiCond.FirstUseEver) {
+    private void HandleScale(int windowWidth, int windowHeight) {
+        windowWidth = Math.Max(1, windowWidth);
+        windowHeight = Math.Max(1, windowHeight);
+        
         if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
-        }
-        
-        Vector2 windowSize = new Vector2(controller.Window.GetWidth(), controller.Window.GetHeight());
-        Vector2 scaledMinSize = minSize * this._appliedScale;
-        Vector2 scaledMaxSize = Vector2.Max(scaledMinSize, maxSize * this._appliedScale);
-        
-        // Store initial placement as a fraction of the window.
-        if (!this._relativeRectInitialized) {
-            this._relativeRect = new RectangleF(
-                position.X / this.Size.Width,
-                position.Y / this.Size.Height,
-                size.X / this.Size.Width,
-                size.Y / this.Size.Height
-            );
-            
-            this._relativeRectInitialized = true;
-        }
-        
-        this._windowSize = windowSize;
-        this._minSize = scaledMinSize;
-        this._maxSize = scaledMaxSize;
-        
-        ImGui.SetNextWindowSizeConstraints(scaledMinSize, scaledMaxSize);
-        
-        // Reapply placement if the window resized.
-        bool windowResized = this._lastWindowSize != Vector2.Zero && Vector2.DistanceSquared(this._lastWindowSize, windowSize) > 0.01F;
-        bool shouldApplyPlacement = !this._placementInitialized || windowResized || condition == ImGuiCond.None || condition.HasFlag(ImGuiCond.Always) || condition.HasFlag(ImGuiCond.Appearing);
-        
-        if (shouldApplyPlacement) {
-            
-            // Convert the relative rect back to absolute size/position.
-            Vector2 targetSize = Vector2.Clamp(new Vector2(this._relativeRect.Width * windowSize.X, this._relativeRect.Height * windowSize.Y), scaledMinSize, scaledMaxSize);
-            Vector2 targetPosition = new Vector2(Math.Clamp(this._relativeRect.X * windowSize.X, 0.0F, MathF.Max(0.0F, windowSize.X - targetSize.X)), Math.Clamp(this._relativeRect.Y * windowSize.Y, 0.0F, MathF.Max(0.0F, windowSize.Y - targetSize.Y)));
-            
-            // Always force it through on resize, even with a one-time condition.
-            ImGuiCond effectiveCondition = windowResized ? ImGuiCond.Always : condition;
-            
-            ImGui.SetNextWindowPos(targetPosition, effectiveCondition);
-            ImGui.SetNextWindowSize(targetSize, effectiveCondition);
-            this._placementInitialized = true;
-        }
-        
-        this._lastWindowSize = windowSize;
-    }
-    
-    /// <summary>
-    /// Reads back the window's current position and size after rendering, and stores it as the new relative placement.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">Thrown if <see cref="EnableScaleHandler"/> is <c>false</c>, or if called before <see cref="SetNextWindowScaledPlacement"/> has initialized the overlay's placement.</exception>
-    protected virtual void UpdateWindowScaledPlacement() {
-        if (!this.EnableScaleHandler) {
-            throw new InvalidOperationException($"The scale handler for [{this.Name}] is disabled. Enable {nameof(EnableScaleHandler)} before using this method.");
-        }
-        
-        if (!this._relativeRectInitialized) {
-            throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(SetNextWindowScaledPlacement)} before using this method.");
-        }
-        
-        // Only save placement while the user is interacting with this window.
-        if (!ImGui.IsMouseDragging(ImGuiMouseButton.Left) || !ImGui.IsWindowFocused()) {
+            this.CurrentScaleFactor = 1.0F;
+            this.DestinationRectangle = new RectangleF(0.0F, 0.0F, windowWidth, windowHeight);
+            this.VirtualDisplaySize = new Vector2(windowWidth, windowHeight);
             return;
         }
         
-        Vector2 position = ImGui.GetWindowPos();
-        Vector2 size = ImGui.GetWindowSize();
+        float fitScale = Math.Min((float) windowWidth / this.Size.Width, (float) windowHeight / this.Size.Height);
+        fitScale = MathF.Max(0.01F, fitScale);
         
-        // Clamp position to the application window.
-        position.X = Math.Clamp(position.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X));
-        position.Y = Math.Clamp(position.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y));
+        float scaleFactor = Math.Clamp(fitScale * this.Scale, 0.25F, 4.0F);
         
-        Vector2 windowSize = new(MathF.Max(1.0F, this._windowSize.X), MathF.Max(1.0F, this._windowSize.Y));
+        if (this.UseIntegerScaling) {
+            float integerScale = MathF.Floor(scaleFactor);
+            
+            if (integerScale >= 1.0F) {
+                scaleFactor = integerScale;
+            }
+        }
         
-        // Save the actual user-selected position and size.
-        this._relativeRect = new RectangleF(
-            position.X / windowSize.X,
-            position.Y / windowSize.Y,
-            size.X / windowSize.X,
-            size.Y / windowSize.Y
-        );
+        this.CurrentScaleFactor = scaleFactor;
+        this.DestinationRectangle = new RectangleF(0.0F, 0.0F, windowWidth, windowHeight);
+        this.VirtualDisplaySize = new Vector2(windowWidth / scaleFactor, windowHeight / scaleFactor);
+    }
+    
+    /// <summary>
+    /// Ensures the backing RenderTexture and result texture match the real window size.
+    /// </summary>
+    private void EnsureRenderTarget() {
+        uint width = (uint) Math.Max(1, (int) MathF.Ceiling(this.DestinationRectangle.Width));
+        uint height = (uint) Math.Max(1, (int) MathF.Ceiling(this.DestinationRectangle.Height));
+        
+        if (this._renderTarget == null || this._resultTexture == null) {
+            this._renderTarget = new RenderTexture2D(GlobalGraphicsAssets.GraphicsDevice, width, height);
+            this._resultTexture = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
+            return;
+        }
+        
+        if (this._renderTarget.Width != width || this._renderTarget.Height != height) {
+            this._renderTarget.Resize(width, height);
+            this._resultTexture.Dispose();
+            this._resultTexture = new Texture2D(GlobalGraphicsAssets.GraphicsDevice, new Image((int) width, (int) height, new Color(0, 0, 0, 0)), false);
+        }
+    }
+    
+    /// <summary>
+    /// Applies the virtual mouse position before ImGuiController.Begin calls ImGui.NewFrame.
+    /// </summary>
+    /// <param name="controller">The ImGui controller.</param>
+    private void ApplyVirtualMouseBeforeBegin(ImGuiController controller) {
+        this._previousDisplaySize = controller.Io.DisplaySize;
+        this._previousFramebufferScale = controller.Io.DisplayFramebufferScale;
+        this._previousMousePos = controller.Io.MousePos;
+        
+        Vector2 virtualMouse = this.RealToVirtualMousePosition(Input.GetMousePosition());
+        controller.Io.AddMousePosEvent(virtualMouse.X, virtualMouse.Y);
+        controller.Io.MousePos = virtualMouse;
+    }
+    
+    /// <summary>
+    /// Applies virtual display values after Begin, because Begin refreshes IO from the real window.
+    /// </summary>
+    /// <param name="controller">The ImGui controller.</param>
+    private void ApplyVirtualDisplayAfterBegin(ImGuiController controller) {
+        controller.Io.DisplaySize = this.VirtualDisplaySize;
+        controller.Io.DisplayFramebufferScale = new Vector2(this.CurrentScaleFactor, this.CurrentScaleFactor);
+        
+        ImGuiViewportPtr viewport = ImGui.GetMainViewport();
+        viewport.Pos = Vector2.Zero;
+        viewport.Size = this.VirtualDisplaySize;
+        viewport.WorkPos = Vector2.Zero;
+        viewport.WorkSize = this.VirtualDisplaySize;
+    }
+    
+    /// <summary>
+    /// Restores ImGui IO values after rendering into the overlay target.
+    /// </summary>
+    /// <param name="controller">The ImGui controller.</param>
+    private void RestoreImGuiIo(ImGuiController controller) {
+        controller.Io.DisplaySize = this._previousDisplaySize;
+        controller.Io.DisplayFramebufferScale = this._previousFramebufferScale;
+        controller.Io.MousePos = this._previousMousePos;
+    }
+    
+    /// <summary>
+    /// Converts the real window mouse position into virtual ImGui coordinates.
+    /// </summary>
+    /// <param name="realMouse">Mouse position in real window pixels.</param>
+    /// <returns>Mouse position in virtual ImGui coordinates.</returns>
+    private Vector2 RealToVirtualMousePosition(Vector2 realMouse) {
+        if (this.CurrentScaleFactor <= 0.0F) {
+            return new Vector2(-float.MaxValue, -float.MaxValue);
+        }
+        
+        float x = realMouse.X / this.CurrentScaleFactor;
+        float y = realMouse.Y / this.CurrentScaleFactor;
+        
+        if (x < 0.0F || y < 0.0F || x > this.VirtualDisplaySize.X || y > this.VirtualDisplaySize.Y) {
+            return new Vector2(-float.MaxValue, -float.MaxValue);
+        }
+        
+        return new Vector2(x, y);
+    }
+    
+    protected override void Dispose(bool disposing) {
+        if (disposing) {
+            this._renderTarget?.Dispose();
+            this._resultTexture?.Dispose();
+        }
     }
 }
