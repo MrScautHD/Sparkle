@@ -183,6 +183,11 @@ public abstract class ImGuiOverlay : Disposable {
         return this._resultTexture;
     }
     
+    /// <summary>
+    /// Updates the overlay scale state from the current window size.
+    /// </summary>
+    /// <param name="windowWidth">The current window width in logical pixels.</param>
+    /// <param name="windowHeight">The current window height in logical pixels.</param>
     private void HandleScale(int windowWidth, int windowHeight) {
         windowWidth = Math.Max(1, windowWidth);
         windowHeight = Math.Max(1, windowHeight);
