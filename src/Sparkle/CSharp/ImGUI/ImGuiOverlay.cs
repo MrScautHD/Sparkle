@@ -244,18 +244,21 @@ public abstract class ImGuiOverlay : Disposable {
             throw new InvalidOperationException($"The ImGui overlay placement for [{this.Name}] has not been initialized. Initialize the overlay's placement with {nameof(SetNextWindowScaledPlacement)} before using this method.");
         }
         
-        // Clamp in case the user dragged/resized outside the window.
-        Vector2 currentPosition = ImGui.GetWindowPos();
-        Vector2 size = Vector2.Clamp(ImGui.GetWindowSize(), this._minSize, this._maxSize);
-        Vector2 position = new Vector2(
-            Math.Clamp(currentPosition.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X)),
-            Math.Clamp(currentPosition.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y))
-        );
+        // Only save placement while the user is interacting with this window.
+        if (!ImGui.IsMouseDragging(ImGuiMouseButton.Left) || !ImGui.IsWindowFocused()) {
+            return;
+        }
         
-        // Avoid division by zero.
-        Vector2 windowSize = new Vector2(MathF.Max(1.0F, this._windowSize.X), MathF.Max(1.0F, this._windowSize.Y));
+        Vector2 position = ImGui.GetWindowPos();
+        Vector2 size = ImGui.GetWindowSize();
         
-        // Store as a fraction of the window for next time.
+        // Clamp position to the application window.
+        position.X = Math.Clamp(position.X, 0.0F, MathF.Max(0.0F, this._windowSize.X - size.X));
+        position.Y = Math.Clamp(position.Y, 0.0F, MathF.Max(0.0F, this._windowSize.Y - size.Y));
+        
+        Vector2 windowSize = new(MathF.Max(1.0F, this._windowSize.X), MathF.Max(1.0F, this._windowSize.Y));
+        
+        // Save the actual user-selected position and size.
         this._relativeRect = new RectangleF(
             position.X / windowSize.X,
             position.Y / windowSize.Y,
