@@ -87,9 +87,24 @@ public abstract class ImGuiOverlay : Disposable {
     private Vector2 _previousFramebufferScale;
     
     /// <summary>
-    /// Previous ImGui mouse position.
+    /// The main viewport position before applying virtual display settings.
     /// </summary>
-    private Vector2 _previousMousePos;
+    private Vector2 _previousViewportPos;
+    
+    /// <summary>
+    /// The main viewport size before applying virtual display settings.
+    /// </summary>
+    private Vector2 _previousViewportSize;
+    
+    /// <summary>
+    /// The main viewport work position before applying virtual display settings.
+    /// </summary>
+    private Vector2 _previousViewportWorkPos;
+    
+    /// <summary>
+    /// The main viewport work size before applying virtual display settings.
+    /// </summary>
+    private Vector2 _previousViewportWorkSize;
     
     /// <summary>
     /// Placement states for ImGui windows, keyed by their stable window id/name.
@@ -357,16 +372,13 @@ public abstract class ImGuiOverlay : Disposable {
             return null;
         }
         
-        // Queue mouse before NewFrame so dragging gets the correct scaled mouse position.
-        this.ApplyVirtualMouseBeforeBegin(controller);
-        
         // Render into the target framebuffer.
         commandList.SetFramebuffer(this._renderTarget.Framebuffer);
         commandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         commandList.ClearDepthStencil(1.0F);
         
         // Begin controller.
-        controller.Begin(commandList, this._renderTarget.Framebuffer);
+        controller.Begin(commandList, this._renderTarget.Framebuffer, this.RealToVirtualMousePosition(Input.GetMousePosition()));
         
         // Refreshes IO from the real window, so patch display values right after it.
         this.ApplyVirtualDisplayAfterBegin(controller);
@@ -441,28 +453,25 @@ public abstract class ImGuiOverlay : Disposable {
     }
     
     /// <summary>
-    /// Applies the virtual mouse position before ImGuiController.Begin calls ImGui.NewFrame.
-    /// </summary>
-    /// <param name="controller">The ImGui controller.</param>
-    private void ApplyVirtualMouseBeforeBegin(ImGuiController controller) {
-        this._previousDisplaySize = controller.Io.DisplaySize;
-        this._previousFramebufferScale = controller.Io.DisplayFramebufferScale;
-        this._previousMousePos = controller.Io.MousePos;
-        
-        Vector2 virtualMouse = this.RealToVirtualMousePosition(Input.GetMousePosition());
-        controller.Io.AddMousePosEvent(virtualMouse.X, virtualMouse.Y);
-        controller.Io.MousePos = virtualMouse;
-    }
-    
-    /// <summary>
     /// Applies virtual display values after Begin, because Begin refreshes IO from the real window.
     /// </summary>
     /// <param name="controller">The ImGui controller.</param>
     private void ApplyVirtualDisplayAfterBegin(ImGuiController controller) {
+        ImGuiViewportPtr viewport = ImGui.GetMainViewport();
+        
+        // Store old values.
+        this._previousDisplaySize = controller.Io.DisplaySize;
+        this._previousFramebufferScale = controller.Io.DisplayFramebufferScale;
+        
+        this._previousViewportPos = viewport.Pos;
+        this._previousViewportSize = viewport.Size;
+        this._previousViewportWorkPos = viewport.WorkPos;
+        this._previousViewportWorkSize = viewport.WorkSize;
+        
+        // Set new values.
         controller.Io.DisplaySize = this.VirtualDisplaySize;
         controller.Io.DisplayFramebufferScale = new Vector2(this.CurrentScaleFactor, this.CurrentScaleFactor);
         
-        ImGuiViewportPtr viewport = ImGui.GetMainViewport();
         viewport.Pos = Vector2.Zero;
         viewport.Size = this.VirtualDisplaySize;
         viewport.WorkPos = Vector2.Zero;
@@ -476,7 +485,12 @@ public abstract class ImGuiOverlay : Disposable {
     private void RestoreImGuiIo(ImGuiController controller) {
         controller.Io.DisplaySize = this._previousDisplaySize;
         controller.Io.DisplayFramebufferScale = this._previousFramebufferScale;
-        controller.Io.MousePos = this._previousMousePos;
+        
+        ImGuiViewportPtr viewport = ImGui.GetMainViewport();
+        viewport.Pos = this._previousViewportPos;
+        viewport.Size = this._previousViewportSize;
+        viewport.WorkPos = this._previousViewportWorkPos;
+        viewport.WorkSize = this._previousViewportWorkSize;
     }
     
     /// <summary>
