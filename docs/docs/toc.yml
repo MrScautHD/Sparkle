@@ -2,3 +2,5 @@
   href: introduction.md
 - name: Getting Started
   href: getting-started.md
+- name: JSON Storage
+  href: json-storage.md
