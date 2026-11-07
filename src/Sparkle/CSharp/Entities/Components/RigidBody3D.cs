@@ -248,9 +248,20 @@ public class RigidBody3D : Component {
     }
     
     /// <summary>
+    /// Gets or sets the rigid body's deactivation velocities.
+    /// The tuple contains the linear and angular velocity thresholds used to determine when the body can become inactive.
+    /// </summary>
+    public (float linear, float angular) DeactivationVelocity {
+        get => this.Body.DeactivationVelocity;
+        set => this.Body.DeactivationVelocity = value;
+    }
+    
+    /// <summary>
     /// Sets the angular and linear deactivation thresholds.
     /// </summary>
+    [Obsolete($"Use {nameof(DeactivationVelocity)} instead. Note that it takes the linear value first.", true)]
     public (float angular, float linear) DeactivationThreshold {
+        get => this.Body.DeactivationThreshold;
         set => this.Body.DeactivationThreshold = value;
     }
     
