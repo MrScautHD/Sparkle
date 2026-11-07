@@ -22,6 +22,11 @@ public abstract class ImGuiOverlay : Disposable {
     public string Name { get; private set; }
     
     /// <summary>
+    /// Determines whether camera movement is allowed while the ImGuiOverlay is active.
+    /// </summary>
+    public bool AllowCameraMovement;
+    
+    /// <summary>
     /// The virtual design size this overlay targets.
     /// Used as the reference resolution for automatic scaling.
     /// </summary>
@@ -38,7 +43,28 @@ public abstract class ImGuiOverlay : Disposable {
     /// <summary>
     /// Whether this overlay is active.
     /// </summary>
-    public bool Enabled;
+    public bool Enabled {
+        get;
+        set {
+            field = value;
+            this.StateChanged?.Invoke(this, value);
+        }
+    }
+
+    /// <summary>
+    /// Whether this overlay wanted to capture the mouse during its last frame.
+    /// </summary>
+    internal bool CapturesMouse;
+
+    /// <summary>
+    /// Whether a mouse button pressed on this overlay is still held (dragging a window, a slider, ...).
+    /// </summary>
+    internal bool OwnsMouse;
+    
+    /// <summary>
+    /// Set by the manager. While true, this overlay ignores the mouse.
+    /// </summary>
+    internal bool MouseBlocked;
     
     /// <summary>
     /// Whether the RenderTexture scale handler is enabled.
@@ -67,6 +93,11 @@ public abstract class ImGuiOverlay : Disposable {
     public Vector2 VirtualDisplaySize { get; private set; }
     
     /// <summary>
+    /// Event raised when the overlay's enabled state changes.
+    /// </summary>
+    public event Action<ImGuiOverlay, bool>? StateChanged;
+    
+    /// <summary>
     /// Render target containing the full-window ImGui overlay.
     /// </summary>
     private RenderTexture2D? _renderTarget;
@@ -77,39 +108,14 @@ public abstract class ImGuiOverlay : Disposable {
     private Texture2D? _resultTexture;
     
     /// <summary>
-    /// Previous ImGui display size.
-    /// </summary>
-    private Vector2 _previousDisplaySize;
-    
-    /// <summary>
-    /// Previous ImGui framebuffer scale.
-    /// </summary>
-    private Vector2 _previousFramebufferScale;
-    
-    /// <summary>
-    /// The main viewport position before applying virtual display settings.
-    /// </summary>
-    private Vector2 _previousViewportPos;
-    
-    /// <summary>
-    /// The main viewport size before applying virtual display settings.
-    /// </summary>
-    private Vector2 _previousViewportSize;
-    
-    /// <summary>
-    /// The main viewport work position before applying virtual display settings.
-    /// </summary>
-    private Vector2 _previousViewportWorkPos;
-    
-    /// <summary>
-    /// The main viewport work size before applying virtual display settings.
-    /// </summary>
-    private Vector2 _previousViewportWorkSize;
-    
-    /// <summary>
     /// Placement states for ImGui windows, keyed by their stable window id/name.
     /// </summary>
     private Dictionary<string, ImGuiWindowPlacementState> _windowPlacementStates;
+    
+    /// <summary>
+    /// The private ImGui controller of this overlay, which owns the overlay's own ImGui context.
+    /// </summary>
+    private ImGuiController _controller;
     
     /// <summary>
     /// Creates a new ImGui overlay.
@@ -122,6 +128,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <param name="useIntegerScaling">Whether to prefer integer scales for sharper output.</param>
     protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true, bool useIntegerScaling = false) {
         this.Name = name;
+        this.AllowCameraMovement = true;
         this.Size = size ?? (1280, 720);
         this.Scale = scale;
         this.Enabled = enabled;
@@ -131,6 +138,7 @@ public abstract class ImGuiOverlay : Disposable {
         this.DestinationRectangle = new RectangleF(0.0F, 0.0F, this.Size.Width, this.Size.Height);
         this.VirtualDisplaySize = new Vector2(this.Size.Width, this.Size.Height);
         this._windowPlacementStates = new Dictionary<string, ImGuiWindowPlacementState>();
+        this._controller = new ImGuiController(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
     }
     
     /// <summary>
@@ -359,13 +367,20 @@ public abstract class ImGuiOverlay : Disposable {
     }
     
     /// <summary>
+    /// Updates the delta time of the private ImGui controller of this overlay.
+    /// </summary>
+    /// <param name="delta">The time in seconds since the last update.</param>
+    internal void UpdateImGuiController(double delta) {
+        this._controller.Update(delta);
+    }
+    
+    /// <summary>
     /// Renders this ImGui overlay into its offscreen render texture and returns the resolved texture.
     /// </summary>
     /// <param name="commandList">The command list used to record framebuffer, clear, ImGui, and texture copy commands.</param>
-    /// <param name="controller">The ImGui controller responsible for beginning, ending, and rendering the ImGui frame.</param>
     /// <returns>The texture containing the rendered overlay for the current frame, or <c>null</c> if the render target could not be created.</returns>
-    internal Texture2D? RenderToTexture(CommandList commandList, ImGuiController controller) {
-        this.HandleScale(controller.Window.GetWidth(), controller.Window.GetHeight());
+    internal Texture2D? RenderToTexture(CommandList commandList) {
+        this.HandleScale(this._controller.Window.GetWidth(), this._controller.Window.GetHeight());
         this.EnsureRenderTarget();
         
         if (this._renderTarget == null || this._resultTexture == null) {
@@ -377,20 +392,24 @@ public abstract class ImGuiOverlay : Disposable {
         commandList.ClearColorTarget(0, new Color(0, 0, 0, 0).ToRgbaFloat());
         commandList.ClearDepthStencil(1.0F);
         
+        // If gui is blocked it goes off-screen.
+        Vector2 mousePosition = this.MouseBlocked ? new Vector2(-float.MaxValue, -float.MaxValue) : this.RealToVirtualMousePosition(Input.GetMousePosition());
+        
         // Begin controller.
-        controller.Begin(commandList, this._renderTarget.Framebuffer, this.RealToVirtualMousePosition(Input.GetMousePosition()));
+        this._controller.Begin(commandList, this._renderTarget.Framebuffer, true, mousePosition);
         
         // Refreshes IO from the real window, so patch display values right after it.
-        this.ApplyVirtualDisplayAfterBegin(controller);
+        this.ApplyVirtualDisplayAfterBegin(this._controller);
         
         // Draw overlay.
-        this.Draw(controller);
+        this.Draw(this._controller);
+        
+        // The context of this overlay is still current here.
+        this.CapturesMouse = this._controller.Io.WantCaptureMouse;
+        this.OwnsMouse = this.CapturesMouse && (ImGui.IsMouseDown(ImGuiMouseButton.Left) || ImGui.IsMouseDown(ImGuiMouseButton.Right) || ImGui.IsMouseDown(ImGuiMouseButton.Middle));
         
         // End controller.
-        controller.End();
-        
-        // Restore previous ImGui values.
-        this.RestoreImGuiIo(controller);
+        this._controller.End();
         
         // Copy render target to result texture.
         commandList.CopyTexture(this._renderTarget.ColorTexture, this._resultTexture.DeviceTexture);
@@ -459,15 +478,6 @@ public abstract class ImGuiOverlay : Disposable {
     private void ApplyVirtualDisplayAfterBegin(ImGuiController controller) {
         ImGuiViewportPtr viewport = ImGui.GetMainViewport();
         
-        // Store old values.
-        this._previousDisplaySize = controller.Io.DisplaySize;
-        this._previousFramebufferScale = controller.Io.DisplayFramebufferScale;
-        
-        this._previousViewportPos = viewport.Pos;
-        this._previousViewportSize = viewport.Size;
-        this._previousViewportWorkPos = viewport.WorkPos;
-        this._previousViewportWorkSize = viewport.WorkSize;
-        
         // Set new values.
         controller.Io.DisplaySize = this.VirtualDisplaySize;
         controller.Io.DisplayFramebufferScale = new Vector2(this.CurrentScaleFactor, this.CurrentScaleFactor);
@@ -476,21 +486,6 @@ public abstract class ImGuiOverlay : Disposable {
         viewport.Size = this.VirtualDisplaySize;
         viewport.WorkPos = Vector2.Zero;
         viewport.WorkSize = this.VirtualDisplaySize;
-    }
-    
-    /// <summary>
-    /// Restores ImGui IO values after rendering into the overlay target.
-    /// </summary>
-    /// <param name="controller">The ImGui controller.</param>
-    private void RestoreImGuiIo(ImGuiController controller) {
-        controller.Io.DisplaySize = this._previousDisplaySize;
-        controller.Io.DisplayFramebufferScale = this._previousFramebufferScale;
-        
-        ImGuiViewportPtr viewport = ImGui.GetMainViewport();
-        viewport.Pos = this._previousViewportPos;
-        viewport.Size = this._previousViewportSize;
-        viewport.WorkPos = this._previousViewportWorkPos;
-        viewport.WorkSize = this._previousViewportWorkSize;
     }
     
     /// <summary>
@@ -581,6 +576,7 @@ public abstract class ImGuiOverlay : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
+            this._controller.Dispose();
             this._renderTarget?.Dispose();
             this._resultTexture?.Dispose();
             this._windowPlacementStates.Clear();

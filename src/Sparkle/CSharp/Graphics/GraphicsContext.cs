@@ -34,11 +34,6 @@ public class GraphicsContext {
     public PrimitiveBatch PrimitiveBatch { get; private set; }
     
     /// <summary>
-    /// The ImGui controller used for rendering immediate-mode GUI elements.
-    /// </summary>
-    public ImGuiController ImGuiController { get; private set; }
-    
-    /// <summary>
     /// Initializes a new instance of the <see cref="GraphicsContext"/> class.
     /// </summary>
     /// <param name="graphicsDevice">The graphics device to use.</param>
@@ -46,13 +41,11 @@ public class GraphicsContext {
     /// <param name="fullScreenRenderer">The render pass used for full-screen rendering operations.</param>
     /// <param name="spriteBatch">The sprite batch for rendering sprites.</param>
     /// <param name="primitiveBatch">The primitive batch for rendering primitive shapes.</param>
-    /// <param name="imGuiController">The ImGui controller for rendering immediate-mode GUI.</param>
-    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch, ImGuiController imGuiController) {
+    public GraphicsContext(GraphicsDevice graphicsDevice, CommandList commandList, FullScreenRenderer fullScreenRenderer, SpriteBatch spriteBatch, PrimitiveBatch primitiveBatch) {
         this.GraphicsDevice = graphicsDevice;
         this.CommandList = commandList;
         this.FullScreenRenderer = fullScreenRenderer;
         this.SpriteBatch = spriteBatch;
         this.PrimitiveBatch = primitiveBatch;
-        this.ImGuiController = imGuiController;
     }
 }

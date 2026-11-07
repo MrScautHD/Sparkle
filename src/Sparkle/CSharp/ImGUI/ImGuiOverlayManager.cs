@@ -58,6 +58,7 @@ public static class ImGuiOverlayManager {
         // Update overlays.
         foreach (ImGuiOverlay overlay in _overlays) {
             if (overlay.Enabled) {
+                overlay.UpdateImGuiController(delta);
                 overlay.Update(delta);
             }
         }
@@ -93,12 +94,47 @@ public static class ImGuiOverlayManager {
     /// <param name="context">Graphics context.</param>
     /// <param name="framebuffer">Final destination framebuffer.</param>
     internal static void OnDraw(GraphicsContext context, Framebuffer framebuffer) {
+        ImGuiOverlay? owner = null;
+        
+        // The topmost overlay that currently holds a pressed button owns the mouse.
+        foreach (ImGuiOverlay overlay in _overlays) {
+            if (!overlay.Enabled) {
+                overlay.CapturesMouse = false;
+                overlay.OwnsMouse = false;
+                overlay.MouseBlocked = false;
+                continue;
+            }
+            
+            if (overlay.OwnsMouse) {
+                owner = overlay;
+            }
+        }
+        
+        // Block everything except the owner. Without an owner, block everything below the topmost capturing overlay.
+        bool blocked = false;
+        
+        for (int i = _overlays.Count - 1; i >= 0; i--) {
+            ImGuiOverlay overlay = _overlays[i];
+            
+            if (!overlay.Enabled) {
+                continue;
+            }
+            
+            if (owner != null) {
+                overlay.MouseBlocked = overlay != owner;
+            }
+            else {
+                overlay.MouseBlocked = blocked;
+                blocked |= overlay.CapturesMouse;
+            }
+        }
+        
         foreach (ImGuiOverlay overlay in _overlays) {
             if (!overlay.Enabled) {
                 continue;
             }
             
-            Texture2D? texture = overlay.RenderToTexture(context.CommandList, context.ImGuiController);
+            Texture2D? texture = overlay.RenderToTexture(context.CommandList);
             
             if (texture == null) {
                 continue;

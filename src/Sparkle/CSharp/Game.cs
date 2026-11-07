@@ -76,11 +76,6 @@ public class Game : Disposable {
     public PrimitiveBatch GlobalPrimitiveBatch { get; private set; }
     
     /// <summary>
-    /// The default (global) ImGUI controller used for rendering 2D immediate guis.
-    /// </summary>
-    public ImGuiController ImGuiController { get; private set; }
-
-    /// <summary>
     /// An instance encapsulating core graphics rendering components associated with the game.
     /// </summary>
     public GraphicsContext GraphicsContext { get; private set; }
@@ -219,11 +214,8 @@ public class Game : Disposable {
         Logger.Info("Initialize global primitive batch...");
         this.GlobalPrimitiveBatch = new PrimitiveBatch(graphicsDevice, this.MainWindow);
         
-        Logger.Info("Initialize global ImGUI controller...");
-        this.ImGuiController = new ImGuiController(graphicsDevice, this.MainWindow);
-        
         Logger.Info("Initialize graphics context...");
-        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch, this.ImGuiController);
+        this.GraphicsContext = new GraphicsContext(graphicsDevice, this.CommandList, this.FullScreenRenderPass, this.GlobalSpriteBatch, this.GlobalPrimitiveBatch);
         
         Logger.Info("Initialize content manager...");
         this.Content = new ContentManager(graphicsDevice);
@@ -317,9 +309,6 @@ public class Game : Disposable {
             
             // Process window events.
             this.MainWindow.PumpEvents();
-            
-            // Update ImGUI controller.
-            this.ImGuiController.Update(Time.Delta);
             
             // Handle shutdown (Do not allow shutting down the game while it is in a loading GUI).
             if ((this.ShouldClose || !this.MainWindow.Exists) && GuiManager.ActiveGui is not LoadingGui) {

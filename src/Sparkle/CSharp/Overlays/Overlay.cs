@@ -13,9 +13,25 @@ public abstract class Overlay : Disposable {
     public string Name { get; private set; }
     
     /// <summary>
-    /// Determines whether the overlay is enabled.
+    /// Determines whether camera movement is allowed while the Overlay is active.
     /// </summary>
-    public bool Enabled;
+    public bool AllowCameraMovement;
+    
+    /// <summary>
+    /// Whether this overlay is active.
+    /// </summary>
+    public bool Enabled {
+        get;
+        set {
+            field = value;
+            this.StateChanged?.Invoke(this, value);
+        }
+    }
+    
+    /// <summary>
+    /// Event raised when the overlay's enabled state changes.
+    /// </summary>
+    public event Action<Overlay, bool>? StateChanged;
     
     /// <summary>
     /// Initializes a new instance of the <see cref="Overlay"/> class.
@@ -24,6 +40,7 @@ public abstract class Overlay : Disposable {
     /// <param name="enabled">Whether the overlay is initially enabled (default is false).</param>
     protected Overlay(string name, bool enabled = false) {
         this.Name = name;
+        this.AllowCameraMovement = true;
         this.Enabled = enabled;
     }
     

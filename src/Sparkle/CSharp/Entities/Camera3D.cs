@@ -4,6 +4,8 @@ using Bliss.CSharp.Graphics.Rendering;
 using Bliss.CSharp.Transformations;
 using Sparkle.CSharp.Graphics;
 using Sparkle.CSharp.GUI;
+using Sparkle.CSharp.ImGUI;
+using Sparkle.CSharp.Overlays;
 using Sparkle.CSharp.Scenes;
 using Veldrith;
 
@@ -145,6 +147,18 @@ public class Camera3D : Entity {
         if (SceneManager.ActiveCam3D == this) {
             if (GuiManager.ActiveGui != null && !GuiManager.ActiveGui.AllowCameraMovement) {
                 return;
+            }
+            
+            foreach (ImGuiOverlay imGuiOverlay in ImGuiOverlayManager.GetOverlays()) {
+                if (!imGuiOverlay.AllowCameraMovement) {
+                    return;
+                }
+            }
+            
+            foreach (Overlay overlay in OverlayManager.GetOverlays()) {
+                if (!overlay.AllowCameraMovement) {
+                    return;
+                }
             }
             
             this._cam3D.Update(delta);
