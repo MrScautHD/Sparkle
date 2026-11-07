@@ -22,6 +22,11 @@ public abstract class ImGuiOverlay : Disposable {
     public string Name { get; private set; }
     
     /// <summary>
+    /// The ImGui controller of this overlay, which owns the overlay's own ImGui context.
+    /// </summary>
+    public ImGuiController Controller { get; private set; }
+    
+    /// <summary>
     /// Determines whether camera movement is allowed while the ImGuiOverlay is active.
     /// </summary>
     public bool AllowCameraMovement;
@@ -113,11 +118,6 @@ public abstract class ImGuiOverlay : Disposable {
     private Dictionary<string, ImGuiWindowPlacementState> _windowPlacementStates;
     
     /// <summary>
-    /// The private ImGui controller of this overlay, which owns the overlay's own ImGui context.
-    /// </summary>
-    private ImGuiController _controller;
-    
-    /// <summary>
     /// Creates a new ImGui overlay.
     /// </summary>
     /// <param name="name">The overlay name.</param>
@@ -128,6 +128,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <param name="useIntegerScaling">Whether to prefer integer scales for sharper output.</param>
     protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true, bool useIntegerScaling = false) {
         this.Name = name;
+        this.Controller = new ImGuiController(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
         this.AllowCameraMovement = true;
         this.Size = size ?? (1280, 720);
         this.Scale = scale;
@@ -138,7 +139,6 @@ public abstract class ImGuiOverlay : Disposable {
         this.DestinationRectangle = new RectangleF(0.0F, 0.0F, this.Size.Width, this.Size.Height);
         this.VirtualDisplaySize = new Vector2(this.Size.Width, this.Size.Height);
         this._windowPlacementStates = new Dictionary<string, ImGuiWindowPlacementState>();
-        this._controller = new ImGuiController(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
     }
     
     /// <summary>
@@ -371,7 +371,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// </summary>
     /// <param name="delta">The time in seconds since the last update.</param>
     internal void UpdateImGuiController(double delta) {
-        this._controller.Update(delta);
+        this.Controller.Update(delta);
     }
     
     /// <summary>
@@ -380,7 +380,7 @@ public abstract class ImGuiOverlay : Disposable {
     /// <param name="commandList">The command list used to record framebuffer, clear, ImGui, and texture copy commands.</param>
     /// <returns>The texture containing the rendered overlay for the current frame, or <c>null</c> if the render target could not be created.</returns>
     internal Texture2D? RenderToTexture(CommandList commandList) {
-        this.HandleScale(this._controller.Window.GetWidth(), this._controller.Window.GetHeight());
+        this.HandleScale(this.Controller.Window.GetWidth(), this.Controller.Window.GetHeight());
         this.EnsureRenderTarget();
         
         if (this._renderTarget == null || this._resultTexture == null) {
@@ -396,20 +396,20 @@ public abstract class ImGuiOverlay : Disposable {
         Vector2 mousePosition = this.MouseBlocked ? new Vector2(-float.MaxValue, -float.MaxValue) : this.RealToVirtualMousePosition(Input.GetMousePosition());
         
         // Begin controller.
-        this._controller.Begin(commandList, this._renderTarget.Framebuffer, true, mousePosition);
+        this.Controller.Begin(commandList, this._renderTarget.Framebuffer, true, mousePosition);
         
         // Refreshes IO from the real window, so patch display values right after it.
-        this.ApplyVirtualDisplayAfterBegin(this._controller);
+        this.ApplyVirtualDisplayAfterBegin(this.Controller);
         
         // Draw overlay.
-        this.Draw(this._controller);
+        this.Draw(this.Controller);
         
         // The context of this overlay is still current here.
-        this.CapturesMouse = this._controller.Io.WantCaptureMouse;
+        this.CapturesMouse = this.Controller.Io.WantCaptureMouse;
         this.OwnsMouse = this.CapturesMouse && (ImGui.IsMouseDown(ImGuiMouseButton.Left) || ImGui.IsMouseDown(ImGuiMouseButton.Right) || ImGui.IsMouseDown(ImGuiMouseButton.Middle));
         
         // End controller.
-        this._controller.End();
+        this.Controller.End();
         
         // Copy render target to result texture.
         commandList.CopyTexture(this._renderTarget.ColorTexture, this._resultTexture.DeviceTexture);
@@ -576,7 +576,7 @@ public abstract class ImGuiOverlay : Disposable {
     
     protected override void Dispose(bool disposing) {
         if (disposing) {
-            this._controller.Dispose();
+            this.Controller.Dispose();
             this._renderTarget?.Dispose();
             this._resultTexture?.Dispose();
             this._windowPlacementStates.Clear();
