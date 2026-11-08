@@ -470,7 +470,7 @@ public abstract class Scene : Disposable {
             this._entitiesToAdd.Clear();
             this._entitiesToRemove.Clear();
             this._entityIds = 0;
-
+            
             foreach (MultiInstanceRenderer multiInstanceRenderer in this._multiInstanceRenderers) {
                 multiInstanceRenderer.Dispose();
             }

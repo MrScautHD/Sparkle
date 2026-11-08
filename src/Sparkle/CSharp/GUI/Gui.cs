@@ -17,7 +17,12 @@ public abstract class Gui : Disposable {
     public readonly string Name;
     
     /// <summary>
-    /// Determines whether camera movement is allowed while the GUI is active.
+    /// Determines whether the active camera may be rotated by input while this GUI is active.
+    /// </summary>
+    public bool AllowCameraRotation;
+    
+    /// <summary>
+    /// Determines whether the active camera may be moved by input while this GUI is active.
     /// </summary>
     public bool AllowCameraMovement;
     

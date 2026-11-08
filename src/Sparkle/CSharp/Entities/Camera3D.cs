@@ -108,6 +108,22 @@ public class Camera3D : Entity {
     }
 
     /// <summary>
+    /// Determines whether the camera may be rotated by input.
+    /// </summary>
+    public bool AllowRotation {
+        get => this._cam3D.AllowRotation;
+        set => this._cam3D.AllowRotation = value;
+    }
+
+    /// <summary>
+    /// Determines whether the camera may be moved by input.
+    /// </summary>
+    public bool AllowMovement {
+        get => this._cam3D.AllowMovement;
+        set => this._cam3D.AllowMovement = value;
+    }
+
+    /// <summary>
     /// The mouse sensitivity for camera movement.
     /// </summary>
     public float MouseSensitivity {
@@ -143,25 +159,36 @@ public class Camera3D : Entity {
     protected internal override void Update(double delta) {
         base.Update(delta);
         
-        // To make sure just the active camera moves from the input and check if the active gui allows the camera to get moved.
+        // To make sure just the active camera moves from the input and check if the active gui/overlay... allows the camera to get moved.
         if (SceneManager.ActiveCam3D == this) {
-            if (GuiManager.ActiveGui != null && !GuiManager.ActiveGui.AllowCameraMovement) {
-                return;
-            }
+            bool allowRotation = true;
+            bool allowMovement = true;
             
-            foreach (ImGuiOverlay imGuiOverlay in ImGuiOverlayManager.GetOverlays()) {
-                if (!imGuiOverlay.AllowCameraMovement) {
-                    return;
-                }
+            if (GuiManager.ActiveGui != null) {
+                allowRotation &= GuiManager.ActiveGui.AllowCameraRotation;
+                allowMovement &= GuiManager.ActiveGui.AllowCameraMovement;
             }
             
             foreach (Overlay overlay in OverlayManager.GetOverlays()) {
-                if (!overlay.AllowCameraMovement) {
-                    return;
-                }
+                allowRotation &= overlay.AllowCameraRotation;
+                allowMovement &= overlay.AllowCameraMovement;
             }
             
+            foreach (ImGuiOverlay imGuiOverlay in ImGuiOverlayManager.GetOverlays()) {
+                allowRotation &= imGuiOverlay.AllowCameraRotation;
+                allowMovement &= imGuiOverlay.AllowCameraMovement;
+            }
+            
+            bool prevAllowRotation = this.AllowRotation;
+            bool prevAllowMovement = this.AllowMovement;
+            
+            this.AllowRotation = prevAllowRotation && allowRotation;
+            this.AllowMovement = prevAllowMovement && allowMovement;
+            
             this._cam3D.Update(delta);
+            
+            this.AllowRotation = prevAllowRotation;
+            this.AllowMovement = prevAllowMovement;
         }
     }
     

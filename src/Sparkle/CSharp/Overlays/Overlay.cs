@@ -13,7 +13,12 @@ public abstract class Overlay : Disposable {
     public string Name { get; private set; }
     
     /// <summary>
-    /// Determines whether camera movement is allowed while the Overlay is active.
+    /// Determines whether the active camera may be rotated by input while this overlay is active.
+    /// </summary>
+    public bool AllowCameraRotation;
+    
+    /// <summary>
+    /// Determines whether the active camera may be moved by input while this overlay is active.
     /// </summary>
     public bool AllowCameraMovement;
     
@@ -40,6 +45,7 @@ public abstract class Overlay : Disposable {
     /// <param name="enabled">Whether the overlay is initially enabled (default is false).</param>
     protected Overlay(string name, bool enabled = false) {
         this.Name = name;
+        this.AllowCameraRotation = true;
         this.AllowCameraMovement = true;
         this.Enabled = enabled;
     }

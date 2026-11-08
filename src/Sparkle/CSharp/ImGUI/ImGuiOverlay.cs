@@ -27,7 +27,12 @@ public abstract class ImGuiOverlay : Disposable {
     public ImGuiController Controller { get; private set; }
     
     /// <summary>
-    /// Determines whether camera movement is allowed while the ImGuiOverlay is active.
+    /// Determines whether the active camera may be rotated by input while this overlay is active.
+    /// </summary>
+    public bool AllowCameraRotation;
+    
+    /// <summary>
+    /// Determines whether the active camera may be moved by input while this overlay is active.
     /// </summary>
     public bool AllowCameraMovement;
     
@@ -129,6 +134,7 @@ public abstract class ImGuiOverlay : Disposable {
     protected ImGuiOverlay(string name, (int, int)? size = null, float scale = 1.0F, bool enabled = false, bool enableScaleHandler = true, bool useIntegerScaling = false) {
         this.Name = name;
         this.Controller = new ImGuiController(GlobalGraphicsAssets.GraphicsDevice, GlobalGraphicsAssets.Window);
+        this.AllowCameraRotation = true;
         this.AllowCameraMovement = true;
         this.Size = size ?? (1280, 720);
         this.Scale = scale;
@@ -396,7 +402,7 @@ public abstract class ImGuiOverlay : Disposable {
         Vector2 mousePosition = this.MouseBlocked ? new Vector2(-float.MaxValue, -float.MaxValue) : this.RealToVirtualMousePosition(Input.GetMousePosition());
         
         // Begin controller.
-        this.Controller.Begin(commandList, this._renderTarget.Framebuffer, true, mousePosition);
+        this.Controller.Begin(commandList, this._renderTarget.Framebuffer, mousePosition);
         
         // Refreshes IO from the real window, so patch display values right after it.
         this.ApplyVirtualDisplayAfterBegin(this.Controller);
