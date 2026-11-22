@@ -387,10 +387,10 @@ public class Player : Entity {
             bool isBody1 = contact.Body1 == this._rigidBody.Body;
             floor = isBody1 ? contact.Body2 : contact.Body1;
             
-            if ((mask & ContactData.MaskContact0) != 0) { hitPoint += isBody1 ? contactData.Contact0.RelativePosition1 : contactData.Contact0.RelativePosition2; numContacts++; }
-            if ((mask & ContactData.MaskContact1) != 0) { hitPoint += isBody1 ? contactData.Contact1.RelativePosition1 : contactData.Contact1.RelativePosition2; numContacts++; }
-            if ((mask & ContactData.MaskContact2) != 0) { hitPoint += isBody1 ? contactData.Contact2.RelativePosition1 : contactData.Contact2.RelativePosition2; numContacts++; }
-            if ((mask & ContactData.MaskContact3) != 0) { hitPoint += isBody1 ? contactData.Contact3.RelativePosition1 : contactData.Contact3.RelativePosition2; numContacts++; }
+            if ((mask & ContactData.MaskContact0) != 0) { hitPoint += isBody1 ? contactData.Contact0.RelativePosition1 : contactData.Contact0.GetRelativePosition2(contactData); numContacts++; }
+            if ((mask & ContactData.MaskContact1) != 0) { hitPoint += isBody1 ? contactData.Contact1.RelativePosition1 : contactData.Contact1.GetRelativePosition2(contactData); numContacts++; }
+            if ((mask & ContactData.MaskContact2) != 0) { hitPoint += isBody1 ? contactData.Contact2.RelativePosition1 : contactData.Contact2.GetRelativePosition2(contactData); numContacts++; }
+            if ((mask & ContactData.MaskContact3) != 0) { hitPoint += isBody1 ? contactData.Contact3.RelativePosition1 : contactData.Contact3.GetRelativePosition2(contactData); numContacts++; }
             
             if (numContacts == 0) {
                 continue;
