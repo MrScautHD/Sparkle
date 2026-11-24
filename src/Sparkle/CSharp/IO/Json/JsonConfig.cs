@@ -18,7 +18,7 @@ public class JsonConfig : JsonStorage {
     /// <param name="encryptKey">The key used to encrypt/decrypt the file. Empty disables encryption.</param>
     /// <param name="removeUnknownValues">Whether to strip keys that are not part of the default schema.</param>
     public JsonConfig(string name, string directory, Dictionary<string, object> defaultValues, string encryptKey = "", bool removeUnknownValues = true) : base(name, directory, encryptKey) {
-        this._defaultValues = defaultValues;
+        this._defaultValues = new Dictionary<string, object>(defaultValues, defaultValues.Comparer);
         
         // Load the current JSON data from file.
         JObject data = this.GetData();
@@ -37,7 +37,7 @@ public class JsonConfig : JsonStorage {
         // Add missing default values to the config file.
         foreach (KeyValuePair<string, object> defaultValue in this._defaultValues) {
             if (!data.ContainsKey(defaultValue.Key)) {
-                data.Add(defaultValue.Key, JToken.FromObject(defaultValue.Value));
+                data.Add(defaultValue.Key, defaultValue.Value is null ? JValue.CreateNull() : JToken.FromObject(defaultValue.Value));
                 changed = true;
             }
         }
@@ -53,7 +53,7 @@ public class JsonConfig : JsonStorage {
     /// </summary>
     /// <returns>A read-only dictionary of the default key-value pairs.</returns>
     public IReadOnlyDictionary<string, object> GetDefaultValues() {
-        return this._defaultValues;
+        return this._defaultValues.AsReadOnly();
     }
     
     /// <summary>
