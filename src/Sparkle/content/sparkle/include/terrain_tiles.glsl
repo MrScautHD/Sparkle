@@ -148,6 +148,38 @@ vec3 getMaskPosition(vec3 normal, int axis, vec2 projected, int size) {
 }
 
 /*
+ * Rotates (and optionally mirrors) a source pixel by a variant chosen from a hash of the texture tile.
+ *
+ * The 8 variants (4 rotations x mirror) are 90-degree steps, so pixel art stays crisp.
+ * The source texture must be square.
+ */
+ivec2 getRandomizedSourcePixel(ivec2 sourcePixel, ivec2 tileCell, int size) {
+    uint hash = uint(tileCell.x) * HASH_X + uint(tileCell.y) * HASH_Y;
+    hash = (hash ^ (hash >> 13)) * HASH_MIX;
+    hash ^= hash >> 16;
+    
+    int last = size - 1;
+    ivec2 pixel = clamp(sourcePixel, ivec2(0), ivec2(last));
+    
+    // Mirror horizontally for half of the tiles.
+    if ((hash & 4u) != 0u) {
+        pixel.x = last - pixel.x;
+    }
+    
+    // Rotate by 0, 90, 180 or 270 degrees.
+    switch (int(hash & 3u)) {
+        case 1:
+            return ivec2(last - pixel.y, pixel.x);
+        case 2:
+            return ivec2(last - pixel.x, last - pixel.y);
+        case 3:
+            return ivec2(pixel.y, last - pixel.x);
+        default:
+            return pixel;
+    }
+}
+
+/*
  * Samples a terrain material from the source texture array.
  *
  * The source coordinates are converted to the requested mip levels manually.
@@ -622,6 +654,9 @@ vec4 GetTerrainColor() {
     
     // Add small deterministic noise to soften material transitions.
     float noise = getMaskNoise(axis, pixel, sourcePixel, size, footprint);
+    
+    // Every texture tile gets its own rotation/mirror.
+    sourcePixel = getRandomizedSourcePixel(sourcePixel, ivec2(floor(projected)), size);
     
     // Resolve the final terrain material color from the surrounding tile corners.
     return getTerrainColor(corners, pixel, sourcePixel, uv, normal, lod, noise, size);
